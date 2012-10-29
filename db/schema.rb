@@ -14,10 +14,10 @@
 ActiveRecord::Schema.define(:version => 20121029160734) do
 
   create_table "media_sources", :force => true do |t|
-    t.integer  "song_id"
+    t.integer  "song_id",    :null => false
     t.string   "type"
     t.string   "url"
-    t.integer  "rating"
+    t.integer  "votes"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -34,9 +34,9 @@ ActiveRecord::Schema.define(:version => 20121029160734) do
   end
 
   create_table "sync_files", :force => true do |t|
-    t.integer  "song_id"
-    t.text     "timecodes"
-    t.integer  "rating"
+    t.integer  "song_id",    :null => false
+    t.text     "timecode"
+    t.integer  "votes"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

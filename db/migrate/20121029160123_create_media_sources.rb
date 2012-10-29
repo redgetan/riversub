@@ -2,11 +2,11 @@ class CreateMediaSources < ActiveRecord::Migration
   def change
     create_table :media_sources do |t|
 
-      t.integer :song_id
+      t.integer :song_id, :null => false
 
       t.string :type
       t.string :url
-      t.integer :rating
+      t.integer :votes
 
       t.timestamps
     end
