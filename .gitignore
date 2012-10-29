@@ -17,3 +17,4 @@ gem_link
 tags
 .rvmrc
 .vagrant
+Gemfile.lock
