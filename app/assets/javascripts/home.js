@@ -21,13 +21,6 @@
     }
   };
 
-  var validateSyncFiles = function(sync_files) {
-    if (sync_files.length == 0) {
-      $("div#notice").text("This song does not have any synchorized lyrics file yet. Why not create one?")
-                     .css("color","blue");
-    }
-  };
-
   var syncLyricsToMedia = function(timecode) {
 
     timecode = timecode.split(",");
@@ -37,15 +30,15 @@
       popcorn.code({
         start: timecode[i],
         end:   timecode[i + 1],
-        onStart: function(lineno) {
+        onStart: function(i) {
           return function(options) {
-            console.log("line: " + lineno + "  start: " + options.start + "   " + $lines.eq(lineno).text());
-            $lines.eq(lineno).css("background-color","yellow");
+            console.log("line: " + i + "  start: " + options.start + "   " + $lines.eq(i).text());
+            $lines.eq(i).css("background-color","yellow");
           }
         }(i),
-        onEnd: function(lineno) {
+        onEnd: function(i) {
           return function(options) {
-            $lines.eq(lineno).css("background-color","");
+            $lines.eq(i).css("background-color","");
           }
         }(i),
       });
