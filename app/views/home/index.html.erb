@@ -1,5 +1,14 @@
-<ul>
-  <% @songs.each do |song| %>
-    <li><%= link_to song.name, "#", :id => song.id, :class => "song" %></li>
-  <% end %>
-</ul>
+<div id="songs">
+  <ul>
+    <% @songs.each do |song| %>
+      <li><%= link_to song.name, "#", :id => song.id, :class => "song" %></li>
+    <% end %>
+  </ul>
+</div>
+
+
+<div id="container">
+  <div id="media"></div>
+  <div id="lyrics"></div>
+  <div id="notice"></div>
+</div>

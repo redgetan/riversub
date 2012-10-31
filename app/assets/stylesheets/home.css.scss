@@ -1,3 +1,44 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+div#songs {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+div#container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 1150px;
+}
+
+div#media {
+  width: 550px;
+  height: 450px;
+  float: left;
+}
+
+div#lyrics {
+  margin-left: 30px;
+  width: 500px;
+  height: 450px;
+  float: left;
+}
+
+div#lyrics pre {
+  font-family: monospace;
+}
+
+div#lyrics .line {
+  height: 1em;
+}
+
+div#notice {
+  width: 550px;
+  margin-top: 20px;
+  font-size: 18px;
+  float: left;
+  font-family: monospace;
+  color: red;
+}

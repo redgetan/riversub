@@ -10,13 +10,13 @@ class HomeController < ApplicationController
   def play
     song = Song.find params[:song_id]
 
-    media_source = MediaSource.highest_voted(song.id)
-    sync_file    = SyncFile.highest_voted(song.id)
+    media_sources = MediaSource.highest_voted(song.id)
+    sync_files    = SyncFile.highest_voted(song.id)
 
     render :json => {
-      :media_source => media_source,
+      :media_sources => media_sources,
       :lyrics     => song.lyrics,
-      :sync_file  => sync_file
+      :sync_files  => sync_files
     }
   end
 end

@@ -108,6 +108,64 @@ I love the way you lie
 I love the way you lie
 EOF
 
+lyrics2 = <<EOF
+So sentimental, not sentimental no
+Romantic not disgusting yet
+Darling, I'm down and lonely when with the fortunate only
+I've been looking for something else
+Do let, do let, do let, jugulate, do let, do let, do
+
+Let's go slowly discouraged
+Distant from other interests on your favorite weekend ending
+This love's for gentlemen only that's with the fortunate only
+No, I gotta be someone else
+These days it comes, it comes, it comes, it comes, it comes and goes
+
+Lisztomania
+Think less but see it grow like a riot, like a riot, oh
+I'm not easily offended
+It's not hard to let it go from a mess to the masses
+
+Lisztomania
+Think less but see it grow like a riot, like a riot, oh
+I'm not easily offended
+It's not hard to let it go from a mess to the masses
+
+Follow, misguide, stand still
+Disgust, discourage on this precious weekend ending
+This love's for gentlemen only, wealthiest gentlemen only
+And now that you're lonely
+Do let, do let, do let, jugulate, do let, do let, do
+
+Let's go slowly discouraged, we'll burn the pictures instead
+When it's all over we can barely discuss
+For one minute only, not with the fortunate only
+Thought it could have been something else
+These days it comes, it comes, it comes, it comes, it comes and goes
+
+Lisztomania
+Think less but see it grow like a riot, like a riot, oh
+I'm not easily offended
+It's not hard to let it go from a mess to the masses
+
+Lisztomania
+Think less but see it grow like a riot, like a riot, oh
+I'm not easily offended
+It's not hard to let it go from a mess to the masses
+
+This is show time, this is show time, this is show time
+This is show time, this is show time, this is show time
+Time, time is your love, time is your love, yes time is your
+Time, time is your love, time is your love, yes time is your
+
+From the mess to the masses
+
+Lisztomania
+Think less but see it grow like a ride, like a ride, oh
+Discuss, discuss, discuss
+Discuss, discuss, discouraged
+EOF
+
 song1 = Song.create!(
   :name => "Love The Way You Lie",
   :artist => "Eminem, Rhianna",
@@ -115,12 +173,28 @@ song1 = Song.create!(
 )
 
 song1.sync_files.create!(
-  :timecode => "10,14,17,21,23,25,27,29,30,33,35,36,37,40,42,45"
-
+  :timecode => "0,0.2,4,10,16,21,25,25.2,25.5,27,30,32,35,38,40,44,46,48,50,51,53,54,57,60,63,66,68,70,70.2,70.4,74,80,85,91,95,100"
 )
 
 song1.media_sources.create!(
   :media_type => "video",
   :url => "http://www.youtube.com/watch?v=uelHwf8o7_U",
   :votes => 2
+)
+
+song1.media_sources.create!(
+  :media_type => "video",
+  :url => "http://www.youtube.com/watch?v=uelHwf8o7_U",
+  :votes => 2
+)
+
+song2 = Song.create!(
+  :name => "Lisztomania",
+  :artist => "Phoenix",
+  :lyrics => lyrics2,
+)
+
+song2.media_sources.create!(
+  :media_type => "video",
+  :url => "http://www.youtube.com/watch?v=Dq741YqlP7w"
 )
