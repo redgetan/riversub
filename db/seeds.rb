@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-lyrics_1 = <<EOF
+lyrics1 = <<EOF
 [Intro - Rihanna:]
 Just gonna stand there and watch me burn
 But that's alright because I like the way it hurts
@@ -108,15 +108,19 @@ I love the way you lie
 I love the way you lie
 EOF
 
-song_1 = Song.create!(
+song1 = Song.create!(
   :name => "Love The Way You Lie",
   :artist => "Eminem, Rhianna",
-  :lyrics => lyrics_1,
+  :lyrics => lyrics1,
 )
 
-sync_file_1 = SyncFile.new(
+song1.sync_files.create!(
   :timecode => "10,14,17,21,23,25,27,29,30,33,35,36,37,40,42,45"
+
 )
 
-sync_file_1.song = song_1
-sync_file_1.save!
+song1.media_sources.create!(
+  :media_type => "video",
+  :url => "http://www.youtube.com/watch?v=uelHwf8o7_U",
+  :votes => 2
+)

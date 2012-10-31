@@ -24,6 +24,7 @@ end
 gem 'jquery-rails'
 
 group :development, :test do
+  gem 'thin'
   gem 'capistrano'
   gem "pry"
   gem 'pry-stack_explorer'

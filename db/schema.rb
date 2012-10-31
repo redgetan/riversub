@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(:version => 20121029160734) do
 
   create_table "media_sources", :force => true do |t|
     t.integer  "song_id",    :null => false
-    t.string   "type"
+    t.string   "media_type"
     t.string   "url"
     t.integer  "votes"
     t.datetime "created_at", :null => false
