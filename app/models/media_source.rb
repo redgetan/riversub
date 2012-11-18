@@ -2,7 +2,7 @@ class MediaSource < ActiveRecord::Base
   attr_accessible :votes, :media_type, :url
   belongs_to :song
 
-  validates :media_type, :url, :presence => true
+  validates :media_type, :url, :song_id, :presence => true
 
   scope :highest_voted, lambda { |song_id|
     where("song_id = ?",song_id).order("votes DESC").limit(3)

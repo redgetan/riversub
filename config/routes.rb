@@ -1,8 +1,13 @@
 Lyrex::Application.routes.draw do
 
-  get "home/index"
-  match "play" => 'home#play'
+  get "songs/play"
 
+  resources :songs, :only => [:new, :create, :show] do
+    resources :media_sources, :only => [:new, :create]
+    resources :sync_files, :only => [:create]
+  end
+
+  get "home/index"
   root :to => "home#index"
 
 

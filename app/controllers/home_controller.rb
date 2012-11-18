@@ -1,22 +1,10 @@
 class HomeController < ApplicationController
 
-  respond_to :html, :json
-
   def index
-    @songs = Song.all
-    respond_with @songs
+    @songs_with_sync_files = Song.with_sync_files
+    @songs_no_sync_files   = Song.no_sync_files
+
+    respond_to :html
   end
 
-  def play
-    song = Song.find params[:song_id]
-
-    media_sources = MediaSource.highest_voted(song.id)
-    sync_files    = SyncFile.highest_voted(song.id)
-
-    render :json => {
-      :media_sources => media_sources,
-      :lyrics     => song.lyrics,
-      :sync_files  => sync_files
-    }
-  end
 end

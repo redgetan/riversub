@@ -1,0 +1,12 @@
+class SyncFilesController < ApplicationController
+  def create
+    @song = Song.find params[:song_id]
+    @sync_file = @song.sync_files.build(:timecode => params[:timecode])
+
+    if @sync_file.save
+      render :json => {}, :status => 200
+    else
+      render :json => { :error => @sync_file.errors.messages }, :status => 403
+    end
+  end
+end

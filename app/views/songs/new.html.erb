@@ -1,0 +1,22 @@
+<%= form_for @song do |f| %>
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %> </br>
+  </div>
+
+  <div class="field">
+    <%= f.label :lyrics %>
+    <%= f.text_area :lyrics %> </br>
+  </div>
+
+  <div class="field">
+    <%= label_tag :media_url  %>
+    <%= text_field_tag :media_url %>
+  </div>
+
+  <%= f.submit %>
+<% end %>
+
+<div id="media_sources">
+
+</div>

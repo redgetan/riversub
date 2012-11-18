@@ -2,21 +2,65 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-div#songs {
-  margin-top: 20px;
-  margin-left: 20px;
+div#menu {
+  text-align: center;
 }
+
+input[type=button], input[type=submit] {
+  font-size: 20px;
+}
+
+div#top_container {
+  width: 1150px;
+  height: 100px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 
 div#container {
   margin-left: auto;
   margin-right: auto;
-  width: 1150px;
+  width: 1450px;
+  height: 900px;
+}
+
+textarea#lyrics {
+  font: 18px monospace;
+  float: left;
+  clear: both;
+}
+
+textarea#song_lyrics {
+  vertical-align: text-top;
+}
+
+div#songs_with_sync_files {
+  margin-left: 20px;
+  width: 250px;
+  height: 450px;
+  float: left;
+  font: 16px monospace;
+}
+
+div#songs {
+  float: left;
+}
+
+div#new_song {
+  float: left;
+}
+
+div#songs li.selected {
+  background-color: mediumaquamarine;
 }
 
 div#media {
   width: 550px;
   height: 450px;
   float: left;
+  text-align: right;
 }
 
 div#lyrics {
@@ -26,12 +70,26 @@ div#lyrics {
   float: left;
 }
 
-div#lyrics pre {
-  font-family: monospace;
+div#lyrics tr {
+  height: 1em;
 }
 
 div#lyrics .line {
   height: 1em;
+  font-family: monospace;
+}
+
+div#lyrics .line.selected {
+  height: 1em;
+  background-color: yellow;
+}
+
+div#lyrics .time_slot {
+  height: 1em;
+  width: 30px;
+  border: dotted 1px green;
+  text-align: center;
+  margin-left: 20px;
 }
 
 div#notice {
@@ -41,4 +99,12 @@ div#notice {
   float: left;
   font-family: monospace;
   color: red;
+}
+
+div.field {
+  margin: 5px;
+}
+
+input[type=button] {
+  margin: 15px;
 }
