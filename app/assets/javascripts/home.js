@@ -114,26 +114,6 @@
       $("div#songs").show();
     });
 
-    $(document).on("click", "a#something", function(event) {
-      event.preventDefault();
-
-      $("div#media").empty();
-      $("div#lyrics").empty();
-      $("div#songs").hide();
-
-      var nameInput = "<input type='text' name='' value='' placeholder='Song name' id='song_name'/>";
-      $("div#lyrics").append(nameInput);
-
-      var textarea = "<textarea name='lyrics' id='lyrics' placeholder='Paste song lyrics here' rows='10' cols='30'></textarea>";
-      $("div#lyrics").append(textarea);
-
-      var mediaSourceInput = "<input type='text' placeholder='Paste youtube link to load song' name='' value='' id='media_url'/>";
-      $("div#media").append(mediaSourceInput);
-
-      var addSongBtn = "<input type='button' name='' value='Create Song' id='create_song_btn'/>";
-      var addMediaSourceBtn = "<input type='button' name='' value='Create Media Source' id='create_media_source_btn'/>";
-    });
-
     $(document).on("click", "a.song", function(event) {
       event.preventDefault();
 
@@ -173,7 +153,7 @@
         dataType: "json",
         success: function(data) {
           var songLink = "<li><a href='#' class='song' id=" + data.song_id + ">" + $("form#new_song #song_name").val() + "</a></li>";
-          $("div#no_sync_files ul").append(songLink);
+          $("div#no_sync_files ul").prepend(songLink);
           $(this).remove();
         }.bind(this),
         error: function(data) {
@@ -223,6 +203,10 @@
         }
       });
 
+    });
+
+    $(document).on("click", "form#new_song input#cancel", function(event) {
+      $("form#new_song").remove();
     });
 
   });

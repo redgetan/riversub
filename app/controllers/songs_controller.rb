@@ -32,7 +32,7 @@ class SongsController < ApplicationController
     )
 
     if @media_source.save
-      render :json => {}, :status => 200
+      render :json => { :song_id => @song.id }, :status => 200
     else
       render :json => { :error => @media_source.errors.messages }, :status => 403
     end
