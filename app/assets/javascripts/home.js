@@ -94,10 +94,6 @@
     }
   };
 
-  var removeSyncabilityFromLyrics = function() {
-    alert("not implemented");
-  };
-
   var addTimeSlotsToLyrics = function(text) {
     $("div#lyrics .row").each(function(i) {
       $(this).append("<td><div class='time_slot' id='" + i + "'><div></td>");
@@ -105,14 +101,6 @@
   }
 
   $(document).ready(function(){
-
-    $(document).on("click", "a#play", function(event) {
-      event.preventDefault();
-
-      $("div#media").empty();
-      $("div#lyrics").empty();
-      $("div#songs").show();
-    });
 
     $(document).on("click", "a.song", function(event) {
       event.preventDefault();
