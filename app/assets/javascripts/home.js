@@ -3,7 +3,7 @@
   var popcorn;
 
   var loadMedia = function(url) {
-    popcorn = Popcorn.youtube("#media",url);
+    popcorn = Popcorn.smart("#media",url);
   };
 
   var loadLyrics = function(text) {
@@ -96,7 +96,7 @@
 
   var addTimeSlotsToLyrics = function(text) {
     $("div#lyrics .row").each(function(i) {
-      $(this).append("<td><div class='time_slot' id='" + i + "'><div></td>");
+      $(this).append("<td><div class='time_slot' id='" + i + "'></div></td>");
     });
   }
 
@@ -166,6 +166,7 @@
       $("input#start_sync_btn").removeAttr('disabled');
     });
 
+    // saves sync file to associated song
     $(document).on("click", "input#save_sync_btn", function(event) {
       $(document).off("keyup",lyricsMediaSync);
       $(this).attr("disabled","disabled");
@@ -195,6 +196,25 @@
 
     $(document).on("click", "form#new_song input#cancel", function(event) {
       $("form#new_song").remove();
+    });
+
+    // Allow you to change the endTime of previous lines
+    $(document).on("click", "div#lyrics .row", function(event) {
+      var endTime = $(this).find(".time_slot").text();
+
+      if (endTime !== "") {
+        // remove prev highlighted line
+        var $lines = $("div#lyrics .row .line");
+        var index = parseInt($lines.parent().find(".selected").attr("id"));
+        $lines.eq(index).removeClass("selected");
+
+        // add highlight to current line
+        $(this).find(".line").addClass("selected");
+
+        // set media currentTime to prev end time
+        var prevEndTime = $(this).prev().find(".time_slot").text();
+        popcorn.currentTime(prevEndTime);
+      }
     });
 
   });
