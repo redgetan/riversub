@@ -1,8 +1,10 @@
 (function() {
 
   var popcorn;
+  var createSyncMode;
 
   var loadMedia = function(url) {
+    $("div#media").empty();
     popcorn = Popcorn.smart("#media",url);
   };
 
@@ -27,6 +29,11 @@
     timecode = timecode.split(",");
     var $lines = $("div#lyrics .row .line");
 
+    // remove any previously highlighted lines
+    $lines.filter(".selected").each(function(){
+      $(this).removeClass("selected");
+    });
+
     for (var i = 0, length = timecode.length; i < length; i++) {
       popcorn.code({
         start: timecode[i],
@@ -49,32 +56,59 @@
   var playSong = function(data) {
     console.log(data);
 
-    var mediaUrl = data.media_sources[0].url;
     var lyrics   = data.lyrics;
     var syncFile = data.sync_files[0];
 
-    $("div#notice").empty();
-    $("div#media").empty();
-    loadMedia(mediaUrl);
+    var builder;
+
+    $("div#create").empty();
+    $("div#media_sources").empty();
+    $("div#sync_files").empty();
+
+    // build list of media sources
+    builder = "<ul>";
+    $.each(data.media_sources, function(i,e) {
+      builder += "<li id='media_source'><a href='#'>" + e.url + "</a></li>";
+    });
+    builder += "</ul>";
+
+    $("div#media_sources").append("<p>Media Sources</p>");
+    $("div#media_sources").append(builder);
+    $("div#media_sources").append("<input type='button' name='' value='Add Media Source' id='add_media_source_btn'/>");
+    $("div#media_sources ul li").first().addClass("selected");
+
+
+    // build list of sync files
+    var builder = "<ul>";
+    $.each(data.sync_files, function(i,e) {
+      builder += "<li id='sync_file' data-timecode=" + e.timecode + "><a href='#'>" + e.id + "</a></li>";
+    });
+    builder += "</ul>";
+    $("div#sync_files").append("<p>Sync Files</p>");
+    $("div#sync_files").append(builder);
+    $("div#sync_files").append("<input type='button' name='' value='Add Sync File' id='add_sync_file_btn'/>");
+    $("div#sync_files ul li").first().addClass("selected");
+
+
     $("div#lyrics").empty();
     loadLyrics(lyrics);
 
-    if (syncFile) {
-      syncLyricsToMedia(syncFile.timecode);
-      popcorn.play();
-    } else {
-      $("div#notice").text("Once you Start Sync Mode, you can start pressing [Enter] to mark the 'End Time' of current line in lyrics as the media's current playback time");
+    $("div#media_sources ul li").first().trigger("click");
+
+    if (typeof syncFile === "undefined") {
       addTimeSlotsToLyrics();
 
       // add highlight to first line of lyrics
       $("div#lyrics .row .line").first().addClass("selected");
 
+
       var startSyncBtn = "<input type='button' name='' value='Start Sync Mode' id='start_sync_btn'/>";
       var pauseSyncBtn = "<input type='button' name='' value='Pause Sync Mode' id='pause_sync_btn' disabled='disabled'/>";
       var saveSyncBtn = "<input type='button' name='' value='Save SyncFile' id='save_sync_btn'/>";
-      $("div#notice").append(startSyncBtn);
-      $("div#notice").append(pauseSyncBtn);
-      $("div#notice").append(saveSyncBtn);
+      $("div#create").append("<p>Once you Start Sync Mode, you can start pressing [Enter] to mark the 'End Time' of current line in lyrics as the media's current playback time</p>");
+      $("div#create").append(startSyncBtn);
+      $("div#create").append(pauseSyncBtn);
+      $("div#create").append(saveSyncBtn);
     }
   };
 
@@ -102,6 +136,14 @@
 
   $(document).ready(function(){
 
+    $(document).on("click", "div#with_sync_files a.song", function(event) {
+      createSyncMode = false;
+    });
+
+    $(document).on("click", "div#no_sync_files a.song", function(event) {
+      createSyncMode = true;
+    });
+
     $(document).on("click", "a.song", function(event) {
       event.preventDefault();
 
@@ -116,13 +158,13 @@
       });
     });
 
-    $(document).on("click", "input#new_song_btn", function(event) {
+    $(document).on("click", "input#add_song_btn", function(event) {
 
       $.ajax({
         url: "/songs/new",
         type: "GET",
         success: function(data) {
-          $("div#new_song").append(data);
+          $("div#songs #new").append(data);
         },
         error: function(data) {
           alert(data.responseText);
@@ -194,8 +236,8 @@
 
     });
 
-    $(document).on("click", "form#new_song input#cancel", function(event) {
-      $("form#new_song").remove();
+    $(document).on("click", "form input#cancel", function(event) {
+      $(this).closest("form").remove();
     });
 
     // Allow you to change the endTime of previous lines
@@ -215,6 +257,64 @@
         var prevEndTime = $(this).prev().find(".time_slot").text();
         popcorn.currentTime(prevEndTime);
       }
+    });
+
+
+    $(document).on("click", "input#add_media_source_btn", function(event) {
+      $song = $("div#songs li.selected a");
+
+      $.ajax({
+        url: "/songs/" + $song.attr("id") + "/media_sources/new",
+        type: "GET",
+        success: function(data) {
+          $("div#create").append(data);
+        },
+        error: function(data) {
+          alert(data.responseText);
+        }
+      });
+    });
+
+    $(document).on("submit", "form#new_media_source", function(event) {
+      event.preventDefault();
+
+      $.ajax({
+        url: $(this).attr("action"),
+        type: "POST",
+        data: $(this).serialize(),
+        dataType: "json",
+        success: function(data) {
+          var mediaSourceLink = "<li id='media_source'><a href='#'>" + data.media_source_url + "</a></li>";
+          $("div#media_sources ul").append(mediaSourceLink);
+          $(this).remove();
+        }.bind(this),
+        error: function(data) {
+          alert(data.responseText);
+        }
+      });
+    });
+
+    $(document).on("click", "div#media_sources li", function(event) {
+      event.preventDefault();
+
+      var mediaUrl = $(this).text();
+
+      if (createSyncMode === true) {
+        loadMedia(mediaUrl);
+      } else {
+        loadMedia(mediaUrl);
+        var timecode = $("div#sync_files li.selected").data("timecode");
+        syncLyricsToMedia(timecode);
+        popcorn.play();
+      }
+    });
+
+    $(document).on("click", "div#sync_files li", function(event) {
+      event.preventDefault();
+    });
+
+    $(document).on("click", "input#add_media_source_btn", function(event) {
+
     });
 
   });

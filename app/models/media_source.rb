@@ -4,6 +4,7 @@ class MediaSource < ActiveRecord::Base
 
   validates :media_type, :url, :song_id, :presence => true
 
+
   scope :highest_voted, lambda { |song_id|
     where("song_id = ?",song_id).order("votes DESC").limit(3)
   }
@@ -12,5 +13,10 @@ class MediaSource < ActiveRecord::Base
   after_initialize do
     self.votes ||= 0 if self.has_attribute? :votes
   end
+
+  before_validation do
+    self.media_type = self.url =~ /soundcloud/ ? "audio" : "video"
+  end
+
 
 end

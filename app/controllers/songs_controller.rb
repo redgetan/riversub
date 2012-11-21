@@ -26,10 +26,7 @@ class SongsController < ApplicationController
       render :json => { :error => @song.errors.messages }, :status => 403 and return
     end
 
-    @media_source = @song.media_sources.build(
-      :url => params[:media_url],
-      :media_type => "video"
-    )
+    @media_source = @song.media_sources.build(:url => params[:url])
 
     if @media_source.save
       render :json => { :song_id => @song.id }, :status => 200

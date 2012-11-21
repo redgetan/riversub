@@ -56,11 +56,28 @@ div#songs li.selected {
   background-color: mediumaquamarine;
 }
 
-div#media {
+div#media_container {
+  margin-left: 15px;
   width: 550px;
   height: 450px;
   float: left;
   text-align: right;
+}
+
+div#media_container table {
+  width: 100%;
+}
+
+div#media_container div#media_sources {
+  text-align: left;
+}
+
+div#media_container div#create {
+  text-align: left;
+}
+
+div#media_sources {
+  margin-top: 15px;
 }
 
 div#lyrics {
@@ -92,11 +109,8 @@ div#lyrics .time_slot {
   margin-left: 20px;
 }
 
-div#notice {
-  width: 550px;
-  margin-top: 20px;
+div#create_sync_file p {
   font-size: 18px;
-  float: left;
   font-family: monospace;
   color: red;
 }
@@ -108,3 +122,8 @@ div.field {
 input[type=button], input[type=submit] {
   margin: 15px;
 }
+
+li#sync_file.selected, li#media_source.selected {
+  background-color: bisque;
+}
+

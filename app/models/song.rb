@@ -6,9 +6,6 @@ class Song < ActiveRecord::Base
 
   validates :name, :lyrics, :presence => true
 
-  accepts_nested_attributes_for :media_sources
-
-
   scope :with_sync_files, lambda {
     joins("LEFT JOIN sync_files ON songs.id = sync_files.song_id")
       .where("song_id IS NOT NULL")
