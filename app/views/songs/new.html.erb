@@ -9,10 +9,10 @@
     <%= f.text_area :lyrics %> </br>
   </div>
 
-  <div class="field">
-    <%= label_tag :media_url  %>
-    <%= text_field_tag :url %>
-  </div>
+  <%= f.fields_for :media_sources, MediaSource.new do |m| %>
+    <%= m.label :media_url %>
+    <%= m.text_field :url %>
+  <% end %>
 
   <%= f.submit %>
   <%= tag :input, :type => "button", :value => "Cancel", :id => "cancel"  %>

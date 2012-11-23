@@ -22,16 +22,10 @@ class SongsController < ApplicationController
   def create
     @song = Song.new params[:song]
 
-    unless @song.save
-      render :json => { :error => @song.errors.messages }, :status => 403 and return
-    end
-
-    @media_source = @song.media_sources.build(:url => params[:url])
-
-    if @media_source.save
+    if @song.save
       render :json => { :song_id => @song.id }, :status => 200
     else
-      render :json => { :error => @media_source.errors.messages }, :status => 403
+      render :json => { :error => @song.errors.messages }, :status => 403
     end
 
   end

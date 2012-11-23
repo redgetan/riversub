@@ -208,7 +208,7 @@
         data: $(this).serialize(),
         dataType: "json",
         success: function(data) {
-          var songLink = "<li><a href='#' class='song' id=" + data.song_id + ">" + $("form#new_song #song_name").val() + "</a></li>";
+          var songLink = "<li id='" + data.song_id + "'><a href='#' class='song'>" + $("form#new_song #song_name").val() + "</a></li>";
           $("div#no_sync_files ul").prepend(songLink);
           $(this).remove();
         }.bind(this),
