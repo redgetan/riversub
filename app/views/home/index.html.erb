@@ -10,7 +10,7 @@
       </p>
       <ul>
         <% @songs_with_sync_files.each do |song| %>
-          <li><%= link_to song.name, "#", :id => song.id, :class => "song" %></li>
+          <li id="<%= song.id %>"><%= link_to song.name, "#", :class => "song" %></li>
         <% end %>
       </ul>
     </div>
@@ -24,7 +24,7 @@
       </p>
       <ul>
         <% @songs_no_sync_files.each do |song| %>
-          <li><%= link_to song.name, "#", :id => song.id, :class => "song" %></li>
+          <li id="<%= song.id %>"><%= link_to song.name, "#", :class => "song" %></li>
         <% end %>
       </ul>
     </div>

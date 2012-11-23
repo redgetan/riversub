@@ -59,6 +59,12 @@ div#songs li.selected {
 div#media_container {
   margin-left: 15px;
   width: 550px;
+  float: left;
+  text-align: right;
+}
+
+div#media {
+  width: 550px;
   height: 450px;
   float: left;
   text-align: right;
@@ -109,7 +115,7 @@ div#lyrics .time_slot {
   margin-left: 20px;
 }
 
-div#create_sync_file p {
+p#edit_sync_file {
   font-size: 18px;
   font-family: monospace;
   color: red;
@@ -123,7 +129,10 @@ input[type=button], input[type=submit] {
   margin: 15px;
 }
 
-li#sync_file.selected, li#media_source.selected {
+div#sync_files li.selected, div#media_sources li.selected {
   background-color: bisque;
 }
 
+div#media_container table td#left {
+  width: 70%;
+}
