@@ -26,6 +26,7 @@ gem 'jquery-rails'
 group :development, :test do
   gem 'thin'
   gem 'capistrano'
+  gem 'rvm-capistrano'
   gem "pry"
   gem 'pry-stack_explorer'
   gem 'rspec'
@@ -44,4 +45,4 @@ end
 gem 'unicorn'
 
 # Deploy with Capistrano
-# gem 'capistrano'
+gem 'capistrano'
