@@ -43,6 +43,7 @@ before "deploy:update" do
 end
 
 after "deploy:restart", "deploy:cleanup" # keep only the last 5 releases
+after "deploy:update_code", "deploy:migrate"
 
 namespace :deploy do
   %w[start stop restart].each do |command|
@@ -56,6 +57,11 @@ namespace :deploy do
     sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
   end
   after "deploy:setup", "deploy:setup_config"
+
+  task :setup_database, roles: :app do
+    run "cd #{current_path} && RAILS_ENV=production rake db:create"
+  end
+  after "deploy:setup", "deploy:setup_database"
 
   desc "Make sure local git is in sync with remote."
   task :check_revision, roles: :web do
