@@ -2,6 +2,7 @@
 
   var popcorn;
   var editTimecodeMode;
+  var showPositionInterval;
 
   var loadMedia = function(url) {
     $("div#media").empty();
@@ -29,6 +30,14 @@
     });
 
     $(".time_slot").hide();
+  };
+
+  var loadTimeSpans = function() {
+    $("div#lyrics .row").each(function(i) {
+      $(this).prepend("<td><div class='time_span' id='" + i + "'></div></td>");
+    });
+
+    $(".time_span").hide();
   };
 
   var syncLyricsToMedia = function(timecode) {
@@ -86,8 +95,9 @@
     $("div#sync_files ul li").first().addClass("selected");
   };
 
-  var displaySyncFileControls = function(method) {
+  var displaySyncFileControls = function() {
     $(".time_slot").show();
+    $(".time_span").show();
 
     // set highlight to first line of lyrics
     $("div#lyrics .row .line.selected").removeClass("selected");
@@ -95,11 +105,7 @@
 
     var startSyncBtn = "<input type='button' name='' value='Start Sync Mode' id='start_sync_btn'/>";
     var pauseSyncBtn = "<input type='button' name='' value='Pause Sync Mode' id='pause_sync_btn' disabled='disabled'/>";
-    if (method === "create") {
-      var saveSyncBtn = "<input type='button' name='' value='Save SyncFile' id='create_sync_btn'/>";
-    } else {
-      var saveSyncBtn = "<input type='button' name='' value='Save SyncFile' id='update_sync_btn'/>";
-    }
+    var saveSyncBtn = "<input type='button' name='' value='Save SyncFile' id='update_sync_btn'/>";
     $("div#create").append("<p id='edit_sync_file'>Once you Start Sync Mode, you can start pressing [Enter] to mark the 'End Time' of current line in lyrics as the media's current playback time</p>");
     $("div#create").append(startSyncBtn);
     $("div#create").append(pauseSyncBtn);
@@ -123,6 +129,7 @@
     displayMediaSources(data.media_sources);
     displaySyncFiles(data.sync_files);
     loadLyrics(data.lyrics);
+    loadTimeSpans();
     loadTimeslots();
 
     $("div#media_sources ul li").first().trigger("click");
@@ -150,6 +157,12 @@
       $lines.eq(index).removeClass("selected");
       $lines.eq(index + 1).addClass("selected");
     }
+  };
+
+  var showPositionIndicator = function(){
+    var currentTime = popcorn.currentTime()
+    var position = (currentTime * 10).toFixed(1) + "px";
+    $("div#position_indicator").css("left",position);
   };
 
   var getCurrentTimecode = function() {
@@ -223,6 +236,7 @@
     $(document).on("click", "input#start_sync_btn", function(event) {
       $(document).off("keyup",enableTimecodeEdit);
       $(document).on("keyup",enableTimecodeEdit);
+      showPositionInterval = setInterval(showPositionIndicator,100);
       popcorn.play();
       $(this).attr("disabled","disabled");
       $("input#pause_sync_btn").removeAttr('disabled');
@@ -230,6 +244,7 @@
 
     $(document).on("click", "input#pause_sync_btn", function(event) {
       $(document).off("keyup",enableTimecodeEdit);
+      clearInterval(showPositionInterval);
       popcorn.pause();
       $(this).attr("disabled","disabled");
       $("input#start_sync_btn").removeAttr('disabled');
@@ -341,7 +356,7 @@
     });
 
     $(document).on("click", "input#add_sync_file_btn", function(event) {
-      displaySyncFileControls("create");
+      displaySyncFileControls();
     });
 
     $(document).on("click", "div#sync_files li", function(event) {
@@ -358,7 +373,7 @@
       $(this).val("Cancel Edit");
       $(this).addClass("cancel");
 
-      displaySyncFileControls("update");
+      displaySyncFileControls();
 
       popcorn.pause();
       popcorn.currentTime(0);
@@ -382,6 +397,10 @@
       $("div#media_sources ul li.selected").trigger("click");
     });
 
+    $("#top_container").append("<div id='position_indicator'></div>");
+
   });
+
+
 
 //})();

@@ -26,12 +26,6 @@ div#container {
   height: 900px;
 }
 
-textarea#lyrics {
-  font: 18px monospace;
-  float: left;
-  clear: both;
-}
-
 textarea#song_lyrics {
   vertical-align: text-top;
 }
@@ -65,7 +59,7 @@ div#media_container {
 
 div#media {
   width: 550px;
-  height: 450px;
+  height: 250px;
   float: left;
   text-align: right;
 }
@@ -90,7 +84,6 @@ div#lyrics {
   margin-left: 30px;
   width: 500px;
   height: 450px;
-  float: left;
 }
 
 div#lyrics tr {
@@ -135,4 +128,16 @@ div#sync_files li.selected, div#media_sources li.selected {
 
 div#media_container table td#left {
   width: 70%;
+}
+
+div#focus_container {
+  width: 70%;
+  float: left;
+}
+
+div#position_indicator {
+  width: 2px;
+  height: 20px;
+  background-color: red;
+  position: relative;
 }

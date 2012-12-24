@@ -26,6 +26,7 @@ gem 'jquery-rails'
 group :development, :test do
   gem 'thin'
   gem 'capistrano'
+  gem 'capistrano-unicorn', :require => false
   gem 'rvm-capistrano'
   gem "pry"
   gem 'pry-stack_explorer'
@@ -43,6 +44,3 @@ end
 
 # Use unicorn as the app server
 gem 'unicorn'
-
-# Deploy with Capistrano
-gem 'capistrano'
