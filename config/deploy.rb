@@ -42,47 +42,28 @@ before "deploy:update" do
   run "ssh-add ~/.ssh/id_dsa"
 end
 
-# if you want to clean up old releases on each deploy uncomment this:
-# after "deploy:restart", "deploy:cleanup"
+after "deploy:restart", "deploy:cleanup" # keep only the last 5 releases
 
-# if you're still using the script/reaper helper you will need
-# these http://github.com/rails/irs_process_scripts
+namespace :deploy do
+  %w[start stop restart].each do |command|
+    desc "#{command} unicorn server"
+    task command, roles: :app, except: {no_release: true} do
+      run "/etc/init.d/unicorn_#{application} #{command}"
+    end
+  end
 
-# If you are using Passenger mod_rails uncomment this:
-#namespace :deploy do
-  #task :start do ; end
-  #task :stop do ; end
-  #task :restart, :roles => :app, :except => { :no_release => true } do
-    #run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-  #end
-#end
+  task :setup_config, roles: :app do
+    sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
+  end
+  after "deploy:setup", "deploy:setup_config"
 
-#set :rails_env, deploy_environment
-#set :unicorn_binary, "#{shared_path}/bundle/ruby/1.9.1/gems/unicorn-4.5.0/bin/unicorn_rails"
-#set :unicorn_config, "#{current_path}/config/unicorn.rb"
-#set :unicorn_pid, "#{current_path}/tmp/pids/unicorn.pid"
-
-#namespace :deploy do
-  #task :start, :roles => :app, :except => { :no_release => true } do
-    #run "cd #{current_path} && #{try_sudo} #{unicorn_binary} -c #{unicorn_config} -E #{rails_env} -D"
-  #end
-  #task :stop, :roles => :app, :except => { :no_release => true } do
-    #run "#{try_sudo} kill `cat #{unicorn_pid}`"
-  #end
-  #task :graceful_stop, :roles => :app, :except => { :no_release => true } do
-    #run "#{try_sudo} kill -s QUIT `cat #{unicorn_pid}`"
-  #end
-  #task :reload, :roles => :app, :except => { :no_release => true } do
-    #run "#{try_sudo} kill -s USR2 `cat #{unicorn_pid}`"
-  #end
-  #task :restart, :roles => :app, :except => { :no_release => true } do
-    #reload
-  #end
-#end
-
-
-
-require 'capistrano-unicorn'
-
-after "deploy", "deploy:cleanup" # keep only the last 5 releases
-after 'deploy:restart', 'unicorn:restart'
+  desc "Make sure local git is in sync with remote."
+  task :check_revision, roles: :web do
+    unless `git rev-parse HEAD` == `git rev-parse origin/master`
+      puts "WARNING: HEAD is not the same as origin/master"
+      puts "Run `git push` to sync changes."
+      exit
+    end
+  end
+  before "deploy", "deploy:check_revision"
+end

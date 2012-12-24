@@ -8,6 +8,8 @@
 # See http://unicorn.bogomips.org/Unicorn/Configurator.html for complete
 # documentation.
 
+root = "/home/hatch/apps/lyrex/current"
+
 # Use at least one worker per core if you're on a dedicated server,
 # more will usually help for _short_ waits on databases/caches.
 worker_processes 2
@@ -30,14 +32,11 @@ listen 8080, :tcp_nopush => true
 # nuke workers after 30 seconds instead of 60 seconds (the default)
 timeout 30
 
-# feel free to point this anywhere accessible on the filesystem
-pid "/tmp/unicorn.pid"
+working_directory root
 
-# By default, the Unicorn logger will write to stderr.
-# Additionally, ome applications/frameworks log to stderr or stdout,
-# so prevent them from going to /dev/null when daemonized here:
-stderr_path "/var/log/unicorn.stderr.log"
-stdout_path "/var/log/unicorn.stdout.log"
+pid "#{root}/tmp/pids/unicorn.pid"
+stderr_path "#{root}/log/unicorn.log"
+stdout_path "#{root}/log/unicorn.log"
 
 # combine Ruby 2.0.0dev or REE with "preload_app true" for memory savings
 # http://rubyenterpriseedition.com/faq.html#adapt_apps_for_cow
