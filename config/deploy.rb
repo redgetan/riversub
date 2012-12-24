@@ -1,6 +1,5 @@
 require 'bundler/capistrano'
 require 'rvm/capistrano'
-require 'capistrano-unicorn'
 
 set :rvm_ruby_string, ENV['GEM_HOME'].gsub(/.*\//,"")
 set :rvm_type, :system
@@ -82,6 +81,8 @@ end
 #end
 
 
+
+require 'capistrano-unicorn'
 
 after "deploy", "deploy:cleanup" # keep only the last 5 releases
 after 'deploy:restart', 'unicorn:restart'
