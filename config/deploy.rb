@@ -11,7 +11,7 @@ set :myconfig, {
   },
   :staging => {
     :user => "hatch",
-    :host => "vhatch"
+    :host => "localhost"
   }
 }
 
