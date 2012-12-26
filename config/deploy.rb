@@ -46,7 +46,7 @@ after "deploy:restart", "deploy:cleanup" # keep only the last 5 releases
 after "deploy:update_code", "deploy:migrate"
 
 namespace :deploy do
-  %w[start stop restart].each do |command|
+  %w[start stop reload upgrade].each do |command|
     desc "#{command} unicorn server"
     task command, roles: :app, except: {no_release: true} do
       run "/etc/init.d/unicorn_#{application} #{command}"
