@@ -62,7 +62,14 @@
           }
         }(i)
       });
+
+      popcorn.subtitle({
+        start: timecode[i],
+        end:   timecode[i + 1],
+        text: $lines.eq(i).text(),
+      });
     }
+
 
   };
 
