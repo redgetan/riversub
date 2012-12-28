@@ -1,5 +1,7 @@
 Lyrex::Application.routes.draw do
 
+  devise_for :users
+
   get "songs/play"
 
   resources :songs, :only => [:new, :create, :show] do
