@@ -141,3 +141,25 @@ div#position_indicator {
   background-color: red;
   position: relative;
 }
+
+div.timespan {
+  width: 200px;
+}
+
+div.timespan .start_time, div.timespan .waveform, div.timespan .end_time {
+  float: left;
+  margin-right: 10px;
+  font-family: monospace;
+  height: 1em;
+}
+
+div.timespan .start_time {
+  width: 45px;
+  text-align: right;
+}
+
+div.timespan .waveform {
+  background-color: blue;
+}
+
+

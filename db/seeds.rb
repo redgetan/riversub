@@ -182,12 +182,6 @@ song1.media_sources.create!(
   :votes => 2
 )
 
-song1.media_sources.create!(
-  :media_type => "video",
-  :url => "http://www.youtube.com/watch?v=uelHwf8o7_U",
-  :votes => 2
-)
-
 song2 = Song.create!(
   :name => "Lisztomania",
   :artist => "Phoenix",

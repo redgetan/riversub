@@ -1,0 +1,21 @@
+1. subtitles overlap each other
+  steps:
+    click a video
+    click "Edit Timecode"
+    click "Cancel Edit"
+    you'll see overlapping subtitles
+  cause:
+    $(document).on("click", "div#media_sources li", function(event) {
+        syncLyricsToMedia(timecode);
+    }
+
+    code below gets executed twice. method buggy? maybe reset event handlers as a temporary mechanism
+
+    var syncLyricsToMedia = function(timecode) {
+      popcorn.subtitle({
+      })
+    }
+
+
+
+

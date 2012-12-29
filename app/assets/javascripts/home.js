@@ -15,29 +15,13 @@
 
     var lines = text.split("\n");
     for (var i = 0, length = lines.length; i < length; i++) {
-      var line = "<tr class='row'>" +
+      var line = "<tr class='row' id='" +  i + "'>" +
                    "<td>" +
                      "<pre class='line' id='" + i + "'>" + lines[i] + "</pre>" +
                    "</td>" +
                  "</tr>";
       $("div#lyrics table").append(line);
     }
-  };
-
-  var loadTimeslots = function() {
-    $("div#lyrics .row").each(function(i) {
-      $(this).append("<td><div class='time_slot' id='" + i + "'></div></td>");
-    });
-
-    $(".time_slot").hide();
-  };
-
-  var loadTimeSpans = function() {
-    $("div#lyrics .row").each(function(i) {
-      $(this).prepend("<td><div class='time_span' id='" + i + "'></div></td>");
-    });
-
-    $(".time_span").hide();
   };
 
   var syncLyricsToMedia = function(timecode) {
@@ -103,12 +87,7 @@
   };
 
   var displaySyncFileControls = function() {
-    $(".time_slot").show();
-    $(".time_span").show();
-
-    // set highlight to first line of lyrics
-    $("div#lyrics .row .line.selected").removeClass("selected");
-    $("div#lyrics .row .line").first().addClass("selected");
+    $(".timespan").show();
 
     var startSyncBtn = "<input type='button' name='' value='Start Sync Mode' id='start_sync_btn'/>";
     var pauseSyncBtn = "<input type='button' name='' value='Pause Sync Mode' id='pause_sync_btn' disabled='disabled'/>";
@@ -119,12 +98,54 @@
     $("div#create").append(saveSyncBtn);
   };
 
-  var addTimecodeToTimeslots = function(timecode){
+  /**
+   *  Timespan has 3 componenets
+   *    div#timespan i
+   *      div#start_time
+   *      div#waveform
+   *      div#end_time
+   *
+   *  This method fills up those values using just timecode
+   *        0 [   ] 2
+   *      2 [     ] 6
+   *    6 [       ] 11
+   *
+   *  Algo:
+   *    for i in timecode array
+   *      startTime = timecode[i]
+   *      endTime = timecode[i + 1]
+   *      waveform = endTime - startTime pixels
+   *
+   *
+   **/
+  var loadTimespan = function(timecode){
+    // create divs if they don't exist
+    if ($("div#lyrics .timespan").length === 0) {
+      $("div#lyrics .row").each(function(i) {
+        var content = "<td>" +
+                    "<div class='timespan' id='" + i + "'>" +
+                      "<div class='start_time' id='" + i + "'></div>" +
+                      "<div class='waveform' id='" + i + "'></div>" +
+                      "<div class='end_time' id='" + i + "'></div>" +
+                    "</div>" +
+                  "</td>";
+        $(this).prepend(content);
+      });
+
+      $(".timespan").hide();
+    }
+
+    // fill in or update values
     timecode = timecode.split(",");
-    $timeSlots = $("div#lyrics .row .time_slot");
+    $timespans = $("div#lyrics .row .timespan");
 
     for (var i = 0, length = timecode.length; i < length; i++) {
-      $timeSlots.eq(i).text(timecode[i]);
+      var startTime = timecode[i];
+      var endTime = timecode[i + 1];
+      var width = (endTime - startTime) * 10 + "px";
+      $timespans.eq(i).find(".start_time").text(startTime);
+      $timespans.eq(i).find(".end_time").text(endTime);
+      $timespans.eq(i).find(".waveform").css("width",width);
     }
   };
 
@@ -136,44 +157,109 @@
     displayMediaSources(data.media_sources);
     displaySyncFiles(data.sync_files);
     loadLyrics(data.lyrics);
-    loadTimeSpans();
-    loadTimeslots();
 
     $("div#media_sources ul li").first().trigger("click");
 
     if (data.sync_files.length !== 0) {
       $("div#lyrics").prepend("<input type='button' id='edit_timecode_btn' value='Edit Timecode'/>");
-      $("div#lyrics").prepend("<input type='button' id='show_timecode_btn' value='Show/Hide Timecode'/>");
       var timecode = $("div#sync_files ul li.selected").data("timecode");
-      addTimecodeToTimeslots(timecode);
+      loadTimespan(timecode);
       $("input#add_sync_file_btn").hide();
     }
   };
 
+  /**
+   *  Main handler for sync mode
+   *  When user press [Enter],
+   *    if there is line that is already highlighted
+   *      endTime = floored time when [Enter] key was pressed
+   *      waveform width stops expanding
+   *    end
+   *
+   *    if there is next line to be highlighted
+   *      next lyrics line is highlighted
+   *      highlighted lyrics line will have a timespan dynamically
+   *        change according to player time
+   *      startTime = floored time when [Enter] key was pressed
+   *      waveform width expands according to player time
+   *    end
+   *
+   *    states
+   *
+   *    nothing highlighted
+   *      before
+   *              1
+   *              2
+   *              3
+   *
+   *      after
+   *      2[]     1 <-
+   *              2
+   *              3
+   *
+   *
+   *    middle highlighted
+   *      before
+   *      2[]     1 <-
+   *              2
+   *              3
+   *
+   *      after
+   *      2[  ]5  1
+   *      5[]     2 <-
+   *              3
+   *
+   *    last highlighted
+   *      before
+   *      2[  ]5  1
+   *      5[   ]9 2
+   *      9[]     3 <-
+   *
+   *      after
+   *      2[  ]5  1
+   *      5[   ]9 2
+   *      9[  ]11 3
+   *
+   */
   var enableTimecodeEdit = function(event){
     var ENTER_KEY = 13;
+    var index = -1;
 
-    $timeSlots = $("div#lyrics .row .time_slot");
+    $timespans = $("div#lyrics .row .timespan");
     $lines = $("div#lyrics .row .line");
 
-    if (event.which === ENTER_KEY) {
-      var index = parseInt($lines.parent().find(".selected").attr("id"));
-      var currentTime = popcorn.currentTime().toFixed(1);
 
-      $timeSlots.eq(index).text(currentTime);
-      $lines.eq(index).removeClass("selected");
-      $lines.eq(index + 1).addClass("selected");
+    if (event.which === ENTER_KEY) {
+      var currentPlayerTime = Math.floor(popcorn.currentTime());
+      var $selectedLyricsLine = $lines.parent().find(".selected");
+
+      // if there is line that is already highlighted
+      // set its endTime to currentPlayerTime
+      // remove current highlight
+      if ($selectedLyricsLine.length > 0) {
+        index = parseInt($selectedLyricsLine.attr("id"));
+        $timespans.eq(index).find(".end_time").text(currentPlayerTime);
+        $lines.eq(index).removeClass("selected");
+      }
+
+      // if there is next line to be highlighted
+      // highlight next line
+      // set its startTime to currentPlayerTime
+      if (index === -1 || index < $lines.length - 1) {
+        $lines.eq(index + 1).addClass("selected");
+        $timespans.eq(index + 1).find(".start_time").text(currentPlayerTime);
+      }
     }
   };
 
   var showPositionIndicator = function(){
     var currentTime = popcorn.currentTime()
-    var position = (currentTime * 10).toFixed(1) + "px";
+    var position = Math.floor(currentTime * 10) + "px";
     $("div#position_indicator").css("left",position);
   };
 
   var getCurrentTimecode = function() {
-    return $("div#lyrics .row .time_slot")
+    return $("div#lyrics .row .timespan .start_time")
              .filter(function(){ return $(this).text() !== "" })
              .map(   function(){ return $(this).text() })
              .get()
@@ -286,7 +372,7 @@
         data: { "timecode" : timecode },
         success: function(data) {
           $("div#sync_files li#" + data.id).data("timecode",data.timecode);
-          addTimecodeToTimeslots(data.timecode);
+          loadTimespan(data.timecode);
           alert("Timecode updated");
         },
         error: function(data) {
@@ -300,13 +386,40 @@
       $(this).closest("form").remove();
     });
 
-    // Allow you to go to previous line/time
+    // Click on lyrics row
+    //   allows you to go to previous line/time
     $(document).on("click", "div#lyrics .row", function(event) {
-      var endTime = $(this).find(".time_slot").text();
+      var startTime = $(this).find(".timespan .start_time").text();
 
-      if (endTime !== "") {
-        popcorn.currentTime(endTime);
+      if (startTime !== "") {
+        popcorn.currentTime(startTime);
       }
+    });
+
+    // Double click on lyrics row
+    //   plays the media for current lyric line timespan
+    //   *** What if no start/end time
+    $(document).on("dblclick", "div#lyrics .row", function(event) {
+      console.log("double clicked");
+      var i = $(this).attr("id");
+      console.log("REG" + i);
+      var startTime = $(this).find(".timespan .start_time").text();
+      var endTime = $(this).find(".timespan .end_time").text();
+
+      popcorn.code({
+        start: startTime,
+        end:   endTime,
+        onEnd: function(i,endTime) {
+          return function(options) {
+            console.log("must pause " + i + "endTime: " + endTime);
+            popcorn.pause();
+          }
+        }(i,endTime)
+      });
+      // we will add an event handler for the timecode in that row
+      //   but:
+      //    1. we will have to remove this event handler when we want to play entire lyrics w/o pauses
+      //    2. does this add or replace the event handler for timespan?
     });
 
 
@@ -370,10 +483,6 @@
       event.preventDefault();
     });
 
-    $(document).on("click", "input#show_timecode_btn", function(event) {
-      $(".time_slot").toggle();
-    });
-
     $(document).on("click", "input#edit_timecode_btn", function(event) {
       editTimecodeMode = true;
 
@@ -392,12 +501,12 @@
 
       // reload the original timecode
       var timecode = $("div#sync_files ul li.selected").data("timecode");
-      addTimecodeToTimeslots(timecode);
+      loadTimespan(timecode);
 
       $(this).val("Edit Timecode");
       $(this).removeClass("cancel");
 
-      $(".time_slot").hide();
+      $(".timespan").hide();
       $("div#lyrics .row .line.selected").removeClass("selected");
       $("div#create").empty();
 
