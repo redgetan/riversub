@@ -388,8 +388,8 @@
 
     // Click on lyrics row
     //   allows you to go to previous line/time
-    $(document).on("click", "div#lyrics .row", function(event) {
-      var startTime = $(this).find(".timespan .start_time").text();
+    $(document).on("click", "div#lyrics .row .line", function(event) {
+      var startTime = $(this).closest(".row").find(".timespan .start_time").text();
 
       if (startTime !== "") {
         popcorn.currentTime(startTime);

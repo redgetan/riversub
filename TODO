@@ -19,3 +19,19 @@
 
 
 
+2. lock in lyrics line
+  test mode
+    click on line, locks into the line
+      (diff color to indicate lock)
+      play button appears
+      pressing it always starts from startTime of line
+    you can change start/endtime
+      once its changed, to apply it,
+        if endTime changed,
+          removeTrackEvent current track and next track
+          code
+        if startTime changed,
+          removeTrackEvent prev track and current track
+          code
+
+

@@ -49,12 +49,18 @@ Installation
   Once you're logged in
 
     $ cd /vagrant
+
+  /vagrant is where your rails app is located in the VM. Since it's a shared folder, modifications on either the VM or localhost is reflected on either side immediately.
+
+  To install the gems
+
     $ bundle install
+
+  To setup database and tables
+
     $ rake db:create && rake db:migrate && rake db:seed
 
-  That will create the required databases,run migrations, and seed them with initial data for development
-
-  Now, you can just run rails in your VM
+  To run rails
 
     $ rails s
 
@@ -62,4 +68,17 @@ Installation
 
     http://localhost:3030
 
-  Even though rails app is running in a VM, we can still edit the code in our localhost since vagrant by default setups a shared folder between the VM and localhost such that any changes in either VM or localhost is reflected on either side immediately.
+Port Forwarding
+====
+  4 ports are forwarded from VM to localhost as configured in VagrantFile
+
+    VM   => localhost
+    22 => 2222           # ssh
+    80 => 8080           # webserver
+    3000 => 3030         # rails
+    3306 => 4040         # mysql server
+
+  This means,to access:
+    rails app server, you go to http://localhost:3030 in your browser.
+    mysql server, you connect to 127.0.0.1 port 4040
+
