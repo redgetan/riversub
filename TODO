@@ -26,12 +26,15 @@
       play button appears
       pressing it always starts from startTime of line
     you can change start/endtime
+      dblclick to change
       once its changed, to apply it,
-        if endTime changed,
-          removeTrackEvent current track and next track
-          code
-        if startTime changed,
-          removeTrackEvent prev track and current track
-          code
+        mechanism:
+          each lyrics line contains trackEventId
+          if endTime changed,
+            removeTrackEvent current track and next track
+            code
+          if startTime changed,
+            removeTrackEvent prev track and current track
+            code
 
 

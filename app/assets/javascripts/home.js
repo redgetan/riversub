@@ -27,6 +27,7 @@
   var syncLyricsToMedia = function(timecode) {
 
     timecode = timecode.split(",");
+    var lastTrackEventId;
     var $lines = $("div#lyrics .row .line");
 
     // remove any previously highlighted lines
@@ -47,11 +48,17 @@
         }(i)
       });
 
+      lastTrackEventId = popcorn.data.history[popcorn.data.history.length-1]
+      $lines.eq(i).data("code-track-event-id",lastTrackEventId);
+
       popcorn.subtitle({
         start: timecode[i],
         end:   timecode[i + 1],
         text: $lines.eq(i).text(),
       });
+
+      lastTrackEventId = popcorn.data.history[popcorn.data.history.length-1]
+      $lines.eq(i).data("subtitle-track-event-id",lastTrackEventId);
     }
 
 
@@ -98,6 +105,10 @@
     $("div#create").append(saveSyncBtn);
   };
 
+  var calculateWaveformWidth = function(startTime,endTime) {
+    return (endTime - startTime) * 10 + "px";
+  };
+
   /**
    *  Timespan has 3 componenets
    *    div#timespan i
@@ -123,10 +134,10 @@
     if ($("div#lyrics .timespan").length === 0) {
       $("div#lyrics .row").each(function(i) {
         var content = "<td>" +
-                    "<div class='timespan' id='" + i + "'>" +
-                      "<div class='start_time' id='" + i + "'></div>" +
-                      "<div class='waveform' id='" + i + "'></div>" +
-                      "<div class='end_time' id='" + i + "'></div>" +
+                    "<div class='timespan'>" +
+                      "<div class='start_time'></div>" +
+                      "<div class='waveform'></div>" +
+                      "<div class='end_time'></div>" +
                     "</div>" +
                   "</td>";
         $(this).prepend(content);
@@ -139,13 +150,75 @@
     timecode = timecode.split(",");
     $timespans = $("div#lyrics .row .timespan");
 
-    for (var i = 0, length = timecode.length; i < length; i++) {
+    for (var i = 0, length = timecode.length; i < length - 1; i++) {
       var startTime = timecode[i];
       var endTime = timecode[i + 1];
-      var width = (endTime - startTime) * 10 + "px";
+      var width = calculateWaveformWidth(startTime,endTime);
       $timespans.eq(i).find(".start_time").text(startTime);
       $timespans.eq(i).find(".end_time").text(endTime);
       $timespans.eq(i).find(".waveform").css("width",width);
+
+      // make start_time and end_time inplace editable
+
+      $("div#lyrics .row#" + i + " .start_time").editInPlace({
+        callback: function(unused, enteredText) {
+          // rule:
+          //     i cannot changed beyond prev timespans start time
+          // if prev line exists
+          //   changing start_time would
+          //     change end_time of prev line
+          //     change waveform of prev line
+          // end
+          //
+          // change waveform width of current line
+          //
+
+          // i could have used closure to be able to use i in this callback. maybe faster. benchmark in future if i have time
+          var index = parseInt($(this).closest(".row").attr("id"));
+
+          if (index > 0) {
+            var prevTimespan = $timespans.eq(index - 1);
+            var prevStartTime = prevTimespan.find(".start_time").text();
+            var prevEndTime = enteredText;
+            prevTimespan.find(".end_time").text(prevEndTime);
+            var prevWidth = calculateWaveformWidth(prevStartTime,prevEndTime);
+            prevTimespan.find(".waveform").css("width",prevWidth);
+          }
+
+          var currTimespan = $timespans.eq(index);
+          var currStartTime = enteredText;
+          var currEndTime = currTimespan.find(".end_time").text();
+          var currWidth = calculateWaveformWidth(currStartTime,currEndTime);
+          $timespans.eq(index).find(".waveform").css("width",currWidth);
+
+          return enteredText;
+        },
+        text_size: "2"
+      });
+
+      $("div#lyrics .row#" + i + " .end_time").editInPlace({
+        callback: function(unused, enteredText) {
+
+          var index = parseInt($(this).closest(".row").attr("id"));
+
+          if (index < $timespans.length - 1) {
+            var nextTimespan = $timespans.eq(index + 1);
+            var nextStartTime = enteredText;
+            var nextEndTime = nextTimespan.find(".end_time").text();
+            nextTimespan.find(".end_time").text(nextEndTime);
+            var nextWidth = calculateWaveformWidth(nextStartTime,nextEndTime);
+            nextTimespan.find(".waveform").css("width",nextWidth);
+          }
+
+          var currTimespan = $timespans.eq(index);
+          var currStartTime = currTimespan.find(".start_time").text();
+          var currEndTime = enteredText;
+          var currWidth = calculateWaveformWidth(currStartTime,currEndTime);
+          $timespans.eq(index).find(".waveform").css("width",currWidth);
+          return enteredText;
+        },
+        text_size: "2"
+      });
     }
   };
 
@@ -399,23 +472,21 @@
     // Double click on lyrics row
     //   plays the media for current lyric line timespan
     //   *** What if no start/end time
-    $(document).on("dblclick", "div#lyrics .row", function(event) {
-      console.log("double clicked");
-      var i = $(this).attr("id");
-      console.log("REG" + i);
-      var startTime = $(this).find(".timespan .start_time").text();
-      var endTime = $(this).find(".timespan .end_time").text();
+    $(document).on("dblclick", "div#lyrics .row .line", function(event) {
+      //var i = $(this).attr("id");
+      //var startTime = $(this).find(".timespan .start_time").text();
+      //var endTime = $(this).find(".timespan .end_time").text();
 
-      popcorn.code({
-        start: startTime,
-        end:   endTime,
-        onEnd: function(i,endTime) {
-          return function(options) {
-            console.log("must pause " + i + "endTime: " + endTime);
-            popcorn.pause();
-          }
-        }(i,endTime)
-      });
+      //popcorn.code({
+        //start: startTime,
+        //end:   endTime,
+        //onEnd: function(i,endTime) {
+          //return function(options) {
+            //console.log("must pause " + i + "endTime: " + endTime);
+            //popcorn.pause();
+          //}
+        //}(i,endTime)
+      //});
       // we will add an event handler for the timecode in that row
       //   but:
       //    1. we will have to remove this event handler when we want to play entire lyrics w/o pauses
@@ -513,6 +584,7 @@
       $("div#media_sources ul li.selected").trigger("click");
     });
 
+    // some fiddling. must remove in production
     $("#top_container").append("<div id='position_indicator'></div>");
 
   });
