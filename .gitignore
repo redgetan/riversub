@@ -15,5 +15,6 @@
 /tmp
 gem_link
 tags
+.DS_Store
 .vagrant
 public/assets
