@@ -24,6 +24,38 @@
     }
   };
 
+  var addHighlightSync = function(options) {
+    var $lines = $("div#lyrics .row .line");
+
+    popcorn.code({
+      start: options.start,
+      end:   options.end,
+      onStart: function(i) {
+        return function(options) {
+          console.log("line: " + i + "  start: " + options.start + "   " + "  end: " + options.end + "   " + $lines.eq(i).text());
+          $lines.parent().find(".selected").removeClass("selected");
+          $lines.eq(i).addClass("selected");
+        }
+      }(options.index)
+    });
+
+    lastTrackEventId = popcorn.data.history[popcorn.data.history.length-1]
+    $lines.eq(options.index).data("code-track-event-id",lastTrackEventId);
+  };
+
+  var addSubtitleSync = function(options) {
+    var $lines = $("div#lyrics .row .line");
+
+    popcorn.subtitle({
+      start: options.start,
+      end:   options.end,
+      text: $lines.eq(options.index).text(),
+    });
+
+    lastTrackEventId = popcorn.data.history[popcorn.data.history.length-1]
+    $lines.eq(options.index).data("subtitle-track-event-id",lastTrackEventId);
+  };
+
   var syncLyricsToMedia = function(timecode) {
 
     timecode = timecode.split(",");
@@ -36,32 +68,18 @@
     });
 
     for (var i = 0, length = timecode.length; i < length; i++) {
-      popcorn.code({
+      addHighlightSync({
+        index: i,
         start: timecode[i],
-        end:   timecode[i + 1],
-        onStart: function(i) {
-          return function(options) {
-            console.log("line: " + i + "  start: " + options.start + "   " + $lines.eq(i).text());
-            $lines.parent().find(".selected").removeClass("selected");
-            $lines.eq(i).addClass("selected");
-          }
-        }(i)
+        end: timecode[i + 1]
       });
 
-      lastTrackEventId = popcorn.data.history[popcorn.data.history.length-1]
-      $lines.eq(i).data("code-track-event-id",lastTrackEventId);
-
-      popcorn.subtitle({
+      addSubtitleSync({
+        index: i,
         start: timecode[i],
-        end:   timecode[i + 1],
-        text: $lines.eq(i).text(),
+        end: timecode[i + 1]
       });
-
-      lastTrackEventId = popcorn.data.history[popcorn.data.history.length-1]
-      $lines.eq(i).data("subtitle-track-event-id",lastTrackEventId);
     }
-
-
   };
 
   var displayMediaSources = function(mediaSources) {
@@ -89,7 +107,7 @@
     builder += "</ul>";
     $("div#sync_files").append("<p>Sync Files</p>");
     $("div#sync_files").append(builder);
-    $("div#sync_files").append("<input type='button' name='' value='Add Sync File' id='add_sync_file_btn'/>");
+    //$("div#sync_files").append("<input type='button' name='' value='Add Sync File' id='add_sync_file_btn'/>");
     $("div#sync_files ul li").first().addClass("selected");
   };
 
@@ -99,14 +117,127 @@
     var startSyncBtn = "<input type='button' name='' value='Start Sync Mode' id='start_sync_btn'/>";
     var pauseSyncBtn = "<input type='button' name='' value='Pause Sync Mode' id='pause_sync_btn' disabled='disabled'/>";
     var saveSyncBtn = "<input type='button' name='' value='Save SyncFile' id='update_sync_btn'/>";
-    $("div#create").append("<p id='edit_sync_file'>Once you Start Sync Mode, you can start pressing [Enter] to mark the 'End Time' of current line in lyrics as the media's current playback time</p>");
     $("div#create").append(startSyncBtn);
     $("div#create").append(pauseSyncBtn);
     $("div#create").append(saveSyncBtn);
+
+    // must highlight first line if none highlighted
+    var $lines = $("div#lyrics .row .line");
+    var $selectedLyricsLine = $lines.parent().find(".selected");
+    if ($selectedLyricsLine.length === 0) {
+      $lines.first().addClass("selected");
+    }
   };
 
+  // if endTime is blank
   var calculateWaveformWidth = function(startTime,endTime) {
+    startTime = parseFloat(startTime);
+    endTime   = parseFloat(endTime);
+    if (isNaN(startTime) || isNaN(endTime)) {
+      return "0px";
+    }
     return (endTime - startTime) * 10 + "px";
+  };
+
+  var updateHighlightSync = function(options) {
+    var $lines = $("div#lyrics .row .line");
+    popcorn.removeTrackEvent($lines.eq(options.index).data("code-track-event-id"));
+
+    addHighlightSync({
+      index: options.index,
+      start: options.start,
+      end: options.end
+    });
+  };
+
+  var updateSubtitleSync = function(options) {
+    var $lines = $("div#lyrics .row .line");
+    popcorn.removeTrackEvent($lines.eq(options.index).data("subtitle-track-event-id"));
+
+    addSubtitleSync({
+      index: options.index,
+      start: options.start,
+      end: options.end
+    });
+  };
+
+  var changeTimespan = function(options) {
+    console.log("options.position: " + options.position + "time: " + options.time);
+    if (options.position !== "start" && options.position !== "end") {
+      throw "Invalid position: " + options.position + " . Could only be 'start' or 'end'";
+    }
+
+    var $timespans = $("div#lyrics .row .timespan");
+    var index = options.index;
+
+    if (index < 0 || index > $timespans.length - 1) {
+      throw "Index out of bounds. (" + index + " out of " + ($timespans.length - 1) + ") " ;
+    }
+
+    var timespan = $timespans.eq(index);
+    var startTime;
+    var endTime;
+    var waveformWidth;
+
+    // set new start/end time
+    if (options.position === "start") {
+      startTime = options.time;
+      endTime = timespan.find(".end_time").text();
+      timespan.find(".start_time").text(startTime);
+    } else {
+      startTime = timespan.find(".start_time").text();
+      endTime = options.time;
+      timespan.find(".end_time").text(endTime);
+    }
+
+    // modify waveform width
+    waveformWidth = calculateWaveformWidth(startTime,endTime);
+    timespan.find(".waveform").css("width",waveformWidth);
+
+    // update synchronization data
+    // but only when both startTime & endTime is already set
+    if (startTime !== "" && endTime !== "") {
+      updateHighlightSync({
+        index: index,
+        start: startTime,
+        end: endTime
+      });
+
+      updateSubtitleSync({
+        index: index,
+        start: startTime,
+        end: endTime
+      });
+    }
+
+  };
+
+  var changeCurrEndTime = function(index,time) {
+    changeTimespan({
+      index: index,
+      position: "end",
+      time: time
+    });
+
+    changeTimespan({
+      index: index + 1,
+      position: "start",
+      time: time
+    });
+  };
+
+  var changeCurrStartTime = function(index,time) {
+    changeTimespan({
+      index: index - 1,
+      position: "end",
+      time: time
+    });
+
+    changeTimespan({
+      index: index,
+      position: "start",
+      time: time
+    });
   };
 
   /**
@@ -157,69 +288,36 @@
       $timespans.eq(i).find(".start_time").text(startTime);
       $timespans.eq(i).find(".end_time").text(endTime);
       $timespans.eq(i).find(".waveform").css("width",width);
-
-      // make start_time and end_time inplace editable
-
-      $("div#lyrics .row#" + i + " .start_time").editInPlace({
-        callback: function(unused, enteredText) {
-          // rule:
-          //     i cannot changed beyond prev timespans start time
-          // if prev line exists
-          //   changing start_time would
-          //     change end_time of prev line
-          //     change waveform of prev line
-          // end
-          //
-          // change waveform width of current line
-          //
-
-          // i could have used closure to be able to use i in this callback. maybe faster. benchmark in future if i have time
-          var index = parseInt($(this).closest(".row").attr("id"));
-
-          if (index > 0) {
-            var prevTimespan = $timespans.eq(index - 1);
-            var prevStartTime = prevTimespan.find(".start_time").text();
-            var prevEndTime = enteredText;
-            prevTimespan.find(".end_time").text(prevEndTime);
-            var prevWidth = calculateWaveformWidth(prevStartTime,prevEndTime);
-            prevTimespan.find(".waveform").css("width",prevWidth);
-          }
-
-          var currTimespan = $timespans.eq(index);
-          var currStartTime = enteredText;
-          var currEndTime = currTimespan.find(".end_time").text();
-          var currWidth = calculateWaveformWidth(currStartTime,currEndTime);
-          $timespans.eq(index).find(".waveform").css("width",currWidth);
-
-          return enteredText;
-        },
-        text_size: "2"
-      });
-
-      $("div#lyrics .row#" + i + " .end_time").editInPlace({
-        callback: function(unused, enteredText) {
-
-          var index = parseInt($(this).closest(".row").attr("id"));
-
-          if (index < $timespans.length - 1) {
-            var nextTimespan = $timespans.eq(index + 1);
-            var nextStartTime = enteredText;
-            var nextEndTime = nextTimespan.find(".end_time").text();
-            nextTimespan.find(".end_time").text(nextEndTime);
-            var nextWidth = calculateWaveformWidth(nextStartTime,nextEndTime);
-            nextTimespan.find(".waveform").css("width",nextWidth);
-          }
-
-          var currTimespan = $timespans.eq(index);
-          var currStartTime = currTimespan.find(".start_time").text();
-          var currEndTime = enteredText;
-          var currWidth = calculateWaveformWidth(currStartTime,currEndTime);
-          $timespans.eq(index).find(".waveform").css("width",currWidth);
-          return enteredText;
-        },
-        text_size: "2"
-      });
     }
+
+    // if there are no timecodes available yet,
+    // initialize startTime of first line to 0
+    if (timecode[0] === "") {
+      $timespans.first().find(".start_time").text("0");
+    }
+
+    // make start_time and end_time inplace editable
+
+    $("div#lyrics .row .start_time").editInPlace({
+      callback: function(unused, enteredText) {
+        var index = parseInt($(this).closest(".row").attr("id"));
+        changeCurrStartTime(index,enteredText);
+        return enteredText;
+      },
+      text_size: "2",
+      default_text: ""
+    });
+
+    $("div#lyrics .row .end_time").editInPlace({
+      callback: function(unused, enteredText) {
+        var index = parseInt($(this).closest(".row").attr("id"));
+        changeCurrEndTime(index,enteredText);
+        return enteredText;
+      },
+      text_size: "2",
+      default_text: ""
+    });
+
   };
 
   var playSong = function(data) {
@@ -233,11 +331,12 @@
 
     $("div#media_sources ul li").first().trigger("click");
 
-    if (data.sync_files.length !== 0) {
-      $("div#lyrics").prepend("<input type='button' id='edit_timecode_btn' value='Edit Timecode'/>");
-      var timecode = $("div#sync_files ul li.selected").data("timecode");
+    $("div#lyrics").prepend("<input type='button' id='edit_timecode_btn' value='Edit Timecode'/>");
+    var timecode = $("div#sync_files ul li.selected").data("timecode");
+    if (typeof timecode === "undefined") {
+      loadTimespan("");
+    } else {
       loadTimespan(timecode);
-      $("input#add_sync_file_btn").hide();
     }
   };
 
@@ -306,21 +405,16 @@
       var currentPlayerTime = Math.floor(popcorn.currentTime());
       var $selectedLyricsLine = $lines.parent().find(".selected");
 
-      // if there is line that is already highlighted
-      // set its endTime to currentPlayerTime
-      // remove current highlight
-      if ($selectedLyricsLine.length > 0) {
-        index = parseInt($selectedLyricsLine.attr("id"));
-        $timespans.eq(index).find(".end_time").text(currentPlayerTime);
-        $lines.eq(index).removeClass("selected");
-      }
+      index = parseInt($selectedLyricsLine.attr("id"));
+      $lines.eq(index).removeClass("selected");
+      console.log("curr player time: " + currentPlayerTime);
+      changeCurrEndTime(index,currentPlayerTime);
 
       // if there is next line to be highlighted
       // highlight next line
       // set its startTime to currentPlayerTime
       if (index === -1 || index < $lines.length - 1) {
         $lines.eq(index + 1).addClass("selected");
-        $timespans.eq(index + 1).find(".start_time").text(currentPlayerTime);
       }
     }
   };
