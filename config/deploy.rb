@@ -60,7 +60,7 @@ namespace :deploy do
   after "deploy:setup", "deploy:setup_config"
 
   task :setup_database, roles: :app do
-    run "cd #{current_path} && RAILS_ENV=production rake db:create"
+    run "cd #{release_path} && RAILS_ENV=production rake db:create"
   end
 
   desc "Make sure local git is in sync with remote."
