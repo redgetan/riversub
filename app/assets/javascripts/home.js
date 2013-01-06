@@ -110,8 +110,8 @@
 
   };
 
-  var loadSyncFile = function(syncFile) {
-    $("div#media").data("timecode",syncFile.timecode);
+  var loadSyncFile = function(timecode) {
+    $("div#media").data("timecode",timecode);
   };
 
   var displaySyncFileControls = function() {
@@ -164,7 +164,6 @@
   };
 
   var changeTimespan = function(options) {
-    console.log("options.position: " + options.position + "time: " + options.time);
     if (options.position !== "start" && options.position !== "end") {
       throw "Invalid position: " + options.position + " . Could only be 'start' or 'end'";
     }
@@ -263,6 +262,9 @@
    *
    **/
   var loadTimespan = function(timecode){
+    // remove any existing position indicators
+    $("div#position_indicator").remove();
+
     // create divs if they don't exist
     if ($("div#lyrics .timespan").length === 0) {
       $("div#lyrics .row").each(function(i) {
@@ -405,7 +407,7 @@
     var index = -1;
 
     $lines = $("div#lyrics .row .line");
-    $waveforms = $("div#lyrics .row .waveforms");
+    $waveforms = $("div#lyrics .row .waveform");
 
     if (event.which === ENTER_KEY) {
       var currentPlayerTime = Math.floor(popcorn.currentTime());
@@ -446,7 +448,12 @@
     if ($("div#position_indicator").length === 0) {
       $("body").append("<div id='position_indicator'></div>");
     }
+
     this.elem = $("div#position_indicator");
+
+    // initialize position
+    this.elem.css("left",this.waveform.position().left + "px");
+    this.elem.css("top", this.waveform.position().top  + "px");
   };
 
   // public methods via prototype
