@@ -23,7 +23,15 @@ set :scm_username, "redgetan"
 
 set :use_sudo, false
 
-set :deploy_environment, :staging
+
+set :deploy_environment, ENV['RAILS_ENV'].to_sym
+
+if ![:staging, :production].include?(deploy_environment)
+  puts "Usage: "
+  puts "  RAILS_ENV=production cap deploy:setup"
+  puts "  RAILS_ENV=staging    cap deploy:setup"
+  exit
+end
 
 set :user, myconfig[deploy_environment][:user]
 set :deploy_to, "/home/hatch/apps/lyrex"
