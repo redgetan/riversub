@@ -3,6 +3,7 @@
   var popcorn;
   var editTimecodeMode;
   var showPositionInterval;
+  var positionIndicator;
 
   var loadMedia = function(url) {
     $("div#media").empty();
@@ -26,15 +27,21 @@
 
   var addHighlightSync = function(options) {
     var $lines = $("div#lyrics .row .line");
+    var $waveforms;
 
     popcorn.code({
       start: options.start,
       end:   options.end,
       onStart: function(i) {
         return function(options) {
+          $waveforms = $("div#lyrics .timespan .waveform");
+
           console.log("line: " + i + "  start: " + options.start + "   " + "  end: " + options.end + "   " + $lines.eq(i).text());
           $lines.parent().find(".selected").removeClass("selected");
           $lines.eq(i).addClass("selected");
+
+          $waveforms.parent().find(".active").removeClass("active");
+          $waveforms.eq(i).addClass("active");
         }
       }(options.index)
     });
@@ -61,10 +68,16 @@
     timecode = timecode.split(",");
     var lastTrackEventId;
     var $lines = $("div#lyrics .row .line");
+    var $waveforms = $("div#lyrics .timespan .waveform");
 
     // remove any previously highlighted lines
     $lines.filter(".selected").each(function(){
       $(this).removeClass("selected");
+    });
+
+    // remove any previously active waveforms
+    $waveforms.filter(".active").each(function(){
+      $(this).removeClass("active");
     });
 
     for (var i = 0, length = timecode.length; i < length; i++) {
@@ -285,6 +298,9 @@
       $timespans.first().find(".start_time").text("0");
     }
 
+    // make first waveform active
+    $timespans.first().find(".waveform").addClass("active");
+
     // make start_time and end_time inplace editable
 
     $("div#lyrics .row .start_time").editInPlace({
@@ -390,9 +406,8 @@
     var ENTER_KEY = 13;
     var index = -1;
 
-    $timespans = $("div#lyrics .row .timespan");
     $lines = $("div#lyrics .row .line");
-
+    $waveforms = $("div#lyrics .row .waveforms");
 
     if (event.which === ENTER_KEY) {
       var currentPlayerTime = Math.floor(popcorn.currentTime());
@@ -400,7 +415,7 @@
 
       index = parseInt($selectedLyricsLine.attr("id"));
       $lines.eq(index).removeClass("selected");
-      console.log("curr player time: " + currentPlayerTime);
+      $waveforms.eq(index).removeClass("active");
       changeCurrEndTime(index,currentPlayerTime);
 
       // if there is next line to be highlighted
@@ -408,6 +423,7 @@
       // set its startTime to currentPlayerTime
       if (index === -1 || index < $lines.length - 1) {
         $lines.eq(index + 1).addClass("selected");
+        $waveforms.eq(index + 1).addClass("active");
       }
     }
   };
@@ -416,10 +432,51 @@
   // if it is currently not visible
   // initialize position to be same as left position of first lyrics line's waveform
   //   its y position depends on where current active waveform is
+  //   its x position simply increments steadily depending on interval number used on this function
+  //   x position would be reset to 0 if:
+  //     it waveform is played from beginning again
+  //       restart parameter
+  //       if restart === true (default is false)
+  //     active waveform changes
+  //       track old and new waveform. if new !== old, reset to 0
+
+  // constructor function
+  var PositionIndicator = function(){
+    this.waveform = $("div#lyrics .waveform.active");
+
+    // create position indicator if it doesnt exist
+    if ($("div#position_indicator").length === 0) {
+      $("body").append("<div id='position_indicator'></div>");
+    }
+    this.elem = $("div#position_indicator");
+  };
+
+  // public methods via prototype
+  PositionIndicator.prototype.move = function(){
+    var oldWaveform = this.waveform;
+    var newWaveform = $("div#lyrics .waveform.active");
+
+    // if active waveform has changed
+    if ($("div#lyrics .waveform").index(oldWaveform) !==
+        $("div#lyrics .waveform").index(newWaveform)) {
+      this.waveform = newWaveform;
+      this.elem.css("left",this.waveform.position().left + "px");
+      this.elem.css("top", this.waveform.position().top  + "px");
+    }
+
+    var activeWaveformStartTime = parseFloat(this.waveform.parent().find(".start_time").text());
+    var progress = (popcorn.currentTime() - activeWaveformStartTime) * 10;
+    var base = this.waveform.position().left;
+    var left = base + progress;
+    this.elem.css("left",left + "px");
+  };
+
   var showPositionIndicator = function(){
-    var currentTime = popcorn.currentTime()
-    var position = Math.floor(currentTime * 10) + "px";
-    $("div#position_indicator").css("left",position);
+    if (typeof positionIndicator === "undefined") {
+      positionIndicator = new PositionIndicator;
+    }
+
+    positionIndicator.move();
   };
 
   var getCurrentTimecode = function() {
@@ -669,14 +726,12 @@
       $(this).removeClass("cancel");
 
       $(".timespan").hide();
+      $("div#lyrics .timespan .waveform").removeClass("active");
       $("div#lyrics .row .line.selected").removeClass("selected");
       $("div#sync_mode_controls #main").empty();
 
       $("div#media_sources ul li.selected").trigger("click");
     });
-
-    // some fiddling. must remove in production
-    $("#top_container").append("<div id='position_indicator'></div>");
 
   });
 

@@ -16,6 +16,14 @@
       })
     }
 
+2. Pause sync button doesn't always work
+  steps:
+    click a video
+    quickly click "Edit Timecode" before media starts playing
+    click "start"
+    click "pause"
+    media won't pause
+
 
 
 

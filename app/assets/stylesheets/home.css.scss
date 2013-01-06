@@ -12,7 +12,7 @@ input[type=button], input[type=submit] {
 
 div#top_container {
   width: 1150px;
-  height: 100px;
+  height: 20px;
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
@@ -123,9 +123,9 @@ input[type=button], input[type=submit] {
 
 div#position_indicator {
   width: 2px;
-  height: 20px;
+  height: 14px;
   background-color: red;
-  position: relative;
+  position: absolute;
 }
 
 div.timespan {
@@ -145,7 +145,7 @@ div.timespan .start_time {
 }
 
 div.timespan .waveform {
-  background-color: blue;
+  background-color: cadetblue;
 }
 
 
