@@ -4,12 +4,11 @@ class SongsController < ApplicationController
     song = Song.find params[:id]
 
     media_sources = MediaSource.highest_voted(song.id)
-    sync_files    = SyncFile.highest_voted(song.id)
 
     render :json => {
       :media_sources => media_sources,
       :lyrics        => song.lyrics,
-      :sync_files    => sync_files
+      :sync_file    => song.sync_file
     }
   end
 

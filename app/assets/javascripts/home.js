@@ -97,29 +97,18 @@
 
   };
 
-  var displaySyncFiles = function(syncFiles) {
-    $("div#sync_files").empty();
-
-    var builder = "<ul>";
-    $.each(syncFiles, function(i,e) {
-      builder += "<li id='" + e.id + "' data-timecode=" + e.timecode + "><a href='#'>" + e.id + "</a></li>";
-    });
-    builder += "</ul>";
-    $("div#sync_files").append("<p>Sync Files</p>");
-    $("div#sync_files").append(builder);
-    //$("div#sync_files").append("<input type='button' name='' value='Add Sync File' id='add_sync_file_btn'/>");
-    $("div#sync_files ul li").first().addClass("selected");
+  var loadSyncFile = function(syncFile) {
+    $("div#media").data("timecode",syncFile.timecode);
   };
 
   var displaySyncFileControls = function() {
     $(".timespan").show();
 
-    var startSyncBtn = "<input type='button' name='' value='Start Sync Mode' id='start_sync_btn'/>";
-    var pauseSyncBtn = "<input type='button' name='' value='Pause Sync Mode' id='pause_sync_btn' disabled='disabled'/>";
-    var saveSyncBtn = "<input type='button' name='' value='Save SyncFile' id='update_sync_btn'/>";
-    $("div#create").append(startSyncBtn);
-    $("div#create").append(pauseSyncBtn);
-    $("div#create").append(saveSyncBtn);
+    $("div#sync_mode_controls #main").append(
+      "<input type='button' name='' value='Start' id='start_sync_btn'/>" +
+      "<input type='button' name='' value='Pause' id='pause_sync_btn' disabled='disabled'/>" +
+      "<input type='button' name='' value='save' id='update_sync_btn'/>"
+    );
 
     // must highlight first line if none highlighted
     var $lines = $("div#lyrics .row .line");
@@ -323,16 +312,20 @@
   var playSong = function(data) {
     console.log(data);
 
-    $("div#create").empty();
+    $("div#sync_mode_controls").empty();
 
     displayMediaSources(data.media_sources);
-    displaySyncFiles(data.sync_files);
+    loadSyncFile(data.sync_file);
     loadLyrics(data.lyrics);
 
     $("div#media_sources ul li").first().trigger("click");
 
-    $("div#lyrics").prepend("<input type='button' id='edit_timecode_btn' value='Edit Timecode'/>");
-    var timecode = $("div#sync_files ul li.selected").data("timecode");
+    $("div#sync_mode_controls").append(
+        "<input type='button' id='edit_timecode_btn' value='Edit Timecode'/>" +
+        "<div id='main'></div>"
+    );
+
+    var timecode = $("div#media").data("timecode");
     if (typeof timecode === "undefined") {
       loadTimespan("");
     } else {
@@ -419,6 +412,10 @@
     }
   };
 
+  // red vertical bar indicating which second of media we are at.
+  // if it is currently not visible
+  // initialize position to be same as left position of first lyrics line's waveform
+  //   its y position depends on where current active waveform is
   var showPositionIndicator = function(){
     var currentTime = popcorn.currentTime()
     var position = Math.floor(currentTime * 10) + "px";
@@ -538,7 +535,7 @@
         type: "PUT",
         data: { "timecode" : timecode },
         success: function(data) {
-          $("div#sync_files li#" + data.id).data("timecode",data.timecode);
+          $("div#media").data("timecode",data.timecode);
           loadTimespan(data.timecode);
           alert("Timecode updated");
         },
@@ -595,7 +592,7 @@
         url: "/songs/" + $song.attr("id") + "/media_sources/new",
         type: "GET",
         success: function(data) {
-          $("div#create").append(data);
+          $("div#media_sources ul").append(data);
         },
         error: function(data) {
           alert(data.responseText);
@@ -634,7 +631,7 @@
         loadMedia(mediaUrl);
       } else {
         loadMedia(mediaUrl);
-        var timecode = $("div#sync_files li.selected").data("timecode");
+        var timecode = $("div#media").data("timecode");
         syncLyricsToMedia(timecode);
         popcorn.play();
       }
@@ -665,7 +662,7 @@
       $("input#pause_sync_btn").trigger("click");
 
       // reload the original timecode
-      var timecode = $("div#sync_files ul li.selected").data("timecode");
+      var timecode = $("div#media").data("timecode");
       loadTimespan(timecode);
 
       $(this).val("Edit Timecode");
@@ -673,7 +670,7 @@
 
       $(".timespan").hide();
       $("div#lyrics .row .line.selected").removeClass("selected");
-      $("div#create").empty();
+      $("div#sync_mode_controls #main").empty();
 
       $("div#media_sources ul li.selected").trigger("click");
     });
