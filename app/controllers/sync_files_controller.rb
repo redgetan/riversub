@@ -1,7 +1,7 @@
 class SyncFilesController < ApplicationController
   def create
     @song = Song.find params[:song_id]
-    @sync_file = @song.sync_files.build(:timecode => params[:timecode])
+    @sync_file = @song.sync_file.build(:timecode => params[:timecode])
 
     if @sync_file.save
       render :json => {}, :status => 200
@@ -12,7 +12,7 @@ class SyncFilesController < ApplicationController
 
   def update
     @song = Song.find params[:song_id]
-    @sync_file = @song.sync_files.find(params[:id])
+    @sync_file = @song.sync_file.find(params[:id])
 
 
     if @sync_file.update_attributes(:timecode => params[:timecode])

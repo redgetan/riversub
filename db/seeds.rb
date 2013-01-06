@@ -172,7 +172,7 @@ song1 = Song.create!(
   :lyrics => lyrics1,
 )
 
-song1.sync_files.create!(
+song1.sync_file.create!(
   :timecode => "0,0.2,4,10,16,21,25,25.2,25.5,27,30,32,35,38,40,44,46,48,50,51,53,54,57,60,63,66,68,70,70.2,70.4,74,80,85,91,95,100"
 )
 
