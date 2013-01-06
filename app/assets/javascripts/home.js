@@ -403,13 +403,13 @@
    *
    */
   var enableTimecodeEdit = function(event){
-    var ENTER_KEY = 13;
+    var SPACE_KEY = 32;
     var index = -1;
 
     $lines = $("div#lyrics .row .line");
     $waveforms = $("div#lyrics .row .waveform");
 
-    if (event.which === ENTER_KEY) {
+    if (event.which === SPACE_KEY) {
       var currentPlayerTime = Math.floor(popcorn.currentTime());
       var $selectedLyricsLine = $lines.parent().find(".selected");
 
@@ -474,6 +474,14 @@
     var base = this.waveform.position().left;
     var left = base + progress;
     this.elem.css("left",left + "px");
+
+    // fills up waveform width if waveform right < positionindicator
+    var waveformRightPos = this.waveform.position().left + this.waveform.width();
+
+    if (this.elem.position().left > waveformRightPos) {
+      console.log("here");
+      this.waveform.css("width", progress + "px");
+    }
   };
 
   var showPositionIndicator = function(){
@@ -493,6 +501,14 @@
   };
 
   $(document).ready(function(){
+
+    // disable scrolling of window for space bar
+    $(document).on("keydown", function(event) {
+      var SPACE_KEY = 32;
+      if (event.keyCode == SPACE_KEY) {
+        return false;
+      }
+    });
 
     $(document).on("click", "div#with_sync_files a.song", function(event) {
       editTimecodeMode = false;
