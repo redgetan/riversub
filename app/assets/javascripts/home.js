@@ -331,7 +331,10 @@
     $("div#sync_mode_controls").empty();
 
     displayMediaSources(data.media_sources);
-    loadSyncFile(data.sync_file);
+
+    var timecode = data.sync_file ? data.sync_file.timecode : ""
+
+    loadSyncFile(timecode);
     loadLyrics(data.lyrics);
 
     $("div#media_sources ul li").first().trigger("click");
@@ -341,12 +344,7 @@
         "<div id='main'></div>"
     );
 
-    var timecode = $("div#media").data("timecode");
-    if (typeof timecode === "undefined") {
-      loadTimespan("");
-    } else {
-      loadTimespan(timecode);
-    }
+    loadTimespan(timecode);
   };
 
   /**
