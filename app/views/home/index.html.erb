@@ -4,30 +4,17 @@
 <div id="container">
   <div id="songs">
 
-    <div id="with_sync_files">
-      <p>
-        Playable
-      </p>
-      <ul>
-        <% @songs_with_sync_files.each do |song| %>
-          <li id="<%= song.id %>"><%= link_to song.name, "#", :class => "song" %></li>
-        <% end %>
-      </ul>
-    </div>
+    <p>
+      Songs
+    </p>
+    <ul>
+      <% @songs.each do |song| %>
+        <li id="<%= song.id %>"><%= link_to song.name, "#", :class => "song" %></li>
+      <% end %>
+    </ul>
 
     </br>
     </br>
-
-    <div id="no_sync_files">
-      <p>
-        Add SyncFiles to these Songs
-      </p>
-      <ul>
-        <% @songs_no_sync_files.each do |song| %>
-          <li id="<%= song.id %>"><%= link_to song.name, "#", :class => "song" %></li>
-        <% end %>
-      </ul>
-    </div>
 
     <div id="new">
       <input type="button" name="" value="Add Song" id="add_song_btn"/>

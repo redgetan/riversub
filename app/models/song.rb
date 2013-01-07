@@ -8,14 +8,12 @@ class Song < ActiveRecord::Base
 
   accepts_nested_attributes_for :media_sources
 
-  scope :with_sync_files, lambda {
-    joins("LEFT JOIN sync_files ON songs.id = sync_files.song_id")
-      .where("song_id IS NOT NULL")
-  }
-
-  scope :no_sync_files, lambda {
-    joins("LEFT JOIN sync_files ON songs.id = sync_files.song_id")
-      .where("song_id IS NULL")
-  }
+  before_save do
+    # if first character of lyrics is not a newline, insert one
+    # Now, all lyrics would start with blank line, period of start time where no lyrics is shown
+    if self.lyrics[0] != "\n"
+      self.lyrics = "\n#{self.lyrics}"
+    end
+  end
 
 end

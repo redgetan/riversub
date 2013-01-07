@@ -1,7 +1,6 @@
 //(function() {
 
   var popcorn;
-  var editTimecodeMode;
   var showPositionInterval;
   var positionIndicator;
 
@@ -120,7 +119,7 @@
     $("div#sync_mode_controls #main").append(
       "<input type='button' name='' value='Start' id='start_sync_btn'/>" +
       "<input type='button' name='' value='Pause' id='pause_sync_btn' disabled='disabled'/>" +
-      "<input type='button' name='' value='save' id='update_sync_btn'/>"
+      "<input type='button' name='' value='save' id='save_sync_btn'/>"
     );
 
     // must highlight first line if none highlighted
@@ -403,13 +402,13 @@
    *
    */
   var enableTimecodeEdit = function(event){
-    var SPACE_KEY = 32;
+    var N_KEY = 78;
     var index = -1;
 
     $lines = $("div#lyrics .row .line");
     $waveforms = $("div#lyrics .row .waveform");
 
-    if (event.which === SPACE_KEY) {
+    if (event.which === N_KEY) {
       var currentPlayerTime = Math.floor(popcorn.currentTime());
       var $selectedLyricsLine = $lines.parent().find(".selected");
 
@@ -479,7 +478,6 @@
     var waveformRightPos = this.waveform.position().left + this.waveform.width();
 
     if (this.elem.position().left > waveformRightPos) {
-      console.log("here");
       this.waveform.css("width", progress + "px");
     }
   };
@@ -501,22 +499,6 @@
   };
 
   $(document).ready(function(){
-
-    // disable scrolling of window for space bar
-    $(document).on("keydown", function(event) {
-      var SPACE_KEY = 32;
-      if (event.keyCode == SPACE_KEY) {
-        return false;
-      }
-    });
-
-    $(document).on("click", "div#with_sync_files a.song", function(event) {
-      editTimecodeMode = false;
-    });
-
-    $(document).on("click", "div#no_sync_files a.song", function(event) {
-      editTimecodeMode = true;
-    });
 
     $(document).on("click", "div#songs li", function(event) {
       event.preventDefault();
@@ -557,7 +539,7 @@
         dataType: "json",
         success: function(data) {
           var songLink = "<li id='" + data.song_id + "'><a href='#' class='song'>" + $("form#new_song #song_name").val() + "</a></li>";
-          $("div#no_sync_files ul").prepend(songLink);
+          $("div#songs ul").append(songLink);
           $(this).remove();
         }.bind(this),
         error: function(data) {
@@ -585,35 +567,19 @@
       $("input#start_sync_btn").removeAttr('disabled');
     });
 
-    $(document).on("click", "input#create_sync_btn", function(event) {
+    $(document).on("click", "input#save_sync_btn", function(event) {
       var timecode = getCurrentTimecode();
       var $song = $("div#songs li.selected");
+
+      var mediaDoesNotHaveTimecode = $("div#media").data("timecode") === "";
+      var method = mediaDoesNotHaveTimecode ? "POST" : "PUT";
 
       $.ajax({
         url: "/songs/" + $song.attr("id") + "/sync_files",
-        type: "POST",
+        type: method,
         data: { "timecode" : timecode },
         success: function(data) {
-          var songLink = "<li id='" + $song.attr("id") + "'><a href='#' class='song'>" + $song.text() + "</a></li>";
-          $("div#with_sync_files ul").append(songLink);
-        },
-        error: function(data) {
-          alert(data.responseText);
-        }
-      });
-    });
-
-    $(document).on("click", "input#update_sync_btn", function(event) {
-      var timecode = getCurrentTimecode();
-      var $song = $("div#songs li.selected");
-      var $syncFile = $("div#sync_files li.selected");
-
-      $.ajax({
-        url: "/songs/" + $song.attr("id") + "/sync_files/" + $syncFile.attr("id"),
-        type: "PUT",
-        data: { "timecode" : timecode },
-        success: function(data) {
-          $("div#media").data("timecode",data.timecode);
+          loadSyncFile(data.timecode);
           loadTimespan(data.timecode);
           alert("Timecode updated");
         },
@@ -621,6 +587,7 @@
           alert(data.responseText);
         }
       });
+
     });
 
     // Remove form when cancel is pressed
@@ -704,12 +671,10 @@
       $(this).addClass("selected");
 
       var mediaUrl = $(this).text();
+      loadMedia(mediaUrl);
 
-      if (editTimecodeMode === true) {
-        loadMedia(mediaUrl);
-      } else {
-        loadMedia(mediaUrl);
-        var timecode = $("div#media").data("timecode");
+      var timecode = $("div#media").data("timecode");
+      if (timecode !== "") {
         syncLyricsToMedia(timecode);
         popcorn.play();
       }
@@ -724,8 +689,6 @@
     });
 
     $(document).on("click", "input#edit_timecode_btn", function(event) {
-      editTimecodeMode = true;
-
       $(this).val("Cancel Edit");
       $(this).addClass("cancel");
 
@@ -736,7 +699,6 @@
     });
 
     $(document).on("click", "input#edit_timecode_btn.cancel", function(event) {
-      editTimecodeMode = false;
       $("input#pause_sync_btn").trigger("click");
 
       // reload the original timecode
