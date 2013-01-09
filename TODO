@@ -24,8 +24,19 @@
     click "pause"
     media won't pause
 
+3. PositionIndicator would not go to last line
+  steps:
+    click "start"
+    press "n" several times
+    click any previous lyrics line
+    when position indicator hits 2nd to last line, it would never go to last line
 
+4. Changing start/end time beyond allowable
+  should only be able to change it to:
+    for start_time: max of prev start_time
+    for end_time: max of next end_time
 
+5. PositionIndicator should show current time
 
 2. lock in lyrics line
   test mode

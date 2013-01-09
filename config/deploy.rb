@@ -7,7 +7,7 @@ set :rvm_type, :system
 set :myconfig, {
   :production => {
     :user => "hatch",
-    :host => "50.116.53.215"
+    :host => "ec2-23-23-22-41.compute-1.amazonaws.com"
   },
   :staging => {
     :user => "hatch",
