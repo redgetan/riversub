@@ -24,7 +24,7 @@ set :scm_username, "redgetan"
 set :use_sudo, false
 
 
-set :deploy_environment, ENV['RAILS_ENV'].to_sym
+set :deploy_environment, ENV['DEPLOY_ENV'].to_sym
 
 if ![:staging, :production].include?(deploy_environment)
   puts "Usage: "
@@ -45,10 +45,6 @@ host = myconfig[deploy_environment][:host]
 role :web, host                          # Your HTTP server, Apache/etc
 role :app, host                          # This may be the same as your `Web` server
 role :db,  host, :primary => true # This is where Rails migrations will run
-
-before "deploy:update" do
-  run "ssh-add ~/.ssh/id_dsa"
-end
 
 after "deploy:restart", "deploy:cleanup" # keep only the last 5 releases
 after "deploy:update_code", "deploy:setup_database"

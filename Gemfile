@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.11'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -26,7 +26,9 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem 'thin'
-  gem 'capistrano'
+  gem 'capistrano',
+    :git => 'git://github.com/capistrano/capistrano.git',
+    :ref => "186b698eebc8b3ea3d67abb5a141bada1c595cc9"
   gem 'capistrano-unicorn', :require => false
   gem 'rvm-capistrano'
   gem "pry"
