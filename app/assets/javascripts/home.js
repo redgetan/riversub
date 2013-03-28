@@ -1,7 +1,7 @@
 //(function() {
 
   var popcorn;
-  var showPositionInterval;
+  var movePositionIndicator;
   var positionIndicator;
 
   var loadMedia = function(url) {
@@ -79,17 +79,17 @@
       $(this).removeClass("active");
     });
 
-    for (var i = 0, length = timecode.length; i < length; i++) {
+    for (var i = 0, length = timecode.length / 2; i < length; i++) {
       addHighlightSync({
         index: i,
-        start: timecode[i],
-        end: timecode[i + 1]
+        start: timecode[i*2],
+        end:   timecode[i*2 + 1]
       });
 
       addSubtitleSync({
         index: i,
-        start: timecode[i],
-        end: timecode[i + 1]
+        start: timecode[i*2],
+        end:   timecode[i*2 + 1]
       });
     }
   };
@@ -118,7 +118,6 @@
 
     $("div#sync_mode_controls #main").append(
       "<input type='button' name='' value='Start' id='start_sync_btn'/>" +
-      "<input type='button' name='' value='Pause' id='pause_sync_btn' disabled='disabled'/>" +
       "<input type='button' name='' value='save' id='save_sync_btn'/>"
     );
 
@@ -162,7 +161,7 @@
     });
   };
 
-  var changeTimespan = function(options) {
+  var setTimespan = function(options) {
     if (options.position !== "start" && options.position !== "end") {
       throw "Invalid position: " + options.position + " . Could only be 'start' or 'end'";
     }
@@ -213,13 +212,13 @@
   };
 
   var changeCurrEndTime = function(index,time) {
-    changeTimespan({
+    setTimespan({
       index: index,
       position: "end",
       time: time
     });
 
-    changeTimespan({
+    setTimespan({
       index: index + 1,
       position: "start",
       time: time
@@ -227,13 +226,13 @@
   };
 
   var changeCurrStartTime = function(index,time) {
-    changeTimespan({
+    setTimespan({
       index: index - 1,
       position: "end",
       time: time
     });
 
-    changeTimespan({
+    setTimespan({
       index: index,
       position: "start",
       time: time
@@ -284,23 +283,15 @@
     timecode = timecode.split(",");
     $timespans = $("div#lyrics .row .timespan");
 
-    for (var i = 0, length = timecode.length; i < length - 1; i++) {
-      var startTime = timecode[i];
-      var endTime = timecode[i + 1];
+    for (var i = 0, length = timecode.length / 2; i < length ; i++) {
+      var startTime = timecode[i*2];
+      var endTime =   timecode[i*2 + 1];
       var width = calculateWaveformWidth(startTime,endTime);
       $timespans.eq(i).find(".start_time").text(startTime);
       $timespans.eq(i).find(".end_time").text(endTime);
       $timespans.eq(i).find(".waveform").css("width",width);
     }
 
-    // if there are no timecodes available yet,
-    // initialize startTime of first line to 0
-    if (timecode[0] === "") {
-      $timespans.first().find(".start_time").text("0");
-    }
-
-    // make first waveform active
-    $timespans.first().find(".waveform").addClass("active");
 
     // make start_time and end_time inplace editable
 
@@ -409,7 +400,7 @@
     $waveforms = $("div#lyrics .row .waveform");
 
     if (event.which === N_KEY) {
-      var currentPlayerTime = Math.floor(popcorn.currentTime());
+      var currentPlayerTime = popcorn.currentTime();
       var $selectedLyricsLine = $lines.parent().find(".selected");
 
       index = parseInt($selectedLyricsLine.attr("id"));
@@ -419,11 +410,64 @@
 
       // if there is next line to be highlighted
       // highlight next line
-      // set its startTime to currentPlayerTime
       if (index === -1 || index < $lines.length - 1) {
         $lines.eq(index + 1).addClass("selected");
         $waveforms.eq(index + 1).addClass("active");
       }
+    }
+  };
+
+  var isPressed = false;
+
+  var recordStartTime = function(event){
+    var K_KEY = 75;
+
+    if (event.which === K_KEY) {
+      if (!isPressed) {
+        var currentPlayerTime = popcorn.currentTime();
+
+        $lines = $("div#lyrics .row .line");
+        var $selectedLyricsLine = $lines.parent().find(".selected");
+        index = parseInt($selectedLyricsLine.attr("id"));
+
+        $waveforms = $("div#lyrics .row .waveform");
+        $waveforms.eq(index).addClass("active");
+
+        positionIndicator.start();
+
+        setTimespan({ index: index, position: "start", time: currentPlayerTime });
+
+        isPressed = true;
+      }
+    }
+  };
+
+  var recordEndTime = function(event){
+    var K_KEY = 75;
+
+    if (event.which === K_KEY) {
+      var currentPlayerTime = popcorn.currentTime();
+
+      $lines = $("div#lyrics .row .line");
+      var $selectedLyricsLine = $lines.parent().find(".selected");
+      index = parseInt($selectedLyricsLine.attr("id"));
+
+      // if there is next line to be highlighted
+      // highlight next line
+      if (index < $lines.length - 1) {
+        $lines.eq(index).removeClass("selected");
+        $lines.eq(index + 1).addClass("selected");
+
+        $waveforms = $("div#lyrics .row .waveform");
+        $waveforms.eq(index).removeClass("active");
+        $waveforms.eq(index + 1).addClass("active");
+      }
+
+      positionIndicator.stop();
+
+      setTimespan({ index: index, position: "end", time: currentPlayerTime });
+
+      isPressed = false;
     }
   };
 
@@ -440,14 +484,10 @@
   //       track old and new waveform. if new !== old, reset to 0
 
   // constructor function
-  var PositionIndicator = function(){
-    this.waveform = $("div#lyrics .waveform.active");
+  function PositionIndicator(){
+    this.waveform = $("div#lyrics .waveform").first();
 
-    // create position indicator if it doesnt exist
-    if ($("div#position_indicator").length === 0) {
-      $("body").append("<div id='position_indicator'></div>");
-    }
-
+    $("body").append("<div id='position_indicator'></div>");
     this.elem = $("div#position_indicator");
 
     // initialize position
@@ -455,8 +495,7 @@
     this.elem.css("top", this.waveform.position().top  + "px");
   };
 
-  // public methods via prototype
-  PositionIndicator.prototype.move = function(){
+  PositionIndicator.prototype.switchWaveform = function(){
     var oldWaveform = this.waveform;
     var newWaveform = $("div#lyrics .waveform.active");
 
@@ -467,6 +506,11 @@
       this.elem.css("left",this.waveform.position().left + "px");
       this.elem.css("top", this.waveform.position().top  + "px");
     }
+  };
+
+  PositionIndicator.prototype.move = function(){
+
+    this.switchWaveform();
 
     var activeWaveformStartTime = parseFloat(this.waveform.parent().find(".start_time").text());
     var progress = (popcorn.currentTime() - activeWaveformStartTime) * 10;
@@ -478,24 +522,35 @@
     var waveformRightPos = this.waveform.position().left + this.waveform.width();
 
     if (this.elem.position().left > waveformRightPos) {
+      console.log(progress);
       this.waveform.css("width", progress + "px");
     }
   };
 
-  var showPositionIndicator = function(){
-    if (typeof positionIndicator === "undefined") {
-      positionIndicator = new PositionIndicator;
-    }
+  PositionIndicator.prototype.start = function(){
+    this.moveInterval = setInterval(this.move.bind(this),100);
+  };
 
-    positionIndicator.move();
+  PositionIndicator.prototype.stop = function(){
+    this.switchWaveform();
+    clearInterval(this.moveInterval);
   };
 
   var getCurrentTimecode = function() {
-    return $("div#lyrics .row .timespan .start_time")
-             .filter(function(){ return $(this).text() !== "" })
-             .map(   function(){ return $(this).text() })
-             .get()
-             .join(",");
+    var startTimes = $("div#lyrics .row .timespan .start_time")
+                       .filter(function(){ return $(this).text() !== "" })
+                       .map(   function(){ return $(this).text() })
+                       .get();
+
+    var endTimes   = $("div#lyrics .row .timespan .end_time")
+                       .filter(function(){ return $(this).text() !== "" })
+                       .map(   function(){ return $(this).text() })
+                       .get();
+
+    var timecode   = startTimes.concat(endTimes)
+                       .sort(function(a,b){return a - b})
+                       .join(",");
+    return timecode;
   };
 
   $(document).ready(function(){
@@ -551,20 +606,12 @@
 
 
     $(document).on("click", "input#start_sync_btn", function(event) {
-      $(document).off("keyup",enableTimecodeEdit);
-      $(document).on("keyup",enableTimecodeEdit);
-      showPositionInterval = setInterval(showPositionIndicator,100);
-      popcorn.play();
-      $(this).attr("disabled","disabled");
-      $("input#pause_sync_btn").removeAttr('disabled');
-    });
+      $(document).off("keydown",recordStartTime);
+      $(document).off("keyup",recordEndTime);
 
-    $(document).on("click", "input#pause_sync_btn", function(event) {
-      $(document).off("keyup",enableTimecodeEdit);
-      clearInterval(showPositionInterval);
-      popcorn.pause();
-      $(this).attr("disabled","disabled");
-      $("input#start_sync_btn").removeAttr('disabled');
+      $(document).on("keydown",recordStartTime);
+      $(document).on("keyup",recordEndTime);
+      popcorn.play();
     });
 
     $(document).on("click", "input#save_sync_btn", function(event) {
@@ -693,14 +740,13 @@
       $(this).addClass("cancel");
 
       displaySyncFileControls();
+      positionIndicator = new PositionIndicator();
 
       popcorn.pause();
       popcorn.currentTime(0);
     });
 
     $(document).on("click", "input#edit_timecode_btn.cancel", function(event) {
-      $("input#pause_sync_btn").trigger("click");
-
       // reload the original timecode
       var timecode = $("div#media").data("timecode");
       loadTimespan(timecode);

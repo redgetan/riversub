@@ -8,12 +8,4 @@ class Song < ActiveRecord::Base
 
   accepts_nested_attributes_for :media_sources
 
-  before_save do
-    # if first character of lyrics is not a newline, insert one
-    # Now, all lyrics would start with blank line, period of start time where no lyrics is shown
-    if self.lyrics[0] != "\n"
-      self.lyrics = "\n#{self.lyrics}"
-    end
-  end
-
 end
