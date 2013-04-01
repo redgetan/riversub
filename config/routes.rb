@@ -4,7 +4,7 @@ Lyrex::Application.routes.draw do
 
   get "songs/play"
 
-  resources :songs, :only => [:new, :create, :show] do
+  resources :songs, :only => [:new, :create, :show, :edit] do
     resources :media_sources, :only => [:new, :create]
     resource :sync_files, :only => [:create, :update]
   end

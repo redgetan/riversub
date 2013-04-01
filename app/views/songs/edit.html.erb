@@ -1,0 +1,20 @@
+<div id="media_container">
+	<div id="media" data-url="<%= @media_sources.first.url %>">
+	</div>
+</div>
+
+<div id="timeline"><h1>Timeline</h1></div>
+
+
+<div id="subtitle">
+	<h1>Subtitle</h1></br>
+	<table>
+		<% @song.lyrics.split("\n").each_with_index do |line,i| %>
+			<tr class='row' id='"<%= i %>"'>
+				<td> 
+					<pre class='line' id='"<%= i %>"'><%= line %></pre>
+				</td> 
+			</tr>
+		<% end %>
+	</table>
+</div>

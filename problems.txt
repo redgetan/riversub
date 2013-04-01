@@ -1,0 +1,53 @@
+fill mode
+  recording
+    press k, start filling
+    release k, end filling
+    fill timeline with lyrics sync start/end
+edit mode
+  when position is inside filled waveform, you are on edit mode,
+  meaning you can't do any recording
+  can only adjust start/end times of specific slices
+
+Waveform Fill
+
+tests (coupled to popcorn.js)
+
+  dependencies
+    video element trailer.mp4 muted
+
+  "Start Sync"
+    numTrackEvents = 0
+    seek(0:03)
+    start_fill
+    seek(0:08)
+    stop_fill
+
+    assert 1, numTrackEvents
+    assert 0:03, start
+    assert length_of_video, end
+
+  "Start Sync + Stop Sync"
+    numTrackEvents = 0
+    seek(0:03)
+    start_fill
+    seek(0:08)
+    stop_fill
+
+    assert 1, numTrackEvents
+    assert 0:03, start
+    assert 0:08, end
+
+  should_allow_inserting_new_track_event_in_between_2_track_events
+
+SubtitleTimelineEditor
+  contains SubtitleTimeline
+
+SubtitleTimeline
+  has many Events
+
+
+
+
+
+
+

@@ -30,12 +30,17 @@ class SongsController < ApplicationController
   end
 
   def show
-    @post = Song.find params[:id]
+    @song = Song.find params[:id]
 
-    render :json => @post
+    render :json => @song.to_json(:include => [:media_sources,:sync_file])
   end
 
   def update
   end
 
+  def edit
+    @song = Song.find params[:id]
+    @media_sources = MediaSource.highest_voted(@song.id)
+    respond_to :html
+  end
 end

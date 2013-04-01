@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lyrex Editor Test</title>
+  <link rel="stylesheet" href="qunit/qunit.css" media="screen" charset="utf-8">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="qunit/qunit.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../app/assets/javascripts/lib/popcorn-complete.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../app/assets/javascripts/lib/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../app/assets/javascripts/track.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../app/assets/javascripts/editor.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../app/assets/javascripts/timeline.js" type="text/javascript" charset="utf-8"></script>
+
+  <video id="video"
+    controls
+    width="250px"
+    poster="data/poster.png">
+
+    <source id="mp4"
+      src="data/trailer.mp4"
+      type='video/mp4; codecs="avc1, mp4a"'>
+
+    <source id="ogv"
+      src="data/trailer.ogv"
+      type='video/ogg; codecs="theora, vorbis"'>
+
+    <source id="webm"
+      src="data/trailer.webm"
+      type='video/webm; codecs="vp8, vorbis"'>
+
+    <p>Your user agent does not support the HTML5 Video element.</p>
+
+  </video>
+
+  <script src="tests.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>
+

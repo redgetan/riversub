@@ -1,12 +1,13 @@
 //(function() {
 
   var popcorn;
+  var editor;
   var movePositionIndicator;
   var positionIndicator;
 
   var loadMedia = function(url) {
     $("div#media").empty();
-    popcorn = Popcorn.smart("#media",url);
+    popcorn = Popcorn.smart("div#media",url);
   };
 
   var loadLyrics = function(text) {
@@ -21,6 +22,21 @@
                    "</td>" +
                  "</tr>";
       $("div#lyrics table").append(line);
+    }
+  };
+
+  var loadSubtitle = function(text) {
+    $("div#subtitle").empty();
+    $("div#subtitle").append("<table></table>");
+
+    var lines = text.split("\n");
+    for (var i = 0, length = lines.length; i < length; i++) {
+      var line = "<tr class='row' id='" +  i + "'>" +
+                   "<td>" +
+                     "<pre class='line' id='" + i + "'>" + lines[i] + "</pre>" +
+                   "</td>" +
+                 "</tr>";
+      $("div#subtitle table").append(line);
     }
   };
 
@@ -339,83 +355,6 @@
     loadTimespan(timecode);
   };
 
-  /**
-   *  Main handler for sync mode
-   *  When user press [Enter],
-   *    if there is line that is already highlighted
-   *      endTime = floored time when [Enter] key was pressed
-   *      waveform width stops expanding
-   *    end
-   *
-   *    if there is next line to be highlighted
-   *      next lyrics line is highlighted
-   *      highlighted lyrics line will have a timespan dynamically
-   *        change according to player time
-   *      startTime = floored time when [Enter] key was pressed
-   *      waveform width expands according to player time
-   *    end
-   *
-   *    states
-   *
-   *    nothing highlighted
-   *      before
-   *              1
-   *              2
-   *              3
-   *
-   *      after
-   *      2[]     1 <-
-   *              2
-   *              3
-   *
-   *
-   *    middle highlighted
-   *      before
-   *      2[]     1 <-
-   *              2
-   *              3
-   *
-   *      after
-   *      2[  ]5  1
-   *      5[]     2 <-
-   *              3
-   *
-   *    last highlighted
-   *      before
-   *      2[  ]5  1
-   *      5[   ]9 2
-   *      9[]     3 <-
-   *
-   *      after
-   *      2[  ]5  1
-   *      5[   ]9 2
-   *      9[  ]11 3
-   *
-   */
-  var enableTimecodeEdit = function(event){
-    var N_KEY = 78;
-    var index = -1;
-
-    $lines = $("div#lyrics .row .line");
-    $waveforms = $("div#lyrics .row .waveform");
-
-    if (event.which === N_KEY) {
-      var currentPlayerTime = popcorn.currentTime();
-      var $selectedLyricsLine = $lines.parent().find(".selected");
-
-      index = parseInt($selectedLyricsLine.attr("id"));
-      $lines.eq(index).removeClass("selected");
-      $waveforms.eq(index).removeClass("active");
-      changeCurrEndTime(index,currentPlayerTime);
-
-      // if there is next line to be highlighted
-      // highlight next line
-      if (index === -1 || index < $lines.length - 1) {
-        $lines.eq(index + 1).addClass("selected");
-        $waveforms.eq(index + 1).addClass("active");
-      }
-    }
-  };
 
   var isPressed = false;
 
@@ -555,213 +494,215 @@
 
   $(document).ready(function(){
 
-    $(document).on("click", "div#songs li", function(event) {
-      event.preventDefault();
+    // $(document).on("click", "div#songs li", function(event) {
+    //   event.preventDefault();
 
-      $("div #songs").find(".selected").removeClass("selected");
-      $(this).addClass("selected");
+    //   $("div #songs").find(".selected").removeClass("selected");
+    //   $(this).addClass("selected");
 
-      $.ajax({
-        url: "/songs/play",
-        data: { "id": this.id },
-        dataType: "json",
-        success: playSong
-      });
-    });
+    //   $.ajax({
+    //     url: "/songs/play",
+    //     data: { "id": this.id },
+    //     dataType: "json",
+    //     success: playSong
+    //   });
+    // });
 
-    $(document).on("click", "input#add_song_btn", function(event) {
+    // $(document).on("click", "input#add_song_btn", function(event) {
 
-      $.ajax({
-        url: "/songs/new",
-        type: "GET",
-        success: function(data) {
-          $("div#songs #new").append(data);
-        },
-        error: function(data) {
-          alert(data.responseText);
-        }
-      });
+    //   $.ajax({
+    //     url: "/songs/new",
+    //     type: "GET",
+    //     success: function(data) {
+    //       $("div#songs #new").append(data);
+    //     },
+    //     error: function(data) {
+    //       alert(data.responseText);
+    //     }
+    //   });
 
-    });
+    // });
 
-    $(document).on("submit", "form#new_song", function(event) {
-      event.preventDefault();
+    // $(document).on("submit", "form#new_song", function(event) {
+    //   event.preventDefault();
 
-      $.ajax({
-        url: "/songs",
-        type: "POST",
-        data: $(this).serialize(),
-        dataType: "json",
-        success: function(data) {
-          var songLink = "<li id='" + data.song_id + "'><a href='#' class='song'>" + $("form#new_song #song_name").val() + "</a></li>";
-          $("div#songs ul").append(songLink);
-          $(this).remove();
-        }.bind(this),
-        error: function(data) {
-          alert(data.responseText);
-        }
-      });
+    //   $.ajax({
+    //     url: "/songs",
+    //     type: "POST",
+    //     data: $(this).serialize(),
+    //     dataType: "json",
+    //     success: function(data) {
+    //       var songLink = "<li id='" + data.song_id + "'><a href='#' class='song'>" + $("form#new_song #song_name").val() + "</a></li>";
+    //       $("div#songs ul").append(songLink);
+    //       $(this).remove();
+    //     }.bind(this),
+    //     error: function(data) {
+    //       alert(data.responseText);
+    //     }
+    //   });
 
-    });
-
-
-    $(document).on("click", "input#start_sync_btn", function(event) {
-      $(document).off("keydown",recordStartTime);
-      $(document).off("keyup",recordEndTime);
-
-      $(document).on("keydown",recordStartTime);
-      $(document).on("keyup",recordEndTime);
-      popcorn.play();
-    });
-
-    $(document).on("click", "input#save_sync_btn", function(event) {
-      var timecode = getCurrentTimecode();
-      var $song = $("div#songs li.selected");
-
-      var mediaDoesNotHaveTimecode = $("div#media").data("timecode") === "";
-      var method = mediaDoesNotHaveTimecode ? "POST" : "PUT";
-
-      $.ajax({
-        url: "/songs/" + $song.attr("id") + "/sync_files",
-        type: method,
-        data: { "timecode" : timecode },
-        success: function(data) {
-          loadSyncFile(data.timecode);
-          loadTimespan(data.timecode);
-          alert("Timecode updated");
-        },
-        error: function(data) {
-          alert(data.responseText);
-        }
-      });
-
-    });
-
-    // Remove form when cancel is pressed
-    $(document).on("click", "form input#cancel", function(event) {
-      $(this).closest("form").remove();
-    });
-
-    // Click on lyrics row
-    //   allows you to go to previous line/time
-    $(document).on("click", "div#lyrics .row .line", function(event) {
-      var startTime = $(this).closest(".row").find(".timespan .start_time").text();
-
-      if (startTime !== "") {
-        popcorn.currentTime(startTime);
-      }
-    });
-
-    // Double click on lyrics row
-    //   plays the media for current lyric line timespan
-    //   *** What if no start/end time
-    $(document).on("dblclick", "div#lyrics .row .line", function(event) {
-      //var i = $(this).attr("id");
-      //var startTime = $(this).find(".timespan .start_time").text();
-      //var endTime = $(this).find(".timespan .end_time").text();
-
-      //popcorn.code({
-        //start: startTime,
-        //end:   endTime,
-        //onEnd: function(i,endTime) {
-          //return function(options) {
-            //console.log("must pause " + i + "endTime: " + endTime);
-            //popcorn.pause();
-          //}
-        //}(i,endTime)
-      //});
-      // we will add an event handler for the timecode in that row
-      //   but:
-      //    1. we will have to remove this event handler when we want to play entire lyrics w/o pauses
-      //    2. does this add or replace the event handler for timespan?
-    });
+    // });
 
 
-    $(document).on("click", "input#add_media_source_btn", function(event) {
-      $song = $("div#songs li.selected");
+    // $(document).on("click", "input#start_sync_btn", function(event) {
+    //   $(document).off("keydown",recordStartTime);
+    //   $(document).off("keyup",recordEndTime);
 
-      $.ajax({
-        url: "/songs/" + $song.attr("id") + "/media_sources/new",
-        type: "GET",
-        success: function(data) {
-          $("div#media_sources ul").append(data);
-        },
-        error: function(data) {
-          alert(data.responseText);
-        }
-      });
-    });
+    //   $(document).on("keydown",recordStartTime);
+    //   $(document).on("keyup",recordEndTime);
+    //   popcorn.play();
+    // });
 
-    $(document).on("submit", "form#new_media_source", function(event) {
-      event.preventDefault();
+    // $(document).on("click", "input#save_sync_btn", function(event) {
+    //   var timecode = getCurrentTimecode();
+    //   var $song = $("div#songs li.selected");
 
-      $.ajax({
-        url: $(this).attr("action"),
-        type: "POST",
-        data: $(this).serialize(),
-        dataType: "json",
-        success: function(data) {
-          var mediaSourceLink = "<li id='media_source'><a href='#'>" + data.media_source_url + "</a></li>";
-          $("div#media_sources ul").append(mediaSourceLink);
-          $(this).remove();
-        }.bind(this),
-        error: function(data) {
-          alert(data.responseText);
-        }
-      });
-    });
+    //   var mediaDoesNotHaveTimecode = $("div#media").data("timecode") === "";
+    //   var method = mediaDoesNotHaveTimecode ? "POST" : "PUT";
 
-    $(document).on("click", "div#media_sources li", function(event) {
-      event.preventDefault();
+    //   $.ajax({
+    //     url: "/songs/" + $song.attr("id") + "/sync_files",
+    //     type: method,
+    //     data: { "timecode" : timecode },
+    //     success: function(data) {
+    //       loadSyncFile(data.timecode);
+    //       loadTimespan(data.timecode);
+    //       alert("Timecode updated");
+    //     },
+    //     error: function(data) {
+    //       alert(data.responseText);
+    //     }
+    //   });
 
-      $(this).parent().find(".selected").removeClass("selected");
-      $(this).addClass("selected");
+    // });
 
-      var mediaUrl = $(this).text();
-      loadMedia(mediaUrl);
+    // // Remove form when cancel is pressed
+    // $(document).on("click", "form input#cancel", function(event) {
+    //   $(this).closest("form").remove();
+    // });
 
-      var timecode = $("div#media").data("timecode");
-      if (timecode !== "") {
-        syncLyricsToMedia(timecode);
-        popcorn.play();
-      }
-    });
+    // // Click on lyrics row
+    // //   allows you to go to previous line/time
+    // $(document).on("click", "div#lyrics .row .line", function(event) {
+    //   var startTime = $(this).closest(".row").find(".timespan .start_time").text();
 
-    $(document).on("click", "input#add_sync_file_btn", function(event) {
-      displaySyncFileControls();
-    });
+    //   if (startTime !== "") {
+    //     popcorn.currentTime(startTime);
+    //   }
+    // });
 
-    $(document).on("click", "div#sync_files li", function(event) {
-      event.preventDefault();
-    });
+    // // Double click on lyrics row
+    // //   plays the media for current lyric line timespan
+    // //   *** What if no start/end time
+    // $(document).on("dblclick", "div#lyrics .row .line", function(event) {
+    //   //var i = $(this).attr("id");
+    //   //var startTime = $(this).find(".timespan .start_time").text();
+    //   //var endTime = $(this).find(".timespan .end_time").text();
 
-    $(document).on("click", "input#edit_timecode_btn", function(event) {
-      $(this).val("Cancel Edit");
-      $(this).addClass("cancel");
+    //   //popcorn.code({
+    //     //start: startTime,
+    //     //end:   endTime,
+    //     //onEnd: function(i,endTime) {
+    //       //return function(options) {
+    //         //console.log("must pause " + i + "endTime: " + endTime);
+    //         //popcorn.pause();
+    //       //}
+    //     //}(i,endTime)
+    //   //});
+    //   // we will add an event handler for the timecode in that row
+    //   //   but:
+    //   //    1. we will have to remove this event handler when we want to play entire lyrics w/o pauses
+    //   //    2. does this add or replace the event handler for timespan?
+    // });
 
-      displaySyncFileControls();
-      positionIndicator = new PositionIndicator();
 
-      popcorn.pause();
-      popcorn.currentTime(0);
-    });
+    // $(document).on("click", "input#add_media_source_btn", function(event) {
+    //   $song = $("div#songs li.selected");
 
-    $(document).on("click", "input#edit_timecode_btn.cancel", function(event) {
-      // reload the original timecode
-      var timecode = $("div#media").data("timecode");
-      loadTimespan(timecode);
+    //   $.ajax({
+    //     url: "/songs/" + $song.attr("id") + "/media_sources/new",
+    //     type: "GET",
+    //     success: function(data) {
+    //       $("div#media_sources ul").append(data);
+    //     },
+    //     error: function(data) {
+    //       alert(data.responseText);
+    //     }
+    //   });
+    // });
 
-      $(this).val("Edit Timecode");
-      $(this).removeClass("cancel");
+    // $(document).on("submit", "form#new_media_source", function(event) {
+    //   event.preventDefault();
 
-      $(".timespan").hide();
-      $("div#lyrics .timespan .waveform").removeClass("active");
-      $("div#lyrics .row .line.selected").removeClass("selected");
-      $("div#sync_mode_controls #main").empty();
+    //   $.ajax({
+    //     url: $(this).attr("action"),
+    //     type: "POST",
+    //     data: $(this).serialize(),
+    //     dataType: "json",
+    //     success: function(data) {
+    //       var mediaSourceLink = "<li id='media_source'><a href='#'>" + data.media_source_url + "</a></li>";
+    //       $("div#media_sources ul").append(mediaSourceLink);
+    //       $(this).remove();
+    //     }.bind(this),
+    //     error: function(data) {
+    //       alert(data.responseText);
+    //     }
+    //   });
+    // });
 
-      $("div#media_sources ul li.selected").trigger("click");
-    });
+    // $(document).on("click", "div#media_sources li", function(event) {
+    //   event.preventDefault();
 
+    //   $(this).parent().find(".selected").removeClass("selected");
+    //   $(this).addClass("selected");
+
+    //   var mediaUrl = $(this).text();
+    //   loadMedia(mediaUrl);
+
+    //   var timecode = $("div#media").data("timecode");
+    //   if (timecode !== "") {
+    //     syncLyricsToMedia(timecode);
+    //     popcorn.play();
+    //   }
+    // });
+
+    // $(document).on("click", "input#add_sync_file_btn", function(event) {
+    //   displaySyncFileControls();
+    // });
+
+    // $(document).on("click", "div#sync_files li", function(event) {
+    //   event.preventDefault();
+    // });
+
+    // $(document).on("click", "input#edit_timecode_btn", function(event) {
+    //   $(this).val("Cancel Edit");
+    //   $(this).addClass("cancel");
+
+    //   displaySyncFileControls();
+    //   positionIndicator = new PositionIndicator();
+
+    //   popcorn.pause();
+    //   popcorn.currentTime(0);
+    // });
+
+    // $(document).on("click", "input#edit_timecode_btn.cancel", function(event) {
+    //   // reload the original timecode
+    //   var timecode = $("div#media").data("timecode");
+    //   loadTimespan(timecode);
+
+    //   $(this).val("Edit Timecode");
+    //   $(this).removeClass("cancel");
+
+    //   $(".timespan").hide();
+    //   $("div#lyrics .timespan .waveform").removeClass("active");
+    //   $("div#lyrics .row .line.selected").removeClass("selected");
+    //   $("div#sync_mode_controls #main").empty();
+
+    //   $("div#media_sources ul li.selected").trigger("click");
+    // });
+
+    loadMedia($("#media").data("url"));
+    editor = new Editor(popcorn);
   });
 
 
