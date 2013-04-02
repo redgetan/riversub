@@ -1,11 +1,13 @@
-function Track (startTime,endTime,popcorn) {
+function Track (startTime,endTime,popcorn,editor) {
 	this.popcorn = popcorn;
+  this.editor = editor;
 	this.codeTrackEvent     = this.createCodeTrackEvent(startTime,endTime);
 	this.subtitleTrackEvent = this.createSubtitleTrackEvent(startTime,endTime);
-  this.id = this.codeTrackEvent.id + this.subtitleTrackEvent.id;
+  this.id = this.codeTrackEvent._id + this.subtitleTrackEvent._id;
   this.subtitleLine = null;
 
   this.setupElement();
+  this.bindEvents();
 
   this.$el.addClass("ghost");
 }
@@ -19,10 +21,24 @@ Track.prototype.setupElement = function() {
 
 Track.prototype.render = function() {
   this.$el.css("height",this.$container.css("height"));
-  this.$el.css("width", this.endTime() - this.startTime()  + "px");
+  this.$el.css("width", this.toPixel(this.endTime() - this.startTime())  + "px");
   this.$el.offset({
-    left: this.$container.offset().left + this.startTime()
+    left: this.popcorn.media.offsetLeft + this.toPixel(this.startTime())
   })
+};
+
+Track.prototype.bindEvents = function() {
+  this.$el.on("click",this.onClickHandler.bind(this));
+};
+
+Track.prototype.onClickHandler = function(event) {
+  console.log("clicked " + this);
+  this.editor.seek(this.startTime());
+};
+
+Track.prototype.toPixel = function(time) {
+  var pixelWidth = this.$container.width() / this.popcorn.media.duration;
+  return pixelWidth * time;
 };
 
 Track.prototype.startTime = function() {
@@ -92,9 +108,14 @@ Track.prototype.createSubtitleTrackEvent = function(startTime,endTime) {
     return this.popcorn.getTrackEvent(trackEventId);
 };
 
-Track.prototype.removeTrackEvents = function(startTime,endTime) {
-	this.popcorn.removeTrackEvent(this.codeTrackEvent.id);
-	this.popcorn.removeTrackEvent(this.subtitleTrackEvent.id);
+Track.prototype.remove = function() {
+  this.$el.remove();
+  this.removeTrackEvents();
+};
+
+Track.prototype.removeTrackEvents = function() {
+	this.popcorn.removeTrackEvent(this.codeTrackEvent._id);
+	this.popcorn.removeTrackEvent(this.subtitleTrackEvent._id);
 };
 
 Track.prototype.toString = function() {

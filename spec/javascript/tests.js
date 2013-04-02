@@ -133,3 +133,12 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
   equal(popcorn.getTrackEvents().length,0);
 });
 
+// window pane must be 30 seconds long
+//   wat if vid is only 7 seconds
+// whole timeline must be equal to length of video
+//
+//
+//
+//
+//
+

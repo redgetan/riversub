@@ -14,9 +14,12 @@
 }
 
 .track {
-	border: solid 1px blue;
-	background-color: red;
+	background-color: cadetblue;
 	position: absolute;
+}
+
+.track:hover {
+	background-color: darkkhaki;
 }
 
 #subtitle {

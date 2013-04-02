@@ -49,7 +49,6 @@ Editor.prototype.bindEvents = function() {
 	$(document).on("keyup",this.onKeyupHandler.bind(this));
 };
 
-
 Editor.prototype.onKeydownHandler = function(event) {
 	// K key
     if (event.which === 75) {
@@ -63,7 +62,13 @@ Editor.prototype.onKeydownHandler = function(event) {
 Editor.prototype.onKeyupHandler = function(event) {
 	// K key
     if (event.which === 75) {
-      	this.endTrack(this.currentTrack);
+    	try {
+      		this.endTrack(this.currentTrack);
+    	} catch (e) {
+    		console.log(e + ". Removing invalid track");
+    		this.currentTrack.remove();
+    		this.tracks.pop();
+    	}
       	this.isKeydownPressed = false;
   	}
 };
@@ -80,7 +85,7 @@ Editor.prototype.createTrack = function() {
 	this.validateNoTrackOverlap(startTime,endTime);
 
 	var subtitleLine = this.subtitle.currentUnmappedLine();
-	var track = new Track(startTime,endTime,this.popcorn);	
+	var track = new Track(startTime,endTime,this.popcorn,this);	
 	this.subtitle.mapTrack(track,subtitleLine);
 	this.tracks.push(track);
 	return track;
@@ -120,7 +125,7 @@ Editor.prototype.determineEndTime = function(startTime) {
 
 Editor.prototype.clearTracks = function(time) {
 	for (var i = this.tracks.length - 1; i >= 0; i--) {
-		this.tracks[i].removeTrackEvents();
+		this.tracks[i].remove();
 	};
 
 	this.tracks.length = 0;
