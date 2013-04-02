@@ -6,8 +6,6 @@
   var positionIndicator;
 
   var loadMedia = function(url) {
-    $("div#media").empty();
-    popcorn = Popcorn.smart("div#media",url);
   };
 
   var loadLyrics = function(text) {
@@ -492,21 +490,25 @@
     return timecode;
   };
 
+  var editSong = function(song) {
+    $("#main_container").empty();
+    editor = new Editor(song);
+  }
+
   $(document).ready(function(){
 
-    // $(document).on("click", "div#songs li", function(event) {
-    //   event.preventDefault();
+    $(document).on("click", "div#songs li", function(event) {
+      event.preventDefault();
 
-    //   $("div #songs").find(".selected").removeClass("selected");
-    //   $(this).addClass("selected");
+      $("div #songs").find(".selected").removeClass("selected");
+      $(this).addClass("selected");
 
-    //   $.ajax({
-    //     url: "/songs/play",
-    //     data: { "id": this.id },
-    //     dataType: "json",
-    //     success: playSong
-    //   });
-    // });
+      $.ajax({
+        url: "/songs/" + this.id,
+        dataType: "json",
+        success: editSong
+      });
+    });
 
     // $(document).on("click", "input#add_song_btn", function(event) {
 
@@ -701,8 +703,6 @@
     //   $("div#media_sources ul li.selected").trigger("click");
     // });
 
-    loadMedia($("#media").data("url"));
-    editor = new Editor(popcorn);
   });
 
 

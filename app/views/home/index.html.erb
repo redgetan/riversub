@@ -1,42 +1,18 @@
-<div id="top_container">
-</div>
+<div id="songs">
 
-<div id="container">
-  <div id="songs">
+  <p>
+    Songs
+  </p>
+  <ul>
+    <% @songs.each do |song| %>
+      <li id="<%= song.id %>"><%= link_to song.name, "#", :class => "song" %></li>
+    <% end %>
+  </ul>
 
-    <p>
-      Songs
-    </p>
-    <ul>
-      <% @songs.each do |song| %>
-        <li id="<%= song.id %>"><%= link_to song.name, "#", :class => "song" %></li>
-      <% end %>
-    </ul>
+  </br>
+  </br>
 
-    </br>
-    </br>
-
-    <div id="new">
-      <input type="button" name="" value="Add Song" id="add_song_btn"/>
-    </div>
+  <div id="new">
+    <input type="button" name="" value="Add Song" id="add_song_btn"/>
   </div>
-
-  <div id="media_container">
-    <div id="media">
-
-    </div>
-
-    <div id="media_sources">
-    </div>
-
-    <div id="sync_container">
-      <div id="sync_mode_controls">
-      </div>
-
-      <div id="lyrics">
-      </div>
-    </div>
-
-  </div>
-
 </div>

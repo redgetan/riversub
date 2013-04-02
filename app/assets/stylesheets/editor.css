@@ -8,6 +8,17 @@
 	border: solid 1px black ;
 }
 
+.track.ghost {
+	border: dotted 1px gray;
+	background-color: transparent;
+}
+
+.track {
+	border: solid 1px blue;
+	background-color: red;
+	position: absolute;
+}
+
 #subtitle {
   	padding: 10px;  
 	width: 700px;

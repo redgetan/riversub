@@ -1,19 +1,76 @@
-function Editor (popcorn) {
-	this._popcorn = popcorn;
-	this.media = popcorn.media;
-	this.tracks = [];
-	this.timeline = new Timeline();
+function Editor (song) {
+	this.setupElement();
+	this.defineAttributeAccessors();
+	this.bindEvents();
 
+	this.song = song;
+	this.tracks = [];
+	this.isKeydownPressed = false;
+	this.currentTrack = null;
+
+	this.popcorn = this.loadMedia(song.media_sources[0].url);
+	this.subtitle = new Subtitle(song.lyrics);
+}
+
+Editor.prototype.setupElement = function() {
+	this.$container = $("#main_container");
+	var el = "<div id='media_container'>" + 
+				"<div id='media'></div>" + 
+			 "</div>" + 
+			 "<div id='timeline'></div>" + 
+			 "<div id='subtitle'><h1>Subtitle</h1></br></div>";
+	this.$el = $(el);
+				
+	this.$container.append(this.$el);
+};
+
+Editor.prototype.defineAttributeAccessors = function() {
 	Object.defineProperty( this, "numTracks", {
       get: function() {
 		return this.tracks.length;
       },
       enumerable: true
     });
-}
+
+	Object.defineProperty( this, "media", {
+      get: function() {
+		return this.popcorn.media;
+      },
+      enumerable: true
+    });
+};
+
+Editor.prototype.loadMedia = function(url) {
+    return Popcorn.smart("div#media",url);
+};
+
+Editor.prototype.bindEvents = function() {
+	$(document).on("keydown",this.onKeydownHandler.bind(this));
+	$(document).on("keyup",this.onKeyupHandler.bind(this));
+};
+
+
+Editor.prototype.onKeydownHandler = function(event) {
+	// K key
+    if (event.which === 75) {
+      if (!this.isKeydownPressed) {
+      	this.currentTrack = this.createTrack();
+      	this.isKeydownPressed = true;
+      }
+  	}
+};
+
+Editor.prototype.onKeyupHandler = function(event) {
+	// K key
+    if (event.which === 75) {
+      	this.endTrack(this.currentTrack);
+      	this.isKeydownPressed = false;
+  	}
+};
+
 
 Editor.prototype.seek = function(time) {
-	this._popcorn.currentTime(time);
+	this.popcorn.currentTime(time);
 };
 
 Editor.prototype.createTrack = function() {
@@ -22,19 +79,15 @@ Editor.prototype.createTrack = function() {
 
 	this.validateNoTrackOverlap(startTime,endTime);
 
-	var track = new Track(startTime,endTime,this._popcorn);	
+	var subtitleLine = this.subtitle.currentUnmappedLine();
+	var track = new Track(startTime,endTime,this.popcorn);	
+	this.subtitle.mapTrack(track,subtitleLine);
 	this.tracks.push(track);
 	return track;
 };
 
 Editor.prototype.endTrack = function(track) {
-	var duration = this.media.currentTime - track.startTime;
-
-	if (duration <= 0) {
-		throw "Track Duration of " + duration + " is invalid";
-	}
-
-	track.endTime = this.media.currentTime;
+	track.end(this.media.currentTime);
 };
 
 /*

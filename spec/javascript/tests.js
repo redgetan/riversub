@@ -1,5 +1,6 @@
 var popcorn = Popcorn("#video");
-var editor = new Editor(popcorn);
+var subtitle = new Subtitle("one\ntwo\nthree");
+var editor = new Editor(subtitle,popcorn);
 
 test( "createTrack should create a new track", function() {
   editor.clearTracks();
@@ -31,6 +32,38 @@ test( "createTrack should extend duration of new track till the nearest track if
   equal(editor.numTracks,2);
   equal(track.startTime,5);
   equal(track.endTime,20);
+});
+
+test( "currentUnmappedLine should work", function() {
+  editor.clearTracks();
+  var subtitleLine = subtitleText.currentUnmappedLine();
+
+});
+
+test( "currentUnmappedLine should work", function() {
+  editor.clearTracks();
+  editor.subtitle.clearMapping();
+  var subtitleLine = subtitleText.currentUnmappedLine();
+  
+});
+
+test( "createTrack should assign next unassigned subtitle text from subtitle list", function() {
+  editor.clearTracks();
+  var subtitleLine = subtitleText.currentUnmappedLine();
+  editor.seek(1);
+  var track = editor.createTrack();
+  equal(track.text,subtitleLine.text);
+});
+
+test( "changing subtitle text should change the text of track that it is assigned to", function() {
+  editor.clearTracks();
+  var subtitleLine = subtitle.currentUnmappedLine();
+  editor.seek(1);
+  var track = editor.createTrack();
+  var newText = "Now I'm new";
+
+  subtitleLine.text = newText;
+  equal(track.text,newText);
 });
 
 test( "endTrack should update endTime of track to currentTime", function() {
@@ -99,5 +132,4 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
   equal(editor.numTracks,0);
   equal(popcorn.getTrackEvents().length,0);
 });
-
 
