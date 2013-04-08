@@ -54,18 +54,21 @@ div#media_container {
   padding: 10px;  
   margin: auto;
   width: 700px;
-  height: 350px;
+  height: 370px;
   border: solid 1px black ;
 }
 
 div#media {
   width: inherit;
-  height: inherit;
+  height: 350px;
 }
 
-div#media_container table {
-  width: 100%;
+div#subtitle_container {
+  width: inherit; 
+  background-color: black;
+  height: 20px;
 }
+
 
 div#media_container div#media_sources {
   text-align: left;

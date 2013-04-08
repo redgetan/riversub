@@ -16,6 +16,7 @@ Editor.prototype.setupElement = function() {
 	this.$container = $("#main_container");
 	var el = "<div id='media_container'>" + 
 				"<div id='media'></div>" + 
+				"<div id='subtitle_container'></div>" + 
 			 "</div>" + 
 			 "<div id='timeline'></div>" + 
 			 "<div id='subtitle'><h1>Subtitle</h1></br></div>";

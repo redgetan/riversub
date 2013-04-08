@@ -19,11 +19,13 @@ Track.prototype.setupElement = function() {
   this.render();
 };
 
+// perhaps track should only render width & height
+// position should be left up to editor
 Track.prototype.render = function() {
   this.$el.css("height",this.$container.css("height"));
   this.$el.css("width", this.toPixel(this.endTime() - this.startTime())  + "px");
   this.$el.offset({
-    left: this.popcorn.media.offsetLeft + this.toPixel(this.startTime())
+    left: this.editor.$container.find("#media").offset().left + this.toPixel(this.startTime())
   })
 };
 
@@ -32,7 +34,6 @@ Track.prototype.bindEvents = function() {
 };
 
 Track.prototype.onClickHandler = function(event) {
-  console.log("clicked " + this);
   this.editor.seek(this.startTime());
 };
 
