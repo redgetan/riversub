@@ -8,6 +8,21 @@
 	border: solid 1px black ;
 }
 
+#timeline #summary {
+	height: 35px;
+	border: solid 1px black ;
+	position: relative;
+	overflow: hidden;
+}
+
+#timeline #expanded {
+	height: 100px;
+	margin-top: 10px;
+	border: solid 1px black ;
+	position: relative;
+	overflow: hidden;
+}
+
 .track.ghost {
 	border: dotted 1px gray;
 	background-color: transparent;

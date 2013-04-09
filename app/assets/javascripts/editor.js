@@ -9,6 +9,7 @@ function Editor (song) {
   this.currentTrack = null;
 
   this.popcorn = this.loadMedia(song.media_sources[0].url);
+
   this.subtitle = new Subtitle(song.lyrics);
 }
 
@@ -16,11 +17,15 @@ Editor.prototype = {
 
   setupElement: function() {
     this.$container = $("#main_container");
-    var el = "<div id='media_container'>" +
-      "<div id='media'></div>" +
-      "<div id='subtitle_bar'></div>" +
+    var el = 
+      "<div id='media_container'>" +
+        "<div id='media'></div>" +
+        "<div id='subtitle_bar'></div>" +
       "</div>" +
-      "<div id='timeline'></div>" +
+      "<div id='timeline'>" + 
+        "<div id='summary'></div>" +
+        "<div id='expanded'></div>" +
+      "</div>" + 
       "<div id='subtitle'><h1>Subtitle</h1></br></div>";
     this.$el = $(el);
 
@@ -45,6 +50,7 @@ Editor.prototype = {
   },
 
   loadMedia: function(url) {
+    // return Popcorn.smart("div#media",url);
     return Popcorn.smart("div#media",url);
   },
 

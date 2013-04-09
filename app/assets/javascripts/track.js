@@ -9,30 +9,50 @@ function Track (startTime,endTime,subtitleLine,popcorn,editor) {
   this.setupElement();
   this.bindEvents();
 
-  this.$el.addClass("ghost");
 }
 
 Track.prototype = {
 
   setupElement: function() {
-    this.$container = $("#timeline");
-    this.$el = $("<div id='" + this.id + "' class='track'>");
-    this.$container.append(this.$el);
+    this.$container_summary = $("#timeline #summary");
+    this.$el_summary = $("<div id='" + this.id + "' class='track summary'>");
+    this.$container_summary.append(this.$el_summary);
+
+    this.$container_expanded = $("#timeline #expanded");
+    this.$el_expanded = $("<div id='" + this.id + "' class='track expanded'>");
+    this.$container_expanded.append(this.$el_expanded);
+
+    this.$el_summary.addClass("ghost");
+    this.$el_expanded.addClass("ghost");
+
     this.render();
   },
 
   // perhaps track should only render width & height
   // position should be left up to editor
   render: function() {
-    this.$el.css("height",this.$container.css("height"));
-    this.$el.css("width", this.toPixel(this.endTime() - this.startTime())  + "px");
-    this.$el.offset({
-      left: this.editor.$container.find("#media").offset().left + this.toPixel(this.startTime())
-    })
+    this.renderInContainer(this.$container_summary,this.$el_summary);
+    this.renderInContainer(this.$container_expanded,this.$el_expanded);
+  },
+
+  // needs container,element
+
+  renderInContainer: function($container,$el) {
+    var duration = 0;
+    if ($container.attr("id") === "summary") {
+      duration = this.popcorn.media.duration;
+    } else {
+      duration = 30;
+    }
+
+    $el.css("height",$container.css("height"));
+    $el.css("width", this.toPixel($container.width(),duration,this.endTime() - this.startTime())  + "px");
+    $el.css("left",  this.toPixel($container.width(),duration,this.startTime()));
   },
 
   bindEvents: function() {
-    this.$el.on("click",this.onMouseClickHandler.bind(this));
+    this.$el_expanded.on("click",this.onMouseClickHandler.bind(this));
+    this.$el_summary.on("click",this.onMouseClickHandler.bind(this));
   },
 
   onMouseClickHandler: function(event) {
@@ -45,8 +65,8 @@ Track.prototype = {
     subtitleLine.setTrack(this);
   },
 
-  toPixel: function(time) {
-    var pixelWidth = this.$container.width() / this.popcorn.media.duration;
+  toPixel: function(containerWidth,containerDuration,time) {
+    var pixelWidth = containerWidth / containerDuration ;
     return pixelWidth * time;
   },
 
@@ -81,8 +101,12 @@ Track.prototype = {
       throw "Track Duration of " + duration + " is invalid";
     }
 
-    if (this.$el.hasClass("ghost")) {
-      this.$el.removeClass("ghost");
+    if (this.$el_summary.hasClass("ghost")) {
+      this.$el_summary.removeClass("ghost");
+    }
+
+    if (this.$el_expanded.hasClass("ghost")) {
+      this.$el_expanded.removeClass("ghost");
     }
 
     this.setEndTime(time);
@@ -115,7 +139,8 @@ Track.prototype = {
   },
 
   remove: function() {
-    this.$el.remove();
+    this.$el_expanded.remove();
+    this.$el_summary.remove();
     this.popcorn.removeTrackEvent(this.trackEvent._id);
   },
 

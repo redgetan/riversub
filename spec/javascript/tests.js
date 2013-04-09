@@ -140,8 +140,11 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [x] subtitle texts must be formatted, start times should be displayed well
 // [x] click on track should highlight subtitle line
 // [x] replace popcorn.subtitle with just our own implementation
-//       refactor track.js
+// [x] added summary + expanded timeline
+// [ ] drag track should modify start/end times and should be reflected in ui
+// [ ] add window in summary
+// [ ] show scrubber
 // double click on subtitle text on video and on subtitle pane should allow you to edit it
-//
+// [ ] should let user know if media cannot be loaded
 //
 
