@@ -1,10 +1,11 @@
-function Track (startTime,endTime,popcorn,editor) {
+function Track (startTime,endTime,subtitleLine,popcorn,editor) {
 	this.popcorn = popcorn;
   this.editor = editor;
+  this.setSubtitleLine(subtitleLine);
+
 	this.codeTrackEvent     = this.createCodeTrackEvent(startTime,endTime);
 	this.subtitleTrackEvent = this.createSubtitleTrackEvent(startTime,endTime);
   this.id = this.codeTrackEvent._id + this.subtitleTrackEvent._id;
-  this.subtitleLine = null;
 
   this.setupElement();
   this.bindEvents();
@@ -30,11 +31,17 @@ Track.prototype.render = function() {
 };
 
 Track.prototype.bindEvents = function() {
-  this.$el.on("click",this.onClickHandler.bind(this));
+  this.$el.on("click",this.onMouseClickHandler.bind(this));
 };
 
-Track.prototype.onClickHandler = function(event) {
+Track.prototype.onMouseClickHandler = function(event) {
   this.editor.seek(this.startTime());
+  this.subtitleLine.highlight();
+};
+
+Track.prototype.setSubtitleLine = function(subtitleLine) {
+  this.subtitleLine = subtitleLine;
+  subtitleLine.setTrack(this);
 };
 
 Track.prototype.toPixel = function(time) {
@@ -50,6 +57,7 @@ Track.prototype.setStartTime = function(time) {
     this.codeTrackEvent.start = time;
     this.subtitleTrackEvent.start = time;
     this.render();
+    this.subtitleLine.render();
 };
 
 Track.prototype.endTime = function() {
@@ -60,6 +68,7 @@ Track.prototype.setEndTime = function(time) {
     this.codeTrackEvent.end = time;
     this.subtitleTrackEvent.end = time;
     this.render();
+    this.subtitleLine.render();
 };
 
 Track.prototype.text = function() {
@@ -80,11 +89,6 @@ Track.prototype.end = function(time) {
   this.setEndTime(time);
 };
 
-Track.prototype.setSubtitleLine = function(subtitleLine) {
-  this.subtitleLine = subtitleLine;
-  subtitleLine.setTrack(this);
-};
-
 Track.prototype.createCodeTrackEvent = function(startTime,endTime) {
     this.popcorn.code({
       start: startTime,
@@ -102,7 +106,7 @@ Track.prototype.createSubtitleTrackEvent = function(startTime,endTime) {
     this.popcorn.subtitle({
       start: startTime,
       end:   endTime,
-      text:  "subtitle startTime: " + startTime
+      text:  this.subtitleLine.text
     });
 
     var trackEventId = this.popcorn.getLastTrackEventId();

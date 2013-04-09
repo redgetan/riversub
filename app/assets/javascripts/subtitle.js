@@ -15,13 +15,10 @@ Subtitle.prototype.extractLines = function(text) {
    
 };
 
-Subtitle.prototype.currentUnmappedLine = function() {
-  return this.lines[this.currentUnmappedIndex];  
-};
-
-Subtitle.prototype.mapTrack = function(track,subtitleLine) {
-  track.setSubtitleLine(subtitleLine);
+Subtitle.prototype.nextUnmappedLine = function() {
+  var subtitleLine = this.lines[this.currentUnmappedIndex];
   this.currentUnmappedIndex++;
+  return subtitleLine;  
 };
 
 // should listen to changes in track startTime and endTime to rerender
@@ -62,5 +59,13 @@ SubtitleLine.prototype.render = function() {
 
 SubtitleLine.prototype.setTrack = function(track) {
   this.track = track; 
-  this.render();
+};
+
+SubtitleLine.prototype.highlight = function() {
+  //remove any existing highlights on neighboring elements
+  var $selected = this.$container.find(".subtitle_line.selected");
+  if ($selected.length !== 0) {
+    $selected.first().removeClass("selected");  
+  }
+  this.$el.addClass("selected");
 };

@@ -66,7 +66,8 @@ Editor.prototype.onKeyupHandler = function(event) {
     	try {
       		this.endTrack(this.currentTrack);
     	} catch (e) {
-    		console.log(e + ". Removing invalid track");
+    		console.log(e.stack);
+    		console.log("Removing invalid track");
     		this.currentTrack.remove();
     		this.tracks.pop();
     	}
@@ -85,9 +86,8 @@ Editor.prototype.createTrack = function() {
 
 	this.validateNoTrackOverlap(startTime,endTime);
 
-	var subtitleLine = this.subtitle.currentUnmappedLine();
-	var track = new Track(startTime,endTime,this.popcorn,this);	
-	this.subtitle.mapTrack(track,subtitleLine);
+	var subtitleLine = this.subtitle.nextUnmappedLine();
+	var track = new Track(startTime,endTime,subtitleLine,this.popcorn,this);	
 	this.tracks.push(track);
 	return track;
 };

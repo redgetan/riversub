@@ -30,3 +30,26 @@
 	margin-right: auto;
 	border: solid 1px black ;
 }
+
+.subtitle_line {
+	height: 1em;
+}
+
+.subtitle_line.selected {
+	background-color: yellow;
+	border: solid 1px gray;
+}
+
+.subtitle_line .start_time,
+.subtitle_line .end_time,
+.subtitle_line .text {
+	float: left;	
+	display: block;
+}
+
+.subtitle_line .start_time,
+.subtitle_line .end_time {
+	width: 60px;
+	margin-right: 10px;
+	height: 1px;
+}

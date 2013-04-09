@@ -136,9 +136,10 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // window pane must be 30 seconds long
 //   wat if vid is only 7 seconds
 // whole timeline must be equal to length of video
-//
-//
-//
+// 
+// [x] subtitle texts must be formatted, start times should be displayed well
+// [x] click on track should highlight subtitle line 
+// double click on subtitle text on video and on subtitle pane should allow you to edit it
 //
 //
 
