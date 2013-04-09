@@ -44,7 +44,7 @@ test( "currentUnmappedLine should work", function() {
   editor.clearTracks();
   editor.subtitle.clearMapping();
   var subtitleLine = subtitleText.currentUnmappedLine();
-  
+
 });
 
 test( "createTrack should assign next unassigned subtitle text from subtitle list", function() {
@@ -98,7 +98,7 @@ test( "createTrack cannot overlap (overlap tail) ", function() {
   var track = editor.createTrack();
   editor.seek(10);
   editor.endTrack(track);
-  
+
   editor.seek(7);
   throws(function() { editor.createTrack() });
 });
@@ -136,9 +136,9 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // window pane must be 30 seconds long
 //   wat if vid is only 7 seconds
 // whole timeline must be equal to length of video
-// 
+//
 // [x] subtitle texts must be formatted, start times should be displayed well
-// [x] click on track should highlight subtitle line 
+// [x] click on track should highlight subtitle line
 // double click on subtitle text on video and on subtitle pane should allow you to edit it
 //
 //

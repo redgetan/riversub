@@ -1,5 +1,5 @@
 function Scrubber () {
-	this.setupElement();
+  this.setupElement();
 }
 
 Scrubber.prototype.setupElement = function() {
