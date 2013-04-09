@@ -18,13 +18,14 @@ Editor.prototype = {
     this.$container = $("#main_container");
     var el = "<div id='media_container'>" +
       "<div id='media'></div>" +
-      "<div id='subtitle_container'></div>" +
+      "<div id='subtitle_bar'></div>" +
       "</div>" +
       "<div id='timeline'></div>" +
       "<div id='subtitle'><h1>Subtitle</h1></br></div>";
     this.$el = $(el);
 
     this.$container.append(this.$el);
+    this.$subtitleBar = $("#subtitle_bar");
   },
 
   defineAttributeAccessors: function() {
@@ -83,7 +84,7 @@ Editor.prototype = {
   },
 
   createTrack: function() {
-    var startTime = this.media.currentTime;
+    var startTime = this.media.currentTime.toFixed(3);
     var endTime   = this.determineEndTime(startTime);
 
     this.validateNoTrackOverlap(startTime,endTime);
@@ -95,7 +96,7 @@ Editor.prototype = {
   },
 
   endTrack: function(track) {
-    track.end(this.media.currentTime);
+    track.end(this.media.currentTime.toFixed(3));
   },
 
   /*

@@ -63,10 +63,14 @@ div#media {
   height: 350px;
 }
 
-div#subtitle_container {
-  width: inherit; 
+div#subtitle_bar {
   background-color: black;
+  color: white;
+  width: inherit;
   height: 20px;
+  line-height: 20px;
+  text-align: center;
+  font-weight: bold;
 }
 
 
