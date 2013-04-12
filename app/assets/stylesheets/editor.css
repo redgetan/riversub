@@ -23,6 +23,14 @@
 	overflow: hidden;
 }
 
+.scrubber {
+	height: inherit;
+	width: 1px;
+	background-color: red;
+	position: absolute;
+	z-index: 1;
+}
+
 .track.ghost {
 	border: dotted 1px gray;
 	background-color: transparent;

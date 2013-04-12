@@ -38,7 +38,7 @@ Track.prototype = {
   // needs container,element
 
   renderInContainer: function($container,$el) {
-    var duration = 0;
+    var duration;
     if ($container.attr("id") === "summary") {
       duration = this.popcorn.media.duration;
     } else {

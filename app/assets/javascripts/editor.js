@@ -11,6 +11,7 @@ function Editor (song) {
   this.popcorn = this.loadMedia(song.media_sources[0].url);
 
   this.subtitle = new Subtitle(song.lyrics);
+  this.scrubber = new Scrubber(this.popcorn);
 }
 
 Editor.prototype = {
