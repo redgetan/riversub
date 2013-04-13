@@ -138,6 +138,12 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // whole timeline must be equal to length of video
 //
 // [x] subtitle texts must be formatted, start times should be displayed well
+// [ ]  click on subtitle line should seek to that track
+//        subtitle determines which subtitleline was clicked
+//        determine which track it belongs to. and use its start time to seek there
+// [ ]  should be able to edit subtitle
+// [ ]  inserting in between subtitlelines should work, save load should appear in right order
+// [ ]  should have order and when saved and loaded should appear in right order
 // [x] click on track should highlight subtitle line
 // [x] replace popcorn.subtitle with just our own implementation
 // [x] added summary + expanded timeline

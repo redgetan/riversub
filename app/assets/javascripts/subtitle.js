@@ -29,6 +29,7 @@ Subtitle.prototype = {
 function SubtitleLine(text) {
   this.id = this.generateGuid();
   this.text = text;
+  this.track = null;
 
   this.setupElement();
 }
