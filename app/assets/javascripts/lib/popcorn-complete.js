@@ -6107,10 +6107,10 @@
         case YT.PlayerState.PAUSED:
           // a seekTo call fires a pause event, which we don't want at this point.
           // as long as a seekTo continues to do this, we can safly toggle this state.
-          if ( catchRoguePauseEvent ) {
-            catchRoguePauseEvent = false;
-            break;
-          }
+          // if ( catchRoguePauseEvent ) {
+          //   catchRoguePauseEvent = false;
+          //   break;
+          // }
           onPause();
           break;
 

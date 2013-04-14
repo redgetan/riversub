@@ -147,14 +147,17 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [x] click on track should highlight subtitle line
 // [x] replace popcorn.subtitle with just our own implementation
 // [x] added summary + expanded timeline
-// [ ] expanded timeline should move itself dynamically when out of bounds
+// [x] expanded timeline should move itself dynamically when out of bounds
 // [ ] expanded timeline should have time label every 5 second
 // [ ] drag track should modify start/end times and should be reflected in ui
 // [ ] add window in summary
 // [x] show scrubber
 // [x] scrubber should  appear on top of any element
-// [ ] clicking on any space on timeline should move scrubber to that spot
+// [x] when playing,clicking on any space on timeline should move scrubber to that spot
+// [x] when paused, clicking on any space on timeline should move scrubber to that spot
+// [ ] should show currenttime
 // double click on subtitle text on video and on subtitle pane should allow you to edit it
 // [ ] should let user know if media cannot be loaded
+// [ ] should let user know if media is buffering to avoid making them think that our app is slow when in fact its the video loading thats slow
 //
 

@@ -8,10 +8,11 @@ function Editor (song) {
   this.isKeydownPressed = false;
   this.currentTrack = null;
 
+  this.subtitle = new Subtitle(song.lyrics);
+  this.timeline = new Timeline();
+
   this.popcorn = this.loadMedia(song.media_sources[0].url);
 
-  this.subtitle = new Subtitle(song.lyrics);
-  this.scrubber = new Scrubber(this.popcorn);
 }
 
 Editor.prototype = {
@@ -23,9 +24,7 @@ Editor.prototype = {
         "<div id='media'></div>" +
         "<div id='subtitle_bar'></div>" +
       "</div>" +
-      "<div id='timeline'>" + 
-        "<div id='summary'></div>" +
-        "<div id='expanded'></div>" +
+      "<div id='timeline_container'>" + 
       "</div>" + 
       "<div id='subtitle'><h1>Subtitle</h1></br></div>";
     this.$el = $(el);
@@ -39,7 +38,7 @@ Editor.prototype = {
       get: function() {
         return this.tracks.length;
       },
-    enumerable: true
+      enumerable: true
     });
 
     Object.defineProperty( this, "media", {
@@ -51,13 +50,15 @@ Editor.prototype = {
   },
 
   loadMedia: function(url) {
-    // return Popcorn.smart("div#media",url);
-    return Popcorn.smart("div#media",url);
+    var popcorn = Popcorn.smart("div#media",url);
+    this.timeline.setMedia(popcorn.media);
+    return popcorn;
   },
 
   bindEvents: function() {
     $(document).on("keydown",this.onKeydownHandler.bind(this));
     $(document).on("keyup",this.onKeyupHandler.bind(this));
+    $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
   },
 
   onKeydownHandler: function(event) {
@@ -85,6 +86,10 @@ Editor.prototype = {
     }
   },
 
+  onTimelineSeekHandler: function(event,time) {
+    console.log(time);
+    this.seek(time);
+  },
 
   seek: function(time) {
     this.popcorn.currentTime(time);

@@ -57,7 +57,7 @@ SubtitleLine.prototype = {
   },
 
   render: function() {
-    if (typeof this.track !== "undefined" ) {
+    if (this.track !== null ) {
       this.$el.find(".start_time").text(this.track.startTime());
       this.$el.find(".end_time").text(this.track.endTime());
     }

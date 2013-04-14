@@ -14,18 +14,17 @@ function Track (startTime,endTime,subtitleLine,popcorn,editor) {
 Track.prototype = {
 
   setupElement: function() {
-    this.$container_summary = $("#timeline #summary");
-    this.$el_summary = $("<div id='" + this.id + "' class='track summary'>");
+    this.$container_summary = $("#timeline_container #summary");
+    this.$el_summary = $("<div id='" + this.id + "' class='track'>");
     this.$container_summary.append(this.$el_summary);
 
-    this.$container_expanded = $("#timeline #expanded");
-    this.$el_expanded = $("<div id='" + this.id + "' class='track expanded'>");
-    this.$container_expanded.append(this.$el_expanded);
+    this.$container_expanded = $("#timeline_container #expanded");
+    this.$el_expanded = $("<div id='" + this.id + "' class='track'>");
+    this.$container_expanded.find(".filler").append(this.$el_expanded);
 
     this.$el_summary.addClass("ghost");
     this.$el_expanded.addClass("ghost");
 
-    this.render();
   },
 
   // perhaps track should only render width & height
@@ -38,16 +37,28 @@ Track.prototype = {
   // needs container,element
 
   renderInContainer: function($container,$el) {
-    var duration;
-    if ($container.attr("id") === "summary") {
-      duration = this.popcorn.media.duration;
-    } else {
-      duration = 30;
-    }
+    console.log("[track] container: " + $container.attr("id") + " resolution: " + this.resolution($container));
+    var duration = this.endTime() - this.startTime();
+    $el.css("width", this.resolution($container) * duration  + "px");
+    $el.css("left",  this.resolution($container) * this.startTime());
+  },
 
-    $el.css("height",$container.css("height"));
-    $el.css("width", this.toPixel($container.width(),duration,this.endTime() - this.startTime())  + "px");
-    $el.css("left",  this.toPixel($container.width(),duration,this.startTime()));
+  // how many pixels per second
+  resolution: function($container) {
+    var widthPixel = $container.width();
+    var widthSeconds = $container.attr("id") === "summary" ? 
+                         this.summaryTimelineWidthInSeconds() :
+                         this.expandedTimelineWidthInSeconds();
+
+    return widthPixel / widthSeconds ;
+  },
+
+  summaryTimelineWidthInSeconds: function() {
+    return this.popcorn.media.duration || 30;
+  },
+
+  expandedTimelineWidthInSeconds: function() {
+    return 30; //always 30 seconds
   },
 
   bindEvents: function() {
@@ -63,11 +74,6 @@ Track.prototype = {
   setSubtitleLine: function(subtitleLine) {
     this.subtitleLine = subtitleLine;
     subtitleLine.setTrack(this);
-  },
-
-  toPixel: function(containerWidth,containerDuration,time) {
-    var pixelWidth = containerWidth / containerDuration ;
-    return pixelWidth * time;
   },
 
   startTime: function() {
