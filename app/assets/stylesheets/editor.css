@@ -27,12 +27,28 @@
 	height: inherit;
 }
 
+.progress_bar {
+	height: inherit;
+	position: absolute;
+	left: 0px;
+	background-color: palegreen;
+}
+
 .scrubber {
 	height: inherit;
 	width: 1px;
 	background-color: red;
 	position: absolute;
 	z-index: 1;
+}
+
+.time_indicator {
+	border: solid 1px black;
+	height: 10px;
+	width: 40px;
+	font: normal 10px Helvetica;
+	position: absolute;
+	z-index: 3;
 }
 
 .track.ghost {
@@ -42,12 +58,13 @@
 
 .track {
 	height: inherit;
-	background-color: cadetblue;
+	background-color: lightcoral;
 	position: absolute;
+	opacity: 0.5;
 }
 
 .track:hover {
-	background-color: darkkhaki;
+	background-color: red;
 }
 
 #subtitle {
@@ -64,7 +81,7 @@
 }
 
 .subtitle_line.selected {
-	background-color: yellow;
+	background-color: palegoldenrod;
 	border: solid 1px gray;
 }
 

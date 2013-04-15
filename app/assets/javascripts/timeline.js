@@ -10,23 +10,32 @@ Timeline.prototype = {
     this.$container = $("#timeline_container");
 
     var el = "<div id='summary' class='timeline'>" + 
+               "<div class='progress_bar'></div>" +
                "<div class='scrubber'></div>" +
              "</div>" +
              "<div id='expanded' class='timeline'>" + 
                "<div class='filler'>" + 
+                 "<div class='progress_bar'></div>" +
                  "<div class='scrubber'></div>" +
+                 "<div class='time_indicator'>0</div>" +
                "</div>" +
              "</div>";
 
     this.$container.append(el);
 
     this.$summary = $("#summary");
+    this.$progress_bar_summary = $("#summary .progress_bar");
     this.$scrubber_summary = $("#summary .scrubber");
 
     this.$expanded = $("#expanded");
+    this.$progress_bar_expanded = $("#expanded .progress_bar");
     this.$scrubber_expanded = $("#expanded .scrubber");
+    this.$time_indicator = $("#expanded .time_indicator");
 
     this.$filler = $("#expanded .filler");
+
+    this.$progress_bar_summary.css("width","0px");
+    this.$progress_bar_expanded.css("width","0px");
   },
 
   bindEvents: function() {
@@ -64,18 +73,21 @@ Timeline.prototype = {
   },
 
   onPlay: function() {
-      console.log("play");
-      console.log("interval" + this.scrubberInterval);
-    clearInterval(this.scrubberInterval);
     this.scrubberInterval = setInterval(this.renderScrubber.bind(this),10);
+    this.progressBarInterval = setInterval(this.renderProgressBar.bind(this),10);
+    this.timeIndicatorInterval = setInterval(this.renderTimeIndicator.bind(this),10);
   },
 
   onPause: function() {
     clearInterval(this.scrubberInterval);
+    clearInterval(this.progressBarInterval);
+    clearInterval(this.timeIndicatorInterval);
   },
 
   onSeeking: function() {
+    this.renderProgressBar();  
     this.renderScrubber();  
+    this.renderTimeIndicator();  
   },
 
   onLoadedMetadata: function() {
@@ -83,20 +95,39 @@ Timeline.prototype = {
   },
 
   renderScrubber: function() {
-    this.renderInContainer(this.$summary, this.$scrubber_summary, this.media.currentTime);
-    this.renderInContainer(this.$expanded,this.$scrubber_expanded,this.media.currentTime);
+    this.renderInContainer(this.$summary, this.$scrubber_summary, { left: this.media.currentTime.toFixed(3) });
+    this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
+  },
+
+
+  renderProgressBar: function() {
+    this.renderInContainer(this.$summary, this.$progress_bar_summary, { width: this.media.currentTime.toFixed(3) });
+    this.renderInContainer(this.$expanded,this.$progress_bar_expanded,{ width: this.media.currentTime.toFixed(3) });
+
+    if (this.isOutOfBounds(this.$expanded,this.$progress_bar_expanded)) {
+      this.scrollContainerToElement(this.$expanded,this.$progress_bar_expanded);
+    }
+  },
+
+  renderTimeIndicator: function() {
+    this.renderInContainer(this.$expanded,this.$time_indicator,{ 
+      left: this.media.currentTime.toFixed(3),
+      text: this.media.currentTime.toFixed(3) 
+    });
   },
 
   // given container, element, and time position you want to position element on, it will
   // position element on container on appropriate pixel location
-  renderInContainer: function($container,$el,time) {
+  renderInContainer: function($container,$el,property) {
 
-    $el.css("left", this.resolution($container) * time);
-
-    if (this.isOutOfBounds($container,$el)) {
-      console.log("out");
-      this.scrollContainerToElement($container,$el);
+    for (var key in property) {
+      if (key === "text") {
+        $el.text(property[key]);
+      } else {
+        $el.css(key, this.resolution($container) * property[key]);
+      }
     }
+
   },
 
   // how many pixels per second
@@ -120,11 +151,11 @@ Timeline.prototype = {
   isOutOfBounds: function($container,$el) {
     var containerStart = $container.scrollLeft();
     var containerEnd   = containerStart + $container.width();
-    var elPos          = parseFloat($el.css("left"),10);
+    var elRight        = this.getRightPos($el);
 
-    // console.log("start: " + containerStart + " end: "   + containerEnd + " el: "   +  elPos);
+    // console.log("start: " + containerStart + " end: "   + containerEnd + " el: "   +  elRight);
 
-    if (elPos >= containerStart && elPos <= containerEnd ) {
+    if (elRight >= containerStart && elRight <= containerEnd ) {
       return false;
     } else {
       return true;
@@ -132,12 +163,16 @@ Timeline.prototype = {
   },
 
   scrollContainerToElement: function($container,$el) {
-    var elPos = parseFloat($el.css("left"),10);
+    var elRight = this.getRightPos($el);
     var width = $container.width();
-    var index = Math.floor(elPos / width);
+    var index = Math.floor(elRight / width);
     var pos   = index * width;
     // console.log(pos);
     $container.scrollLeft(pos);
+  },
+
+  getRightPos: function($el) {
+    return parseFloat($el.css("left"),10) + $el.width();
   }
 
 };
