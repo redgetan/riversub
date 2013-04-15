@@ -12,6 +12,7 @@ Timeline.prototype = {
     var el = "<div id='summary' class='timeline'>" + 
                "<div class='progress_bar'></div>" +
                "<div class='scrubber'></div>" +
+               "<div class='window_slider'></div>" +
              "</div>" +
              "<div id='expanded' class='timeline'>" + 
                "<div class='filler'>" + 
@@ -26,6 +27,7 @@ Timeline.prototype = {
     this.$summary = $("#summary");
     this.$progress_bar_summary = $("#summary .progress_bar");
     this.$scrubber_summary = $("#summary .scrubber");
+    this.$window_slider = $("#summary .window_slider");
 
     this.$expanded = $("#expanded");
     this.$progress_bar_expanded = $("#expanded .progress_bar");
@@ -91,6 +93,7 @@ Timeline.prototype = {
   },
 
   onLoadedMetadata: function() {
+    this.$window_slider.css("width",this.resolution(this.$summary) * 30);
     this.$filler.css("width",this.resolution(this.$expanded) * this.media.duration);
   },
 
@@ -105,7 +108,7 @@ Timeline.prototype = {
     this.renderInContainer(this.$expanded,this.$progress_bar_expanded,{ width: this.media.currentTime.toFixed(3) });
 
     if (this.isOutOfBounds(this.$expanded,this.$progress_bar_expanded)) {
-      this.scrollContainerToElement(this.$expanded,this.$progress_bar_expanded);
+      this.scrollContainerToElementAndMoveWindowSlider(this.$expanded,this.$progress_bar_expanded);
     }
   },
 
@@ -162,13 +165,14 @@ Timeline.prototype = {
     }
   },
 
-  scrollContainerToElement: function($container,$el) {
+  scrollContainerToElementAndMoveWindowSlider: function($container,$el) {
     var elRight = this.getRightPos($el);
     var width = $container.width();
     var index = Math.floor(elRight / width);
     var pos   = index * width;
     // console.log(pos);
     $container.scrollLeft(pos);
+    this.$window_slider.css("left",this.resolution(this.$summary) * 30 * index);
   },
 
   getRightPos: function($el) {

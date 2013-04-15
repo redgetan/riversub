@@ -148,6 +148,7 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [x] replace popcorn.subtitle with just our own implementation
 // [x] added summary + expanded timeline
 // [x] timeline should have progress bar
+// [x] summary timeline should have window to indicate where expanded timeline is
 // [x] expanded timeline should move itself dynamically when out of bounds
 // [x] expanded timeline should have time indicator
 // [ ] expanded timeline should have time label every 5 second
