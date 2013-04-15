@@ -66,6 +66,7 @@ Editor.prototype = {
     if (event.which === 75) {
       if (!this.isKeydownPressed) {
         this.currentTrack = this.createTrack();
+        this.renderFillProgressInterval = setInterval(this.currentTrack.renderFillProgress.bind(this.currentTrack),10);
         this.isKeydownPressed = true;
       }
     }
@@ -75,6 +76,7 @@ Editor.prototype = {
     // K key
     if (event.which === 75) {
       try {
+        clearInterval(this.renderFillProgressInterval);
         this.endTrack(this.currentTrack);
       } catch (e) {
         console.log(e.stack);
@@ -87,7 +89,6 @@ Editor.prototype = {
   },
 
   onTimelineSeekHandler: function(event,time) {
-    console.log(time);
     this.seek(time);
   },
 

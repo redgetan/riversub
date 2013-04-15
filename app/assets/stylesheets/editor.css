@@ -9,14 +9,14 @@
 }
 
 #timeline_container #summary {
-	height: 35px;
+	height: 25px;
 	border: solid 1px black ;
 	position: relative;
 	overflow: hidden;
 }
 
 #timeline_container #expanded {
-	height: 100px;
+	height: 110px;
 	margin-top: 10px;
 	border: solid 1px black ;
 	position: relative;
@@ -57,11 +57,12 @@
 	font: normal 10px Helvetica;
 	position: absolute;
 	z-index: 3;
+	background-color: white;
 }
 
 .track.ghost {
 	border: dotted 1px gray;
-	background-color: transparent;
+	background-color: red;
 }
 
 .track {

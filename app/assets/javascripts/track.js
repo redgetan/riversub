@@ -27,20 +27,31 @@ Track.prototype = {
 
   },
 
-  // perhaps track should only render width & height
-  // position should be left up to editor
   render: function() {
-    this.renderInContainer(this.$container_summary,this.$el_summary);
-    this.renderInContainer(this.$container_expanded,this.$el_expanded);
+    var duration = this.endTime() - this.startTime();
+
+    this.renderInContainer(this.$container_summary,this.$el_summary,   { width: duration, left: this.startTime() });
+    this.renderInContainer(this.$container_expanded,this.$el_expanded, { width: duration, left: this.startTime() });
+  },
+
+  renderFillProgress: function() {
+    var progress = this.popcorn.media.currentTime - this.startTime();
+    console.log(progress);
+
+    this.renderInContainer(this.$container_summary,this.$el_summary,  { width: progress, left: this.startTime() });
+    this.renderInContainer(this.$container_expanded,this.$el_expanded,{ width: progress, left: this.startTime() });
   },
 
   // needs container,element
 
-  renderInContainer: function($container,$el) {
-    console.log("[track] container: " + $container.attr("id") + " resolution: " + this.resolution($container));
-    var duration = this.endTime() - this.startTime();
-    $el.css("width", this.resolution($container) * duration  + "px");
-    $el.css("left",  this.resolution($container) * this.startTime());
+  renderInContainer: function($container,$el,property) {
+    for (var key in property) {
+      if (key === "text") {
+        $el.text(property[key]);
+      } else {
+        $el.css(key, this.resolution($container) * property[key]);
+      }
+    }
   },
 
   // how many pixels per second
