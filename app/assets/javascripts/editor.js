@@ -1,7 +1,6 @@
 function Editor (song) {
   this.setupElement();
   this.defineAttributeAccessors();
-  this.bindEvents();
 
   this.song = song;
   this.tracks = [];
@@ -13,6 +12,7 @@ function Editor (song) {
 
   this.popcorn = this.loadMedia(song.media_sources[0].url);
 
+  this.bindEvents();
 }
 
 Editor.prototype = {
@@ -25,7 +25,7 @@ Editor.prototype = {
           "<div id='media'></div>" +
           "<div id='subtitle_bar'></div>" +
         "</div>" +
-        "<div id='subtitle_container'><h1>Subtitle</h1></br></div>" +
+        "<div id='subtitle_container'></div>" +
       "</div>" +
       "<div id='timeline_container'>" + 
       "</div>"; 
@@ -61,6 +61,7 @@ Editor.prototype = {
     $(document).on("keydown",this.onKeydownHandler.bind(this));
     $(document).on("keyup",this.onKeyupHandler.bind(this));
     $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
+    $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
   },
 
   onKeydownHandler: function(event) {
@@ -92,6 +93,10 @@ Editor.prototype = {
 
   onTimelineSeekHandler: function(event,time) {
     this.seek(time);
+  },
+
+  onSubtitleLineClick: function(event,subtitleLine) {
+    this.seek(subtitleLine.track.startTime());
   },
 
   seek: function(time) {

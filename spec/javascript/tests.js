@@ -138,7 +138,7 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // whole timeline must be equal to length of video
 //
 // [x] subtitle texts must be formatted, start times should be displayed well
-// [ ]  click on subtitle line should seek to that track
+// [x]  click on subtitle line should seek to that track
 //        subtitle determines which subtitleline was clicked
 //        determine which track it belongs to. and use its start time to seek there
 // [ ]  should be able to edit subtitle
