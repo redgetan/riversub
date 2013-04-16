@@ -42,7 +42,7 @@ SubtitleLine.prototype = {
     this.$container = $("#subtitle_container");
     var el = "<div id='" + this.id + "' class='subtitle_line'>" +
       "<div class='start_time'></div>" +
-      "<div class='end_time'></div>" +
+      // "<div class='end_time'></div>" +
       "<div class='text'></div>" +
       "</div>";
     this.$el = $(el);
@@ -60,7 +60,7 @@ SubtitleLine.prototype = {
   render: function() {
     if (this.track !== null ) {
       this.$el.find(".start_time").text(this.track.startTime());
-      this.$el.find(".end_time").text(this.track.endTime());
+      // this.$el.find(".end_time").text(this.track.endTime());
     }
     this.$el.find(".text").text(this.text);
   },

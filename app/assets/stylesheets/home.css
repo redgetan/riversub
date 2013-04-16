@@ -56,7 +56,7 @@ div#songs li.selected {
 div#media_container {
   float: left;
   padding: 10px;  
-  width: 40%;
+  width: 600px;
   height: 370px;
   border: solid 1px black ;
   margin-right: 15px;

@@ -79,7 +79,7 @@
 #subtitle_container {
 	float: right;
   	padding: 10px;  
-	width: 640px;
+	width: 500px;
 	height: 370px;
 	border: solid 1px black ;
 	overflow-y: scroll;
@@ -115,6 +115,7 @@
 }
 
 .subtitle_line .text {
-	width: 450px;
+	width: 400px;
 	white-space: nowrap;
+	overflow: hidden;
 }
