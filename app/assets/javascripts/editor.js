@@ -20,13 +20,15 @@ Editor.prototype = {
   setupElement: function() {
     this.$container = $("#main_container");
     var el = 
-      "<div id='media_container'>" +
-        "<div id='media'></div>" +
-        "<div id='subtitle_bar'></div>" +
+      "<div id='top_container'>" +
+        "<div id='media_container'>" +
+          "<div id='media'></div>" +
+          "<div id='subtitle_bar'></div>" +
+        "</div>" +
+        "<div id='subtitle_container'><h1>Subtitle</h1></br></div>" +
       "</div>" +
       "<div id='timeline_container'>" + 
-      "</div>" + 
-      "<div id='subtitle'><h1>Subtitle</h1></br></div>";
+      "</div>"; 
     this.$el = $(el);
 
     this.$container.append(this.$el);

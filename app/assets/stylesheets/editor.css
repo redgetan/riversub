@@ -1,6 +1,6 @@
 #timeline_container {
   	padding: 10px;  
-	width: 700px;
+	width: 1150px;
 	height: 150px;
 	margin-top: 15px;
 	margin-left: auto;
@@ -76,13 +76,14 @@
 	background-color: red;
 }
 
-#subtitle {
+#subtitle_container {
+	float: right;
   	padding: 10px;  
-	width: 700px;
-	margin-top: 15px;
-	margin-left: auto;
-	margin-right: auto;
+	width: 640px;
+	height: 370px;
 	border: solid 1px black ;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
 .subtitle_line {
@@ -106,4 +107,9 @@
 	width: 60px;
 	margin-right: 10px;
 	height: 1px;
+}
+
+.subtitle_line .text {
+	width: 450px;
+	white-space: nowrap;
 }

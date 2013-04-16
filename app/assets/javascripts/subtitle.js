@@ -38,7 +38,7 @@ SubtitleLine.prototype = {
 
   setupElement: function() {
 
-    this.$container = $("#subtitle");
+    this.$container = $("#subtitle_container");
     var el = "<div id='" + this.id + "' class='subtitle_line'>" +
       "<div class='start_time'></div>" +
       "<div class='end_time'></div>" +

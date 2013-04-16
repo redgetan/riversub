@@ -10,12 +10,15 @@ input[type=button], input[type=submit] {
   font-size: 20px;
 }
 
-div#top_container {
-  width: 1150px;
-  height: 20px;
+div#main_container {
   margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
+}
+
+div#top_container {
+  width: 1170px;
+  height: 400px;
+  margin-top: 20px;
+  margin: auto;
 }
 
 
@@ -51,22 +54,21 @@ div#songs li.selected {
 }
 
 div#media_container {
+  float: left;
   padding: 10px;  
-  margin: auto;
-  width: 700px;
+  width: 40%;
   height: 370px;
   border: solid 1px black ;
+  margin-right: 15px;
 }
 
 div#media {
-  width: inherit;
   height: 350px;
 }
 
 div#subtitle_bar {
   background-color: black;
   color: white;
-  width: inherit;
   height: 20px;
   line-height: 20px;
   text-align: center;
