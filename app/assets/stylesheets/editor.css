@@ -90,6 +90,11 @@
 	height: 1em;
 }
 
+.subtitle_line.mapped {
+	background-color: peachpuff;
+	border: solid 1px lightcoral;
+}
+
 .subtitle_line.selected {
 	background-color: palegoldenrod;
 	border: solid 1px gray;

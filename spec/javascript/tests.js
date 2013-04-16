@@ -154,6 +154,7 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [ ] expanded timeline should have time label every 5 second
 // [ ] drag track should modify start/end times and should be reflected in ui
 // [x] pressing fill button should show track fill animation
+// [x] should distinguish mapped subtitle line from unmapped ones 
 // [x] add window in summary
 // [x] show scrubber
 // [x] scrubber should  appear on top of any element
@@ -163,5 +164,6 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [ ] should let user know if media cannot be loaded
 // [ ] should let user know if media is buffering to avoid making them think that our app is slow when in fact its the video loading thats slow
 // [ ] should not allow user to create track inside another track
+// [x] removing track means unmapping the subtitleline 
 //
 

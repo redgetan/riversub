@@ -1,26 +1,28 @@
 function Subtitle(text) {
   this.lines = this.extractLines(text);
-  this.currentUnmappedIndex = 0;
 }
 
 Subtitle.prototype = {
 
   extractLines: function(text) {
-    var lines = text.split("\n");
-    var subtitleLines = [];
+    var textLines = text.split("\n");
+    var lines = [];
 
-    for (var i = 0; i < lines.length; i++) {
-      subtitleLines.push(new SubtitleLine(lines[i]));
+    for (var i = 0; i < textLines.length; i++) {
+      lines.push(new SubtitleLine(textLines[i]));
     };
 
-    return subtitleLines;
+    return lines;
 
   },
 
+  // find one that is not yet mapped
   nextUnmappedLine: function() {
-    var subtitleLine = this.lines[this.currentUnmappedIndex];
-    this.currentUnmappedIndex++;
-    return subtitleLine;
+    for (var i = 0; i < this.lines.length; i++) {
+      if ( this.lines[i].$el.hasClass("mapped") === false ) {
+        return this.lines[i];
+      }
+    };
   }
 
 };
@@ -30,7 +32,6 @@ function SubtitleLine(text) {
   this.id = this.generateGuid();
   this.text = text;
   this.track = null;
-
   this.setupElement();
 }
 
@@ -66,15 +67,20 @@ SubtitleLine.prototype = {
 
   setTrack: function(track) {
     this.track = track;
+    this.$el.addClass("mapped");
+  },
+
+  removeTrack: function() {
+    this.track = null;
+    this.$el.removeClass("mapped");
   },
 
   highlight: function() {
-    //remove any existing highlights on neighboring elements
-    var $selected = this.$container.find(".subtitle_line.selected");
-    if ($selected.length !== 0) {
-      $selected.first().removeClass("selected");
-    }
     this.$el.addClass("selected");
+  },
+
+  unhighlight: function() {
+    this.$el.removeClass("selected");
   }
 
 };

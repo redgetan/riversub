@@ -36,7 +36,6 @@ Track.prototype = {
 
   renderFillProgress: function() {
     var progress = this.popcorn.media.currentTime - this.startTime();
-    console.log(progress);
 
     this.renderInContainer(this.$container_summary,this.$el_summary,  { width: progress, left: this.startTime() });
     this.renderInContainer(this.$container_expanded,this.$el_expanded,{ width: progress, left: this.startTime() });
@@ -79,7 +78,6 @@ Track.prototype = {
 
   onMouseClickHandler: function(event) {
     this.editor.seek(this.startTime());
-    this.subtitleLine.highlight();
   },
 
   setSubtitleLine: function(subtitleLine) {
@@ -137,9 +135,11 @@ Track.prototype = {
       end:   endTime,
       onStart: function() {
         self.showSubtitleInSubtitleBar();
+        self.subtitleLine.highlight();
       },
       onEnd: function() {
         self.hideSubtitleInSubtitleBar();
+        self.subtitleLine.unhighlight();
       },
     });
 
@@ -159,6 +159,7 @@ Track.prototype = {
     this.$el_expanded.remove();
     this.$el_summary.remove();
     this.popcorn.removeTrackEvent(this.trackEvent._id);
+    this.subtitleLine.removeTrack();
   },
 
   toString: function() {
