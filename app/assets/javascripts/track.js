@@ -25,6 +25,22 @@ Track.prototype = {
     this.$el_summary.addClass("ghost");
     this.$el_expanded.addClass("ghost");
 
+    this.$el_expanded.resizable({
+      handles: 'e, w',
+      stop: this.onResizableStop.bind(this)
+    });
+  },
+
+  onResizableStop: function(event, ui) {
+    var $container = $(event.target).closest(".timeline");
+
+    var seconds = ui.position.left / this.resolution($container);
+    seconds = Math.round(seconds * 1000) / 1000;
+    var duration = ui.size.width   / this.resolution($container);
+    duration = Math.round(duration * 1000) / 1000;
+
+    this.setStartTime(seconds);
+    this.setEndTime(seconds + duration);
   },
 
   render: function() {

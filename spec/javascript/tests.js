@@ -152,7 +152,10 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [x] expanded timeline should move itself dynamically when out of bounds
 // [x] expanded timeline should have time indicator
 // [ ] expanded timeline should have time label every 5 second
-// [ ] drag track should modify start/end times and should be reflected in ui
+// [x] drag track should modify start/end times and should be reflected in ui
+// [ ] drag track should modify subtitle bar meaning if you drag track from 3 to 5 second, and scrubber currently at 3
+//       then after dragging, the subtitle bar should be blank since the subtitle should start at 5th second
+// [ ] should be able to drag tracks across timeline window boundaries
 // [x] pressing fill button should show track fill animation
 // [x] should distinguish mapped subtitle line from unmapped ones 
 // [x] add window in summary

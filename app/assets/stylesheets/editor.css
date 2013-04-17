@@ -68,7 +68,7 @@
 .track {
 	height: inherit;
 	background-color: lightcoral;
-	position: absolute;
+	position: absolute !important;
 	opacity: 0.5;
 }
 
