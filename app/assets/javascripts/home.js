@@ -510,40 +510,40 @@ $(document).ready(function(){
     });
   });
 
-  // $(document).on("click", "input#add_song_btn", function(event) {
+  $(document).on("click", "input#add_song_btn", function(event) {
 
-  //   $.ajax({
-  //     url: "/songs/new",
-  //     type: "GET",
-  //     success: function(data) {
-  //       $("div#songs #new").append(data);
-  //     },
-  //     error: function(data) {
-  //       alert(data.responseText);
-  //     }
-  //   });
+    $.ajax({
+      url: "/songs/new",
+      type: "GET",
+      success: function(data) {
+        $("div#songs #new").append(data);
+      },
+      error: function(data) {
+        alert(data.responseText);
+      }
+    });
 
-  // });
+  });
 
-  // $(document).on("submit", "form#new_song", function(event) {
-  //   event.preventDefault();
+  $(document).on("submit", "form#new_song", function(event) {
+    event.preventDefault();
 
-  //   $.ajax({
-  //     url: "/songs",
-  //     type: "POST",
-  //     data: $(this).serialize(),
-  //     dataType: "json",
-  //     success: function(data) {
-  //       var songLink = "<li id='" + data.song_id + "'><a href='#' class='song'>" + $("form#new_song #song_name").val() + "</a></li>";
-  //       $("div#songs ul").append(songLink);
-  //       $(this).remove();
-  //     }.bind(this),
-  //     error: function(data) {
-  //       alert(data.responseText);
-  //     }
-  //   });
+    $.ajax({
+      url: "/songs",
+      type: "POST",
+      data: $(this).serialize(),
+      dataType: "json",
+      success: function(data) {
+        var songLink = "<li id='" + data.song_id + "'><a href='#' class='song'>" + $("form#new_song #song_name").val() + "</a></li>";
+        $("div#songs ul").append(songLink);
+        $(this).remove();
+      }.bind(this),
+      error: function(data) {
+        alert(data.responseText);
+      }
+    });
 
-  // });
+  });
 
 
   // $(document).on("click", "input#start_sync_btn", function(event) {
