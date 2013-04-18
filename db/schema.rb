@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121228023708) do
+ActiveRecord::Schema.define(:version => 20130418193540) do
 
   create_table "media_sources", :force => true do |t|
     t.integer  "song_id",    :null => false
@@ -33,15 +33,15 @@ ActiveRecord::Schema.define(:version => 20121228023708) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "sync_files", :force => true do |t|
+  create_table "timings", :force => true do |t|
     t.integer  "song_id",    :null => false
-    t.text     "timecode"
-    t.integer  "votes"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "start_time"
+    t.integer  "end_time"
   end
 
-  add_index "sync_files", ["song_id"], :name => "sync_files_song_id_fk"
+  add_index "timings", ["song_id"], :name => "timings_song_id_fk"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -63,6 +63,6 @@ ActiveRecord::Schema.define(:version => 20121228023708) do
 
   add_foreign_key "media_sources", "songs", :name => "media_sources_song_id_fk"
 
-  add_foreign_key "sync_files", "songs", :name => "sync_files_song_id_fk"
+  add_foreign_key "timings", "songs", :name => "timings_song_id_fk"
 
 end
