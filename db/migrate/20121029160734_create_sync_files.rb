@@ -10,6 +10,5 @@ class CreateSyncFiles < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_foreign_key(:sync_files, :songs)
   end
 end

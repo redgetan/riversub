@@ -11,6 +11,5 @@ class CreateMediaSources < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_foreign_key(:media_sources, :songs)
   end
 end

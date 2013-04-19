@@ -1,5 +1,7 @@
 class TimingsController < ApplicationController
   def create
+    # needs subtitle 
+    # needs song_id, start,end, subtitle_id 
     @song = Song.find params[:song_id]
     @timing = @song.build_timings(
       :start_time => params[:start_time],

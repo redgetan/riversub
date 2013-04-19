@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130418193540) do
+ActiveRecord::Schema.define(:version => 20130418203304) do
 
   create_table "media_sources", :force => true do |t|
     t.integer  "song_id",    :null => false
@@ -22,8 +22,6 @@ ActiveRecord::Schema.define(:version => 20130418193540) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "media_sources", ["song_id"], :name => "media_sources_song_id_fk"
-
   create_table "songs", :force => true do |t|
     t.string   "name"
     t.string   "artist"
@@ -33,15 +31,22 @@ ActiveRecord::Schema.define(:version => 20130418193540) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "timings", :force => true do |t|
+  create_table "subtitles", :force => true do |t|
     t.integer  "song_id",    :null => false
+    t.string   "text"
+    t.string   "order"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.integer  "start_time"
-    t.integer  "end_time"
   end
 
-  add_index "timings", ["song_id"], :name => "timings_song_id_fk"
+  create_table "timings", :force => true do |t|
+    t.integer  "song_id",     :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "start_time"
+    t.integer  "end_time"
+    t.integer  "subtitle_id"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -60,9 +65,5 @@ ActiveRecord::Schema.define(:version => 20130418193540) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
-
-  add_foreign_key "media_sources", "songs", :name => "media_sources_song_id_fk"
-
-  add_foreign_key "timings", "songs", :name => "timings_song_id_fk"
 
 end
