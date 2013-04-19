@@ -6,7 +6,7 @@ Lyrex::Application.routes.draw do
 
   resources :songs, :only => [:new, :create, :show, :edit] do
     resources :media_sources, :only => [:new, :create]
-    resource :sync_files, :only => [:create, :update]
+    resource :timing, :only => [:create, :update]
   end
 
   get "home/index"

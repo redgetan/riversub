@@ -1,4 +1,4 @@
-function Timeline () {
+function Timeline (timings) {
   this.media = null;
   this.setupElement();
   this.bindEvents();
@@ -66,6 +66,10 @@ Timeline.prototype = {
 
   },
 
+  setTracks: function(tracks) {
+    this.tracks = tracks;
+  },
+
   setMedia: function(media) {
     this.media = media;
     this.media.addEventListener("play",this.onPlay.bind(this));
@@ -95,13 +99,20 @@ Timeline.prototype = {
   onLoadedMetadata: function() {
     this.$window_slider.css("width",this.resolution(this.$summary) * 30);
     this.$filler.css("width",this.resolution(this.$expanded) * this.media.duration);
+
+    this.renderTracks();
+  },
+
+  renderTracks: function() {
+    for (var i = 0; i < this.tracks.length; i++) {
+      this.tracks[i].render();
+    };
   },
 
   renderScrubber: function() {
     this.renderInContainer(this.$summary, this.$scrubber_summary, { left: this.media.currentTime.toFixed(3) });
     this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
   },
-
 
   renderProgressBar: function() {
     this.renderInContainer(this.$summary, this.$progress_bar_summary, { width: this.media.currentTime.toFixed(3) });
@@ -170,7 +181,7 @@ Timeline.prototype = {
     var width = $container.width();
     var index = Math.floor(elRight / width);
     var pos   = index * width;
-    // console.log(pos);
+    
     $container.scrollLeft(pos);
     this.$window_slider.css("left",this.resolution(this.$summary) * 30 * index);
   },

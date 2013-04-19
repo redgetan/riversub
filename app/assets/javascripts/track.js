@@ -1,29 +1,37 @@
-function Track (startTime,endTime,subtitleLine,popcorn,editor) {
-  this.popcorn = popcorn;
+function Track(attributes,editor,options) {
+  this.attributes = attributes;
+
   this.editor = editor;
-  this.setSubtitleLine(subtitleLine);
+  this.popcorn = editor.popcorn;
 
-  this.trackEvent     = this.createTrackEvent(startTime,endTime);
-  this.id = this.trackEvent._id; 
+  var subtitle = this.editor.subtitleCollection.find(attributes.subtitle_id);
+  this.setSubtitle(subtitle);
 
-  this.setupElement();
+  this.trackEvent     = this.createTrackEvent(this.attributes.start_time,this.attributes.end_time);
+
+  this.setupElement(options);
   this.bindEvents();
 
+  var isSaved = typeof options['isSaved'] === "undefined" ? false : options['isSaved'];
+  this.setIsSaved(isSaved);
 }
 
 Track.prototype = {
 
-  setupElement: function() {
+  setupElement: function(options) {
+
     this.$container_summary = $("#timeline_container #summary");
-    this.$el_summary = $("<div id='" + this.id + "' class='track'>");
+    this.$el_summary = $("<div id='" + this.attributes.id + "' class='track'>");
     this.$container_summary.append(this.$el_summary);
 
     this.$container_expanded = $("#timeline_container #expanded");
-    this.$el_expanded = $("<div id='" + this.id + "' class='track'>");
+    this.$el_expanded = $("<div id='" + this.attributes.id + "' class='track'>");
     this.$container_expanded.find(".filler").append(this.$el_expanded);
 
-    this.$el_summary.addClass("ghost");
-    this.$el_expanded.addClass("ghost");
+    if (typeof options !== "undefined" && options["isGhost"]) {
+      this.$el_summary.addClass("ghost");
+      this.$el_expanded.addClass("ghost");
+    }
 
     this.$el_expanded.resizable({
       handles: 'e, w',
@@ -43,11 +51,18 @@ Track.prototype = {
     this.setEndTime(seconds + duration);
   },
 
+  setIsSaved: function(isSaved) {
+    this.isSaved = isSaved;
+    this.$el_expanded.trigger("trackchange");
+  },
+
   render: function() {
     var duration = this.endTime() - this.startTime();
 
     this.renderInContainer(this.$container_summary,this.$el_summary,   { width: duration, left: this.startTime() });
     this.renderInContainer(this.$container_expanded,this.$el_expanded, { width: duration, left: this.startTime() });
+
+    this.subtitle.render();
   },
 
   renderFillProgress: function() {
@@ -96,33 +111,38 @@ Track.prototype = {
     this.editor.seek(this.startTime());
   },
 
-  setSubtitleLine: function(subtitleLine) {
-    this.subtitleLine = subtitleLine;
-    subtitleLine.setTrack(this);
+  setSubtitle: function(subtitle) {
+    this.subtitle = subtitle;
+    this.attributes["subtitle_id"] = subtitle.attributes.id;
+    subtitle.setTrack(this);
   },
 
   startTime: function() {
-    return this.trackEvent.start;
+    return this.attributes["start_time"];
   },
 
   setStartTime: function(time) {
     this.trackEvent.start = time;
+    this.attributes["start_time"] = time;
+
+    this.setIsSaved(false);
     this.render();
-    this.subtitleLine.render();
   },
 
   endTime: function() {
-    return this.trackEvent.end;
+    return this.attributes["end_time"];
   },
 
   setEndTime: function(time) {
     this.trackEvent.end = time;
+    this.attributes["end_time"] = time;
+
+    this.setIsSaved(false);
     this.render();
-    this.subtitleLine.render();
   },
 
   text: function() {
-    return this.subtitleLine.text;
+    return this.subtitle.attributes.text;
   },
 
   end: function(time) {
@@ -151,20 +171,25 @@ Track.prototype = {
       end:   endTime,
       onStart: function() {
         self.showSubtitleInSubtitleBar();
-        self.subtitleLine.highlight();
+        self.subtitle.highlight();
       },
       onEnd: function() {
         self.hideSubtitleInSubtitleBar();
-        self.subtitleLine.unhighlight();
+        self.subtitle.unhighlight();
       },
     });
 
     var trackEventId = this.popcorn.getLastTrackEventId();
+
+    this.attributes["start_time"] = startTime;
+    this.attributes["end_time"] = endTime;
+    this.attributes["client_id"] = trackEventId;
+
     return this.popcorn.getTrackEvent(trackEventId);
   },
 
   showSubtitleInSubtitleBar: function() {
-    this.editor.$subtitleBar.text(this.subtitleLine.text);
+    this.editor.$subtitleBar.text(this.subtitle.attributes.text);
   },
 
   hideSubtitleInSubtitleBar: function() {
@@ -175,7 +200,7 @@ Track.prototype = {
     this.$el_expanded.remove();
     this.$el_summary.remove();
     this.popcorn.removeTrackEvent(this.trackEvent._id);
-    this.subtitleLine.removeTrack();
+    this.subtitle.removeTrack();
   },
 
   toString: function() {

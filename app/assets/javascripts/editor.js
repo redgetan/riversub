@@ -3,14 +3,17 @@ function Editor (song) {
   this.defineAttributeAccessors();
 
   this.song = song;
-  this.tracks = [];
   this.isKeydownPressed = false;
   this.currentTrack = null;
 
-  this.subtitle = new Subtitle(song.lyrics);
+  this.subtitleCollection = new SubtitleCollection(song.subtitles);
   this.timeline = new Timeline();
 
   this.popcorn = this.loadMedia(song.media_sources[0].url);
+
+  this.trackMap = {}
+  this.tracks = this.loadTracks(song.timings);
+  this.timeline.setTracks(this.tracks);
 
   this.bindEvents();
 }
@@ -25,6 +28,7 @@ Editor.prototype = {
           "<div id='media'></div>" +
           "<div id='subtitle_bar'></div>" +
         "</div>" +
+        "<button type='button' id='save_btn'>Save</button>" +
         "<div id='subtitle_container'></div>" +
       "</div>" +
       "<div id='timeline_container'>" + 
@@ -33,6 +37,9 @@ Editor.prototype = {
 
     this.$container.append(this.$el);
     this.$subtitleBar = $("#subtitle_bar");
+
+    this.$saveBtn = $("#save_btn");
+    this.$saveBtn.attr("disabled","disabled");
   },
 
   defineAttributeAccessors: function() {
@@ -62,13 +69,15 @@ Editor.prototype = {
     $(document).on("keyup",this.onKeyupHandler.bind(this));
     $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
     $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
+    $(document).on("trackchange",this.onTrackChange.bind(this));
+    this.$saveBtn.on("click",this.onSaveBtnClick.bind(this));
   },
 
   onKeydownHandler: function(event) {
     // K key
     if (event.which === 75) {
       if (!this.isKeydownPressed) {
-        this.currentTrack = this.createTrack();
+        this.currentTrack = this.createGhostTrack();
         this.renderFillProgressInterval = setInterval(this.currentTrack.renderFillProgress.bind(this.currentTrack),10);
         this.isKeydownPressed = true;
       }
@@ -80,7 +89,7 @@ Editor.prototype = {
     if (event.which === 75) {
       try {
         clearInterval(this.renderFillProgressInterval);
-        this.endTrack(this.currentTrack);
+        this.endGhostTrack(this.currentTrack);
       } catch (e) {
         console.log(e.stack);
         console.log("Removing invalid track");
@@ -95,28 +104,66 @@ Editor.prototype = {
     this.seek(time);
   },
 
-  onSubtitleLineClick: function(event,subtitleLine) {
-    this.seek(subtitleLine.track.startTime());
+  onSubtitleLineClick: function(event,subtitle) {
+    this.seek(subtitle.track.startTime());
+  },
+
+  onTrackChange: function() {
+    for (var i = 0; i < this.tracks.length; i++) {
+      if (!this.tracks[i].isSaved) {
+        this.$saveBtn.removeAttr("disabled");
+        return;
+      }
+    };
+
+    // if changes are saved and nothing is changed
+    this.$saveBtn.attr("disabled", "disabled");
+  },
+
+  onSaveBtnClick: function(event) {
+    this.save();
   },
 
   seek: function(time) {
     this.popcorn.currentTime(time);
   },
 
-  createTrack: function() {
-    var startTime = this.media.currentTime.toFixed(3);
+  loadTracks: function(timings) {
+    var tracks = [];
+
+    if (typeof timings !== "undefined") { 
+      for (var i = 0; i < timings.length; i++) {
+        var track = new Track(timings[i],this, { isSaved: true });
+        this.trackMap[track.attributes.client_id] = track;
+        tracks.push(track);
+      };
+    }
+
+    return tracks;
+  },
+
+  createGhostTrack: function() {
+    var startTime = Math.round(this.media.currentTime * 1000) / 1000;
     var endTime   = this.determineEndTime(startTime);
 
     this.validateNoTrackOverlap(startTime,endTime);
 
-    var subtitleLine = this.subtitle.nextUnmappedLine();
-    var track = new Track(startTime,endTime,subtitleLine,this.popcorn,this);
+    var subtitle = this.subtitleCollection.nextUnmappedSubtitle();
+    var attributes = {
+      start_time: startTime, 
+      end_time: endTime,
+      subtitle_id: subtitle.attributes.id
+    };
+
+    var track = new Track(attributes, this, { "isGhost": true });
+    this.trackMap[track.attributes.client_id] = track;
     this.tracks.push(track);
     return track;
   },
 
-  endTrack: function(track) {
-    track.end(this.media.currentTime.toFixed(3));
+  endGhostTrack: function(track) {
+    var time = Math.round(this.media.currentTime * 1000) / 1000;
+    track.end(time);
   },
 
   /*
@@ -145,6 +192,74 @@ Editor.prototype = {
     };
 
     return nextNearestEdgeTime;
+  },
+
+  save: function() {
+    var creates = [];
+    var updates = [];
+    var track;
+    for (var i = 0; i < this.tracks.length; i++) {
+      track = this.tracks[i];
+      if (!track.isSaved) {
+        if (typeof track.attributes.id === "undefined") {
+          creates.push(this.tracks[i].attributes);
+        } else {
+          updates.push(this.tracks[i].attributes);
+        }
+      }
+    };
+
+    if (creates.length > 0 ) {
+      $.ajax({
+        url: "/songs/" + this.song.id +"/timing",
+        type: "POST",
+        data: { timing: creates },
+        dataType: "json",
+        success: function(data) {
+          this.setTrackIds(data);
+        }.bind(this),
+        error: function(data,e,i) {
+          try {
+            var result = JSON.parse(data);
+            this.setTrackIds(result.created);
+            alert(result.error);
+          } catch (e) {
+            alert(data.responseText);
+          }
+        }
+      });
+    }
+
+    if (updates.length > 0 ) {
+      $.ajax({
+        url: "/songs/" + this.song.id +"/timing",
+        type: "PUT",
+        data: { timing: updates },
+        dataType: "json",
+        success: function(data) {
+          this.setTrackIds(data);
+        }.bind(this),
+        error: function(data,e,i) {
+          try {
+            var result = JSON.parse(data);
+            this.setTrackIds(result.updated);
+            alert(result.error);
+          } catch (e) {
+            alert(data.responseText);
+          }
+        }
+      });
+    }
+
+  },
+
+  setTrackIds: function(timings) {
+    var track;
+    for (var i = 0; i < timings.length; i++) {
+      track = this.trackMap[timings[i].client_id];
+      track.attributes.id = timings[i].id;
+      track.setIsSaved(true);
+    };
   },
 
   clearTracks: function(time) {

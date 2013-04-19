@@ -1,26 +1,25 @@
-function Subtitle(text) {
+function SubtitleCollection(subtitles) {
   this.orderedLineKeys = [];
-  this.lines = this.extractLines(text);
-  this.selectedLine = null;
+  this.subtitles = this.createSubtitles(subtitles);
+  this.selectedSubtitle = null;
 
   this.$container = $("#subtitle_container");
   this.bindEvents();
 }
 
-Subtitle.prototype = {
+SubtitleCollection.prototype = {
 
-  extractLines: function(text) {
-    var lines = {};
-    var subtitleLine;
+  createSubtitles: function(subtitles) {
+    var result = {};
+    var subtitle;
 
-    var textLines = text.split("\n");
-    for (var i = 0; i < textLines.length; i++) {
-      subtitleLine = new SubtitleLine(textLines[i]);
-      lines[subtitleLine.id] = subtitleLine;
-      this.orderedLineKeys.push(subtitleLine.id);
+    for (var i = 0; i < subtitles.length; i++) {
+      subtitle = new Subtitle(subtitles[i]);
+      result[subtitle.attributes.id] = subtitle;
+      this.orderedLineKeys.push(subtitle.attributes.id);
     };
 
-    return lines;
+    return result;
 
   },
 
@@ -30,40 +29,44 @@ Subtitle.prototype = {
 
   onClickHandler: function(event) {
     var $target = $(event.target);
-    var $line = $target.hasClass("subtitle_line") ? $target : $target.closest(".subtitle_line");
-    var subtitleLine = this.lines[$line.attr("id")];
+    var $subtitle = $target.hasClass("subtitle") ? $target : $target.closest(".subtitle");
+    var subtitle= this.subtitles[$subtitle.attr("id")];
 
-    if (subtitleLine.track != null) {
-      this.highlightLine(subtitleLine);
-      this.$container.trigger("subtitlelineclick",[subtitleLine]);
+    if (subtitle.track != null) {
+      this.highlightLine(subtitle);
+      this.$container.trigger("subtitlelineclick",[subtitle]);
     }
   },
 
-  highlightLine: function(subtitleLine) {
-      if (this.selectedLine != null ) { 
-        this.selectedLine.unhighlight();
+  find: function(id) {
+    return this.subtitles[id];
+  },
+
+  highlightLine: function(subtitle) {
+      if (this.selectedSubtitle != null ) { 
+        this.selectedSubtitle.unhighlight();
       }
-      this.selectedLine = subtitleLine;
-      subtitleLine.highlight();
+      this.selectedSubtitle = subtitle;
+      subtitle.highlight();
   },
 
   // find one that is not yet mapped
-  nextUnmappedLine: function() {
-    var target = this.findFirst(this.lines,function(line){
-      return line.$el.hasClass("mapped") === false;
+  nextUnmappedSubtitle: function() {
+    var target = this.findFirst(this.subtitles,function(subtitle){
+      return subtitle.$el.hasClass("mapped") === false;
     });
 
     return target;
   },
 
-  findFirst: function(lines,fn) {
+  findFirst: function(subtitles,fn) {
     var key;
     var value = null;
     var conditionSatisfied;
 
     for (var i = 0; i < this.orderedLineKeys.length; i++) {
       key = this.orderedLineKeys[i];
-      value = lines[key];
+      value = subtitles[key];
       conditionSatisfied = fn(value);
       if (conditionSatisfied) {
         break;
@@ -77,20 +80,19 @@ Subtitle.prototype = {
 };
 
 // should listen to changes in track startTime and endTime to rerender
-function SubtitleLine(text) {
-  this.id = this.generateGuid();
-  this.text = text;
+function Subtitle(attributes) {
+  this.attributes = attributes;
   this.track = null;
   this.setupElement();
 }
 
-SubtitleLine.prototype = {
+Subtitle.prototype = {
 
   setupElement: function() {
 
     this.$container = $("#subtitle_container");
 
-    var el = "<div id='" + this.id + "' class='subtitle_line'>" +
+    var el = "<div id='" + this.attributes.id + "' class='subtitle'>" +
       "<div class='start_time'></div>" +
       // "<div class='end_time'></div>" +
       "<div class='text'></div>" +
@@ -100,19 +102,12 @@ SubtitleLine.prototype = {
     this.render();
   },
 
-  generateGuid: function() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-      return v.toString(16);
-    });
-  },
-
   render: function() {
     if (this.track !== null ) {
       this.$el.find(".start_time").text(this.track.startTime());
       // this.$el.find(".end_time").text(this.track.endTime());
     }
-    this.$el.find(".text").text(this.text);
+    this.$el.find(".text").text(this.attributes.text);
   },
 
   setTrack: function(track) {

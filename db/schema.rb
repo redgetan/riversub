@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130418203304) do
+ActiveRecord::Schema.define(:version => 20130421193806) do
 
   create_table "media_sources", :force => true do |t|
     t.integer  "song_id",    :null => false
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(:version => 20130418203304) do
   create_table "subtitles", :force => true do |t|
     t.integer  "song_id",    :null => false
     t.string   "text"
-    t.string   "order"
+    t.integer  "order"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -43,8 +43,8 @@ ActiveRecord::Schema.define(:version => 20130418203304) do
     t.integer  "song_id",     :null => false
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
-    t.integer  "start_time"
-    t.integer  "end_time"
+    t.float    "start_time"
+    t.float    "end_time"
     t.integer  "subtitle_id"
   end
 

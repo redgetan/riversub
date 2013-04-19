@@ -76,6 +76,12 @@
 	background-color: red;
 }
 
+#save_btn {
+	border: solid 1px black;
+	width: 100px;
+	height: 30px;
+}
+
 #subtitle_container {
 	float: right;
   	padding: 10px;  
@@ -86,35 +92,35 @@
 	overflow-x: hidden;
 }
 
-.subtitle_line {
+.subtitle {
 	height: 1em;
 }
 
-.subtitle_line.mapped {
+.subtitle.mapped {
 	background-color: peachpuff;
 	border: solid 1px lightcoral;
 }
 
-.subtitle_line.selected {
+.subtitle.selected {
 	background-color: palegreen;
 	border: solid 1px gray;
 }
 
-.subtitle_line .start_time,
-.subtitle_line .end_time,
-.subtitle_line .text {
+.subtitle .start_time,
+.subtitle .end_time,
+.subtitle .text {
 	float: left;	
 	display: block;
 }
 
-.subtitle_line .start_time,
-.subtitle_line .end_time {
+.subtitle .start_time,
+.subtitle .end_time {
 	width: 60px;
 	margin-right: 10px;
 	height: 1px;
 }
 
-.subtitle_line .text {
+.subtitle .text {
 	width: 400px;
 	white-space: nowrap;
 	overflow: hidden;

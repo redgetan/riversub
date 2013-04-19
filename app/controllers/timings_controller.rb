@@ -1,33 +1,34 @@
 class TimingsController < ApplicationController
   def create
-    # needs subtitle 
-    # needs song_id, start,end, subtitle_id 
     @song = Song.find params[:song_id]
-    @timing = @song.build_timings(
-      :start_time => params[:start_time],
-      :end_time => params[:end_time]
-    )
 
-    if @timing.save
-      render :json => @timing, :status => 200
-    else
-      render :json => { :error => @timing.errors.messages }, :status => 403
+    @timings = []
+    params[:timing].each do |i,timing_param|
+      @timing = @song.timings.create(timing_param)
+      unless @timing 
+        render :json => { :error => @timing.errors.messages, :created => @timings }, :status => 403 and return
+      end
+      @timings << @timing
     end
+
+    render :json => @timings.map(&:serialize).to_json, :status => 200
+
   end
 
   def update
     @song = Song.find params[:song_id]
-    @timing = @song.timing
 
-    success = @timing.update_attributes(
-      :start_time => params[:start_time],
-      :end_time => params[:end_time]
-    )
-
-    if success
-      render :json => @timing, :status => 200
-    else
-      render :json => { :error => @timing.errors.messages }, :status => 403
+    @timings = []
+    params[:timing].each do |i,timing_param|
+      id = timing_param.delete(:id)
+      @timing = @song.timings.find(id)
+      sucess = @timing.update_attributes(timing_param)
+      unless sucess
+        render :json => { :error => @timing.errors.messages, :updated => @timings }, :status => 403 and return
+      end
+      @timings << @timing
     end
+
+    render :json => @timings.map(&:serialize).to_json, :status => 200
   end
 end
