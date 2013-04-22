@@ -12,8 +12,7 @@ function Track(attributes,editor,options) {
   this.setupElement(options);
   this.bindEvents();
 
-  var isSaved = typeof options['isSaved'] === "undefined" ? false : options['isSaved'];
-  this.setIsSaved(isSaved);
+  this.isSaved = typeof options['isSaved'] === "undefined" ? false : options['isSaved']; 
 }
 
 Track.prototype = {
@@ -39,69 +38,6 @@ Track.prototype = {
     });
   },
 
-  onResizableStop: function(event, ui) {
-    var $container = $(event.target).closest(".timeline");
-
-    var seconds = ui.position.left / this.resolution($container);
-    seconds = Math.round(seconds * 1000) / 1000;
-    var duration = ui.size.width   / this.resolution($container);
-    duration = Math.round(duration * 1000) / 1000;
-
-    this.setStartTime(seconds);
-    this.setEndTime(seconds + duration);
-  },
-
-  setIsSaved: function(isSaved) {
-    this.isSaved = isSaved;
-    this.$el_expanded.trigger("trackchange");
-  },
-
-  render: function() {
-    var duration = this.endTime() - this.startTime();
-
-    this.renderInContainer(this.$container_summary,this.$el_summary,   { width: duration, left: this.startTime() });
-    this.renderInContainer(this.$container_expanded,this.$el_expanded, { width: duration, left: this.startTime() });
-
-    this.subtitle.render();
-  },
-
-  renderFillProgress: function() {
-    var progress = this.popcorn.media.currentTime - this.startTime();
-
-    this.renderInContainer(this.$container_summary,this.$el_summary,  { width: progress, left: this.startTime() });
-    this.renderInContainer(this.$container_expanded,this.$el_expanded,{ width: progress, left: this.startTime() });
-  },
-
-  // needs container,element
-
-  renderInContainer: function($container,$el,property) {
-    for (var key in property) {
-      if (key === "text") {
-        $el.text(property[key]);
-      } else {
-        $el.css(key, this.resolution($container) * property[key]);
-      }
-    }
-  },
-
-  // how many pixels per second
-  resolution: function($container) {
-    var widthPixel = $container.width();
-    var widthSeconds = $container.attr("id") === "summary" ? 
-                         this.summaryTimelineWidthInSeconds() :
-                         this.expandedTimelineWidthInSeconds();
-
-    return widthPixel / widthSeconds ;
-  },
-
-  summaryTimelineWidthInSeconds: function() {
-    return this.popcorn.media.duration || 30;
-  },
-
-  expandedTimelineWidthInSeconds: function() {
-    return 30; //always 30 seconds
-  },
-
   bindEvents: function() {
     this.$el_expanded.on("click",this.onMouseClickHandler.bind(this));
     this.$el_summary.on("click",this.onMouseClickHandler.bind(this));
@@ -109,6 +45,10 @@ Track.prototype = {
 
   onMouseClickHandler: function(event) {
     this.editor.seek(this.startTime());
+  },
+
+  onResizableStop: function(event, ui) {
+    this.$el_expanded.trigger("trackresize",[this,ui]);
   },
 
   setSubtitle: function(subtitle) {
@@ -125,8 +65,8 @@ Track.prototype = {
     this.trackEvent.start = time;
     this.attributes["start_time"] = time;
 
-    this.setIsSaved(false);
-    this.render();
+    this.isSaved = false;
+    this.$el_expanded.trigger("trackchange",[this]);
   },
 
   endTime: function() {
@@ -137,8 +77,8 @@ Track.prototype = {
     this.trackEvent.end = time;
     this.attributes["end_time"] = time;
 
-    this.setIsSaved(false);
-    this.render();
+    this.isSaved = false;
+    this.$el_expanded.trigger("trackchange",[this]);
   },
 
   text: function() {

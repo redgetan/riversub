@@ -1,7 +1,6 @@
 function Timeline (timings) {
   this.media = null;
   this.setupElement();
-  this.bindEvents();
 }
 
 Timeline.prototype = {
@@ -40,42 +39,28 @@ Timeline.prototype = {
     this.$progress_bar_expanded.css("width","0px");
   },
 
-  bindEvents: function() {
-    this.$summary.on("click",this.onClickHandler.bind(this));
-    this.$expanded.on("click",this.onClickHandler.bind(this));
-  },
-
-  onClickHandler: function(event) {
-    // given pixel position, find out what seconds in time it corresponds to
-    var $target = $(event.target);
-    var $timeline;
-
-    if (!$target.hasClass("timeline")) {
-      $timeline = $target.closest(".timeline");
-    } else {
-      $timeline = $target;
-    }
-
-    // if its track then seek to start time of track
-    if (!$target.hasClass("track")) {
-      var timelineX = $timeline.position().left;
-      var posX = event.pageX - timelineX;
-      var seconds = posX / this.resolution($timeline) + $timeline.scrollLeft() / this.resolution($timeline);
-      this.$container.trigger("timelineseek",[seconds]);
-    }
-
-  },
-
   setTracks: function(tracks) {
     this.tracks = tracks;
   },
 
   setMedia: function(media) {
     this.media = media;
+    this.bindEvents();
+  },
+
+  bindEvents: function() {
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("seeking",this.onSeeking.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
+
+    $(document).on("marktrackstart",this.onMarkTrackStart.bind(this));
+    $(document).on("marktrackend",this.onMarkTrackStart.bind(this));
+    $(document).on("trackchange",this.onTrackChange.bind(this));
+    $(document).on("trackresize",this.onTrackResize.bind(this));
+
+    this.$summary.on("click",this.onClickHandler.bind(this));
+    this.$expanded.on("click",this.onClickHandler.bind(this));
   },
 
   onPlay: function() {
@@ -103,10 +88,72 @@ Timeline.prototype = {
     this.renderTracks();
   },
 
+  onMarkTrackStart: function(track) {
+    this.renderFillProgressInterval = setInterval(this.renderFillProgress.bind(this,track),10);
+  },
+
+  onMarkTrackEnd: function(track) {
+    clearInterval(this.renderFillProgressInterval);
+  },
+
+  onClickHandler: function(event) {
+    // given pixel position, find out what seconds in time it corresponds to
+    var $target = $(event.target);
+    var $timeline;
+
+    if (!$target.hasClass("timeline")) {
+      $timeline = $target.closest(".timeline");
+    } else {
+      $timeline = $target;
+    }
+
+    // if its track then seek to start time of track
+    if (!$target.hasClass("track")) {
+      var timelineX = $timeline.position().left;
+      var posX = event.pageX - timelineX;
+      var seconds = posX / this.resolution($timeline) + $timeline.scrollLeft() / this.resolution($timeline);
+      this.$container.trigger("timelineseek",[seconds]);
+    }
+
+  },
+
+  onTrackChange: function(event,track) {
+    this.renderTrack(track);
+  },
+
+  onTrackResize: function(event,track,trackView) {
+    var $container = $(event.target).closest(".timeline");
+
+    var seconds = trackView.position.left / this.resolution($container);
+    seconds = Math.round(seconds * 1000) / 1000;
+    var duration = trackView.size.width   / this.resolution($container);
+    duration = Math.round(duration * 1000) / 1000;
+
+    track.setStartTime(seconds);
+    track.setEndTime(seconds + duration);
+  },
+
   renderTracks: function() {
     for (var i = 0; i < this.tracks.length; i++) {
-      this.tracks[i].render();
+      this.renderTrack(this.tracks[i]);
     };
+  },
+
+  renderTrack: function(track) {
+
+    var duration = track.endTime() - track.startTime();
+
+    this.renderInContainer(this.$summary,track.$el_summary,   { width: duration, left: track.startTime() });
+    this.renderInContainer(this.$expanded,track.$el_expanded, { width: duration, left: track.startTime() });
+
+  },
+
+
+  renderFillProgress: function(track) {
+    var progress = this.media.currentTime - track.startTime();
+
+    this.renderInContainer(this.$summary,track.$el_summary,  { width: progress, left: track.startTime() });
+    this.renderInContainer(this.$expanded,track.$el_expanded,{ width: progress, left: track.startTime() });
   },
 
   renderScrubber: function() {

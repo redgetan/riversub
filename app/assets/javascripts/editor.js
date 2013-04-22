@@ -78,7 +78,7 @@ Editor.prototype = {
     if (event.which === 75) {
       if (!this.isKeydownPressed) {
         this.currentTrack = this.createGhostTrack();
-        this.renderFillProgressInterval = setInterval(this.currentTrack.renderFillProgress.bind(this.currentTrack),10);
+        this.$el.trigger("marktrackstart",[this.currentTrack]);
         this.isKeydownPressed = true;
       }
     }
@@ -88,7 +88,7 @@ Editor.prototype = {
     // K key
     if (event.which === 75) {
       try {
-        clearInterval(this.renderFillProgressInterval);
+        this.$el.trigger("marktrackend");
         this.endGhostTrack(this.currentTrack);
       } catch (e) {
         console.log(e.stack);
@@ -115,13 +115,69 @@ Editor.prototype = {
         return;
       }
     };
-
     // if changes are saved and nothing is changed
     this.$saveBtn.attr("disabled", "disabled");
   },
 
   onSaveBtnClick: function(event) {
-    this.save();
+    var creates = [];
+    var updates = [];
+    var track;
+    for (var i = 0; i < this.tracks.length; i++) {
+      track = this.tracks[i];
+      if (!track.isSaved) {
+        if (typeof track.attributes.id === "undefined") {
+          creates.push(this.tracks[i].attributes);
+        } else {
+          updates.push(this.tracks[i].attributes);
+        }
+      }
+    };
+
+    if (creates.length > 0 ) {
+      $.ajax({
+        url: "/songs/" + this.song.id +"/timing",
+        type: "POST",
+        data: { timing: creates },
+        dataType: "json",
+        success: function(data) {
+          this.setTrackIds(data);
+          this.$saveBtn.attr("disabled", "disabled");
+        }.bind(this),
+        error: function(data,e,i) {
+          try {
+            var result = JSON.parse(data);
+            this.setTrackIds(result.created);
+            alert(result.error);
+          } catch (e) {
+            alert(data.responseText);
+          }
+        }
+      });
+    }
+
+    if (updates.length > 0 ) {
+      $.ajax({
+        url: "/songs/" + this.song.id +"/timing",
+        type: "PUT",
+        data: { timing: updates },
+        dataType: "json",
+        success: function(data) {
+          this.setTrackIds(data);
+          this.$saveBtn.attr("disabled", "disabled");
+        }.bind(this),
+        error: function(data,e,i) {
+          try {
+            var result = JSON.parse(data);
+            this.setTrackIds(result.updated);
+            alert(result.error);
+          } catch (e) {
+            alert(data.responseText);
+          }
+        }
+      });
+    }
+
   },
 
   seek: function(time) {
@@ -194,71 +250,12 @@ Editor.prototype = {
     return nextNearestEdgeTime;
   },
 
-  save: function() {
-    var creates = [];
-    var updates = [];
-    var track;
-    for (var i = 0; i < this.tracks.length; i++) {
-      track = this.tracks[i];
-      if (!track.isSaved) {
-        if (typeof track.attributes.id === "undefined") {
-          creates.push(this.tracks[i].attributes);
-        } else {
-          updates.push(this.tracks[i].attributes);
-        }
-      }
-    };
-
-    if (creates.length > 0 ) {
-      $.ajax({
-        url: "/songs/" + this.song.id +"/timing",
-        type: "POST",
-        data: { timing: creates },
-        dataType: "json",
-        success: function(data) {
-          this.setTrackIds(data);
-        }.bind(this),
-        error: function(data,e,i) {
-          try {
-            var result = JSON.parse(data);
-            this.setTrackIds(result.created);
-            alert(result.error);
-          } catch (e) {
-            alert(data.responseText);
-          }
-        }
-      });
-    }
-
-    if (updates.length > 0 ) {
-      $.ajax({
-        url: "/songs/" + this.song.id +"/timing",
-        type: "PUT",
-        data: { timing: updates },
-        dataType: "json",
-        success: function(data) {
-          this.setTrackIds(data);
-        }.bind(this),
-        error: function(data,e,i) {
-          try {
-            var result = JSON.parse(data);
-            this.setTrackIds(result.updated);
-            alert(result.error);
-          } catch (e) {
-            alert(data.responseText);
-          }
-        }
-      });
-    }
-
-  },
-
   setTrackIds: function(timings) {
     var track;
     for (var i = 0; i < timings.length; i++) {
       track = this.trackMap[timings[i].client_id];
       track.attributes.id = timings[i].id;
-      track.setIsSaved(true);
+      track.isSaved = true;
     };
   },
 

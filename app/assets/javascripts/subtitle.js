@@ -25,6 +25,7 @@ SubtitleCollection.prototype = {
 
   bindEvents: function() {
     this.$container.on("click",this.onClickHandler.bind(this));
+    $(document).on("trackchange",this.onTrackChange.bind(this));
   },
 
   onClickHandler: function(event) {
@@ -36,6 +37,10 @@ SubtitleCollection.prototype = {
       this.highlightLine(subtitle);
       this.$container.trigger("subtitlelineclick",[subtitle]);
     }
+  },
+
+  onTrackChange: function(event,track) {
+    track.subtitle.render();
   },
 
   find: function(id) {
@@ -76,7 +81,6 @@ SubtitleCollection.prototype = {
     return value;
   }
 
-
 };
 
 // should listen to changes in track startTime and endTime to rerender
@@ -106,6 +110,9 @@ Subtitle.prototype = {
     if (this.track !== null ) {
       this.$el.find(".start_time").text(this.track.startTime());
       // this.$el.find(".end_time").text(this.track.endTime());
+    } else {
+      this.$el.find(".start_time").text("");
+      // this.$el.find(".end_time").text("");
     }
     this.$el.find(".text").text(this.attributes.text);
   },
@@ -113,11 +120,13 @@ Subtitle.prototype = {
   setTrack: function(track) {
     this.track = track;
     this.$el.addClass("mapped");
+    this.render();
   },
 
   removeTrack: function() {
     this.track = null;
     this.$el.removeClass("mapped");
+    this.render();
   },
 
   highlight: function() {
