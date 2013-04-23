@@ -23,7 +23,7 @@ Editor.prototype = {
   setupElement: function() {
     this.$container = $("#main_container");
     var el = 
-      "<div id='top_container'>" +
+      "<div id='editor'>" +
         "<div id='media_container'>" +
           "<div id='media'></div>" +
           "<div id='subtitle_bar'></div>" +
@@ -33,9 +33,10 @@ Editor.prototype = {
       "</div>" +
       "<div id='timeline_container'>" + 
       "</div>"; 
-    this.$el = $(el);
+    this.$container.append(el);
 
-    this.$container.append(this.$el);
+    this.$el = $("#editor");
+
     this.$subtitleBar = $("#subtitle_bar");
 
     this.$saveBtn = $("#save_btn");

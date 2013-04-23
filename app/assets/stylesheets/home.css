@@ -6,39 +6,12 @@ div#menu {
   text-align: center;
 }
 
-input[type=button], input[type=submit] {
-  font-size: 20px;
-}
-
 div#main_container {
   margin-top: 20px;
 }
 
-div#top_container {
-  width: 1170px;
-  height: 400px;
-  margin-top: 20px;
-  margin: auto;
-}
-
-
-div#container {
-  margin-left: auto;
-  margin-right: auto;
-  width: 1450px;
-  height: 900px;
-}
-
-textarea#song_lyrics {
-  vertical-align: text-top;
-}
-
-div#songs_with_sync_files {
-  margin-left: 20px;
-  width: 250px;
-  height: 450px;
-  float: left;
-  font: 16px monospace;
+input[type=button], input[type=submit] {
+  font-size: 20px;
 }
 
 div#songs {
@@ -74,81 +47,3 @@ div#subtitle_bar {
   text-align: center;
   font-weight: bold;
 }
-
-
-div#media_container div#media_sources {
-  text-align: left;
-}
-
-div#media_sources {
-  margin-top: 15px;
-}
-
-div#sync_container {
-  width: 700px;
-  margin-left: 30px;
-}
-
-div#sync_mode_controls {
-}
-
-div#lyrics {
-  width: inherit;
-  height: 450px;
-  clear: both;
-}
-
-div#lyrics tr, div#subtitle tr{
-  height: 1em;
-}
-
-div#lyrics .line, div#subtitle .line {
-  height: 1em;
-  font-family: monospace;
-}
-
-div#lyrics .line.selected {
-  height: 1em;
-  background-color: yellow;
-}
-
-div.field {
-  margin: 5px;
-}
-
-input[type=button], input[type=submit] {
-  margin: 15px;
-}
-
-div#position_indicator {
-  width: 2px;
-  height: 14px;
-  background-color: red;
-  position: absolute;
-}
-
-div.timespan {
-  width: 150px;
-}
-
-div.timespan .start_time, div.timespan .waveform, div.timespan .end_time {
-  float: left;
-  margin-right: 10px;
-  font-family: monospace;
-  height: 1em;
-}
-
-div.timespan .start_time {
-  width: 15px;
-  text-align: right;
-}
-
-div.timespan .start_time, .end_time {
-  display: none;
-}
-
-div.timespan .waveform {
-  background-color: cadetblue;
-}
-
-
