@@ -37,7 +37,7 @@ Installation
   Now you're ready to apply the chef_repo_river recipe to the VM. Do
 
     $ cd chef_repo_river
-    $ ./deploy vm
+    $ ./deploy.sh vm
 
   If everything goes well, your rails project is now fully setup in the VM. All you need to do is ssh into it and go to /vagrant directory where the rails project is located at.
 
