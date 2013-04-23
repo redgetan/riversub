@@ -79,3 +79,20 @@ Port Forwarding
     rails app server, you go to http://localhost:3030 in your browser.
     mysql server, you connect to 127.0.0.1 port 4040
 
+Deployment
+====
+
+  To see deployment configurations, look at config/deploy.rb
+
+  Deploying to staging, first time:
+
+    $ RAILS_ENV=staging bundle exec cap deploy:setup
+    $ RAILS_ENV=staging bundle exec cap deploy
+    $ RAILS_ENV=staging bundle exec cap deploy:start
+
+  Deploying to staging, after first time, for updates:
+
+    $ RAILS_ENV=staging bundle exec cap deploy
+    $ RAILS_ENV=staging bundle exec cap deploy:upgrade
+
+  For production, simply change to RAILS_ENV=production
