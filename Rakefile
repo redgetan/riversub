@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Lyrex::Application.load_tasks
+River::Application.load_tasks

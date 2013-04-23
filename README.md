@@ -10,37 +10,34 @@ Installation
 
   Afterwards, we are ready to clone the rails_app repo
 
-    $ cd ~/
-    $ git clone git@bitbucket.org:redgetan/lyrex.git
-    $ cd lyrex
+    $ git clone git@bitbucket.org:redgetan/river.git
+    $ cd river
     $ vagrant up
 
-  This will create a VM specifically for lyrex.
-  Now download chef-repo which contains the recipes that will make our VM fully configured for our rails app
+  This will create a VM specifically for river.
+  Now download chef_repo which contains the recipes that will make our VM fully configured for our rails app
 
     $ cd ~/
-    $ git clone git@bitbucket.org:redgetan/chef-repo.git
+    $ git clone git@bitbucket.org:redgetan/chef_repo_river.git
 
   Now make sure your ssh config file contains the configuration shown below. If not, copy and paste it into your ~/.ssh/config file.
 
-  NOTE that you have to change the location of the identity file according to where your vagrant's private_key is located at. Mine is located under /Users/reg/.vagrant.d but yours could be found on /Users/you/.vagrant.d
-
     $ cat ~/.ssh/config
 
-    Host default
+    Host vm
       HostName 127.0.0.1
       User vagrant
       Port 2222
       UserKnownHostsFile /dev/null
       StrictHostKeyChecking no
       PasswordAuthentication no
-      IdentityFile /Users/reg/.vagrant.d/insecure_private_key
+      IdentityFile ~/.vagrant.d/insecure_private_key
       IdentitiesOnly yes
 
-  Now you're ready to apply the chef-repo recipe to the VM. Do
+  Now you're ready to apply the chef_repo_river recipe to the VM. Do
 
-    $ cd chef-repo
-    $ ./deploy default
+    $ cd chef_repo_river
+    $ ./deploy vm
 
   If everything goes well, your rails project is now fully setup in the VM. All you need to do is ssh into it and go to /vagrant directory where the rails project is located at.
 

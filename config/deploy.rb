@@ -15,8 +15,8 @@ set :myconfig, {
   }
 }
 
-set :application, "lyrex"
-set :repository,  "git@bitbucket.org:redgetan/lyrex.git"
+set :application, "river"
+set :repository,  "git@bitbucket.org:redgetan/river.git"
 set :branch, "master"
 set :scm, :git
 set :scm_username, "redgetan"
@@ -24,7 +24,7 @@ set :scm_username, "redgetan"
 set :use_sudo, false
 
 
-set :deploy_environment, ENV['DEPLOY_ENV'].to_sym
+set :deploy_environment, ENV['RAILS_ENV'].to_sym
 
 if ![:staging, :production].include?(deploy_environment)
   puts "Usage: "
@@ -34,7 +34,7 @@ if ![:staging, :production].include?(deploy_environment)
 end
 
 set :user, myconfig[deploy_environment][:user]
-set :deploy_to, "/home/hatch/apps/lyrex"
+set :deploy_to, "/home/hatch/apps/river"
 set :deploy_via, :remote_cache
 
 default_run_options[:pty] = true

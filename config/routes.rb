@@ -1,4 +1,4 @@
-Lyrex::Application.routes.draw do
+River::Application.routes.draw do
 
   devise_for :users
 
