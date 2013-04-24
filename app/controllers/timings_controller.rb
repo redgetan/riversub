@@ -5,8 +5,8 @@ class TimingsController < ApplicationController
     @timings = []
     params[:timing].each do |i,timing_param|
       @timing = @song.timings.create(timing_param)
-      unless @timing 
-        render :json => { :error => @timing.errors.messages, :created => @timings }, :status => 403 and return
+      unless @timing
+        render :json => { :error => @timing.errors.messages, :created => @timings.map(&:serialize).to_json }, :status => 403 and return
       end
       @timings << @timing
     end
@@ -24,7 +24,7 @@ class TimingsController < ApplicationController
       @timing = @song.timings.find(id)
       sucess = @timing.update_attributes(timing_param)
       unless sucess
-        render :json => { :error => @timing.errors.messages, :updated => @timings }, :status => 403 and return
+        render :json => { :error => @timing.errors.messages, :updated => @timings.map(&:serialize).to_json }, :status => 403 and return
       end
       @timings << @timing
     end
