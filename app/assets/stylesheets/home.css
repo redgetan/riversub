@@ -1,20 +1,8 @@
-// Place all the styles related to the home controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
-div#menu {
-  text-align: center;
-}
-
-div#main_container {
+div#header {
   margin-top: 20px;
 }
 
 div#songs {
-  float: left;
-}
-
-div#new_song {
   float: left;
 }
 
@@ -25,14 +13,14 @@ div#songs li.selected {
 div#media_container {
   float: left;
   padding: 10px;  
-  width: 600px;
-  height: 370px;
+  width: inherit;
+  height: 320px;
   border: solid 1px black ;
-  margin-right: 15px;
+  /*margin-right: 15px;*/
 }
 
 div#media {
-  height: 350px;
+  height: 300px;
 }
 
 div#subtitle_bar {

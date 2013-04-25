@@ -1,17 +1,12 @@
-div#editor {
-  width: 1170px;
-  height: 400px;
-  margin-top: 20px;
-  margin: auto;
+div#editor-bottom {
+	margin-top: 20px;
 }
 
 #timeline_container {
   	padding: 10px;  
-	width: 1150px;
+	/*width: 1150px;*/
 	height: 150px;
-	margin-top: 15px;
-	margin-left: auto;
-	margin-right: auto;
+	/*margin-top: 15px;*/
 	border: solid 1px black ;
 }
 
@@ -84,18 +79,17 @@ div#editor {
 }
 
 #save_btn {
-	border: solid 1px black;
+/*	border: solid 1px black;
 	width: 100px;
 	height: 30px;
-	margin-left: 10px;
+*/	margin-left: 20px;
 	margin-bottom: 10px;
 }
 
 #subtitle_container {
-	float: right;
+	margin-left: 20px;
   	padding: 10px;  
-	width: 500px;
-	height: 330px;
+	height: 280px;
 	border: solid 1px black ;
 	overflow-y: scroll;
 	overflow-x: hidden;
@@ -126,11 +120,11 @@ div#editor {
 .subtitle .end_time {
 	width: 60px;
 	margin-right: 10px;
-	height: 1px;
+	height: 20px;
 }
 
 .subtitle .text {
-	width: 400px;
+	width: 250px;
 	white-space: nowrap;
 	overflow: hidden;
 }

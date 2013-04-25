@@ -24,15 +24,25 @@ Editor.prototype = {
     this.$container = $("#main_container");
     var el = 
       "<div id='editor'>" +
-        "<div id='media_container'>" +
-          "<div id='media'></div>" +
-          "<div id='subtitle_bar'></div>" +
+        "<div id='editor-top' class='row'>" +
+          "<div id='editor-top-left' class='span7'>" +
+            "<div id='media_container'>" +
+              "<div id='media'></div>" +
+              "<div id='subtitle_bar'></div>" +
+            "</div>" +
+          "</div>" +
+          "<div id='editor-top-right' class='span5'>" +
+            "<button type='button' id='save_btn' class='btn btn-primary'>Save</button>" +
+            "<div id='subtitle_container'></div>" +
+          "</div>" +
         "</div>" +
-        "<button type='button' id='save_btn'>Save</button>" +
-        "<div id='subtitle_container'></div>" +
-      "</div>" +
-      "<div id='timeline_container'>" + 
-      "</div>"; 
+        "<div id='editor-bottom' class='row'>" +
+          "<div class='span12'>" +
+            "<div id='timeline_container'></div>" +
+          "</div>" +
+        "</div>" +
+      "</div>";
+      
     this.$container.append(el);
 
     this.$el = $("#editor");
