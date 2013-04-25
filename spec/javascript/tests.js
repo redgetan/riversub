@@ -141,9 +141,6 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [x]  click on subtitle line should seek to that track
 //        subtitle determines which subtitleline was clicked
 //        determine which track it belongs to. and use its start time to seek there
-// [ ]  should be able to edit subtitle
-// [ ]  inserting in between subtitlelines should work, save load should appear in right order
-// [ ]  should have order and when saved and loaded should appear in right order
 // [x] click on track should highlight subtitle line
 // [x] replace popcorn.subtitle with just our own implementation
 // [x] added summary + expanded timeline
@@ -151,11 +148,7 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [x] summary timeline should have window to indicate where expanded timeline is
 // [x] expanded timeline should move itself dynamically when out of bounds
 // [x] expanded timeline should have time indicator
-// [ ] expanded timeline should have time label every 5 second
 // [x] drag track should modify start/end times and should be reflected in ui
-// [ ] drag track should modify subtitle bar meaning if you drag track from 3 to 5 second, and scrubber currently at 3
-//       then after dragging, the subtitle bar should be blank since the subtitle should start at 5th second
-// [ ] should be able to drag tracks across timeline window boundaries
 // [x] pressing fill button should show track fill animation
 // [x] should distinguish mapped subtitle line from unmapped ones
 // [x] add window in summary
@@ -163,12 +156,32 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [x] scrubber should  appear on top of any element
 // [x] when playing,clicking on any space on timeline should move scrubber to that spot
 // [x] when paused, clicking on any space on timeline should move scrubber to that spot
-// [ ] double click on subtitle text on video and on subtitle pane should allow you to edit it
-// [ ] should let user know if media cannot be loaded
-// [ ] should let user know if media is buffering to avoid making them think that our app is slow when in fact its the video loading thats slow
-// [ ] should not allow user to create track inside another track
 // [x] removing track means unmapping the subtitleline
-// [ ] display newly added subtitles according to country
 // [x] use twitter bootstrap
+// [ ] should be able to drag tracks across timeline window boundaries
+// [ ] double click on track should lock into that track and play until end of that track only, press space will replay that track again
+// [ ] double click on subtitle text on subtitle container should allow you to edit it
+// [ ] if media cannot be loaded, let user choose another url
+// [ ] should not allow user to create track inside another track
+// [ ] change add song to subtitle song - needs only url, extract name, lyrics, let user paste that on 2nd step, 1st step has to be extremely convenient
+// [ ] display video thumbnail instead of just text 
+// [ ] add county label
+// [ ] paginate through subtitled video list
+// [ ] add footer with about (built in rails), feedback
+// [ ] test email registration
+// [ ] when logged in, make formatting better, replace Edit Profile with my username with dropdown ability to edit profile
+// [ ] add google analytics
+// [ ] add instructions in editor
+// [ ] make home/editor navlink work
+
+// 2.0
+// [ ] use speech recognition to automatically detect timeslices
+// [ ] allow user to tab through time slices
+// [ ] drag track should modify subtitle bar meaning if you drag track from 3 to 5 second, and scrubber currently at 3
+//       then after dragging, the subtitle bar should be blank since the subtitle should start at 5th second
+// [ ] expanded timeline should have time label every 5 second
+// [ ] should let user know if media is buffering to avoid making them think that our app is slow when in fact its the video loading thats slow
+// [ ] inserting in between subtitlelines should work, save load should appear in right order
+// [ ]   should have order and when saved and loaded should appear in right order
 //
 
