@@ -23,7 +23,7 @@ $(document).ready(function(){
     });
   });
 
-  $(document).on("click", "input#add_song_btn", function(event) {
+  $(document).on("click", "button#add_song_btn", function(event) {
 
     $.ajax({
       url: "/songs/new",

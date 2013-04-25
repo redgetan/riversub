@@ -157,7 +157,7 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 //       then after dragging, the subtitle bar should be blank since the subtitle should start at 5th second
 // [ ] should be able to drag tracks across timeline window boundaries
 // [x] pressing fill button should show track fill animation
-// [x] should distinguish mapped subtitle line from unmapped ones 
+// [x] should distinguish mapped subtitle line from unmapped ones
 // [x] add window in summary
 // [x] show scrubber
 // [x] scrubber should  appear on top of any element
@@ -167,6 +167,8 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [ ] should let user know if media cannot be loaded
 // [ ] should let user know if media is buffering to avoid making them think that our app is slow when in fact its the video loading thats slow
 // [ ] should not allow user to create track inside another track
-// [x] removing track means unmapping the subtitleline 
+// [x] removing track means unmapping the subtitleline
+// [ ] display newly added subtitles according to country
+// [x] use twitter bootstrap
 //
 
