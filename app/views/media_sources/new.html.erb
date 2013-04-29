@@ -1,9 +1,0 @@
-<%= form_for [@song,@media_source] do |f| %>
-  <div class="field">
-    <%= label_tag :media_url  %>
-    <%= text_field_tag :url %>
-  </div>
-
-  <%= f.submit %>
-  <%= tag :input, :type => "button", :value => "Cancel", :id => "cancel"  %>
-<% end %>
