@@ -7,7 +7,7 @@ set :rvm_type, :system
 set :myconfig, {
   :production => {
     :user => "hatch",
-    :host => "ec2-54-235-12-225.compute-1.amazonaws.com"
+    :host => "www.zeroplay.net"
   },
   :staging => {
     :user => "hatch",
