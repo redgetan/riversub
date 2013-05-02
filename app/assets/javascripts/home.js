@@ -46,7 +46,7 @@ var isEmbeddable = function(metadata) {
 
 $(document).ready(function(){
 
-  $(document).on("click", "div#songs a", function(event) {
+  $(document).on("click", "div#songs a.song", function(event) {
     event.preventDefault();
 
     $.ajax({

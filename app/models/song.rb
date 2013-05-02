@@ -5,6 +5,8 @@ class Song < ActiveRecord::Base
   has_many :subtitles
   has_many  :timings
 
+  serialize :metadata, JSON
+
   validates :name, :presence => true
 
   accepts_nested_attributes_for :media_sources

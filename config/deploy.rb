@@ -75,5 +75,11 @@ namespace :deploy do
       exit
     end
   end
+
+  task :add_ssh_keys_to_agent, roles: :web do
+    `ssh-add ~/.ssh/id_rsa`
+  end
+
   before "deploy", "deploy:check_revision"
+  before "deploy", "deploy:add_ssh_keys_to_agent"
 end

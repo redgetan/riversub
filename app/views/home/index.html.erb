@@ -2,18 +2,27 @@
   <form id="sub">
     <div class="control-group">
       <div class="input-append">
-        <input id="media_url" name="media_url" class="span4" type="text" placeholder="Paste youtube url">
+        <input id="media_url" name="media_url" class="span5" type="text" placeholder="Paste youtube url">
         <button type="button" id="sub_btn" class="btn btn-primary"/>Subtitle It</button>
       </div>
     </div>
 </form>
 </div>
 
-<div id="songs" class="span6 center">
+<div id="songs" class="span12">
   <p>Recently Subtitled Songs</p>
-  <ul>
+  <ul class="thumbnails">
     <% @songs.each do |song| %>
-      <li><%= link_to song.name, "#", :id => song.id, :class => "song" %></li>
+        <li class="span2">
+          <div class="thumbnail center">
+            <a href="#" id="<%= song.id %>" class="song" >
+              <img src="<%= song.metadata["data"]["thumbnail"]["sqDefault"] %>" alt="">
+            </a>
+            <a href="#" id="<%= song.id %>" class="song" >
+              <h6><%= song.name %></h6>
+            </a>
+          </div>
+        </li>
     <% end %>
   </ul>
 

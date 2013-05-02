@@ -2,6 +2,7 @@
   float: none; 
   margin-left: auto; 
   margin-right: auto; 
+  text-align: center;
 }
 
 div#header {
@@ -14,6 +15,10 @@ div#media_input {
 
 div#songs {
   margin-top: 100px;
+}
+
+div#songs li h6 {
+  line-height: 1em;
 }
 
 div#songs li.selected {

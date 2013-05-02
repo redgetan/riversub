@@ -39,6 +39,8 @@ Installation
     $ cd chef_repo_river
     $ ./deploy.sh vm
 
+  Convert to HTTPS instead of ssh (too much hassle, has to add ssh pub key of each user to repo,then need to configure agentforwarding, ssh-add stuff)
+
   If everything goes well, your rails project is now fully setup in the VM. All you need to do is ssh into it and go to /vagrant directory where the rails project is located at.
 
     $ ssh default
