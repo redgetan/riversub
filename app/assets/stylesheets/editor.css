@@ -1,3 +1,8 @@
+div#editor #controls {
+  	margin-left: 20px;
+	margin-bottom: 10px;
+}
+
 textarea#transcript {
 	width: 96%;
 }
@@ -80,14 +85,6 @@ div#editor-bottom {
 
 .track:hover {
 	background-color: red;
-}
-
-#save_btn {
-/*	border: solid 1px black;
-	width: 100px;
-	height: 30px;
-*/	margin-left: 20px;
-	margin-bottom: 10px;
 }
 
 #subtitle_container {

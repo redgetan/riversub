@@ -47,6 +47,24 @@
       <%= yield %>
     </div>
 
+ 
+    <!-- Modal -->
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Instructions</h3>
+      </div>
+      <div class="modal-body">
+        <p>Before doing anything. Make sure to add subtitle texts of the video</p>
+        <p>Click on video to play/pause, then click outside the video right after in order use [Enter] command described below</p>
+        <p>Press   [Enter]    to start syncing the current line of subtitle </p>
+        <p>Release [Enter]    to stop  syncing the current line of subtitle </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+    </div>
+
   </div>
 
 

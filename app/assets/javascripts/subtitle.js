@@ -13,7 +13,7 @@ SubtitleView.prototype = {
   setupElement: function(subtitles) {
     this.$container = $("#subtitle_container");
 
-    this.subtitles = this.createSubtitles(subtitles);
+    this.createSubtitles(subtitles);
 
     if (Object.keys(subtitles).length === 0) {
       this.createSubtitleForm();
@@ -29,9 +29,8 @@ SubtitleView.prototype = {
       result[subtitle.attributes.id] = subtitle;
       this.orderedLineKeys.push(subtitle.attributes.id);
     };
-
-    return result;
-
+    
+    this.subtitles = result;
   },
 
   createSubtitleForm: function() {

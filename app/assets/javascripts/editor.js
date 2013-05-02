@@ -32,7 +32,10 @@ Editor.prototype = {
             "</div>" +
           "</div>" +
           "<div id='editor-top-right' class='span5'>" +
-            "<button type='button' id='save_btn' class='btn btn-primary'>Save</button>" +
+            "<div id='controls'>" +
+              "<button type='button' id='save_btn' class='btn btn-primary'>Save</button>" +
+              "<button type='button' data-toggle='modal' data-target='#myModal' class='btn'>Help</button>" +
+            "</div>" +
             "<div id='subtitle_container'></div>" +
           "</div>" +
         "</div>" +
@@ -85,8 +88,8 @@ Editor.prototype = {
   },
 
   onKeydownHandler: function(event) {
-    // K key
-    if (event.which === 75) {
+    // enter key
+    if (event.which === 13) {
       if (!this.isKeydownPressed) {
         this.currentTrack = this.createGhostTrack();
         this.$el.trigger("marktrackstart",[this.currentTrack]);
@@ -96,8 +99,8 @@ Editor.prototype = {
   },
 
   onKeyupHandler: function(event) {
-    // K key
-    if (event.which === 75) {
+    // enter key
+    if (event.which === 13) {
       try {
         this.$el.trigger("marktrackend");
         this.endGhostTrack(this.currentTrack);
