@@ -9,14 +9,14 @@ CMD="cd $APP_ROOT; bundle exec unicorn -D -c $APP_ROOT/config/unicorn.rb -E prod
 AS_USER=hatch
 set -u
 
-OLD_PIN="$PID.oldbin"
+OLD_PID="$PID.oldbin"
 
 sig () {
   test -s "$PID" && kill -$1 `cat $PID`
 }
 
 oldsig () {
-  test -s $OLD_PIN && kill -$1 `cat $OLD_PIN`
+  test -s $OLD_PID && kill -$1 `cat $OLD_PID`
 }
 
 run () {
