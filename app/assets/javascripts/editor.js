@@ -6,7 +6,7 @@ function Editor (song) {
   this.isKeydownPressed = false;
   this.currentTrack = null;
 
-  this.subtitleCollection = new SubtitleCollection(song.subtitles);
+  this.subtitleView = new SubtitleView(song.subtitles,this);
   this.timeline = new Timeline();
 
   this.popcorn = this.loadMedia(song.media_sources[0].url);
@@ -147,9 +147,9 @@ Editor.prototype = {
 
     if (creates.length > 0 ) {
       $.ajax({
-        url: "/songs/" + this.song.id +"/timing",
+        url: "/songs/" + this.song.id +"/timings",
         type: "POST",
-        data: { timing: creates },
+        data: { timings: creates },
         dataType: "json",
         success: function(data) {
           this.setTrackIds(data);
@@ -169,9 +169,9 @@ Editor.prototype = {
 
     if (updates.length > 0 ) {
       $.ajax({
-        url: "/songs/" + this.song.id +"/timing",
+        url: "/songs/" + this.song.id +"/timings",
         type: "PUT",
-        data: { timing: updates },
+        data: { timings: updates },
         dataType: "json",
         success: function(data) {
           this.setTrackIds(data);
@@ -215,7 +215,7 @@ Editor.prototype = {
 
     this.validateNoTrackOverlap(startTime,endTime);
 
-    var subtitle = this.subtitleCollection.nextUnmappedSubtitle();
+    var subtitle = this.subtitleView.nextUnmappedSubtitle();
     var attributes = {
       start_time: startTime, 
       end_time: endTime,

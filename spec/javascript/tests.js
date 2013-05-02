@@ -163,7 +163,7 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [ ] double click on subtitle text on subtitle container should allow you to edit it
 // [ ] if media cannot be loaded, let user choose another url
 // [ ] should not allow user to create track inside another track
-// [ ] change add song to subtitle song - needs only url, extract name, lyrics, let user paste that on 2nd step, 1st step has to be extremely convenient
+// [x] change add song to subtitle song - needs only url, extract name, lyrics, let user paste that on 2nd step, 1st step has to be extremely convenient
 // [ ] display video thumbnail instead of just text 
 // [ ] add county label
 // [ ] paginate through subtitled video list

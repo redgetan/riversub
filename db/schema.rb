@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130421193806) do
+ActiveRecord::Schema.define(:version => 20130501212433) do
 
   create_table "media_sources", :force => true do |t|
     t.integer  "song_id",    :null => false
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20130421193806) do
     t.text     "lyrics"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.text     "metadata"
   end
 
   create_table "subtitles", :force => true do |t|

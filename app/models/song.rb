@@ -1,11 +1,11 @@
 class Song < ActiveRecord::Base
-  attr_accessible :artist, :genre, :lyrics, :name,
+  attr_accessible :artist, :genre, :name, :metadata
                   :media_sources_attributes
   has_many :media_sources, :dependent => :destroy
   has_many :subtitles
   has_many  :timings
 
-  validates :name, :lyrics, :presence => true
+  validates :name, :presence => true
 
   accepts_nested_attributes_for :media_sources
   accepts_nested_attributes_for :subtitles

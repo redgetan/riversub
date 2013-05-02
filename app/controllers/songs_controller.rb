@@ -6,16 +6,18 @@ class SongsController < ApplicationController
     render :layout => false
   end
 
-  def create
-    @song = Song.new params[:song]
+  def sub
+    metadata = params[:song_metadata]
 
-    @song.subtitles_attributes = @song.lyrics.gsub("\r","").split("\n").each_with_index.inject([]) do |result,(item,i)|
-      result << { :text => item, :order => i} unless item.blank? 
-      result
-    end
+    @song = Song.new({
+      :name => metadata[:data][:title],
+      :metadata => metadata
+    })
+
+    @song.media_sources_attributes = [{:url => params[:media_url]}]
 
     if @song.save
-      render :json => { :song_id => @song.id }, :status => 200
+      render :json => @song.serialize.to_json
     else
       render :json => { :error => @song.errors.messages }, :status => 403
     end

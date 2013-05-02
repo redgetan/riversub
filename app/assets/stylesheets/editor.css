@@ -1,3 +1,7 @@
+textarea#transcript {
+	width: 96%;
+}
+
 div#editor-bottom {
 	margin-top: 20px;
 }

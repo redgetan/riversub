@@ -1,18 +1,21 @@
-<div id="songs">
+<div id="media_input" class="span6 center">
+  <form id="sub">
+    <div class="control-group">
+      <div class="input-append">
+        <input id="media_url" name="media_url" class="span4" type="text" placeholder="Paste youtube url">
+        <button type="button" id="sub_btn" class="btn btn-primary"/>Subtitle It</button>
+      </div>
+    </div>
+</form>
+</div>
 
-  <p>
-    Songs
-  </p>
+<div id="songs" class="span6 center">
+  <p>Recently Subtitled Songs</p>
   <ul>
     <% @songs.each do |song| %>
-      <li id="<%= song.id %>"><%= link_to song.name, "#", :class => "song" %></li>
+      <li><%= link_to song.name, "#", :id => song.id, :class => "song" %></li>
     <% end %>
   </ul>
 
-  </br>
-  </br>
-
-  <div id="new">
-    <button type="button" id="add_song_btn" class="btn btn-primary"/>Add Song</button>
-  </div>
 </div>
+

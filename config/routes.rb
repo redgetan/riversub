@@ -3,10 +3,12 @@ River::Application.routes.draw do
   devise_for :users
 
   get "songs/play"
+  post "songs/sub"
 
   resources :songs, :only => [:new, :create, :show, :edit] do
     resources :media_sources, :only => [:new, :create]
-    resource :timing, :only => [:create, :update]
+    resource :timings, :only => [:create, :update]
+    resource :subtitles, :only => [:create, :update]
   end
 
   get "home/index"

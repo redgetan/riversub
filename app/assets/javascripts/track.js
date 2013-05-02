@@ -4,7 +4,7 @@ function Track(attributes,editor,options) {
   this.editor = editor;
   this.popcorn = editor.popcorn;
 
-  var subtitle = this.editor.subtitleCollection.find(attributes.subtitle_id);
+  var subtitle = this.editor.subtitleView.find(attributes.subtitle_id);
   this.setSubtitle(subtitle);
 
   this.trackEvent     = this.createTrackEvent(this.attributes.start_time,this.attributes.end_time);

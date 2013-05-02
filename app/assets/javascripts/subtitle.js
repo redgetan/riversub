@@ -1,13 +1,24 @@
-function SubtitleCollection(subtitles) {
+function SubtitleView(subtitles,editor) {
+  this.editor = editor;
   this.orderedLineKeys = [];
-  this.subtitles = this.createSubtitles(subtitles);
+
+  this.setupElement(subtitles);
   this.selectedSubtitle = null;
 
-  this.$container = $("#subtitle_container");
   this.bindEvents();
 }
 
-SubtitleCollection.prototype = {
+SubtitleView.prototype = {
+
+  setupElement: function(subtitles) {
+    this.$container = $("#subtitle_container");
+
+    this.subtitles = this.createSubtitles(subtitles);
+
+    if (Object.keys(subtitles).length === 0) {
+      this.createSubtitleForm();
+    }
+  },
 
   createSubtitles: function(subtitles) {
     var result = {};
@@ -23,8 +34,23 @@ SubtitleCollection.prototype = {
 
   },
 
+  createSubtitleForm: function() {
+    var el = "<form id='transcript'>" + 
+               "<textarea id='transcript' name='transcript' rows='12' cols='10' placeholder='Paste Transcript here'></textarea>" +
+               "<input class='btn' type='submit' value='Submit'>" +
+             "</form>";
+    this.$container.append(el);
+
+    this.$form = this.$container.find("form#transcript");
+  },
+
   bindEvents: function() {
     this.$container.on("click",this.onClickHandler.bind(this));
+
+    if (typeof this.$form !== "undefined") { 
+      this.$form.on("submit",this.onFormSubmit.bind(this));
+    }
+    
     $(document).on("trackchange",this.onTrackChange.bind(this));
   },
 
@@ -33,10 +59,30 @@ SubtitleCollection.prototype = {
     var $subtitle = $target.hasClass("subtitle") ? $target : $target.closest(".subtitle");
     var subtitle= this.subtitles[$subtitle.attr("id")];
 
+    if (typeof subtitle === "undefined") { return; }
+
     if (subtitle.track != null) {
       this.highlightLine(subtitle);
       this.$container.trigger("subtitlelineclick",[subtitle]);
     }
+  },
+
+  onFormSubmit: function(event) {
+    event.preventDefault();
+
+    $.ajax({
+      url: "/songs/" + this.editor.song.id + "/subtitles",
+      type: "POST",
+      data: this.$form.serialize(),
+      dataType: "json",
+      success: function(data) {
+        this.$form.remove();
+        this.createSubtitles(data);
+      }.bind(this),
+      error: function(data) {
+        alert(data.responseText);
+      }
+    });
   },
 
   onTrackChange: function(event,track) {
