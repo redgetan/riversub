@@ -43,7 +43,7 @@ div#media #iframe_overlay {
   position: absolute;
   z-index: 2;
   background-color: white;
-  opacity: 0.5;
+  opacity: 0;
 }
 
 div#subtitle_bar {
