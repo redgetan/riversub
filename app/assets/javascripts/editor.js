@@ -125,6 +125,15 @@ Editor.prototype = {
       }
       this.isKeydownPressed = false;
     }
+
+    // space key
+    if (event.which === 32) {
+      if (!this.$playBtn.is(':hidden')) {
+        this.$playBtn.trigger("click");
+      } else {
+        this.$pauseBtn.trigger("click");
+      }
+    }
   },
 
   onTimelineSeekHandler: function(event,time) {
