@@ -1,6 +1,9 @@
+div#editor #song_name {
+
+}
+
 div#editor #controls {
-  	margin-left: 20px;
-	margin-bottom: 10px;
+	padding: 10px;
 }
 
 textarea#transcript {
@@ -12,7 +15,7 @@ div#editor-bottom {
 }
 
 #timeline_container {
-  	padding: 10px;  
+  	padding: 10px;
 	/*width: 1150px;*/
 	height: 150px;
 	/*margin-top: 15px;*/
@@ -89,8 +92,8 @@ div#editor-bottom {
 
 #subtitle_container {
 	margin-left: 20px;
-  	padding: 10px;  
-	height: 280px;
+  	padding: 10px;
+	height: 360px;
 	border: solid 1px black ;
 	overflow-y: scroll;
 	overflow-x: hidden;
@@ -113,7 +116,7 @@ div#editor-bottom {
 .subtitle .start_time,
 .subtitle .end_time,
 .subtitle .text {
-	float: left;	
+	float: left;
 	display: block;
 }
 

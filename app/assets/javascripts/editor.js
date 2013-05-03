@@ -16,26 +16,33 @@ function Editor (song) {
   this.timeline.setTracks(this.tracks);
 
   this.bindEvents();
+
 }
 
 Editor.prototype = {
 
   setupElement: function() {
     this.$container = $("#main_container");
-    var el = 
+    var el =
       "<div id='editor'>" +
         "<div id='editor-top' class='row'>" +
           "<div id='editor-top-left' class='span7'>" +
             "<div id='media_container'>" +
-              "<div id='media'></div>" +
+              "<div id='media'><div id='iframe_overlay'></div></div>" +
               "<div id='subtitle_bar'></div>" +
+              "<div id='controls' class='row'>" +
+                "<div class='pull-left span1'>" +
+                  "<button type='button' id='play_btn' class='btn'><i class='icon-play'></i></button>" +
+                  "<button type='button' id='pause_btn' class='btn'><i class='icon-pause'></i></button>" +
+                "</div>" +
+                "<div class='btn-group pull-right'>" +
+                  "<a id='save_btn' class='btn'><i class='icon-save'></i> Save</a>" +
+                  "<a data-toggle='modal' data-target='#myModal' class='btn pull-right'><i class='icon-question-sign'></i> Help</a>" +
+                "</div>" +
+              "</div>" +
             "</div>" +
           "</div>" +
           "<div id='editor-top-right' class='span5'>" +
-            "<div id='controls'>" +
-              "<button type='button' id='save_btn' class='btn btn-primary'>Save</button>" +
-              "<button type='button' data-toggle='modal' data-target='#myModal' class='btn'>Help</button>" +
-            "</div>" +
             "<div id='subtitle_container'></div>" +
           "</div>" +
         "</div>" +
@@ -45,7 +52,7 @@ Editor.prototype = {
           "</div>" +
         "</div>" +
       "</div>";
-      
+
     this.$container.append(el);
 
     this.$el = $("#editor");
@@ -54,6 +61,10 @@ Editor.prototype = {
 
     this.$saveBtn = $("#save_btn");
     this.$saveBtn.attr("disabled","disabled");
+
+    this.$playBtn = $("#play_btn");
+    this.$pauseBtn = $("#pause_btn");
+    this.$pauseBtn.hide();
   },
 
   defineAttributeAccessors: function() {
@@ -85,6 +96,8 @@ Editor.prototype = {
     $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
     $(document).on("trackchange",this.onTrackChange.bind(this));
     this.$saveBtn.on("click",this.onSaveBtnClick.bind(this));
+    this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
+    this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
   },
 
   onKeydownHandler: function(event) {
@@ -131,6 +144,18 @@ Editor.prototype = {
     };
     // if changes are saved and nothing is changed
     this.$saveBtn.attr("disabled", "disabled");
+  },
+
+  onPlayBtnClick: function(event) {
+    this.popcorn.play();
+    this.$playBtn.hide();
+    this.$pauseBtn.show();
+  },
+
+  onPauseBtnClick: function(event) {
+    this.popcorn.pause();
+    this.$pauseBtn.hide();
+    this.$playBtn.show();
   },
 
   onSaveBtnClick: function(event) {
@@ -201,7 +226,7 @@ Editor.prototype = {
   loadTracks: function(timings) {
     var tracks = [];
 
-    if (typeof timings !== "undefined") { 
+    if (typeof timings !== "undefined") {
       for (var i = 0; i < timings.length; i++) {
         var track = new Track(timings[i],this, { isSaved: true });
         this.trackMap[track.attributes.client_id] = track;
@@ -220,7 +245,7 @@ Editor.prototype = {
 
     var subtitle = this.subtitleView.nextUnmappedSubtitle();
     var attributes = {
-      start_time: startTime, 
+      start_time: startTime,
       end_time: endTime,
       subtitle_id: subtitle.attributes.id
     };
@@ -281,4 +306,3 @@ Editor.prototype = {
     this.tracks.length = 0;
   }
 }
-
