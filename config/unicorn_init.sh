@@ -41,64 +41,8 @@ force-stop)
   echo >&2 "Not running"
   ;;
 restart|reload)
-  sig HUP && echo reloaded OK && exit 0
+  sig USR2 && sleep 30 && oldsig QUIT && echo "Killing old master" `cat $OLD_PID` && exit 0
   echo >&2 "Couldn't reload, starting '$CMD' instead"
-  run "$CMD"
-  ;;
-upgrade)
-  #http://www.rostamizadeh.net/blog/2012/03/09/wrangling-unicorn-usr2-signals-and-capistrano-deployments/
-   if test -s $PID; then ORIG_PID=`cat $PID`; else ORIG_PID=0; fi
-
-  echo 'Original PID: ' $ORIG_PID
-
-  if sig USR2
-  then
-    echo 'USR2 sent; Waiting for .oldbin'
-    n=$TIMEOUT
-
-    #wait for .oldpid to be written
-    while (!(test -s $OLD_PID) && test $n -ge 0)
-    do
-      printf '.' && sleep 1 && n=$(( $n - 1 ))
-    done
-
-    echo 'Waiting for new pid file'
-    #when this loop finishes, should have new pid file
-    while (!(test -s $PID ) || test -s $OLD_PID) && test $n -ge 0
-    do
-      printf '.' && sleep 1 && n=$(( $n - 1 ))
-    done
-
-    if test -s $PID
-    then
-      NEW_PID=`cat $PID`
-    else
-      echo 'New master failed to start; see error log'
-      exit 1
-    fi
-
-    #timeout has elapsed, verify new pid file exists
-    if [ $ORIG_PID -eq $NEW_PID ]
-    then
-      echo
-      echo >&2 'New master failed to start; see error log'
-      exit 1
-    fi
-
-    echo 'New PID: ' $NEW_PID
-
-    #verify old master QUIT
-		echo
-    if test -s $OLD_PID
-    then
-      echo >&2 "$OLD_PID still exists after $TIMEOUT seconds"
-      exit 1
-    fi
-
-    printf 'Unicorn successfully upgraded'
-    exit 0
-  fi
-  echo >&2 "Upgrade failed: executing '$CMD' "
   run "$CMD"
   ;;
 reopen-logs)
