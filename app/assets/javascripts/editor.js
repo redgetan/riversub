@@ -37,7 +37,7 @@ Editor.prototype = {
                 "</div>" +
                 "<div class='btn-group pull-right'>" +
                   "<a id='save_btn' class='btn'><i class='icon-save'></i> Save</a>" +
-                  "<a data-toggle='modal' data-target='#myModal' class='btn pull-right'><i class='icon-question-sign'></i> Help</a>" +
+                  "<a data-toggle='modal' data-target='#myModal' class='btn'><i class='icon-question-sign'></i> Help</a>" +
                 "</div>" +
               "</div>" +
             "</div>" +
