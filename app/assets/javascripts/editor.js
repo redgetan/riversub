@@ -65,6 +65,8 @@ Editor.prototype = {
     this.$playBtn = $("#play_btn");
     this.$pauseBtn = $("#pause_btn");
     this.$pauseBtn.hide();
+
+    this.$iframeOverlay = $("#iframe_overlay");
   },
 
   defineAttributeAccessors: function() {
@@ -98,6 +100,7 @@ Editor.prototype = {
     this.$saveBtn.on("click",this.onSaveBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
+    this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
   },
 
   onKeydownHandler: function(event) {
@@ -153,6 +156,14 @@ Editor.prototype = {
     };
     // if changes are saved and nothing is changed
     this.$saveBtn.attr("disabled", "disabled");
+  },
+
+  onIframeOverlayClick: function(event) {
+    if (!this.$playBtn.is(':hidden')) {
+      this.$playBtn.trigger("click");
+    } else {
+      this.$pauseBtn.trigger("click");
+    }
   },
 
   onPlayBtnClick: function(event) {
