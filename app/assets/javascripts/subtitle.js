@@ -1,6 +1,7 @@
 function SubtitleView(subtitles,editor) {
   this.editor = editor;
   this.orderedLineKeys = [];
+  this.subtitles = {};
 
   this.setupElement(subtitles);
   this.selectedSubtitle = null;
@@ -51,6 +52,7 @@ SubtitleView.prototype = {
     }
     
     $(document).on("trackchange",this.onTrackChange.bind(this));
+    $(document).on("subtitleremove",this.onSubtitleRemove.bind(this));
   },
 
   onClickHandler: function(event) {
@@ -86,6 +88,10 @@ SubtitleView.prototype = {
 
   onTrackChange: function(event,track) {
     track.subtitle.render();
+  },
+
+  onSubtitleRemove: function(event, subtitleId) {
+    delete this.subtitles[subtitleId];
   },
 
   find: function(id) {
@@ -133,6 +139,8 @@ function Subtitle(attributes) {
   this.attributes = attributes;
   this.track = null;
   this.setupElement();
+  this.isDeleted = false;
+  this.bindEvents();
 }
 
 Subtitle.prototype = {
@@ -145,10 +153,46 @@ Subtitle.prototype = {
       "<div class='start_time'></div>" +
       // "<div class='end_time'></div>" +
       "<div class='text'></div>" +
+      "<button type='button' class='close'>×</button>" +
       "</div>";
     this.$el = $(el);
     this.$container.append(this.$el);
+
+    this.$close = this.$el.find(".close");
+    this.$close.hide();
+
     this.render();
+  },
+
+  bindEvents: function() {
+    this.$el.on("mouseenter",this.onMouseEnter.bind(this));
+    this.$el.on("mouseleave",this.onMouseLeave.bind(this));
+    this.$close.on("click",this.onCloseClick.bind(this));
+  },
+
+  onCloseClick: function() {
+    this.remove();
+  },
+
+  remove: function() {
+    // remove subtitle element 
+    this.$el.remove();
+    // remove track if its mapped to a track
+    if (this.track !== null ) {
+      this.track.remove();
+    }
+    // mark subtitle as isDeleted
+    this.isDeleted = true;
+
+    $(document).trigger("subtitleremove",this.attributes.id);
+  },
+
+  onMouseEnter: function() {
+    this.$close.show();
+  },
+
+  onMouseLeave: function() {
+    this.$close.hide();
   },
 
   render: function() {
@@ -168,7 +212,7 @@ Subtitle.prototype = {
     this.render();
   },
 
-  removeTrack: function() {
+  unmapTrack: function() {
     this.track = null;
     this.$el.removeClass("mapped");
     this.render();

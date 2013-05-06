@@ -22,4 +22,13 @@ class SubtitlesController < ApplicationController
   def update
     
   end
+
+  def destroy
+    @song = Song.find params[:song_id]
+    params[:subtitles].each do |id|
+      @subtitle = @song.subtitles.find(id)
+      @subtitle.delete    
+    end
+    render :json => {}, :status => 200
+  end
 end

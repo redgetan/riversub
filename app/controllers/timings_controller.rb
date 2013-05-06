@@ -31,4 +31,13 @@ class TimingsController < ApplicationController
 
     render :json => @timings.map(&:serialize).to_json, :status => 200
   end
+
+  def destroy
+    @song = Song.find params[:song_id]
+    params[:timings].each do |id|
+      @timing = @song.timings.find(id)
+      @timing.delete    
+    end
+    render :json => {}, :status => 200
+  end
 end

@@ -13,6 +13,7 @@ function Track(attributes,editor,options) {
   this.bindEvents();
 
   this.isSaved = typeof options['isSaved'] === "undefined" ? false : options['isSaved']; 
+  this.isDeleted = false;
 }
 
 Track.prototype = {
@@ -140,7 +141,9 @@ Track.prototype = {
     this.$el_expanded.remove();
     this.$el_summary.remove();
     this.popcorn.removeTrackEvent(this.trackEvent._id);
-    this.subtitle.removeTrack();
+    this.subtitle.unmapTrack();
+    this.isDeleted = true;
+    $(document).trigger("trackremove",this.attributes.id);
   },
 
   toString: function() {

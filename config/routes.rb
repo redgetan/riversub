@@ -7,8 +7,8 @@ River::Application.routes.draw do
 
   resources :songs, :only => [:new, :create, :show, :edit] do
     resources :media_sources, :only => [:new, :create]
-    resource :timings, :only => [:create, :update]
-    resource :subtitles, :only => [:create, :update]
+    resource :timings, :only => [:create, :update, :destroy]
+    resource :subtitles, :only => [:create, :update, :destroy]
   end
 
   get "home/index"

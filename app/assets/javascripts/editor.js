@@ -15,6 +15,21 @@ function Editor (song) {
   this.tracks = this.loadTracks(song.timings);
   this.timeline.setTracks(this.tracks);
 
+  this.changes = {
+    creates: {
+      tracks: [],
+      subtitles: []
+    },
+    updates: {
+      tracks: [],
+      subtitles: []
+    },
+    deletes: {
+      tracks: [],
+      subtitles: []
+    }
+  };
+
   this.bindEvents();
 
 }
@@ -97,6 +112,8 @@ Editor.prototype = {
     $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
     $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
     $(document).on("trackchange",this.onTrackChange.bind(this));
+    $(document).on("trackremove",this.onTrackRemove.bind(this));
+    $(document).on("subtitleremove",this.onSubtitleRemove.bind(this));
     this.$saveBtn.on("click",this.onSaveBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
@@ -158,6 +175,24 @@ Editor.prototype = {
     this.$saveBtn.attr("disabled", "disabled");
   },
 
+  onTrackRemove: function(event,trackId) {
+    // removing a track that is not yet saved in server
+    if (typeof trackId === "undefined") {
+      return;  
+    }
+    this.changes["deletes"]["tracks"].push(trackId);
+    this.$saveBtn.removeAttr("disabled");
+  },
+
+  onSubtitleRemove: function(event,subtitleId) {
+    // removing a subtitle that is not yet saved in server
+    if (typeof subtitleId === "undefined") {
+      return;  
+    }
+    this.changes["deletes"]["subtitles"].push(subtitleId);
+    this.$saveBtn.removeAttr("disabled");
+  },
+
   onIframeOverlayClick: function(event) {
     if (!this.$playBtn.is(':hidden')) {
       this.$playBtn.trigger("click");
@@ -180,8 +215,10 @@ Editor.prototype = {
 
   onSaveBtnClick: function(event) {
     var creates = [];
-    var updates = [];
+    var updates = []; 
+
     var track;
+
     for (var i = 0; i < this.tracks.length; i++) {
       track = this.tracks[i];
       if (!track.isSaved) {
@@ -190,6 +227,7 @@ Editor.prototype = {
         } else {
           updates.push(this.tracks[i].attributes);
         }
+
       }
     };
 
@@ -221,14 +259,56 @@ Editor.prototype = {
         type: "PUT",
         data: { timings: updates },
         dataType: "json",
-        success: function(data) {
-          this.setTrackIds(data);
+        success: function(timings) {
+          for (var i = 0; i < timings.length; i++) {
+            timings[i].isSaved = true;
+          }
           this.$saveBtn.attr("disabled", "disabled");
         }.bind(this),
         error: function(data,e,i) {
           try {
             var result = JSON.parse(data);
             this.setTrackIds(result.updated);
+            alert(result.error);
+          } catch (e) {
+            alert(data.responseText);
+          }
+        }
+      });
+    }
+
+    if (this.changes["deletes"]["tracks"].length > 0 ) {
+      $.ajax({
+        url: "/songs/" + this.song.id +"/timings",
+        type: "DELETE",
+        data: { timings: this.changes["deletes"]["tracks"] },
+        dataType: "json",
+        success: function(timings) {
+          this.$saveBtn.attr("disabled", "disabled");
+        }.bind(this),
+        error: function(data,e,i) {
+          try {
+            var result = JSON.parse(data);
+            alert(result.error);
+          } catch (e) {
+            alert(data.responseText);
+          }
+        }
+      });
+    }
+
+    if (this.changes["deletes"]["subtitles"].length > 0 ) {
+      $.ajax({
+        url: "/songs/" + this.song.id +"/subtitles",
+        type: "DELETE",
+        data: { subtitles: this.changes["deletes"]["subtitles"] },
+        dataType: "json",
+        success: function(timings) {
+          this.$saveBtn.attr("disabled", "disabled");
+        }.bind(this),
+        error: function(data,e,i) {
+          try {
+            var result = JSON.parse(data);
             alert(result.error);
           } catch (e) {
             alert(data.responseText);
