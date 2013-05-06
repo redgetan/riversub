@@ -62,17 +62,10 @@ Timeline.prototype = {
     this.$summary.on("click",this.onClickHandler.bind(this));
     this.$expanded.on("click",this.onClickHandler.bind(this));
 
-    this.$summary.on("mousemove",this.onMouseMoveHandler.bind(this));
-    this.$summary.on("mouseenter",this.onMouseEnterHandler.bind(this));
-    this.$summary.on("mouseleave",this.onMouseLeaveHandler.bind(this));
-
-    this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
-    this.$expanded.on("mouseenter",this.onMouseEnterHandler.bind(this));
-    this.$expanded.on("mouseleave",this.onMouseLeaveHandler.bind(this));
   },
 
   onPlay: function() {
-    // this.scrubberInterval = setInterval(this.renderScrubber.bind(this),10);
+    this.scrubberInterval = setInterval(this.renderScrubber.bind(this),10);
     this.progressBarInterval = setInterval(this.renderProgressBar.bind(this),10);
     this.timeIndicatorInterval = setInterval(this.renderTimeIndicator.bind(this),10);
   },
@@ -85,7 +78,7 @@ Timeline.prototype = {
 
   onSeeking: function() {
     this.renderProgressBar();  
-    // this.renderScrubber();  
+    this.renderScrubber();  
     this.renderTimeIndicator();  
   },
 
@@ -123,32 +116,6 @@ Timeline.prototype = {
       this.$container.trigger("timelineseek",[seconds]);
     }
 
-  },
-
-  onMouseMoveHandler: function(event) {
-    var $target = $(event.target);
-    var $timeline;
-
-    if (!$target.hasClass("timeline")) {
-      $timeline = $target.closest(".timeline");
-    } else {
-      $timeline = $target;
-    }
-
-    var $scrubber = $target.closest(".timeline").find(".scrubber");
-    var timelineX = $timeline.position().left;
-    var posX = event.pageX - timelineX + $timeline.scrollLeft();
-    $scrubber.css("left",posX);
-  },
-
-  onMouseEnterHandler: function(event) {
-    var $scrubber = $(event.target).closest(".timeline").find(".scrubber");
-    $scrubber.show();
-  },
-
-  onMouseLeaveHandler: function(event) {
-    var $scrubber = $(event.target).closest(".timeline").find(".scrubber");
-    $scrubber.hide();
   },
 
   onTrackChange: function(event,track) {
@@ -190,10 +157,10 @@ Timeline.prototype = {
     this.renderInContainer(this.$expanded,track.$el_expanded,{ width: progress, left: track.startTime() });
   },
 
-  // renderScrubber: function() {
-  //   this.renderInContainer(this.$summary, this.$scrubber_summary, { left: this.media.currentTime.toFixed(3) });
-  //   this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
-  // },
+  renderScrubber: function() {
+    this.renderInContainer(this.$summary, this.$scrubber_summary, { left: this.media.currentTime.toFixed(3) });
+    this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
+  },
 
   renderProgressBar: function() {
     this.renderInContainer(this.$summary, this.$progress_bar_summary, { width: this.media.currentTime.toFixed(3) });
