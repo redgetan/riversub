@@ -151,7 +151,7 @@ Subtitle.prototype = {
 
     var el = "<div id='" + this.attributes.id + "' class='subtitle'>" +
       "<div class='start_time'></div>" +
-      // "<div class='end_time'></div>" +
+      "<div class='end_time'></div>" +
       "<div class='text'></div>" +
       "<button type='button' class='close'>×</button>" +
       "</div>";
@@ -198,10 +198,10 @@ Subtitle.prototype = {
   render: function() {
     if (this.track !== null ) {
       this.$el.find(".start_time").text(this.track.startTime());
-      // this.$el.find(".end_time").text(this.track.endTime());
+      this.$el.find(".end_time").text(this.track.endTime());
     } else {
       this.$el.find(".start_time").text("");
-      // this.$el.find(".end_time").text("");
+      this.$el.find(".end_time").text("");
     }
     this.$el.find(".text").text(this.attributes.text);
   },

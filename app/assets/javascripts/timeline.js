@@ -65,15 +65,20 @@ Timeline.prototype = {
   },
 
   onPlay: function() {
-    this.scrubberInterval = setInterval(this.renderScrubber.bind(this),10);
-    this.progressBarInterval = setInterval(this.renderProgressBar.bind(this),10);
-    this.timeIndicatorInterval = setInterval(this.renderTimeIndicator.bind(this),10);
+    // youtube javascript API getCurrentTime updates roughly around 10 fps in my mac, but might be higher in others?
+    // lets just try 30fp s
+    this.scrubberInterval = setInterval(this.renderScrubber.bind(this),1000/30); 
+    this.progressBarInterval = setInterval(this.renderProgressBar.bind(this),1000/30);
+    this.timeIndicatorInterval = setInterval(this.renderTimeIndicator.bind(this),1000/30);
   },
 
   onPause: function() {
     clearInterval(this.scrubberInterval);
     clearInterval(this.progressBarInterval);
     clearInterval(this.timeIndicatorInterval);
+    this.renderProgressBar();  
+    this.renderScrubber();  
+    this.renderTimeIndicator();  
   },
 
   onSeeking: function() {
@@ -174,7 +179,7 @@ Timeline.prototype = {
   renderTimeIndicator: function() {
     this.renderInContainer(this.$expanded,this.$time_indicator,{ 
       left: this.media.currentTime.toFixed(3),
-      text: this.media.currentTime.toFixed(3) 
+      text: this.stringifyTime(this.media.currentTime) 
     });
   },
 
@@ -236,6 +241,21 @@ Timeline.prototype = {
 
   getRightPos: function($el) {
     return parseFloat($el.css("left"),10) + $el.width();
+  },
+
+  stringifyTime: function(time) {
+    time = Math.round(time * 1000) / 1000;
+
+    var hours = parseInt( time / 3600 ) % 24;
+    var minutes = parseInt( time / 60 ) % 60;
+    var seconds = Math.floor(time % 60);
+    var milliseconds = Math.round((time % 1) * 1000);
+
+    var result = (hours < 10 ? "0" + hours : hours) + ":" + 
+                 (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                 (seconds  < 10 ? "0" + seconds : seconds) + "." +
+                 (milliseconds  < 10 ? "00" + milliseconds : (milliseconds < 100 ? "0" + milliseconds : milliseconds)); 
+    return result;
   }
 
 };

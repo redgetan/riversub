@@ -1,3 +1,13 @@
+#current_time {
+	display: inline;
+	margin-left: 5px;
+}
+
+#total_time {
+	display: inline;
+	margin-right: 5px;
+}
+
 div#editor #song_name {
 
 }
@@ -66,9 +76,9 @@ div#editor-bottom {
 
 .time_indicator {
 	border: solid 1px black;
-	height: 10px;
-	width: 40px;
-	font: normal 10px Helvetica;
+	height: 20px;
+	width: 90px;
+	font: normal 15px Helvetica;
 	position: absolute;
 	z-index: 3;
 	background-color: white;

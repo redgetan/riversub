@@ -41,7 +41,7 @@ Editor.prototype = {
     var el =
       "<div id='editor'>" +
         "<div id='editor-top' class='row'>" +
-          "<div id='editor-top-left' class='span7'>" +
+          "<div id='editor-top-left' class='span6'>" +
             "<div id='media_container'>" +
               "<div id='media'><div id='iframe_overlay'></div></div>" +
               "<div id='subtitle_bar'></div>" +
@@ -57,7 +57,7 @@ Editor.prototype = {
               "</div>" +
             "</div>" +
           "</div>" +
-          "<div id='editor-top-right' class='span5'>" +
+          "<div id='editor-top-right' class='span6'>" +
             "<div id='subtitle_container'></div>" +
           "</div>" +
         "</div>" +
