@@ -21,6 +21,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem "less-rails"
   gem "twitter-bootstrap-rails", "~> 2.2.6"
+  gem 'jquery-ui-rails'
 end
 
 gem 'jquery-rails'
