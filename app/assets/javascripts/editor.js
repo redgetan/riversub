@@ -6,7 +6,7 @@ function Editor (song) {
   this.isKeydownPressed = false;
   this.currentTrack = null;
 
-  this.subtitleView = new SubtitleView(song.subtitles,this);
+  this.subtitleView = new SubtitleView($.map(song.timings,function(timing){ return timing.subtitle; }),this);
   this.timeline = new Timeline();
 
   this.popcorn = this.loadMedia(song.media_sources[0].url);
@@ -16,17 +16,15 @@ function Editor (song) {
   this.timeline.setTracks(this.tracks);
 
   this.changes = {
-    creates: {
-      tracks: [],
-      subtitles: []
+    tracks: {
+      creates: [],
+      updates: [],
+      deletes: []
     },
-    updates: {
-      tracks: [],
-      subtitles: []
-    },
-    deletes: {
-      tracks: [],
-      subtitles: []
+    subtitles: {
+      creates: [],
+      updates: [],
+      deletes: []
     }
   };
 
@@ -44,7 +42,10 @@ Editor.prototype = {
           "<div id='editor-top-left' class='span6'>" +
             "<div id='media_container'>" +
               "<div id='media'><div id='iframe_overlay'></div></div>" +
-              "<div id='subtitle_bar'></div>" +
+              "<div id='subtitle_bar' class='span6 center'>" +
+                "<div id='subtitle_display'></div>" +
+                "<input id='subtitle_edit' class='span5 center' type='text' placeholder='Enter Subtitle Here'>" +
+              "</div>" +
               "<div id='controls' class='row'>" +
                 "<div class='pull-left span1'>" +
                   "<button type='button' id='play_btn' class='btn'><i class='icon-play'></i></button>" +
@@ -81,6 +82,11 @@ Editor.prototype = {
     this.$pauseBtn = $("#pause_btn");
     this.$pauseBtn.hide();
 
+    this.$subtitleDisplay = $("#subtitle_display");
+
+    this.$subtitleEdit = $("#subtitle_edit");
+    this.$subtitleEdit.hide();
+
     this.$iframeOverlay = $("#iframe_overlay");
   },
 
@@ -111,6 +117,8 @@ Editor.prototype = {
     $(document).on("keyup",this.onKeyupHandler.bind(this));
     $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
     $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
+    $(document).on("trackstart",this.onTrackStart.bind(this));
+    $(document).on("trackend",this.onTrackEnd.bind(this));
     $(document).on("trackchange",this.onTrackChange.bind(this));
     $(document).on("trackremove",this.onTrackRemove.bind(this));
     $(document).on("subtitleremove",this.onSubtitleRemove.bind(this));
@@ -118,11 +126,16 @@ Editor.prototype = {
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
+    this.$subtitleEdit.on("focus",this.onSubtitleEditFocus.bind(this));
+    this.$subtitleEdit.on("blur",this.onSubtitleEditBlur.bind(this));
+    this.$subtitleEdit.on("keydown",this.onSubtitleEditKeydown.bind(this));
+    this.$subtitleEdit.on("keyup",this.onSubtitleEditKeyup.bind(this));
+    this.$subtitleDisplay.on("dblclick",this.onSubtitleDisplayDblClick.bind(this));
   },
 
   onKeydownHandler: function(event) {
-    // enter key
-    if (event.which === 13) {
+    // space key
+    if (event.which === 32) {
       if (!this.isKeydownPressed) {
         this.currentTrack = this.createGhostTrack();
         this.$el.trigger("marktrackstart",[this.currentTrack]);
@@ -132,11 +145,12 @@ Editor.prototype = {
   },
 
   onKeyupHandler: function(event) {
-    // enter key
-    if (event.which === 13) {
+    // space key
+    if (event.which === 32) {
       try {
         this.$el.trigger("marktrackend");
         this.endGhostTrack(this.currentTrack);
+        this.$subtitleEdit.show();
       } catch (e) {
         console.log(e.stack);
         console.log("Removing invalid track");
@@ -144,16 +158,17 @@ Editor.prototype = {
         this.tracks.pop();
       }
       this.isKeydownPressed = false;
+
     }
 
-    // space key
-    if (event.which === 32) {
-      if (!this.$playBtn.is(':hidden')) {
-        this.$playBtn.trigger("click");
-      } else {
-        this.$pauseBtn.trigger("click");
-      }
-    }
+    // // space key
+    // if (event.which === 32) {
+    //   if (!this.$playBtn.is(':hidden')) {
+    //     this.$playBtn.trigger("click");
+    //   } else {
+    //     this.$pauseBtn.trigger("click");
+    //   }
+    // }
   },
 
   onTimelineSeekHandler: function(event,time) {
@@ -164,15 +179,28 @@ Editor.prototype = {
     this.seek(subtitle.track.startTime());
   },
 
-  onTrackChange: function() {
-    for (var i = 0; i < this.tracks.length; i++) {
-      if (!this.tracks[i].isSaved) {
-        this.$saveBtn.removeAttr("disabled");
-        return;
-      }
-    };
-    // if changes are saved and nothing is changed
-    this.$saveBtn.attr("disabled", "disabled");
+  onTrackChange: function(track) {
+    this.$saveBtn.removeAttr("disabled");
+  },
+
+  onTrackStart: function(event,track) {
+    this.currentTrack = track;
+  },
+
+  onTrackEnd: function(event,track) {
+    console.log("shit about to happen")
+    if (typeof track.subtitle.text === "undefined" || /^\s*$/.test(track.subtitle.text) ) {
+      // if playing, pause playback to let user type subtitle
+      if (!this.$pauseBtn.is(':hidden')) {
+        this.$pauseBtn.trigger("click");
+        // we want to seek to a few millseconds before end just so 
+        // 1. that the text from input would disappear triggered by the end event of track
+        // 2. scrubber is positioned nicely inside track instead of a bit outside.
+        //    this is to indicated were editing subtitle of that track
+        this.$subtitleEdit.show();
+        this.$subtitleEdit.focus();
+      } 
+    }
   },
 
   onTrackRemove: function(event,trackId) {
@@ -180,7 +208,7 @@ Editor.prototype = {
     if (typeof trackId === "undefined") {
       return;  
     }
-    this.changes["deletes"]["tracks"].push(trackId);
+    this.changes["tracks"]["deletes"].push(trackId);
     this.$saveBtn.removeAttr("disabled");
   },
 
@@ -189,7 +217,7 @@ Editor.prototype = {
     if (typeof subtitleId === "undefined") {
       return;  
     }
-    this.changes["deletes"]["subtitles"].push(subtitleId);
+    this.changes["subtitles"]["deletes"].push(subtitleId);
     this.$saveBtn.removeAttr("disabled");
   },
 
@@ -201,50 +229,114 @@ Editor.prototype = {
     }
   },
 
+  onSubtitleEditFocus: function(event) {
+    $(document).off("keydown");
+    $(document).off("keyup");
+  },
+
+  onSubtitleEditBlur: function(event) {
+    $(document).on("keydown",this.onKeydownHandler.bind(this));
+    $(document).on("keyup",this.onKeyupHandler.bind(this));
+  },
+
+  onSubtitleEditKeydown: function(event) {
+    var text = this.$subtitleEdit.val();
+    this.currentTrack.subtitle.setAttributes({ "text": text})
+  },
+
+  onSubtitleEditKeyup: function(event) {
+    // enter key
+    if (event.which == 13) {
+      console.log("enter key in input ");
+      this.$subtitleEdit.blur();  
+      var text = this.$subtitleEdit.val();
+      // this.$subtitleDisplay.text(text);  
+      this.$subtitleEdit.hide();  
+
+      // if puased, resume playback 
+      if (!this.$playBtn.is(':hidden')) {
+        console.log("must be resumeing");
+        this.$playBtn.trigger("click");
+      } 
+    }
+  },
+
+  onSubtitleDisplayDblClick: function(event) {
+    var text = this.$subtitleDisplay.text();  
+    this.$subtitleEdit.val(text);
+    this.$subtitleDisplay.hide();  
+    this.$subtitleEdit.show();
+    this.$subtitleEdit.focus();
+  },
+
   onPlayBtnClick: function(event) {
+    console.log("play button click trigger");
     this.popcorn.play();
     this.$playBtn.hide();
     this.$pauseBtn.show();
   },
 
   onPauseBtnClick: function(event) {
+    console.log("pause button click trigger");
     this.popcorn.pause();
     this.$pauseBtn.hide();
     this.$playBtn.show();
   },
 
   onSaveBtnClick: function(event) {
-    var creates = [];
-    var updates = []; 
+
+    // save subtitles
+    // if (this.changes["subtitles"]["creates"].length > 0 ) {
+    //   $.ajax({
+    //     url: "/songs/" + this.song.id +"/subtitles",
+    //     type: "POST",
+    //     data: { subtitles: this.changes["subtitles"]["creates"].attributes },
+    //     dataType: "json",
+    //     success: function(data) {
+    //       this.setSubtitleIds(data);
+    //       this.$saveBtn.attr("disabled", "disabled");
+    //     }.bind(this),
+    //     error: function(data,e,i) {
+    //       try {
+    //         var result = JSON.parse(data);
+    //         this.setSubtitleIds(result.created);
+    //         alert(result.error);
+    //       } catch (e) {
+    //         alert(data.responseText);
+    //       }
+    //     }
+    //   });
+    // }
+
+    // save timings and subtitles
 
     var track;
-
     for (var i = 0; i < this.tracks.length; i++) {
       track = this.tracks[i];
+      // add track to creates/updates list
       if (!track.isSaved) {
-        if (typeof track.attributes.id === "undefined") {
-          creates.push(this.tracks[i].attributes);
+        if (typeof track.getAttributes().id === "undefined") {
+          this.changes["tracks"]["creates"].push(track);
         } else {
-          updates.push(this.tracks[i].attributes);
+          this.changes["tracks"]["updates"].push(track);
         }
-
-      }
+      } 
     };
 
-    if (creates.length > 0 ) {
+    if (this.changes["tracks"]["creates"].length > 0 ) {
       $.ajax({
         url: "/songs/" + this.song.id +"/timings",
         type: "POST",
-        data: { timings: creates },
+        data: { timings: $.map(this.changes["tracks"]["creates"],function(track){ return track.getAttributes(); } ) },
         dataType: "json",
         success: function(data) {
-          this.setTrackIds(data);
+          this.setIds(data);
           this.$saveBtn.attr("disabled", "disabled");
         }.bind(this),
         error: function(data,e,i) {
           try {
             var result = JSON.parse(data);
-            this.setTrackIds(result.created);
+            this.setIds(result.created);
             alert(result.error);
           } catch (e) {
             alert(data.responseText);
@@ -253,11 +345,11 @@ Editor.prototype = {
       });
     }
 
-    if (updates.length > 0 ) {
+    if (this.changes["tracks"]["updates"].length > 0 ) {
       $.ajax({
         url: "/songs/" + this.song.id +"/timings",
         type: "PUT",
-        data: { timings: updates },
+        data: { timings: $.map(this.changes["tracks"]["updates"],function(track){ return track.getAttributes(); } ) },
         dataType: "json",
         success: function(timings) {
           for (var i = 0; i < timings.length; i++) {
@@ -268,7 +360,7 @@ Editor.prototype = {
         error: function(data,e,i) {
           try {
             var result = JSON.parse(data);
-            this.setTrackIds(result.updated);
+            this.setIds(result.updated);
             alert(result.error);
           } catch (e) {
             alert(data.responseText);
@@ -277,31 +369,11 @@ Editor.prototype = {
       });
     }
 
-    if (this.changes["deletes"]["tracks"].length > 0 ) {
+    if (this.changes["tracks"]["deletes"].length > 0 ) {
       $.ajax({
         url: "/songs/" + this.song.id +"/timings",
         type: "DELETE",
-        data: { timings: this.changes["deletes"]["tracks"] },
-        dataType: "json",
-        success: function(timings) {
-          this.$saveBtn.attr("disabled", "disabled");
-        }.bind(this),
-        error: function(data,e,i) {
-          try {
-            var result = JSON.parse(data);
-            alert(result.error);
-          } catch (e) {
-            alert(data.responseText);
-          }
-        }
-      });
-    }
-
-    if (this.changes["deletes"]["subtitles"].length > 0 ) {
-      $.ajax({
-        url: "/songs/" + this.song.id +"/subtitles",
-        type: "DELETE",
-        data: { subtitles: this.changes["deletes"]["subtitles"] },
+        data: { timings: this.changes["tracks"]["deletes"] },
         dataType: "json",
         success: function(timings) {
           this.$saveBtn.attr("disabled", "disabled");
@@ -329,7 +401,7 @@ Editor.prototype = {
     if (typeof timings !== "undefined") {
       for (var i = 0; i < timings.length; i++) {
         var track = new Track(timings[i],this, { isSaved: true });
-        this.trackMap[track.attributes.client_id] = track;
+        this.trackMap[track.getAttributes().client_id] = track;
         tracks.push(track);
       };
     }
@@ -343,15 +415,13 @@ Editor.prototype = {
 
     this.validateNoTrackOverlap(startTime,endTime);
 
-    var subtitle = this.subtitleView.nextUnmappedSubtitle();
     var attributes = {
       start_time: startTime,
-      end_time: endTime,
-      subtitle_id: subtitle.attributes.id
+      end_time: endTime
     };
 
-    var track = new Track(attributes, this, { "isGhost": true });
-    this.trackMap[track.attributes.client_id] = track;
+    var track = new Track(attributes, this, { "isGhost": true});
+    this.trackMap[track.getAttributes().client_id] = track;
     this.tracks.push(track);
     return track;
   },
@@ -376,24 +446,34 @@ Editor.prototype = {
 
   },
 
+  showSubtitleEdit: function() {
+    this.$subtitleEdit.val("");
+    this.$subtitleEdit.show();
+  },
+
+  hideSubtitleEdit: function() {
+    this.$subtitleEdit.hide();
+  },
+
   // either the end of media or the starttime next nearest track
   determineEndTime: function(startTime) {
     var nextNearestEdgeTime = this.media.duration;
 
     for (var i = this.tracks.length - 1; i >= 0; i--) {
-      if (this.tracks[i].startTime > startTime && this.tracks[i].startTime < nextNearestEdgeTime) {
-        nextNearestEdgeTime = this.tracks[i].startTime;
+      if (this.tracks[i].startTime() > startTime && this.tracks[i].startTime() < nextNearestEdgeTime) {
+        nextNearestEdgeTime = this.tracks[i].startTime();
       }
     };
 
     return nextNearestEdgeTime;
   },
 
-  setTrackIds: function(timings) {
+  setIds: function(timings) {
     var track;
     for (var i = 0; i < timings.length; i++) {
       track = this.trackMap[timings[i].client_id];
-      track.attributes.id = timings[i].id;
+      track.id = timings[i].id;
+      track.subtitles.id = timings[i].subtitle.id;
       track.isSaved = true;
     };
   },

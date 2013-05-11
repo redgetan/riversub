@@ -173,6 +173,8 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [ ] add google analytics
 // [ ] add instructions in editor
 // [ ] make home/editor navlink work
+// [ ] when typing in subtitle input, editor_space_listener should not get triggered
+// [ ] while typing in subtitle input, subtitle text should immediately be modified
 
 // 2.0
 // [ ] use speech recognition to automatically detect timeslices
@@ -183,5 +185,5 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [ ] should let user know if media is buffering to avoid making them think that our app is slow when in fact its the video loading thats slow
 // [ ] inserting in between subtitlelines should work, save load should appear in right order
 // [ ]   should have order and when saved and loaded should appear in right order
-//
+// [ ] should test determineEndTime
 

@@ -1,7 +1,17 @@
+Array.prototype.move = function (old_index, new_index) {
+    if (new_index >= this.length) {
+        var k = new_index - this.length;
+        while ((k--) + 1) {
+            this.push(undefined);
+        }
+    }
+    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+    return this; // for testing purposes
+};
+
 function SubtitleView(subtitles,editor) {
   this.editor = editor;
-  this.orderedLineKeys = [];
-  this.subtitles = {};
+  this.subtitles = [];
 
   this.setupElement(subtitles);
   this.selectedSubtitle = null;
@@ -13,25 +23,50 @@ SubtitleView.prototype = {
 
   setupElement: function(subtitles) {
     this.$container = $("#subtitle_container");
-
     this.createSubtitles(subtitles);
-
-    if (Object.keys(subtitles).length === 0) {
-      this.createSubtitleForm();
-    }
+    // if (Object.keys(subtitles).length === 0) {
+    //   this.createSubtitleForm();
+    // }
   },
 
   createSubtitles: function(subtitles) {
-    var result = {};
-    var subtitle;
-
     for (var i = 0; i < subtitles.length; i++) {
-      subtitle = new Subtitle(subtitles[i]);
-      result[subtitle.attributes.id] = subtitle;
-      this.orderedLineKeys.push(subtitle.attributes.id);
+      this.createSubtitle(subtitles[i]);
     };
-    
-    this.subtitles = result;
+  },
+
+  createSubtitle: function(subtitle) {
+    var subtitle = new Subtitle(subtitle);
+    this.subtitles.push(subtitle);
+    return subtitle;
+  },
+
+  render: function(subtitle) {
+    // render positions of subtitles
+    // subtitle are arranged by start time
+    // while subtitle.startTime > start time of other people, keep looping until its less than, then thats where u insert it
+    // case 1: subtitle must be insert before all
+    // case 2: subtitle must be insert after all
+    // case 3: subtitle must be insert somewhere in middle
+    var fromIndex = this.subtitles.indexOf(subtitle);
+    var toIndex   = this.subtitles.length - 1;
+
+    for (var i = 0; i < this.subtitles.length; i++) {
+
+      console.log("start sub: " + subtitle.startTime());
+      if (subtitle.startTime() > this.subtitles[i].startTime()) {
+        // continue
+      } else {
+        toIndex = i;
+        break;
+      }
+    };
+
+    if (fromIndex !== toIndex) {
+      subtitle.$el.insertBefore(this.subtitles[toIndex].$el);
+      this.subtitles.move(fromIndex,toIndex);
+      console.log("move: " + fromIndex + "," + toIndex);
+    }
   },
 
   createSubtitleForm: function() {
@@ -53,12 +88,13 @@ SubtitleView.prototype = {
     
     $(document).on("trackchange",this.onTrackChange.bind(this));
     $(document).on("subtitleremove",this.onSubtitleRemove.bind(this));
+    $(document).on("subtitletrackmapped",this.onSubtitleTrackMapped.bind(this));
   },
 
   onClickHandler: function(event) {
     var $target = $(event.target);
     var $subtitle = $target.hasClass("subtitle") ? $target : $target.closest(".subtitle");
-    var subtitle= this.subtitles[$subtitle.attr("id")];
+    var subtitle = $subtitle.data("model"); 
 
     if (typeof subtitle === "undefined") { return; }
 
@@ -68,23 +104,23 @@ SubtitleView.prototype = {
     }
   },
 
-  onFormSubmit: function(event) {
-    event.preventDefault();
+  // onFormSubmit: function(event) {
+  //   event.preventDefault();
 
-    $.ajax({
-      url: "/songs/" + this.editor.song.id + "/subtitles",
-      type: "POST",
-      data: this.$form.serialize(),
-      dataType: "json",
-      success: function(data) {
-        this.$form.remove();
-        this.createSubtitles(data);
-      }.bind(this),
-      error: function(data) {
-        alert(data.responseText);
-      }
-    });
-  },
+  //   $.ajax({
+  //     url: "/songs/" + this.editor.song.id + "/subtitles",
+  //     type: "POST",
+  //     data: this.$form.serialize(),
+  //     dataType: "json",
+  //     success: function(data) {
+  //       this.$form.remove();
+  //       this.createSubtitles(data);
+  //     }.bind(this),
+  //     error: function(data) {
+  //       alert(data.responseText);
+  //     }
+  //   });
+  // },
 
   onTrackChange: function(event,track) {
     track.subtitle.render();
@@ -92,6 +128,10 @@ SubtitleView.prototype = {
 
   onSubtitleRemove: function(event, subtitleId) {
     delete this.subtitles[subtitleId];
+  },
+
+  onSubtitleTrackMapped: function(event, subtitle) {
+    this.render(subtitle);
   },
 
   find: function(id) {
@@ -107,55 +147,79 @@ SubtitleView.prototype = {
   },
 
   // find one that is not yet mapped
-  nextUnmappedSubtitle: function() {
-    var target = this.findFirst(this.subtitles,function(subtitle){
-      return subtitle.$el.hasClass("mapped") === false;
-    });
+  // nextUnmappedSubtitle: function() {
+  //   var target = this.findFirst(this.subtitles,function(subtitle){
+  //     return subtitle.$el.hasClass("mapped") === false;
+  //   });
 
-    return target;
-  },
+  //   return target;
+  // },
 
-  findFirst: function(subtitles,fn) {
-    var key;
-    var value = null;
-    var conditionSatisfied;
+  // findFirst: function(subtitles,fn) {
+  //   var key;
+  //   var value = null;
+  //   var conditionSatisfied;
 
-    for (var i = 0; i < this.orderedLineKeys.length; i++) {
-      key = this.orderedLineKeys[i];
-      value = subtitles[key];
-      conditionSatisfied = fn(value);
-      if (conditionSatisfied) {
-        break;
-      }
-    };
+  //   for (var i = 0; i < this.orderedLineKeys.length; i++) {
+  //     key = this.orderedLineKeys[i];
+  //     value = subtitles[key];
+  //     conditionSatisfied = fn(value);
+  //     if (conditionSatisfied) {
+  //       break;
+  //     }
+  //   };
 
-    return value;
-  }
+  //   return value;
+  // }
+
 
 };
 
 // should listen to changes in track startTime and endTime to rerender
 function Subtitle(attributes) {
-  this.attributes = attributes;
   this.track = null;
   this.setupElement();
+  this.setAttributes(attributes);
   this.isDeleted = false;
   this.bindEvents();
 }
 
 Subtitle.prototype = {
 
+  setAttributes: function(attributes) {
+    for (var prop in attributes) {
+      this[prop] = attributes[prop];  
+    }
+    this.render();
+  },
+
+  getAttributes: function() {
+    return {
+      id:   this.id,
+      text: this.text
+    }
+  },
+
+  // generateGuid: function() {
+  //   'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  //     var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+  //     return v.toString(16);
+  //   });
+  // },
+
   setupElement: function() {
 
     this.$container = $("#subtitle_container");
 
-    var el = "<div id='" + this.attributes.id + "' class='subtitle'>" +
+    var el = "<div class='subtitle'>" +
       "<div class='start_time'></div>" +
       "<div class='end_time'></div>" +
       "<div class='text'></div>" +
       "<button type='button' class='close'>×</button>" +
       "</div>";
     this.$el = $(el);
+    this.$el.data("model",this);
+
     this.$container.append(this.$el);
 
     this.$close = this.$el.find(".close");
@@ -174,17 +238,25 @@ Subtitle.prototype = {
     this.remove();
   },
 
+  startTime: function() {
+    return this.track.startTime();
+  },
+
+  endTime: function() {
+    return this.track.endTime();
+  },
+
   remove: function() {
     // remove subtitle element 
     this.$el.remove();
     // remove track if its mapped to a track
-    if (this.track !== null ) {
+    if (this.track.isDeleted === false ) {
       this.track.remove();
     }
     // mark subtitle as isDeleted
     this.isDeleted = true;
 
-    $(document).trigger("subtitleremove",this.attributes.id);
+    $(document).trigger("subtitleremove",this.id);
   },
 
   onMouseEnter: function() {
@@ -203,13 +275,14 @@ Subtitle.prototype = {
       this.$el.find(".start_time").text("");
       this.$el.find(".end_time").text("");
     }
-    this.$el.find(".text").text(this.attributes.text);
+    this.$el.find(".text").text(this.text);
   },
 
   setTrack: function(track) {
     this.track = track;
     this.$el.addClass("mapped");
     this.render();
+    this.$el.trigger("subtitletrackmapped",[this]);
   },
 
   unmapTrack: function() {

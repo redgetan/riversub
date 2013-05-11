@@ -51,7 +51,7 @@ Timeline.prototype = {
   bindEvents: function() {
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
-    this.media.addEventListener("seeking",this.onSeeking.bind(this));
+    this.media.addEventListener("seeked",this.onSeeking.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
 
     $(document).on("marktrackstart",this.onMarkTrackStart.bind(this));
@@ -131,9 +131,7 @@ Timeline.prototype = {
     var $container = $(event.target).closest(".timeline");
 
     var seconds = trackView.position.left / this.resolution($container);
-    seconds = Math.round(seconds * 1000) / 1000;
     var duration = trackView.size.width   / this.resolution($container);
-    duration = Math.round(duration * 1000) / 1000;
 
     track.setStartTime(seconds);
     track.setEndTime(seconds + duration);

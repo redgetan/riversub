@@ -8,6 +8,12 @@
 	margin-right: 5px;
 }
 
+#subtitle_edit {
+	background-color: black;	
+	color: white;
+	font-style: bold;
+}
+
 div#editor #song_name {
 
 }
@@ -103,7 +109,7 @@ div#editor-bottom {
 #subtitle_container {
 	margin-left: 20px;
   	padding: 10px;
-	height: 310px;
+	height: 330px;
 	border: solid 1px black ;
 	overflow-y: scroll;
 	overflow-x: hidden;

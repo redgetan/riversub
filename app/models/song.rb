@@ -18,7 +18,6 @@ class Song < ActiveRecord::Base
       :name => self.name,
       :genre => self.genre,
       :media_sources => self.media_sources.map(&:serialize),
-      :subtitles => self.subtitles.map(&:serialize),
       :timings => self.timings.map(&:serialize)
     }
   end

@@ -1,9 +1,7 @@
 class Subtitle < ActiveRecord::Base
-  attr_accessible :text, :order
+  attr_accessible :text
 
-  belongs_to :song
-
-  validates :text, :order, :presence => true
+  has_one    :timing
 
   def serialize
     result = self.class.accessible_attributes.inject({}) do |result, attr|
