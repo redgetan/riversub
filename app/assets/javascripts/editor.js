@@ -473,7 +473,7 @@ Editor.prototype = {
     for (var i = 0; i < timings.length; i++) {
       track = this.trackMap[timings[i].client_id];
       track.id = timings[i].id;
-      track.subtitles.id = timings[i].subtitle.id;
+      track.subtitle.id = timings[i].subtitle.id;
       track.isSaved = true;
     };
   },

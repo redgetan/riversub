@@ -32,7 +32,7 @@ Track.prototype = {
       id: this.id,
       start_time: this.startTime(),
       end_time: this.endTime(),
-      client_id: this.trackEvent,
+      client_id: this.trackEvent._id,
       subtitle_attributes: this.subtitle.getAttributes(),
     }
   },

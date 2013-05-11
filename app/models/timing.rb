@@ -16,7 +16,7 @@ class Timing < ActiveRecord::Base
   def serialize
     result = self.class.accessible_attributes.inject({}) do |result, attr|
       # rails 3.2.11, sometimes attr is blank
-      unless attr == ""
+      unless attr == "" || attr =~ /_attributes/
         # to access client_id, you can't do self[client_id], but you can do self.client_id (its really a method, not an attribute)
         value = eval("self.#{attr}")
         result.merge!({ attr => value }) unless attr == ""
@@ -25,7 +25,7 @@ class Timing < ActiveRecord::Base
     end
     result.merge!({ :id => self.id})
           .merge!({
-      :subtitile => self.subtitile.serialize
+      :subtitle => self.subtitle.serialize
     })
   end
 
