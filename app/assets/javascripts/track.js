@@ -11,6 +11,7 @@ function Track(attributes,editor,options) {
   this.setupElement(options);
   this.bindEvents();
 
+  console.log("tracking..");
   this.setSubtitle(this.editor.subtitleView.createSubtitle(attributes['subtitle']));
   this.trackEvent     = this.createTrackEvent(attributes.start_time,attributes.end_time);
 
@@ -158,16 +159,19 @@ Track.prototype = {
   showSubtitleInSubtitleBar: function() {
 
     if (typeof this.subtitle.text === "undefined") {
-      this.editor.showSubtitleEdit();
-        
+      this.editor.$subtitleDisplay.hide();
+      this.editor.$subtitleEdit.val("");
+      this.editor.$subtitleEdit.show();
     } else {
+      this.editor.$subtitleEdit.hide();
+      this.editor.$subtitleDisplay.show();
       this.editor.$subtitleDisplay.text(this.subtitle.text);
     }
   },
 
   hideSubtitleInSubtitleBar: function() {
     if (typeof this.subtitle.text === "undefined") {
-      this.editor.hideSubtitleEdit();
+      this.editor.$subtitleEdit.hide();
     } else {
       this.editor.$subtitleDisplay.text("");
     }

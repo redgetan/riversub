@@ -23,17 +23,16 @@ SubtitleView.prototype = {
 
   setupElement: function(subtitles) {
     this.$container = $("#subtitle_container");
-    this.createSubtitles(subtitles);
     // if (Object.keys(subtitles).length === 0) {
     //   this.createSubtitleForm();
     // }
   },
 
-  createSubtitles: function(subtitles) {
-    for (var i = 0; i < subtitles.length; i++) {
-      this.createSubtitle(subtitles[i]);
-    };
-  },
+  // createSubtitles: function(subtitles) {
+  //   for (var i = 0; i < subtitles.length; i++) {
+  //     this.createSubtitle(subtitles[i]);
+  //   };
+  // },
 
   createSubtitle: function(subtitle) {
     var subtitle = new Subtitle(subtitle);
@@ -53,7 +52,6 @@ SubtitleView.prototype = {
 
     for (var i = 0; i < this.subtitles.length; i++) {
 
-      console.log("start sub: " + subtitle.startTime());
       if (subtitle.startTime() > this.subtitles[i].startTime()) {
         // continue
       } else {

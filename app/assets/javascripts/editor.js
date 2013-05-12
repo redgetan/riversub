@@ -122,6 +122,7 @@ Editor.prototype = {
     $(document).on("trackchange",this.onTrackChange.bind(this));
     $(document).on("trackremove",this.onTrackRemove.bind(this));
     $(document).on("subtitleremove",this.onSubtitleRemove.bind(this));
+    $(document).on("pauseadjust",this.onPauseAdjust.bind(this));
     this.$saveBtn.on("click",this.onSaveBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
@@ -150,7 +151,7 @@ Editor.prototype = {
       try {
         this.$el.trigger("marktrackend");
         this.endGhostTrack(this.currentTrack);
-        this.$subtitleEdit.show();
+        // this.$subtitleEdit.show();
       } catch (e) {
         console.log(e.stack);
         console.log("Removing invalid track");
@@ -175,6 +176,9 @@ Editor.prototype = {
     this.seek(time);
   },
 
+  onPauseAdjust: function(event,correctPauseTime) {
+  },
+
   onSubtitleLineClick: function(event,subtitle) {
     this.seek(subtitle.track.startTime());
   },
@@ -188,17 +192,26 @@ Editor.prototype = {
   },
 
   onTrackEnd: function(event,track) {
-    console.log("shit about to happen")
     if (typeof track.subtitle.text === "undefined" || /^\s*$/.test(track.subtitle.text) ) {
       // if playing, pause playback to let user type subtitle
       if (!this.$pauseBtn.is(':hidden')) {
         this.$pauseBtn.trigger("click");
-        // we want to seek to a few millseconds before end just so 
-        // 1. that the text from input would disappear triggered by the end event of track
-        // 2. scrubber is positioned nicely inside track instead of a bit outside.
-        //    this is to indicated were editing subtitle of that track
         this.$subtitleEdit.show();
         this.$subtitleEdit.focus();
+
+        var self = this;
+        setTimeout(function() {
+          console.log("b4 popcorn currtime: " + self.popcorn.currentTime());
+            // we want to seek to a few millseconds before end just so 
+            // 1. that the text from input would disappear triggered by the end event of track
+            // 2. scrubber is positioned nicely inside track instead of a bit outside.
+            //    this is to indicated were editing subtitle of that track
+            var x = Math.floor((self.currentTrack.endTime() - 0.01) * 1000) / 1000;
+            console.log("gonna seek to ");
+            console.log(x);
+            self.seek(x);
+          console.log("after popcorn currtime: " + self.popcorn.currentTime());
+        },100);
       } 
     }
   },
@@ -250,8 +263,9 @@ Editor.prototype = {
       console.log("enter key in input ");
       this.$subtitleEdit.blur();  
       var text = this.$subtitleEdit.val();
-      // this.$subtitleDisplay.text(text);  
       this.$subtitleEdit.hide();  
+      this.$subtitleDisplay.text(text);  
+      this.$subtitleDisplay.show();  
 
       // if puased, resume playback 
       if (!this.$playBtn.is(':hidden')) {
@@ -447,7 +461,6 @@ Editor.prototype = {
   },
 
   showSubtitleEdit: function() {
-    this.$subtitleEdit.val("");
     this.$subtitleEdit.show();
   },
 

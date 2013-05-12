@@ -51,7 +51,7 @@ Timeline.prototype = {
   bindEvents: function() {
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
-    this.media.addEventListener("seeked",this.onSeeking.bind(this));
+    this.media.addEventListener("seeking",this.onSeeking.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
 
     $(document).on("marktrackstart",this.onMarkTrackStart.bind(this));
@@ -73,15 +73,16 @@ Timeline.prototype = {
   },
 
   onPause: function() {
+    var pauseTime = Math.floor(this.media.currentTime * 1000) / 1000;
+    console.log("pause: " + pauseTime);
     clearInterval(this.scrubberInterval);
     clearInterval(this.progressBarInterval);
     clearInterval(this.timeIndicatorInterval);
-    this.renderProgressBar();  
-    this.renderScrubber();  
-    this.renderTimeIndicator();  
+    this.$container.trigger("pauseadjust",[pauseTime]);
   },
 
   onSeeking: function() {
+    console.log("seek: " + this.media.currentTime);
     this.renderProgressBar();  
     this.renderScrubber();  
     this.renderTimeIndicator();  
