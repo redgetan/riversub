@@ -40,4 +40,9 @@ class TimingsController < ApplicationController
     end
     render :json => {}, :status => 200
   end
+
+  def index
+    @song = Song.find params[:song_id]
+    send_data @song.to_srt, :type => "text/plain", :filename => "#{@song.name}.srt"
+  end
 end

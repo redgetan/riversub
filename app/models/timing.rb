@@ -23,10 +23,31 @@ class Timing < ActiveRecord::Base
       end
       result
     end
+
     result.merge!({ :id => self.id})
-          .merge!({
-      :subtitle => self.subtitle.serialize
-    })
+          .merge!({ :subtitle => self.subtitle.serialize })
+  end
+
+  def formatted_start_time
+    formatted_time(self.start_time)
+  end
+
+  def formatted_end_time
+    formatted_time(self.end_time)
+  end
+
+  def formatted_time(time)
+    hours = ( time / 3600 ).floor % 24
+    minutes = ( time / 60 ).floor % 60
+    seconds = (time % 60).floor
+    milliseconds = (time * 1000).floor % 1000
+
+    hours = (hours < 10 ? "0#{hours}" : hours)
+    minutes = (minutes < 10 ? "0#{minutes}" : minutes)
+    seconds = (seconds  < 10 ? "0#{seconds}" : seconds) 
+    milliseconds = (milliseconds  < 10 ? "00#{milliseconds}" : (milliseconds < 100 ? "0#{milliseconds}" : milliseconds))
+
+    "#{hours}:#{minutes}:#{seconds},#{milliseconds}"
   end
 
 end

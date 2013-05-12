@@ -1,8 +1,8 @@
 function Editor (song) {
+  this.song = song;
   this.setupElement();
   this.defineAttributeAccessors();
 
-  this.song = song;
   this.isKeydownPressed = false;
   this.currentTrack = null;
 
@@ -53,6 +53,7 @@ Editor.prototype = {
                 "</div>" +
                 "<div class='btn-group pull-right'>" +
                   "<a id='save_btn' class='btn'><i class='icon-save'></i> Save</a>" +
+                  "<a id='download_btn' class='btn' href='/songs/" + this.song.id + "/timings'><i class='icon-download-alt'></i> Download</a>" +
                   "<a data-toggle='modal' data-target='#myModal' class='btn'><i class='icon-question-sign'></i> Help</a>" +
                 "</div>" +
               "</div>" +

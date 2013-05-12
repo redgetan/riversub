@@ -22,4 +22,11 @@ class Song < ActiveRecord::Base
     }
   end
 
+  def to_srt
+    self.timings.each_with_index.map do |timing,index|
+      # get subtitle each subtitle
+      "#{index + 1}\n#{timing.formatted_start_time} --> #{timing.formatted_end_time}\n#{timing.subtitle.text}\n\n"
+    end.join
+  end
+
 end

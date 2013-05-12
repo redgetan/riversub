@@ -246,7 +246,7 @@ Timeline.prototype = {
     var hours = parseInt( time / 3600 ) % 24;
     var minutes = parseInt( time / 60 ) % 60;
     var seconds = Math.floor(time % 60);
-    var milliseconds = Math.round((time % 1) * 1000);
+    var milliseconds = Math.floor(time * 1000) % 1000
 
     var result = (hours < 10 ? "0" + hours : hours) + ":" + 
                  (minutes < 10 ? "0" + minutes : minutes) + ":" + 
