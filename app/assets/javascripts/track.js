@@ -165,9 +165,9 @@ Track.prototype = {
       start: startTime,
       end:   endTime,
       onStart: function() {
-        self.$el_expanded.trigger("trackstart",[self]);
         self.showSubtitleInSubtitleBar();
         self.subtitle.highlight();
+        self.$el_expanded.trigger("trackstart",[self]);
       },
       onEnd: function() {
         self.hideSubtitleInSubtitleBar();
@@ -183,7 +183,7 @@ Track.prototype = {
 
   showSubtitleInSubtitleBar: function() {
 
-    if (typeof this.subtitle.text === "undefined") {
+    if (typeof this.subtitle.text === "undefined" || /^\s*$/.test(this.subtitle.text) ) {
       this.editor.$subtitleDisplay.hide();
       this.editor.$subtitleEdit.val("");
       this.editor.$subtitleEdit.show();
@@ -195,7 +195,7 @@ Track.prototype = {
   },
 
   hideSubtitleInSubtitleBar: function() {
-    if (typeof this.subtitle.text === "undefined") {
+    if (typeof this.subtitle.text === "undefined" || /^\s*$/.test(this.subtitle.text) ) {
       this.editor.$subtitleEdit.hide();
     } else {
       this.editor.$subtitleDisplay.text("");

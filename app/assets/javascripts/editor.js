@@ -190,6 +190,9 @@ Editor.prototype = {
 
   onTrackStart: function(event,track) {
     this.currentTrack = track;
+    if (this.edit_sub_mode) {
+      this.$subtitleEdit.focus();
+    }
   },
 
   onTrackEnd: function(event,track) {
@@ -197,18 +200,16 @@ Editor.prototype = {
       // if playing, pause playback to let user type subtitle
       if (!this.$pauseBtn.is(':hidden')) {
         this.$pauseBtn.trigger("click");
-        this.$subtitleEdit.show();
-        this.$subtitleEdit.focus();
-
-        var self = this;
-        setTimeout(function() {
-            // we want to seek to a few millseconds before end just so 
-            // 1. that the text from input would disappear triggered by the end event of track
-            // 2. scrubber is positioned nicely inside track instead of a bit outside.
-            //    this is to indicated were editing subtitle of that track
-          var time = Math.floor((self.currentTrack.endTime() - 0.01) * 1000) / 1000;
-          self.seek(time);
-        },100);
+        // we want to seek to a few millseconds before end just so 
+        // 1. that the text from input would disappear triggered by the end event of track
+        // 2. scrubber is positioned nicely inside track instead of a bit outside.
+        //    this is to indicated were editing subtitle of that track
+        var time = Math.floor((this.currentTrack.endTime() - 0.01) * 1000) / 1000;
+        this.seek(time);
+        // seeking will trigger trackEvent.start which will show subtitle edit input, only then do we focus
+        // but we also want to avoid focus on normal trackEvent.start, so we only focus on case where user just ended 
+        // the track and is about to edit sub
+        this.edit_sub_mode = true;
       } 
     }
   },
@@ -267,6 +268,10 @@ Editor.prototype = {
       if (!this.$playBtn.is(':hidden')) {
         this.$playBtn.trigger("click");
       } 
+
+
+
+      this.edit_sub_mode = false;
     }
   },
 
