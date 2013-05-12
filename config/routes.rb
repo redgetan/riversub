@@ -5,9 +5,13 @@ River::Application.routes.draw do
   get "songs/play"
   post "songs/sub"
 
+  get "songs/:song_id/timings", :to => "timings#index"
+  post "songs/:song_id/timings", :to => "timings#create"
+  put "songs/:song_id/timings", :to => "timings#update"
+  delete "songs/:song_id/timings", :to => "timings#destroy"
+
   resources :songs do
     resources :media_sources
-    resources :timings
   end
 
   get "home/index"

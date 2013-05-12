@@ -291,6 +291,11 @@ Editor.prototype = {
   },
 
   onSaveBtnClick: function(event) {
+    if (this.$saveBtn.attr("disabled") === "disabled") {
+      return;
+    } else {
+      this.$saveBtn.attr("disabled","disabled");
+    }
 
     // save subtitles
     // if (this.changes["subtitles"]["creates"].length > 0 ) {
@@ -345,6 +350,7 @@ Editor.prototype = {
             var result = JSON.parse(data);
             this.setIds(result.created);
             alert(result.error);
+            this.$saveBtn.removeAttr("disabled");
           } catch (e) {
             alert(data.responseText);
           }
@@ -369,6 +375,7 @@ Editor.prototype = {
             var result = JSON.parse(data);
             this.setIds(result.updated);
             alert(result.error);
+            this.$saveBtn.removeAttr("disabled");
           } catch (e) {
             alert(data.responseText);
           }
@@ -389,6 +396,7 @@ Editor.prototype = {
           try {
             var result = JSON.parse(data);
             alert(result.error);
+            this.$saveBtn.removeAttr("disabled");
           } catch (e) {
             alert(data.responseText);
           }
