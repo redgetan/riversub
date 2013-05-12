@@ -1,3 +1,11 @@
+.corner {
+	opacity: 0.9;
+	position: relative;
+	/*vertical-align: bottom;*/
+	top: 90px;
+
+}
+
 #current_time {
 	display: inline;
 	margin-left: 5px;
@@ -88,6 +96,7 @@ div#editor-bottom {
 	position: absolute;
 	z-index: 3;
 	background-color: white;
+	opacity: 0.7;
 }
 
 .track.ghost {

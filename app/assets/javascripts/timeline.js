@@ -74,7 +74,6 @@ Timeline.prototype = {
 
   onPause: function() {
     var pauseTime = Math.floor(this.media.currentTime * 1000) / 1000;
-    console.log("pause: " + pauseTime);
     clearInterval(this.scrubberInterval);
     clearInterval(this.progressBarInterval);
     clearInterval(this.timeIndicatorInterval);
@@ -82,7 +81,6 @@ Timeline.prototype = {
   },
 
   onSeeking: function() {
-    console.log("seek: " + this.media.currentTime);
     this.renderProgressBar();  
     this.renderScrubber();  
     this.renderTimeIndicator();  

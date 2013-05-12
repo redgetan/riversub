@@ -201,16 +201,12 @@ Editor.prototype = {
 
         var self = this;
         setTimeout(function() {
-          console.log("b4 popcorn currtime: " + self.popcorn.currentTime());
             // we want to seek to a few millseconds before end just so 
             // 1. that the text from input would disappear triggered by the end event of track
             // 2. scrubber is positioned nicely inside track instead of a bit outside.
             //    this is to indicated were editing subtitle of that track
-            var x = Math.floor((self.currentTrack.endTime() - 0.01) * 1000) / 1000;
-            console.log("gonna seek to ");
-            console.log(x);
-            self.seek(x);
-          console.log("after popcorn currtime: " + self.popcorn.currentTime());
+          var time = Math.floor((self.currentTrack.endTime() - 0.01) * 1000) / 1000;
+          self.seek(time);
         },100);
       } 
     }
@@ -260,7 +256,6 @@ Editor.prototype = {
   onSubtitleEditKeyup: function(event) {
     // enter key
     if (event.which == 13) {
-      console.log("enter key in input ");
       this.$subtitleEdit.blur();  
       var text = this.$subtitleEdit.val();
       this.$subtitleEdit.hide();  
@@ -269,7 +264,6 @@ Editor.prototype = {
 
       // if puased, resume playback 
       if (!this.$playBtn.is(':hidden')) {
-        console.log("must be resumeing");
         this.$playBtn.trigger("click");
       } 
     }
@@ -284,14 +278,12 @@ Editor.prototype = {
   },
 
   onPlayBtnClick: function(event) {
-    console.log("play button click trigger");
     this.popcorn.play();
     this.$playBtn.hide();
     this.$pauseBtn.show();
   },
 
   onPauseBtnClick: function(event) {
-    console.log("pause button click trigger");
     this.popcorn.pause();
     this.$pauseBtn.hide();
     this.$playBtn.show();

@@ -11,7 +11,6 @@ function Track(attributes,editor,options) {
   this.setupElement(options);
   this.bindEvents();
 
-  console.log("tracking..");
   this.setSubtitle(this.editor.subtitleView.createSubtitle(attributes['subtitle']));
   this.trackEvent     = this.createTrackEvent(attributes.start_time,attributes.end_time);
 
@@ -41,17 +40,29 @@ Track.prototype = {
   setupElement: function(options) {
 
     this.$container_summary = $("#timeline_container #summary");
-    this.$el_summary = $("<div id='" + this.id + "' class='track'>");
+
+    var el_summary = "<div id='" + this.id + "' class='track'>" +
+                     "</div>"
+
+    this.$el_summary = $(el_summary);
     this.$container_summary.append(this.$el_summary);
 
     this.$container_expanded = $("#timeline_container #expanded");
-    this.$el_expanded = $("<div id='" + this.id + "' class='track'>");
+
+    var el_expanded = "<div id='" + this.id + "' class='track'>" +
+                       "<button type='button' class='close corner'>×</button>" +
+                     "</div>"
+
+    this.$el_expanded = $(el_expanded);
     this.$container_expanded.find(".filler").append(this.$el_expanded);
 
     if (typeof options !== "undefined" && options["isGhost"]) {
       this.$el_summary.addClass("ghost");
       this.$el_expanded.addClass("ghost");
     }
+
+    this.$close = this.$el_expanded.find(".close");
+    this.$close.hide();
 
     this.$el_expanded.resizable({
       handles: 'e, w',
@@ -62,6 +73,22 @@ Track.prototype = {
   bindEvents: function() {
     this.$el_expanded.on("click",this.onMouseClickHandler.bind(this));
     this.$el_summary.on("click",this.onMouseClickHandler.bind(this));
+
+    this.$el_expanded.on("mouseenter",this.onMouseEnter.bind(this));
+    this.$el_expanded.on("mouseleave",this.onMouseLeave.bind(this));
+    this.$close.on("click",this.onCloseClick.bind(this));
+  },
+
+  onMouseEnter: function() {
+    this.$close.show();
+  },
+
+  onMouseLeave: function() {
+    this.$close.hide();
+  },
+
+  onCloseClick: function() {
+    this.remove();
   },
 
   onMouseClickHandler: function(event) {
@@ -138,13 +165,11 @@ Track.prototype = {
       start: startTime,
       end:   endTime,
       onStart: function() {
-        console.log("start " + self.startTime());
         self.$el_expanded.trigger("trackstart",[self]);
         self.showSubtitleInSubtitleBar();
         self.subtitle.highlight();
       },
       onEnd: function() {
-        console.log("end " + self.endTime());
         self.hideSubtitleInSubtitleBar();
         self.subtitle.unhighlight();
         self.$el_expanded.trigger("trackend",[self]);
