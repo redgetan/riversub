@@ -52,7 +52,6 @@ Timeline.prototype = {
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("seeking",this.onSeeking.bind(this));
-    this.media.addEventListener("seeked",this.onSeeked.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
 
     $(document).on("marktrackstart",this.onMarkTrackStart.bind(this));
