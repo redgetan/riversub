@@ -87,7 +87,8 @@ Track.prototype = {
     this.$close.hide();
   },
 
-  onCloseClick: function() {
+  onCloseClick: function(event) {
+    event.stopPropagation();
     this.remove();
   },
 

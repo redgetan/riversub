@@ -5,6 +5,7 @@ function Editor (song) {
 
   this.isKeydownPressed = false;
   this.currentTrack = null;
+  this.currentGhostTrack = null;
 
   this.subtitleView = new SubtitleView($.map(song.timings,function(timing){ return timing.subtitle; }),this);
   this.timeline = new Timeline();
@@ -133,25 +134,47 @@ Editor.prototype = {
     this.$subtitleEdit.on("keydown",this.onSubtitleEditKeydown.bind(this));
     this.$subtitleEdit.on("keyup",this.onSubtitleEditKeyup.bind(this));
     this.$subtitleDisplay.on("dblclick",this.onSubtitleDisplayDblClick.bind(this));
+    this.media.addEventListener("pause",this.onPause.bind(this));
   },
 
   onKeydownHandler: function(event) {
-    // space key
-    if (event.which === 32) {
+    // shift key
+    if (event.which === 16) {
       if (!this.isKeydownPressed) {
-        this.currentTrack = this.createGhostTrack();
-        this.$el.trigger("marktrackstart",[this.currentTrack]);
-        this.isKeydownPressed = true;
+        if (!this.insideAnotherTrack()) {
+          // console.log("ghost track gonna start");
+          this.currentTrack = this.createGhostTrack();
+          this.currentGhostTrack = this.currentTrack;
+          this.$el.trigger("marktrackstart",[this.currentTrack]);
+          this.ghostTrackStarted = true;
+          this.isKeydownPressed = true;
+        }
       }
     }
   },
 
+  insideAnotherTrack: function() {
+    if (this.currentTrack !== null) {
+      if (this.media.currentTime >= this.currentTrack.startTime() && 
+          this.media.currentTime <= this.currentTrack.endTime()) {
+        return true;
+      }
+    }
+
+    return false;  
+  },
+
   onKeyupHandler: function(event) {
-    // space key
-    if (event.which === 32) {
+    // shift key
+    if (event.which === 16) {
       try {
-        this.$el.trigger("marktrackend");
-        this.endGhostTrack(this.currentTrack);
+        if (this.ghostTrackStarted) {
+          // console.log("ghost track gonna end");
+          this.$el.trigger("marktrackend");
+          this.endGhostTrack(this.currentGhostTrack);
+          this.currentGhostTrack = null;
+          this.ghostTrackStarted = false;
+        }
         // this.$subtitleEdit.show();
       } catch (e) {
         console.log(e.stack);
@@ -163,18 +186,37 @@ Editor.prototype = {
 
     }
 
-    // // space key
-    // if (event.which === 32) {
-    //   if (!this.$playBtn.is(':hidden')) {
-    //     this.$playBtn.trigger("click");
-    //   } else {
-    //     this.$pauseBtn.trigger("click");
-    //   }
-    // }
+    // space key
+    if (event.which === 32) {
+      if (!this.$playBtn.is(':hidden')) {
+        this.$playBtn.trigger("click");
+      } else {
+        this.$pauseBtn.trigger("click");
+      }
+    }
   },
 
   onTimelineSeekHandler: function(event,time) {
     this.seek(time);
+  },
+
+  onPause: function(event) {
+    if (this.edit_sub_mode) {
+      // on edit subtitle mode, 2 cases:
+      //1. ghost track has been ended and thus currentghosttrack is null, here we use currenttrack
+      //2. ghost track has not been ended, and current track has changed to next one,
+      //   this happens when a ghost track bumps right into next track and pause is triggered by its own end time
+      //   but by the time pause happens, ghost track has overlapped next track and thus
+      //   currenttrack changes to next track, we want to switch currenttrack back to unfinished ghost track, and seek
+      //   to its end time
+      this.currentTrack = this.currentGhostTrack || this.currentTrack;
+      // we want to seek to a few millseconds before end just so 
+      // 1. that the text from input would disappear triggered by the end event of track
+      // 2. scrubber is positioned nicely inside track instead of a bit outside.
+      //    this is to indicated were editing subtitle of that track
+      var time = Math.floor((this.currentTrack.endTime() - 0.01) * 1000) / 1000;
+      this.seek(time);
+    }
   },
 
   onPauseAdjust: function(event,correctPauseTime) {
@@ -200,12 +242,6 @@ Editor.prototype = {
       // if playing, pause playback to let user type subtitle
       if (!this.$pauseBtn.is(':hidden')) {
         this.$pauseBtn.trigger("click");
-        // we want to seek to a few millseconds before end just so 
-        // 1. that the text from input would disappear triggered by the end event of track
-        // 2. scrubber is positioned nicely inside track instead of a bit outside.
-        //    this is to indicated were editing subtitle of that track
-        var time = Math.floor((this.currentTrack.endTime() - 0.01) * 1000) / 1000;
-        this.seek(time);
         // seeking will trigger trackEvent.start which will show subtitle edit input, only then do we focus
         // but we also want to avoid focus on normal trackEvent.start, so we only focus on case where user just ended 
         // the track and is about to edit sub
@@ -241,6 +277,7 @@ Editor.prototype = {
   },
 
   onSubtitleEditFocus: function(event) {
+    this.isKeydownPressed = false;
     $(document).off("keydown");
     $(document).off("keyup");
   },
@@ -263,6 +300,19 @@ Editor.prototype = {
       this.$subtitleEdit.hide();  
       this.$subtitleDisplay.text(text);  
       this.$subtitleDisplay.show();  
+
+      // will reach this state if user presses space_key until startTime of next track,
+      // in which it immediately stops since ghostTrack ends at starttime of next track
+      // but it is not stopped by explicit user action which would be to release space_key, we would have
+      // known that track should end at that point and ghost status should be removed
+      // 
+      // thus, in this case, we automatically remove ghost status of the track knowing that it is 
+      // the maximum endTime of the current track since it can't go beyond start time of next track
+      if (this.currentTrack.$el_expanded.hasClass("ghost")) {
+        this.$el.trigger("marktrackend");
+        this.currentTrack.end(this.currentTrack.endTime());
+        this.ghostTrackStarted = false;
+      }
 
       // if puased, resume playback 
       if (!this.$playBtn.is(':hidden')) {

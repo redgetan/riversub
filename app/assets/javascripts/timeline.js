@@ -52,6 +52,7 @@ Timeline.prototype = {
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("seeking",this.onSeeking.bind(this));
+    this.media.addEventListener("seeked",this.onSeeked.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
 
     $(document).on("marktrackstart",this.onMarkTrackStart.bind(this));
@@ -61,7 +62,6 @@ Timeline.prototype = {
 
     this.$summary.on("click",this.onClickHandler.bind(this));
     this.$expanded.on("click",this.onClickHandler.bind(this));
-
   },
 
   onPlay: function() {
@@ -73,6 +73,7 @@ Timeline.prototype = {
   },
 
   onPause: function() {
+    // console.log("on pause" + this.media.currentTime);
     var pauseTime = Math.floor(this.media.currentTime * 1000) / 1000;
     clearInterval(this.scrubberInterval);
     clearInterval(this.progressBarInterval);
@@ -81,6 +82,7 @@ Timeline.prototype = {
   },
 
   onSeeking: function() {
+    // console.log("seeking " + this.media.currentTime);
     this.renderProgressBar();  
     this.renderScrubber();  
     this.renderTimeIndicator();  
