@@ -250,13 +250,18 @@ Editor.prototype = {
     }
   },
 
-  onTrackRemove: function(event,trackId) {
-    // removing a track that is not yet saved in server
-    if (typeof trackId === "undefined") {
-      return;  
+  onTrackRemove: function(event,track) {
+    // remove references to track that must be deleted
+    var index = this.tracks.indexOf(track);
+    delete this.trackMap[track.client_id];
+    this.tracks.splice(index,1);
+
+    // if track was previously saved to server, make sure to delete server side track as well
+    if (typeof trackId !== "undefined") {
+      this.changes["tracks"]["deletes"].push(trackId);
+      this.$saveBtn.removeAttr("disabled");
     }
-    this.changes["tracks"]["deletes"].push(trackId);
-    this.$saveBtn.removeAttr("disabled");
+
   },
 
   onSubtitleRemove: function(event,subtitleId) {

@@ -210,7 +210,7 @@ Track.prototype = {
     // this.subtitle.unmapTrack();
     this.isDeleted = true;
     this.subtitle.remove();
-    $(document).trigger("trackremove",this.id);
+    $(document).trigger("trackremove",this);
   },
 
   toString: function() {

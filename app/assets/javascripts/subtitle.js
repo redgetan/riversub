@@ -63,7 +63,6 @@ SubtitleView.prototype = {
     if (fromIndex !== toIndex) {
       subtitle.$el.insertBefore(this.subtitles[toIndex].$el);
       this.subtitles.move(fromIndex,toIndex);
-      console.log("move: " + fromIndex + "," + toIndex);
     }
   },
 
@@ -187,6 +186,12 @@ Subtitle.prototype = {
   setAttributes: function(attributes) {
     for (var prop in attributes) {
       this[prop] = attributes[prop];  
+      if (prop === "text") {
+        if (this.track !== null ) {
+          this.track.isSaved = false;
+          this.$el.trigger("trackchange",[this.track]);
+        }
+      }
     }
     this.render();
   },
