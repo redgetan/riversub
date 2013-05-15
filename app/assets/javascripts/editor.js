@@ -245,6 +245,9 @@ Editor.prototype = {
     if (this.edit_sub_mode) {
       this.$subtitleEdit.focus();
     }
+
+    this.showSubtitleInSubtitleBar(track.subtitle);
+    track.subtitle.highlight();
   },
 
   onTrackEnd: function(event,track) {
@@ -258,6 +261,9 @@ Editor.prototype = {
         this.edit_sub_mode = true;
       } 
     }
+
+    this.hideSubtitleInSubtitleBar(track.subtitle);
+    track.subtitle.unhighlight();
   },
 
   onTrackRemove: function(event,track) {
@@ -531,12 +537,25 @@ Editor.prototype = {
 
   },
 
-  showSubtitleEdit: function() {
-    this.$subtitleEdit.show();
+  showSubtitleInSubtitleBar: function(subtitle) {
+
+    if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
+      this.$subtitleDisplay.hide();
+      this.$subtitleEdit.val("");
+      this.$subtitleEdit.show();
+    } else {
+      this.$subtitleEdit.hide();
+      this.$subtitleDisplay.show();
+      this.$subtitleDisplay.text(subtitle.text);
+    }
   },
 
-  hideSubtitleEdit: function() {
-    this.$subtitleEdit.hide();
+  hideSubtitleInSubtitleBar: function(subtitle) {
+    if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
+      this.$subtitleEdit.hide();
+    } else {
+      this.$subtitleDisplay.text("");
+    }
   },
 
   // either the end of media or the starttime next nearest track

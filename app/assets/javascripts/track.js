@@ -170,13 +170,9 @@ Track.prototype = {
       start: startTime,
       end:   endTime,
       onStart: function() {
-        self.showSubtitleInSubtitleBar();
-        self.subtitle.highlight();
         self.$el_expanded.trigger("trackstart",[self]);
       },
       onEnd: function() {
-        self.hideSubtitleInSubtitleBar();
-        self.subtitle.unhighlight();
         self.$el_expanded.trigger("trackend",[self]);
       },
     });
@@ -184,27 +180,6 @@ Track.prototype = {
     var trackEventId = this.popcorn.getLastTrackEventId();
 
     return this.popcorn.getTrackEvent(trackEventId);
-  },
-
-  showSubtitleInSubtitleBar: function() {
-
-    if (typeof this.subtitle.text === "undefined" || /^\s*$/.test(this.subtitle.text) ) {
-      this.editor.$subtitleDisplay.hide();
-      this.editor.$subtitleEdit.val("");
-      this.editor.$subtitleEdit.show();
-    } else {
-      this.editor.$subtitleEdit.hide();
-      this.editor.$subtitleDisplay.show();
-      this.editor.$subtitleDisplay.text(this.subtitle.text);
-    }
-  },
-
-  hideSubtitleInSubtitleBar: function() {
-    if (typeof this.subtitle.text === "undefined" || /^\s*$/.test(this.subtitle.text) ) {
-      this.editor.$subtitleEdit.hide();
-    } else {
-      this.editor.$subtitleDisplay.text("");
-    }
   },
 
   remove: function() {
