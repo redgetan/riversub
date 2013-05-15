@@ -220,10 +220,10 @@ Subtitle.prototype = {
       "<div class='text'></div>" +
       "<button type='button' class='close'>×</button>" +
       "</div>";
-    this.$el = $(el);
-    this.$el.data("model",this);
+    this.$container.append(el);
 
-    this.$container.append(this.$el);
+    this.$el = this.$container.find(".subtitle").last();
+    this.$el.data("model",this);
 
     this.$close = this.$el.find(".close");
     this.$close.hide();
