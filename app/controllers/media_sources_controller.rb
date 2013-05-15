@@ -1,13 +1,13 @@
 class MediaSourcesController < ApplicationController
   def new
-    @song = Song.find params[:song_id]
-    @media_source = @song.media_sources.build
+    @video = Video.find params[:video_id]
+    @media_source = @video.media_sources.build
     render :layout => false
   end
 
   def create
-    @song = Song.find params[:song_id]
-    @media_source = @song.media_sources.build(:url => params[:url])
+    @video = Video.find params[:video_id]
+    @media_source = @video.media_sources.build(:url => params[:url])
 
     if @media_source.save
       render :json => { :media_source_url => @media_source.url }, :status => 200

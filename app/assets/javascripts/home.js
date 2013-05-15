@@ -4,9 +4,9 @@ var popcorn;
 var editor;
 var metadata;
 
-var editSong = function(song) {
+var editVideo = function(video) {
   $("#main_container").empty();
-  editor = new Editor(song);
+  editor = new Editor(video);
 }
 
 var getMetadata = function(url,done) {
@@ -46,13 +46,13 @@ var isEmbeddable = function(metadata) {
 
 $(document).ready(function(){
 
-  $(document).on("click", "div#songs a.song", function(event) {
+  $(document).on("click", "div#videos a.video", function(event) {
     event.preventDefault();
 
     $.ajax({
-      url: "/songs/" + this.id,
+      url: "/videos/" + this.id,
       dataType: "json",
-      success: editSong
+      success: editVideo
     });
   });
 
@@ -66,7 +66,7 @@ $(document).ready(function(){
     var url = $("input#media_url").val();
     // verify embeddable
 
-    if (url.match(/youtube/)) { 
+    if (url.match(/youtube/)) {
       getMetadata(url,function(data){
         metadata  = data;
 
@@ -83,15 +83,15 @@ $(document).ready(function(){
 
         if (isEmbeddable(metadata)) {
           $.ajax({
-            url: "/songs/sub",
+            url: "/videos/sub",
             type: "POST",
             data: {
               media_url : $("input#media_url").val(),
-              song_metadata: metadata
+              video_metadata: metadata
             },
             dataType: "json",
-            success: function(song) {
-              editSong(song);
+            success: function(video) {
+              editVideo(video);
             }.bind(this),
             error: function(data) {
               alert(data.responseText);
@@ -114,7 +114,7 @@ $(document).ready(function(){
         $("form#sub .control-group").removeClass("error");
       },2000);
     }
-  
+
 
   });
 

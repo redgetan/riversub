@@ -17,15 +17,15 @@ div#media_input {
   margin-top: 100px;
 }
 
-div#songs {
+div#videos {
   margin-top: 100px;
 }
 
-div#songs li h6 {
+div#videos li h6 {
   line-height: 1em;
 }
 
-div#songs li.selected {
+div#videos li.selected {
   background-color: mediumaquamarine;
 }
 

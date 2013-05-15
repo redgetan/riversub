@@ -1,4 +1,4 @@
-class Song < ActiveRecord::Base
+class Video < ActiveRecord::Base
   attr_accessible :artist, :genre, :name, :metadata
                   :media_sources_attributes
   has_many :media_sources, :dependent => :destroy

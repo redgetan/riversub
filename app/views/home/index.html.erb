@@ -9,17 +9,17 @@
 </form>
 </div>
 
-<div id="songs" class="span12">
+<div id="videos" class="span12">
   <p>Recently Subtitled Videos</p>
   <ul class="thumbnails">
-    <% @songs.each do |song| %>
+    <% @videos.each do |video| %>
         <li class="span2">
           <div class="thumbnail center">
-            <a href="#" id="<%= song.id %>" class="song" >
-              <img src="<%= song.metadata["data"]["thumbnail"]["sqDefault"] %>" alt="">
+            <a href="#" id="<%= video.id %>" class="video" >
+              <img src="<%= video.metadata["data"]["thumbnail"]["sqDefault"] %>" alt="">
             </a>
-            <a href="#" id="<%= song.id %>" class="song" >
-              <h6><%= song.name %></h6>
+            <a href="#" id="<%= video.id %>" class="video" >
+              <h6><%= video.name %></h6>
             </a>
           </div>
         </li>

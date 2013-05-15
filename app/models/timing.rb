@@ -1,13 +1,13 @@
 class Timing < ActiveRecord::Base
-  attr_accessible :song_id, :start_time, :end_time, :subtitle_id, :client_id,
+  attr_accessible :video_id, :start_time, :end_time, :subtitle_id, :client_id,
                   :subtitle_attributes
 
-  # used as an id to for client tracks to identify which server timing it maps to 
+  # used as an id to for client tracks to identify which server timing it maps to
   # useful when doing bulk updates where more than 1 track is returned back to client
   attr_accessor :client_id
 
   belongs_to :subtitle
-  belongs_to :song
+  belongs_to :video
 
   validates :start_time, :end_time, :presence => true
 
@@ -44,7 +44,7 @@ class Timing < ActiveRecord::Base
 
     hours = (hours < 10 ? "0#{hours}" : hours)
     minutes = (minutes < 10 ? "0#{minutes}" : minutes)
-    seconds = (seconds  < 10 ? "0#{seconds}" : seconds) 
+    seconds = (seconds  < 10 ? "0#{seconds}" : seconds)
     milliseconds = (milliseconds  < 10 ? "00#{milliseconds}" : (milliseconds < 100 ? "0#{milliseconds}" : milliseconds))
 
     "#{hours}:#{minutes}:#{seconds},#{milliseconds}"

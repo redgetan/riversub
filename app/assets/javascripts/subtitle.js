@@ -67,7 +67,7 @@ SubtitleView.prototype = {
   },
 
   createSubtitleForm: function() {
-    var el = "<form id='transcript'>" + 
+    var el = "<form id='transcript'>" +
                "<textarea id='transcript' name='transcript' rows='12' cols='10' placeholder='Paste Transcript here'></textarea>" +
                "<input class='btn' type='submit' value='Submit'>" +
              "</form>";
@@ -80,10 +80,10 @@ SubtitleView.prototype = {
     this.$container.on("click",this.onClickHandler.bind(this));
     this.$container.on("dblclick",this.onDblClickHandler.bind(this));
 
-    if (typeof this.$form !== "undefined") { 
+    if (typeof this.$form !== "undefined") {
       this.$form.on("submit",this.onFormSubmit.bind(this));
     }
-    
+
     $(document).on("trackchange",this.onTrackChange.bind(this));
     $(document).on("subtitleremove",this.onSubtitleRemove.bind(this));
     $(document).on("subtitletrackmapped",this.onSubtitleTrackMapped.bind(this));
@@ -92,7 +92,7 @@ SubtitleView.prototype = {
   onClickHandler: function(event) {
     var $target = $(event.target);
     var $subtitle = $target.hasClass("subtitle") ? $target : $target.closest(".subtitle");
-    var subtitle = $subtitle.data("model"); 
+    var subtitle = $subtitle.data("model");
 
     if (subtitle === null) { return; }
 
@@ -105,7 +105,7 @@ SubtitleView.prototype = {
   onDblClickHandler: function(event) {
     var $target = $(event.target);
     var $subtitle = $target.hasClass("subtitle") ? $target : $target.closest(".subtitle");
-    var subtitle = $subtitle.data("model"); 
+    var subtitle = $subtitle.data("model");
 
     if (subtitle === null) { return; }
 
@@ -116,7 +116,7 @@ SubtitleView.prototype = {
   //   event.preventDefault();
 
   //   $.ajax({
-  //     url: "/songs/" + this.editor.song.id + "/subtitles",
+  //     url: "/videos/" + this.editor.video.id + "/subtitles",
   //     type: "POST",
   //     data: this.$form.serialize(),
   //     dataType: "json",
@@ -147,7 +147,7 @@ SubtitleView.prototype = {
   },
 
   highlightLine: function(subtitle) {
-      if (this.selectedSubtitle != null ) { 
+      if (this.selectedSubtitle != null ) {
         this.selectedSubtitle.unhighlight();
       }
       this.selectedSubtitle = subtitle;
@@ -196,7 +196,7 @@ Subtitle.prototype = {
 
   setAttributes: function(attributes) {
     for (var prop in attributes) {
-      this[prop] = attributes[prop];  
+      this[prop] = attributes[prop];
       if (prop === "text") {
         if (this.track !== null ) {
           this.track.isSaved = false;
@@ -262,7 +262,7 @@ Subtitle.prototype = {
   },
 
   remove: function() {
-    // remove subtitle element 
+    // remove subtitle element
     this.$el.remove();
     // remove track if its mapped to a track
     if (this.track.isDeleted === false ) {

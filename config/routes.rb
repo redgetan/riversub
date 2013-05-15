@@ -2,15 +2,15 @@ River::Application.routes.draw do
 
   devise_for :users
 
-  get "songs/play"
-  post "songs/sub"
+  get "videos/play"
+  post "videos/sub"
 
-  get "songs/:song_id/timings", :to => "timings#index"
-  post "songs/:song_id/timings", :to => "timings#create"
-  put "songs/:song_id/timings", :to => "timings#update"
-  delete "songs/:song_id/timings", :to => "timings#destroy"
+  get "videos/:video_id/timings", :to => "timings#index"
+  post "videos/:video_id/timings", :to => "timings#create"
+  put "videos/:video_id/timings", :to => "timings#update"
+  delete "videos/:video_id/timings", :to => "timings#destroy"
 
-  resources :songs do
+  resources :videos do
     resources :media_sources
   end
 

@@ -1,5 +1,5 @@
-function Editor (song) {
-  this.song = song;
+function Editor (video) {
+  this.video = video;
   this.setupElement();
   this.defineAttributeAccessors();
 
@@ -7,13 +7,13 @@ function Editor (song) {
   this.currentTrack = null;
   this.currentGhostTrack = null;
 
-  this.subtitleView = new SubtitleView($.map(song.timings,function(timing){ return timing.subtitle; }),this);
+  this.subtitleView = new SubtitleView($.map(video.timings,function(timing){ return timing.subtitle; }),this);
   this.timeline = new Timeline();
 
-  this.popcorn = this.loadMedia(song.media_sources[0].url);
+  this.popcorn = this.loadMedia(video.media_sources[0].url);
 
   this.trackMap = {}
-  this.tracks = this.loadTracks(song.timings);
+  this.tracks = this.loadTracks(video.timings);
   this.timeline.setTracks(this.tracks);
 
   this.changes = {
@@ -58,7 +58,7 @@ Editor.prototype = {
                 "</div>" +
                 "<div class='btn-group pull-right'>" +
                   "<a id='save_btn' class='btn'><i class='icon-save'></i> Save</a>" +
-                  "<a id='download_btn' class='btn' href='/songs/" + this.song.id + "/timings'><i class='icon-download-alt'></i> Download</a>" +
+                  "<a id='download_btn' class='btn' href='/videos/" + this.video.id + "/timings'><i class='icon-download-alt'></i> Download</a>" +
                   "<a data-toggle='modal' data-target='#myModal' class='btn'><i class='icon-question-sign'></i> Help</a>" +
                 "</div>" +
               "</div>" +
@@ -96,10 +96,10 @@ Editor.prototype = {
     this.$iframeOverlay = $("#iframe_overlay");
 
     this.$video_name = $("#video_name");
-    this.$video_name.text(this.song.name);
+    this.$video_name.text(this.video.name);
 
     this.$video_url = $("#video_url");
-    this.$video_url.text(this.song.media_sources[0].url);
+    this.$video_url.text(this.video.media_sources[0].url);
   },
 
   defineAttributeAccessors: function() {
@@ -166,13 +166,13 @@ Editor.prototype = {
 
   insideAnotherTrack: function() {
     if (this.currentTrack !== null) {
-      if (this.media.currentTime >= this.currentTrack.startTime() && 
+      if (this.media.currentTime >= this.currentTrack.startTime() &&
           this.media.currentTime <= this.currentTrack.endTime()) {
         return true;
       }
     }
 
-    return false;  
+    return false;
   },
 
   onKeyupHandler: function(event) {
@@ -221,7 +221,7 @@ Editor.prototype = {
       //   currenttrack changes to next track, we want to switch currenttrack back to unfinished ghost track, and seek
       //   to its end time
       this.currentTrack = this.currentGhostTrack || this.currentTrack;
-      // we want to seek to a few millseconds before end just so 
+      // we want to seek to a few millseconds before end just so
       // 1. that the text from input would disappear triggered by the end event of track
       // 2. scrubber is positioned nicely inside track instead of a bit outside.
       //    this is to indicated were editing subtitle of that track
@@ -262,10 +262,10 @@ Editor.prototype = {
       if (!this.$pauseBtn.is(':hidden')) {
         this.$pauseBtn.trigger("click");
         // seeking will trigger trackEvent.start which will show subtitle edit input, only then do we focus
-        // but we also want to avoid focus on normal trackEvent.start, so we only focus on case where user just ended 
+        // but we also want to avoid focus on normal trackEvent.start, so we only focus on case where user just ended
         // the track and is about to edit sub
         this.edit_sub_mode = true;
-      } 
+      }
     }
   },
 
@@ -286,7 +286,7 @@ Editor.prototype = {
   onSubtitleRemove: function(event,subtitleId) {
     // removing a subtitle that is not yet saved in server
     if (typeof subtitleId === "undefined") {
-      return;  
+      return;
     }
     this.changes["subtitles"]["deletes"].push(subtitleId);
     this.$saveBtn.removeAttr("disabled");
@@ -308,9 +308,9 @@ Editor.prototype = {
 
   onSubtitleEditBlur: function(event) {
     var text = this.$subtitleEdit.val();
-    this.$subtitleEdit.hide();  
-    this.$subtitleDisplay.text(text);  
-    this.$subtitleDisplay.show();  
+    this.$subtitleEdit.hide();
+    this.$subtitleDisplay.text(text);
+    this.$subtitleDisplay.show();
 
     $(document).on("keydown",this.onKeydownHandler.bind(this));
     $(document).on("keyup",this.onKeyupHandler.bind(this));
@@ -324,13 +324,13 @@ Editor.prototype = {
   onSubtitleEditKeyup: function(event) {
     // enter key
     if (event.which == 13) {
-      this.$subtitleEdit.blur();  
+      this.$subtitleEdit.blur();
       // will reach this state if user presses space_key until startTime of next track,
       // in which it immediately stops since ghostTrack ends at starttime of next track
       // but it is not stopped by explicit user action which would be to release space_key, we would have
       // known that track should end at that point and ghost status should be removed
-      // 
-      // thus, in this case, we automatically remove ghost status of the track knowing that it is 
+      //
+      // thus, in this case, we automatically remove ghost status of the track knowing that it is
       // the maximum endTime of the current track since it can't go beyond start time of next track
       if (this.currentTrack.isGhost()) {
         this.$el.trigger("marktrackend");
@@ -338,10 +338,10 @@ Editor.prototype = {
         this.ghostTrackStarted = false;
       }
 
-      // if puased, resume playback 
+      // if puased, resume playback
       if (!this.$playBtn.is(':hidden')) {
         this.$playBtn.trigger("click");
-      } 
+      }
 
 
 
@@ -357,9 +357,9 @@ Editor.prototype = {
   },
 
   onSubtitleDisplayDblClick: function(event) {
-    var text = this.$subtitleDisplay.text();  
+    var text = this.$subtitleDisplay.text();
     this.$subtitleEdit.val(text);
-    this.$subtitleDisplay.hide();  
+    this.$subtitleDisplay.hide();
     this.$subtitleEdit.show();
     this.$subtitleEdit.focus();
   },
@@ -386,7 +386,7 @@ Editor.prototype = {
     // save subtitles
     // if (this.changes["subtitles"]["creates"].length > 0 ) {
     //   $.ajax({
-    //     url: "/songs/" + this.song.id +"/subtitles",
+    //     url: "/videos/" + this.video.id +"/subtitles",
     //     type: "POST",
     //     data: { subtitles: this.changes["subtitles"]["creates"].attributes },
     //     dataType: "json",
@@ -418,12 +418,12 @@ Editor.prototype = {
         } else {
           this.changes["tracks"]["updates"].push(track);
         }
-      } 
+      }
     };
 
     if (this.changes["tracks"]["creates"].length > 0 ) {
       $.ajax({
-        url: "/songs/" + this.song.id +"/timings",
+        url: "/videos/" + this.video.id +"/timings",
         type: "POST",
         data: { timings: $.map(this.changes["tracks"]["creates"],function(track){ return track.getAttributes(); } ) },
         dataType: "json",
@@ -446,7 +446,7 @@ Editor.prototype = {
 
     if (this.changes["tracks"]["updates"].length > 0 ) {
       $.ajax({
-        url: "/songs/" + this.song.id +"/timings",
+        url: "/videos/" + this.video.id +"/timings",
         type: "PUT",
         data: { timings: $.map(this.changes["tracks"]["updates"],function(track){ return track.getAttributes(); } ) },
         dataType: "json",
@@ -471,7 +471,7 @@ Editor.prototype = {
 
     if (this.changes["tracks"]["deletes"].length > 0 ) {
       $.ajax({
-        url: "/songs/" + this.song.id +"/timings",
+        url: "/videos/" + this.video.id +"/timings",
         type: "DELETE",
         data: { timings: this.changes["tracks"]["deletes"] },
         dataType: "json",

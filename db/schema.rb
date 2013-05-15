@@ -11,25 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130511191610) do
+ActiveRecord::Schema.define(:version => 20130515191713) do
 
   create_table "media_sources", :force => true do |t|
-    t.integer  "song_id",    :null => false
+    t.integer  "video_id",   :null => false
     t.string   "media_type"
     t.string   "url"
     t.integer  "votes"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "songs", :force => true do |t|
-    t.string   "name"
-    t.string   "artist"
-    t.string   "genre"
-    t.text     "lyrics"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.text     "metadata"
   end
 
   create_table "subtitles", :force => true do |t|
@@ -39,7 +29,7 @@ ActiveRecord::Schema.define(:version => 20130511191610) do
   end
 
   create_table "timings", :force => true do |t|
-    t.integer  "song_id",     :null => false
+    t.integer  "video_id",    :null => false
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.float    "start_time"
@@ -64,5 +54,15 @@ ActiveRecord::Schema.define(:version => 20130511191610) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "videos", :force => true do |t|
+    t.string   "name"
+    t.string   "artist"
+    t.string   "genre"
+    t.text     "lyrics"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.text     "metadata"
+  end
 
 end
