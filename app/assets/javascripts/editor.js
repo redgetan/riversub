@@ -335,8 +335,6 @@ Editor.prototype = {
   },
 
   onSubtitleEditKeydown: function(event) {
-    var text = this.$subtitleEdit.val();
-    this.currentTrack.subtitle.setAttributes({ "text": text})
   },
 
   onSubtitleEditKeyup: function(event) {
@@ -349,7 +347,10 @@ Editor.prototype = {
         this.$playBtn.trigger("click");
       }
 
-    }
+    } 
+    
+    var text = this.$subtitleEdit.val();
+    this.currentTrack.subtitle.setAttributes({ "text": text})
   },
 
   onSubtitleDblClick: function(event) {
