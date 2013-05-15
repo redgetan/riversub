@@ -93,7 +93,7 @@ SubtitleView.prototype = {
     var $subtitle = $target.hasClass("subtitle") ? $target : $target.closest(".subtitle");
     var subtitle = $subtitle.data("model"); 
 
-    if (typeof subtitle === "undefined") { return; }
+    if (subtitle === null) { return; }
 
     if (subtitle.track != null) {
       this.highlightLine(subtitle);
