@@ -183,17 +183,18 @@ Editor.prototype = {
           // console.log("ghost track gonna end");
           this.$el.trigger("marktrackend");
           this.endGhostTrack(this.currentGhostTrack);
-          this.currentGhostTrack = null;
-          this.ghostTrackStarted = false;
         }
-        // this.$subtitleEdit.show();
       } catch (e) {
-        console.log(e.stack);
+        console.log(e);
         console.log("Removing invalid track");
-        this.currentTrack.remove();
+        this.currentGhostTrack.remove();
+        this.currentTrack = null;
         this.tracks.pop();
+        this.$subtitleEdit.hide();
       }
+      this.currentGhostTrack = null;
       this.isKeydownPressed = false;
+      this.ghostTrackStarted = false;
 
     }
 
@@ -312,19 +313,6 @@ Editor.prototype = {
     this.$subtitleDisplay.text(text);
     this.$subtitleDisplay.show();
 
-    $(document).on("keydown",this.onKeydownHandler.bind(this));
-    $(document).on("keyup",this.onKeyupHandler.bind(this));
-  },
-
-  onSubtitleEditKeydown: function(event) {
-    var text = this.$subtitleEdit.val();
-    this.currentTrack.subtitle.setAttributes({ "text": text})
-  },
-
-  onSubtitleEditKeyup: function(event) {
-    // enter key
-    if (event.which == 13) {
-      this.$subtitleEdit.blur();
       // will reach this state if user presses space_key until startTime of next track,
       // in which it immediately stops since ghostTrack ends at starttime of next track
       // but it is not stopped by explicit user action which would be to release space_key, we would have
@@ -338,14 +326,29 @@ Editor.prototype = {
         this.ghostTrackStarted = false;
       }
 
+
+
+      this.edit_sub_mode = false;
+
+    $(document).on("keydown",this.onKeydownHandler.bind(this));
+    $(document).on("keyup",this.onKeyupHandler.bind(this));
+  },
+
+  onSubtitleEditKeydown: function(event) {
+    var text = this.$subtitleEdit.val();
+    this.currentTrack.subtitle.setAttributes({ "text": text})
+  },
+
+  onSubtitleEditKeyup: function(event) {
+    // enter key
+    if (event.which == 13) {
+      this.$subtitleEdit.blur();
+
       // if puased, resume playback
       if (!this.$playBtn.is(':hidden')) {
         this.$playBtn.trigger("click");
       }
 
-
-
-      this.edit_sub_mode = false;
     }
   },
 
