@@ -22,6 +22,7 @@ group :assets do
   gem "less-rails"
   gem "twitter-bootstrap-rails", "~> 2.2.6"
   gem 'jquery-ui-rails'
+  gem 'turbo-sprockets-rails3'
 end
 
 gem 'jquery-rails'
