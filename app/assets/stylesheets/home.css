@@ -1,3 +1,7 @@
+.navbar .brand {
+  margin-left: 0px;
+}
+
 .center {
   float: none;
   margin-left: auto;
@@ -5,8 +9,8 @@
   text-align: center;
 }
 
-div#header {
-  margin-top: 20px;
+div#main_container {
+  margin-top: 60px;
 }
 
 div#media_input {

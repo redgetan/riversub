@@ -40,6 +40,10 @@ Editor.prototype = {
     var el =
       "<div id='editor'>" +
         "<div id='editor-top' class='row'>" +
+          "<div class='span12'>" +
+            "<h4 id='video_name'></h4>" +
+            "<h6 id='video_url'></h6>" +
+          "</div>" +
           "<div id='editor-top-left' class='span6'>" +
             "<div id='media_container'>" +
               "<div id='media'><div id='iframe_overlay'></div></div>" +
@@ -90,6 +94,12 @@ Editor.prototype = {
     this.$subtitleEdit.hide();
 
     this.$iframeOverlay = $("#iframe_overlay");
+
+    this.$video_name = $("#video_name");
+    this.$video_name.text(this.song.name);
+
+    this.$video_url = $("#video_url");
+    this.$video_url.text(this.song.media_sources[0].url);
   },
 
   defineAttributeAccessors: function() {
