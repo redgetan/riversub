@@ -78,6 +78,7 @@ SubtitleView.prototype = {
 
   bindEvents: function() {
     this.$container.on("click",this.onClickHandler.bind(this));
+    this.$container.on("dblclick",this.onDblClickHandler.bind(this));
 
     if (typeof this.$form !== "undefined") { 
       this.$form.on("submit",this.onFormSubmit.bind(this));
@@ -99,6 +100,16 @@ SubtitleView.prototype = {
       this.highlightLine(subtitle);
       this.$container.trigger("subtitlelineclick",[subtitle]);
     }
+  },
+
+  onDblClickHandler: function(event) {
+    var $target = $(event.target);
+    var $subtitle = $target.hasClass("subtitle") ? $target : $target.closest(".subtitle");
+    var subtitle = $subtitle.data("model"); 
+
+    if (subtitle === null) { return; }
+
+    this.$container.trigger("subtitledblclick");
   },
 
   // onFormSubmit: function(event) {
@@ -235,6 +246,7 @@ Subtitle.prototype = {
     this.$el.on("mouseenter",this.onMouseEnter.bind(this));
     this.$el.on("mouseleave",this.onMouseLeave.bind(this));
     this.$close.on("click",this.onCloseClick.bind(this));
+    this.$close.on("dblclick",this.onCloseClick.bind(this));
   },
 
   onCloseClick: function() {

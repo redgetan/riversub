@@ -134,6 +134,7 @@ Editor.prototype = {
     $(document).on("trackchange",this.onTrackChange.bind(this));
     $(document).on("trackremove",this.onTrackRemove.bind(this));
     $(document).on("subtitleremove",this.onSubtitleRemove.bind(this));
+    $(document).on("subtitledblclick",this.onSubtitleDblClick.bind(this));
     $(document).on("pauseadjust",this.onPauseAdjust.bind(this));
     this.$saveBtn.on("click",this.onSaveBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
@@ -344,6 +345,13 @@ Editor.prototype = {
 
       this.edit_sub_mode = false;
     }
+  },
+
+  onSubtitleDblClick: function(event) {
+    if (!this.$pauseBtn.is(":hidden")) {
+      this.$pauseBtn.trigger("click");
+    }
+    this.onSubtitleDisplayDblClick();
   },
 
   onSubtitleDisplayDblClick: function(event) {
