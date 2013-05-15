@@ -243,15 +243,20 @@ Editor.prototype = {
 
   onTrackStart: function(event,track) {
     this.currentTrack = track;
+
+    this.showSubtitleInSubtitleBar(track.subtitle);
+    track.subtitle.highlight();
+
     if (this.edit_sub_mode) {
       this.$subtitleEdit.focus();
     }
 
-    this.showSubtitleInSubtitleBar(track.subtitle);
-    track.subtitle.highlight();
   },
 
   onTrackEnd: function(event,track) {
+    this.hideSubtitleInSubtitleBar(track.subtitle);
+    track.subtitle.unhighlight();
+
     if (typeof track.subtitle.text === "undefined" || /^\s*$/.test(track.subtitle.text) ) {
       // if playing, pause playback to let user type subtitle
       if (!this.$pauseBtn.is(':hidden')) {
@@ -262,9 +267,6 @@ Editor.prototype = {
         this.edit_sub_mode = true;
       } 
     }
-
-    this.hideSubtitleInSubtitleBar(track.subtitle);
-    track.subtitle.unhighlight();
   },
 
   onTrackRemove: function(event,track) {
@@ -305,6 +307,11 @@ Editor.prototype = {
   },
 
   onSubtitleEditBlur: function(event) {
+    var text = this.$subtitleEdit.val();
+    this.$subtitleEdit.hide();  
+    this.$subtitleDisplay.text(text);  
+    this.$subtitleDisplay.show();  
+
     $(document).on("keydown",this.onKeydownHandler.bind(this));
     $(document).on("keyup",this.onKeyupHandler.bind(this));
   },
@@ -318,11 +325,6 @@ Editor.prototype = {
     // enter key
     if (event.which == 13) {
       this.$subtitleEdit.blur();  
-      var text = this.$subtitleEdit.val();
-      this.$subtitleEdit.hide();  
-      this.$subtitleDisplay.text(text);  
-      this.$subtitleDisplay.show();  
-
       // will reach this state if user presses space_key until startTime of next track,
       // in which it immediately stops since ghostTrack ends at starttime of next track
       // but it is not stopped by explicit user action which would be to release space_key, we would have
