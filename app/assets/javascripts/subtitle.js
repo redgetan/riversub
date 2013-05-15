@@ -273,7 +273,9 @@ Subtitle.prototype = {
   render: function() {
     if (this.track !== null ) {
       this.$el.find(".start_time").text(this.track.startTime());
-      this.$el.find(".end_time").text(this.track.endTime());
+      if (!this.track.isGhost()) {
+        this.$el.find(".end_time").text(this.track.endTime());
+      }
     } else {
       this.$el.find(".start_time").text("");
       this.$el.find(".end_time").text("");

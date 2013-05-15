@@ -257,8 +257,8 @@ Editor.prototype = {
     this.tracks.splice(index,1);
 
     // if track was previously saved to server, make sure to delete server side track as well
-    if (typeof trackId !== "undefined") {
-      this.changes["tracks"]["deletes"].push(trackId);
+    if (typeof track.id !== "undefined") {
+      this.changes["tracks"]["deletes"].push(track.id);
       this.$saveBtn.removeAttr("disabled");
     }
 
@@ -313,7 +313,7 @@ Editor.prototype = {
       // 
       // thus, in this case, we automatically remove ghost status of the track knowing that it is 
       // the maximum endTime of the current track since it can't go beyond start time of next track
-      if (this.currentTrack.$el_expanded.hasClass("ghost")) {
+      if (this.currentTrack.isGhost()) {
         this.$el.trigger("marktrackend");
         this.currentTrack.end(this.currentTrack.endTime());
         this.ghostTrackStarted = false;

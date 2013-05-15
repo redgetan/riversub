@@ -159,6 +159,10 @@ Track.prototype = {
     this.setEndTime(time);
   },
 
+  isGhost: function() {
+    return this.$el_expanded.hasClass("ghost");
+  },
+
   createTrackEvent: function(startTime,endTime) {
     var self = this;
 
