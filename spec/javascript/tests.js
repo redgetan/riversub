@@ -160,23 +160,33 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [x] use twitter bootstrap
 // [ ] should be able to drag tracks across timeline window boundaries
 // [ ] double click on track should lock into that track and play until end of that track only, press space will replay that track again
-// [ ] double click on subtitle text on subtitle container should allow you to edit it
+// [x] double click on subtitle text on subtitle container should allow you to edit it
 // [ ] if media cannot be loaded, let user choose another url
-// [ ] should not allow user to create track inside another track
+// [x] should not allow user to create track inside another track
 // [x] change add song to subtitle song - needs only url, extract name, lyrics, let user paste that on 2nd step, 1st step has to be extremely convenient
-// [ ] display video thumbnail instead of just text 
+// [ ] display video thumbnail instead of just text
 // [ ] add county label
 // [ ] paginate through subtitled video list
-// [ ] add footer with about (built in rails), feedback
+// [ ] add about page
 // [ ] test email registration
 // [ ] when logged in, make formatting better, replace Edit Profile with my username with dropdown ability to edit profile
-// [ ] add google analytics
-// [ ] add instructions in editor
-// [ ] make home/editor navlink work
-// [ ] when typing in subtitle input, editor_space_listener should not get triggered
-// [ ] while typing in subtitle input, subtitle text should immediately be modified
+// [x] add google analytics
+// [x] add instructions in editor
+// [x] when typing in subtitle input, editor_space_listener should not get triggered
+// [x] while typing in subtitle input, subtitle text should immediately be modified
+// [ ] bug: pressing shift multiple times would fill up entire timeline
+// [ ] bug: create 2 tracks. svae. create another track. save. error. its saving the previously created 2 tracks again to server
+// [ ] bug: create a track. start another before that track. right when its about to reach start of next track, release shift, and you'll see it jumps to end of next track
+// [ ] ui: instructions on how to start. popover tooltip, 1,2,3 [andre]
+// [ ] click and drag timeline to create segment like aegis
+// [ ] ui: when error, instead of alert, show flash. let user know that we will take care of it
+// [ ] permalinks: so back button would work
+// [ ] dealing with duplicate youtube links
+// [ ] cancelling a sub entry immediately
+// [ ] saving should just do one request, and payload should be in json instead of form encoded
 
 // 2.0
+// [ ] allow user to sync timing of existing transcripts
 // [ ] use speech recognition to automatically detect timeslices
 // [ ] allow user to tab through time slices
 // [ ] drag track should modify subtitle bar meaning if you drag track from 3 to 5 second, and scrubber currently at 3
