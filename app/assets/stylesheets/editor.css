@@ -128,7 +128,10 @@ div#editor-bottom {
 }
 
 .subtitle {
-	height: 20px;
+	height: auto;
+	display: inline-block;
+	margin-top: -5px;
+	width: 100%;
 }
 
 .subtitle.mapped {
@@ -156,7 +159,5 @@ div#editor-bottom {
 }
 
 .subtitle .text {
-	width: 250px;
-	white-space: nowrap;
-	overflow: hidden;
+	width: 240px;
 }

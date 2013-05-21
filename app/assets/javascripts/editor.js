@@ -48,7 +48,7 @@ Editor.prototype = {
             "<div id='media_container'>" +
               "<div id='media'><div id='iframe_overlay'></div></div>" +
               "<div id='subtitle_bar' class='span6 center'>" +
-                "<div id='subtitle_display'></div>" +
+                "<div id='subtitle_display' class='span5 center'></div>" +
                 "<input id='subtitle_edit' class='span5 center' type='text' placeholder='Enter Subtitle Here'>" +
               "</div>" +
               "<div id='controls' class='row'>" +
