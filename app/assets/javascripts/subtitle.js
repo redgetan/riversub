@@ -78,7 +78,6 @@ SubtitleView.prototype = {
 
   bindEvents: function() {
     this.$container.on("click",this.onClickHandler.bind(this));
-    this.$container.on("dblclick",this.onDblClickHandler.bind(this));
 
     if (typeof this.$form !== "undefined") {
       this.$form.on("submit",this.onFormSubmit.bind(this));
@@ -100,16 +99,6 @@ SubtitleView.prototype = {
       this.highlightLine(subtitle);
       this.$container.trigger("subtitlelineclick",[subtitle]);
     }
-  },
-
-  onDblClickHandler: function(event) {
-    var $target = $(event.target);
-    var $subtitle = $target.hasClass("subtitle") ? $target : $target.closest(".subtitle");
-    var subtitle = $subtitle.data("model");
-
-    if (subtitle === null) { return; }
-
-    this.$container.trigger("subtitledblclick");
   },
 
   // onFormSubmit: function(event) {
@@ -239,6 +228,30 @@ Subtitle.prototype = {
     this.$close = this.$el.find(".close");
     this.$close.hide();
 
+    this.$el.find(".text").editInPlace({
+      editEvent: "dblclick",
+      bg_over: "transparent",
+      default_text: "",
+      callback: function(unused, enteredText) { this.setAttributes({ "text": enteredText}); return enteredText; }.bind(this),
+      delegate: {
+        didOpenEditInPlace: function($dom,settings) {
+          $dom.trigger("subtitlelineedit");
+
+          $dom.find(":input").attr("maxlength",60);
+          $dom.find(":input").on("keyup",function(event) {
+            var $input = $(event.target);
+            $input.trigger("subtitlelinekeyup",$input.val());
+          });
+        }.bind(this),
+        // shouldCloseEditInPlace: function() { return false; },
+        didCloseEditInPlace: function($dom) {
+          $dom.trigger("subtitlelineblur");
+          // this.edit_sub_mode = false;
+        }.bind(this)  
+      }
+    });
+
+
     this.render();
   },
 
@@ -246,7 +259,6 @@ Subtitle.prototype = {
     this.$el.on("mouseenter",this.onMouseEnter.bind(this));
     this.$el.on("mouseleave",this.onMouseLeave.bind(this));
     this.$close.on("click",this.onCloseClick.bind(this));
-    this.$close.on("dblclick",this.onCloseClick.bind(this));
   },
 
   onCloseClick: function() {

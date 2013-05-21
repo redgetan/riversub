@@ -129,12 +129,14 @@ Editor.prototype = {
     $(document).on("keyup",this.onKeyupHandler.bind(this));
     $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
     $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
+    $(document).on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
+    $(document).on("subtitlelineblur",this.onSubtitleLineBlur.bind(this));
+    $(document).on("subtitlelinekeyup",this.onSubtitleLineKeyup.bind(this));
     $(document).on("trackstart",this.onTrackStart.bind(this));
     $(document).on("trackend",this.onTrackEnd.bind(this));
     $(document).on("trackchange",this.onTrackChange.bind(this));
     $(document).on("trackremove",this.onTrackRemove.bind(this));
     $(document).on("subtitleremove",this.onSubtitleRemove.bind(this));
-    $(document).on("subtitledblclick",this.onSubtitleDblClick.bind(this));
     $(document).on("pauseadjust",this.onPauseAdjust.bind(this));
     this.$saveBtn.on("click",this.onSaveBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
@@ -142,7 +144,6 @@ Editor.prototype = {
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
     this.$subtitleEdit.on("focus",this.onSubtitleEditFocus.bind(this));
     this.$subtitleEdit.on("blur",this.onSubtitleEditBlur.bind(this));
-    this.$subtitleEdit.on("keydown",this.onSubtitleEditKeydown.bind(this));
     this.$subtitleEdit.on("keyup",this.onSubtitleEditKeyup.bind(this));
     this.$subtitleDisplay.on("dblclick",this.onSubtitleDisplayDblClick.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
@@ -302,9 +303,7 @@ Editor.prototype = {
   },
 
   onSubtitleEditFocus: function(event) {
-    this.isKeydownPressed = false;
-    $(document).off("keydown");
-    $(document).off("keyup");
+    this.disableCommands();
   },
 
   onSubtitleEditBlur: function(event) {
@@ -326,15 +325,28 @@ Editor.prototype = {
         this.ghostTrackStarted = false;
       }
 
-
-
       this.edit_sub_mode = false;
+      
+      this.enableCommands();
+  },
 
+  onSubtitleLineEdit: function(event) {
+    this.disableCommands();
+  },
+
+  onSubtitleLineBlur: function(event) {
+    this.enableCommands();
+  },
+
+  enableCommands: function(event) {
     $(document).on("keydown",this.onKeydownHandler.bind(this));
     $(document).on("keyup",this.onKeyupHandler.bind(this));
   },
 
-  onSubtitleEditKeydown: function(event) {
+  disableCommands: function(event) {
+    this.isKeydownPressed = false;
+    $(document).off("keydown");
+    $(document).off("keyup");
   },
 
   onSubtitleEditKeyup: function(event) {
@@ -353,11 +365,8 @@ Editor.prototype = {
     this.currentTrack.subtitle.setAttributes({ "text": text})
   },
 
-  onSubtitleDblClick: function(event) {
-    if (!this.$pauseBtn.is(":hidden")) {
-      this.$pauseBtn.trigger("click");
-    }
-    this.onSubtitleDisplayDblClick();
+  onSubtitleLineKeyup: function(event,text) {
+    this.$subtitleDisplay.text(text);
   },
 
   onSubtitleDisplayDblClick: function(event) {

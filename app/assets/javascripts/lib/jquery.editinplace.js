@@ -74,6 +74,7 @@ $.fn.editInPlace.defaults = {
 	save_if_nothing_changed:	false,  // boolean: submit to function or server even if the user did not change anything
 	on_blur:			"save", // string: "save" or null; what to do on blur; will be overridden if show_buttons is true
 	cancel:				"", // string: if not empty, a jquery selector for elements that will not cause the editor to open even though they are clicked. E.g. if you have extra buttons inside editable fields
+	editEvent:		"click", // string: event that triggers openEditor event
 	
 	// All callbacks will have this set to the DOM node of the editor that triggered the callback
 	
@@ -147,7 +148,7 @@ $.extend(InlineEditor.prototype, {
 		this.dom
 			.bind('mouseenter.editInPlace', function(){ that.addHoverEffect(); })
 			.bind('mouseleave.editInPlace', function(){ that.removeHoverEffect(); })
-			.bind('click.editInPlace', function(anEvent){ that.openEditor(anEvent); });
+			.bind(this.settings.editEvent + '.editInPlace', function(anEvent){ that.openEditor(anEvent); });
 	},
 	
 	disconnectOpeningEvents: function() {
