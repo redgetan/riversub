@@ -184,6 +184,9 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [ ] dealing with duplicate youtube links
 // [ ] cancelling a sub entry immediately
 // [ ] saving should just do one request, and payload should be in json instead of form encoded
+// [ ] editing/deleting subitile should be obvious
+// [ ] save/download buttons should be outside media container. because it makes it look like you're saving the video.
+//     controls over there should only be related to the video itself
 
 // 2.0
 // [ ] allow user to sync timing of existing transcripts

@@ -39,11 +39,12 @@ div#media_container {
 
 div#media {
   height: 250px;
+  width: inherit;
 }
 
 div#media #iframe_overlay {
   height: inherit;
-  width: 540px;
+  width: inherit;
   position: absolute;
   z-index: 2;
   background-color: white;
@@ -54,5 +55,6 @@ div#subtitle_bar {
   background-color: black;
   color: white;
   height: 40px;
+  display: table;
   font-weight: bold;
 }

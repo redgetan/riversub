@@ -15,6 +15,11 @@
 	margin-right: 5px;
 }
 
+#subtitle_display {
+	display:table-cell;
+	vertical-align:middle;
+}
+
 #subtitle_edit {
 	background-color: black;	
 	color: white;
