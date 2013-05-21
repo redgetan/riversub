@@ -177,6 +177,8 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [ ] bug: pressing shift multiple times would fill up entire timeline
 // [ ] bug: create 2 tracks. svae. create another track. save. error. its saving the previously created 2 tracks again to server
 // [ ] bug: create a track. start another before that track. right when its about to reach start of next track, release shift, and you'll see it jumps to end of next track
+// [x] bug: paused video somewhere. press shift, while holding click on subbar so that you can type.press enter. track fills whole container
+
 // [ ] ui: instructions on how to start. popover tooltip, 1,2,3 [andre]
 // [ ] click and drag timeline to create segment like aegis
 // [ ] ui: when error, instead of alert, show flash. let user know that we will take care of it
@@ -186,7 +188,6 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [ ] saving should just do one request, and payload should be in json instead of form encoded
 // [ ] editing/deleting subitile should be obvious
 // [ ] save/download buttons should be outside media container. because it makes it look like you're saving the video.
-//     controls over there should only be related to the video itself
 
 // 2.0
 // [ ] allow user to sync timing of existing transcripts

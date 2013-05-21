@@ -157,7 +157,6 @@ Editor.prototype = {
           // console.log("ghost track gonna start");
           this.currentTrack = this.createGhostTrack();
           this.currentGhostTrack = this.currentTrack;
-          this.$el.trigger("marktrackstart",[this.currentTrack]);
           this.ghostTrackStarted = true;
           this.isKeydownPressed = true;
         }
@@ -179,24 +178,7 @@ Editor.prototype = {
   onKeyupHandler: function(event) {
     // shift key
     if (event.which === 16) {
-      try {
-        if (this.ghostTrackStarted) {
-          // console.log("ghost track gonna end");
-          this.$el.trigger("marktrackend");
-          this.endGhostTrack(this.currentGhostTrack);
-        }
-      } catch (e) {
-        console.log(e);
-        console.log("Removing invalid track");
-        this.currentGhostTrack.remove();
-        this.currentTrack = null;
-        this.tracks.pop();
-        this.$subtitleEdit.hide();
-      }
-      this.currentGhostTrack = null;
-      this.isKeydownPressed = false;
-      this.ghostTrackStarted = false;
-
+      this.endGhostTrack(this.currentGhostTrack);
     }
 
     // space key
@@ -247,6 +229,8 @@ Editor.prototype = {
     this.currentTrack = track;
 
     this.showSubtitleInSubtitleBar(track.subtitle);
+
+    track.highlight();
     track.subtitle.highlight();
 
     if (this.edit_sub_mode) {
@@ -257,6 +241,8 @@ Editor.prototype = {
 
   onTrackEnd: function(event,track) {
     this.hideSubtitleInSubtitleBar(track.subtitle);
+
+    track.unhighlight();
     track.subtitle.unhighlight();
 
     if (typeof track.subtitle.text === "undefined" || /^\s*$/.test(track.subtitle.text) ) {
@@ -319,14 +305,14 @@ Editor.prototype = {
       //
       // thus, in this case, we automatically remove ghost status of the track knowing that it is
       // the maximum endTime of the current track since it can't go beyond start time of next track
-      if (this.currentTrack.isGhost()) {
-        this.$el.trigger("marktrackend");
-        this.currentTrack.end(this.currentTrack.endTime());
-        this.ghostTrackStarted = false;
+      if (this.currentTrack && this.currentTrack.isGhost()) {
+        this.endGhostTrack(this.currentTrack);
+        this.$subtitleDisplay.text("");
+        this.$subtitleDisplay.hide();
       }
 
       this.edit_sub_mode = false;
-      
+
       this.enableCommands();
   },
 
@@ -537,12 +523,30 @@ Editor.prototype = {
     var track = new Track(attributes, this, { "isGhost": true});
     this.trackMap[track.getAttributes().client_id] = track;
     this.tracks.push(track);
+
+    this.$el.trigger("marktrackstart",[track]);
     return track;
   },
 
   endGhostTrack: function(track) {
     var time = Math.round(this.media.currentTime * 1000) / 1000;
-    track.end(time);
+
+    try {
+      if (this.ghostTrackStarted) {
+        track.end(time);
+      }
+    } catch (e) {
+      console.log(e);
+      console.log("Removing invalid track");
+      this.currentGhostTrack.remove();
+      this.currentTrack = null;
+      this.tracks.pop();
+      this.$subtitleEdit.hide();
+    }
+    this.currentGhostTrack = null;
+    this.isKeydownPressed = false;
+    this.ghostTrackStarted = false;
+    this.$el.trigger("marktrackend");
   },
 
   /*

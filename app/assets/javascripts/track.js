@@ -192,6 +192,16 @@ Track.prototype = {
     $(document).trigger("trackremove",this);
   },
 
+  highlight: function() {
+    this.$el_summary.addClass("selected");
+    this.$el_expanded.addClass("selected");
+  },
+
+  unhighlight: function() {
+    this.$el_summary.removeClass("selected");
+    this.$el_expanded.removeClass("selected");
+  },
+
   toString: function() {
     return "Track(" + this.startTime() + "," + this.endTime() + ")";
   }

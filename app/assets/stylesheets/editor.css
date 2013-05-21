@@ -114,13 +114,17 @@ div#editor-bottom {
 
 .track {
 	height: inherit;
-	background-color: lightcoral;
+	/*background-color: lightcoral;*/
+	background-color: palegreen;
 	position: absolute !important;
-	opacity: 0.5;
+}
+
+.track.selected {
+	background-color: lightcoral;
 }
 
 .track:hover {
-	background-color: red;
+	background-color: lightcoral;
 }
 
 #subtitle_container {
@@ -140,12 +144,13 @@ div#editor-bottom {
 }
 
 .subtitle.mapped {
-	background-color: peachpuff;
+/*	background-color: peachpuff;
 	border: solid 1px lightcoral;
-}
+*/}
 
 .subtitle.selected {
-	background-color: palegreen;
+	background-color: lightcoral;
+	color: white;
 	border: solid 1px gray;
 }
 

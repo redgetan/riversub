@@ -9,13 +9,13 @@ Timeline.prototype = {
     this.$container = $("#timeline_container");
 
     var el = "<div id='summary' class='timeline'>" + 
-               "<div class='progress_bar'></div>" +
+               // "<div class='progress_bar'></div>" +
                "<div class='scrubber'></div>" +
                "<div class='window_slider'></div>" +
              "</div>" +
              "<div id='expanded' class='timeline'>" + 
                "<div class='filler'>" + 
-                 "<div class='progress_bar'></div>" +
+                 // "<div class='progress_bar'></div>" +
                  "<div class='scrubber'></div>" +
                  "<div class='time_indicator'>0</div>" +
                "</div>" +
@@ -67,7 +67,7 @@ Timeline.prototype = {
     // youtube javascript API getCurrentTime updates roughly around 10 fps in my mac, but might be higher in others?
     // lets just try 30fp s
     this.scrubberInterval = setInterval(this.renderScrubber.bind(this),1000/30); 
-    this.progressBarInterval = setInterval(this.renderProgressBar.bind(this),1000/30);
+    // this.progressBarInterval = setInterval(this.renderProgressBar.bind(this),1000/30);
     this.timeIndicatorInterval = setInterval(this.renderTimeIndicator.bind(this),1000/30);
   },
 
@@ -75,14 +75,14 @@ Timeline.prototype = {
     // console.log("on pause" + this.media.currentTime);
     var pauseTime = Math.floor(this.media.currentTime * 1000) / 1000;
     clearInterval(this.scrubberInterval);
-    clearInterval(this.progressBarInterval);
+    // clearInterval(this.progressBarInterval);
     clearInterval(this.timeIndicatorInterval);
     this.$container.trigger("pauseadjust",[pauseTime]);
   },
 
   onSeeking: function() {
     // console.log("seeking " + this.media.currentTime);
-    this.renderProgressBar();  
+    // this.renderProgressBar();  
     this.renderScrubber();  
     this.renderTimeIndicator();  
   },
