@@ -149,6 +149,16 @@ div#editor-bottom {
 	border: solid 1px lightcoral;
 */}
 
+
+.subtitle:hover {
+	background-color: lightcoral;
+	color: white;
+}
+
+.subtitle button.close {
+	opacity: 0.9;
+}
+
 .subtitle.selected {
 	background-color: lightcoral;
 	color: white;
