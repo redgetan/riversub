@@ -23,6 +23,20 @@ SubtitleView.prototype = {
 
   setupElement: function(subtitles) {
     this.$container = $("#subtitle_container");
+
+    var el = "<table class='table'>" + 
+                "<tr>" + 
+                  "<th>Start</th>" +
+                  "<th>End</th>" +
+                  "<th>Text</th>" +
+                "</tr>" +
+              "</table>";
+
+    this.$container.append(el);
+
+    this.$el = this.$container.find("table");
+
+
     // if (Object.keys(subtitles).length === 0) {
     //   this.createSubtitleForm();
     // }
@@ -212,14 +226,23 @@ Subtitle.prototype = {
 
   setupElement: function() {
 
-    this.$container = $("#subtitle_container");
+    this.$container = $("#subtitle_container").find("table");
 
-    var el = "<div class='subtitle'>" +
-      "<div class='start_time'></div>" +
-      "<div class='end_time'></div>" +
-      "<div class='text'></div>" +
-      "<button type='button' class='close'>×</button>" +
-      "</div>";
+    var el = "<tr class='subtitle'>" + 
+               "<td>" +
+                 "<div class='start_time'></div>" +
+               "</td>" +
+               "<td>" +
+                 "<div class='end_time'></div>" +
+               "</td>" +
+               "<td>" +
+                 "<div class='text'></div>" +
+                 "<div class='delete'>" +
+                   "<button type='button' class='close'>×</button>" +
+                 "</div>" +
+               "</td>" +
+              "</tr>";
+
     this.$container.append(el);
 
     this.$el = this.$container.find(".subtitle").last();

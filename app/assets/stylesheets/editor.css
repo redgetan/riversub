@@ -137,12 +137,20 @@ div#editor-bottom {
 	overflow-x: hidden;
 }
 
+#subtitle_container table {
+	width: 100%;
+}
+
+#subtitle_container table td {
+	padding: 0px;
+}
+
 .subtitle {
-	height: auto;
+/*	height: auto;
 	display: inline-block;
 	margin-top: -5px;
 	width: 100%;
-}
+*/}
 
 .subtitle.mapped {
 /*	background-color: peachpuff;
@@ -152,7 +160,7 @@ div#editor-bottom {
 
 .subtitle:hover {
 	background-color: moccasin;
-	border: solid 1px gray;
+	/*border: solid 1px gray;*/
 }
 
 .subtitle button.close {
@@ -160,9 +168,9 @@ div#editor-bottom {
 }
 
 .subtitle.selected {
-	background-color: lightcoral;
+	background-color: lightcoral !important;
 	color: white;
-	border: solid 1px gray;
+	/*border: solid 1px gray;*/
 }
 
 .subtitle .start_time,
@@ -187,4 +195,9 @@ div#editor-bottom {
 	height: 10px;
 	line-height: 10px;
 	margin-bottom: 0px !important;
+}
+
+.subtitle .delete {
+	width: 10px;
+	float: right;
 }
