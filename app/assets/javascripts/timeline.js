@@ -58,6 +58,7 @@ Timeline.prototype = {
     $(document).on("marktrackend",this.onMarkTrackEnd.bind(this));
     $(document).on("trackchange",this.onTrackChange.bind(this));
     $(document).on("trackresize",this.onTrackResize.bind(this));
+    $(document).on("trackdrag",this.onTrackDrag.bind(this));
 
     this.$summary.on("click",this.onClickHandler.bind(this));
     this.$expanded.on("click",this.onClickHandler.bind(this));
@@ -128,13 +129,32 @@ Timeline.prototype = {
   },
 
   onTrackResize: function(event,track,trackView) {
+    var handle= $(event.target).css("cursor").split("-")[0]; 
+
     var $container = $(event.target).closest(".timeline");
 
     var seconds = trackView.position.left / this.resolution($container);
     var duration = trackView.size.width   / this.resolution($container);
 
-    track.setStartTime(seconds);
-    track.setEndTime(seconds + duration);
+    if (handle === "w") {
+      track.setStartTime(seconds);
+    } else {
+      track.setEndTime(seconds + duration);
+    }
+  },
+
+  onTrackDrag: function(event,track,trackView) {
+    var $container = $(event.target).closest(".timeline");
+
+    var seconds = trackView.position.left / this.resolution($container);
+
+    var origStartTime = track.startTime();
+    var origEndTime = track.endTime();
+
+    var delta = seconds - origStartTime;
+
+    track.setStartTime(origStartTime + delta);
+    track.setEndTime(origEndTime + delta);
   },
 
   renderTracks: function() {

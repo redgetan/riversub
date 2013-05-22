@@ -66,7 +66,13 @@ Track.prototype = {
 
     this.$el_expanded.resizable({
       handles: 'e, w',
-      stop: this.onResizableStop.bind(this)
+      resize: this.onResizableResize.bind(this)
+    });
+
+    this.$el_expanded.draggable({
+      cursor: "move",
+      containment: "parent",
+      drag: this.onDraggableDrag.bind(this)
     });
   },
 
@@ -96,8 +102,12 @@ Track.prototype = {
     this.editor.seek(this.startTime());
   },
 
-  onResizableStop: function(event, ui) {
+  onResizableResize: function(event, ui) {
     this.$el_expanded.trigger("trackresize",[this,ui]);
+  },
+
+  onDraggableDrag: function(event, ui) {
+    this.$el_expanded.trigger("trackdrag",[this,ui]);
   },
 
   setSubtitle: function(subtitle) {
