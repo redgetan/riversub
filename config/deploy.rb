@@ -47,6 +47,7 @@ role :app, host                          # This may be the same as your `Web` se
 role :db,  host, :primary => true # This is where Rails migrations will run
 
 after "deploy:restart", "deploy:cleanup" # keep only the last 5 releases
+after "deploy:restart", "deploy:reload" # unicorn pre init app true uses reload instead of restart
 after "deploy:update_code", "deploy:setup_database"
 after "deploy:setup_database", "deploy:migrate"
 
