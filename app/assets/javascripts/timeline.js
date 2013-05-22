@@ -163,15 +163,16 @@ Timeline.prototype = {
   renderScrubber: function() {
     this.renderInContainer(this.$summary, this.$scrubber_summary, { left: this.media.currentTime.toFixed(3) });
     this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
+
+    if (this.isOutOfBounds(this.$expanded,this.$scrubber_expanded)) {
+      this.scrollContainerToElementAndMoveWindowSlider(this.$expanded,this.$scrubber_expanded);
+    }
   },
 
   renderProgressBar: function() {
     this.renderInContainer(this.$summary, this.$progress_bar_summary, { width: this.media.currentTime.toFixed(3) });
     this.renderInContainer(this.$expanded,this.$progress_bar_expanded,{ width: this.media.currentTime.toFixed(3) });
 
-    if (this.isOutOfBounds(this.$expanded,this.$progress_bar_expanded)) {
-      this.scrollContainerToElementAndMoveWindowSlider(this.$expanded,this.$progress_bar_expanded);
-    }
   },
 
   renderTimeIndicator: function() {
