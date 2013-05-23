@@ -22,7 +22,7 @@ function SubtitleView(subtitles,editor) {
 SubtitleView.prototype = {
 
   setupElement: function(subtitles) {
-    this.$container = $("#subtitle_container");
+    this.$container = $("#subtitle_list");
 
     var el = "<table class='table'>" + 
                 "<tr>" + 

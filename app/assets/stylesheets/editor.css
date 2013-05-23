@@ -130,15 +130,25 @@ div#editor-bottom {
   	padding: 10px;
 	height: 330px;
 	border: solid 1px black ;
-	overflow-y: scroll;
-	overflow-x: hidden;
 }
 
-#subtitle_container table {
+#subtitle_container #controls_extra {
+  	padding: 10px;
+}
+
+#subtitle_list {
+  	padding: 10px;
+	height: 270px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	border: solid 1px black;
+}
+
+#subtitle_list table {
 	width: 100%;
 }
 
-#subtitle_container table td {
+#subtitle_list table td {
 	padding: 0px;
 }
 

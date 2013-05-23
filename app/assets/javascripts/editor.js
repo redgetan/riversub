@@ -59,15 +59,21 @@ Editor.prototype = {
                 "<div class='btn-group pull-right'>" +
                   "<a id='start_timing_btn' class='btn'><i class='icon-circle'></i> Start Timing</a>" +
                   "<a id='stop_timing_btn' class='btn'><i class='icon-circle'></i> Stop Timing</a>" +
-                  // "<a id='save_btn' class='btn'><i class='icon-save'></i> Save</a>" +
-                  // "<a id='download_btn' class='btn' href='/videos/" + this.video.id + "/timings'><i class='icon-download-alt'></i> Download</a>" +
-                  // "<a data-toggle='modal' data-target='#myModal' class='btn'><i class='icon-question-sign'></i> Help</a>" +
                 "</div>" +
               "</div>" +
             "</div>" +
           "</div>" +
           "<div id='editor-top-right' class='span6'>" +
-            "<div id='subtitle_container'></div>" +
+            "<div id='subtitle_container'>" +
+              "<div id='subtitle_list'></div>" +
+              "<div id='controls_extra' class='row'>" +
+                "<div class='btn-group pull-right'>" +
+                  "<a id='save_btn' class='btn btn-info'><i class='icon-save'></i> Save</a>" +
+                  "<a id='download_btn' class='btn' href='/videos/" + this.video.id + "/timings'><i class='icon-download-alt'></i> .srt</a>" +
+                  "<a data-toggle='modal' data-target='#myModal' class='btn'><i class='icon-question-sign'></i></a>" +
+                "</div>" +
+              "</div>" +
+            "</div>" +
           "</div>" +
         "</div>" +
         "<div id='editor-bottom' class='row'>" +
@@ -203,23 +209,6 @@ Editor.prototype = {
   onPause: function(event) {
     this.$pauseBtn.hide();
     this.$playBtn.show();
-
-    if (this.edit_sub_mode) {
-      // on edit subtitle mode, 2 cases:
-      //1. ghost track has been ended and thus currentghosttrack is null, here we use currenttrack
-      //2. ghost track has not been ended, and current track has changed to next one,
-      //   this happens when a ghost track bumps right into next track and pause is triggered by its own end time
-      //   but by the time pause happens, ghost track has overlapped next track and thus
-      //   currenttrack changes to next track, we want to switch currenttrack back to unfinished ghost track, and seek
-      //   to its end time
-      this.currentTrack = this.currentGhostTrack || this.currentTrack;
-      // we want to seek to a few millseconds before end just so
-      // 1. that the text from input would disappear triggered by the end event of track
-      // 2. scrubber is positioned nicely inside track instead of a bit outside.
-      //    this is to indicated were editing subtitle of that track
-      var time = Math.floor((this.currentTrack.endTime() - 0.01) * 1000) / 1000;
-      this.seek(time);
-    }
   },
 
   onPauseAdjust: function(event,correctPauseTime) {
@@ -279,9 +268,35 @@ Editor.prototype = {
     track.subtitle.unhighlight();
 
     if (typeof track.subtitle.text === "undefined" || /^\s*$/.test(track.subtitle.text) ) {
+      // will reach this state if user presses space_key until startTime of next track,
+      // in which it immediately stops since ghostTrack ends at starttime of next track
+      // but it is not stopped by explicit user action which would be to release space_key, we would have
+      // known that track should end at that point and ghost status should be removed
+      //
+      // thus, in this case, we automatically remove ghost status of the track knowing that it is
+      // the maximum endTime of the current track since it can't go beyond start time of next track
+      if (track.isGhost()) {
+        this.endGhostTrack(track,track.endTime());
+      }
       // if playing, pause playback to let user type subtitle
       this.popcorn.pause();
       this.edit_sub_mode = true;
+
+      var seekToPrev = function() {
+        // we want to seek to a few millseconds before end of prev track just so
+        // 1. that the text from input would disappear triggered by the end event of track
+        // 2. scrubber is positioned nicely inside track instead of a bit outside.
+        //    this is to indicated were editing subtitle of that track
+        console.log("seeking to prev");
+        console.log(seekToPrev);
+        var time = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
+        this.seek(time);
+        this.media.removeEventListener("pause",seekToPrev);
+      }.bind(this);
+
+      console.log("add pause listener");
+      this.media.addEventListener("pause",seekToPrev);
+
     }
   },
 
@@ -330,18 +345,6 @@ Editor.prototype = {
     this.$subtitleDisplay.text(text);
     this.$subtitleDisplay.show();
 
-      // will reach this state if user presses space_key until startTime of next track,
-      // in which it immediately stops since ghostTrack ends at starttime of next track
-      // but it is not stopped by explicit user action which would be to release space_key, we would have
-      // known that track should end at that point and ghost status should be removed
-      //
-      // thus, in this case, we automatically remove ghost status of the track knowing that it is
-      // the maximum endTime of the current track since it can't go beyond start time of next track
-      if (this.currentTrack && this.currentTrack.isGhost()) {
-        this.endGhostTrack(this.currentTrack);
-        this.$subtitleDisplay.text("");
-        this.$subtitleDisplay.hide();
-      }
 
       this.edit_sub_mode = false;
 
@@ -574,8 +577,8 @@ Editor.prototype = {
     return track;
   },
 
-  endGhostTrack: function(track) {
-    var time = Math.round(this.media.currentTime * 1000) / 1000;
+  endGhostTrack: function(track,endTime) {
+    var time = endTime || Math.round(this.media.currentTime * 1000) / 1000;
 
     try {
       track.end(time);
