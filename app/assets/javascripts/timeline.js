@@ -54,8 +54,8 @@ Timeline.prototype = {
     this.media.addEventListener("seeking",this.onSeeking.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
 
-    $(document).on("marktrackstart",this.onMarkTrackStart.bind(this));
-    $(document).on("marktrackend",this.onMarkTrackEnd.bind(this));
+    $(document).on("ghosttrackstart",this.onGhostTrackStart.bind(this));
+    $(document).on("ghosttrackend",this.onGhostTrackEnd.bind(this));
     $(document).on("trackchange",this.onTrackChange.bind(this));
     $(document).on("trackresize",this.onTrackResize.bind(this));
     $(document).on("trackdrag",this.onTrackDrag.bind(this));
@@ -95,11 +95,11 @@ Timeline.prototype = {
     this.renderTracks();
   },
 
-  onMarkTrackStart: function(event,track) {
+  onGhostTrackStart: function(event,track) {
     this.renderFillProgressInterval = setInterval(this.renderFillProgress.bind(this,track),10);
   },
 
-  onMarkTrackEnd: function(event) {
+  onGhostTrackEnd: function(event,track) {
     clearInterval(this.renderFillProgressInterval);
   },
 

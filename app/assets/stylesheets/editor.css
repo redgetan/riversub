@@ -109,7 +109,6 @@ div#editor-bottom {
 
 .track.ghost {
 	border: dotted 1px gray;
-	background-color: red;
 }
 
 .track {
@@ -200,4 +199,12 @@ div#editor-bottom {
 .subtitle .delete {
 	width: 10px;
 	float: right;
+}
+
+#controls #start_timing_btn i {
+	color: #B3192D;
+}
+
+#controls #stop_timing_btn i {
+	color: #333;
 }
