@@ -158,13 +158,11 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [x] when paused, clicking on any space on timeline should move scrubber to that spot
 // [x] removing track means unmapping the subtitleline
 // [x] use twitter bootstrap
-// [ ] should be able to drag tracks across timeline window boundaries
-// [ ] double click on track should lock into that track and play until end of that track only, press space will replay that track again
 // [x] double click on subtitle text on subtitle container should allow you to edit it
 // [ ] if media cannot be loaded, let user choose another url
 // [x] should not allow user to create track inside another track
 // [x] change add song to subtitle song - needs only url, extract name, lyrics, let user paste that on 2nd step, 1st step has to be extremely convenient
-// [ ] display video thumbnail instead of just text
+// [x] display video thumbnail instead of just text
 // [ ] add county label
 // [ ] paginate through subtitled video list
 // [ ] add about page
@@ -184,12 +182,14 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [ ] ui: when error, instead of alert, show flash. let user know that we will take care of it
 // [ ] permalinks: so back button would work
 // [ ] dealing with duplicate youtube links
-// [ ] cancelling a sub entry immediately
 // [ ] saving should just do one request, and payload should be in json instead of form encoded
-// [ ] editing/deleting subitile should be obvious
+// [x] editing/deleting subitile should be obvious
 // [ ] save/download buttons should be outside media container. because it makes it look like you're saving the video.
+// [x] should be able to undo creation of a track easily in case user decided oh that's a mistake
 
 // 2.0
+// [ ] should be able to delete track using keyboard
+// [ ] play only up to current track endtime
 // [ ] allow user to sync timing of existing transcripts
 // [ ] use speech recognition to automatically detect timeslices
 // [ ] allow user to tab through time slices
@@ -200,4 +200,6 @@ test( "clearTrack should remove all tracks & their trackEvents", function() {
 // [ ] inserting in between subtitlelines should work, save load should appear in right order
 // [ ]   should have order and when saved and loaded should appear in right order
 // [ ] should test determineEndTime
+// [ ] double click on track should lock into that track and play until end of that track only, press space will replay that track again
+// [ ] should be able to drag tracks across timeline window boundaries
 

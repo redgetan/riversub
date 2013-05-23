@@ -55,5 +55,6 @@ div#subtitle_bar {
   background-color: black;
   color: white;
   height: 40px;
+  line-height: 40px;
   font-weight: bold;
 }

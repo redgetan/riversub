@@ -49,7 +49,7 @@ Editor.prototype = {
               "<div id='media'><div id='iframe_overlay'></div></div>" +
               "<div id='subtitle_bar' class='span6 center'>" +
                 "<div id='subtitle_display' class='span5 center'></div>" +
-                "<input id='subtitle_edit' class='span5 center' type='text' placeholder='Enter Subtitle Here'>" +
+                "<input id='subtitle_edit' class='span5 center' type='text' maxlength='60' placeholder='Enter Subtitle Here'>" +
               "</div>" +
               "<div id='controls' class='row'>" +
                 "<div class='pull-left span1'>" +
@@ -248,10 +248,20 @@ Editor.prototype = {
   onTrackStart: function(event,track) {
     this.currentTrack = track;
 
-    this.showSubtitleInSubtitleBar(track.subtitle);
+    var subtitle = track.subtitle;
+
+    if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
+      if (!track.isGhost()) {
+        this.$subtitleDisplay.hide();
+        this.$subtitleEdit.val("");
+        this.$subtitleEdit.show();
+      }
+    } else {
+      this.showSubtitleInSubtitleBar(subtitle);
+    }
 
     track.highlight();
-    track.subtitle.highlight();
+    subtitle.highlight();
 
     if (this.edit_sub_mode) {
       // seeking will trigger trackEvent.start which will show subtitle edit input, only then do we focus
@@ -356,6 +366,12 @@ Editor.prototype = {
   },
 
   onSubtitleEditKeyup: function(event) {
+    // escape key
+    if (event.which == 27) {
+      this.currentTrack.remove();
+      this.$subtitleEdit.blur();
+    } 
+
     // enter key
     if (event.which == 13) {
       this.$subtitleEdit.blur();
@@ -592,15 +608,9 @@ Editor.prototype = {
 
   showSubtitleInSubtitleBar: function(subtitle) {
 
-    if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
-      this.$subtitleDisplay.hide();
-      this.$subtitleEdit.val("");
-      this.$subtitleEdit.show();
-    } else {
       this.$subtitleEdit.hide();
       this.$subtitleDisplay.show();
       this.$subtitleDisplay.text(subtitle.text);
-    }
   },
 
   hideSubtitleInSubtitleBar: function(subtitle) {
