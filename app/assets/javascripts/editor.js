@@ -1,6 +1,9 @@
-function Editor (video) {
-  this.video = video;
+function Editor () {
   this.setupElement();
+  var video = this.$el.data("model");
+  this.$el.removeData("model");
+
+  this.video = video;
   this.defineAttributeAccessors();
 
   this.currentTrack = null;
@@ -37,53 +40,6 @@ Editor.prototype = {
 
   setupElement: function() {
     this.$container = $("#main_container");
-    var el =
-      "<div id='editor'>" +
-        "<div id='editor-top' class='row'>" +
-          "<div class='span12'>" +
-            "<h4 id='video_name'></h4>" +
-            "<h6 id='video_url'></h6>" +
-          "</div>" +
-          "<div id='editor-top-left' class='span6'>" +
-            "<div id='media_container'>" +
-              "<div id='media'><div id='iframe_overlay'></div></div>" +
-              "<div id='subtitle_bar' class='span6 center'>" +
-                "<div id='subtitle_display' class='span5 center'></div>" +
-                "<input id='subtitle_edit' class='span5 center' type='text' maxlength='60' placeholder='Enter Subtitle Here'>" +
-              "</div>" +
-              "<div id='controls' class='row'>" +
-                "<div class='pull-left span1'>" +
-                  "<button type='button' id='play_btn' class='btn'><i class='icon-play'></i></button>" +
-                  "<button type='button' id='pause_btn' class='btn'><i class='icon-pause'></i></button>" +
-                "</div>" +
-                "<div class='btn-group pull-right'>" +
-                  "<a id='start_timing_btn' class='btn'><i class='icon-circle'></i> Start Timing</a>" +
-                  "<a id='stop_timing_btn' class='btn'><i class='icon-circle'></i> Stop Timing</a>" +
-                "</div>" +
-              "</div>" +
-            "</div>" +
-          "</div>" +
-          "<div id='editor-top-right' class='span6'>" +
-            "<div id='subtitle_container'>" +
-              "<div id='subtitle_list'></div>" +
-              "<div id='controls_extra' class='row'>" +
-                "<div class='btn-group pull-right'>" +
-                  "<a id='save_btn' class='btn btn-info'><i class='icon-save'></i> Save</a>" +
-                  "<a id='download_btn' class='btn' href='/videos/" + this.video.id + "/timings'><i class='icon-download-alt'></i> Download</a>" +
-                  "<a id='help_btn' data-toggle='modal' data-target='#myModal' class='btn'><i class='icon-question-sign'></i></a>" +
-                "</div>" +
-              "</div>" +
-            "</div>" +
-          "</div>" +
-        "</div>" +
-        "<div id='editor-bottom' class='row'>" +
-          "<div class='span12'>" +
-            "<div id='timeline_container'></div>" +
-          "</div>" +
-        "</div>" +
-      "</div>";
-
-    this.$container.append(el);
 
     this.$el = $("#editor");
 
@@ -115,10 +71,8 @@ Editor.prototype = {
     this.$iframeOverlay = $("#iframe_overlay");
 
     this.$video_name = $("#video_name");
-    this.$video_name.text(this.video.name);
 
     this.$video_url = $("#video_url");
-    this.$video_url.text(this.video.media_sources[0].url);
   },
 
   defineAttributeAccessors: function() {
@@ -491,7 +445,7 @@ Editor.prototype = {
             alert(result.error);
             this.$saveBtn.removeAttr("disabled");
           } catch (e) {
-            alert(data.responseText);
+            alert(e);
           }
         }
       });
@@ -516,7 +470,7 @@ Editor.prototype = {
             alert(result.error);
             this.$saveBtn.removeAttr("disabled");
           } catch (e) {
-            alert(data.responseText);
+            alert(e);
           }
         }
       });
@@ -537,7 +491,7 @@ Editor.prototype = {
             alert(result.error);
             this.$saveBtn.removeAttr("disabled");
           } catch (e) {
-            alert(data.responseText);
+            alert(e);
           }
         }
       });

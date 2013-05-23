@@ -3,7 +3,7 @@
     <div class="control-group">
       <div class="input-append">
         <input id="media_url" name="media_url" class="span5" type="text" placeholder="Paste youtube url">
-        <button type="button" id="sub_btn" class="btn btn-primary"/>Subtitle It</button>
+        <button type="button" id="sub_btn" class="btn btn-primary">Subtitle It</button>
       </div>
     </div>
 </form>
@@ -15,10 +15,10 @@
     <% @videos.each do |video| %>
         <li class="span2">
           <div class="thumbnail center">
-            <a href="#" id="<%= video.id %>" class="video" >
+            <a href="/videos/<%= video.id %>/editor" id="<%= video.id %>" class="video" >
               <img src="<%= video.metadata["data"]["thumbnail"]["sqDefault"] %>" alt="">
             </a>
-            <a href="#" id="<%= video.id %>" class="video" >
+            <a href="/videos/<%= video.id %>/editor" id="<%= video.id %>" class="video" >
               <h6><%= video.name %></h6>
             </a>
           </div>

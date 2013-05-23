@@ -4,6 +4,8 @@ River::Application.routes.draw do
 
   get "videos/play"
   post "videos/sub"
+  match "videos/:id/editor" => "videos#editor", :as => "videos_editor"
+
 
   get "videos/:video_id/timings", :to => "timings#index"
   post "videos/:video_id/timings", :to => "timings#create"

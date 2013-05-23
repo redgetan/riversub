@@ -17,12 +17,19 @@ class VideosController < ApplicationController
     @video.media_sources_attributes = [{:url => params[:media_url]}]
 
     if @video.save
-      render :json => @video.serialize.to_json
+      redirect_to videos_editor_path(@video)
     else
       render :json => { :error => @video.errors.messages }, :status => 403
     end
 
   end
+
+   def editor
+     @video = Video.find params[:id]
+ 
+     respond_to :html
+   end
+ 
 
   def show
     @video = Video.find params[:id]

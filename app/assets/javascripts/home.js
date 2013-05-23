@@ -4,11 +4,6 @@ var popcorn;
 var editor;
 var metadata;
 
-var editVideo = function(video) {
-  $("#main_container").empty();
-  editor = new Editor(video);
-}
-
 var getMetadata = function(url,done) {
 
   // get youtube video id
@@ -44,17 +39,17 @@ var isEmbeddable = function(metadata) {
   }
 };
 
+// handles page specific javascript
+var handleRoute = function() {
+  if (new RegExp("/videos/\\w+/editor").test(location.pathname)) {
+    editor = new Editor;
+  };
+};
+
+
 $(document).ready(function(){
 
-  $(document).on("click", "div#videos a.video", function(event) {
-    event.preventDefault();
-
-    $.ajax({
-      url: "/videos/" + this.id,
-      dataType: "json",
-      success: editVideo
-    });
-  });
+  handleRoute();
 
   $("#sub_btn").on("click",function(event) {
     $("form#sub").trigger("submit");
@@ -90,9 +85,6 @@ $(document).ready(function(){
               video_metadata: metadata
             },
             dataType: "json",
-            success: function(video) {
-              editVideo(video);
-            }.bind(this),
             error: function(data) {
               alert(data.responseText);
             }
