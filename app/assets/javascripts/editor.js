@@ -69,8 +69,8 @@ Editor.prototype = {
               "<div id='controls_extra' class='row'>" +
                 "<div class='btn-group pull-right'>" +
                   "<a id='save_btn' class='btn btn-info'><i class='icon-save'></i> Save</a>" +
-                  "<a id='download_btn' class='btn' href='/videos/" + this.video.id + "/timings'><i class='icon-download-alt'></i> .srt</a>" +
-                  "<a data-toggle='modal' data-target='#myModal' class='btn'><i class='icon-question-sign'></i></a>" +
+                  "<a id='download_btn' class='btn' href='/videos/" + this.video.id + "/timings'><i class='icon-download-alt'></i> Download</a>" +
+                  "<a id='help_btn' data-toggle='modal' data-target='#myModal' class='btn'><i class='icon-question-sign'></i></a>" +
                 "</div>" +
               "</div>" +
             "</div>" +
@@ -89,16 +89,23 @@ Editor.prototype = {
 
     this.$subtitleBar = $("#subtitle_bar");
 
-    this.$saveBtn = $("#save_btn");
-    this.$saveBtn.attr("disabled","disabled");
-
     this.$playBtn = $("#play_btn");
     this.$pauseBtn = $("#pause_btn");
     this.$pauseBtn.hide();
 
     this.$startTimingBtn = $("#start_timing_btn");
+
     this.$stopTimingBtn = $("#stop_timing_btn");
     this.$stopTimingBtn.hide();
+
+    this.$saveBtn = $("#save_btn");
+    this.$saveBtn.attr("disabled","disabled");
+    this.$saveBtn.tooltip({title: "Save changes"});
+
+    this.$downloadBtn = $("#download_btn");
+    this.$downloadBtn.tooltip({title: "Download subtitle file in .srt format"});
+    this.$helpBtn = $("#help_btn");
+    this.$helpBtn.tooltip({title: "Help"});
 
     this.$subtitleDisplay = $("#subtitle_display");
 
