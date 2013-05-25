@@ -41,6 +41,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'debugger'
   gem 'factory_girl'
+  gem 'qunit-rails'
 end
 
 # To use ActiveModel has_secure_password
