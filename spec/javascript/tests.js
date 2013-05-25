@@ -1,6 +1,4 @@
-var popcorn = Popcorn("#video");
-var subtitle = new Subtitle("one\ntwo\nthree");
-var editor = new Editor(subtitle,popcorn);
+var editor = new Editor();
 
 test( "createTrack should create a new track", function() {
   editor.clearTracks();

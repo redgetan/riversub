@@ -1,23 +1,24 @@
-function Editor () {
-  this.setupElement();
-  var video = this.$el.data("model");
-  this.$el.removeData("model");
+function Editor (video) {
+  this.video = video || {};
+  var timings = this.video.timings || [];
+  var subtitles = $.map(timings,function(timing){ return timing.subtitle; });
 
-  this.video = video;
+  this.setupElement();
   this.defineAttributeAccessors();
+
+  this.popcorn = this.loadMedia(video.media_sources[0].url);
+
+  this.subtitleView = new SubtitleView(subtitles,this);
+  this.timeline = new Timeline();
+  this.timeline.setMedia(this.popcorn.media);
+
+  this.trackMap = {}
+  this.tracks = this.loadTracks(timings);
+  this.timeline.setTracks(this.tracks);
 
   this.currentTrack = null;
   this.currentGhostTrack = null;
   this.ghostTrackStarted = false;
-
-  this.subtitleView = new SubtitleView($.map(video.timings,function(timing){ return timing.subtitle; }),this);
-  this.timeline = new Timeline();
-
-  this.popcorn = this.loadMedia(video.media_sources[0].url);
-
-  this.trackMap = {}
-  this.tracks = this.loadTracks(video.timings);
-  this.timeline.setTracks(this.tracks);
 
   this.changes = {
     tracks: {
@@ -93,7 +94,6 @@ Editor.prototype = {
 
   loadMedia: function(url) {
     var popcorn = Popcorn.smart("div#media",url);
-    this.timeline.setMedia(popcorn.media);
     return popcorn;
   },
 
