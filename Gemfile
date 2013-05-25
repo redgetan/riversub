@@ -35,6 +35,7 @@ group :development, :test do
   gem 'capistrano-unicorn', :require => false
   gem 'rvm-capistrano'
   gem "pry"
+  gem "pry-debugger"
   gem 'pry-stack_explorer'
   gem 'rspec'
   gem 'rspec-rails'
