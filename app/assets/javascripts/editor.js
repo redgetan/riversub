@@ -1,10 +1,11 @@
 function Editor (video,options) {
   this.video = video || {};
+  this.options = options || {};
   var timings = this.video.timings || [];
   var subtitles = $.map(timings,function(timing){ return timing.subtitle; });
   var mediaSource = typeof this.video.media_sources === "undefined" ? "" : this.video.media_sources[0].url;
 
-  var targetSelector = options["targetSelector"] || "div#media";
+  var targetSelector = this.options["targetSelector"] || "div#media";
 
   this.setupElement();
   this.defineAttributeAccessors();
@@ -132,17 +133,6 @@ Editor.prototype = {
     this.$subtitleDisplay.on("dblclick",this.onSubtitleDisplayDblClick.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
-  },
-
-  insideAnotherTrack: function() {
-    if (this.currentTrack !== null) {
-      if (this.media.currentTime >= this.currentTrack.startTime() &&
-          this.media.currentTime <= this.currentTrack.endTime()) {
-        return true;
-      }
-    }
-
-    return false;
   },
 
   onKeyupHandler: function(event) {
@@ -526,7 +516,6 @@ Editor.prototype = {
   },
 
   createGhostTrack: function() {
-    if (this.insideAnotherTrack()) return null;
 
     var startTime = Math.round(this.media.currentTime * 1000) / 1000;
     var endTime   = this.determineEndTime(startTime);
@@ -569,8 +558,8 @@ Editor.prototype = {
    */
   validateNoTrackOverlap: function(startTime,endTime) {
     for (var i = this.tracks.length - 1; i >= 0; i--) {
-      if (startTime >= this.tracks[i].startTime && startTime < this.tracks[i].endTime ||
-          endTime   <= this.tracks[i].endTime   && endTime   > this.tracks[i].startTime) {
+      if (startTime >= this.tracks[i].startTime() && startTime < this.tracks[i].endTime() ||
+          endTime   <= this.tracks[i].endTime()   && endTime   > this.tracks[i].startTime()) {
             throw "Track Overlap Detected. Track(" + startTime + "," + endTime + ") " +
               "would overlap with " + this.tracks[i].toString();
           }
