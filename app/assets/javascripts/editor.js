@@ -254,14 +254,11 @@ Editor.prototype = {
         // 1. that the text from input would disappear triggered by the end event of track
         // 2. scrubber is positioned nicely inside track instead of a bit outside.
         //    this is to indicated were editing subtitle of that track
-        console.log("seeking to prev");
-        console.log(seekToPrev);
         var time = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
         this.seek(time);
         this.media.removeEventListener("pause",seekToPrev);
       }.bind(this);
 
-      console.log("add pause listener");
       this.media.addEventListener("pause",seekToPrev);
 
     }
@@ -452,7 +449,7 @@ Editor.prototype = {
             alert(result.error);
             this.$saveBtn.removeAttr("disabled");
           } catch (e) {
-            alert(e);
+            alert("Failed to save changes");
           }
         }
       });
@@ -477,7 +474,7 @@ Editor.prototype = {
             alert(result.error);
             this.$saveBtn.removeAttr("disabled");
           } catch (e) {
-            alert(e);
+            alert("Failed to save changes");
           }
         }
       });
@@ -498,7 +495,7 @@ Editor.prototype = {
             alert(result.error);
             this.$saveBtn.removeAttr("disabled");
           } catch (e) {
-            alert(e);
+            alert("Failed to save changes");
           }
         }
       });

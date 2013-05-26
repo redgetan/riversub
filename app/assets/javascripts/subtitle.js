@@ -188,6 +188,9 @@ SubtitleView.prototype = {
 
 // should listen to changes in track startTime and endTime to rerender
 function Subtitle(attributes) {
+  if (typeof attributes === "undefined") {
+    attributes = { text: "" }; // default attribute
+  }
   this.track = null;
   this.setupElement();
   this.setAttributes(attributes);

@@ -9,7 +9,7 @@ class Timing < ActiveRecord::Base
   belongs_to :subtitle
   belongs_to :video
 
-  validates :start_time, :end_time, :presence => true
+  validates :start_time, :end_time, :subtitle, :presence => true
 
   accepts_nested_attributes_for :subtitle
 
