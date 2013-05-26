@@ -140,9 +140,11 @@ Editor.prototype = {
     if (event.which === 16) {
       if (!this.ghostTrackStarted) {
       // first time, you start timing
-        var track = this.createGhostTrack();
-        if (track) {
-          this.currentGhostTrack = this.currentTrack = track;
+        try {
+          this.createGhostTrack();
+          this.popcorn.play();
+        } catch(e) {
+          console.log(e);  
         }
       } else {
       // second time, you stop timing
@@ -370,11 +372,12 @@ Editor.prototype = {
   },
 
   onStartTimingBtn: function(event) {
-    var track = this.createGhostTrack();
-    if (track) {
-      this.currentGhostTrack = this.currentTrack = track;
+    try {
+      this.createGhostTrack();
+      this.popcorn.play();
+    } catch(e) {
+      console.log(e);  
     }
-    this.popcorn.play();
   },
 
   onStopTimingBtn: function(event) {
@@ -532,6 +535,8 @@ Editor.prototype = {
     this.tracks.push(track);
 
     this.$el.trigger("ghosttrackstart",[track]);
+
+    this.currentGhostTrack = this.currentTrack = track;
     return track;
   },
 
