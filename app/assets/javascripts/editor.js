@@ -55,6 +55,7 @@ Editor.prototype = {
     this.$pauseBtn.hide();
 
     this.$startTimingBtn = $("#start_timing_btn");
+    this.$startTimingBtn.attr("disabled","disabled");
 
     this.$stopTimingBtn = $("#stop_timing_btn");
     this.$stopTimingBtn.hide();
@@ -133,6 +134,7 @@ Editor.prototype = {
     this.$subtitleDisplay.on("dblclick",this.onSubtitleDisplayDblClick.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
+    this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
   },
 
   onKeyupHandler: function(event) {
@@ -170,6 +172,10 @@ Editor.prototype = {
   onPause: function(event) {
     this.$pauseBtn.hide();
     this.$playBtn.show();
+  },
+
+  onLoadedMetadata: function(event) {
+    this.$startTimingBtn.removeAttr("disabled");
   },
 
   onPauseAdjust: function(event,correctPauseTime) {
