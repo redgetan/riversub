@@ -42,6 +42,7 @@ group :development, :test do
   gem 'debugger'
   gem 'factory_girl'
   gem 'qunit-rails'
+  gem "teabag"
 end
 
 # To use ActiveModel has_secure_password

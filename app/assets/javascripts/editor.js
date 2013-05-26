@@ -1,12 +1,15 @@
-function Editor (video) {
+function Editor (video,options) {
   this.video = video || {};
   var timings = this.video.timings || [];
   var subtitles = $.map(timings,function(timing){ return timing.subtitle; });
+  var mediaSource = typeof this.video.media_sources === "undefined" ? "" : this.video.media_sources[0].url;
+
+  var targetSelector = options["targetSelector"] || "div#media";
 
   this.setupElement();
   this.defineAttributeAccessors();
 
-  this.popcorn = this.loadMedia(video.media_sources[0].url);
+  this.popcorn = this.loadMedia(targetSelector,mediaSource);
 
   this.subtitleView = new SubtitleView(subtitles,this);
   this.timeline = new Timeline();
@@ -92,8 +95,13 @@ Editor.prototype = {
     });
   },
 
-  loadMedia: function(url) {
-    var popcorn = Popcorn.smart("div#media",url);
+  loadMedia: function(targetSelector,url) {
+    var popcorn;
+    if (url == "") {
+      popcorn = Popcorn(targetSelector);
+    } else {
+      popcorn = Popcorn.smart(targetSelector,url);
+    }
     return popcorn;
   },
 
