@@ -60,8 +60,13 @@ Timeline.prototype = {
     $(document).on("trackresize",this.onTrackResize.bind(this));
     $(document).on("trackdrag",this.onTrackDrag.bind(this));
 
-    this.$summary.on("click",this.onClickHandler.bind(this));
-    this.$expanded.on("click",this.onClickHandler.bind(this));
+    this.$summary.on("mousedown",this.onMouseDownHandler.bind(this));
+    this.$summary.on("mousemove",this.onMouseMoveHandler.bind(this));
+    this.$summary.on("mouseup",this.onMouseUpHandler.bind(this));
+
+    this.$expanded.on("mousedown",this.onMouseDownHandler.bind(this));
+    this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
+    this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
   },
 
   onPlay: function() {
@@ -103,7 +108,8 @@ Timeline.prototype = {
     clearInterval(this.renderFillProgressInterval);
   },
 
-  onClickHandler: function(event) {
+  onMouseDownHandler: function(event) {
+    this.seekmode = true;
     // given pixel position, find out what seconds in time it corresponds to
     var $target = $(event.target);
     var $timeline;
@@ -114,7 +120,6 @@ Timeline.prototype = {
       $timeline = $target;
     }
 
-    // if its track then seek to start time of track
     if (!$target.hasClass("track")) {
       var timelineX = $timeline.position().left;
       var posX = event.pageX - timelineX;
@@ -122,6 +127,31 @@ Timeline.prototype = {
       this.$container.trigger("timelineseek",[seconds]);
     }
 
+  },
+
+  onMouseMoveHandler: function(event) {
+    if (this.seekmode) {
+      // given pixel position, find out what seconds in time it corresponds to
+      var $target = $(event.target);
+      var $timeline;
+
+      if (!$target.hasClass("timeline")) {
+        $timeline = $target.closest(".timeline");
+      } else {
+        $timeline = $target;
+      }
+
+      if (!$target.hasClass("track")) {
+        var timelineX = $timeline.position().left;
+        var posX = event.pageX - timelineX;
+        var seconds = posX / this.resolution($timeline) + $timeline.scrollLeft() / this.resolution($timeline);
+        this.$container.trigger("timelineseek",[seconds]);
+      }
+    }
+  },
+
+  onMouseUpHandler: function(event) {
+    this.seekmode = false;
   },
 
   onTrackChange: function(event,track) {

@@ -82,7 +82,7 @@ Track.prototype = {
 
     this.$el_expanded.on("mouseenter",this.onMouseEnter.bind(this));
     this.$el_expanded.on("mouseleave",this.onMouseLeave.bind(this));
-    this.$close.on("click",this.onCloseClick.bind(this));
+    this.$close.on("mousedown",this.onCloseMouseDown.bind(this));
   },
 
   onMouseEnter: function() {
@@ -93,7 +93,7 @@ Track.prototype = {
     this.$close.hide();
   },
 
-  onCloseClick: function(event) {
+  onCloseMouseDown: function(event) {
     event.stopPropagation();
     this.remove();
   },
