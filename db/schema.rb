@@ -11,16 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130515191713) do
-
-  create_table "media_sources", :force => true do |t|
-    t.integer  "video_id",   :null => false
-    t.string   "media_type"
-    t.string   "url"
-    t.integer  "votes"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
+ActiveRecord::Schema.define(:version => 20130527192030) do
 
   create_table "subtitles", :force => true do |t|
     t.string   "text"
@@ -63,6 +54,7 @@ ActiveRecord::Schema.define(:version => 20130515191713) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.text     "metadata"
+    t.string   "url"
   end
 
 end
