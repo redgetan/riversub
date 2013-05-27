@@ -57,7 +57,7 @@ Installation
 
   To setup database and tables
 
-    $ rake db:create && rake db:migrate && rake db:seed
+    $ rake db:create && rake db:migrate 
 
   To run rails
 
@@ -90,11 +90,9 @@ Deployment
 
     $ RAILS_ENV=staging bundle exec cap deploy:setup
     $ RAILS_ENV=staging bundle exec cap deploy
-    $ RAILS_ENV=staging bundle exec cap deploy:start
 
   Deploying to staging, after first time, for updates:
 
     $ RAILS_ENV=staging bundle exec cap deploy
-    $ RAILS_ENV=staging bundle exec cap deploy:upgrade
 
   For production, simply change to RAILS_ENV=production
