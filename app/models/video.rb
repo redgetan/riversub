@@ -3,7 +3,10 @@ class Video < ActiveRecord::Base
                   :media_sources_attributes
   has_many :media_sources, :dependent => :destroy
   has_many :subtitles
-  has_many  :timings
+  has_many :timings
+
+  has_many :repositories
+  has_many :users, :through => :repositories
 
   serialize :metadata, JSON
 
