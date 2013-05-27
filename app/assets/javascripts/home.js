@@ -42,7 +42,7 @@ var isEmbeddable = function(metadata) {
 // handles page specific javascript
 var handleRoute = function() {
   if (new RegExp("/videos/\\w+/editor").test(location.pathname)) {
-    var video = $("#editor").data("video");
+    var video = $("#editor").data("video") ;
     $("#editor").removeData("video");
     editor = new Editor(video);
   };
@@ -87,6 +87,9 @@ $(document).ready(function(){
               video_metadata: metadata
             },
             dataType: "json",
+            success: function(data,status) {
+              window.location.href = data.redirect_url;
+            },
             error: function(data) {
               alert(data.responseText);
             }

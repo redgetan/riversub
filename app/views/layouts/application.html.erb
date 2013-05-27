@@ -32,10 +32,10 @@
         </ul>
 
         <ul class="nav pull-right">
-          <% if user_signed_in? %>
+          <% if user_signed_in?  %>
             <li class="dropdown">
               <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
-                <%= current_user.email %><b class="caret"></b>
+                <%= current_user.username %><b class="caret"></b>
               </a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
                 <li><%= link_to 'Edit profile', edit_user_registration_path %></li>

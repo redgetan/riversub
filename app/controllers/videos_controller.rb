@@ -11,13 +11,12 @@ class VideosController < ApplicationController
 
     @video = Video.new({
       :name => metadata[:data][:title],
-      :metadata => metadata
+      :metadata => metadata,
+      :url => params[:media_url]
     })
 
-    @video.media_sources_attributes = [{:url => params[:media_url]}]
-
     if @video.save
-      redirect_to videos_editor_path(@video)
+      render :json => { :redirect_url => videos_editor_path(@video) } 
     else
       render :json => { :error => @video.errors.messages }, :status => 403
     end
@@ -26,10 +25,10 @@ class VideosController < ApplicationController
 
    def editor
      @video = Video.find params[:id]
- 
+
      respond_to :html
    end
- 
+
 
   def show
     @video = Video.find params[:id]
@@ -37,9 +36,4 @@ class VideosController < ApplicationController
     render :json => @video.serialize.to_json
   end
 
-  def edit
-    @video = Video.find params[:id]
-    @media_sources = MediaSource.highest_voted(@video.id)
-    respond_to :html
-  end
 end

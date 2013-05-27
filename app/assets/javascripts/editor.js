@@ -3,7 +3,7 @@ function Editor (video,options) {
   this.options = options || {};
   var timings = this.video.timings || [];
   var subtitles = $.map(timings,function(timing){ return timing.subtitle; });
-  var mediaSource = typeof this.video.media_sources === "undefined" ? "" : this.video.media_sources[0].url;
+  var mediaSource = typeof this.video.url === "undefined" ? "" : this.video.url;
 
   var targetSelector = this.options["targetSelector"] || "div#media";
 

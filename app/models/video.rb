@@ -1,7 +1,5 @@
 class Video < ActiveRecord::Base
-  attr_accessible :artist, :genre, :name, :metadata
-                  :media_sources_attributes
-  has_many :media_sources, :dependent => :destroy
+  attr_accessible :artist, :genre, :name, :metadata, :url
   has_many :subtitles
   has_many :timings
 
@@ -12,7 +10,6 @@ class Video < ActiveRecord::Base
 
   validates :name, :presence => true
 
-  accepts_nested_attributes_for :media_sources
   accepts_nested_attributes_for :subtitles
 
   def serialize
@@ -20,7 +17,7 @@ class Video < ActiveRecord::Base
       :id => self.id,
       :name => self.name,
       :genre => self.genre,
-      :media_sources => self.media_sources.map(&:serialize),
+      :url => self.url,
       :timings => self.timings.map(&:serialize)
     }
   end
