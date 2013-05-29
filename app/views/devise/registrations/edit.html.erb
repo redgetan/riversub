@@ -1,51 +1,64 @@
 
-    
+<div id='edit_user_sidebar' class='span4'>
+  <ul class="nav nav-tabs nav-stacked">
+    <li><a id='account' href="#account"><i class="icon-chevron-right"></i>Account</a></li>
+    <li><a id='password' href="#password"><i class="icon-chevron-right"></i>Password</a></li>
+  </ul>
+</div>
 
-    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :multipart => true }) do |f| %>
-      <%= devise_error_messages! %>
+<div id='edit_user_content' class='span6 offset1'>
+  <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :id => 'edit_account', :method => :put, :multipart => true }) do |f| %>
 
-      <div class='row'>
-        <div id='avatar' class='span4 offset2'>
-          <h2>Profile<br /></h2>
-          <% if current_user.avatar.url.present? %>
-            <%= image_tag current_user.avatar.url  %>     
-          <% end %>
-          <div>
-            <button class="btn"><span id='upload_btn_label'>Upload Photo</span><input id="user_avatar" name="user[avatar]" type="file">
-            </button>
-            <%= f.hidden_field :avatar_cache %>
-          </div>
+    <div id='avatar' >
+      <%= f.label :photo %>
+      <% if current_user.avatar.url.present? %>
+        <div class="thumbnail">
+          <%= image_tag current_user.avatar.url  %>     
         </div>
+      <% end %>
+    </div>
 
-        <div id='edit_profile' class='span5'>
-
-          <div><%= f.label :email %>
-          <%= f.email_field :email %></div>
-
-          <div><%= f.label :bio %>
-          <%= f.text_field :bio %></div>
-
-          <div><%= f.label :password %> <i>(leave blank if you don't want to change it)</i>
-          <%= f.password_field :password, :autocomplete => "off" %></div>
-
-          <div><%= f.label :password_confirmation %>
-          <%= f.password_field :password_confirmation %></div>
-
-          <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i>
-          <%= f.password_field :current_password %></div>
-
-          <div><%= f.submit "Update", :class => 'btn btn-primary' %></div>
-        </div>
+    <div id='upload_photo_btn' class="btn">
+      <div id='upload_btn_label'>
+        Change Photo
       </div>
+      <%= f.file_field :avatar %>
+      <%= f.hidden_field :avatar_cache %>
+    </div >
 
-    <% end %>
+    </br>
+    </br>
+    <div><%= f.label :email %>
+    <%= f.email_field :email %></div>
+
+    <div><%= f.label :bio %>
+    <%= f.text_area :bio, :rows => '7', :cols => '30', :maxlength => '500' %></div>
+
+    <div><%= f.submit "Save Changes", :class => 'btn btn-info btn-large' %></div>
+
+  <% end %>
+
+  <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :id => 'edit_password', :method => :put, :multipart => true }) do |f| %>
+
+    <div><%= f.label :password %> <i>(leave blank if you don't want to change it)</i>
+    <%= f.password_field :password, :autocomplete => "off" %></div>
+
+    <div><%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %></div>
+
+    <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i>
+    <%= f.password_field :current_password %></div>
+
+    <div><%= f.submit "Save Changes", :class => 'btn btn-info btn-large' %></div>
+
+  <% end %>
+
+</div>
 
     <div class='row'>
       <div class='span4 offset6'>
-        <h3>Cancel my account</h3>
 
-        <p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete %>.</p>
-
-        <%= link_to "Back", :back %>
+<!--         <p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete %>.</p>
+ -->
       </div>
     </div>
