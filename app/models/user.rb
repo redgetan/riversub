@@ -1,13 +1,14 @@
+
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
+
+  include ActiveModel::Validations
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :username, :email, :password, :password_confirmation, :remember_me,:lazy_id
-  # attr_accessible :title, :body
+  attr_accessible :login, :username, :bio, :email, :password, :password_confirmation, :remember_me,
+                  :avatar, :avatar_cache, :remove_avatar
 
   validates :username, :presence => true
 
@@ -16,6 +17,8 @@ class User < ActiveRecord::Base
   has_many :videos, :through => :repositories
 
   attr_accessor :login
+
+  mount_uploader :avatar, AvatarUploader
 
   before_save do
     self.username.downcase! 

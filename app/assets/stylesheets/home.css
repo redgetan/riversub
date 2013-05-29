@@ -68,3 +68,19 @@ div#subtitle_bar {
   line-height: 40px;
   font-weight: bold;
 }
+
+div#avatar img {
+  margin-bottom: 20px;
+}
+
+span#upload_btn_label {
+  position: absolute;
+  line-height: 30px;
+}
+
+input#user_avatar {
+  opacity: 0;  
+  z-index: 2;
+  width: 100px;
+}
+

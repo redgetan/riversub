@@ -20,3 +20,4 @@ tags
 .DS_Store
 .vagrant
 public/assets
+public/uploads
