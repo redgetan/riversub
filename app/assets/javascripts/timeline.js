@@ -1,4 +1,4 @@
-function Timeline (timings) {
+function Timeline () {
   this.media = null;
   this.setupElement();
 }

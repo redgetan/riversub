@@ -12,7 +12,7 @@ function Editor (video,options) {
 
   this.popcorn = this.loadMedia(targetSelector,mediaSource);
 
-  this.subtitleView = new SubtitleView(subtitles,this);
+  this.subtitleView = new SubtitleView(subtitles);
   this.timeline = new Timeline();
   this.timeline.setMedia(this.popcorn.media);
 
@@ -110,6 +110,7 @@ Editor.prototype = {
   bindEvents: function() {
     $(document).on("keyup",this.onKeyupHandler.bind(this));
     $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
+    $(document).on("trackseek",this.onTrackSeekHandler.bind(this));
     $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
     $(document).on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
     $(document).on("subtitlelineblur",this.onSubtitleLineBlur.bind(this));
@@ -161,6 +162,10 @@ Editor.prototype = {
   },
 
   onTimelineSeekHandler: function(event,time) {
+    this.seek(time);
+  },
+
+  onTrackSeekHandler: function(event,time) {
     this.seek(time);
   },
 
@@ -278,13 +283,16 @@ Editor.prototype = {
 
   },
 
-  onSubtitleRemove: function(event,subtitleId) {
-    // removing a subtitle that is not yet saved in server
-    if (typeof subtitleId === "undefined") {
-      return;
+  onSubtitleRemove: function(event,subtitle) {
+    // remove references that must be deleted
+    var index = this.subtitleView.subtitles.indexOf(subtitle);
+    this.subtitleView.subtitles.splice(index,1);
+
+    // if subtitle was previously saved to server, make sure to delete server side as well
+    if (typeof subtitleId !== "undefined") {
+      this.changes["subtitles"]["deletes"].push(subtitle.id);
+      this.$saveBtn.removeAttr("disabled");
     }
-    this.changes["subtitles"]["deletes"].push(subtitleId);
-    this.$saveBtn.removeAttr("disabled");
   },
 
   onIframeOverlayClick: function(event) {
@@ -512,7 +520,7 @@ Editor.prototype = {
 
     if (typeof timings !== "undefined") {
       for (var i = 0; i < timings.length; i++) {
-        var track = new Track(timings[i],this, { isSaved: true });
+        var track = new Track(timings[i], this.popcorn, { isSaved: true });
         this.trackMap[track.getAttributes().client_id] = track;
         tracks.push(track);
       };
@@ -533,7 +541,7 @@ Editor.prototype = {
       end_time: endTime
     };
 
-    var track = new Track(attributes, this, { "isGhost": true});
+    var track = new Track(attributes, this.popcorn, { "isGhost": true});
     this.trackMap[track.getAttributes().client_id] = track;
     this.tracks.push(track);
 

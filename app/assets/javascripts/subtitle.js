@@ -9,8 +9,7 @@ Array.prototype.move = function (old_index, new_index) {
     return this; // for testing purposes
 };
 
-function SubtitleView(subtitles,editor) {
-  this.editor = editor;
+function SubtitleView(subtitles) {
   this.subtitles = [];
 
   this.setupElement(subtitles);
@@ -48,8 +47,7 @@ SubtitleView.prototype = {
   //   };
   // },
 
-  createSubtitle: function(subtitle) {
-    var subtitle = new Subtitle(subtitle);
+  onSubtitleCreate: function(event,subtitle) {
     this.subtitles.push(subtitle);
     return subtitle;
   },
@@ -98,6 +96,7 @@ SubtitleView.prototype = {
     }
 
     $(document).on("trackchange",this.onTrackChange.bind(this));
+    $(document).on("subtitlecreate",this.onSubtitleCreate.bind(this));
     $(document).on("subtitleremove",this.onSubtitleRemove.bind(this));
     $(document).on("subtitletrackmapped",this.onSubtitleTrackMapped.bind(this));
   },
@@ -115,30 +114,11 @@ SubtitleView.prototype = {
     }
   },
 
-  // onFormSubmit: function(event) {
-  //   event.preventDefault();
-
-  //   $.ajax({
-  //     url: "/videos/" + this.editor.video.id + "/subtitles",
-  //     type: "POST",
-  //     data: this.$form.serialize(),
-  //     dataType: "json",
-  //     success: function(data) {
-  //       this.$form.remove();
-  //       this.createSubtitles(data);
-  //     }.bind(this),
-  //     error: function(data) {
-  //       alert(data.responseText);
-  //     }
-  //   });
-  // },
-
   onTrackChange: function(event,track) {
     track.subtitle.render();
   },
 
   onSubtitleRemove: function(event, subtitleId) {
-    delete this.subtitles[subtitleId];
   },
 
   onSubtitleTrackMapped: function(event, subtitle) {
@@ -196,6 +176,8 @@ function Subtitle(attributes) {
   this.setAttributes(attributes);
   this.isDeleted = false;
   this.bindEvents();
+
+  this.$el.trigger("subtitlecreate",[this]);
 }
 
 Subtitle.prototype = {
@@ -287,7 +269,8 @@ Subtitle.prototype = {
     this.$close.on("click",this.onCloseClick.bind(this));
   },
 
-  onCloseClick: function() {
+  onCloseClick: function(event) {
+    event.stopPropagation();
     this.remove();
   },
 
@@ -309,7 +292,7 @@ Subtitle.prototype = {
     // mark subtitle as isDeleted
     this.isDeleted = true;
 
-    $(document).trigger("subtitleremove",this.id);
+    $(document).trigger("subtitleremove",this);
   },
 
   onMouseEnter: function() {

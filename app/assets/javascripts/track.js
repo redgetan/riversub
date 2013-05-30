@@ -1,17 +1,13 @@
-function Track(attributes,editor,options) {
-  this.editor = editor;
-  this.popcorn = editor.popcorn;
-
-  // var subtitle = this.editor.subtitleView.find(attributes.subtitle_id);
-  // this.setSubtitle(subtitle);
-
+function Track(attributes,popcorn,options) {
+  this.popcorn = popcorn;
 
   this.setAttributes(attributes);
 
   this.setupElement(options);
   this.bindEvents();
 
-  this.setSubtitle(this.editor.subtitleView.createSubtitle(attributes['subtitle']));
+  var subtitle = new Subtitle(attributes['subtitle']);
+  this.setSubtitle(subtitle);
   this.trackEvent     = this.createTrackEvent(attributes.start_time,attributes.end_time);
 
   this.isSaved = typeof options['isSaved'] === "undefined" ? false : options['isSaved']; 
@@ -99,7 +95,7 @@ Track.prototype = {
   },
 
   onMouseClickHandler: function(event) {
-    this.editor.seek(this.startTime());
+    $(event.target).trigger("trackseek",[this.startTime()]);
   },
 
   onResizableResize: function(event, ui) {
