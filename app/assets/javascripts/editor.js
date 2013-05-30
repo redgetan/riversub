@@ -383,6 +383,8 @@ Editor.prototype = {
   },
 
   onStartTimingBtn: function(event) {
+    if (this.$startTimingBtn.attr("disabled") == "disabled") return;
+
     try {
       this.createGhostTrack();
       this.popcorn.play();

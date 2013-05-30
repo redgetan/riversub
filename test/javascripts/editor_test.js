@@ -159,11 +159,11 @@ $(document).ready(function(){
 // [ ] ui: instructions on how to start. popover tooltip, 1,2,3 [andre]
 // [ ] click and drag timeline to create segment like aegis
 // [ ] ui: when error, instead of alert, show flash. let user know that we will take care of it
-// [ ] permalinks: so back button would work
+// [x] permalinks: so back button would work
 // [ ] dealing with duplicate youtube links
 // [ ] saving should just do one request, and payload should be in json instead of form encoded
 // [x] editing/deleting subitile should be obvious
-// [ ] save/download buttons should be outside media container. because it makes it look like you're saving the video.
+// [x] save/download buttons should be outside media container. because it makes it look like you're saving the video.
 // [x] should be able to undo creation of a track easily in case user decided oh that's a mistake
 
 // 2.0
