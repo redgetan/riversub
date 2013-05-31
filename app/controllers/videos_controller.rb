@@ -15,19 +15,27 @@ class VideosController < ApplicationController
       :url => params[:media_url]
     })
 
+    if current_user
+      @video.users << current_user
+    end
+
     if @video.save
-      render :json => { :redirect_url => videos_editor_path(@video) } 
+      if current_user
+        render :json => { :redirect_url => editor_user_video_path(@user,@video) } 
+      else
+        render :json => { :redirect_url => editor_video_path(@video) } 
+      end
     else
       render :json => { :error => @video.errors.messages }, :status => 403
     end
 
   end
 
-   def editor
-     @video = Video.find params[:id]
+  def editor
+    @video = Video.find params[:id]
 
-     respond_to :html
-   end
+    respond_to :html
+  end
 
 
   def show

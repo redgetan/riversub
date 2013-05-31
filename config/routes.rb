@@ -9,8 +9,16 @@ River::Application.routes.draw do
 
   get "videos/play"
   post "videos/sub"
-  match "videos/:id/editor" => "videos#editor", :as => "videos_editor"
+  match "videos/:id/editor" => "videos#editor", :as => "editor_video"
 
+  # http://stackoverflow.com/questions/5160021/rails-namespace-vs-nested-resource
+  resources :users do
+    resources :videos do
+      member do
+        get "editor"
+      end
+    end
+  end
 
   get "videos/:video_id/timings", :to => "timings#index"
   post "videos/:video_id/timings", :to => "timings#create"
