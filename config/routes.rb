@@ -17,7 +17,7 @@ River::Application.routes.draw do
   put "videos/:video_id/timings", :to => "timings#update"
   delete "videos/:video_id/timings", :to => "timings#destroy"
 
-  get "home/index"
+  get "about", :to => "home#about"
   root :to => "home#index"
 
 

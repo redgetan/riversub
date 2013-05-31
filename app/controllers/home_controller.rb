@@ -5,4 +5,10 @@ class HomeController < ApplicationController
     respond_to :html
   end
 
+  def about
+  end
+
+  def tutorial
+  end
+
 end
