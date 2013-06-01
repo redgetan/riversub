@@ -25,10 +25,10 @@ div#main_container {
 
 div#media_input {
   margin-top: 100px;
+  margin-bottom: 100px;
 }
 
 div#videos {
-  margin-top: 100px;
 }
 
 div#videos li h6 {
@@ -113,3 +113,4 @@ div#edit_user_sidebar .icon-chevron-right{
   background-color: slategray;  
   color: white;
 }
+

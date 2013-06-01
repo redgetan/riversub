@@ -1,0 +1,37 @@
+<div id='user_profile' class='span3'>
+<div id='avatar' >
+  <% if @user.avatar.url.present? %>
+    <div class="thumbnail">
+      <%= image_tag @user.avatar.url  %>     
+    </div>
+  <% end %>
+  <div id='user_bio'><%= @user.bio  %></div>
+  <div id='user_email'><%= @user.email  %></div>
+  <div id='stats'>
+      <div id='num_of_subtitles'><span>subtitled: </span><%= @user.repositories.count  %></div>
+  </div>
+</div>
+</div>
+
+<div id='user_repositories' class='span6 offset1'>
+  <h3>Videos Subtitled</h3>
+  <div id='videos'>
+    <ul class='thumbnails'>
+      <% @user.repositories.each do |repo| %>
+      <li class='span2 center'>
+        <div class='thumbnail'>
+          <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+            <img src="<%= repo.thumbnail_url %>" alt="" >
+          </a>
+          <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+            <h6><%= repo.video.name %></h6>
+          </a>
+          <ul id='stats' class="unstyled">
+            <li><h6>timings: <%= repo.timings.count %></h6></li>
+          </ul>
+        </div>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

@@ -2,7 +2,7 @@
   <div id='editor-top' class='row'> 
     <div class='span12'> 
       <h5 id='repo_label'>
-        <span id='repo_owner'><%= @repo.owner %></span> / <%= @repo.video.name %>
+        <span id='repo_owner'><a href="<%= user_path(@repo.user) %>"><%= @repo.owner %></a></span> / <%= @repo.video.name %>
       </h5>
       <h6 id='video_url'><%= @repo.video.url %></h6> 
     </div> 

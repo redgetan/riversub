@@ -3,7 +3,8 @@ River::Application.routes.draw do
   devise_for :users, :controllers => { :registrations => "registrations" }
 
   devise_scope :user do
-    put "/users/change_avatar", :to => "registrations#change_avatar", :as => "user_change_avatar"
+    put "/users/change_avatar",  :to => "registrations#change_avatar", :as => "user_change_avatar"
+    get "/users/:username",      :to => "users#show",                  :as => "user"
   end
 
   post "/videos/sub",                          :to => "videos#sub",    :as => "sub_videos"
