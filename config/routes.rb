@@ -6,24 +6,27 @@ River::Application.routes.draw do
     put "/users/change_avatar", :to => "registrations#change_avatar", :as => "user_change_avatar"
   end
 
-
-  get "videos/play"
-  post "videos/sub"
-  match "videos/:id/editor" => "videos#editor", :as => "editor_video"
+  resources :videos, :only => [:show] do
+    member do
+      get "editor"
+    end
+    collection do
+      post "sub"
+    end
+  end
 
   # http://stackoverflow.com/questions/5160021/rails-namespace-vs-nested-resource
   resources :users do
-    resources :videos do
+    resources :videos, :only => [:show] do
       member do
         get "editor"
       end
     end
   end
 
-  get "videos/:video_id/timings", :to => "timings#index"
-  post "videos/:video_id/timings", :to => "timings#create"
-  put "videos/:video_id/timings", :to => "timings#update"
-  delete "videos/:video_id/timings", :to => "timings#destroy"
+  resources :repositories, :only => [] do
+    resources :timings, :only => [:index,:create,:update,:destroy]
+  end
 
   get "about", :to => "home#about"
   root :to => "home#index"

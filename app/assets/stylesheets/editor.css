@@ -24,9 +24,14 @@
 	font-style: bold;
 }
 
-div#editor #video_name {
+div#editor #repo_label {
 	float: left;
 }
+
+div#editor #repo_owner {
+	color: gray;
+}
+
 div#editor #video_url {
 	/*float: left;*/
 	color: gray;

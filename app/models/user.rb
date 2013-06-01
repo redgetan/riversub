@@ -32,4 +32,14 @@ class User < ActiveRecord::Base
       where(conditions).first
     end
   end
+
+  def serialize
+    {
+      :id => self.id,
+      :username => self.username,
+      :bio => self.bio,
+      :email => self.email,
+      :avatar => self.avatar
+    }  
+  end
 end

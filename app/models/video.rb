@@ -1,7 +1,5 @@
 class Video < ActiveRecord::Base
   attr_accessible :artist, :genre, :name, :metadata, :url
-  has_many :subtitles
-  has_many :timings
 
   has_many :repositories
   has_many :users, :through => :repositories
@@ -10,23 +8,13 @@ class Video < ActiveRecord::Base
 
   validates :name, :presence => true
 
-  accepts_nested_attributes_for :subtitles
-
   def serialize
     {
       :id => self.id,
       :name => self.name,
       :genre => self.genre,
-      :url => self.url,
-      :timings => self.timings.map(&:serialize)
+      :url => self.url
     }
-  end
-
-  def to_srt
-    self.timings.order("start_time").each_with_index.map do |timing,index|
-      # get subtitle each subtitle
-      "#{index + 1}\n#{timing.formatted_start_time} --> #{timing.formatted_end_time}\n#{timing.subtitle.text}\n\n"
-    end.join
   end
 
 end

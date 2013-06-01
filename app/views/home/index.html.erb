@@ -12,14 +12,14 @@
 <div id="videos" class="span12">
   <p>Recently Subtitled Videos</p>
   <ul class="thumbnails">
-    <% @videos.each do |video| %>
+    <% @repos.each do |repo| %>
         <li class="span2">
           <div class="thumbnail center">
-            <a href="/videos/<%= video.id %>/editor" id="<%= video.id %>" class="video" >
-              <img src="<%= video.metadata["data"]["thumbnail"]["sqDefault"] %>" alt="">
+            <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+              <img src="<%= repo.thumbnail_url %>" alt="">
             </a>
-            <a href="/videos/<%= video.id %>/editor" id="<%= video.id %>" class="video" >
-              <h6><%= video.name %></h6>
+            <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+              <h6><%= repo.video.name %></h6>
             </a>
           </div>
         </li>

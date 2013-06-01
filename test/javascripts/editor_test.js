@@ -167,6 +167,8 @@ $(document).ready(function(){
 // [x] should be able to undo creation of a track easily in case user decided oh that's a mistake
 
 // 2.0
+// [ ] destroy subtitle should destroy track (server model/javascript)
+// [ ] destroy track should destroy subtitle (server model/javascript)
 // [ ] should be able to delete track using keyboard
 // [ ] play only up to current track endtime
 // [ ] allow user to sync timing of existing transcripts

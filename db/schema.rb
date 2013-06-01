@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130528205210) do
+ActiveRecord::Schema.define(:version => 20130601035645) do
 
   create_table "repositories", :force => true do |t|
     t.integer  "video_id",   :null => false
@@ -27,9 +27,9 @@ ActiveRecord::Schema.define(:version => 20130528205210) do
   end
 
   create_table "timings", :force => true do |t|
-    t.integer  "video_id",    :null => false
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "repository_id", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.float    "start_time"
     t.float    "end_time"
     t.integer  "subtitle_id"

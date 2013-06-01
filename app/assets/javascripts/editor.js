@@ -1,7 +1,10 @@
-function Editor (video,options) {
-  this.video = video || {};
+function Editor (repo,options) {
+  this.repo = repo || {};
+  this.video = this.repo.video || {};
+  this.user = this.repo.user || {};
+  
   this.options = options || {};
-  var timings = this.video.timings || [];
+  var timings = this.repo.timings || [];
   var subtitles = $.map(timings,function(timing){ return timing.subtitle; });
   var mediaSource = typeof this.video.url === "undefined" ? "" : this.video.url;
 
@@ -404,29 +407,6 @@ Editor.prototype = {
       this.$saveBtn.attr("disabled","disabled");
     }
 
-    // save subtitles
-    // if (this.changes["subtitles"]["creates"].length > 0 ) {
-    //   $.ajax({
-    //     url: "/videos/" + this.video.id +"/subtitles",
-    //     type: "POST",
-    //     data: { subtitles: this.changes["subtitles"]["creates"].attributes },
-    //     dataType: "json",
-    //     success: function(data) {
-    //       this.setSubtitleIds(data);
-    //       this.$saveBtn.attr("disabled", "disabled");
-    //     }.bind(this),
-    //     error: function(data,e,i) {
-    //       try {
-    //         var result = JSON.parse(data);
-    //         this.setSubtitleIds(result.created);
-    //         alert(result.error);
-    //       } catch (e) {
-    //         alert(data.responseText);
-    //       }
-    //     }
-    //   });
-    // }
-
     // save timings and subtitles
 
     var track;
@@ -444,7 +424,7 @@ Editor.prototype = {
 
     if (this.changes["tracks"]["creates"].length > 0 ) {
       $.ajax({
-        url: "/videos/" + this.video.id +"/timings",
+        url: "/repositories/" + this.repo.id +"/timings",
         type: "POST",
         data: { timings: $.map(this.changes["tracks"]["creates"],function(track){ return track.getAttributes(); } ) },
         dataType: "json",
@@ -467,7 +447,7 @@ Editor.prototype = {
 
     if (this.changes["tracks"]["updates"].length > 0 ) {
       $.ajax({
-        url: "/videos/" + this.video.id +"/timings",
+        url: "/repositories/" + this.repo.id +"/timings",
         type: "PUT",
         data: { timings: $.map(this.changes["tracks"]["updates"],function(track){ return track.getAttributes(); } ) },
         dataType: "json",
@@ -492,7 +472,7 @@ Editor.prototype = {
 
     if (this.changes["tracks"]["deletes"].length > 0 ) {
       $.ajax({
-        url: "/videos/" + this.video.id +"/timings",
+        url: "/repositories/" + this.repo.id +"/timings",
         type: "DELETE",
         data: { timings: this.changes["tracks"]["deletes"] },
         dataType: "json",

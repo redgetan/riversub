@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
   def index
-    @videos = Video.all
+    @repos = Repository.all
     respond_to :html
   end
 
