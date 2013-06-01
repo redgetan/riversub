@@ -176,10 +176,10 @@ Track.prototype = {
       start: startTime,
       end:   endTime,
       onStart: function() {
-        self.$el_expanded.trigger("trackstart",[self]);
+        $(document).trigger("trackstart",[self]);
       },
       onEnd: function() {
-        self.$el_expanded.trigger("trackend",[self]);
+        $(document).trigger("trackend",[self]);
       },
     });
 

@@ -236,29 +236,30 @@ Subtitle.prototype = {
     this.$close = this.$el.find(".close");
     this.$close.hide();
 
-    this.$el.find(".text").editInPlace({
-      editEvent: "dblclick",
-      bg_over: "transparent",
-      default_text: "",
-      callback: function(unused, enteredText) { this.setAttributes({ "text": enteredText}); return enteredText; }.bind(this),
-      delegate: {
-        didOpenEditInPlace: function($dom,settings) {
-          $dom.trigger("subtitlelineedit");
+    if ($("#editor").size() === 1) {
+      this.$el.find(".text").editInPlace({
+        editEvent: "dblclick",
+        bg_over: "transparent",
+        default_text: "",
+        callback: function(unused, enteredText) { this.setAttributes({ "text": enteredText}); return enteredText; }.bind(this),
+        delegate: {
+          didOpenEditInPlace: function($dom,settings) {
+            $dom.trigger("subtitlelineedit");
 
-          $dom.find(":input").attr("maxlength",60);
-          $dom.find(":input").on("keyup",function(event) {
-            var $input = $(event.target);
-            $input.trigger("subtitlelinekeyup",$input.val());
-          });
-        }.bind(this),
-        // shouldCloseEditInPlace: function() { return false; },
-        didCloseEditInPlace: function($dom) {
-          $dom.trigger("subtitlelineblur");
-          // this.edit_sub_mode = false;
-        }.bind(this)  
-      }
-    });
-
+            $dom.find(":input").attr("maxlength",60);
+            $dom.find(":input").on("keyup",function(event) {
+              var $input = $(event.target);
+              $input.trigger("subtitlelinekeyup",$input.val());
+            });
+          }.bind(this),
+          // shouldCloseEditInPlace: function() { return false; },
+          didCloseEditInPlace: function($dom) {
+            $dom.trigger("subtitlelineblur");
+            // this.edit_sub_mode = false;
+          }.bind(this)  
+        }
+      });
+    }
 
     this.render();
   },

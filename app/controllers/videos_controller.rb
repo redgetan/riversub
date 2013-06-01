@@ -35,7 +35,7 @@ class VideosController < ApplicationController
 
     @repo = Repository.where(:user_id => @user.try(:id), :video_id => @video.id).first
                       
-    render :json => @repo.serialize.to_json
+    respond_to :html
   end
 
 end

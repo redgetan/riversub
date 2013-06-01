@@ -2,6 +2,7 @@
 
 var popcorn;
 var editor;
+var player;
 var metadata;
 
 var getMetadata = function(url,done) {
@@ -45,9 +46,11 @@ var handleRoute = function() {
     var repo = $("#editor").data("repo") ;
     $("#editor").removeData("repo");
     editor = new Editor(repo);
-  }
-
-  if (new RegExp("/users/edit").test(location.pathname)) {
+  } else if (new RegExp("/videos/.+").test(location.pathname)) {
+    var repo = $("#player").data("repo") ;
+    $("#editor").removeData("repo");
+    player = new Player(repo);
+  } else if (new RegExp("/users/edit").test(location.pathname)) {
     // hide all forms initially
     $("div#edit_user_content form").each(function(){
       $(this).hide();

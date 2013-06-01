@@ -24,21 +24,25 @@
 	font-style: bold;
 }
 
-div#editor #repo_label {
+div#editor #repo_label,
+div#player #repo_label {
 	float: left;
 }
 
-div#editor #repo_owner {
+div#editor #repo_owner, 
+div#player #repo_owner {
 	color: gray;
 }
 
-div#editor #video_url {
+div#editor #video_url, 
+div#player #video_url {
 	/*float: left;*/
 	color: gray;
 	float: right;
 }
 
-div#editor #controls {
+div#editor #controls,
+div#player #controls {
 	padding: 10px;
 }
 
