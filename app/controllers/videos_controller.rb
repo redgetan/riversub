@@ -20,17 +20,22 @@ class VideosController < ApplicationController
   end
 
   def editor
-    @repo = Repository.where(:user_id => params[:user_id],
-                             :video_id => params[:id]).first
+    @user = User.where(:username => params[:username]).first
+    @video = Video.where(:token => params[:token]).first
+
+    @repo = Repository.where(:user_id => @user.try(:id), :video_id => @video.id).first
 
     respond_to :html
   end
 
 
   def show
-    @video = Video.find params[:id]
+    @user = User.where(:username => params[:username]).first
+    @video = Video.where(:token => params[:token]).first
 
-    render :json => @video.serialize.to_json
+    @repo = Repository.where(:user_id => @user.try(:id), :video_id => @video.id).first
+                      
+    render :json => @repo.serialize.to_json
   end
 
 end

@@ -6,12 +6,12 @@ River::Application.routes.draw do
     put "/users/change_avatar", :to => "registrations#change_avatar", :as => "user_change_avatar"
   end
 
-  get "/videos/sub",                       :to => "videos#sub",    :as => "sub_videos"
-  get "/videos/:id",                       :to => "videos#show",   :as => "video"
-  get "/videos/:id/editor",                :to => "videos#editor", :as => "editor_video"
+  post "/videos/sub",                          :to => "videos#sub",    :as => "sub_videos"
+  get "/videos/:token",                        :to => "videos#show",   :as => "video"
+  get "/videos/:token/editor",                 :to => "videos#editor", :as => "editor_video"
 
-  get "/users/:user_id/videos/:id",        :to => "videos#show",   :as => "user_video"
-  get "/users/:user_id/videos/:id/editor", :to => "videos#editor", :as => "editor_user_video"
+  get "/users/:username/videos/:token",        :to => "videos#show",   :as => "user_video"
+  get "/users/:username/videos/:token/editor", :to => "videos#editor", :as => "editor_user_video"
 
   resources :repositories, :only => [] do
     resources :timings, :only => [:index,:create,:update,:destroy]

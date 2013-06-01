@@ -42,4 +42,8 @@ class User < ActiveRecord::Base
       :avatar => self.avatar
     }  
   end
+
+  def to_param
+    self.username  
+  end
 end

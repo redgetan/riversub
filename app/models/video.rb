@@ -8,6 +8,8 @@ class Video < ActiveRecord::Base
 
   validates :name, :presence => true
 
+  before_create :generate_token
+
   def serialize
     {
       :id => self.id,
@@ -15,6 +17,17 @@ class Video < ActiveRecord::Base
       :genre => self.genre,
       :url => self.url
     }
+  end
+
+  def generate_token
+    self.token = loop do
+      random_token = SecureRandom.urlsafe_base64
+      break random_token unless self.class.where(token: random_token).exists?
+    end
+  end
+
+  def to_param
+    self.token  
   end
 
 end

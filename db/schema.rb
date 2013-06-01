@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130601035645) do
+ActiveRecord::Schema.define(:version => 20130601200528) do
 
   create_table "repositories", :force => true do |t|
     t.integer  "video_id",   :null => false
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20130601035645) do
     t.datetime "updated_at", :null => false
     t.text     "metadata"
     t.string   "url"
+    t.string   "token"
   end
 
 end
