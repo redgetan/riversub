@@ -21,7 +21,7 @@ class Video < ActiveRecord::Base
 
   def generate_token
     self.token = loop do
-      random_token = SecureRandom.urlsafe_base64
+      random_token = SecureRandom.urlsafe_base64(8)
       break random_token unless self.class.where(token: random_token).exists?
     end
   end
