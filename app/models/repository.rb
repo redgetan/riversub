@@ -28,6 +28,15 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def owner_profile_url
+    if self.user
+      user_path(self.user)
+    else
+      "#"
+    end
+  end
+
+
   def editor_url
     if self.user
       editor_user_video_path(self.user,self.video) 
