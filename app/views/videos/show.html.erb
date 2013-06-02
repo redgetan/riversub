@@ -23,6 +23,8 @@
           <div class='pull-right'> 
             <% if @repo.user == current_user %>
               <a class='btn btn-info' href="<%= @repo.editor_url %>">Edit Current</a>
+            <% else %>
+              Authored by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> (View only)
             <% end %>
           </div> 
         </div> 
