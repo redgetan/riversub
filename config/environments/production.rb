@@ -72,7 +72,7 @@ River::Application.configure do
     :port                 => 587,
     :domain               => 'zeroplay.net',
     :user_name            => 'simple.yuji@gmail.com',
-    :password             => 'justletmein',
+    :password             => 'iwtets90',
     :authentication       => 'plain',
     :enable_starttls_auto => true  
   }

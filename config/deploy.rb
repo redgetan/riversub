@@ -51,8 +51,10 @@ role :db,  host, :primary => true # This is where Rails migrations will run
 
 after "deploy:restart", "deploy:cleanup" # keep only the last 5 releases
 after "deploy:restart", "deploy:reload" # unicorn pre init app true uses reload instead of restart
+
 after "deploy:update_code", "deploy:setup_database"
 after "deploy:setup_database", "deploy:migrate"
+after "deploy:create_symlink", "deploy:update_unicorn_init_script"
 
 namespace :deploy do
   %w[start stop reload upgrade].each do |command|
@@ -62,13 +64,14 @@ namespace :deploy do
     end
   end
 
-  task :setup_config, roles: :app do
+  task :update_unicorn_init_script, roles: :app do
+    template = File.read "#{current_path}/config/unicorn_init.erb"
+    File.open("#{current_path}/config/unicorn_init.sh","w") { |f| f.write ERB.new(template).result }
     sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
   end
-  after "deploy:setup", "deploy:setup_config"
 
   task :setup_database, roles: :app do
-    run "cd #{release_path} && RAILS_ENV=production rake db:create"
+    run "cd #{release_path} && RAILS_ENV=#{deploy_environment} rake db:create"
   end
 
   desc "Make sure local git is in sync with remote."
