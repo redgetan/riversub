@@ -320,10 +320,11 @@ Editor.prototype = {
     this.$subtitleDisplay.text(text);
     this.$subtitleDisplay.show();
 
+    this.edit_sub_mode = false;
 
-      this.edit_sub_mode = false;
+    this.enableCommands();
 
-      this.enableCommands();
+    if (this.media.paused) this.popcorn.play();
   },
 
   onSubtitleLineEdit: function(event) {
@@ -336,11 +337,13 @@ Editor.prototype = {
 
   enableCommands: function(event) {
     $(document).on("keyup",this.onKeyupHandler.bind(this));
+    this.$startTimingBtn.removeAttr("disabled");
   },
 
   disableCommands: function(event) {
     $(document).off("keydown");
     $(document).off("keyup");
+    this.$startTimingBtn.attr("disabled","disabled");
   },
 
   onSubtitleEditKeyup: function(event) {
@@ -353,8 +356,6 @@ Editor.prototype = {
     // enter key
     if (event.which == 13) {
       this.$subtitleEdit.blur();
-
-      if (this.media.paused) this.popcorn.play();
     } 
     
     var text = this.$subtitleEdit.val();
