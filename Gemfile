@@ -55,3 +55,4 @@ end
 gem 'unicorn'
 gem 'devise'
 gem "rmagick"
+gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
