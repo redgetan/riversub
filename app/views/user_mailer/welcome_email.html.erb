@@ -4,18 +4,19 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   </head>
   <body>
-    <h1>Welcome to River Subtitles</h1>
-    <h1>Dear <%= @user.username %>,</h1>
+    <h3>Welcome to River Subtitles</h3>
+    <p>Dear <%= @user.username %>,</p>
     <p>
-      You have successfully signed up to <%= @url %>,
+      You have successfully signed up to <a href="<%= @url %>"></a><%= @url %>,
     </p>
 
     <p>
       If you have any questions or feedback, feel free to contact me at <a href="mailto:redge.tan@gmail.com">redge.tan@gmail.com</a>
     </p>
+    </br>
 
-    Happy Subtitling,
+    <p>Happy Subtitling,</p>
 
-    Reginald Tan
+    <p>Reginald Tan</p>
   </body>
 </html>

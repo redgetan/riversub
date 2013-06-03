@@ -72,7 +72,7 @@ River::Application.configure do
     :port                 => 587,
     :domain               => 'zeroplay.net',
     :user_name            => 'simple.yuji@gmail.com',
-    :password             => 'blackwing',
+    :password             => 'justletmein',
     :authentication       => 'plain',
     :enable_starttls_auto => true  
   }
