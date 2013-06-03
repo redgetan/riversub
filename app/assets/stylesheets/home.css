@@ -9,7 +9,7 @@ margin-left:-1px;
 }
 
 #header {
-  margin-top: 20px;
+  /*margin-top: 20px;*/
 }
 
 .center {
@@ -20,11 +20,11 @@ margin-left:-1px;
 }
 
 div#main_container {
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 div#media_input {
-  margin-top: 100px;
+  margin-top: 150px;
   margin-bottom: 100px;
 }
 
@@ -112,5 +112,12 @@ div#edit_user_sidebar .icon-chevron-right{
 #edit_user_sidebar ul li.active a {
   background-color: slategray;  
   color: white;
+}
+
+div#user_details {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+  margin: 10px 0;
 }
 
