@@ -37,6 +37,9 @@ set :user, myconfig[deploy_environment][:user]
 set :deploy_to, "/home/hatch/apps/river"
 set :deploy_via, :remote_cache
 
+# http://stackoverflow.com/questions/9043662/carrierwave-files-with-capistrano/9710542#9710542
+set :shared_children, shared_children + %w{public/uploads}
+
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 

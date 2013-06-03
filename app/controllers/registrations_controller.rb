@@ -1,6 +1,11 @@
 class RegistrationsController < Devise::RegistrationsController
   include DeviseHelper
 
+  def create
+    super
+    UserMailer.welcome_email(@user).deliver unless @user.invalid?
+  end
+
   # https://github.com/plataformatec/devise/wiki/How-To%3a-Allow-users-to-edit-their-account-without-providing-a-password
   def update
     @user = User.find(current_user.id)
