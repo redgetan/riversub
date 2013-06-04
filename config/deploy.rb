@@ -11,7 +11,7 @@ set :myconfig, {
   },
   :staging => {
     :user => "hatch",
-    :host => "localhost"
+    :host => "vm"
   }
 }
 
@@ -24,9 +24,9 @@ set :scm_username, "redgetan"
 set :use_sudo, false
 
 
-set :deploy_environment, ENV['RAILS_ENV'].to_sym
+set :deploy_environment, ENV['RAILS_ENV'] ? ENV['RAILS_ENV'].to_sym : nil
 
-if ![:staging, :production].include?(deploy_environment)
+if !deploy_environment || ![:staging, :production].include?(deploy_environment)
   puts "Usage: "
   puts "  RAILS_ENV=production cap deploy:setup"
   puts "  RAILS_ENV=staging    cap deploy:setup"
@@ -66,7 +66,7 @@ namespace :deploy do
 
   task :update_unicorn_init_script, roles: :app do
     template = File.read "#{current_path}/config/unicorn_init.erb"
-    File.open("#{current_path}/config/unicorn_init.sh","w") { |f| f.write ERB.new(template).result }
+    put ERB.new(template).result, "#{current_path}/config/unicorn_init.sh "
     sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
   end
 
