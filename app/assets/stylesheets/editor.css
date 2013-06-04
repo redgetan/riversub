@@ -57,13 +57,13 @@ div#editor-bottom {
 #timeline_container {
   	padding: 10px;
 	/*width: 1150px;*/
-	height: 150px;
+	height: 140px;
 	/*margin-top: 15px;*/
 	border: solid 1px black ;
 }
 
 #timeline_container #summary {
-	height: 25px;
+	height: 15px;
 	border: solid 1px black ;
 	position: relative;
 	overflow: hidden;

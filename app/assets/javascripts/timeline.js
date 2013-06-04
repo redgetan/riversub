@@ -111,7 +111,27 @@ Timeline.prototype = {
   onMouseDownHandler: function(event) {
     this.seekmode = true;
     // given pixel position, find out what seconds in time it corresponds to
+
     var $target = $(event.target);
+    var seconds = this.getSecondsFromCurrentPosition($target);
+
+    if (!$target.hasClass("track")) {
+      this.$container.trigger("timelineseek",[seconds]);
+    }
+  },
+
+  onMouseMoveHandler: function(event) {
+    // given pixel position, find out what seconds in time it corresponds to
+    var $target = $(event.target);
+    var seconds = this.getSecondsFromCurrentPosition($target);
+    if (this.seekmode) {
+      if (!$target.hasClass("track")) {
+        this.$container.trigger("timelineseek",[seconds]);
+      }
+    }
+  },
+
+  getSecondsFromCurrentPosition: function($target) {
     var $timeline;
 
     if (!$target.hasClass("timeline")) {
@@ -120,34 +140,10 @@ Timeline.prototype = {
       $timeline = $target;
     }
 
-    if (!$target.hasClass("track")) {
-      var timelineX = $timeline.position().left;
-      var posX = event.pageX - timelineX;
-      var seconds = posX / this.resolution($timeline) + $timeline.scrollLeft() / this.resolution($timeline);
-      this.$container.trigger("timelineseek",[seconds]);
-    }
-
-  },
-
-  onMouseMoveHandler: function(event) {
-    if (this.seekmode) {
-      // given pixel position, find out what seconds in time it corresponds to
-      var $target = $(event.target);
-      var $timeline;
-
-      if (!$target.hasClass("timeline")) {
-        $timeline = $target.closest(".timeline");
-      } else {
-        $timeline = $target;
-      }
-
-      if (!$target.hasClass("track")) {
-        var timelineX = $timeline.position().left;
-        var posX = event.pageX - timelineX;
-        var seconds = posX / this.resolution($timeline) + $timeline.scrollLeft() / this.resolution($timeline);
-        this.$container.trigger("timelineseek",[seconds]);
-      }
-    }
+    var timelineX = $timeline.position().left;
+    var posX = event.pageX - timelineX;
+    var seconds = posX / this.resolution($timeline) + $timeline.scrollLeft() / this.resolution($timeline);
+    return seconds;
   },
 
   onMouseUpHandler: function(event) {
