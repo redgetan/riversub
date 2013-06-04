@@ -17,6 +17,10 @@ test:
   database: river_test
   <<: *defaults
 
+staging:
+  database: river_staging
+  <<: *defaults
+
 production:
   database: river_production
   <<: *defaults
