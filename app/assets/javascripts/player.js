@@ -39,13 +39,13 @@ Player.prototype = {
 
   hideEditing: function() {
     $("#player-top-left").removeClass("span6");
-    $("#player-top-left").addClass("span8");
+    $("#player-top-left").addClass("span7");
 
     $("#player-top-right").removeClass("span6");
-    $("#player-top-right").addClass("span4");
+    $("#player-top-right").addClass("span5");
 
     $("#subtitle_bar").removeClass("span6");
-    $("#subtitle_bar").addClass("span8");
+    $("#subtitle_bar").addClass("span7");
 
     $("#subtitle_list").find("th").first().remove(); // remove start heading
     $("#subtitle_list").find("th").first().remove(); // remove end   heading

@@ -32,11 +32,6 @@ function Editor (repo,options) {
       creates: [],
       updates: [],
       deletes: []
-    },
-    subtitles: {
-      creates: [],
-      updates: [],
-      deletes: []
     }
   };
 
@@ -432,6 +427,7 @@ Editor.prototype = {
         success: function(data) {
           this.setIds(data);
           this.$saveBtn.attr("disabled", "disabled");
+          this.changes["tracks"]["creates"] = [];
         }.bind(this),
         error: function(data,e,i) {
           try {
@@ -442,6 +438,7 @@ Editor.prototype = {
           } catch (e) {
             alert("Failed to save changes");
           }
+          this.changes["tracks"]["creates"] = [];
         }
       });
     }
@@ -457,6 +454,7 @@ Editor.prototype = {
             timings[i].isSaved = true;
           }
           this.$saveBtn.attr("disabled", "disabled");
+          this.changes["tracks"]["updates"] = [];
         }.bind(this),
         error: function(data,e,i) {
           try {
@@ -467,6 +465,7 @@ Editor.prototype = {
           } catch (e) {
             alert("Failed to save changes");
           }
+          this.changes["tracks"]["updates"] = [];
         }
       });
     }
@@ -479,6 +478,7 @@ Editor.prototype = {
         dataType: "json",
         success: function(timings) {
           this.$saveBtn.attr("disabled", "disabled");
+          this.changes["tracks"]["deletes"] = [];
         }.bind(this),
         error: function(data,e,i) {
           try {
@@ -488,6 +488,7 @@ Editor.prototype = {
           } catch (e) {
             alert("Failed to save changes");
           }
+          this.changes["tracks"]["deletes"] = [];
         }
       });
     }

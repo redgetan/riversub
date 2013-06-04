@@ -150,7 +150,7 @@ div#editor-bottom {
 	height: 270px;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	border: solid 1px black;
+	/*border: solid 1px black;*/
 }
 
 #subtitle_list table {

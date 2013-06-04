@@ -44,11 +44,11 @@ var isEmbeddable = function(metadata) {
 var handleRoute = function() {
   if (new RegExp("/videos/.+/editor").test(location.pathname)) {
     var repo = $("#editor").data("repo") ;
-    $("#editor").removeData("repo");
+    $("#editor").removeAttr("data-repo");
     editor = new Editor(repo);
   } else if (new RegExp("/videos/.+").test(location.pathname)) {
     var repo = $("#player").data("repo") ;
-    $("#editor").removeData("repo");
+    $("#player").removeAttr("data-repo");
     player = new Player(repo);
   } else if (new RegExp("/users/edit").test(location.pathname)) {
     // hide all forms initially
