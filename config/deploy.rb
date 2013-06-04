@@ -49,6 +49,8 @@ role :web, host                          # Your HTTP server, Apache/etc
 role :app, host                          # This may be the same as your `Web` server
 role :db,  host, :primary => true # This is where Rails migrations will run
 
+after "deploy:setup", "deploy:create_shared_uploads_folder" 
+
 after "deploy:restart", "deploy:cleanup" # keep only the last 5 releases
 after "deploy:restart", "deploy:reload" # unicorn pre init app true uses reload instead of restart
 
@@ -62,6 +64,11 @@ namespace :deploy do
     task command, roles: :app, except: {no_release: true} do
       run "/etc/init.d/unicorn_#{application} #{command}"
     end
+  end
+
+  desc "create shared/uploads folder"
+  task :create_shared_uploads_folder, :except => { :no_release => true } do
+    run "mkdir -p #{shared_path}/uploads"
   end
 
   task :update_unicorn_init_script, roles: :app do
