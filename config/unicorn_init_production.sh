@@ -5,7 +5,7 @@ set -e
 TIMEOUT=${TIMEOUT-60}
 APP_ROOT=/home/hatch/apps/river/current
 PID=$APP_ROOT/tmp/pids/unicorn.pid
-CMD="cd $APP_ROOT; bundle exec unicorn -D -c $APP_ROOT/config/unicorn.rb -E <%= ENV['RAILS_ENV'] %>"
+CMD="cd $APP_ROOT; bundle exec unicorn -D -c $APP_ROOT/config/unicorn.rb -E production"
 AS_USER=hatch
 set -u
 
