@@ -11,7 +11,7 @@ set :myconfig, {
   },
   :staging => {
     :user => "hatch",
-    :host => "vm"
+    :host => "stage"
   }
 }
 
@@ -65,9 +65,7 @@ namespace :deploy do
   end
 
   task :update_unicorn_init_script, roles: :app do
-    template = File.read "#{current_path}/config/unicorn_init.erb"
-    put ERB.new(template).result, "#{current_path}/config/unicorn_init.sh "
-    sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
+    sudo "ln -nfs #{current_path}/config/unicorn_init_#{deploy_environment}.sh /etc/init.d/unicorn_#{application}"
   end
 
   task :setup_database, roles: :app do

@@ -30,9 +30,7 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem 'thin'
-  gem 'capistrano',
-    :git => 'git://github.com/capistrano/capistrano.git',
-    :ref => "186b698eebc8b3ea3d67abb5a141bada1c595cc9"
+  gem 'capistrano', "~> 2.15.4"
   gem 'capistrano-unicorn', :require => false
   gem 'rvm-capistrano'
   gem "pry"
