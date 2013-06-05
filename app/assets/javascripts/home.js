@@ -46,6 +46,16 @@ var handleRoute = function() {
     var repo = $("#editor").data("repo") ;
     $("#editor").removeAttr("data-repo");
     editor = new Editor(repo);
+
+    var has_seen_instructions = getCookie("has_seen_instructions");
+    if (!has_seen_instructions) {
+      setTimeout(editor.guideUser.bind(editor),2000);
+    }
+
+    $('#instructions_modal').on('hidden', function () {
+      setCookie("has_seen_instructions","yes",365);
+    })
+
   } else if (new RegExp("/videos/.+").test(location.pathname)) {
     var repo = $("#player").data("repo") ;
     $("#player").removeAttr("data-repo");
@@ -209,6 +219,32 @@ $(document).ready(function(){
 
 });
 
+function setCookie(c_name,value,exdays)
+{
+  var exdate=new Date();
+  exdate.setDate(exdate.getDate() + exdays);
+  var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+  document.cookie=c_name + "=" + c_value;
+}
 
+function getCookie(c_name)
+{
+  var c_value = document.cookie;
+  var c_start = c_value.indexOf(" " + c_name + "=");
+  if (c_start == -1) {
+    c_start = c_value.indexOf(c_name + "=");
+  }
+  if (c_start == -1) {
+    c_value = null;
+  } else {
+    c_start = c_value.indexOf("=", c_start) + 1;
+    var c_end = c_value.indexOf(";", c_start);
+    if (c_end == -1) {
+      c_end = c_value.length;
+    }
+    c_value = unescape(c_value.substring(c_start,c_end));
+  }
+  return c_value;
+}
 
 //})();

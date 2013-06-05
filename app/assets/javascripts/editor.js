@@ -66,6 +66,10 @@ Editor.prototype = {
     this.$downloadBtn.tooltip({title: "Download subtitle file in .srt format"});
     this.$helpBtn = $("#help_btn");
     this.$helpBtn.tooltip({title: "Help"});
+    this.$helpBtn.popover({content: "Click Here for Instructions", placement: "top", trigger: "manual"});
+    this.$helpBtn.on("click",function() {
+      $(this).popover("hide");
+    });
 
     this.$subtitleDisplay = $("#subtitle_display");
 
@@ -77,6 +81,10 @@ Editor.prototype = {
     this.$video_name = $("#video_name");
 
     this.$video_url = $("#video_url");
+  },
+
+  guideUser: function() {
+    this.$helpBtn.popover("show");
   },
 
   defineAttributeAccessors: function() {

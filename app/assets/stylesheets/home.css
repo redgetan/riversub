@@ -1,3 +1,8 @@
+.popover {
+  width: 150px;
+  background-color: lightgoldenrodyellow; 
+}
+
 .navbar-inner .brand {
   margin-left: 0px;
 }
