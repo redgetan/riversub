@@ -1,3 +1,7 @@
+.navbar-inner .brand {
+  margin-left: 0px;
+}
+
 /* temporary fix to https://github.com/twitter/bootstrap/issues/5704  */
 .btn-group > .tooltip + .btn,
 .btn-group > .popover + .btn {
