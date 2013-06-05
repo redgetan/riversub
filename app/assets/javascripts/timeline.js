@@ -49,10 +49,10 @@ Timeline.prototype = {
   },
 
   bindEvents: function() {
-    this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("seeking",this.onSeeking.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
+    this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
 
     $(document).on("ghosttrackstart",this.onGhostTrackStart.bind(this));
     $(document).on("ghosttrackend",this.onGhostTrackEnd.bind(this));
@@ -69,28 +69,21 @@ Timeline.prototype = {
     this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
   },
 
-  onPlay: function() {
-    // youtube javascript API getCurrentTime updates roughly around 10 fps in my mac, but might be higher in others?
-    // lets just try 30fp s
-    this.scrubberInterval = setInterval(this.renderScrubber.bind(this),1000/30); 
-    // this.progressBarInterval = setInterval(this.renderProgressBar.bind(this),1000/30);
-    this.timeIndicatorInterval = setInterval(this.renderTimeIndicator.bind(this),1000/30);
+  onPause: function() {
+    var pauseTime = Math.floor(this.media.currentTime * 1000) / 1000;
+    this.$container.trigger("pauseadjust",[pauseTime]);
   },
 
-  onPause: function() {
-    // console.log("on pause" + this.media.currentTime);
-    var pauseTime = Math.floor(this.media.currentTime * 1000) / 1000;
-    clearInterval(this.scrubberInterval);
-    // clearInterval(this.progressBarInterval);
-    clearInterval(this.timeIndicatorInterval);
-    this.$container.trigger("pauseadjust",[pauseTime]);
+  onTimeUpdate: function(event) {
+    this.renderScrubber();
+    this.renderTimeIndicator();
   },
 
   onSeeking: function() {
     // console.log("seeking " + this.media.currentTime);
     // this.renderProgressBar();  
-    this.renderScrubber();  
-    this.renderTimeIndicator();  
+    // this.renderScrubber();  
+    // this.renderTimeIndicator();  
   },
 
   onLoadedMetadata: function() {
@@ -113,7 +106,7 @@ Timeline.prototype = {
     // given pixel position, find out what seconds in time it corresponds to
 
     var $target = $(event.target);
-    var seconds = this.getSecondsFromCurrentPosition($target);
+    var seconds = this.getSecondsFromCurrentPosition($target,event.pageX);
 
     if (!$target.hasClass("track")) {
       this.$container.trigger("timelineseek",[seconds]);
@@ -123,7 +116,7 @@ Timeline.prototype = {
   onMouseMoveHandler: function(event) {
     // given pixel position, find out what seconds in time it corresponds to
     var $target = $(event.target);
-    var seconds = this.getSecondsFromCurrentPosition($target);
+    var seconds = this.getSecondsFromCurrentPosition($target,event.pageX);
     if (this.seekmode) {
       if (!$target.hasClass("track")) {
         this.$container.trigger("timelineseek",[seconds]);
@@ -131,7 +124,7 @@ Timeline.prototype = {
     }
   },
 
-  getSecondsFromCurrentPosition: function($target) {
+  getSecondsFromCurrentPosition: function($target,eventPageX) {
     var $timeline;
 
     if (!$target.hasClass("timeline")) {
@@ -141,8 +134,9 @@ Timeline.prototype = {
     }
 
     var timelineX = $timeline.position().left;
-    var posX = event.pageX - timelineX;
+    var posX = eventPageX - timelineX;
     var seconds = posX / this.resolution($timeline) + $timeline.scrollLeft() / this.resolution($timeline);
+    seconds = Math.round(seconds * 1000) / 1000;
     return seconds;
   },
 
@@ -206,7 +200,7 @@ Timeline.prototype = {
     this.renderInContainer(this.$expanded,track.$el_expanded,{ width: progress, left: track.startTime() });
   },
 
-  renderScrubber: function() {
+  renderScrubber: function(time) {
     this.renderInContainer(this.$summary, this.$scrubber_summary, { left: this.media.currentTime.toFixed(3) });
     this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
 

@@ -77,6 +77,10 @@ Editor.prototype = {
     this.$video_name = $("#video_name");
 
     this.$video_url = $("#video_url");
+
+    this.$progress_bar = $("#progress_bar");
+    this.$progress_bar_scrubber = $("#progress_bar_scrubber");
+
   },
 
   defineAttributeAccessors: function() {
@@ -134,6 +138,71 @@ Editor.prototype = {
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
+    this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+  },
+
+  onProgressBarMouseDownHandler: function(event) {
+    this.seekmode = true;
+    var $target = $(event.target);
+    var seconds = this.getSecondsFromCurrentPosition($target,event.pageX);
+    this.seek(seconds);
+  },
+
+  onProgressBarMouseMoveHandler: function(event) {
+    var $target = $(event.target);
+    var seconds = this.getSecondsFromCurrentPosition($target,event.pageX);
+
+    // show current time
+    var progressBarTooltip = this.$progress_bar.data("tooltip").tip().find('.tooltip-inner');
+    progressBarTooltip.text(this.stringifyTime(seconds));
+
+    this.renderInContainer(this.$progress_bar, progressBarTooltip, { left: seconds - 60 });
+
+    // seek
+    if (this.seekmode) {
+      this.seek(seconds);
+    }
+  },
+
+  onProgressBarMouseUpHandler: function(event) {
+    this.seekmode = false;
+  },
+
+  getSecondsFromCurrentPosition: function($target,eventPageX) {
+    $container = this.$progress_bar;
+
+    var containerX = $container.position().left;
+    var posX = eventPageX - containerX;
+    var seconds = posX / this.resolution($container);
+    seconds = Math.round(seconds * 1000) / 1000;
+    return seconds;
+  },
+
+  // how many pixels per second
+  resolution: function($container) {
+    var widthPixel = $container.width();
+    var widthSeconds = this.media.duration;
+
+    return widthPixel / widthSeconds ;
+  },
+
+  onTimeUpdate: function(event) {
+    this.renderInContainer(this.$progress_bar, this.$progress_bar_scrubber, { left: this.media.currentTime.toFixed(3)});
+  },
+
+
+  // given container, element, and time position you want to position element on, it will
+  // position element on container on appropriate pixel location
+  renderInContainer: function($container,$el,property) {
+
+    for (var key in property) {
+      if (key === "text") {
+        $el.text(property[key]);
+      } else {
+        $el.css(key, this.resolution($container) * property[key]);
+      }
+    }
+
   },
 
   onKeyupHandler: function(event) {
@@ -179,6 +248,16 @@ Editor.prototype = {
 
   onLoadedMetadata: function(event) {
     this.$startTimingBtn.removeAttr("disabled");
+
+    this.$progress_bar.tooltip({title : "."});
+    this.$progress_bar.data("tooltip").tip().find(".tooltip-inner").css("background-color","white");
+    this.$progress_bar.data("tooltip").tip().find(".tooltip-inner").css("color","black");
+    this.$progress_bar.data("tooltip").tip().find(".tooltip-inner").css("border","solid 1px black");
+    this.$progress_bar.data("tooltip").tip().find(".tooltip-inner").css("position","relative");
+
+    this.$progress_bar.on("mousedown",this.onProgressBarMouseDownHandler.bind(this));
+    this.$progress_bar.on("mousemove",this.onProgressBarMouseMoveHandler.bind(this));
+    this.$progress_bar.on("mouseup",this.onProgressBarMouseUpHandler.bind(this));
   },
 
   onPauseAdjust: function(event,correctPauseTime) {
@@ -611,5 +690,20 @@ Editor.prototype = {
     };
 
     this.tracks.length = 0;
+  },
+
+  stringifyTime: function(time) {
+    time = Math.round(time * 1000) / 1000;
+
+    var hours = parseInt( time / 3600 ) % 24;
+    var minutes = parseInt( time / 60 ) % 60;
+    var seconds = Math.floor(time % 60);
+    var milliseconds = Math.floor(time * 1000) % 1000
+
+    var result = (hours < 10 ? "0" + hours : hours) + ":" + 
+                 (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                 (seconds  < 10 ? "0" + seconds : seconds) + "." +
+                 (milliseconds  < 10 ? "00" + milliseconds : (milliseconds < 100 ? "0" + milliseconds : milliseconds)); 
+    return result;
   }
 }

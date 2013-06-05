@@ -42,13 +42,12 @@ div#videos li.selected {
 div#media_container {
   padding: 10px;
   width: inherit;
-  height: 330px;
   border: solid 1px black ;
   /*margin-right: 15px;*/
 }
 
 div#media {
-  height: 250px;
+  height: 210px;
   width: inherit;
 }
 
