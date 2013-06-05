@@ -13,9 +13,16 @@ function Player (repo,options) {
   this.setupElement();
   this.popcorn = this.loadMedia(targetSelector,mediaSource);
   this.subtitleView = new SubtitleView(subtitles);
+  this.timeline = new Timeline({ "hide_expanded": true});
+  this.timeline.setMedia(this.popcorn.media);
+
+
 
   this.trackMap = {}
   this.tracks = this.loadTracks(timings);
+  this.timeline.setTracks(this.tracks);
+
+
 
   this.hideEditing();
   this.bindEvents();
@@ -71,6 +78,8 @@ Player.prototype = {
   },
 
   bindEvents: function() {
+    $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
+    $(document).on("trackseek",this.onTrackSeekHandler.bind(this));
     $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
     $(document).on("trackstart",this.onTrackStart.bind(this));
     $(document).on("trackend",this.onTrackEnd.bind(this));
@@ -79,6 +88,15 @@ Player.prototype = {
     this.popcorn.media.addEventListener("pause",this.onPause.bind(this));
     this.popcorn.media.addEventListener("play",this.onPlay.bind(this));
   },
+
+  onTimelineSeekHandler: function(event,time) {
+    this.seek(time);
+  },
+
+  onTrackSeekHandler: function(event,time) {
+    this.seek(time);
+  },
+
 
   onSubtitleLineClick: function(event,subtitle) {
     this.seek(subtitle.track.startTime());

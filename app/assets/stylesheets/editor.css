@@ -56,22 +56,18 @@ div#editor-bottom {
 
 #timeline_container {
   	padding: 10px;
-	/*width: 1150px;*/
-	height: 140px;
-	/*margin-top: 15px;*/
 	border: solid 1px black ;
 }
 
-#timeline_container #summary {
+#summary.timeline {
 	height: 15px;
 	border: solid 1px black ;
 	position: relative;
 	overflow: hidden;
 }
 
-#timeline_container #expanded {
+#expanded.timeline {
 	height: 110px;
-	margin-top: 10px;
 	border: solid 1px black ;
 	position: relative;
 	overflow: hidden;
@@ -146,7 +142,7 @@ div#editor-bottom {
 
 #subtitle_list {
   	padding: 10px;
-	height: 240px;
+	height: 245px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	/*border: solid 1px black;*/
@@ -223,23 +219,5 @@ div#editor-bottom {
 
 #controls #stop_timing_btn i {
 	color: #333;
-}
-
-#progress_bar {
-	height: 10px;
-	background-color: lightgrey;
-	border: solid 1px black;
-}
-
-#progress_bar_scrubber {
-	background-color: burlywood;
-	border: solid 1px black;
-	width: 10px;
-	height: 10px;
-	border-radius: 15px;
-	position: relative;
-	transform:scale(1.5,1.5);
-	-ms-transform:scale(1.5,1.5);
-	-webkit-transform: scale(1.5,1.5);
 }
 

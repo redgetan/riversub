@@ -35,7 +35,7 @@ Track.prototype = {
 
   setupElement: function(options) {
 
-    this.$container_summary = $("#timeline_container #summary");
+    this.$container_summary = $("#summary.timeline");
 
     var el_summary = "<div id='" + this.id + "' class='track'>" +
                      "</div>"
@@ -43,7 +43,7 @@ Track.prototype = {
     this.$el_summary = $(el_summary);
     this.$container_summary.append(this.$el_summary);
 
-    this.$container_expanded = $("#timeline_container #expanded");
+    this.$container_expanded = $("#expanded.timeline");
 
     var el_expanded = "<div id='" + this.id + "' class='track'>" +
                        "<button type='button' class='close corner'>×</button>" +
