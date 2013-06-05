@@ -51,7 +51,6 @@ Timeline.prototype = {
   },
 
   bindEvents: function() {
-    this.media.addEventListener("seeking",this.onSeeking.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
 
@@ -81,17 +80,10 @@ Timeline.prototype = {
     }
   },
 
-  onSeeking: function() {
-    // console.log("seeking " + this.media.currentTime);
-    // this.renderProgressBar();  
-    // this.renderScrubber();  
-    // this.renderTimeIndicator();  
-  },
-
   onLoadedMetadata: function() {
-    this.$window_slider.css("width",this.resolution(this.$summary) * 30);
 
     if (!this.options["hide_expanded"]) {
+      this.$window_slider.css("width",this.resolution(this.$summary) * 30);
       this.$filler.css("width",this.resolution(this.$expanded) * this.media.duration);
     }
 
@@ -101,7 +93,9 @@ Timeline.prototype = {
     this.$summary.data("tooltip").tip().find(".tooltip-inner").css("border","solid 1px black");
     this.$summary.data("tooltip").tip().find(".tooltip-inner").css("position","relative");
 
-    this.renderTracks();
+    if (!this.options["hide_expanded"]) {
+      this.renderTracks();
+    }
   },
 
   onGhostTrackStart: function(event,track) {
@@ -220,7 +214,6 @@ Timeline.prototype = {
     this.renderInContainer(this.$summary,track.$el_summary,   { width: duration, left: track.startTime() });
 
     if (!this.options["hide_expanded"]) {
-      console.log("fuck");
       this.renderInContainer(this.$expanded,track.$el_expanded, { width: duration, left: track.startTime() });
     }
 
