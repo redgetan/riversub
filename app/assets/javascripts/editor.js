@@ -114,6 +114,7 @@ Editor.prototype = {
   },
 
   bindEvents: function() {
+    $(document).on("mousewheel",this.onDocumentScroll.bind(this));
     $(document).on("keyup",this.onKeyupHandler.bind(this));
     $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
     $(document).on("trackseek",this.onTrackSeekHandler.bind(this));
@@ -143,6 +144,13 @@ Editor.prototype = {
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     // this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+  },
+
+  onDocumentScroll: function(event,delta) { 
+    // disallow horizontal scroll
+    if (event.originalEvent.wheelDeltaX !== 0) {
+      event.preventDefault();
+    }
   },
 
   getSecondsFromCurrentPosition: function($target,eventPageX) {
