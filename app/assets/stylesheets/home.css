@@ -32,9 +32,14 @@ div#main_container {
   margin-top: 50px;
 }
 
+#description {
+  margin-top: 100px;
+  color: lightslategray;
+}
+
 div#media_input {
-  margin-top: 150px;
-  margin-bottom: 100px;
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 div#videos {
