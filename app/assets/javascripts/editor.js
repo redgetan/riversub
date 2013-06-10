@@ -14,6 +14,7 @@ function Editor (repo,options) {
   this.defineAttributeAccessors();
 
   this.popcorn = this.loadMedia(targetSelector,mediaSource);
+  this.popcorn.volume(0.2);
 
   this.subtitleView = new SubtitleView(subtitles);
   this.timeline = new Timeline();

@@ -12,6 +12,8 @@ function Player (repo,options) {
 
   this.setupElement();
   this.popcorn = this.loadMedia(targetSelector,mediaSource);
+  this.popcorn.volume(0.2);
+  
   this.subtitleView = new SubtitleView(subtitles);
   this.timeline = new Timeline({ "hide_expanded": true});
   this.timeline.setMedia(this.popcorn.media);
