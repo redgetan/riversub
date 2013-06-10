@@ -89,12 +89,6 @@ Timeline.prototype = {
       this.$filler.css("width",this.resolution(this.$expanded) * this.media.duration);
     }
 
-    this.$summary.tooltip({title : "."});
-    this.$summary.data("tooltip").tip().find(".tooltip-inner").css("background-color","white");
-    this.$summary.data("tooltip").tip().find(".tooltip-inner").css("color","black");
-    this.$summary.data("tooltip").tip().find(".tooltip-inner").css("border","solid 1px black");
-    this.$summary.data("tooltip").tip().find(".tooltip-inner").css("position","relative");
-
     if (!this.options["hide_expanded"]) {
       this.renderTracks();
     }
@@ -141,15 +135,6 @@ Timeline.prototype = {
     }
 
     var seconds = this.getSecondsFromCurrentPosition($timeline,$target,event.pageX);
-
-    // show current time using tooltip
-    if ($timeline.data("tooltip")) {
-      var tooltip = $timeline.data("tooltip").tip().find('.tooltip-inner');
-      var tooltipArrow = $timeline.data("tooltip").arrow();
-      tooltip.text(this.stringifyTime(seconds));
-      this.renderInContainer($timeline, tooltip, { left: seconds - this.summaryTimelineWidthInSeconds() / 2 });
-      this.renderInContainer($timeline, tooltipArrow, { left: seconds - this.summaryTimelineWidthInSeconds() / 2 });
-    }
 
     // seek
     if (this.seekmode) {
