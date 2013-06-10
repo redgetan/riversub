@@ -20,6 +20,7 @@ Timeline.prototype = {
     this.$summary = $("#summary");
     this.$scrubber_summary = $("#summary .scrubber");
     this.$window_slider = $("#summary .window_slider");
+    this.$window_slider.css("left",0);
 
 
     if (!this.options["hide_expanded"]) {
@@ -69,6 +70,7 @@ Timeline.prototype = {
       this.$expanded.on("mousedown",this.onMouseDownHandler.bind(this));
       this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
       this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
+      this.$expanded.on("mousewheel",this.onExpandedTimelineScroll.bind(this));
     }
   },
 
@@ -166,6 +168,21 @@ Timeline.prototype = {
 
   onMouseUpHandler: function(event) {
     this.seekmode = false;
+  },
+
+  onExpandedTimelineScroll: function(event,delta){
+    this.$expanded.scrollLeft(this.$expanded.scrollLeft() - delta) ; 
+    var secondsToScroll = delta / this.resolution(this.$expanded);
+    var numPixelsToScrollSummary = this.resolution(this.$summary) * secondsToScroll;
+    var oldWindowSliderLeft = parseFloat(this.$window_slider.css("left"));
+    var newWindowSliderLeft = oldWindowSliderLeft - numPixelsToScrollSummary;
+
+    // cannot go beyond the min/max left
+    var maxLeft = this.$summary.width() - this.$window_slider.width();
+    var minLeft = 0;
+    if (newWindowSliderLeft >= minLeft && newWindowSliderLeft <= maxLeft) {
+      this.$window_slider.css("left",newWindowSliderLeft);
+    }
   },
 
   onTrackChange: function(event,track) {
@@ -297,13 +314,15 @@ Timeline.prototype = {
   },
 
   scrollContainerToElementAndMoveWindowSlider: function($container,$el) {
-    var elRight = this.getRightPos($el);
-    var width = $container.width();
-    var index = Math.floor(elRight / width);
-    var pos   = index * width;
-    
-    $container.scrollLeft(pos);
-    this.$window_slider.css("left",this.resolution(this.$summary) * 30 * index);
+    if (!this.media.paused) {
+      var elRight = this.getRightPos($el);
+      var width = $container.width();
+      var index = Math.floor(elRight / width);
+      var pos   = index * width;
+      
+      $container.scrollLeft(pos);
+      this.$window_slider.css("left",this.resolution(this.$summary) * 30 * index);
+    }
   },
 
   getRightPos: function($el) {

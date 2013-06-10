@@ -74,11 +74,12 @@ div#editor-bottom {
 }
 
 .window_slider {
-	border: solid 1px blue;
+	border: solid 2px blue;
 	position: absolute;
-	height: inherit;
+	height: 12px;
 	background-color: lightblue;
 	opacity: 0.5;
+	z-index: 5;
 }
 
 .filler {
