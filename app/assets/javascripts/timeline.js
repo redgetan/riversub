@@ -101,11 +101,12 @@ Timeline.prototype = {
   },
 
   onGhostTrackStart: function(event,track) {
-    this.renderFillProgressInterval = setInterval(this.renderFillProgress.bind(this,track),10);
+    this.trackFillProgressCallback = this.renderFillProgress.bind(this,track);
+    this.media.addEventListener("timeupdate",this.trackFillProgressCallback);
   },
 
   onGhostTrackEnd: function(event,track) {
-    clearInterval(this.renderFillProgressInterval);
+    this.media.removeEventListener("timeupdate",this.trackFillProgressCallback);
   },
 
   onMouseDownHandler: function(event) {
