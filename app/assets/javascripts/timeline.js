@@ -1,5 +1,4 @@
-function Timeline (options) {
-  this.options = options || {};
+function Timeline () {
   this.media = null;
   this.setupElement();
 }
@@ -23,23 +22,21 @@ Timeline.prototype = {
     this.$window_slider.css("left",0);
 
 
-    if (!this.options["hide_expanded"]) {
-      var expanded = "<div id='expanded' class='timeline'>" + 
-                 "<div class='filler'>" + 
-                   // "<div class='progress_bar'></div>" +
-                   "<div class='scrubber'></div>" +
-                   "<div class='time_indicator'>0</div>" +
-                 "</div>" +
-               "</div>";
+    var expanded = "<div id='expanded' class='timeline'>" + 
+               "<div class='filler'>" + 
+                 // "<div class='progress_bar'></div>" +
+                 "<div class='scrubber'></div>" +
+                 "<div class='time_indicator'>0</div>" +
+               "</div>" +
+             "</div>";
 
-      this.$expanded_container = $("#timeline_container");
-      this.$expanded_container.append(expanded);
+    this.$expanded_container = $("#timeline_container");
+    this.$expanded_container.append(expanded);
 
-      this.$expanded = $("#expanded");
-      this.$scrubber_expanded = $("#expanded .scrubber");
-      this.$time_indicator = $("#expanded .time_indicator");
-      this.$filler = $("#expanded .filler");
-    }
+    this.$expanded = $("#expanded");
+    this.$scrubber_expanded = $("#expanded .scrubber");
+    this.$time_indicator = $("#expanded .time_indicator");
+    this.$filler = $("#expanded .filler");
   },
 
   setTracks: function(tracks) {
@@ -65,33 +62,23 @@ Timeline.prototype = {
     this.$summary.on("mousemove",this.onMouseMoveHandler.bind(this));
     this.$summary.on("mouseup",this.onMouseUpHandler.bind(this));
 
-
-    if (!this.options["hide_expanded"]) {
-      this.$expanded.on("mousedown",this.onMouseDownHandler.bind(this));
-      this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
-      this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
-      this.$expanded.on("mousewheel",this.onExpandedTimelineScroll.bind(this));
-    }
+    this.$expanded.on("mousedown",this.onMouseDownHandler.bind(this));
+    this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
+    this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
+    this.$expanded.on("mousewheel",this.onExpandedTimelineScroll.bind(this));
   },
 
   onTimeUpdate: function(event) {
     this.renderScrubber();
 
-    if (!this.options["hide_expanded"]) {
-      this.renderTimeIndicator();
-    }
+    this.renderTimeIndicator();
   },
 
   onLoadedMetadata: function() {
+    this.$window_slider.css("width",this.resolution(this.$summary) * 30);
+    this.$filler.css("width",this.resolution(this.$expanded) * this.media.duration);
 
-    if (!this.options["hide_expanded"]) {
-      this.$window_slider.css("width",this.resolution(this.$summary) * 30);
-      this.$filler.css("width",this.resolution(this.$expanded) * this.media.duration);
-    }
-
-    if (!this.options["hide_expanded"]) {
-      this.renderTracks();
-    }
+    this.renderTracks();
   },
 
   onGhostTrackStart: function(event,track) {
@@ -215,10 +202,7 @@ Timeline.prototype = {
     var duration = track.endTime() - track.startTime();
 
     this.renderInContainer(this.$summary,track.$el_summary,   { width: duration, left: track.startTime() });
-
-    if (!this.options["hide_expanded"]) {
-      this.renderInContainer(this.$expanded,track.$el_expanded, { width: duration, left: track.startTime() });
-    }
+    this.renderInContainer(this.$expanded,track.$el_expanded, { width: duration, left: track.startTime() });
 
   },
 
@@ -227,22 +211,15 @@ Timeline.prototype = {
     var progress = this.media.currentTime - track.startTime();
 
     this.renderInContainer(this.$summary,track.$el_summary,  { width: progress, left: track.startTime() });
-
-    if (!this.options["hide_expanded"]) {
-      this.renderInContainer(this.$expanded,track.$el_expanded,{ width: progress, left: track.startTime() });
-    }
+    this.renderInContainer(this.$expanded,track.$el_expanded,{ width: progress, left: track.startTime() });
   },
 
   renderScrubber: function(time) {
     this.renderInContainer(this.$summary, this.$scrubber_summary, { left: this.media.currentTime.toFixed(3) });
+    this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
 
-
-    if (!this.options["hide_expanded"]) {
-      this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
-
-      if (this.isOutOfBounds(this.$expanded,this.$scrubber_expanded)) {
-        this.scrollContainerToElementAndMoveWindowSlider(this.$expanded,this.$scrubber_expanded);
-      }
+    if (this.isOutOfBounds(this.$expanded,this.$scrubber_expanded)) {
+      this.scrollContainerToElementAndMoveWindowSlider(this.$expanded,this.$scrubber_expanded);
     }
   },
 

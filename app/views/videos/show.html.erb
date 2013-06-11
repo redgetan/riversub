@@ -13,20 +13,7 @@
       <div id='media_container'> 
         <div id='media'></div> 
         <div id='subtitle_bar' class='span6 center'> 
-          <div id='subtitle_display' class='span5 center'></div> 
-        </div> 
-        <div id='controls' class='row'> 
-          <div class='pull-left span1'> 
-            <button type='button' id='play_btn' class='btn'><i class='icon-play'></i></button> 
-            <button type='button' id='pause_btn' class='btn'><i class='icon-pause'></i></button> 
-          </div> 
-          <div class='pull-right'> 
-            <% if @repo.user == current_user %>
-              <a class='btn btn-info' href="<%= @repo.editor_url %>" target="_blank">Edit Current</a>
-            <% else %>
-              Authored by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> (View only)
-            <% end %>
-          </div> 
+          <span id='subtitle_display' class='span5 center'></span> 
         </div> 
       </div> 
     </div> 
@@ -35,6 +22,13 @@
         <div id='subtitle_list'></div> 
         <div id='controls_extra' class='row'> 
           <div class='btn-group pull-right'> 
+          <!-- <div class='pull-right'>  -->
+            <% if @repo.user == current_user %>
+              <a id='subtitle_editor_btn' class='btn btn-info' href="<%= @repo.editor_url %>" target="_blank"><i class="icon-film"></i> Subtitle Editor</a>
+            <% else %>
+              Authored by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> (View only)
+            <% end %>
+          <!-- </div>  -->
             <a id='download_btn' class='btn' href='<%= @repo.subtitle_download_url %>'><i class='icon-download-alt'></i> Download</a> 
           </div> 
         </div> 

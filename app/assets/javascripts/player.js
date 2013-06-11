@@ -13,18 +13,11 @@ function Player (repo,options) {
   this.setupElement();
   this.popcorn = this.loadMedia(targetSelector,mediaSource);
   this.popcorn.volume(0.2);
-  
+
   this.subtitleView = new SubtitleView(subtitles);
-  this.timeline = new Timeline({ "hide_expanded": true});
-  this.timeline.setMedia(this.popcorn.media);
-
-
 
   this.trackMap = {}
   this.tracks = this.loadTracks(timings);
-  this.timeline.setTracks(this.tracks);
-
-
 
   this.hideEditing();
   this.bindEvents();
@@ -36,12 +29,12 @@ Player.prototype = {
 
     this.$subtitleBar = $("#subtitle_bar");
 
-    this.$playBtn = $("#play_btn");
-    this.$pauseBtn = $("#pause_btn");
-    this.$pauseBtn.hide();
+    this.$subtitleEditorBtn = $("#subtitle_editor_btn");
+    this.$subtitleEditorBtn.tooltip({title: "Opens the Subtitle Editor in new tab"});
 
     this.$downloadBtn = $("#download_btn");
     this.$downloadBtn.tooltip({title: "Download subtitle file in .srt format"});
+
 
     this.$subtitleDisplay = $("#subtitle_display");
   },
@@ -55,6 +48,14 @@ Player.prototype = {
 
     $("#subtitle_bar").removeClass("span6");
     $("#subtitle_bar").addClass("span7");
+    $("#subtitle_bar").css("background","none");
+
+    $("#subtitle_bar").css("margin-top","-90px");
+    $("#subtitle_bar").css("z-index","6");
+    $("#subtitle_bar").css("position","absolute");
+
+    $("#subtitle_display").css("background-color","black");
+    $("#subtitle_display").css("opacity",0.8);
 
     $("#subtitle_list").find("th").first().remove(); // remove start heading
     $("#subtitle_list").find("th").first().remove(); // remove end   heading
@@ -67,6 +68,8 @@ Player.prototype = {
     $("#subtitle_list").find(".delete").each(function(){
       $(this).remove();
     });
+
+    $("#media").css("height","315px");
   },
 
   loadMedia: function(targetSelector,url) {
@@ -74,31 +77,17 @@ Player.prototype = {
     if (url == "") {
       popcorn = Popcorn(targetSelector);
     } else {
+      url = url + "&controls=1"; // make sure youtube controls are shown 
       popcorn = Popcorn.smart(targetSelector,url);
     }
     return popcorn;
   },
 
   bindEvents: function() {
-    $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
-    $(document).on("trackseek",this.onTrackSeekHandler.bind(this));
     $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
     $(document).on("trackstart",this.onTrackStart.bind(this));
     $(document).on("trackend",this.onTrackEnd.bind(this));
-    this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
-    this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
-    this.popcorn.media.addEventListener("pause",this.onPause.bind(this));
-    this.popcorn.media.addEventListener("play",this.onPlay.bind(this));
   },
-
-  onTimelineSeekHandler: function(event,time) {
-    this.seek(time);
-  },
-
-  onTrackSeekHandler: function(event,time) {
-    this.seek(time);
-  },
-
 
   onSubtitleLineClick: function(event,subtitle) {
     this.seek(subtitle.track.startTime());
@@ -125,28 +114,6 @@ Player.prototype = {
 
   hideSubtitleInSubtitleBar: function(subtitle) {
     this.$subtitleDisplay.text("");
-  },
-
-  onPlayBtnClick: function(event) {
-    this.popcorn.play();
-    this.$playBtn.hide();
-    this.$pauseBtn.show();
-  },
-
-  onPauseBtnClick: function(event) {
-    this.popcorn.pause();
-    this.$pauseBtn.hide();
-    this.$playBtn.show();
-  },
-
-  onPlay: function(event) {
-    this.$playBtn.hide();
-    this.$pauseBtn.show();
-  },
-
-  onPause: function(event) {
-    this.$pauseBtn.hide();
-    this.$playBtn.show();
   },
 
   loadTracks: function(timings) {
