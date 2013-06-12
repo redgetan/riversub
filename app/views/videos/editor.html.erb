@@ -7,7 +7,9 @@
         <% end %>
         <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
       </h5>
-      <h6 id='video_url'><%= @repo.video.url %></h6> 
+      <h6 id='video_url'>
+        <a href="<%= @repo.video.url%>"><%= @repo.video.url %></a>
+      </h6> 
     </div> 
     <div id='editor-top-left' class='span6'> 
       <div id='media_container'> 

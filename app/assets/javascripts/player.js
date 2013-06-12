@@ -30,7 +30,7 @@ Player.prototype = {
     this.$subtitleBar = $("#subtitle_bar");
 
     this.$subtitleEditorBtn = $("#subtitle_editor_btn");
-    this.$subtitleEditorBtn.tooltip({title: "Opens the Subtitle Editor in new tab"});
+    this.$subtitleEditorBtn.tooltip({title: "Opens Editor in new tab", placement: 'bottom'});
 
     this.$downloadBtn = $("#download_btn");
     this.$downloadBtn.tooltip({title: "Download subtitle file in .srt format"});
@@ -40,17 +40,9 @@ Player.prototype = {
   },
 
   hideEditing: function() {
-    $("#player-top-left").removeClass("span6");
-    $("#player-top-left").addClass("span7");
-
-    $("#player-top-right").removeClass("span6");
-    $("#player-top-right").addClass("span5");
-
-    $("#subtitle_bar").removeClass("span6");
-    $("#subtitle_bar").addClass("span7");
     $("#subtitle_bar").css("background","none");
 
-    $("#subtitle_bar").css("margin-top","-90px");
+    $("#subtitle_bar").css("margin-top","-70px");
     $("#subtitle_bar").css("z-index","6");
     $("#subtitle_bar").css("position","absolute");
 
@@ -110,10 +102,12 @@ Player.prototype = {
 
   showSubtitleInSubtitleBar: function(subtitle) {
     this.$subtitleDisplay.text(subtitle.text);
+    this.$subtitleDisplay.css("padding","5px");
   },
 
   hideSubtitleInSubtitleBar: function(subtitle) {
     this.$subtitleDisplay.text("");
+    this.$subtitleDisplay.css("padding","0px");
   },
 
   loadTracks: function(timings) {
