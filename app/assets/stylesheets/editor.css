@@ -44,6 +44,7 @@ div#player #video_url {
 div#editor #controls,
 div#player #controls {
 	padding: 10px;
+	margin-top: 10px;
 }
 
 textarea#transcript {
@@ -223,4 +224,43 @@ div#editor-bottom {
 }
 
 div#player-bottom {
+}
+
+div#time_float {
+	height: 20px;
+	z-index: 5;
+	position: absolute;
+	padding: 1px;
+	border: solid 1px violet;
+	margin-top: -50px;
+	background-color: white;
+}
+
+div#seek_head {
+	width: 10px;
+	height: 20px;
+	position: absolute;
+	margin-top: -5px;
+	margin-left: -4px;
+	z-index: 5;
+}
+
+div#seek_head_body {
+	width: 8px;
+	height: 10px;
+	background-color: #eee;
+	border: solid 1px black;
+}
+
+div#seek_head_corner {
+	width: 0;
+	height: 0;
+	line-height: 0;
+	border: solid 5px #eee;
+	border-color: transparent transparent gray transparent;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	top: 15px;
+	left: 13px;
 }

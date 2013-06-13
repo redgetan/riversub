@@ -1,6 +1,9 @@
 function Timeline () {
   this.media = null;
   this.setupElement();
+
+  this.isScrubberVisible = true;
+  this.force_scroll_window = false;
 }
 
 Timeline.prototype = {
@@ -21,6 +24,12 @@ Timeline.prototype = {
     this.$window_slider = $("#summary .window_slider");
     this.$window_slider.css("left",0);
 
+    this.$time_float = $("#time_float");
+    this.$time_float.hide();
+
+    this.$seek_head = $("#seek_head");
+    this.$seek_head.css("left",this.$summary.position().left);
+
 
     var expanded = "<div id='expanded' class='timeline'>" + 
                "<div class='filler'>" + 
@@ -37,6 +46,7 @@ Timeline.prototype = {
     this.$scrubber_expanded = $("#expanded .scrubber");
     this.$time_indicator = $("#expanded .time_indicator");
     this.$filler = $("#expanded .filler");
+
   },
 
   setTracks: function(tracks) {
@@ -51,6 +61,7 @@ Timeline.prototype = {
   bindEvents: function() {
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+    $(document).on("timelineseek",this.onTimelineSeek.bind(this));
 
     $(document).on("ghosttrackstart",this.onGhostTrackStart.bind(this));
     $(document).on("ghosttrackend",this.onGhostTrackEnd.bind(this));
@@ -62,19 +73,33 @@ Timeline.prototype = {
     this.$summary.on("mousemove",this.onMouseMoveHandler.bind(this));
     this.$summary.on("mouseup",this.onMouseUpHandler.bind(this));
 
+    this.$summary.on("mouseenter",this.onSummaryMouseEnterHandler.bind(this));
+    this.$summary.on("mousemove",this.onSummaryMouseMoveHandler.bind(this));
+    this.$summary.on("mouseleave",this.onSummaryMouseLeaveHandler.bind(this));
+
     this.$expanded.on("mousedown",this.onMouseDownHandler.bind(this));
     this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
     this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
-    this.$expanded.on("mousewheel",this.onExpandedTimelineScroll.bind(this));
+
+    this.$scrubber_expanded.on("disappear",this.onScrubberDisappear.bind(this));
   },
 
   onTimeUpdate: function(event) {
     this.renderScrubber();
+    this.renderSeekHead();
 
     this.renderTimeIndicator();
   },
 
+  onTimelineSeek: function(event) {
+    // always scroll window, do not care if appeared/disappeared
+    this.force_scroll_window = true;
+  },
+
   onLoadedMetadata: function() {
+    // events that should happen after loading metadata
+    this.$expanded.on("mousewheel",this.onExpandedTimelineScroll.bind(this));
+
     this.$window_slider.css("width",this.resolution(this.$summary) * 30);
     this.$filler.css("width",this.resolution(this.$expanded) * this.media.duration);
 
@@ -141,6 +166,23 @@ Timeline.prototype = {
 
   onMouseUpHandler: function(event) {
     this.seekmode = false;
+  },
+
+  onSummaryMouseEnterHandler: function(event) {
+    this.$time_float.show();
+  },
+
+  onSummaryMouseMoveHandler: function(event) {
+    // move and update time float
+    var $target = $(event.target);
+    var seconds = this.getSecondsFromCurrentPosition(this.$summary,$target,event.pageX);
+
+    this.$time_float.text(this.stringifyTimeShort(seconds));
+    this.$time_float.css("left",event.pageX - this.$time_float.width() / 2);
+  },
+
+  onSummaryMouseLeaveHandler: function(event) {
+    this.$time_float.hide();
   },
 
   onExpandedTimelineScroll: function(event,delta){
@@ -214,13 +256,34 @@ Timeline.prototype = {
     this.renderInContainer(this.$expanded,track.$el_expanded,{ width: progress, left: track.startTime() });
   },
 
+  renderSeekHead: function() {
+    // this.renderInContainer(this.$summary, this.$seek_head, { left: this.media.currentTime.toFixed(3) });
+    var time = Math.round(this.media.currentTime * 1000) / 1000;
+    var relativePixelPos = time * this.resolution(this.$summary);
+    this.$seek_head.css('left',this.$summary.position().left + relativePixelPos)
+  },
+
   renderScrubber: function(time) {
     this.renderInContainer(this.$summary, this.$scrubber_summary, { left: this.media.currentTime.toFixed(3) });
     this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
 
+    // trigger appear/disappear events
     if (this.isOutOfBounds(this.$expanded,this.$scrubber_expanded)) {
-      this.scrollContainerToElementAndMoveWindowSlider(this.$expanded,this.$scrubber_expanded);
+      if (this.force_scroll_window || this.isScrubberVisible) {
+        this.$scrubber_expanded.trigger("disappear");
+        this.isScrubberVisible = false;
+        this.force_scroll_window = false;
+      }
+    } else {
+      if (!this.isScrubberVisible) {
+        this.$scrubber_expanded.trigger("appear");
+        this.isScrubberVisible = true;
+      } 
     }
+  },
+
+  onScrubberDisappear: function(event) {
+    this.scrollContainerToElementAndMoveWindowSlider(this.$expanded,this.$scrubber_expanded);
   },
 
   renderTimeIndicator: function() {
@@ -277,15 +340,30 @@ Timeline.prototype = {
   },
 
   scrollContainerToElementAndMoveWindowSlider: function($container,$el) {
-    if (!this.media.paused) {
+    // if (!this.media.paused) {
       var elRight = this.getRightPos($el);
       var width = $container.width();
       var index = Math.floor(elRight / width);
       var pos   = index * width;
       
-      $container.scrollLeft(pos);
-      this.$window_slider.css("left",this.resolution(this.$summary) * 30 * index);
-    }
+      setTimeout(function() { 
+        $container.animate({scrollLeft: pos},1000,function(){
+          // trigger appear/disappear events
+          if (this.isOutOfBounds(this.$expanded,this.$scrubber_expanded)) {
+            if (this.isScrubberVisible) {
+              this.$scrubber_expanded.trigger("disappear");
+              this.isScrubberVisible = false;
+            }
+          } else {
+            if (!this.isScrubberVisible) {
+              this.$scrubber_expanded.trigger("appear");
+              this.isScrubberVisible = true;
+            } 
+          }
+        }.bind(this)); 
+        this.$window_slider.animate({ left: this.resolution(this.$summary) * 30 * index },1000);
+      }.bind(this),500);
+    // }
   },
 
   getRightPos: function($el) {
@@ -304,6 +382,43 @@ Timeline.prototype = {
                  (minutes < 10 ? "0" + minutes : minutes) + ":" + 
                  (seconds  < 10 ? "0" + seconds : seconds) + "." +
                  (milliseconds  < 10 ? "00" + milliseconds : (milliseconds < 100 ? "0" + milliseconds : milliseconds)); 
+    return result;
+  },
+
+  stringifyTimeShort: function(time) {
+    time = Math.round(time * 1000) / 1000;
+
+    var hours = parseInt( time / 3600 ) % 24;
+    var minutes = parseInt( time / 60 ) % 60;
+    var seconds = Math.floor(time % 60);
+    var milliseconds = Math.floor(time * 1000) % 1000
+
+    var result = "";
+    var zeroPrependCheck = false;
+
+    if (hours !== 0) {
+      result = result + hours;
+      zeroPrependCheck = true;
+      result += ":";
+    }
+
+    if (zeroPrependCheck) {
+      result = result + (minutes < 10 ? "0" + minutes : minutes);
+    } else {
+      result = result + minutes;
+    }
+    result += ":";
+
+    zeroPrependCheck = true;
+
+    // if (seconds !== 0) {
+    if (zeroPrependCheck) {
+      result = result + (seconds < 10 ? "0" + seconds : seconds);
+    } else {
+      result = result + seconds;
+    }
+    // }
+
     return result;
   }
 
