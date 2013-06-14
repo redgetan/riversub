@@ -134,3 +134,10 @@ div#user_details {
   margin: 10px 0;
 }
 
+div#videos .thumbnails.anonymous .thumbnail {
+  height: 130px;
+}
+
+div#videos .thumbnails.user .thumbnail {
+  height: 150px;
+}

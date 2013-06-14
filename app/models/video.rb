@@ -30,4 +30,13 @@ class Video < ActiveRecord::Base
     self.token  
   end
 
+  def name_short
+    short = "#{self.name[0..30]}"
+    if short != self.name
+      short = "#{short}..."
+    end
+
+    short
+  end
+
 end

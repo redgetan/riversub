@@ -12,7 +12,7 @@
 
 <div id="videos" class="span12">
   <h4>Anonymously Subtitled Videos</h4>
-  <ul class="thumbnails">
+  <ul class="thumbnails anonymous">
     <% Repository.where(:user_id => nil).each do |repo| %>
         <li class="span2">
           <div class="thumbnail center">
@@ -20,7 +20,7 @@
               <img src="<%= repo.thumbnail_url %>" alt="">
             </a>
             <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-              <h6><%= repo.video.name %></h6>
+              <h6><%= repo.video.name_short %></h6>
             </a>
           </div>
         </li>
@@ -28,7 +28,7 @@
   </ul>
 
   <h4>User Subtitled Videos</h4>
-  <ul class="thumbnails">
+  <ul class="thumbnails user">
     <% Repository.where("user_id IS NOT NULL").each do |repo| %>
         <li class="span2">
           <div class="thumbnail center">
@@ -36,7 +36,7 @@
               <img src="<%= repo.thumbnail_url %>" alt="">
             </a>
             <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-              <h6><%= repo.video.name %></h6>
+              <h6><%= repo.video.name_short %></h6>
             </a>
             by
             <span id='repo_owner'>
