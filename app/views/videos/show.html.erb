@@ -37,7 +37,7 @@
     <div class='span7'>
       <div class='pull-right'> 
         <% if @repo.user == current_user %>
-          <a id='subtitle_editor_btn' class='btn btn-danger' href="<%= @repo.editor_url %>" target="_blank"><i class="icon-film"></i> Subtitle Editor</a>
+          <a id='subtitle_editor_btn' class='btn btn-danger' href="<%= @repo.editor_url %>"><i class="icon-film"></i> Subtitle Editor</a>
         <% else %>
           <div>
             <h6>
