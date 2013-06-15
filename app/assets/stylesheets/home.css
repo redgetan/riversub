@@ -46,7 +46,9 @@ div#videos {
 }
 
 div#videos li h6 {
-  line-height: 1em;
+  line-height: 12px;
+  height: 24px;
+  overflow: hidden;
 }
 
 div#videos li.selected {

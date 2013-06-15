@@ -22,7 +22,7 @@
               <img src="<%= repo.thumbnail_url %>" alt="">
             </a>
             <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-              <h6><%= truncate repo.video.name, :length => 30 %></h6>
+              <h6><%= repo.video.name %></h6>
             </a>
           </div>
         </li>
@@ -38,7 +38,7 @@
               <img src="<%= repo.thumbnail_url %>" alt="">
             </a>
             <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-              <h6><%= truncate repo.video.name, :length => 30 %></h6>
+              <h6><%= repo.video.name %></h6>
             </a>
             by
             <span id='repo_owner'>
