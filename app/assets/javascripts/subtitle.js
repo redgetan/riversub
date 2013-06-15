@@ -99,6 +99,8 @@ SubtitleView.prototype = {
     $(document).on("subtitlecreate",this.onSubtitleCreate.bind(this));
     $(document).on("subtitleremove",this.onSubtitleRemove.bind(this));
     $(document).on("subtitletrackmapped",this.onSubtitleTrackMapped.bind(this));
+    $(document).on("subtitlehighlight",this.onSubtitleHighlight.bind(this));
+    $(document).on("subtitleunhighlight",this.onSubtitleUnHighlight.bind(this));
   },
 
   onClickHandler: function(event) {
@@ -121,6 +123,28 @@ SubtitleView.prototype = {
   onSubtitleRemove: function(event, subtitleId) {
   },
 
+  onSubtitleHighlight: function(event, subtitle) {
+    this.selectedSubtitle = subtitle;
+    // if subtitle is not visible in container, scroll container to subtitle
+    var container_top = this.$container.position().top + this.$container.scrollTop();
+    var container_bottom = container_top + this.$container.height();
+
+    var subtitle_pos = subtitle.$el.position().top + this.$container.scrollTop();
+
+    // console.log("top: " + container_top + " bot: " + container_bottom + " pos: " + subtitle_pos);
+
+    if (subtitle_pos >= container_top && subtitle_pos <= container_bottom) {
+      // not ouf bounds
+    } else {
+      // scroll
+      this.$container.animate({scrollTop: subtitle_pos - this.$container.position().top},1000);
+    }
+  },
+
+  onSubtitleUnHighlight: function(event, subtitle) {
+    this.selectedSubtitle = null;
+  },
+
   onSubtitleTrackMapped: function(event, subtitle) {
     this.render(subtitle);
   },
@@ -133,7 +157,6 @@ SubtitleView.prototype = {
       if (this.selectedSubtitle != null ) {
         this.selectedSubtitle.unhighlight();
       }
-      this.selectedSubtitle = subtitle;
       subtitle.highlight();
   },
 
@@ -332,10 +355,12 @@ Subtitle.prototype = {
 
   highlight: function() {
     this.$el.addClass("selected");
+    this.$el.trigger("subtitlehighlight",[this]);
   },
 
   unhighlight: function() {
     this.$el.removeClass("selected");
+    this.$el.trigger("subtitleunhighlight",[this]);
   }
 
 };
