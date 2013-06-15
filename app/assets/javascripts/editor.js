@@ -410,10 +410,10 @@ Editor.prototype = {
     // enter key
     if (event.which == 13) {
       this.$subtitleEdit.blur();
+      var text = this.$subtitleEdit.val();
+      this.currentTrack.subtitle.setAttributes({ "text": text})
     } 
     
-    var text = this.$subtitleEdit.val();
-    this.currentTrack.subtitle.setAttributes({ "text": text})
   },
 
   onSubtitleLineKeyup: function(event,text) {
