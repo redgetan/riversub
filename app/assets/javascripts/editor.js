@@ -263,27 +263,20 @@ Editor.prototype = {
     this.currentTrack = track;
 
     var subtitle = track.subtitle;
+    track.highlight();
+    subtitle.highlight();
 
     if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
       if (!track.isGhost()) {
         this.$subtitleDisplay.hide();
         this.$subtitleEdit.val("");
         this.$subtitleEdit.show();
+        this.popcorn.pause();
+        this.$subtitleEdit.focus();
       }
     } else {
       this.showSubtitleInSubtitleBar(subtitle);
     }
-
-    track.highlight();
-    subtitle.highlight();
-
-    if (this.edit_sub_mode) {
-      // seeking will trigger trackEvent.start which will show subtitle edit input, only then do we focus
-      // but we also want to avoid focus on normal trackEvent.start, so we only focus on case where user just ended
-      // the track and is about to edit sub
-      this.$subtitleEdit.focus();
-    }
-
   },
 
   onTrackEnd: function(event,track) {
@@ -293,32 +286,34 @@ Editor.prototype = {
     track.subtitle.unhighlight();
 
     if (typeof track.subtitle.text === "undefined" || /^\s*$/.test(track.subtitle.text) ) {
-      // will reach this state if user presses space_key until startTime of next track,
-      // in which it immediately stops since ghostTrack ends at starttime of next track
-      // but it is not stopped by explicit user action which would be to release space_key, we would have
-      // known that track should end at that point and ghost status should be removed
-      //
-      // thus, in this case, we automatically remove ghost status of the track knowing that it is
-      // the maximum endTime of the current track since it can't go beyond start time of next track
       if (track.isGhost()) {
+        // will reach this state if user presses space_key until startTime of next track,
+        // in which it immediately stops since ghostTrack ends at starttime of next track
+        // but it is not stopped by explicit user action which would be to release space_key, we would have
+        // known that track should end at that point and ghost status should be removed
+        //
+        // thus, in this case, we automatically remove ghost status of the track knowing that it is
+        // the maximum endTime of the current track since it can't go beyond start time of next track
         this.endGhostTrack(track,track.endTime());
+      } 
+
+      if (track.initial_subtitle_request) {
+        track.initial_subtitle_request = false;
+        var seekToPrev = function() {
+          // we want to seek to a few millseconds before end of prev track just so
+          // 1. that the text from input would disappear triggered by the end event of track
+          // 2. scrubber is positioned nicely inside track instead of a bit outside.
+          //    this is to indicated were editing subtitle of that track
+          var time = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
+          this.seek(time);
+          this.media.removeEventListener("pause",seekToPrev);
+        }.bind(this);
+
+        this.media.addEventListener("pause",seekToPrev);
+
+        // if playing, pause playback to let user type subtitle
+        this.popcorn.pause();
       }
-      // if playing, pause playback to let user type subtitle
-      this.popcorn.pause();
-      this.edit_sub_mode = true;
-
-      var seekToPrev = function() {
-        // we want to seek to a few millseconds before end of prev track just so
-        // 1. that the text from input would disappear triggered by the end event of track
-        // 2. scrubber is positioned nicely inside track instead of a bit outside.
-        //    this is to indicated were editing subtitle of that track
-        var time = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
-        this.seek(time);
-        this.media.removeEventListener("pause",seekToPrev);
-      }.bind(this);
-
-      this.media.addEventListener("pause",seekToPrev);
-
     }
   },
 
@@ -369,8 +364,6 @@ Editor.prototype = {
     this.$subtitleEdit.hide();
     this.$subtitleDisplay.text(text);
     this.$subtitleDisplay.show();
-
-    this.edit_sub_mode = false;
 
     this.enableCommands();
 
@@ -604,6 +597,7 @@ Editor.prototype = {
       this.$subtitleEdit.hide();
     }
     this.currentGhostTrack = null;
+
     this.$el.trigger("ghosttrackend",[track]);
   },
 

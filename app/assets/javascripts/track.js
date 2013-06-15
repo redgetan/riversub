@@ -55,6 +55,7 @@ Track.prototype = {
     if (typeof options !== "undefined" && options["isGhost"]) {
       this.$el_summary.addClass("ghost");
       this.$el_expanded.addClass("ghost");
+      this.initial_subtitle_request = true;
     }
 
     this.$close = this.$el_expanded.find(".close");
