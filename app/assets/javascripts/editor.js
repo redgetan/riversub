@@ -211,6 +211,15 @@ Editor.prototype = {
     if (event.which === 32) {
       this.togglePlayPause();
     }
+
+    // escape key
+    if (event.which == 27) {
+      if (this.currentGhostTrack) {
+        this.currentGhostTrack.remove();
+        this.currentTrack = null;
+        this.currentGhostTrack = null;
+      }  
+    }
   },
 
   onTimelineSeekHandler: function(event,time) {
@@ -297,7 +306,7 @@ Editor.prototype = {
         this.endGhostTrack(track,track.endTime());
       } 
 
-      if (track.initial_subtitle_request) {
+      if (track.initial_subtitle_request && !track.isDeleted) {
         track.initial_subtitle_request = false;
         var seekToPrev = function() {
           // we want to seek to a few millseconds before end of prev track just so
@@ -393,6 +402,8 @@ Editor.prototype = {
     // escape key
     if (event.which == 27) {
       this.currentTrack.remove();
+      this.currentTrack = null;
+      this.currentGhostTrack = null;
       this.$subtitleEdit.blur();
     } 
 

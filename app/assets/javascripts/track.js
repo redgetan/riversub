@@ -190,11 +190,11 @@ Track.prototype = {
   },
 
   remove: function() {
+    this.isDeleted = true;
     this.$el_expanded.remove();
     this.$el_summary.remove();
     this.popcorn.removeTrackEvent(this.trackEvent._id);
     // this.subtitle.unmapTrack();
-    this.isDeleted = true;
     this.subtitle.remove();
     $(document).trigger("trackremove",this);
   },
