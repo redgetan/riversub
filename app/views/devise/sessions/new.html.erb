@@ -2,9 +2,9 @@
 
 <h2>Login</h2>
 
-<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+<%= form_for(resource, :as => resource_name, :url => session_url(resource_name)) do |f| %>
   <%= devise_error_messages! %>
-  
+
   <div>
     </br><%= f.text_field :login, :placeholder => 'Username or Email' %>
 
@@ -14,12 +14,12 @@
   <div  >
     <div class="pull-left">
       <% if devise_mapping.rememberable? %>
-        <%= f.check_box :remember_me, :style => 'float: left;margin-right:5px' %> 
+        <%= f.check_box :remember_me, :style => 'float: left;margin-right:5px' %>
         <%= f.label :remember_me, :style => 'white-space: nowrap; width: 130px; color: gray;' %>
       <% end %>
     </div>
       <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
-        <%= link_to "Forgot your password?", new_password_path(resource_name), :style => "color: gray;" %><br />
+        <%= link_to "Forgot your password?", new_password_url(resource_name), :style => "color: gray;" %><br />
       <% end -%>
   </ul>
 

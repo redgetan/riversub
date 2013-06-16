@@ -1,6 +1,6 @@
 class Repository < ActiveRecord::Base
 
-  include Rails.application.routes.url_helpers 
+  include Rails.application.routes.url_helpers
 
   belongs_to :video
   belongs_to :user
@@ -9,7 +9,7 @@ class Repository < ActiveRecord::Base
   has_many :timings
 
   attr_accessible :video_id, :user_id
-  
+
   validates :video_id, :presence => true
 
   def name
@@ -17,20 +17,20 @@ class Repository < ActiveRecord::Base
   end
 
   def owner
-    self.user.try(:username) || "default"  
+    self.user.try(:username) || "default"
   end
 
   def url
     if self.user
-      user_video_path(self.user,self.video) 
+      user_video_url(self.user,self.video)
     else
-      video_path(self.video) 
+      video_url(self.video)
     end
   end
 
   def owner_profile_url
     if self.user
-      user_path(self.user)
+      user_url(self.user)
     else
       "#"
     end
@@ -39,9 +39,9 @@ class Repository < ActiveRecord::Base
 
   def editor_url
     if self.user
-      editor_user_video_path(self.user,self.video) 
+      editor_user_video_url(self.user,self.video)
     else
-      editor_video_path(self.video) 
+      editor_video_url(self.video)
     end
   end
 
@@ -50,7 +50,7 @@ class Repository < ActiveRecord::Base
   end
 
   def subtitle_download_url
-    repository_timings_path(self)
+    repository_timings_url(self)
   end
 
   def to_srt

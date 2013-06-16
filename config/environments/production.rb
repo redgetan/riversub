@@ -74,11 +74,13 @@ River::Application.configure do
     :user_name            => 'simple.yuji@gmail.com',
     :password             => 'iwtets90',
     :authentication       => 'plain',
-    :enable_starttls_auto => true  
+    :enable_starttls_auto => true
   }
 
   config.to_prepare { Devise::SessionsController.force_ssl }
   config.to_prepare { RegistrationsController.force_ssl }
   config.to_prepare { Devise::PasswordsController.force_ssl }
+
+  Rails.application.routes.default_url_options[:host] = 'www.riversub.cc'
 
 end

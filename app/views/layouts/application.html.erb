@@ -37,16 +37,16 @@
                 <%= current_user.username %><b class="caret"></b>
               </a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                <li><%= link_to 'View profile', user_path(current_user) %></li>
-                <li><%= link_to 'Settings', edit_user_registration_path %></li>
+                <li><%= link_to 'View profile', user_url(current_user) %></li>
+                <li><%= link_to 'Settings', edit_user_registration_url %></li>
               </ul>
             </li>
             <li class="divider-vertical"></li>
-            <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
+            <li><%= link_to "Logout", destroy_user_session_url, method: :delete %></li>
           <% else %>
-            <li><%= link_to "Sign up", new_user_registration_path %></li>
+            <li><%= link_to "Sign up", new_user_registration_url %></li>
             <li class="divider-vertical"></li>
-            <li><%= link_to "Login", new_user_session_path %></li>
+            <li><%= link_to "Login", new_user_session_url %></li>
           <% end %>
         </ul>
       </div>
