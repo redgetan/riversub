@@ -2,12 +2,10 @@
 <html>
 <head>
   <%= display_meta_tags %>
-  
+
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
-  <script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
-  
-  
+
   <%= csrf_meta_tags %>
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -67,7 +65,7 @@
       <%= yield %>
     </div>
 
- 
+
     <!-- Modal -->
     <div id="instructions_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-header">
@@ -79,9 +77,9 @@
           <li>
             <h4>Adding Subtitles</h4>
             While the video is playing
-            </br>click the <a class='btn btn-mini'><i class='icon-circle' style="color: #B3192D;"></i> Start Timing</a> button to mark the beginning of a subtitle.  
+            </br>click the <a class='btn btn-mini'><i class='icon-circle' style="color: #B3192D;"></i> Start Timing</a> button to mark the beginning of a subtitle.
             </br>click the <a class='btn btn-mini'><i class='icon-circle' style="color: #333;"></i> Stop </a> button to end the subtitle at a specific time of your choice.
-             
+
           </li>
           <li>
             <h4>Editing Subtitles</h4>
@@ -89,7 +87,7 @@
           </li>
           <li>
             <h4>Saving</h4>
-            click the <a class='btn btn-info btn-mini'><i class='icon-save'></i> Save</a> button to save your work. 
+            click the <a class='btn btn-info btn-mini'><i class='icon-save'></i> Save</a> button to save your work.
             </br>click the <a class='btn btn-mini'><i class='icon-download-alt'></i> Download</a> button to download the subtitles file in .srt format which you can simply upload to a youtube video (only if you're the owner) to add subtitles to it.
           </li>
           <li>
