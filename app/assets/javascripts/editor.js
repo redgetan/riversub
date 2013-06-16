@@ -399,6 +399,9 @@ Editor.prototype = {
   },
 
   onSubtitleEditKeyup: function(event) {
+    var text = this.$subtitleEdit.val();
+    this.currentTrack.subtitle.setAttributes({ "text": text})
+
     // escape key
     if (event.which == 27) {
       this.currentTrack.remove();
@@ -410,10 +413,7 @@ Editor.prototype = {
     // enter key
     if (event.which == 13) {
       this.$subtitleEdit.blur();
-      var text = this.$subtitleEdit.val();
-      this.currentTrack.subtitle.setAttributes({ "text": text})
     } 
-    
   },
 
   onSubtitleLineKeyup: function(event,text) {
