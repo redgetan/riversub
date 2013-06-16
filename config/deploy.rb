@@ -49,13 +49,13 @@ role :web, host                          # Your HTTP server, Apache/etc
 role :app, host                          # This may be the same as your `Web` server
 role :db,  host, :primary => true # This is where Rails migrations will run
 
-after "deploy:setup", "deploy:create_shared_uploads_folder" 
+after "deploy:setup", "deploy:create_shared_uploads_folder"
 
 after "deploy:restart", "deploy:cleanup" # keep only the last 5 releases
 after "deploy:restart", "deploy:reload" # unicorn pre init app true uses reload instead of restart
 
 after "deploy:update_code", "deploy:setup_database"
-after "deploy:setup_database", "deploy:migrate"
+after "deploy:setup_database", "deploy:migrate_environment_aware"
 after "deploy:create_symlink", "deploy:update_unicorn_init_script"
 
 namespace :deploy do
@@ -77,6 +77,10 @@ namespace :deploy do
 
   task :setup_database, roles: :app do
     run "cd #{release_path} && RAILS_ENV=#{deploy_environment} rake db:create"
+  end
+
+  task :migrate_environment_aware, roles: :app do
+    run "cd #{release_path} && RAILS_ENV=#{deploy_environment} rake db:migrate"
   end
 
   desc "Make sure local git is in sync with remote."
