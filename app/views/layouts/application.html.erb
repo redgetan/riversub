@@ -23,10 +23,10 @@
   <div class='container'>
     <div class="navbar navbar-fixed-top" id="header">
       <div class="navbar-inner">
-        <a class="brand" href="/"> River</a>
+        <a class="brand" href="<%= root_url %>"> River</a>
         <ul class="nav">
-          <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'index' %>"><a href="/">Home</a></li>
-          <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'about' %>"><a href="/about">About</a></li>
+          <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'index' %>"><a href="<%= root_url %>">Home</a></li>
+          <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'about' %>"><a href="<%= about_url %>">About</a></li>
           <!-- <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'tutorial' %>"><a href="/tutorial">Tutorial</a></li> -->
         </ul>
 
