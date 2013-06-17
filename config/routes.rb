@@ -1,10 +1,17 @@
 River::Application.routes.draw do
 
-  devise_for :users, :controllers => { :registrations => "registrations" }
+  # http://stackoverflow.com/questions/3993651/rails-3-ssl-routing-redirects-from-https-to-http
+  protocol = Rails.env.development? ? "http://" : "https://"
 
-  devise_scope :user do
-    put "/users/change_avatar",  :to => "registrations#change_avatar", :as => "user_change_avatar"
-    get "/users/:username",      :to => "users#show",                  :as => "user"
+  scope :protocol => protocol, :constraints => { :protocol => protocol } do
+    devise_for :users, :controllers => { :registrations => "registrations" }
+  end
+
+  scope :protocol => protocol, :constraints => { :protocol => protocol } do
+    devise_scope :user do
+      put "/users/change_avatar",  :to => "registrations#change_avatar", :as => "user_change_avatar"
+      get "/users/:username",      :to => "users#show",                  :as => "user"
+    end
   end
 
   post "/videos/sub",                          :to => "videos#sub",    :as => "sub_videos"
