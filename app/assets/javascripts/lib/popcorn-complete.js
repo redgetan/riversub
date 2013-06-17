@@ -6308,6 +6308,7 @@
         changeCurrentTime( 0 );
         impl.ended = false;
       }
+      clearInterval(timeUpdateInterval);
       timeUpdateInterval = setInterval( onTimeUpdate,
                                         self._util.TIMEUPDATE_MS );
       impl.paused = false;

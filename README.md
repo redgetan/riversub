@@ -57,7 +57,7 @@ Installation
 
   To setup database and tables
 
-    $ rake db:create && rake db:migrate 
+    $ rake db:create && rake db:migrate
 
   To run rails
 
@@ -96,3 +96,9 @@ Deployment
     $ RAILS_ENV=staging bundle exec cap deploy
 
   For production, simply change to RAILS_ENV=production
+
+Dependencies
+====
+
+  popcorn.js version e72c1676d82c1e47be0a5723492dd65750c7bde0
+
