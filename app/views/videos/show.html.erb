@@ -1,55 +1,59 @@
 <% set_meta_tags :site => 'Riversub', :title => "#{@repo.video.name}", :description => "Watch a Youtube Video with user generated captions/subtitles" %>
 
-<div id='player' data-repo='<%= @repo.serialize.to_json %>'>
-  <div id='player-top' class='row'> 
-    <div class='span12'> 
-      <h5 id='repo_label'>
-        <% if @repo.user %>
-          <span id='repo_owner'><a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a></span> /
-        <% end %>
-        <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
-      </h5>
-      <h6 id='video_url'>
-        <a href="<%= @repo.video.url%>"><%= @repo.video.url %></a>
-      </h6> 
-    </div> 
-    <div id='player-top-left' class='span7'> 
-      <div id='media_container'> 
-        <div id='media'></div> 
-        <div id='subtitle_bar' class='span7 center'> 
-          <span id='subtitle_display' class='span5 center'></span> 
-        </div> 
+<div class='header-section span12'></div>
+
+<div class='container '>
+
+  <div id='player' data-repo='<%= @repo.serialize.to_json %>'>
+    <div id='player-top' class='row'> 
+      <div class='span12'> 
+        <h5 id='repo_label'>
+          <% if @repo.user %>
+            <span id='repo_owner'><a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a></span> /
+          <% end %>
+          <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
+        </h5>
+        <h6 id='video_url'>
+          <a href="<%= @repo.video.url%>"><%= @repo.video.url %></a>
+        </h6> 
       </div> 
-    </div> 
-    <div id='player-top-right' class='span5'> 
-      <div id='subtitle_container'> 
-        <div id='subtitle_list'></div> 
-        <div id='controls_extra' class='row'> 
-          <div class='btn-group pull-right'> 
-            <a id='download_btn' class='btn' href='<%= @repo.subtitle_download_url %>'><i class='icon-download-alt'></i> Download</a> 
+      <div id='player-top-left' class='span7'> 
+        <div id='media_container'> 
+          <div id='media'></div> 
+          <div id='subtitle_bar' class='span7 center'> 
+            <span id='subtitle_display' class='span5 center'></span> 
           </div> 
         </div> 
       </div> 
+      <div id='player-top-right' class='span5'> 
+        <div id='subtitle_container'> 
+          <div id='subtitle_list'></div> 
+          <div id='controls_extra' class='row'> 
+            <div class='btn-group pull-right'> 
+              <a id='download_btn' class='btn' href='<%= @repo.subtitle_download_url %>'><i class='icon-download-alt'></i> Download</a> 
+            </div> 
+          </div> 
+        </div> 
+      </div> 
+
     </div> 
 
-  </div> 
+  </br>
+    <div id='player-middle' class='row'> 
+      <div class='span7'>
+        <div class='pull-right'> 
+          <% if @repo.user == current_user %>
+            <a id='subtitle_editor_btn' class='btn btn-danger' href="<%= @repo.editor_url %>"><i class="icon-film"></i> Subtitle Editor</a>
+          <% else %>
+            <div>
+              <h6>
+                Authored by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> (View only)
+              </h6>
+            </div>
+          <% end %>
+        </div> 
+      </div>
+    </div> 
 
-</br>
-  <div id='player-middle' class='row'> 
-    <div class='span7'>
-      <div class='pull-right'> 
-        <% if @repo.user == current_user %>
-          <a id='subtitle_editor_btn' class='btn btn-danger' href="<%= @repo.editor_url %>"><i class="icon-film"></i> Subtitle Editor</a>
-        <% else %>
-          <div>
-            <h6>
-              Authored by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> (View only)
-            </h6>
-          </div>
-        <% end %>
-      </div> 
-    </div>
-  </div> 
-
-
+  </div>    
 </div>    

@@ -22,33 +22,35 @@
 
     <div class="navbar navbar-fixed-top" id="header">
       <div class="navbar-inner">
-        <a class="brand" href="<%= root_url %>"> River</a>
-        <ul class="nav">
-          <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'index' %>"><a href="<%= root_url %>">Home</a></li>
-          <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'videos' %>"><a href="<%= videos_url %>">Videos</a></li>
-          <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'about' %>"><a href="<%= about_url %>">About</a></li>
-          <!-- <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'tutorial' %>"><a href="/tutorial">Tutorial</a></li> -->
-        </ul>
+        <div class="container nav-container">
+          <a class="brand" href="<%= root_url %>"> River</a>
+          <ul class="nav menu-nav">
+            <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'index' %>"><a href="<%= root_url %>">Home</a></li>
+            <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'videos' %>"><a href="<%= videos_url %>">Videos</a></li>
+            <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'about' %>"><a href="<%= about_url %>">About</a></li>
+            <!-- <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'tutorial' %>"><a href="/tutorial">Tutorial</a></li> -->
+          </ul>
 
-        <ul class="nav pull-right">
-          <% if user_signed_in?  %>
-            <li class="dropdown">
-              <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
-                <%= current_user.username %><b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-                <li><%= link_to 'View profile', user_url(current_user) %></li>
-                <li><%= link_to 'Settings', edit_user_registration_url %></li>
-              </ul>
-            </li>
-            <li class="divider-vertical"></li>
-            <li><%= link_to "Logout", destroy_user_session_url, method: :delete %></li>
-          <% else %>
-            <li><%= link_to "Sign up", new_user_registration_url %></li>
-            <li class="divider-vertical"></li>
-            <li><%= link_to "Login", new_user_session_url %></li>
-          <% end %>
-        </ul>
+          <ul class="nav pull-right">
+            <% if user_signed_in?  %>
+              <li class="dropdown">
+                <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+                  <%= current_user.username %><b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                  <li><%= link_to 'View profile', user_url(current_user) %></li>
+                  <li><%= link_to 'Settings', edit_user_registration_url %></li>
+                </ul>
+              </li>
+              <li class="divider-vertical"></li>
+              <li><%= link_to "Logout", destroy_user_session_url, method: :delete %></li>
+            <% else %>
+              <li><%= link_to "Sign up", new_user_registration_url %></li>
+              <li class="divider-vertical"></li>
+              <li><%= link_to "Login", new_user_session_url %></li>
+            <% end %>
+          </ul>
+        </div>
       </div>
     </div>
 

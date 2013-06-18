@@ -1,6 +1,7 @@
+<div class='header-section span12'></div>
 <div class='container'>
   <div class='row'>
-    <div class="videos span10">
+    <div class="videos span12">
       <h4>Anonymously Subtitled Videos</h4>
       <ul class="thumbnails anonymous">
         <% Repository.anonymously_subtitled.recent.each do |repo| %>
@@ -21,7 +22,7 @@
       </ul>
     </div>
 
-    <div class="videos span10">
+    <div class="videos span12">
       <h4>User Subtitled Videos</h4>
       <ul class="thumbnails user">
         <% Repository.user_subtitled.recent.each do |repo| %>
