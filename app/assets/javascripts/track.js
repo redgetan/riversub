@@ -77,6 +77,8 @@ Track.prototype = {
     this.$el_expanded.on("click",this.onMouseClickHandler.bind(this));
     this.$el_summary.on("click",this.onMouseClickHandler.bind(this));
 
+    this.$el_expanded.on("dblclick",this.onMouseDblClickHandler.bind(this));
+
     this.$el_expanded.on("mouseenter",this.onMouseEnter.bind(this));
     this.$el_expanded.on("mouseleave",this.onMouseLeave.bind(this));
     this.$close.on("mousedown",this.onCloseMouseDown.bind(this));
@@ -97,6 +99,10 @@ Track.prototype = {
 
   onMouseClickHandler: function(event) {
     $(event.target).trigger("trackseek",[this.startTime()]);
+  },
+
+  onMouseDblClickHandler: function(event) {
+    this.$el_expanded.trigger("subtitleeditmode");
   },
 
   onResizableResize: function(event, ui) {

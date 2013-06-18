@@ -119,6 +119,7 @@ Editor.prototype = {
     $(document).on("keyup",this.onKeyupHandler.bind(this));
     $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
     $(document).on("trackseek",this.onTrackSeekHandler.bind(this));
+    $(document).on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
     $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
     $(document).on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
     $(document).on("subtitlelineblur",this.onSubtitleLineBlur.bind(this));
@@ -252,6 +253,17 @@ Editor.prototype = {
     this.seek(subtitle.track.startTime());
   },
 
+  onSubtitleEditMode: function(event) {
+    this.popcorn.pause();
+
+    this.$subtitleDisplay.hide();
+
+    var text = this.$subtitleDisplay.text();
+    this.$subtitleEdit.val(text);
+    this.$subtitleEdit.show();
+    this.$subtitleEdit.focus();
+  },
+
   onGhostTrackStart: function(event,track) {
     this.ghostTrackStarted = true;
     this.$startTimingBtn.hide();
@@ -277,11 +289,7 @@ Editor.prototype = {
 
     if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
       if (!track.isGhost()) {
-        this.$subtitleDisplay.hide();
-        this.$subtitleEdit.val("");
-        this.$subtitleEdit.show();
-        this.popcorn.pause();
-        this.$subtitleEdit.focus();
+        track.$el_expanded.trigger("subtitleeditmode");
       }
     } else {
       this.showSubtitleInSubtitleBar(subtitle);
@@ -421,11 +429,8 @@ Editor.prototype = {
   },
 
   onSubtitleDisplayDblClick: function(event) {
-    var text = this.$subtitleDisplay.text();
-    this.$subtitleEdit.val(text);
-    this.$subtitleDisplay.hide();
-    this.$subtitleEdit.show();
-    this.$subtitleEdit.focus();
+    var $target = $(event.target);
+    $target.trigger("subtitleeditmode");
   },
 
   onPlayBtnClick: function(event) {
