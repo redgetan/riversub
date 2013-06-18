@@ -1,3 +1,8 @@
+kbd {
+  margin-left: 15px;
+  padding: 2px;
+}
+
 .header-section {
   background-color: white;
   height: 50px;

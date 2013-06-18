@@ -269,3 +269,8 @@ div#seek_head_corner {
 	top: 15px;
 	left: 13px;
 }
+
+div#keyboard-shortcuts {
+	margin-top: 10px;
+	font-size: 10px;
+}
