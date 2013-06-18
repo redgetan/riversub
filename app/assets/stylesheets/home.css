@@ -202,7 +202,6 @@ div#demo-background {
   z-index: -1;
   width: 100%;
   height: 425px;
-  min-width: 1440px;
   border-top: solid 1px #ccc;
   border-bottom: solid 1px #ccc;
 }
