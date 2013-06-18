@@ -1,4 +1,8 @@
-kbd {
+#instructions_modal kbd {
+  font-size: 10px;
+}
+
+#keyboard-shortcuts kbd {
   margin-left: 15px;
   padding: 2px;
 }
