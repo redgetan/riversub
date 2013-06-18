@@ -5,6 +5,11 @@ class HomeController < ApplicationController
     respond_to :html
   end
 
+  def videos
+    @repos = Repository.all
+    respond_to :html
+  end
+
   def about
   end
 

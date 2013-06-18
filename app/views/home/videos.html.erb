@@ -1,37 +1,9 @@
-<% set_meta_tags :site => 'Riversub', :title => 'Subtitle Tool for Youtube Videos', :description => "Riversub lets you subtitle & caption Youtube Videos." %>
-
-<div id='demo' >
-  <div id='demo-background'>
-  </div>
-  <div id='demo-container' class='container'>
-    <div class='row'>
-      <div class='span6'>
-        <iframe class="youtube-player" type="text/html" width="420" height="320" src="http://www.youtube.com/embed/YqbW4BrYkjQ" allowfullscreen frameborder="0">
-        </iframe>
-      </div>
-      <div class='span4'>
-        <h3 id='description' >Add Captions/Subtitles to any Youtube Video</h3>
-        <div id="media_input">
-          <form id="sub">
-            <div class="control-group">
-              <div class="input-append">
-                <input id="media_url" name="media_url" class="span4" type="text" placeholder="Paste youtube url">
-                <button type="button" id="sub_btn" class="btn btn-danger">Subtitle It</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class='container'>
   <div class='row'>
-    <div class="videos span6">
+    <div class="videos span10">
       <h4>Anonymously Subtitled Videos</h4>
       <ul class="thumbnails anonymous">
-        <% Repository.anonymously_subtitled.recent.limit(3).each do |repo| %>
+        <% Repository.anonymously_subtitled.recent.each do |repo| %>
             <li class="span2">
               <div class="thumbnail center">
                 <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span>
@@ -49,10 +21,10 @@
       </ul>
     </div>
 
-    <div class="videos span6">
+    <div class="videos span10">
       <h4>User Subtitled Videos</h4>
       <ul class="thumbnails user">
-        <% Repository.user_subtitled.recent.limit(3).each do |repo| %>
+        <% Repository.user_subtitled.recent.each do |repo| %>
             <li class="span2">
               <div class="thumbnail center">
                 <span class='repo_owner'>
@@ -75,4 +47,3 @@
 
   </div>
 </div>
-

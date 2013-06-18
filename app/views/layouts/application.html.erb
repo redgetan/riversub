@@ -20,12 +20,12 @@
 </head>
 <body>
 
-  <div class='container'>
     <div class="navbar navbar-fixed-top" id="header">
       <div class="navbar-inner">
         <a class="brand" href="<%= root_url %>"> River</a>
         <ul class="nav">
           <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'index' %>"><a href="<%= root_url %>">Home</a></li>
+          <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'videos' %>"><a href="<%= videos_url %>">Videos</a></li>
           <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'about' %>"><a href="<%= about_url %>">About</a></li>
           <!-- <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'tutorial' %>"><a href="/tutorial">Tutorial</a></li> -->
         </ul>
@@ -101,8 +101,5 @@
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
       </div>
     </div>
-
-  </div>
-
 </body>
 </html>

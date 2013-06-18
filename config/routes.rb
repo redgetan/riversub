@@ -27,6 +27,7 @@ River::Application.routes.draw do
   delete "/repositories/:repository_id/timings",          :to => "timings#destroy"
 
   get "about", :to => "home#about"
+  get "videos", :to => "home#videos"
   root :to => "home#index"
 
 

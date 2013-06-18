@@ -12,6 +12,14 @@ class Repository < ActiveRecord::Base
 
   validates :video_id, :presence => true
 
+  # scope :with_timings_count, select("repositories.*, COUNT(timings.id) timings_count")
+  #                              .joins("LEFT JOIN timings on repositories.id = timings.repository_id")
+  #                              .group("repositories.id")
+  
+  scope :anonymously_subtitled, where("user_id IS NULL")
+  scope :user_subtitled,        where("user_id IS NOT NULL")
+  scope :recent,                order("updated_at DESC")
+
   def name
     "#{self.owner}_#{self.video.name}"
   end
