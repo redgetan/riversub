@@ -13,6 +13,12 @@ class Timing < ActiveRecord::Base
 
   accepts_nested_attributes_for :subtitle
 
+  after_save :touch_parent 
+    
+  def touch_parent
+    self.repository.touch    
+  end
+
   def serialize
     {
       :id => self.id,

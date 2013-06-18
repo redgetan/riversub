@@ -1,63 +1,71 @@
-<div id='edit_user_sidebar' class='span4'>
-  <ul class="nav nav-tabs nav-stacked">
-    <li><a id='account' href="#account"><i class="icon-chevron-right"></i>Account</a></li>
-    <li><a id='password' href="#password"><i class="icon-chevron-right"></i>Password</a></li>
-  </ul>
-</div>
 
-<div id='edit_user_content' class='span6 offset1'>
-  <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name), :html => { :id => 'edit_account', :method => :put, :multipart => true }) do |f| %>
+<div class='header-section span12'></div>
+<div class='container '>
+  <div class='row'>
 
-    <div id='avatar' >
-      <%= f.label :photo %>
-      <% if current_user.avatar.url.present? %>
-        <div class="thumbnail">
-          <%= image_tag current_user.avatar.url  %>
+    <div id='edit_user_sidebar' class='span4 offset1'>
+      <ul class="nav nav-tabs nav-stacked">
+        <li><a id='account' href="#account"><i class="icon-chevron-right"></i>Account</a></li>
+        <li><a id='password' href="#password"><i class="icon-chevron-right"></i>Password</a></li>
+      </ul>
+    </div>
+
+    <div id='edit_user_content' class='span6 offset1'>
+      <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name), :html => { :id => 'edit_account', :method => :put, :multipart => true }) do |f| %>
+
+        <div id='avatar' >
+          <%= f.label :photo %>
+          <% if current_user.avatar.url.present? %>
+            <div class="thumbnail">
+              <%= image_tag current_user.avatar.url  %>
+            </div>
+          <% end %>
         </div>
+
+        <div id='upload_photo_btn' class="btn">
+          <div id='upload_btn_label'>
+            Change Photo
+          </div>
+          <%= f.file_field :avatar %>
+          <%= f.hidden_field :avatar_cache %>
+        </div >
+
+        </br>
+        </br>
+        <div><%= f.label :email %>
+        <%= f.email_field :email %></div>
+
+        <div><%= f.label :bio %>
+        <%= f.text_area :bio, :rows => '7', :cols => '30', :maxlength => '500' %></div>
+
+        <div><%= f.submit "Save Changes", :class => 'btn btn-info btn-large' %></div>
+
       <% end %>
+
+      <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name), :html => { :id => 'edit_password', :method => :put, :multipart => true }) do |f| %>
+
+        <div><%= f.label :password %> <i>(leave blank if you don't want to change it)</i>
+        <%= f.password_field :password, :autocomplete => "off" %></div>
+
+        <div><%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation %></div>
+
+        <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i>
+        <%= f.password_field :current_password %></div>
+
+        <div><%= f.submit "Save Changes", :class => 'btn btn-info btn-large' %></div>
+
+      <% end %>
+
     </div>
 
-    <div id='upload_photo_btn' class="btn">
-      <div id='upload_btn_label'>
-        Change Photo
-      </div>
-      <%= f.file_field :avatar %>
-      <%= f.hidden_field :avatar_cache %>
-    </div >
+        <div class='row'>
+          <div class='span4 offset6'>
 
-    </br>
-    </br>
-    <div><%= f.label :email %>
-    <%= f.email_field :email %></div>
+    <!--         <p>Unhappy? <%= link_to "Cancel my account", registration_url(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete %>.</p>
+     -->
+          </div>
+        </div>
 
-    <div><%= f.label :bio %>
-    <%= f.text_area :bio, :rows => '7', :cols => '30', :maxlength => '500' %></div>
-
-    <div><%= f.submit "Save Changes", :class => 'btn btn-info btn-large' %></div>
-
-  <% end %>
-
-  <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name), :html => { :id => 'edit_password', :method => :put, :multipart => true }) do |f| %>
-
-    <div><%= f.label :password %> <i>(leave blank if you don't want to change it)</i>
-    <%= f.password_field :password, :autocomplete => "off" %></div>
-
-    <div><%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation %></div>
-
-    <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i>
-    <%= f.password_field :current_password %></div>
-
-    <div><%= f.submit "Save Changes", :class => 'btn btn-info btn-large' %></div>
-
-  <% end %>
-
+  </div>
 </div>
-
-    <div class='row'>
-      <div class='span4 offset6'>
-
-<!--         <p>Unhappy? <%= link_to "Cancel my account", registration_url(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete %>.</p>
- -->
-      </div>
-    </div>

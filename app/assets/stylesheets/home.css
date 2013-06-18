@@ -87,7 +87,7 @@ input#media_url {
 div.videos {
 }
 
-div.videos li .video_name {
+.video_name {
   line-height: 12px;
   height: 24px;
   overflow: hidden;
