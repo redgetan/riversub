@@ -17,14 +17,6 @@
   background-color: lightgoldenrodyellow; 
 }
 
-/*.navbar .nav,
-.navbar .nav > li {
-    float:none;
-    display:inline-block;
-    vertical-align: top;
-}
-*/
-
 .nav-container {
     text-align: center;
 }
@@ -33,12 +25,24 @@
     float: none;
 }
 
-/*.navbar-inner {
-    text-align:center;
+.navbar-inner {
+  background-image: none;
+  border: none;
+  background-color: white;
 }
-*/
+
+.navbar .nav {
+  font-size: 16px;  
+}
+
+.navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
 .navbar-inner .brand {
   margin-left: 0px;
+  font-size: 30px;
 }
 
 /* temporary fix to https://github.com/twitter/bootstrap/issues/5704  */
@@ -52,7 +56,9 @@ margin-left:-1px;
 }
 
 #header {
-  /*margin-top: 20px;*/
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
 }
 
 .center {
@@ -186,7 +192,12 @@ div#demo {
 }
 
 div#demo-background {
+  background-image: -moz-linear-gradient(top, #EDE8B2, #F0EDCE);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#EDE8B2), to(#F0EDCE));
+  background-image: -webkit-linear-gradient(top, #EDE8B2, #F0EDCE);
+  background-image: -o-linear-gradient(top, #EDE8B2, #F0EDCE);
   background-image: linear-gradient(to bottom, #EDE8B2, #F0EDCE);
+
   position: absolute;
   z-index: -1;
   width: 100%;

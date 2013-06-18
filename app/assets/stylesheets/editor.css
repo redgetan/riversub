@@ -24,6 +24,10 @@
 	font-style: bold;
 }
 
+div#editor {
+	margin-top: 20px;
+}
+
 div#editor #repo_label,
 div#player #repo_label {
 	float: left;
