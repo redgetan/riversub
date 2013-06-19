@@ -412,9 +412,11 @@ Editor.prototype = {
 
     // escape key
     if (event.which == 27) {
-      this.currentTrack.remove();
-      this.currentTrack = null;
-      this.currentGhostTrack = null;
+      if (this.currentTrack.isGhost()) {
+        this.currentTrack.remove();
+        this.currentTrack = null;
+        this.currentGhostTrack = null;
+      }
       this.$subtitleEdit.blur();
     } 
 
