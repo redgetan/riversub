@@ -183,4 +183,7 @@ $(document).ready(function(){
 // [ ] should test determineEndTime
 // [ ] double click on track should lock into that track and play until end of that track only, press space will replay that track again
 // [ ] should be able to drag tracks across timeline window boundaries
+// // [ ] start timing + escape - would not be able to end timing, next action should be start timing
+// [ ] edit subtitle + escape - should not delete that track
+// [ ] start timing + pause - click left of track should end that track
 
