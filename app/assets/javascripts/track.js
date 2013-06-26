@@ -183,9 +183,11 @@ Track.prototype = {
       start: startTime,
       end:   endTime,
       onStart: function() {
+        // console.log("track start");
         $(document).trigger("trackstart",[self]);
       },
       onEnd: function() {
+        // console.log("track end");
         $(document).trigger("trackend",[self]);
       },
     });

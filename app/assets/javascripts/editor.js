@@ -311,7 +311,14 @@ Editor.prototype = {
         //
         // thus, in this case, we automatically remove ghost status of the track knowing that it is
         // the maximum endTime of the current track since it can't go beyond start time of next track
-        this.endGhostTrack(track,track.endTime());
+        var endTime = Math.floor(this.media.currentTime * 1000) / 1000;
+        var overlapTracks = this.getOverlapTracks(track.startTime(),endTime,track);
+
+        if (overlapTracks.length != 0) {
+          endTime = track.endTime();
+        }
+
+        this.endGhostTrack(track,endTime);
       } 
 
       if (track.initial_subtitle_request && !track.isDeleted) {
@@ -611,7 +618,6 @@ Editor.prototype = {
       console.log("Removing invalid track");
       this.currentGhostTrack.remove();
       this.currentTrack = null;
-      this.tracks.pop();
       this.$subtitleEdit.hide();
     }
     this.currentGhostTrack = null;
@@ -619,20 +625,38 @@ Editor.prototype = {
     this.$el.trigger("ghosttrackend",[track]);
   },
 
-  /*
+    /*
    *   startTime should not be less than any existing track endTime
    *   endTime should not be greater than any existing track startTime
    */
-  validateNoTrackOverlap: function(startTime,endTime) {
-    for (var i = this.tracks.length - 1; i >= 0; i--) {
-      if (startTime >= this.tracks[i].startTime() && startTime < this.tracks[i].endTime() ||
-          endTime   <= this.tracks[i].endTime()   && endTime   > this.tracks[i].startTime()) {
-            throw "Track Overlap Detected. Track(" + startTime + "," + endTime + ") " +
-              "would overlap with " + this.tracks[i].toString();
-          }
-    };
+  validateNoTrackOverlap: function(startTime,endTime,track) {
+    var tracks = this.getOverlapTracks(startTime,endTime,track) ;
 
+    if (tracks.length != 0) {
+      throw "Track Overlap Detected. Track(" + startTime + "," + endTime + ") " +
+        "would overlap with " + $.map(tracks,function(track) { return track.toString(); });
+    }
   },
+
+  getOverlapTracks: function(startTime,endTime,track) {
+    var tracks = [];
+
+    for (var i = this.tracks.length - 1; i >= 0; i--) {
+      var curr = this.tracks[i];
+      if (curr !== track) {
+        // console.log("start: " + startTime + " end: " + endTime + " curr: " + curr);
+        if (curr.startTime() <= startTime && startTime < curr.endTime() ||
+            startTime   <= curr.startTime()  && curr.startTime() < endTime) {
+          tracks.push(curr);
+        }
+      }
+    }
+
+    // console.log("track overlap: [ " + tracks + "] start: " + startTime + " end: " + endTime);
+
+    return tracks;
+  },
+
 
   showSubtitleInSubtitleBar: function(subtitle) {
 
