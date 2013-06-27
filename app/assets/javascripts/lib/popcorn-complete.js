@@ -6238,7 +6238,14 @@
     function monitorCurrentTime() {
       var playerTime = player.getCurrentTime();
       if ( !impl.seeking ) {
+
+        var oldCurrentTime = impl.currentTime;
         impl.currentTime = playerTime;
+
+        if (ABS( oldCurrentTime - playerTime ) > 0) {
+          onTimeUpdate();
+        }
+
         if ( ABS( impl.currentTime - playerTime ) > CURRENT_TIME_MONITOR_MS ) {
           onSeeking();
           onSeeked();
