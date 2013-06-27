@@ -254,6 +254,7 @@ Editor.prototype = {
   },
 
   onSubtitleEditMode: function(event) {
+    console.log("edit mode sub");
 
     this.$subtitleDisplay.hide();
 
@@ -261,6 +262,7 @@ Editor.prototype = {
     this.$subtitleEdit.val(text);
     this.$subtitleEdit.show();
     this.$subtitleEdit.focus();
+    this.$subtitleEdit.effect("highlight", { color: "moccasin"},1000);
   },
 
   onGhostTrackStart: function(event,track) {
@@ -290,6 +292,7 @@ Editor.prototype = {
     if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
       if (!track.isGhost()) {
         this.popcorn.pause();
+        console.log("trigger sub [onTrackstart]" + track);
         track.$el_expanded.trigger("subtitleeditmode");
       }
     } else {
@@ -424,6 +427,7 @@ Editor.prototype = {
   onSubtitleDisplayDblClick: function(event) {
     var $target = $(event.target);
     this.popcorn.pause();
+    console.log("trigger sub [onSubDispDblClick]");
     $target.trigger("subtitleeditmode");
   },
 
@@ -612,6 +616,7 @@ Editor.prototype = {
     if (track.initial_subtitle_request && !track.isDeleted) {
       track.initial_subtitle_request = false;
       this.ensurePauseAtTrack(track);
+      console.log("trigger sub [endGhostTrack]");
       track.$el_expanded.trigger("subtitleeditmode");
     }
   },
@@ -626,7 +631,6 @@ Editor.prototype = {
 
     var seekToPrev = function() {
       var time = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
-      console.log("seeking ENSURE" + time);
       this.seek(time);
       this.media.removeEventListener("pause",seekToPrev);
     }.bind(this);

@@ -183,7 +183,7 @@ Track.prototype = {
       start: startTime,
       end:   endTime,
       onStart: function() {
-        // console.log("track start");
+        console.log("track start");
         $(document).trigger("trackstart",[self]);
       },
       onEnd: function() {
@@ -218,7 +218,7 @@ Track.prototype = {
   },
 
   fadingHighlight: function() {
-    this.$el_expanded.effect("highlight", {color: "darkred"}, 1000);
+    this.$el_expanded.effect("highlight", {color: "moccasin"}, 1000);
   },
 
   toString: function() {
