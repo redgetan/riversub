@@ -14,5 +14,6 @@
 //= require jquery_ujs
 //= require jquery.ui.resizable
 //= require jquery.ui.draggable
+//= require jquery.ui.effect-highlight
 //= require twitter/bootstrap
 //= require_tree .

@@ -129,9 +129,12 @@ div#editor-bottom {
 }
 
 .track.selected {
-	background-color: lightcoral !important;
+	background-color: lightcoral ;
 }
 
+.track.selected:hover {
+	background-color: lightcoral ;
+}
 .track:hover {
 	background-color: moccasin;
 }

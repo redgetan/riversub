@@ -97,6 +97,12 @@ Deployment
 
   For production, simply change to RAILS_ENV=production
 
+Testing
+====
+
+  $ rake db:test:prepare
+  $ rspec
+
 Dependencies
 ====
 

@@ -273,6 +273,7 @@ Editor.prototype = {
     this.ghostTrackStarted = false;
     this.$stopTimingBtn.hide();
     this.$startTimingBtn.show();
+    track.fadingHighlight();
   },
 
   onTrackChange: function(track) {

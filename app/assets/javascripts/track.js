@@ -217,6 +217,10 @@ Track.prototype = {
     this.$el_expanded.removeClass("selected");
   },
 
+  fadingHighlight: function() {
+    this.$el_expanded.effect("highlight", {color: "darkred"}, 1000);
+  },
+
   toString: function() {
     return "Track(" + this.startTime() + "," + this.endTime() + ")";
   }
