@@ -186,4 +186,8 @@ $(document).ready(function(){
 // // [ ] start timing + escape - would not be able to end timing, next action should be start timing
 // [ ] edit subtitle + escape - should not delete that track
 // [ ] start timing + pause - click left of track should end that track
+// [ ] start timing + pause + end timing + start timing - breaks
+// [ ] when user asked to input subtitle, not obvious where it is.
+// [ ] when user asked to input subtitle, paused, but once i switch tabs, 
+//       it loses focus and auto plays the video, should only play when user presses enter
 

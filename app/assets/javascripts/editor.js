@@ -254,7 +254,6 @@ Editor.prototype = {
   },
 
   onSubtitleEditMode: function(event) {
-    this.popcorn.pause();
 
     this.$subtitleDisplay.hide();
 
@@ -289,6 +288,7 @@ Editor.prototype = {
 
     if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
       if (!track.isGhost()) {
+        this.popcorn.pause();
         track.$el_expanded.trigger("subtitleeditmode");
       }
     } else {
@@ -320,24 +320,6 @@ Editor.prototype = {
 
         this.endGhostTrack(track,endTime);
       } 
-
-      if (track.initial_subtitle_request && !track.isDeleted) {
-        track.initial_subtitle_request = false;
-        var seekToPrev = function() {
-          // we want to seek to a few millseconds before end of prev track just so
-          // 1. that the text from input would disappear triggered by the end event of track
-          // 2. scrubber is positioned nicely inside track instead of a bit outside.
-          //    this is to indicated were editing subtitle of that track
-          var time = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
-          this.seek(time);
-          this.media.removeEventListener("pause",seekToPrev);
-        }.bind(this);
-
-        this.media.addEventListener("pause",seekToPrev);
-
-        // if playing, pause playback to let user type subtitle
-        this.popcorn.pause();
-      }
     }
   },
 
@@ -391,7 +373,6 @@ Editor.prototype = {
 
     this.enableCommands();
 
-    if (this.media.paused) this.popcorn.play();
   },
 
   onSubtitleLineEdit: function(event) {
@@ -425,11 +406,13 @@ Editor.prototype = {
         this.currentGhostTrack = null;
       }
       this.$subtitleEdit.blur();
+      this.popcorn.play();
     } 
 
     // enter key
     if (event.which == 13) {
       this.$subtitleEdit.blur();
+      this.popcorn.play();
     } 
   },
 
@@ -439,6 +422,7 @@ Editor.prototype = {
 
   onSubtitleDisplayDblClick: function(event) {
     var $target = $(event.target);
+    this.popcorn.pause();
     $target.trigger("subtitleeditmode");
   },
 
@@ -623,7 +607,34 @@ Editor.prototype = {
     this.currentGhostTrack = null;
 
     this.$el.trigger("ghosttrackend",[track]);
+
+    if (track.initial_subtitle_request && !track.isDeleted) {
+      track.initial_subtitle_request = false;
+      this.ensurePauseAtTrack(track);
+      track.$el_expanded.trigger("subtitleeditmode");
+    }
   },
+
+   /* When you're timing a track while media is playing, and you're very near the start of next track, 
+   *   pausing might result in scrubber being inside next track since pausing is not immediate (it takes a few millisec
+   * This function would ensure that pausing would stop at current track
+   * Would only run if media is currently playing, if its paused, don't do anything
+   */
+  ensurePauseAtTrack: function(track) {
+    if (this.popcorn.paused()) return;
+
+    var seekToPrev = function() {
+      var time = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
+      console.log("seeking ENSURE" + time);
+      this.seek(time);
+      this.media.removeEventListener("pause",seekToPrev);
+    }.bind(this);
+
+    this.media.addEventListener("pause",seekToPrev);
+
+    // if playing, pause playback to let user type subtitle
+    this.popcorn.pause();
+  }, 
 
     /*
    *   startTime should not be less than any existing track endTime
