@@ -38,6 +38,8 @@ function Editor (repo,options) {
 
   this.bindEvents();
 
+  // initally commands are disabled/ enabled only when things are loaded
+  this.disableCommands();
 }
 
 Editor.prototype = {
@@ -243,7 +245,7 @@ Editor.prototype = {
 
   onLoadedMetadata: function(event) {
     this.$startTimingBtn.removeAttr("disabled");
-
+    this.enableCommands();
   },
 
   onPauseAdjust: function(event,correctPauseTime) {
@@ -253,8 +255,15 @@ Editor.prototype = {
     this.seek(subtitle.track.startTime());
   },
 
-  onSubtitleEditMode: function(event) {
-    console.log("edit mode sub");
+  onSubtitleEditMode: function(event,track) {
+    console.log("currTrackEdit: " + this.currentTrackEdit + " track: " + track);
+    if (this.currentTrackEdit === track) {
+      console.log("previously in subedit");
+      return;
+      console.log("NOT HERE");
+    }
+
+    this.currentTrackEdit = track;
 
     this.$subtitleDisplay.hide();
 
@@ -283,6 +292,7 @@ Editor.prototype = {
   },
 
   onTrackStart: function(event,track) {
+    console.log("trackStart: " + track);
     this.currentTrack = track;
 
     var subtitle = track.subtitle;
@@ -292,8 +302,7 @@ Editor.prototype = {
     if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
       if (!track.isGhost()) {
         this.popcorn.pause();
-        console.log("trigger sub [onTrackstart]" + track);
-        track.$el_expanded.trigger("subtitleeditmode");
+        track.$el_expanded.trigger("subtitleeditmode",[track]);
       }
     } else {
       this.showSubtitleInSubtitleBar(subtitle);
@@ -385,6 +394,8 @@ Editor.prototype = {
 
   onSubtitleLineBlur: function(event) {
     this.enableCommands();
+
+    this.currentTrackEdit = null;
   },
 
   enableCommands: function(event) {
@@ -427,8 +438,7 @@ Editor.prototype = {
   onSubtitleDisplayDblClick: function(event) {
     var $target = $(event.target);
     this.popcorn.pause();
-    console.log("trigger sub [onSubDispDblClick]");
-    $target.trigger("subtitleeditmode");
+    $target.trigger("subtitleeditmode",[this.currentTrack]);
   },
 
   onPlayBtnClick: function(event) {
@@ -616,8 +626,7 @@ Editor.prototype = {
     if (track.initial_subtitle_request && !track.isDeleted) {
       track.initial_subtitle_request = false;
       this.ensurePauseAtTrack(track);
-      console.log("trigger sub [endGhostTrack]");
-      track.$el_expanded.trigger("subtitleeditmode");
+      track.$el_expanded.trigger("subtitleeditmode",[track]);
     }
   },
 

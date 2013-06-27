@@ -102,7 +102,8 @@ Track.prototype = {
   },
 
   onMouseDblClickHandler: function(event) {
-    this.$el_expanded.trigger("subtitleeditmode");
+    this.popcorn.pause();
+    this.$el_expanded.trigger("subtitleeditmode",[this]);
   },
 
   onResizableResize: function(event, ui) {
@@ -183,7 +184,7 @@ Track.prototype = {
       start: startTime,
       end:   endTime,
       onStart: function() {
-        console.log("track start");
+        // console.log("track start" + self);
         $(document).trigger("trackstart",[self]);
       },
       onEnd: function() {
