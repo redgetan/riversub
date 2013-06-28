@@ -10,7 +10,7 @@ function Track(attributes,popcorn,options) {
   this.setSubtitle(subtitle);
   this.trackEvent     = this.createTrackEvent(attributes.start_time,attributes.end_time);
 
-  this.isSaved = typeof options['isSaved'] === "undefined" ? false : options['isSaved']; 
+  this.isSaved = typeof options['isSaved'] === "undefined" ? false : options['isSaved'];
   this.isDeleted = false;
 
 }
@@ -19,7 +19,7 @@ Track.prototype = {
 
   setAttributes: function(attributes) {
     for (var prop in attributes) {
-      this[prop] = attributes[prop];  
+      this[prop] = attributes[prop];
     }
   },
 
@@ -102,7 +102,6 @@ Track.prototype = {
   },
 
   onMouseDblClickHandler: function(event) {
-    this.popcorn.pause();
     this.$el_expanded.trigger("subtitleeditmode",[this]);
   },
 

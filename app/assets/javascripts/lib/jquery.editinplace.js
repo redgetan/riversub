@@ -37,7 +37,10 @@ $.fn.editInPlace = function(options) {
 			return; // already an editor here
 		dom.data('editInPlace', true);
 		
-		new InlineEditor(settings, dom).init();
+		var editor = new InlineEditor(settings, dom);
+		editor.init();
+		dom.data('editor', editor);
+
 	});
 };
 
@@ -391,7 +394,7 @@ $.extend(InlineEditor.prototype, {
 	handleSaveEditor: function(anEvent) {
 		if (false === this.triggerDelegateCall('shouldCloseEditInPlace', true, anEvent))
 			return;
-		
+
 		var enteredText = this.dom.find(':input').val();
 		enteredText = this.triggerDelegateCall('willCloseEditInPlace', enteredText);
 		

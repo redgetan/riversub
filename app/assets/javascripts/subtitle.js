@@ -90,6 +90,7 @@ SubtitleView.prototype = {
 
   bindEvents: function() {
     this.$container.on("click",this.onClickHandler.bind(this));
+    this.$container.on("dblclick",this.onDblClickHandler.bind(this));
 
     if (typeof this.$form !== "undefined") {
       this.$form.on("submit",this.onFormSubmit.bind(this));
@@ -110,10 +111,17 @@ SubtitleView.prototype = {
 
     if (subtitle === null) { return; }
 
-    if (subtitle.track != null) {
-      this.highlightLine(subtitle);
-      this.$container.trigger("subtitlelineclick",[subtitle]);
-    }
+    this.$container.trigger("subtitlelineclick",[subtitle]);
+  },
+
+  onDblClickHandler: function(event) {
+    var $target = $(event.target);
+    var $subtitle = $target.hasClass("subtitle") ? $target : $target.closest(".subtitle");
+    var subtitle = $subtitle.data("model");
+
+    if (subtitle === null) { return; }
+
+    this.$container.trigger("subtitlelinedblclick",[subtitle]);
   },
 
   onTrackChange: function(event,track) {
@@ -256,12 +264,14 @@ Subtitle.prototype = {
     this.$el = this.$container.find(".subtitle").last();
     this.$el.data("model",this);
 
+    this.$text = this.$el.find(".text");
+
     this.$close = this.$el.find(".close");
     this.$close.hide();
 
     if ($("#editor").size() === 1) {
       this.$el.find(".text").editInPlace({
-        editEvent: "dblclick",
+        editEvent: "none_delegated_by_parent",
         bg_over: "transparent",
         default_text: "",
         callback: function(unused, enteredText) { this.setAttributes({ "text": enteredText}); return enteredText; }.bind(this),
@@ -272,7 +282,7 @@ Subtitle.prototype = {
             $dom.find(":input").attr("maxlength",60);
             $dom.find(":input").on("keyup",function(event) {
               var $input = $(event.target);
-              $input.trigger("subtitlelinekeyup",$input.val());
+              $input.trigger("subtitlelinekeyup",[$input.val()]);
             });
           }.bind(this),
           // shouldCloseEditInPlace: function() { return false; },
@@ -361,6 +371,16 @@ Subtitle.prototype = {
   unhighlight: function() {
     this.$el.removeClass("selected");
     this.$el.trigger("subtitleunhighlight",[this]);
+  },
+
+  openEditor: function(event) {
+    this.$text.data("editor").openEditor(event);
+  },
+
+  hideEditorIfNeeded: function() {
+    if (this.$text.hasClass("editInPlace-active")) {
+      this.$text.data("editor").handleSaveEditor({});  
+    }
   }
 
 };

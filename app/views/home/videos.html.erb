@@ -4,7 +4,7 @@
     <div class="videos span12">
       <h4>Anonymously Subtitled Videos</h4>
       <ul class="thumbnails anonymous">
-        <% Repository.anonymously_subtitled.recent.each do |repo| %>
+        <% Repository.anonymously_subtitled.recent.limit(12).each do |repo| %>
             <li class="span2">
               <div class="thumbnail center">
                 <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span>

@@ -188,6 +188,33 @@ $(document).ready(function(){
 // [ ] start timing + pause - click left of track should end that track
 // [ ] start timing + pause + end timing + start timing - breaks
 // [ ] when user asked to input subtitle, not obvious where it is.
-// [ ] when user asked to input subtitle, paused, but once i switch tabs, 
+// [ ] when user asked to input subtitle, paused, but once i switch tabs,
 //       it loses focus and auto plays the video, should only play when user presses enter
+// [ ] currentTrack/currentGhostTrack should become null when scrubber is not in any track
+// [ ]   when ontrackend happens
+// [ ] think about when ghost track becomes null
+// [ ]   endGhosttrack
+// [ ] fix GA analytics
+// [ ] change all zeroplay to riversub
+// [ ] test ensurePauseAtTrack
+// [ ] test endGhost while playing
+// [ ] test endGhost while paused
+// [ ] test endGhost triggerd by hitting next track and having track end triggered
+// [ ] subtitle editmode should only be triggered ONE at a TIME
+// [ ] what if 2 tracks trigger subtitleditmode simultaneously
+//      track 1 hits track 2 - both doesnt have sub yet
+// [ ] if 1 track hits starttime of next track, and we have the seek back applied
+//       assert track1.start -> track1.end -> track2.start -> track2.end -> track1.start
+// [ ] when on subtitle edit focused. you switch tabs and come back. commands should be enabled. you can still play
+// [ ] dbl click edit + enter + dbl click edit should still work 
+// [ ] subtitleline edit. when move to another line. the inplaceedit should be gone
+// [ ] must be able to drag seek head
+// [ ] click here for isntructions is not obvious
+// [ ] when subtitle line is blank. clicking on it does nothing !!!!!
+// [ ] subedit Keyup should change 1. track.subtitle.text 2. subtitleDisplay
+
+solr search - if no matches found (give suggestions)
+paging (kaminari)
+exception notification
+
 

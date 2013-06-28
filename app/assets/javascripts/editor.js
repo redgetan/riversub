@@ -27,6 +27,7 @@ function Editor (repo,options) {
   this.currentTrack = null;
   this.currentGhostTrack = null;
   this.ghostTrackStarted = false;
+  this.isOnSubtitleEditMode = false;
 
   this.changes = {
     tracks: {
@@ -117,12 +118,14 @@ Editor.prototype = {
   },
 
   bindEvents: function() {
+    $(document).on("click",this.onDocumentClick.bind(this));
     $(document).on("mousewheel",this.onDocumentScroll.bind(this));
     $(document).on("keyup",this.onKeyupHandler.bind(this));
     $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
     $(document).on("trackseek",this.onTrackSeekHandler.bind(this));
     $(document).on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
     $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
+    $(document).on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
     $(document).on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
     $(document).on("subtitlelineblur",this.onSubtitleLineBlur.bind(this));
     $(document).on("subtitlelinekeyup",this.onSubtitleLineKeyup.bind(this));
@@ -147,7 +150,16 @@ Editor.prototype = {
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
-    // this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+    this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+  },
+
+  onDocumentClick: function(event) {
+    if ($(event.target).attr("id") !== "subtitle_edit" && !$(event.target).hasClass("track")) {
+      this.$subtitleEdit.hide(0,function(){
+        this.isOnSubtitleEditMode = false;
+      }.bind(this));
+      this.$subtitleDisplay.show();
+    }
   },
 
   onDocumentScroll: function(event,delta) { 
@@ -175,9 +187,9 @@ Editor.prototype = {
     return widthPixel / widthSeconds ;
   },
 
-  // onTimeUpdate: function(event) {
-  //   this.renderInContainer(this.$progress_bar, this.$progress_bar_scrubber, { left: this.media.currentTime.toFixed(3)});
-  // },
+  onTimeUpdate: function(event) {
+    this.lastTimeUpdateTime = this.media.currentTime;
+  },
 
   // given container, element, and time position you want to position element on, it will
   // position element on container on appropriate pixel location
@@ -239,6 +251,7 @@ Editor.prototype = {
   },
 
   onPause: function(event) {
+    this.seek(this.lastTimeUpdateTime);
     this.$pauseBtn.hide();
     this.$playBtn.show();
   },
@@ -255,33 +268,55 @@ Editor.prototype = {
     this.seek(subtitle.track.startTime());
   },
 
+  onSubtitleLineDblClick: function(event,subtitle) {
+    this.popcorn.pause();
+    subtitle.openEditor(event);
+  },
+
   onSubtitleEditMode: function(event,track) {
-    console.log("currTrackEdit: " + this.currentTrackEdit + " track: " + track);
-    if (this.currentTrackEdit === track) {
-      console.log("previously in subedit");
-      return;
-      console.log("NOT HERE");
-    }
+    // can only get triggered one at a time
+    // console.log("IS ON SUB EDIT MODE: " + this.isOnSubtitleEditMode);
+    if (this.isOnSubtitleEditMode) return;
 
-    this.currentTrackEdit = track;
+    // set the lock flag
+    this.isOnSubtitleEditMode = true;
 
+    this.$subtitleEdit.data("track",track);
+
+    this.ensurePauseAtTrack(track,function() {
+      this.showSubtitleEdit(track);
+    }.bind(this));
+
+  },
+
+  showSubtitleEdit: function(track) {
+    // console.log("show edit");
+    // get subtitle text to edit
+    var text = track.subtitle.text || "";
+
+    // display the text in input
+    this.$subtitleEdit.val(text);
+
+
+    // make sure sub display is hidden
     this.$subtitleDisplay.hide();
 
-    var text = this.$subtitleDisplay.text();
-    this.$subtitleEdit.val(text);
+    // show the input bar
     this.$subtitleEdit.show();
     this.$subtitleEdit.focus();
-    this.$subtitleEdit.effect("highlight", { color: "moccasin"},1000);
+    this.$subtitleEdit.effect("highlight", { color: "moccasin" },1000);
   },
 
   onGhostTrackStart: function(event,track) {
     this.ghostTrackStarted = true;
+    this.currentGhostTrack = track;
     this.$startTimingBtn.hide();
     this.$stopTimingBtn.show();
   },
 
   onGhostTrackEnd: function(event,track) {
     this.ghostTrackStarted = false;
+    this.currentGhostTrack = null
     this.$stopTimingBtn.hide();
     this.$startTimingBtn.show();
     track.fadingHighlight();
@@ -292,7 +327,6 @@ Editor.prototype = {
   },
 
   onTrackStart: function(event,track) {
-    console.log("trackStart: " + track);
     this.currentTrack = track;
 
     var subtitle = track.subtitle;
@@ -310,10 +344,13 @@ Editor.prototype = {
   },
 
   onTrackEnd: function(event,track) {
-    this.hideSubtitleInSubtitleBar(track.subtitle);
+    this.currentTrack = null;
+
+    this.hideSubtitleInSubtitleBar();
 
     track.unhighlight();
     track.subtitle.unhighlight();
+    track.subtitle.hideEditorIfNeeded();
 
     if (typeof track.subtitle.text === "undefined" || /^\s*$/.test(track.subtitle.text) ) {
       if (track.isGhost()) {
@@ -375,17 +412,15 @@ Editor.prototype = {
   },
 
   onSubtitleEditFocus: function(event) {
-    this.disableCommands();
+    if (this.$subtitleEdit.is(":visible")) {
+      this.disableCommands();
+    }
   },
 
   onSubtitleEditBlur: function(event) {
-    var text = this.$subtitleEdit.val();
-    this.$subtitleEdit.hide();
-    this.$subtitleDisplay.text(text);
-    this.$subtitleDisplay.show();
+    // console.log("subEdit BLUR");
 
     this.enableCommands();
-
   },
 
   onSubtitleLineEdit: function(event) {
@@ -394,8 +429,6 @@ Editor.prototype = {
 
   onSubtitleLineBlur: function(event) {
     this.enableCommands();
-
-    this.currentTrackEdit = null;
   },
 
   enableCommands: function(event) {
@@ -410,23 +443,27 @@ Editor.prototype = {
   },
 
   onSubtitleEditKeyup: function(event) {
-    var text = this.$subtitleEdit.val();
-    this.currentTrack.subtitle.setAttributes({ "text": text})
+    var text  = this.$subtitleEdit.val();
+    var track = this.$subtitleEdit.data("track");
+
+    track.subtitle.setAttributes({ "text": text});
+    this.$subtitleDisplay.text(text);
 
     // escape key
     if (event.which == 27) {
-      if (this.currentTrack.isGhost()) {
-        this.currentTrack.remove();
-        this.currentTrack = null;
-        this.currentGhostTrack = null;
-      }
+      this.isOnSubtitleEditMode = false;
       this.$subtitleEdit.blur();
+      this.$subtitleEdit.hide();
+      this.$subtitleDisplay.show();
       this.popcorn.play();
     } 
 
     // enter key
     if (event.which == 13) {
+      this.isOnSubtitleEditMode = false;
       this.$subtitleEdit.blur();
+      this.$subtitleEdit.hide();
+      this.$subtitleDisplay.show();
       this.popcorn.play();
     } 
   },
@@ -437,7 +474,7 @@ Editor.prototype = {
 
   onSubtitleDisplayDblClick: function(event) {
     var $target = $(event.target);
-    this.popcorn.pause();
+
     $target.trigger("subtitleeditmode",[this.currentTrack]);
   },
 
@@ -603,7 +640,6 @@ Editor.prototype = {
 
     this.$el.trigger("ghosttrackstart",[track]);
 
-    this.currentGhostTrack = this.currentTrack = track;
     return track;
   },
 
@@ -616,16 +652,21 @@ Editor.prototype = {
       console.log(e);
       console.log("Removing invalid track");
       this.currentGhostTrack.remove();
-      this.currentTrack = null;
-      this.$subtitleEdit.hide();
+      this.$subtitleEdit.hide(0,function(){
+        this.isOnSubtitleEditMode = false;
+      }.bind(this));
     }
-    this.currentGhostTrack = null;
+    this.requestSubtitleFromUser(track);
 
     this.$el.trigger("ghosttrackend",[track]);
 
+  },
+
+
+
+  requestSubtitleFromUser: function(track) {
     if (track.initial_subtitle_request && !track.isDeleted) {
       track.initial_subtitle_request = false;
-      this.ensurePauseAtTrack(track);
       track.$el_expanded.trigger("subtitleeditmode",[track]);
     }
   },
@@ -635,18 +676,39 @@ Editor.prototype = {
    * This function would ensure that pausing would stop at current track
    * Would only run if media is currently playing, if its paused, don't do anything
    */
-  ensurePauseAtTrack: function(track) {
-    if (this.popcorn.paused()) return;
+  ensurePauseAtTrack: function(track,callback) {
+    if (this.popcorn.paused()) {
+      callback();
+      return;
+    }
 
-    var seekToPrev = function() {
-      var time = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
-      this.seek(time);
-      this.media.removeEventListener("pause",seekToPrev);
+    var seekBackToTrack = function() {
+      // make sure to remove this callback
+      this.media.removeEventListener("pause",seekBackToTrack);
+
+      // console.log("[seeking] curr_track: " + this.currentTrack + " - track: " + track);
+      // check if track that we want to pause  at is same as this.currentTrack
+      // if not, seek back to track
+      if (track !== this.currentTrack) {
+        var executeCallback = function() {
+          this.popcorn.off("seeked",executeCallback);
+          callback();
+        }.bind(this);
+
+        this.popcorn.on("seeked",executeCallback);
+
+        var timeSlightlyBeforeTrackEnd = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
+        this.seek(timeSlightlyBeforeTrackEnd);
+      } else {
+        callback();
+      }
+
     }.bind(this);
 
-    this.media.addEventListener("pause",seekToPrev);
+    this.media.addEventListener("pause",seekBackToTrack);
 
     // if playing, pause playback to let user type subtitle
+
     this.popcorn.pause();
   }, 
 
@@ -682,20 +744,19 @@ Editor.prototype = {
     return tracks;
   },
 
-
   showSubtitleInSubtitleBar: function(subtitle) {
-
-      this.$subtitleEdit.hide();
-      this.$subtitleDisplay.show();
-      this.$subtitleDisplay.text(subtitle.text);
+    // console.log("show sub display");
+    if (this.$subtitleEdit.is(':visible')) {
+      this.$subtitleEdit.hide(0,function(){
+        this.isOnSubtitleEditMode = false;
+      }.bind(this));
+    }
+    this.$subtitleDisplay.show();
+    this.$subtitleDisplay.text(subtitle.text);
   },
 
   hideSubtitleInSubtitleBar: function(subtitle) {
-    if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
-      this.$subtitleEdit.hide();
-    } else {
-      this.$subtitleDisplay.text("");
-    }
+    this.$subtitleDisplay.text("");
   },
 
   // either the end of media or the starttime next nearest track
