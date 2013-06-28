@@ -24,7 +24,7 @@ class VideosController < ApplicationController
     if current_user != @user
       render :text => "you do not have permission to edit the subtitles" and return
     end
-    @video = Video.find_by_token   params[:token]
+    @video = Video.find_by_token!   params[:token]
 
     @repo = Repository.where(:user_id => @user.try(:id), :video_id => @video.id).first
 
@@ -34,7 +34,7 @@ class VideosController < ApplicationController
 
   def show
     @user  = User.find_by_username params[:username]
-    @video = Video.find_by_token   params[:token]
+    @video = Video.find_by_token!   params[:token]
 
     @repo = Repository.where(:user_id => @user.try(:id), :video_id => @video.id).first
                       

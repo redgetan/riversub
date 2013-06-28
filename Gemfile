@@ -39,7 +39,8 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'debugger'
-  gem 'factory_girl'
+  gem 'factory_girl', "~> 4.0"
+  gem "factory_girl_rails", "~> 4.0"
   gem 'qunit-rails'
   gem "teabag"
 end
