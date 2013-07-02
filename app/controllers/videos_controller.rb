@@ -22,7 +22,7 @@ class VideosController < ApplicationController
   def editor
     @user  = User.find_by_username params[:username]
     if current_user != @user
-      render :text => "you do not have permission to edit the subtitles" and return
+      render :text => "you do not have permission to edit the subtitles", :status => 403 and return
     end
     @video = Video.find_by_token!   params[:token]
 

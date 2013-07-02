@@ -213,8 +213,8 @@ $(document).ready(function(){
 // [ ] when subtitle line is blank. clicking on it does nothing !!!!!
 // [ ] subedit Keyup should change 1. track.subtitle.text 2. subtitleDisplay
 
-solr search - if no matches found (give suggestions)
-paging (kaminari)
-exception notification
+// solr search - if no matches found (give suggestions)
+// paging (kaminari)
+// exception notification
 
 
