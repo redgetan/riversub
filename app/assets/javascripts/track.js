@@ -155,12 +155,18 @@ Track.prototype = {
   },
 
   end: function(time) {
+    this.removeGhostClass();
+
     var duration = time - this.startTime();
 
     if (duration <= 0) {
       throw "Track Duration of " + duration + " is invalid";
     }
 
+    this.setEndTime(time);
+  },
+
+  removeGhostClass: function() {
     if (this.$el_summary.hasClass("ghost")) {
       this.$el_summary.removeClass("ghost");
     }
@@ -168,12 +174,14 @@ Track.prototype = {
     if (this.$el_expanded.hasClass("ghost")) {
       this.$el_expanded.removeClass("ghost");
     }
-
-    this.setEndTime(time);
   },
 
   isGhost: function() {
     return this.$el_expanded.hasClass("ghost");
+  },
+
+  isRemoved: function() {
+    return this.isDeleted;
   },
 
   createTrackEvent: function(startTime,endTime) {
@@ -183,11 +191,11 @@ Track.prototype = {
       start: startTime,
       end:   endTime,
       onStart: function() {
-        // console.log("track start" + self);
+        // console.log("track start: " + self);
         $(document).trigger("trackstart",[self]);
       },
       onEnd: function() {
-        // console.log("track end");
+        // console.log("track end: " + self);
         $(document).trigger("trackend",[self]);
       },
     });
@@ -219,6 +227,14 @@ Track.prototype = {
 
   fadingHighlight: function() {
     this.$el_expanded.effect("highlight", {color: "moccasin"}, 1000);
+  },
+
+  progressTime: function() {
+    if (this.isGhost()) {
+      return this.popcorn.currentTime();
+    } else {
+      return this.endTime();
+    }
   },
 
   toString: function() {

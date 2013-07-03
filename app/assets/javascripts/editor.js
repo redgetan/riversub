@@ -8,12 +8,10 @@ function Editor (repo,options) {
   var subtitles = $.map(timings,function(timing){ return timing.subtitle; });
   var mediaSource = typeof this.video.url === "undefined" ? "" : this.video.url;
 
-  var targetSelector = this.options["targetSelector"] || "div#media";
-
   this.setupElement();
   this.defineAttributeAccessors();
 
-  this.popcorn = this.loadMedia(targetSelector,mediaSource);
+  this.popcorn = this.loadMedia(mediaSource);
   this.popcorn.volume(0.2);
 
   this.subtitleView = new SubtitleView(subtitles);
@@ -46,9 +44,87 @@ function Editor (repo,options) {
 Editor.prototype = {
 
   setupElement: function() {
-    this.$container = $("#main_container");
+    this.$container = this.options["container"] || $("#main_container");
 
+    var el = "<div class='container'>" +
+              "<div id='editor'> " +
+                "<div id='editor-top' class='row'> " +
+                  "<div class='span12'> " +
+                    "<h5 id='repo_label'>" +
+                      "<a href=" + this.repo.url + ">" + this.repo.video.name + "</a>" +
+                    "</h5>" +
+                    "<h6 id='video_url'>" +
+                      "<a href=" + this.repo.video.url + ">" + this.repo.video.url + "</a>" +
+                    "</h6> " +
+                  "</div> " +
+                  "<div id='editor-top-left' class='span6'> " +
+                    "<div id='media_container'> " +
+                      "<div id='subtitle_bar' class='span6 center'> " +
+                        "<span id='subtitle_display' class='span5 center'></span> " +
+                        "<input id='subtitle_edit' class='span5 center' type='text' maxlength='60' placeholder='Enter Subtitle Here'> " +
+                      "</div> " +
+                      "<div id='time_float'></div>" +
+                      "<div id='seek_head'>" +
+                        "<div id='seek_head_corner'></div>" +
+                        "<div id='seek_head_body'></div>" +
+                      "</div>" +
+                      "<div id='controls' class='row'> " +
+                        "<div class='pull-left span1'> " +
+                          "<button type='button' id='play_btn' class='btn'><i class='icon-play'></i></button> " +
+                          "<button type='button' id='pause_btn' class='btn'><i class='icon-pause'></i></button> " +
+                        "</div> " +
+                        "<div class='btn-group pull-right'> " +
+                          "<a id='start_timing_btn' class='btn'><i class='icon-circle'></i> Start Timing</a> " +
+                          "<a id='stop_timing_btn' class='btn'><i class='icon-circle'></i> Stop</a> " +
+                        "</div> " +
+                      "</div> " +
+                    "</div> " +
+                  "</div> " +
+                  "<div id='editor-top-right' class='span6'> " +
+                    "<div id='subtitle_container'> " +
+                      "<div id='subtitle_list'></div> " +
+                      "<div id='controls_extra' class='row'> " +
+                        "<div class='btn-group pull-right'> " +
+                          "<a id='save_btn' class='btn btn-info'><i class='icon-save'></i> Save</a> " +
+                          "<a id='download_btn' class='btn' href='" + this.repo.subtitle_download_url + "'><i class='icon-download-alt'></i> Download</a> " +
+                          "<a id='help_btn' data-toggle='modal' data-target='#instructions_modal' class='btn'><i class='icon-question-sign'></i></a> " +
+                        "</div> " +
+                      "</div> " +
+                    "</div> " +
+                  "</div> " +
+                "</div> " +
+                "<div id='editor-bottom' class='row'> " +
+                  "<div class='span12'> " +
+                    "<div id='timeline_container'></div> " +
+                  "</div> " +
+                "</div> " +
+                "<div id='keyboard-shortcuts' class='row'> " +
+                  "<div class='span12 '> " +
+                    "<span class='pull-right'>" +
+                      "<b>Keyboard Shortcuts: </b>  " +
+                      "<kbd class='light'>Shift</kbd> Start/Stop Timing " +
+                      "<kbd class='light'>Space</kbd> Play/Pause" +
+                      "<kbd class='light'>Esc</kbd>   Cancel " +
+                    "</span>" +
+                  "</div> " +
+                "</div> " +
+              "</div>";
+
+    this.$container.append(el);
     this.$el = $("#editor");
+
+    if (this.repo.user) {
+      var repo_owner = "<span id='repo_owner'>" +
+                         "<a href='" + this.repo.owner_profile_url + "'>" + this.repo.owner + "></a>" + 
+                       "</span> /";
+      this.$el.find("#repo_label").prepend(repo_owner);
+    }
+
+    var media = this.options["media"] || "<div id='media'>" +
+                                           "<div id='iframe_overlay'></div>" +
+                                         "</div> ";
+
+    this.$container.find("#media_container").prepend(media);
 
     this.$subtitleBar = $("#subtitle_bar");
 
@@ -107,12 +183,12 @@ Editor.prototype = {
     });
   },
 
-  loadMedia: function(targetSelector,url) {
+  loadMedia: function(url) {
     var popcorn;
     if (url == "") {
-      popcorn = Popcorn(targetSelector);
+      popcorn = Popcorn("#media");
     } else {
-      popcorn = Popcorn.smart(targetSelector,url);
+      popcorn = Popcorn.smart("#media",url);
     }
     return popcorn;
   },
@@ -353,7 +429,7 @@ Editor.prototype = {
     track.subtitle.hideEditorIfNeeded();
 
     if (typeof track.subtitle.text === "undefined" || /^\s*$/.test(track.subtitle.text) ) {
-      if (track.isGhost()) {
+      if (track.isGhost() && !track.isRemoved()) {
         // will reach this state if user presses space_key until startTime of next track,
         // in which it immediately stops since ghostTrack ends at starttime of next track
         // but it is not stopped by explicit user action which would be to release space_key, we would have
@@ -604,7 +680,15 @@ Editor.prototype = {
 
   },
 
-  seek: function(time) {
+  seek: function(time,callback) {
+    if (typeof callback !== "undefined") {
+      var executeCallback = function() {
+        this.popcorn.off("seeked",executeCallback);
+        callback();
+      }.bind(this);
+
+      this.popcorn.on("seeked",executeCallback);
+    }
     this.popcorn.currentTime(time);
   },
 
@@ -644,7 +728,7 @@ Editor.prototype = {
   },
 
   endGhostTrack: function(track,endTime) {
-    var time = endTime || Math.round(this.media.currentTime * 1000) / 1000;
+    var time = endTime || this.lastTimeUpdateTime;
 
     try {
       track.end(time);
@@ -658,6 +742,7 @@ Editor.prototype = {
     }
     this.requestSubtitleFromUser(track);
 
+    // wait until itme is same as time
     this.$el.trigger("ghosttrackend",[track]);
 
   },
@@ -665,7 +750,7 @@ Editor.prototype = {
 
 
   requestSubtitleFromUser: function(track) {
-    if (track.initial_subtitle_request && !track.isDeleted) {
+    if (track.initial_subtitle_request && !track.isRemoved()) {
       track.initial_subtitle_request = false;
       track.$el_expanded.trigger("subtitleeditmode",[track]);
     }
@@ -689,7 +774,8 @@ Editor.prototype = {
       // console.log("[seeking] curr_track: " + this.currentTrack + " - track: " + track);
       // check if track that we want to pause  at is same as this.currentTrack
       // if not, seek back to track
-      if (track !== this.currentTrack) {
+      
+      // if (track !== this.currentTrack) {
         var executeCallback = function() {
           this.popcorn.off("seeked",executeCallback);
           callback();
@@ -699,9 +785,9 @@ Editor.prototype = {
 
         var timeSlightlyBeforeTrackEnd = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
         this.seek(timeSlightlyBeforeTrackEnd);
-      } else {
-        callback();
-      }
+      // } else {
+      //   callback();
+      // }
 
     }.bind(this);
 

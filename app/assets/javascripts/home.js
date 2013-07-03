@@ -43,8 +43,8 @@ var isEmbeddable = function(metadata) {
 // handles page specific javascript
 var handleRoute = function() {
   if (new RegExp("/videos/.+/editor").test(location.pathname)) {
-    var repo = $("#editor").data("repo") ;
-    $("#editor").removeAttr("data-repo");
+    var repo = $("#editor_data").data("repo") ;
+    $("#editor_data").remove();
     editor = new Editor(repo);
 
     var has_seen_instructions = getCookie("has_seen_instructions");

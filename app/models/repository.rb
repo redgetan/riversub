@@ -74,7 +74,11 @@ class Repository < ActiveRecord::Base
       :id => self.id,
       :video => self.video.serialize,
       :user => self.user.try(:serialize),
-      :timings => self.timings.map(&:serialize)
+      :timings => self.timings.map(&:serialize),
+      :url => self.url,
+      :owner_profile_url => self.owner_profile_url,
+      :editor_url => self.editor_url,
+      :subtitle_download_url => self.subtitle_download_url
     }
   end
 

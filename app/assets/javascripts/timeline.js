@@ -250,7 +250,7 @@ Timeline.prototype = {
 
 
   renderFillProgress: function(track) {
-    var progress = this.media.currentTime - track.startTime();
+    var progress = track.progressTime() - track.startTime();
 
     this.renderInContainer(this.$summary,track.$el_summary,  { width: progress, left: track.startTime() });
     this.renderInContainer(this.$expanded,track.$el_expanded,{ width: progress, left: track.startTime() });
