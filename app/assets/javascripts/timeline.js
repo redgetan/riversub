@@ -347,7 +347,7 @@ Timeline.prototype = {
       var pos   = index * width;
       
       setTimeout(function() { 
-        $container.animate({scrollLeft: pos},1000,function(){
+        $container.animate({scrollLeft: pos},500,function(){
           // trigger appear/disappear events
           if (this.isOutOfBounds(this.$expanded,this.$scrubber_expanded)) {
             if (this.isScrubberVisible) {
@@ -361,7 +361,7 @@ Timeline.prototype = {
             } 
           }
         }.bind(this)); 
-        this.$window_slider.animate({ left: this.resolution(this.$summary) * 30 * index },1000);
+        this.$window_slider.animate({ left: this.resolution(this.$summary) * 30 * index },500);
       }.bind(this),500);
     // }
   },
