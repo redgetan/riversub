@@ -22,11 +22,6 @@ function Editor (repo,options) {
   this.tracks = this.loadTracks(timings);
   this.timeline.setTracks(this.tracks);
 
-  this.currentTrack = null;
-  this.currentGhostTrack = null;
-  this.ghostTrackStarted = false;
-  this.isOnSubtitleEditMode = false;
-
   this.changes = {
     tracks: {
       creates: [],
@@ -163,6 +158,16 @@ Editor.prototype = {
     this.$video_url = $("#video_url");
   },
 
+
+  resetState: function() {
+    this.currentTrack = null;
+    this.currentGhostTrack = null;
+    this.isGhostTrackStarted = false;
+    this.isOnSubtitleEditMode = false;
+    this.pause();
+    this.seek(0);
+  },
+
   guideUser: function() {
     this.$helpBtn.popover("show");
   },
@@ -284,18 +289,7 @@ Editor.prototype = {
   onKeyupHandler: function(event) {
     // shift key
     if (event.which === 16) {
-      if (!this.ghostTrackStarted) {
-      // first time, you start timing
-        try {
-          this.createGhostTrack();
-          this.popcorn.play();
-        } catch(e) {
-          console.log(e);  
-        }
-      } else {
-      // second time, you stop timing
-        this.endGhostTrack(this.currentGhostTrack);
-      }
+      this.timeSubtitle();
     }
 
     // space key
@@ -305,11 +299,28 @@ Editor.prototype = {
 
     // escape key
     if (event.which == 27) {
-      if (this.currentGhostTrack) {
-        this.currentGhostTrack.remove();
-        this.currentTrack = null;
-        this.currentGhostTrack = null;
-      }  
+      this.cancelGhostTrack();
+    }
+  },
+
+  cancelGhostTrack: function() {
+    var track = this.currentGhostTrack;
+    if (track) {
+      this.endGhostTrack(track);
+      track.remove();
+    }  
+  },
+
+  timeSubtitle: function() {
+    if (!this.isGhostTrackStarted) {
+    // first time, you start timing
+      this.safeCreateGhostTrack();
+      this.play();
+    } else {
+      // second time, you stop timing
+      var track = this.currentGhostTrack;
+      this.safeEndGhostTrack(track);
+      this.requestSubtitleFromUser(track);
     }
   },
 
@@ -335,6 +346,9 @@ Editor.prototype = {
   onLoadedMetadata: function(event) {
     this.$startTimingBtn.removeAttr("disabled");
     this.enableCommands();
+
+    this.resetState();
+    this.$el.trigger("editor.ready");
   },
 
   onPauseAdjust: function(event,correctPauseTime) {
@@ -345,7 +359,7 @@ Editor.prototype = {
   },
 
   onSubtitleLineDblClick: function(event,subtitle) {
-    this.popcorn.pause();
+    this.pause();
     subtitle.openEditor(event);
   },
 
@@ -384,18 +398,27 @@ Editor.prototype = {
   },
 
   onGhostTrackStart: function(event,track) {
-    this.ghostTrackStarted = true;
+    this.isGhostTrackStarted = true;
     this.currentGhostTrack = track;
     this.$startTimingBtn.hide();
     this.$stopTimingBtn.show();
   },
 
   onGhostTrackEnd: function(event,track) {
-    this.ghostTrackStarted = false;
-    this.currentGhostTrack = null
+    this.isGhostTrackStarted = false;
+    this.currentGhostTrack = null;
+    this.currentTrack = null;
     this.$stopTimingBtn.hide();
     this.$startTimingBtn.show();
     track.fadingHighlight();
+  },
+
+  play: function() {
+    this.popcorn.play();
+  },
+
+  pause: function() {
+    this.popcorn.pause();
   },
 
   onTrackChange: function(track) {
@@ -411,7 +434,7 @@ Editor.prototype = {
 
     if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
       if (!track.isGhost()) {
-        this.popcorn.pause();
+        this.pause();
         track.$el_expanded.trigger("subtitleeditmode",[track]);
       }
     } else {
@@ -444,7 +467,8 @@ Editor.prototype = {
           endTime = track.endTime();
         }
 
-        this.endGhostTrack(track,endTime);
+        this.safeEndGhostTrack(track,endTime);
+        this.requestSubtitleFromUser(track);
       } 
     }
   },
@@ -481,9 +505,9 @@ Editor.prototype = {
 
   togglePlayPause: function() {
     if (this.media.paused) {
-      this.popcorn.play();  
+      this.play();  
     } else {
-      this.popcorn.pause();  
+      this.pause();  
     }
   },
 
@@ -531,7 +555,7 @@ Editor.prototype = {
       this.$subtitleEdit.blur();
       this.$subtitleEdit.hide();
       this.$subtitleDisplay.show();
-      this.popcorn.play();
+      this.play();
     } 
 
     // enter key
@@ -540,7 +564,7 @@ Editor.prototype = {
       this.$subtitleEdit.blur();
       this.$subtitleEdit.hide();
       this.$subtitleDisplay.show();
-      this.popcorn.play();
+      this.play();
     } 
   },
 
@@ -555,30 +579,46 @@ Editor.prototype = {
   },
 
   onPlayBtnClick: function(event) {
-    this.popcorn.play();
+    this.play();
     this.$playBtn.hide();
     this.$pauseBtn.show();
   },
 
   onPauseBtnClick: function(event) {
-    this.popcorn.pause();
+    this.pause();
     this.$pauseBtn.hide();
     this.$playBtn.show();
   },
 
   onStartTimingBtn: function(event) {
     if (this.$startTimingBtn.attr("disabled") == "disabled") return;
+    this.safeCreateGhostTrack();
+    this.play();
+  },
 
+  onStopTimingBtn: function(event) {
+    var track = this.currentGhostTrack;
+    this.safeEndGhostTrack(track);
+    this.requestSubtitleFromUser(track);
+  },
+
+  safeCreateGhostTrack: function() {
     try {
       this.createGhostTrack();
-      this.popcorn.play();
     } catch(e) {
       console.log(e);  
     }
   },
 
-  onStopTimingBtn: function(event) {
-    this.endGhostTrack(this.currentGhostTrack);
+  safeEndGhostTrack: function(track,endTime) {
+    try {
+      this.endGhostTrack(track,endTime);
+    } catch(e) {
+      console.log(e);  
+      // this.$subtitleEdit.hide(0,function(){
+      //   this.isOnSubtitleEditMode = false;
+      // }.bind(this));
+    }
   },
 
   onSaveBtnClick: function(event) {
@@ -697,9 +737,13 @@ Editor.prototype = {
 
     if (typeof timings !== "undefined") {
       for (var i = 0; i < timings.length; i++) {
-        var track = new Track(timings[i], this.popcorn, { isSaved: true });
-        this.trackMap[track.getAttributes().client_id] = track;
-        tracks.push(track);
+        try {
+          var track = new Track(timings[i], this.popcorn, { isSaved: true });
+          this.trackMap[track.getAttributes().client_id] = track;
+          tracks.push(track);
+        } catch(e) {
+          console.log(e);
+        }
       };
     }
 
@@ -729,25 +773,15 @@ Editor.prototype = {
 
   endGhostTrack: function(track,endTime) {
     var time = endTime || this.lastTimeUpdateTime;
-
     try {
       track.end(time);
-    } catch (e) {
-      console.log(e);
-      console.log("Removing invalid track");
-      this.currentGhostTrack.remove();
-      this.$subtitleEdit.hide(0,function(){
-        this.isOnSubtitleEditMode = false;
-      }.bind(this));
+      this.$el.trigger("ghosttrackend",[track]);
+    } catch(e) {
+      track.remove();
+      this.$el.trigger("ghosttrackend",[track]);
+      throw e;
     }
-    this.requestSubtitleFromUser(track);
-
-    // wait until itme is same as time
-    this.$el.trigger("ghosttrackend",[track]);
-
   },
-
-
 
   requestSubtitleFromUser: function(track) {
     if (track.initial_subtitle_request && !track.isRemoved()) {
@@ -775,7 +809,7 @@ Editor.prototype = {
       // check if track that we want to pause  at is same as this.currentTrack
       // if not, seek back to track
       
-      // if (track !== this.currentTrack) {
+      if (track !== this.currentTrack) {
         var executeCallback = function() {
           this.popcorn.off("seeked",executeCallback);
           callback();
@@ -785,9 +819,9 @@ Editor.prototype = {
 
         var timeSlightlyBeforeTrackEnd = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
         this.seek(timeSlightlyBeforeTrackEnd);
-      // } else {
-      //   callback();
-      // }
+      } else {
+        callback();
+      }
 
     }.bind(this);
 
@@ -795,7 +829,7 @@ Editor.prototype = {
 
     // if playing, pause playback to let user type subtitle
 
-    this.popcorn.pause();
+    this.pause();
   }, 
 
     /*
@@ -874,6 +908,15 @@ Editor.prototype = {
     };
 
     this.tracks.length = 0;
+  },
+
+  printStack: function() {
+    var e = new Error('dummy');
+    var stack = e.stack.replace(/^[^\(]+?[\n$]/gm, '')
+        .replace(/^\s+at\s+/gm, '')
+        .replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@')
+        .split('\n');
+    console.log(stack);
   },
 
   stringifyTime: function(time) {

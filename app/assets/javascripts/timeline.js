@@ -13,10 +13,9 @@ Timeline.prototype = {
     this.$summary_container = $("#media_container");
 
     var summary = "<div id='summary' class='timeline'>" + 
-               // "<div class='progress_bar'></div>" +
-               "<div class='scrubber'></div>" +
-               "<div class='window_slider'></div>" +
-             "</div>";
+                     "<div class='scrubber'></div>" +
+                     "<div class='window_slider'></div>" +
+                   "</div>";
 
     this.$summary_container.find("#subtitle_bar").after(summary);
     this.$summary = $("#summary");
@@ -32,12 +31,11 @@ Timeline.prototype = {
 
 
     var expanded = "<div id='expanded' class='timeline'>" + 
-               "<div class='filler'>" + 
-                 // "<div class='progress_bar'></div>" +
-                 "<div class='scrubber'></div>" +
-                 "<div class='time_indicator'>0</div>" +
-               "</div>" +
-             "</div>";
+                     "<div class='filler'>" + 
+                       "<div class='scrubber'></div>" +
+                       "<div class='time_indicator'>0</div>" +
+                     "</div>" +
+                   "</div>";
 
     this.$expanded_container = $("#timeline_container");
     this.$expanded_container.append(expanded);

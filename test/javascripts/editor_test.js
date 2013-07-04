@@ -9,6 +9,7 @@ $(document).ready(function(){
                  "<source id='mp4' src='/trailer.mp4' type=\"video/mp4; codecs='avc1, mp4a'\">" +
                  "<p>Your user agent does not support the HTML5 Video element.</p>" +
                "</video>";
+
   var repo = {
     video: {},
     user: {}
@@ -16,149 +17,252 @@ $(document).ready(function(){
 
   editor = new Editor(repo,{ media: media, container: $("#test_container") } );
 
-  test( "createGhostTrack should create a new track", function() {
-    editor.clearTracks();
-    editor.seek(3);
+  $(document).on("editor.ready", function(){
 
-    var track = editor.createGhostTrack();
-    equal(editor.numTracks,1);
-  });
+    test( "createGhostTrack should create a new track", function() {
+      editor.clearTracks();
+      editor.seek(3);
 
-  asyncTest( "endGhostTrack that happens on same time as startGhostTrack should remove track",1, function() {
-    editor.clearTracks();
-    editor.seek(3,function(){
       var track = editor.createGhostTrack();
-      editor.endGhostTrack(track);
-      equal(editor.numTracks,0);
-      start();
-    });
-
-  });
-
-  test( "cleartracks should not trigger endGhostTrack if there are existing tracks", function() {
-    editor.clearTracks();
-
-    var numOfGhostTrackEnd = 0;
-    $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
-    editor.createGhostTrack();
-    editor.clearTracks();
-
-    equal(numOfGhostTrackEnd,0);
-  });
-
-  asyncTest( "cleartracks should remove existing tracks",3, function() {
-    editor.clearTracks();
-
-    var track = editor.createGhostTrack();
-    editor.seek(5,function(){
-      editor.endGhostTrack(track);
-      editor.seek(7,function(){
-        track = editor.createGhostTrack();
-        editor.seek(8,function(){
-          editor.endGhostTrack(track);
-
-          equal(editor.numTracks,2);
-          editor.clearTracks();
-          equal(editor.numTracks,0);
-          equal(editor.popcorn.getTrackEvents().length,0);
-          start();
-        });
-      });
-    });
-  });
-
-  asyncTest( "createGhostTrack should extend duration of new track all the way till the duration if no other tracks exist", 3, function() {
-    editor.clearTracks();
-    editor.seek(3,function(){
-      var track = editor.createGhostTrack();
-
       equal(editor.numTracks,1);
-      equal(track.startTime(),3);
-      equal(track.endTime(),editor.media.duration);
-      start();
     });
-  });
 
-  asyncTest( "createGhostTrack should extend duration of new track till the nearest track if other tracks exist right after it", 3,function() {
-    editor.clearTracks();
-    editor.seek(20,function(){
-      var track = editor.createGhostTrack();
-      editor.seek(23,function(){
-        editor.endGhostTrack(track);
-        editor.seek(5,function(){
-          track = editor.createGhostTrack();
-          equal(editor.numTracks,2);
-          equal(track.startTime(),5);
-          equal(track.endTime(),20);
-          start();
-        });
-      });
-    });
-  });
-
-  asyncTest( "endGhostTrack should update endTime of track to currentTime", 2,function() {
-    editor.clearTracks();
-    editor.seek(3,function(){
-      var track = editor.createGhostTrack();
-      editor.seek(15,function(){
-        editor.endGhostTrack(track);
-
-        equal(track.startTime(),3);
-        equal(track.endTime(),15);
-        start();
-      });
-    });
-  });
-
-  asyncTest( "endGhostTrack cannot end a track at time less than its startTime", 1, function() {
-    editor.clearTracks();
-    editor.seek(3,function(){
-      var track = editor.createGhostTrack();
-      editor.seek(1,function(){
+    asyncTest( "endGhostTrack that happens on same time as startGhostTrack should remove track",2, function() {
+      editor.clearTracks();
+      editor.seek(3,function(){
+        var track = editor.createGhostTrack();
         throws(function() { editor.endGhostTrack(track); });
+        equal(editor.numTracks,0);
         start();
       });
-    });
-  });
 
-  asyncTest( "createGhostTrack cannot overlap (identical start & end) ",1, function() {
-    editor.clearTracks();
-    editor.seek(3,function(){
-      var track = editor.createGhostTrack();
-      throws(function() { editor.createGhostTrack(); });
-      start();
     });
-  });
 
-  asyncTest( "createGhostTrack cannot overlap (overlap tail) ", 1,function() {
-    editor.clearTracks();
-    editor.seek(6,function(){
-      var track = editor.createGhostTrack();
-      editor.seek(10,function(){
-        editor.endGhostTrack(track);
-        editor.seek(7,function(){
-          throws(function() { editor.createGhostTrack(); });
-          start();
-        });
-      });
+    test( "cleartracks should not trigger endGhostTrack if there are existing tracks", function() {
+      editor.clearTracks();
+
+      var numOfGhostTrackEnd = 0;
+      $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+      editor.createGhostTrack();
+      editor.clearTracks();
+
+      equal(numOfGhostTrackEnd,0);
     });
-  });
 
-  asyncTest( "createGhostTrack cannot overlap (overlap head) ", 1,function() {
-    editor.clearTracks();
-    editor.seek(1,function(){
+    asyncTest( "cleartracks should remove existing tracks",3, function() {
+      editor.clearTracks();
+
       var track = editor.createGhostTrack();
       editor.seek(5,function(){
         editor.endGhostTrack(track);
-        editor.seek(4,function(){
-          throws(function() { editor.createGhostTrack(); });
+        editor.seek(7,function(){
+          track = editor.createGhostTrack();
+          editor.seek(8,function(){
+            editor.endGhostTrack(track);
+
+            equal(editor.numTracks,2);
+            editor.clearTracks();
+            equal(editor.numTracks,0);
+            equal(editor.popcorn.getTrackEvents().length,0);
+            start();
+          });
+        });
+      });
+    });
+
+    asyncTest( "createGhostTrack should extend duration of new track all the way till the duration if no other tracks exist", 3, function() {
+      editor.clearTracks();
+      editor.seek(3,function(){
+        var track = editor.createGhostTrack();
+
+        equal(editor.numTracks,1);
+        equal(track.startTime(),3);
+        equal(track.endTime(),editor.media.duration);
+        start();
+      });
+    });
+
+    asyncTest( "createGhostTrack should extend duration of new track till the nearest track if other tracks exist right after it", 3,function() {
+      editor.clearTracks();
+      editor.seek(20,function(){
+        var track = editor.createGhostTrack();
+        editor.seek(23,function(){
+          editor.endGhostTrack(track);
+          editor.seek(5,function(){
+            track = editor.createGhostTrack();
+            equal(editor.numTracks,2);
+            equal(track.startTime(),5);
+            equal(track.endTime(),20);
+            start();
+          });
+        });
+      });
+    });
+
+    asyncTest( "endGhostTrack should update endTime of track to currentTime", 2,function() {
+      editor.clearTracks();
+      editor.seek(3,function(){
+        var track = editor.createGhostTrack();
+        editor.seek(15,function(){
+          editor.endGhostTrack(track);
+
+          equal(track.startTime(),3);
+          equal(track.endTime(),15);
           start();
         });
       });
     });
+
+    asyncTest( "after createGhostTrack, seeking to time less than its startTime will automatically endGhostTrack and subsequently remove that invalid track of negative duration", 3, function() {
+      editor.clearTracks();
+
+      var numOfGhostTrackStart = 0;
+      var numOfGhostTrackEnd = 0;
+
+      $(document).on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
+      $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+
+      editor.seek(3,function(){
+        var track = editor.createGhostTrack();
+        editor.seek(1,function(){
+          equal(numOfGhostTrackStart,1);
+          equal(numOfGhostTrackEnd,1);
+          equal(editor.numTracks,0);
+          start();
+        });
+      });
+    });
+
+    asyncTest( "createGhostTrack cannot overlap (identical start & end) ",1, function() {
+      editor.clearTracks();
+      editor.seek(3,function(){
+        var track = editor.createGhostTrack();
+        throws(function() { editor.createGhostTrack(); });
+        start();
+      });
+    });
+
+    asyncTest( "createGhostTrack cannot overlap (overlap tail) ", 1,function() {
+      editor.clearTracks();
+      editor.seek(6,function(){
+        var track = editor.createGhostTrack();
+        editor.seek(10,function(){
+          editor.endGhostTrack(track);
+          editor.seek(7,function(){
+            throws(function() { editor.createGhostTrack(); });
+            start();
+          });
+        });
+      });
+    });
+
+    asyncTest( "createGhostTrack cannot overlap (overlap head) ", 1,function() {
+      editor.clearTracks();
+      editor.seek(1,function(){
+        var track = editor.createGhostTrack();
+        editor.seek(5,function(){
+          editor.endGhostTrack(track);
+          editor.seek(4,function(){
+            throws(function() { editor.createGhostTrack(); });
+            start();
+          });
+        });
+      });
+    });
+
+
+    test( "timeSubtitle should initially call createGhostTrack", function() {
+      editor.clearTracks();
+      editor.resetState();
+
+      var numOfGhostTrackStart = 0;
+      var numOfGhostTrackEnd = 0;
+
+      $(document).on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
+      $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+
+      editor.timeSubtitle();
+      equal(numOfGhostTrackStart,1);
+      equal(numOfGhostTrackEnd,0);
+    });
+
+    test( "timeSubtitle should call endGhostTrack after createGhostTrack has been called previously", function() {
+      editor.clearTracks();
+      editor.resetState();
+
+      var numOfGhostTrackStart = 0;
+      var numOfGhostTrackEnd = 0;
+
+      $(document).on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
+      $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+
+      editor.timeSubtitle();
+      editor.timeSubtitle();
+      equal(numOfGhostTrackStart,1);
+      equal(numOfGhostTrackEnd,1);
+    });
+
+    test( "timeSubtitle should call createGhostTrack when cancelGhostTrack is called right after createGhostTrack", function() {
+      editor.clearTracks();
+      editor.resetState();
+
+      var numOfGhostTrackStart = 0;
+      var numOfGhostTrackEnd = 0;
+
+      $(document).on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
+      $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+
+      editor.timeSubtitle();
+      editor.cancelGhostTrack();
+      editor.timeSubtitle();
+      editor.pause();
+      equal(numOfGhostTrackStart,2);
+      equal(numOfGhostTrackEnd,1);
+    });
+
+
+    /*
+     *
+     *  ---------- TRACK TEST ---------------------
+     *
+     */
+
+    test( "track needs start_time & end_time & popcorn object", function() {
+      var popcorn = Popcorn("#media");
+      var track;
+      
+      throws(function() { track = new Track({},popcorn); });
+      throws(function() { track = new Track({ start_time: 4, end_time: 7}); });
+
+      track = new Track({ start_time: 4, end_time: 7}, popcorn);
+      equal(track.toString(),"Track(4,7)");
+    });
+
+    test( "track.remove should remove track event", function() {
+      var popcorn = Popcorn("#media");
+      var track;
+
+      track = new Track({ start_time: 4, end_time: 7}, popcorn);
+
+      equal(popcorn.getTrackEvents().length,1);
+      track.remove();
+      equal(popcorn.getTrackEvents().length,0);
+    });
+
+    // test( "removing a track should not trigger track end", function() {
+    //   var popcorn = Popcorn("#media");
+    //   var track = new Track({},popcorn);
+
+
+    //   equal(editor.numTracks,1);
+    // });
+
   });
 
 });
+
+
+
 
 // window pane must be 30 seconds long
 //   wat if vid is only 7 seconds

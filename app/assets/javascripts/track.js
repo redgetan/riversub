@@ -1,16 +1,19 @@
 function Track(attributes,popcorn,options) {
+  if (typeof popcorn === "undefined") throw "Missing popcorn object. Pass popcorn to new Track in 2nd argument";
   this.popcorn = popcorn;
+
+  this.options = options || {};
 
   this.setAttributes(attributes);
 
-  this.setupElement(options);
+  this.setupElement();
   this.bindEvents();
 
   var subtitle = new Subtitle(attributes['subtitle']);
   this.setSubtitle(subtitle);
   this.trackEvent     = this.createTrackEvent(attributes.start_time,attributes.end_time);
 
-  this.isSaved = typeof options['isSaved'] === "undefined" ? false : options['isSaved'];
+  this.isSaved = typeof this.options['isSaved'] === "undefined" ? false : this.options['isSaved'];
   this.isDeleted = false;
 
 }
@@ -18,6 +21,10 @@ function Track(attributes,popcorn,options) {
 Track.prototype = {
 
   setAttributes: function(attributes) {
+    if (!attributes.hasOwnProperty("start_time") || !attributes.hasOwnProperty("end_time")) {
+      throw "Missing start_time or end_time attribute for Track";
+    }
+
     for (var prop in attributes) {
       this[prop] = attributes[prop];
     }
@@ -33,7 +40,7 @@ Track.prototype = {
     }
   },
 
-  setupElement: function(options) {
+  setupElement: function() {
 
     this.$container_summary = $("#summary.timeline");
 
@@ -52,7 +59,7 @@ Track.prototype = {
     this.$el_expanded = $(el_expanded);
     this.$container_expanded.find(".filler").append(this.$el_expanded);
 
-    if (typeof options !== "undefined" && options["isGhost"]) {
+    if (this.options["isGhost"]) {
       this.$el_summary.addClass("ghost");
       this.$el_expanded.addClass("ghost");
       this.initial_subtitle_request = true;
@@ -197,7 +204,7 @@ Track.prototype = {
       onEnd: function() {
         // console.log("track end: " + self);
         $(document).trigger("trackend",[self]);
-      },
+      }
     });
 
     var trackEventId = this.popcorn.getLastTrackEventId();
@@ -209,6 +216,7 @@ Track.prototype = {
     this.isDeleted = true;
     this.$el_expanded.remove();
     this.$el_summary.remove();
+
     this.popcorn.removeTrackEvent(this.trackEvent._id);
     // this.subtitle.unmapTrack();
     this.subtitle.remove();

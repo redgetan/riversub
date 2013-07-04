@@ -465,6 +465,7 @@
 
     disable: function( instance, plugin ) {
 
+
       if ( instance.data.disabled[ plugin ] ) {
         return;
       }
@@ -1620,6 +1621,7 @@
         type = natives && natives.type;
 
         // if plugin does not exist on this instance, remove it
+
         if ( !natives ||
             ( !!registryByName[ type ] ||
               !!obj[ type ] ) ) {
