@@ -76,6 +76,7 @@ class Repository < ActiveRecord::Base
       :user => self.user.try(:serialize),
       :timings => self.timings.map(&:serialize),
       :url => self.url,
+      :owner => self.owner,
       :owner_profile_url => self.owner_profile_url,
       :editor_url => self.editor_url,
       :subtitle_download_url => self.subtitle_download_url

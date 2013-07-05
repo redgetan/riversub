@@ -2,6 +2,11 @@ function Editor (repo,options) {
   this.repo = repo || {};
   this.video = this.repo.video || {};
   this.user = this.repo.user || {};
+
+  this.currentTrack = null;
+  this.currentGhostTrack = null;
+  this.isGhostTrackStarted = false;
+  this.isOnSubtitleEditMode = null;
   
   this.options = options || {};
   var timings = this.repo.timings || [];
@@ -79,6 +84,9 @@ Editor.prototype = {
                     "<div id='subtitle_container'> " +
                       "<div id='subtitle_list'></div> " +
                       "<div id='controls_extra' class='row'> " +
+                        // "<div class='pull-left'> " +
+                        //   "<a id='add_subtitle_btn' class='btn'><i class='icon-plus'></i> Add</a> " +
+                        // "</div> " +
                         "<div class='btn-group pull-right'> " +
                           "<a id='save_btn' class='btn btn-info'><i class='icon-save'></i> Save</a> " +
                           "<a id='download_btn' class='btn' href='" + this.repo.subtitle_download_url + "'><i class='icon-download-alt'></i> Download</a> " +
@@ -110,8 +118,8 @@ Editor.prototype = {
 
     if (this.repo.user) {
       var repo_owner = "<span id='repo_owner'>" +
-                         "<a href='" + this.repo.owner_profile_url + "'>" + this.repo.owner + "></a>" + 
-                       "</span> /";
+                         "<a href='" + this.repo.owner_profile_url + "'>" + this.repo.owner + "</a>" + 
+                       "</span> / ";
       this.$el.find("#repo_label").prepend(repo_owner);
     }
 
@@ -132,6 +140,8 @@ Editor.prototype = {
 
     this.$stopTimingBtn = $("#stop_timing_btn");
     this.$stopTimingBtn.hide();
+
+    this.$addSubtitleBtn = $("#add_subtitle_btn");
 
     this.$saveBtn = $("#save_btn");
     this.$saveBtn.attr("disabled","disabled");
@@ -159,13 +169,19 @@ Editor.prototype = {
   },
 
 
-  resetState: function() {
+  resetState: function(callback) {
+    this.clearTracks();
     this.currentTrack = null;
     this.currentGhostTrack = null;
     this.isGhostTrackStarted = false;
-    this.isOnSubtitleEditMode = false;
-    this.pause();
-    this.seek(0);
+    this.isOnSubtitleEditMode = null;
+    this.pause(function(){
+      this.seek(0,function(){
+        if (typeof callback !== "undefined") {
+          callback();  
+        }
+      });
+    }.bind(this));
   },
 
   guideUser: function() {
@@ -218,6 +234,7 @@ Editor.prototype = {
     $(document).on("trackremove",this.onTrackRemove.bind(this));
     $(document).on("subtitleremove",this.onSubtitleRemove.bind(this));
     $(document).on("pauseadjust",this.onPauseAdjust.bind(this));
+    this.$addSubtitleBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
     this.$saveBtn.on("click",this.onSaveBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
@@ -237,7 +254,7 @@ Editor.prototype = {
   onDocumentClick: function(event) {
     if ($(event.target).attr("id") !== "subtitle_edit" && !$(event.target).hasClass("track")) {
       this.$subtitleEdit.hide(0,function(){
-        this.isOnSubtitleEditMode = false;
+        this.isOnSubtitleEditMode = null;
       }.bind(this));
       this.$subtitleDisplay.show();
     }
@@ -306,7 +323,7 @@ Editor.prototype = {
   cancelGhostTrack: function() {
     var track = this.currentGhostTrack;
     if (track) {
-      this.endGhostTrack(track);
+      this.safeEndGhostTrack(track);
       track.remove();
     }  
   },
@@ -346,8 +363,6 @@ Editor.prototype = {
   onLoadedMetadata: function(event) {
     this.$startTimingBtn.removeAttr("disabled");
     this.enableCommands();
-
-    this.resetState();
     this.$el.trigger("editor.ready");
   },
 
@@ -365,11 +380,11 @@ Editor.prototype = {
 
   onSubtitleEditMode: function(event,track) {
     // can only get triggered one at a time
-    // console.log("IS ON SUB EDIT MODE: " + this.isOnSubtitleEditMode);
+    console.log("IS ON SUB EDIT MODE: " + track + " isSubEditMode: " + this.isOnSubtitleEditMode);
     if (this.isOnSubtitleEditMode) return;
 
     // set the lock flag
-    this.isOnSubtitleEditMode = true;
+    this.isOnSubtitleEditMode = track;
 
     this.$subtitleEdit.data("track",track);
 
@@ -384,6 +399,7 @@ Editor.prototype = {
     // get subtitle text to edit
     var text = track.subtitle.text || "";
 
+    console.log("SHOW SUBEDIT text: " + text);
     // display the text in input
     this.$subtitleEdit.val(text);
 
@@ -402,6 +418,7 @@ Editor.prototype = {
     this.currentGhostTrack = track;
     this.$startTimingBtn.hide();
     this.$stopTimingBtn.show();
+    this.$addSubtitleBtn.attr("disabled","disabled");
   },
 
   onGhostTrackEnd: function(event,track) {
@@ -410,6 +427,7 @@ Editor.prototype = {
     this.currentTrack = null;
     this.$stopTimingBtn.hide();
     this.$startTimingBtn.show();
+    this.$addSubtitleBtn.removeAttr("disabled");
     track.fadingHighlight();
   },
 
@@ -417,7 +435,21 @@ Editor.prototype = {
     this.popcorn.play();
   },
 
-  pause: function() {
+  pause: function(callback) {
+
+    if (typeof callback !== "undefined") {
+      if (this.popcorn.paused()) {
+        callback();
+        return;
+      }
+
+      var executeCallback = function() {
+        this.popcorn.off("pause",executeCallback);
+        callback();
+      }.bind(this);
+
+      this.popcorn.on("pause",executeCallback);
+    }
     this.popcorn.pause();
   },
 
@@ -551,7 +583,7 @@ Editor.prototype = {
 
     // escape key
     if (event.which == 27) {
-      this.isOnSubtitleEditMode = false;
+      this.isOnSubtitleEditMode = null;
       this.$subtitleEdit.blur();
       this.$subtitleEdit.hide();
       this.$subtitleDisplay.show();
@@ -560,7 +592,7 @@ Editor.prototype = {
 
     // enter key
     if (event.which == 13) {
-      this.isOnSubtitleEditMode = false;
+      this.isOnSubtitleEditMode = null;
       this.$subtitleEdit.blur();
       this.$subtitleEdit.hide();
       this.$subtitleDisplay.show();
@@ -604,7 +636,7 @@ Editor.prototype = {
 
   safeCreateGhostTrack: function() {
     try {
-      this.createGhostTrack();
+      return this.createGhostTrack();
     } catch(e) {
       console.log(e);  
     }
@@ -619,6 +651,24 @@ Editor.prototype = {
       //   this.isOnSubtitleEditMode = false;
       // }.bind(this));
     }
+  },
+
+  onAddSubtitleBtnClick: function(event) {
+    if (this.$addSubtitleBtn.attr("disabled") == "disabled") return;
+    // add a track
+    var trackDuration = 5;
+    var track = this.safeCreateGhostTrack();
+
+    var endTime   = this.determineEndTime(track.startTime());
+
+    if (endTime === this.media.duration) {
+      endTime = this.media.currentTime + trackDuration;
+    }
+
+    this.seek(endTime,function(){
+      this.safeEndGhostTrack(track);
+      this.requestSubtitleFromUser(track);
+    }.bind(this));
   },
 
   onSaveBtnClick: function(event) {
@@ -721,6 +771,13 @@ Editor.prototype = {
   },
 
   seek: function(time,callback) {
+    if (time < 0 || time > this.media.duration) {
+      if (typeof callback !== "undefined") {
+        callback();
+      }
+      return;
+    }
+
     if (typeof callback !== "undefined") {
       var executeCallback = function() {
         this.popcorn.off("seeked",executeCallback);
@@ -868,7 +925,7 @@ Editor.prototype = {
     // console.log("show sub display");
     if (this.$subtitleEdit.is(':visible')) {
       this.$subtitleEdit.hide(0,function(){
-        this.isOnSubtitleEditMode = false;
+        this.isOnSubtitleEditMode = null;
       }.bind(this));
     }
     this.$subtitleDisplay.show();
@@ -902,11 +959,10 @@ Editor.prototype = {
     };
   },
 
-  clearTracks: function(time) {
+  clearTracks: function() {
     for (var i = this.tracks.length - 1; i >= 0; i--) {
       this.tracks[i].remove();
     };
-
     this.tracks.length = 0;
   },
 

@@ -21,6 +21,10 @@
   color: lightcoral;
 }
 
+.icon-plus {
+  color: green;
+}
+
 .popover {
   width: 150px;
   background-color: lightgoldenrodyellow; 

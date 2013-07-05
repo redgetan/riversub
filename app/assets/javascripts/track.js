@@ -217,6 +217,7 @@ Track.prototype = {
     this.$el_expanded.remove();
     this.$el_summary.remove();
 
+    this.trackEvent._running = false; // disallow trackend event from getting triggered
     this.popcorn.removeTrackEvent(this.trackEvent._id);
     // this.subtitle.unmapTrack();
     this.subtitle.remove();
