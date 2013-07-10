@@ -256,6 +256,7 @@ $(document).ready(function(){
     //   });
     // });
 
+    // createGhost + seek to before + createGhost + seek to before + not deleting ghost for some reason
     // ADD + DELETE + subedit should be hidden
     // ADD + ADD + click on prev. editing sub should be on curr track not on other one
     // createGhost + ADD

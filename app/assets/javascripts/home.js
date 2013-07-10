@@ -10,6 +10,11 @@ var getMetadata = function(url,done) {
   // get youtube video id
   // http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
   var videoId = url.split('v=')[1];
+
+  if (typeof videoId === "undefined") {
+    throw "Invalid youtube Url";
+  }
+
   var ampersandPosition = videoId.indexOf('&');
   if(ampersandPosition != -1) {
     videoId = videoId.substring(0, ampersandPosition);
@@ -163,61 +168,71 @@ $(document).ready(function(){
     event.preventDefault();
 
     var url = $("input#media_url").val();
-    // verify embeddable
 
-    if (url.match(/youtube/)) {
-      getMetadata(url,function(data){
-        metadata  = data;
-
-        if (typeof metadata["error"] !== "undefined") {
-          $("form#sub .control-group").addClass("error");
-          $("form#sub .control-group").append("<span class='help-inline'>Invalid Youtube Url - " + metadata["error"]["message"] + "</span>");
-          setTimeout(function(){
-            $("form#sub span.help-inline").remove();
-            $("form#sub .control-group").removeClass("error");
-          },2000);
-
-          return;
-        }
-
-        if (isEmbeddable(metadata)) {
-          $.ajax({
-            url: "/videos/sub",
-            type: "POST",
-            data: {
-              media_url : $("input#media_url").val(),
-              video_metadata: metadata
-            },
-            dataType: "json",
-            success: function(data,status) {
-              window.location.href = data.redirect_url;
-            },
-            error: function(data) {
-              alert(data.responseText);
-            }
-          });
-        } else {
-          $("form#sub .control-group").addClass("error");
-          $("form#sub .control-group").append("<span class='help-inline'>Video is not embeddable. Try another url</span>");
-          setTimeout(function(){
-            $("form#sub span.help-inline").remove();
-            $("form#sub .control-group").removeClass("error");
-          },2000);
-        }
-      });
-    } else {
-      $("form#sub .control-group").addClass("error");
-      $("form#sub .control-group").append("<span class='help-inline'>Only youtube urls are allowed</span>");
-      setTimeout(function(){
-        $("form#sub span.help-inline").remove();
-        $("form#sub .control-group").removeClass("error");
-      },2000);
+    try {
+      openSubtitleEditor(url);
+    } catch(e) {
+      handleOpenSubtitleEditorError(e);
+      throw e;
     }
-
 
   });
 
 });
+
+function handleOpenSubtitleEditorError(e) {
+  $("form#sub .control-group").addClass("error");
+  $("form#sub .control-group").append("<span class='help-inline'>" + e + "</span>");
+  setTimeout(function(){
+    $("form#sub span.help-inline").remove();
+    $("form#sub .control-group").removeClass("error");
+  },2000);
+
+  $("#ajax_loader").remove();
+  $("#sub_btn").button('reset');
+}
+
+function openSubtitleEditor(url) {
+
+  if (!url.match(/youtube/)) {
+    throw "Only youtube urls are allowed";
+  }
+
+  $("form#sub").append("<img id='ajax_loader' src='/assets/ajax-loader.gif' >");
+  $("#sub_btn").button('loading');
+
+  getMetadata(url,function(data){
+    metadata  = data;
+
+    if (typeof metadata["error"] !== "undefined") {
+      var e = "Invalid youtube Url - " + metadata["error"]["message"];
+      handleOpenSubtitleEditorError(e);
+      throw e;
+    }
+
+    if (!isEmbeddable(metadata)) {
+      var e = "Video is not embeddable. Try another url.";
+      handleOpenSubtitleEditorError(e);
+      throw e;
+    }
+
+    $.ajax({
+      url: "/videos/sub",
+      type: "POST",
+      data: {
+        media_url : $("input#media_url").val(),
+        video_metadata: metadata
+      },
+      dataType: "json",
+      success: function(data,status) {
+        window.location.href = data.redirect_url;
+      },
+      error: function(data) {
+        throw "Failed to subtitle video."; 
+      }
+    });
+  });
+}
 
 function setCookie(c_name,value,exdays)
 {
@@ -246,5 +261,9 @@ function getCookie(c_name)
   }
   return c_value;
 }
+
+window.onerror = function(message, file, lineNumber) {
+  ga('send','event', 'error', 'any', 'message', file + ":" + lineNumber + " - " + message);
+};
 
 //})();
