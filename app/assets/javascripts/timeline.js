@@ -4,6 +4,7 @@ function Timeline () {
 
   this.isScrubberVisible = true;
   this.force_scroll_window = false;
+  this.windowSlideTimeoutQueue = [];
 }
 
 Timeline.prototype = {
@@ -440,9 +441,19 @@ Timeline.prototype = {
       var width = $container.width();
       var index = Math.floor(elRight / width);
       var pos   = index * width;
-      
-      setTimeout(function() { 
-        $container.animate({scrollLeft: pos},500,function(){
+      var windowSlideTimeout;
+
+      // if queue is not empty, clear all timeouts and replace it with our new one
+      if (this.windowSlideTimeoutQueue) {
+        for (var i = 0; i < this.windowSlideTimeoutQueue.length; i++) {
+          windowSlideTimeout = this.windowSlideTimeoutQueue[i];
+          clearTimeout(windowSlideTimeout);
+        }  
+        this.windowSlideTimeoutQueue.length = 0;
+      }
+
+      windowSlideTimeout = setTimeout(function() { 
+        $container.animate({scrollLeft: pos},300,function(){
           // trigger appear/disappear events
           if (this.isOutOfBounds(this.$expanded,this.$scrubber_expanded)) {
             if (this.isScrubberVisible) {
@@ -456,8 +467,10 @@ Timeline.prototype = {
             } 
           }
         }.bind(this)); 
-        this.$window_slider.animate({ left: this.resolution(this.$summary) * 30 * index },500);
-      }.bind(this),500);
+        this.$window_slider.animate({ left: this.resolution(this.$summary) * 30 * index },300);
+      }.bind(this),100);
+
+      this.windowSlideTimeoutQueue.push(windowSlideTimeout);
     // }
   },
 
