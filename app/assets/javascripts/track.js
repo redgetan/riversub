@@ -83,8 +83,8 @@ Track.prototype = {
   },
 
   bindEvents: function() {
-    this.$el_expanded.on("click",this.onMouseClickHandler.bind(this));
-    this.$el_summary.on("click",this.onMouseClickHandler.bind(this));
+    this.$el_expanded.on("mousedown",this.onMouseDownHandler.bind(this));
+    this.$el_summary.on("mousedown",this.onMouseDownHandler.bind(this));
 
     this.$el_expanded.on("dblclick",this.onMouseDblClickHandler.bind(this));
 
@@ -106,7 +106,7 @@ Track.prototype = {
     this.remove();
   },
 
-  onMouseClickHandler: function(event) {
+  onMouseDownHandler: function(event) {
     $(event.target).trigger("trackseek",[this.startTime()]);
   },
 
