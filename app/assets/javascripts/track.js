@@ -57,7 +57,7 @@ Track.prototype = {
                      "</div>"
 
     this.$el_expanded = $(el_expanded);
-    this.$container_expanded.find(".filler").append(this.$el_expanded);
+    this.$container_expanded.find("#track_viewport").append(this.$el_expanded);
 
     if (this.options["isGhost"]) {
       this.$el_summary.addClass("ghost");
@@ -75,6 +75,7 @@ Track.prototype = {
 
     this.$el_expanded.draggable({
       cursor: "move",
+      axis: "x",
       containment: "parent",
       drag: this.onDraggableDrag.bind(this)
     });

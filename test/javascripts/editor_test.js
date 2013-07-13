@@ -419,6 +419,8 @@ $(document).ready(function(){
 // [ ] when subtitle line is blank. clicking on it does nothing !!!!!
 // [ ] subedit Keyup should change 1. track.subtitle.text 2. subtitleDisplay
 // [ ] ghosttrack end while playing/paused should stop at exact time you paused
+// [ ] while on ghosttrack mode, delete track should cancel ghostrack mode
+// [ ] let user know internet is slow
 
 // solr search - if no matches found (give suggestions)
 // paging (kaminari)

@@ -32,18 +32,27 @@ Timeline.prototype = {
 
     var expanded = "<div id='expanded' class='timeline'>" + 
                      "<div class='filler'>" + 
-                       "<div class='scrubber'></div>" +
-                       "<div class='time_indicator'>0</div>" +
+                       "<div id='track_viewport'>" + 
+                         "<div class='scrubber'></div>" +
+                         "<div class='time_indicator'>0</div>" +
+                       "</div>" +
+                       "<div id='time_label'>" + 
+                       "</div>" +
                      "</div>" +
                    "</div>";
+
 
     this.$expanded_container = $("#timeline_container");
     this.$expanded_container.append(expanded);
 
     this.$expanded = $("#expanded");
+    this.$expanded_track_viewport = $("#track_viewport");
+    this.$expanded_time_label = $("#time_label");
+
     this.$scrubber_expanded = $("#expanded .scrubber");
     this.$time_indicator = $("#expanded .time_indicator");
     this.$filler = $("#expanded .filler");
+
 
   },
 
@@ -54,6 +63,49 @@ Timeline.prototype = {
   setMedia: function(media) {
     this.media = media;
     this.bindEvents();
+  },
+
+  createTimeLabelHTMLString: function(svgWidth,timelineDuration) {
+    var timeIncrement = 1;
+    var numOfLabel = timelineDuration / timeIncrement; // plus 1 for 0:00
+    var labelDistance = timeIncrement * this.resolution(this.$expanded);
+
+    var labels = "";
+    var label;
+    var xPos = 0;
+
+
+    for (var i = 0; i < numOfLabel; i++) {
+      if (i === 0) {
+        time = "00";
+      } else {
+        time = this.stringifyTimeShort(i*5);
+      }
+
+      for (var x = 0; x < 5; x++) {
+        if (x === 0) {
+          label =    "<g transform='translate(" + xPos + ",-15)' style='opacity: 1;'>" +
+                       "<line class='tick' y2='3' x2='0'></line>" +
+                       "<text class='time' fill='#777777' y='13' x='0' text-anchor='middle'>" + time + "</text>" +
+                     "</g>";
+        } else {
+          label =    "<g transform='translate(" + xPos + ",-15)' style='opacity: 1;'>" +
+                       "<line class='tick' y2='4' x2='0'></line>" +
+                     "</g>";
+        }
+
+        labels += label;
+        xPos += labelDistance;
+      }
+    };
+
+    var result =   "<svg id='timeline' width='" + svgWidth + "' height='15'>" +
+                     "<g class='x axis' transform='translate(0,15)'>" +
+                       labels +
+                    "</g>" +
+                   "</svg>";
+
+    return result;
   },
 
   bindEvents: function() {
@@ -100,6 +152,9 @@ Timeline.prototype = {
 
     this.$window_slider.css("width",this.resolution(this.$summary) * 30);
     this.$filler.css("width",this.resolution(this.$expanded) * this.media.duration);
+
+    var timeline_label = this.createTimeLabelHTMLString(this.$filler.width(),this.media.duration);
+    this.$expanded_time_label.append(timeline_label);
 
     this.renderTracks();
   },

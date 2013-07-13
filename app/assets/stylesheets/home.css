@@ -1,3 +1,14 @@
+.axis path, .axis line {
+  fill: none;
+  stroke: #777777;
+  shape-rendering: crispEdges;
+}
+
+#timeline_label {
+  position: absolute;
+  margin-top: -40px;
+}
+
 #instructions_modal kbd {
   font-size: 10px;
 }

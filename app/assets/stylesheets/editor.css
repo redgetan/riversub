@@ -1,8 +1,5 @@
-.corner {
-	opacity: 0.9;
-	position: relative;
-	/*vertical-align: bottom;*/
-	top: 90px;
+text.time {
+	font-size: 12px;
 }
 
 #current_time {
@@ -60,8 +57,8 @@ div#editor-bottom {
 }
 
 #timeline_container {
-  	padding: 10px;
-	border: solid 1px black ;
+  	/*padding: 10px;*/
+	/*border: solid 1px black ;*/
 }
 
 #summary.timeline {
@@ -89,6 +86,19 @@ div#editor-bottom {
 
 .filler {
 	height: inherit;
+}
+
+#expanded #track_viewport {
+	height: 95px;
+	width: inherit;
+	border-bottom: solid 1px gray;
+	position: relative;
+	overflow: hidden;
+}
+
+#expanded #time_label {
+	height: 15px;
+	width: inherit;
 }
 
 .progress_bar {
@@ -128,6 +138,14 @@ div#editor-bottom {
 	border: solid 1px gray;
 	font-size: 10px;
 }
+
+.track .close {
+	opacity: 0.9;
+	position: relative;
+	/*vertical-align: bottom;*/
+	top: 70px;
+}
+
 
 .track.selected {
 	background-color: lightcoral ;
