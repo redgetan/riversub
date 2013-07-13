@@ -139,6 +139,10 @@ div#editor-bottom {
 	font-size: 10px;
 }
 
+#expanded .track {
+	cursor: move;
+}
+
 .track .close {
 	opacity: 0.9;
 	position: relative;
@@ -265,6 +269,8 @@ div#time_float {
 }
 
 div#seek_head {
+	cursor: hand; 
+	cursor: pointer;
 	width: 10px;
 	height: 20px;
 	position: absolute;

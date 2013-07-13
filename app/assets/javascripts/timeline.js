@@ -29,6 +29,12 @@ Timeline.prototype = {
     this.$seek_head = $("#seek_head");
     this.$seek_head.css("left",this.$summary.position().left);
 
+    this.$seek_head.draggable({
+      cursor: "pointer",
+      axis: "x",
+      containment: "parent",
+      drag: this.onSeekHeadDragHandler.bind(this)
+    });
 
     var expanded = "<div id='expanded' class='timeline'>" + 
                      "<div class='filler'>" + 
@@ -126,6 +132,9 @@ Timeline.prototype = {
     this.$summary.on("mouseenter",this.onSummaryMouseEnterHandler.bind(this));
     this.$summary.on("mousemove",this.onSummaryMouseMoveHandler.bind(this));
     this.$summary.on("mouseleave",this.onSummaryMouseLeaveHandler.bind(this));
+
+    this.$seek_head.on("mousedown",this.onSeekHeadMouseDownHandler.bind(this));
+    this.$seek_head.on("mouseup",this.onSeekHeadMouseUpHandler.bind(this));
 
     this.$expanded.on("mousedown",this.onMouseDownHandler.bind(this));
     this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
@@ -230,12 +239,45 @@ Timeline.prototype = {
     var $target = $(event.target);
     var seconds = this.getSecondsFromCurrentPosition(this.$summary,$target,event.pageX);
 
+    this.renderTimeFloat(seconds);
+  },
+
+  onSeekHeadMouseDownHandler: function(event) {
+    this.seekmode = true;
+    this.$time_float.show();
+  },
+
+  onSeekHeadMouseUpHandler: function(event) {
+    this.seekmode = false;
+    this.$time_float.hide();
+  },
+
+  renderTimeFloat: function(seconds) {
+    // do not allow seeking to negative duration
+    if (seconds < 0) seconds = 0;
+    if (seconds > this.media.duration) seconds = this.media.duration;
+
     this.$time_float.text(this.stringifyTimeShort(seconds));
     this.$time_float.css("left",event.pageX - this.$time_float.width() / 2);
   },
 
+  onSeekHeadDragHandler: function(event) {
+    // move and update time float
+    var $target = $(event.target);
+    var seconds = this.getSecondsFromCurrentPosition(this.$summary,$target,event.pageX);
+
+    this.renderTimeFloat(seconds);
+
+    // if seekmode, seek
+    if (this.seekmode) {
+      this.$summary.trigger("timelineseek",[seconds]);
+    }
+  },
+
   onSummaryMouseLeaveHandler: function(event) {
-    this.$time_float.hide();
+    if (!this.seekmode) {
+      this.$time_float.hide();
+    }
   },
 
   onExpandedTimelineScroll: function(event,delta){
