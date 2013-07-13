@@ -62,6 +62,7 @@ Track.prototype = {
     if (this.options["isGhost"]) {
       this.$el_summary.addClass("ghost");
       this.$el_expanded.addClass("ghost");
+      this.$el_expanded.trigger("ghosttrackstart",[this]);
       this.initial_subtitle_request = true;
     }
 
@@ -164,6 +165,7 @@ Track.prototype = {
 
   end: function(time) {
     this.removeGhostClass();
+    this.$el_expanded.trigger("ghosttrackend",[this]);
 
     var duration = time - this.startTime();
 
@@ -215,6 +217,9 @@ Track.prototype = {
 
   remove: function() {
     this.isDeleted = true;
+    if (this.isGhost()) {
+      this.end(this.endTime());  
+    }
     this.$el_expanded.remove();
     this.$el_summary.remove();
 

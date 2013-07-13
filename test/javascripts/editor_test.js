@@ -40,17 +40,6 @@ $(document).ready(function(){
       });
     });
 
-    asyncTest( "cleartracks should not trigger endGhostTrack if there are existing tracks", 1, function() {
-      editor.resetState(function(){
-        var numOfGhostTrackEnd = 0;
-        $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
-        editor.createGhostTrack();
-        editor.clearTracks();
-        equal(numOfGhostTrackEnd,0);
-        start();
-      });
-    });
-
     asyncTest( "cleartracks should remove existing tracks",3, function() {
       editor.resetState(function(){
         var track = editor.createGhostTrack();
@@ -292,6 +281,61 @@ $(document).ready(function(){
       equal(track.toString(),"Track(4,7)");
     });
 
+    test( "normal track when created and removed should not trigger ghosttrackstart nor ghosttrackend", function() {
+      var popcorn = Popcorn("#media");
+      var track;
+
+      var numOfGhostTrackStart = 0;
+      var numOfGhostTrackEnd = 0;
+
+      $(document).on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
+      $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+
+      track = new Track({ start_time: 4, end_time: 7}, popcorn);
+
+      track.remove();
+      equal(numOfGhostTrackStart,0);
+      equal(numOfGhostTrackEnd,0);
+    });
+
+    test( "ghost track when created should trigger ghosttrackstart ", function() {
+      var popcorn = Popcorn("#media");
+      var track;
+
+      var numOfGhostTrackStart = 0;
+      $(document).on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
+
+      track = new Track({ start_time: 4, end_time: 7}, popcorn,{ "isGhost": true});
+
+      equal(numOfGhostTrackStart,1);
+    });
+
+    test( "ghost track when ended should trigger ghosttrackend", function() {
+      var popcorn = Popcorn("#media");
+      var track;
+
+      var numOfGhostTrackEnd = 0;
+      $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+
+      track = new Track({ start_time: 4, end_time: 7}, popcorn,{ "isGhost": true});
+
+      track.end(6);
+      equal(numOfGhostTrackEnd,1);
+    });
+
+    test( "ghost track when removed should trigger ghosttrackend ", function() {
+      var popcorn = Popcorn("#media");
+      var track;
+
+      var numOfGhostTrackEnd = 0;
+      $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+
+      track = new Track({ start_time: 4, end_time: 7}, popcorn,{ "isGhost": true});
+
+      track.remove();
+      equal(numOfGhostTrackEnd,1);
+    });
+
     test( "track.remove should remove track event", function() {
       var popcorn = Popcorn("#media");
       var track;
@@ -409,17 +453,15 @@ $(document).ready(function(){
 // [ ] subtitle editmode should only be triggered ONE at a TIME
 // [ ] what if 2 tracks trigger subtitleditmode simultaneously
 //      track 1 hits track 2 - both doesnt have sub yet
-// [ ] if 1 track hits starttime of next track, and we have the seek back applied
-//       assert track1.start -> track1.end -> track2.start -> track2.end -> track1.start
-// [ ] when on subtitle edit focused. you switch tabs and come back. commands should be enabled. you can still play
+// [x] when on subtitle edit focused. you switch tabs and come back. commands should be enabled. you can still play
 // [ ] dbl click edit + enter + dbl click edit should still work 
 // [ ] subtitleline edit. when move to another line. the inplaceedit should be gone
-// [ ] must be able to drag seek head
+// [x] must be able to drag seek head
 // [ ] click here for isntructions is not obvious
-// [ ] when subtitle line is blank. clicking on it does nothing !!!!!
-// [ ] subedit Keyup should change 1. track.subtitle.text 2. subtitleDisplay
+// [x] when subtitle line is blank. clicking on it does nothing !!!!!
+// [x] subedit Keyup should change 1. track.subtitle.text 2. subtitleDisplay
 // [ ] ghosttrack end while playing/paused should stop at exact time you paused
-// [ ] while on ghosttrack mode, delete track should cancel ghostrack mode
+// [x] while on ghosttrack mode, delete track should cancel ghostrack mode
 // [ ] let user know internet is slow
 
 // solr search - if no matches found (give suggestions)

@@ -823,8 +823,6 @@ Editor.prototype = {
     this.trackMap[track.getAttributes().client_id] = track;
     this.tracks.push(track);
 
-    this.$el.trigger("ghosttrackstart",[track]);
-
     return track;
   },
 
@@ -832,10 +830,8 @@ Editor.prototype = {
     var time = endTime || this.lastTimeUpdateTime;
     try {
       track.end(time);
-      this.$el.trigger("ghosttrackend",[track]);
     } catch(e) {
       track.remove();
-      this.$el.trigger("ghosttrackend",[track]);
       throw e;
     }
   },
