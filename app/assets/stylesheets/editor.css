@@ -139,10 +139,6 @@ div#editor-bottom {
 	font-size: 10px;
 }
 
-#expanded .track {
-	cursor: move;
-}
-
 .track .close {
 	opacity: 0.9;
 	position: relative;
