@@ -145,7 +145,7 @@ SubtitleView.prototype = {
       // not ouf bounds
     } else {
       // scroll
-      this.$container.animate({scrollTop: subtitle_pos - this.$container.position().top},1000);
+      this.$container.animate({scrollTop: subtitle_pos - this.$container.position().top},300);
     }
   },
 

@@ -468,4 +468,7 @@ $(document).ready(function(){
 // paging (kaminari)
 // exception notification
 
+// [ ] Share buttons (twitter/facebook/google+) textbox url to paste in stuff
+//     somehow show orig youtube link
+// [ ] show other related videos (only ones that are subbed) when watching a video with sub 
 
