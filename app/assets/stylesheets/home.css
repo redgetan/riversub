@@ -283,9 +283,18 @@ span.repo_owner {
 
 
 form#sub {
-  height: 15px;
+  height: 30px;
+  margin-top: 20px;
 }
 
 .modal-body {
   background-color: lightgoldenrodyellow;
+}
+
+#new_project_modal.fade.in {
+  top: 30%;
+}
+
+#layout_new_project_btn {
+  margin-right: 30px;
 }

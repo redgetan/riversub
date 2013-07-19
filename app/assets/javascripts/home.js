@@ -160,6 +160,8 @@ $(document).ready(function(){
 
   handleRoute();
 
+  $("#layout_new_project_btn").tooltip({title: "Subtitle Video", placement: "bottom"});
+
   $(".new_project").hover(function(event) {
     $(this).find("i").css("background-color","green");
     $(this).find("h6").css("color","green");
