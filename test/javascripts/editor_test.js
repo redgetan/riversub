@@ -471,4 +471,6 @@ $(document).ready(function(){
 // [ ] Share buttons (twitter/facebook/google+) textbox url to paste in stuff
 //     somehow show orig youtube link
 // [ ] show other related videos (only ones that are subbed) when watching a video with sub 
+// [ ] startGhost + endGhost + removeTrack -> subtitleedit should be hidden. 
+// [ ] test enable/disable commands
 

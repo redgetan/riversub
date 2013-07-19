@@ -426,6 +426,7 @@ Editor.prototype = {
     this.$startTimingBtn.show();
     this.$addSubtitleBtn.removeAttr("disabled");
     track.fadingHighlight();
+
   },
 
   play: function() {
@@ -549,6 +550,11 @@ Editor.prototype = {
     }
 
     this.disabledOrEnableSaveButton();
+
+
+    this.isOnSubtitleEditMode = null;
+    this.$subtitleEdit.blur();
+    this.$subtitleEdit.hide();
   },
 
   onIframeOverlayClick: function(event) {
@@ -583,12 +589,12 @@ Editor.prototype = {
   },
 
   enableCommands: function(event) {
+    $(document).off("keyup");
     $(document).on("keyup",this.onKeyupHandler.bind(this));
     this.$startTimingBtn.removeAttr("disabled");
   },
 
   disableCommands: function(event) {
-    $(document).off("keydown");
     $(document).off("keyup");
     this.$startTimingBtn.attr("disabled","disabled");
   },
