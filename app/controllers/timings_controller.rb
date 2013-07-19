@@ -1,44 +1,40 @@
 class TimingsController < ApplicationController
-  def create
+
+  def save
     @repo = Repository.find params[:repository_id]
 
-    @timings = []
-    params[:timings].each do |i,timing_param|
-      @timing = @repo.timings.create(timing_param)
-      unless @timing
-        render :json => { :error => @timing.errors.messages, :created => @timings.map(&:serialize).to_json }, :status => 403 and return
+    @creates = []
+    @updates = []
+
+    ActiveRecord::Base.transaction do
+      params[:timings].each do |action,values|
+        case action
+        when "creates"
+          values.each do |i, timing_param|
+            @timing = @repo.timings.create!(timing_param)
+            @creates << @timing
+          end
+        when "updates"
+          values.each do |i, timing_param|
+            id = timing_param.delete(:id)
+            @timing = @repo.timings.find(id)
+            @timing.update_attributes!(timing_param)
+            @updates << @timing
+          end
+        when "destroys"
+          values.each do |id|
+            @timing = @repo.timings.find(id)
+            @timing.destroy
+          end
+        else
+        end
       end
-      @timings << @timing
     end
 
-    render :json => @timings.map(&:serialize).to_json, :status => 200
-
-  end
-
-  def update
-    @repo = Repository.find params[:repository_id]
-
-    @timings = []
-    params[:timings].each do |i,timing_param|
-      id = timing_param.delete(:id)
-      @timing = @repo.timings.find(id)
-      sucess = @timing.update_attributes(timing_param)
-      unless sucess
-        render :json => { :error => @timing.errors.messages, :updated => @timings.map(&:serialize).to_json }, :status => 403 and return
-      end
-      @timings << @timing
-    end
-
-    render :json => @timings.map(&:serialize).to_json, :status => 200
-  end
-
-  def destroy
-    @repo = Repository.find params[:repository_id]
-    params[:timings].each do |id|
-      @timing = @repo.timings.find(id)
-      @timing.delete
-    end
-    render :json => {}, :status => 200
+    render :json => { :creates => @creates.map(&:serialize),
+                      :updates => @updates.map(&:serialize)}.to_json, :status => 200
+  rescue ActiveRecord::RecordInvalid => e
+    render :json => { :error => e.record.errors }, :status => 403
   end
 
   def index

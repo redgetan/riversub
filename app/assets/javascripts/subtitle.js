@@ -128,7 +128,10 @@ SubtitleView.prototype = {
     track.subtitle.render();
   },
 
-  onSubtitleRemove: function(event, subtitleId) {
+  onSubtitleRemove: function(event, subtitle) {
+    // remove references that must be deleted
+    var index = this.subtitles.indexOf(subtitle);
+    this.subtitles.splice(index,1);
   },
 
   onSubtitleHighlight: function(event, subtitle) {

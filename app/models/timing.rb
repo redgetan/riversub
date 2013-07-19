@@ -11,12 +11,20 @@ class Timing < ActiveRecord::Base
 
   validates :start_time, :end_time, :subtitle, :presence => true
 
+  validate :end_time_must_be_greater_than_start_time
+
   accepts_nested_attributes_for :subtitle
 
   after_save :touch_parent 
     
   def touch_parent
     self.repository.touch    
+  end
+
+  def end_time_must_be_greater_than_start_time
+    if self.end_time <= self.start_time
+      errors.add(:end_time, "end_time must be greater than start time")
+    end
   end
 
   def serialize

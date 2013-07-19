@@ -31,7 +31,7 @@ function Editor (repo,options) {
     tracks: {
       creates: [],
       updates: [],
-      deletes: []
+      destroys: []
     }
   };
 
@@ -232,7 +232,6 @@ Editor.prototype = {
     $(document).on("trackend",this.onTrackEnd.bind(this));
     $(document).on("trackchange",this.onTrackChange.bind(this));
     $(document).on("trackremove",this.onTrackRemove.bind(this));
-    $(document).on("subtitleremove",this.onSubtitleRemove.bind(this));
     $(document).on("pauseadjust",this.onPauseAdjust.bind(this));
     this.$addSubtitleBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
     this.$saveBtn.on("click",this.onSaveBtnClick.bind(this));
@@ -380,7 +379,6 @@ Editor.prototype = {
 
   onSubtitleEditMode: function(event,track) {
     // can only get triggered one at a time
-    console.log("IS ON SUB EDIT MODE: " + track + " isSubEditMode: " + this.isOnSubtitleEditMode);
     if (this.isOnSubtitleEditMode) return;
 
     // set the lock flag
@@ -399,7 +397,6 @@ Editor.prototype = {
     // get subtitle text to edit
     var text = track.subtitle.text || "";
 
-    console.log("SHOW SUBEDIT text: " + text);
     // display the text in input
     this.$subtitleEdit.val(text);
 
@@ -453,8 +450,32 @@ Editor.prototype = {
     this.popcorn.pause();
   },
 
-  onTrackChange: function(track) {
-    this.$saveBtn.removeAttr("disabled");
+  onTrackChange: function(event,track) {
+    if (!track.isSaved) {
+      if (typeof track.getAttributes().id === "undefined") {
+        if (this.changes["tracks"]["creates"].indexOf(track) < 0) {
+          this.changes["tracks"]["creates"].push(track);
+        }
+      } else {
+        if (this.changes["tracks"]["updates"].indexOf(track) < 0) {
+          this.changes["tracks"]["updates"].push(track);
+        }
+      }
+    }
+
+    this.disabledOrEnableSaveButton();
+  },
+
+  disabledOrEnableSaveButton: function() {
+    var operationCount = this.changes.tracks.creates.length + 
+                         this.changes.tracks.updates.length + 
+                         this.changes.tracks.destroys.length;
+
+    if (operationCount === 0) {
+      this.$saveBtn.attr("disabled", "disabled");
+    } else {
+      this.$saveBtn.removeAttr("disabled");
+    }
   },
 
   onTrackStart: function(event,track) {
@@ -511,24 +532,23 @@ Editor.prototype = {
     delete this.trackMap[track.client_id];
     this.tracks.splice(index,1);
 
+    // remove references to track in changes hash
+    index = this.changes["tracks"]["creates"].indexOf(track);
+    if (index >= 0) {
+      this.changes["tracks"]["creates"].splice(index,1);
+    }
+
+    index = this.changes["tracks"]["updates"].indexOf(track);
+    if (index >= 0) {
+      this.changes["tracks"]["updates"].splice(index,1);
+    }
+
     // if track was previously saved to server, make sure to delete server side track as well
     if (typeof track.id !== "undefined") {
-      this.changes["tracks"]["deletes"].push(track.id);
-      this.$saveBtn.removeAttr("disabled");
+      this.changes["tracks"]["destroys"].push(track.id);
     }
 
-  },
-
-  onSubtitleRemove: function(event,subtitle) {
-    // remove references that must be deleted
-    var index = this.subtitleView.subtitles.indexOf(subtitle);
-    this.subtitleView.subtitles.splice(index,1);
-
-    // if subtitle was previously saved to server, make sure to delete server side as well
-    if (typeof subtitleId !== "undefined") {
-      this.changes["subtitles"]["deletes"].push(subtitle.id);
-      this.$saveBtn.removeAttr("disabled");
-    }
+    this.disabledOrEnableSaveButton();
   },
 
   onIframeOverlayClick: function(event) {
@@ -550,7 +570,6 @@ Editor.prototype = {
   },
 
   onSubtitleEditBlur: function(event) {
-    // console.log("subEdit BLUR");
 
     this.enableCommands();
   },
@@ -678,96 +697,53 @@ Editor.prototype = {
       this.$saveBtn.attr("disabled","disabled");
     }
 
-    // save timings and subtitles
+    if (this.changes["tracks"]["creates"].length > 0 || 
+        this.changes["tracks"]["updates"].length > 0 ||
+        this.changes["tracks"]["destroys"].length > 0) {
 
-    var track;
-    for (var i = 0; i < this.tracks.length; i++) {
-      track = this.tracks[i];
-      // add track to creates/updates list
-      if (!track.isSaved) {
-        if (typeof track.getAttributes().id === "undefined") {
-          this.changes["tracks"]["creates"].push(track);
-        } else {
-          this.changes["tracks"]["updates"].push(track);
-        }
-      }
-    };
-
-    if (this.changes["tracks"]["creates"].length > 0 ) {
       $.ajax({
-        url: "/repositories/" + this.repo.id +"/timings",
+        url: "/repositories/" + this.repo.id +"/timings/save",
         type: "POST",
-        data: { timings: $.map(this.changes["tracks"]["creates"],function(track){ return track.getAttributes(); } ) },
+        data: { 
+          timings: {
+            "creates": $.map(this.changes["tracks"]["creates"],function(track){ return track.getAttributes(); } ),
+            "updates": $.map(this.changes["tracks"]["updates"],function(track){ return track.getAttributes(); } ),
+            "destroys": this.changes["tracks"]["destroys"]
+          }
+        },
         dataType: "json",
         success: function(data) {
-          this.setIds(data);
-          this.$saveBtn.attr("disabled", "disabled");
-          this.changes["tracks"]["creates"] = [];
-        }.bind(this),
-        error: function(data,e,i) {
-          try {
-            var result = JSON.parse(data);
-            this.setIds(result.created);
-            alert(result.error);
-            this.$saveBtn.removeAttr("disabled");
-          } catch (e) {
-            alert("Failed to save changes");
-          }
-          this.changes["tracks"]["creates"] = [];
-        }
-      });
-    }
+          var creates = data["creates"];
+          var updates = data["updates"];
 
-    if (this.changes["tracks"]["updates"].length > 0 ) {
-      $.ajax({
-        url: "/repositories/" + this.repo.id +"/timings",
-        type: "PUT",
-        data: { timings: $.map(this.changes["tracks"]["updates"],function(track){ return track.getAttributes(); } ) },
-        dataType: "json",
-        success: function(timings) {
-          for (var i = 0; i < timings.length; i++) {
-            timings[i].isSaved = true;
+          if (creates.length > 0) this.setIds(creates);
+          if (updates.length > 0) {
+            for (var i = 0; i < updates.length; i++) {
+              var track = this.trackMap[updates[i].client_id];
+              track.isSaved = true;
+            }
           }
-          this.$saveBtn.attr("disabled", "disabled");
-          this.changes["tracks"]["updates"] = [];
+          this.disabledOrEnableSaveButton();
+          this.clearChanges();
         }.bind(this),
         error: function(data,e,i) {
-          try {
-            var result = JSON.parse(data);
-            this.setIds(result.updated);
-            alert(result.error);
-            this.$saveBtn.removeAttr("disabled");
-          } catch (e) {
-            alert("Failed to save changes");
-          }
-          this.changes["tracks"]["updates"] = [];
-        }
-      });
-    }
-
-    if (this.changes["tracks"]["deletes"].length > 0 ) {
-      $.ajax({
-        url: "/repositories/" + this.repo.id +"/timings",
-        type: "DELETE",
-        data: { timings: this.changes["tracks"]["deletes"] },
-        dataType: "json",
-        success: function(timings) {
-          this.$saveBtn.attr("disabled", "disabled");
-          this.changes["tracks"]["deletes"] = [];
-        }.bind(this),
-        error: function(data,e,i) {
+          this.disabledOrEnableSaveButton();
           try {
             var result = JSON.parse(data);
             alert(result.error);
-            this.$saveBtn.removeAttr("disabled");
           } catch (e) {
-            alert("Failed to save changes");
+            alert("Something went wrong while saving. We will fix this problem shortly.");
           }
-          this.changes["tracks"]["deletes"] = [];
-        }
+        }.bind(this)
       });
     }
 
+  },
+
+  clearChanges: function() {
+    this.changes["tracks"]["creates"] = [];
+    this.changes["tracks"]["updates"] = [];
+    this.changes["tracks"]["destroys"] = [];
   },
 
   seek: function(time,callback) {
