@@ -160,6 +160,14 @@ $(document).ready(function(){
 
   handleRoute();
 
+  $(".new_project").hover(function(event) {
+    $(this).find("i").css("background-color","green");
+    $(this).find("h6").css("color","green");
+  },function(event){
+    $(this).find("i").css("background-color","lightgray");
+    $(this).find("h6").css("color","gray");
+  });
+
   $("#sub_btn").on("click",function(event) {
     $("form#sub").trigger("submit");
   });

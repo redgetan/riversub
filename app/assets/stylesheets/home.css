@@ -36,6 +36,37 @@
   color: green;
 }
 
+a.new_project {
+  height: 163px;  
+  display: block;
+  position: relative;
+  text-decoration: none;
+}
+
+a.new_project:hover {
+  background-color: lightgoldenrodyellow;
+}
+
+.new_project .icon-plus {
+  -webkit-border-radius: 15px;
+  line-height: 30px;
+  top: 30%;
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  font-size: 20px;
+  margin-left: -15px;
+  background-color: lightgray;
+  color: white;
+}
+
+.new_project h6 {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  color: gray;
+}
+
 .popover {
   width: 150px;
   background-color: lightgoldenrodyellow; 
@@ -195,10 +226,17 @@ div#edit_user_sidebar .icon-chevron-right{
   color: white;
 }
 
-div#user_details {
+div#user_profile #user_details {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   padding: 10px 0;
+  margin: 10px 0;
+}
+
+div#user_profile #stats {
+  /*border-top: 1px solid #ddd;*/
+  border-bottom: 1px solid #ddd;
+  /*padding: 10px 0;*/
   margin: 10px 0;
 }
 
@@ -241,4 +279,13 @@ span.updated_at {
 
 span.repo_owner {
   font-size: 12px;
+}
+
+
+form#sub {
+  height: 15px;
+}
+
+.modal-body {
+  background-color: lightgoldenrodyellow;
 }

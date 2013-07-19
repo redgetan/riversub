@@ -2,6 +2,7 @@
 
 <div class='header-section span12'></div>
 <div class='container '>
+
     <div class='row'>
       <div id='user_profile' class='span3 offset1'>
         <div id='avatar' >
@@ -22,26 +23,43 @@
       </div>
 
       <div id='user_repositories' class='span6 offset1'>
-        <h3>Videos Subtitled</h3>
-        <div id='videos'>
-          <ul class='thumbnails'>
-            <% @user.repositories.each do |repo| %>
-            <li class='span2 center'>
-              <div class='thumbnail'>
-                <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                  <img src="<%= repo.thumbnail_url %>" alt="" >
-                </a>
-                <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                  <h6 class='video_name'><%= repo.video.name %></h6>
-                </a>
-                <ul id='stats' class="unstyled">
-                  <li><h6>timings: <%= repo.timings.count %></h6></li>
-                </ul>
-              </div>
-            </li>
-            <% end %>
-          </ul>
+        <div class='container span6 '>
+          <div class='row'>
+            <h3 class='pull-left'>Videos Subtitled</h3>
+          </div>
+          <div class='row'>
+            <div id='videos'>
+              <ul class='thumbnails'>
+                <% if user_signed_in?  %>
+                  <li class='span2 center'>
+                    <div class='thumbnail'>
+                      <a href="#" class="new_project" data-toggle='modal' data-target='#new_project_modal'>
+                        <i class='icon-plus'></i>
+                        <h6>New Project</h6>
+                      </a>
+                    </div>
+                  </li>
+                <% end %>
+                <% @user.repositories.each do |repo| %>
+                <li class='span2 center'>
+                  <div class='thumbnail'>
+                    <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                      <img src="<%= repo.thumbnail_url %>" alt="" >
+                    </a>
+                    <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                      <h6 class='video_name'><%= repo.video.name %></h6>
+                    </a>
+                    <ul id='stats' class="unstyled">
+                      <li><h6>timings: <%= repo.timings.count %></h6></li>
+                    </ul>
+                  </div>
+                </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
+
   </div>
 </div>
