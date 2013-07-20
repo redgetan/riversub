@@ -4,13 +4,15 @@
   <div id='demo-background'>
   </div>
   <div id='demo-container' class='container'>
+    <div class='row center'>
+      <p id='description'>Subtitle Tool for Youtube Videos</p>
+    </div>
     <div class='row'>
       <div class='span6'>
-        <iframe class="youtube-player" type="text/html" width="420" height="320" src="http://www.youtube.com/embed/UReuLfB2CsI" allowfullscreen frameborder="0">
+        <iframe class="youtube-player" type="text/html" width="420" height="260" src="http://www.youtube.com/embed/UReuLfB2CsI" allowfullscreen frameborder="0">
         </iframe>
       </div>
-      <div class='span4'>
-        <h3 id='description' >Add Captions/Subtitles to any Youtube Video</h3>
+      <div class='span6'>
         <div id="media_input">
           <form id="sub">
             <div class="control-group">
@@ -21,6 +23,15 @@
             </div>
           </form>
         </div>
+
+        <div id='benefits'>
+          <ul>
+            <li><span>Increase global viewership via subtitles in Multiple Languages</span></li>
+            <li><span>Add funny captions to your Favorite videos</span></li>
+            <li><span>Better understandability for non-native speakers</span></li>
+            <li><span>Share your work with your friends</span></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -29,7 +40,7 @@
 <div id='summary-container' class='container'>
   <div class='row'>
     <div class="videos span6">
-      <h4>Anonymously Subtitled Videos</h4>
+      <h4 class="center">Anonymously Subtitled Videos</h4>
       <ul class="thumbnails anonymous">
         <% Repository.anonymously_subtitled.recent.limit(3).each do |repo| %>
             <li class="span2">
@@ -50,7 +61,7 @@
     </div>
 
     <div class="videos span6">
-      <h4>User Subtitled Videos</h4>
+      <h4 class="center">User Subtitled Videos</h4>
       <ul class="thumbnails user">
         <% Repository.user_subtitled.recent.limit(3).each do |repo| %>
             <li class="span2">

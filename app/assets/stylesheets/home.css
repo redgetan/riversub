@@ -128,10 +128,17 @@ div#main_container {
 }
 
 #description {
-  margin-top: 100px;
+  font-size: 30px;
+  /*font-family: 'News Cycle', sans-serif;*/
+  /*font-weight: 700;*/
+  font-family: sans-serif;
+  margin-top: 10px;
+  margin-bottom: 30px; 
+
+/*  margin-top: 100px;
   color: black;
   white-space: nowrap;
-}
+*/}
 
 div#media_input {
 }
@@ -249,8 +256,8 @@ div.videos .thumbnails.user .thumbnail {
 }
 
 div#demo {
-  margin-top: 80px;
-  margin-bottom: 20px;
+  margin-top: 60px;
+  margin-bottom: 30px;
 }
 
 div#demo-background {
@@ -263,13 +270,14 @@ div#demo-background {
   position: absolute;
   z-index: -1;
   width: 100%;
-  height: 425px;
+  height: 370px;
   border-top: solid 1px #ccc;
   border-bottom: solid 1px #ccc;
 }
 
 div#demo-container {
-  padding: 50px 0;
+  /*padding: 50px 0;*/
+  padding-top: 20px;
 }
 
 span.updated_at {
@@ -284,7 +292,7 @@ span.repo_owner {
 
 form#sub {
   height: 30px;
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .modal-body {
@@ -297,4 +305,12 @@ form#sub {
 
 #layout_new_project_btn {
   margin-right: 30px;
+}
+
+#summary-container .thumbnail img {
+  height: 70px;
+}
+
+#benefits {
+  margin-top: 40px;
 }
