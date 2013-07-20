@@ -53,9 +53,9 @@ Editor.prototype = {
                     "<h5 id='repo_label'>" +
                       "<a href=" + this.repo.url + ">" + this.repo.video.name + "</a>" +
                     "</h5>" +
-                    "<h6 id='video_url'>" +
-                      "<a href=" + this.repo.video.url + ">" + this.repo.video.url + "</a>" +
-                    "</h6> " +
+                    // "<h6 id='video_url'>" +
+                    //   "<a href=" + this.repo.video.url + ">" + this.repo.video.url + "</a>" +
+                    // "</h6> " +
                   "</div> " +
                   "<div id='editor-top-left' class='span6'> " +
                     "<div id='media_container'> " +
@@ -87,6 +87,12 @@ Editor.prototype = {
                         // "<div class='pull-left'> " +
                         //   "<a id='add_subtitle_btn' class='btn'><i class='icon-plus'></i> Add</a> " +
                         // "</div> " +
+                        "<span class='pull-left '> " +
+                          "<select id='language_select' data-style='btn-inverse' class='selectpicker span2'>" +
+                            "<option>Portuguese</option>" +
+                            "<option>Japanese</option>" + 
+                          "</select>" +
+                        "</span> " +
                         "<div class='btn-group pull-right'> " +
                           "<a id='save_btn' class='btn btn-info'><i class='icon-save'></i> Save</a> " +
                           "<a id='download_btn' class='btn' href='" + this.repo.subtitle_download_url + "'><i class='icon-download-alt'></i> Download</a> " +
@@ -166,6 +172,9 @@ Editor.prototype = {
     this.$video_name = $("#video_name");
 
     this.$video_url = $("#video_url");
+
+    this.$language_select = $('#language_select');
+    this.$language_select.selectpicker();
   },
 
 

@@ -377,6 +377,9 @@ Subtitle.prototype = {
   },
 
   openEditor: function(event) {
+    // no need to open again if its already opened
+    if (this.$text.hasClass("editInPlace-active")) return;
+
     this.$text.data("editor").openEditor(event);
   },
 

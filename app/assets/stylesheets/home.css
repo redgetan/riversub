@@ -129,8 +129,6 @@ div#main_container {
 
 #description {
   font-size: 30px;
-  /*font-family: 'News Cycle', sans-serif;*/
-  /*font-weight: 700;*/
   font-family: sans-serif;
   margin-top: 10px;
   margin-bottom: 30px; 
@@ -292,6 +290,10 @@ span.repo_owner {
 
 form#sub {
   height: 30px;
+  margin-top: 20px;
+}
+
+#demo-container form#sub {
   margin-top: 50px;
 }
 
