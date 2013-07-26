@@ -170,19 +170,20 @@ $(document).ready(function(){
     $(this).find("h6").css("color","gray");
   });
 
-  $("#sub_btn").on("click",function(event) {
-    $("form#sub").trigger("submit");
+  $(".sub_btn").on("click",function(event) {
+    event.preventDefault();
+    $(this).closest("form").trigger("submit");
   });
 
-  $("form#sub").on("submit",function(event) {
+  $("form.sub").on("submit",function(event) {
     event.preventDefault();
 
-    var url = $("input#media_url").val();
+    var url = $(this).find(".media_url").val();
 
     try {
-      openSubtitleEditor(url);
+      openSubtitleEditor(url,$(this));
     } catch(e) {
-      handleOpenSubtitleEditorError(e);
+      handleOpenSubtitleEditorError(e,$(this));
       throw e;
     }
 
@@ -190,26 +191,25 @@ $(document).ready(function(){
 
 });
 
-function handleOpenSubtitleEditorError(e) {
-  $("form#sub .control-group").addClass("error");
-  $("form#sub .control-group").append("<span class='help-inline'>" + e + "</span>");
+function handleOpenSubtitleEditorError(e,$form) {
+  $form.find(".control-group").addClass("error");
+  $form.find(".control-group").append("<span class='help-inline'>" + e + "</span>");
   setTimeout(function(){
-    $("form#sub span.help-inline").remove();
-    $("form#sub .control-group").removeClass("error");
+    $form.find("span.help-inline").remove();
+    $form.find(".control-group").removeClass("error");
   },2000);
 
   $("#ajax_loader").remove();
-  $("#sub_btn").button('reset');
+  $form.find(".sub_btn").button('reset');
 }
 
-function openSubtitleEditor(url) {
+function openSubtitleEditor(url,$form) {
 
   if (!url.match(/youtube/)) {
     throw "Only youtube urls are allowed";
   }
 
-  $("form#sub").append("<img id='ajax_loader' src='/assets/ajax-loader.gif' >");
-  $("#sub_btn").button('loading');
+  $form.find(".sub_btn").button('loading');
 
   getMetadata(url,function(data){
     metadata  = data;
@@ -230,7 +230,7 @@ function openSubtitleEditor(url) {
       url: "/videos/sub",
       type: "POST",
       data: {
-        media_url : $("input#media_url").val(),
+        media_url : url,
         video_metadata: metadata
       },
       dataType: "json",

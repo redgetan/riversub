@@ -141,7 +141,7 @@ div#main_container {
 div#media_input {
 }
 
-input#media_url {
+input.media_url {
 }
 
 div.videos {
@@ -288,12 +288,12 @@ span.repo_owner {
 }
 
 
-form#sub {
+form.sub {
   height: 30px;
   margin-top: 20px;
 }
 
-#demo-container form#sub {
+#demo-container form.sub {
   margin-top: 50px;
 }
 
