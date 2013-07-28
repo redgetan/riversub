@@ -87,12 +87,12 @@ Editor.prototype = {
                         // "<div class='pull-left'> " +
                         //   "<a id='add_subtitle_btn' class='btn'><i class='icon-plus'></i> Add</a> " +
                         // "</div> " +
-                        "<span class='pull-left '> " +
-                          "<select id='language_select' data-style='btn-inverse' class='selectpicker span2'>" +
-                            "<option>Portuguese</option>" +
-                            "<option>Japanese</option>" + 
-                          "</select>" +
-                        "</span> " +
+                        // "<span class='pull-left '> " +
+                        //   "<select id='language_select' data-style='btn-inverse' class='selectpicker span2'>" +
+                        //     "<option>Portuguese</option>" +
+                        //     "<option>Japanese</option>" + 
+                        //   "</select>" +
+                        // "</span> " +
                         "<div class='btn-group pull-right'> " +
                           "<a id='save_btn' class='btn btn-info'><i class='icon-save'></i> Save</a> " +
                           "<a id='download_btn' class='btn' href='" + this.repo.subtitle_download_url + "'><i class='icon-download-alt'></i> Download</a> " +
