@@ -50,7 +50,7 @@ Timeline.prototype = {
 
 
     this.$expanded_container = $("#timeline_container");
-    this.$expanded_container.append(expanded);
+    this.$expanded_container.prepend(expanded);
 
     this.$expanded = $("#expanded");
     this.$expanded_track_viewport = $("#track_viewport");

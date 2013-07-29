@@ -22,7 +22,7 @@ text.time {
 }
 
 div#editor {
-	margin-top: 20px;
+	margin-top: 10px;
 }
 
 div#editor #repo_label,
@@ -44,7 +44,6 @@ div#player #video_url {
 
 div#editor #controls,
 div#player #controls {
-	padding: 10px;
 	margin-top: 10px;
 }
 
@@ -53,7 +52,7 @@ textarea#transcript {
 }
 
 div#editor-bottom {
-	margin-top: 20px;
+	margin-top: 30px;
 }
 
 #timeline_container {
@@ -159,7 +158,7 @@ div#editor-bottom {
 }
 
 #subtitle_container {
-	margin-left: 20px;
+	/*margin-left: 20px;*/
   	padding: 10px;
 	border: solid 1px black ;
 }
@@ -171,8 +170,8 @@ div#editor-bottom {
 }
 
 #subtitle_list {
-  	padding: 10px;
-	height: 245px;
+  	/*padding: 10px;*/
+	height: 200px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	/*border: solid 1px black;*/

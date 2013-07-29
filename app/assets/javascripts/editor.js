@@ -57,7 +57,7 @@ Editor.prototype = {
                     //   "<a href=" + this.repo.video.url + ">" + this.repo.video.url + "</a>" +
                     // "</h6> " +
                   "</div> " +
-                  "<div id='editor-top-left' class='span6'> " +
+                  "<div class='span12'> " +
                     "<div id='media_container'> " +
                       "<div id='subtitle_bar' class='span6 center'> " +
                         "<span id='subtitle_display' class='span5 center'></span> " +
@@ -68,56 +68,83 @@ Editor.prototype = {
                         "<div id='seek_head_corner'></div>" +
                         "<div id='seek_head_body'></div>" +
                       "</div>" +
-                      "<div id='controls' class='row'> " +
-                        "<div class='pull-left span1'> " +
-                          "<button type='button' id='play_btn' class='btn'><i class='icon-play'></i></button> " +
-                          "<button type='button' id='pause_btn' class='btn'><i class='icon-pause'></i></button> " +
-                        "</div> " +
-                        "<div class='btn-group pull-right'> " +
-                          "<a id='start_timing_btn' class='btn'><i class='icon-circle'></i> Start Timing</a> " +
-                          "<a id='stop_timing_btn' class='btn'><i class='icon-circle'></i> Stop</a> " +
-                        "</div> " +
-                      "</div> " +
                     "</div> " +
                   "</div> " +
-                  "<div id='editor-top-right' class='span6'> " +
-                    "<div id='subtitle_container'> " +
-                      "<div id='subtitle_list'></div> " +
-                      "<div id='controls_extra' class='row'> " +
-                        // "<div class='pull-left'> " +
-                        //   "<a id='add_subtitle_btn' class='btn'><i class='icon-plus'></i> Add</a> " +
-                        // "</div> " +
-                        // "<span class='pull-left '> " +
-                        //   "<select id='language_select' data-style='btn-inverse' class='selectpicker span2'>" +
-                        //     "<option>Portuguese</option>" +
-                        //     "<option>Japanese</option>" + 
-                        //   "</select>" +
-                        // "</span> " +
-                        "<div class='btn-group pull-right'> " +
-                          "<a id='save_btn' class='btn btn-info'><i class='icon-save'></i> Save</a> " +
-                          "<a id='download_btn' class='btn' href='" + this.repo.subtitle_download_url + "'><i class='icon-download-alt'></i> Download</a> " +
-                          "<a id='help_btn' data-toggle='modal' data-target='#instructions_modal' class='btn'><i class='icon-question-sign'></i></a> " +
-                        "</div> " +
-                      "</div> " +
-                    "</div> " +
-                  "</div> " +
+                  // "<div id='editor-top-right' class='span6'> " +
+                  // "</div> " +
                 "</div> " +
                 "<div id='editor-bottom' class='row'> " +
                   "<div class='span12'> " +
-                    "<div id='timeline_container'></div> " +
-                  "</div> " +
-                "</div> " +
-                "<div id='keyboard-shortcuts' class='row'> " +
-                  "<div class='span12 '> " +
-                    "<span class='pull-right'>" +
-                      "<b>Keyboard Shortcuts: </b>  " +
-                      "<kbd class='light'>Shift</kbd> Start/Stop Timing " +
-                      "<kbd class='light'>Space</kbd> Play/Pause" +
-                      "<kbd class='light'>Esc</kbd>   Cancel " +
-                    "</span>" +
-                  "</div> " +
-                "</div> " +
-              "</div>";
+                    "<ul class='nav nav-tabs span3'>" +
+                      "<li class='active'><a href='#timeline_tab' data-toggle='tab'>Timeline</a></li>" +
+                      "<li><a href='#subtitle_tab' data-toggle='tab'>Subtitle</a></li>" +
+                    "</ul>" +
+                    "<div id='controls' class='span9'> " +
+                      // "<div class='pull-left span1'> " +
+                      //   "<button type='button' id='play_btn' class='btn'><i class='icon-play'></i></button> " +
+                      //   "<button type='button' id='pause_btn' class='btn'><i class='icon-pause'></i></button> " +
+                      // "</div> " +
+                      // "<div class='pull-left span3 offset4'> " +
+                        // "<ul class='nav nav-tabs btn-group'>" +
+                        //   "<button href='#timeline_tab' class='btn' type='button' data-toggle='tab'>Timeline</button>" +
+                        //   "<button href='#subtitle_tab' class='btn' type='button' data-toggle='tab'>Subtitle</button>" +
+                        // "</ul>" +
+                      // "</div> " +
+                      "<div class='btn-group pull-right'> " +
+                        "<a id='save_btn' class='btn btn-info'><i class='icon-save'></i> Save</a> " +
+                        "<a id='download_btn' class='btn' href='" + this.repo.subtitle_download_url + "'><i class='icon-download-alt'></i> Download</a> " +
+                        "<a id='help_btn' data-toggle='modal' data-target='#instructions_modal' class='btn'><i class='icon-question-sign'></i></a> " +
+                      "</div> " +
+                      "<div class='btn-group pull-right'> " +
+                        "<a id='start_timing_btn' class='btn'><i class='icon-circle'></i> Start Timing</a> " +
+                        "<a id='stop_timing_btn' class='btn'><i class='icon-circle'></i> Stop</a> " +
+                      "</div> " +
+                    "</div> " +
+                  "</div> " + // .span12
+
+                  "<div class='span12'> " +
+                    "<div class='tab-content'>" +
+                      "<div class='tab-pane active' id='timeline_tab'>" +
+
+                        "<div id='timeline_container'>" +
+                          "<div id='keyboard-shortcuts' class='row'> " +
+                            "<div class='span12 '> " +
+                              "<span class='pull-right'>" +
+                                "<b>Keyboard Shortcuts: </b>  " +
+                                "<kbd class='light'>Shift</kbd> Start/Stop Timing " +
+                                "<kbd class='light'>Space</kbd> Play/Pause" +
+                                "<kbd class='light'>Esc</kbd>   Cancel " +
+                              "</span>" +
+                            "</div> " +
+                          "</div> " +
+                        "</div> " +
+
+                      "</div>" +
+                      "<div class='tab-pane' id='subtitle_tab'>" + 
+
+                        "<div id='subtitle_container'> " +
+                          "<div id='subtitle_list'></div> " +
+                          "<div id='controls_extra' class='row'> " +
+                            // "<div class='pull-left'> " +
+                            //   "<a id='add_subtitle_btn' class='btn'><i class='icon-plus'></i> Add</a> " +
+                            // "</div> " +
+                            // "<span class='pull-left '> " +
+                            //   "<select id='language_select' data-style='btn-inverse' class='selectpicker span2'>" +
+                            //     "<option>Portuguese</option>" +
+                            //     "<option>Japanese</option>" + 
+                            //   "</select>" +
+                            // "</span> " +
+                          "</div> " + // #controls_extra
+                        "</div> " +   // #subtitle_container
+
+                      "</div>" +   // tab pane
+                    "</div>" +     // tab content
+
+                  "</div> " + // .span12
+
+                "</div> " +   // #editor-bottom.row
+              "</div>" +  // #editor
+            "</div>";  // container
 
     this.$container.append(el);
     this.$el = $("#editor");
@@ -130,7 +157,10 @@ Editor.prototype = {
     }
 
     var media = this.options["media"] || "<div id='media'>" +
-                                           "<div id='iframe_overlay'></div>" +
+                                             "<div id='overlay_btn'><i class='icon-play'></i></div>" +
+                                           "<div id='iframe_overlay'>" +
+                                           "</div>" +
+                                           "<div id='iframe_container'></div>" +
                                          "</div> ";
 
     this.$container.find("#media_container").prepend(media);
@@ -168,6 +198,7 @@ Editor.prototype = {
     this.$subtitleEdit.hide();
 
     this.$iframeOverlay = $("#iframe_overlay");
+    this.$overlay_btn = $("#overlay_btn");
 
     this.$video_name = $("#video_name");
 
@@ -216,9 +247,9 @@ Editor.prototype = {
   loadMedia: function(url) {
     var popcorn;
     if (url == "") {
-      popcorn = Popcorn("#media");
+      popcorn = Popcorn("#iframe_container");
     } else {
-      popcorn = Popcorn.smart("#media",url);
+      popcorn = Popcorn.smart("#iframe_container",url);
     }
     return popcorn;
   },
@@ -249,6 +280,8 @@ Editor.prototype = {
     this.$startTimingBtn.on("click",this.onStartTimingBtn.bind(this));
     this.$stopTimingBtn.on("click",this.onStopTimingBtn.bind(this));
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
+    this.$iframeOverlay.on("mouseenter",this.onIframeOverlayMouseEnter.bind(this));
+    this.$iframeOverlay.on("mouseleave",this.onIframeOverlayMouseLeave.bind(this));
     this.$subtitleEdit.on("focus",this.onSubtitleEditFocus.bind(this));
     this.$subtitleEdit.on("blur",this.onSubtitleEditBlur.bind(this));
     this.$subtitleEdit.on("keyup",this.onSubtitleEditKeyup.bind(this));
@@ -358,14 +391,18 @@ Editor.prototype = {
   },
 
   onPlay: function(event) {
-    this.$playBtn.hide();
-    this.$pauseBtn.show();
+    // this.$playBtn.hide();
+    // this.$pauseBtn.show();
+    this.$overlay_btn.find("i").removeClass("icon-play");
+    this.$overlay_btn.find("i").addClass("icon-pause");
   },
 
   onPause: function(event) {
     this.seek(this.lastTimeUpdateTime);
-    this.$pauseBtn.hide();
-    this.$playBtn.show();
+    // this.$pauseBtn.hide();
+    // this.$playBtn.show();
+    this.$overlay_btn.find("i").removeClass("icon-pause");
+    this.$overlay_btn.find("i").addClass("icon-play");
   },
 
   onLoadedMetadata: function(event) {
@@ -568,6 +605,16 @@ Editor.prototype = {
 
   onIframeOverlayClick: function(event) {
     this.togglePlayPause();
+  },
+
+  onIframeOverlayMouseEnter: function(event) {
+    this.$overlay_btn.show();
+  },
+
+  onIframeOverlayMouseLeave: function(event) {
+    if (!this.media.paused) {
+      this.$overlay_btn.hide();
+    }
   },
 
   togglePlayPause: function() {
