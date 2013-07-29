@@ -10,10 +10,10 @@
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-right: 20px;
-  padding-left: 25px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-right: 15px;
+  padding-left: 20px;
 }
 
 .axis path, .axis line {
@@ -184,7 +184,7 @@ div#media_container {
 
 div#media {
   position: relative;
-  height: 210px;
+  height: 200px;
   width: inherit;
   background-color: #000;
 }

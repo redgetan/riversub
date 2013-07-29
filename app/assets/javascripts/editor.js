@@ -124,7 +124,6 @@ Editor.prototype = {
 
                         "<div id='subtitle_container'> " +
                           "<div id='subtitle_list'></div> " +
-                          "<div id='controls_extra' class='row'> " +
                             // "<div class='pull-left'> " +
                             //   "<a id='add_subtitle_btn' class='btn'><i class='icon-plus'></i> Add</a> " +
                             // "</div> " +
@@ -134,7 +133,6 @@ Editor.prototype = {
                             //     "<option>Japanese</option>" + 
                             //   "</select>" +
                             // "</span> " +
-                          "</div> " + // #controls_extra
                         "</div> " +   // #subtitle_container
 
                       "</div>" +   // tab pane
@@ -206,6 +204,8 @@ Editor.prototype = {
 
     this.$language_select = $('#language_select');
     this.$language_select.selectpicker();
+
+    this.$keyboard_shortcuts = $("#keyboard-shortcuts");
   },
 
 
@@ -290,6 +290,12 @@ Editor.prototype = {
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+
+    $('a[data-toggle="tab"]').on('shown', this.onTabShown.bind(this));
+  },
+
+  onTabShown: function(event) {
+
   },
 
   onDocumentClick: function(event) {
@@ -395,6 +401,9 @@ Editor.prototype = {
     // this.$pauseBtn.show();
     this.$overlay_btn.find("i").removeClass("icon-play");
     this.$overlay_btn.find("i").addClass("icon-pause");
+    if ($("#expanded:hover").length === 0) {
+      this.$overlay_btn.hide();
+    }
   },
 
   onPause: function(event) {

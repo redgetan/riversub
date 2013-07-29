@@ -355,6 +355,36 @@ $(document).ready(function(){
     //   equal(editor.numTracks,1);
     // });
 
+
+
+    /*
+     *
+     *  ---------- TIMELINE TEST ---------------------
+     *
+     */
+
+     // presence of expanded should not affect:
+     //   summary window sliding
+     //     current window start/end
+     //     if currentTime is beyond that, slide window in 30 sec increment to that currentime
+     //      initially, current_window = [0,30]
+     //      if seek to 42, current_window = [30,60], should trigger event, window_slide, [30,60]
+
+     //   track rendering
+     //   resolution
+
+    test( "timeline resolution should work", function() {
+      var popcorn = Popcorn("#media");
+      var track;
+
+      track = new Track({ start_time: 4, end_time: 7}, popcorn);
+
+      equal(popcorn.getTrackEvents().length,1);
+      track.remove();
+      equal(popcorn.getTrackEvents().length,0);
+    });
+
+
   });
 
 });

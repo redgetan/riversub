@@ -70,7 +70,6 @@ div#editor-bottom {
 #expanded.timeline {
 	height: 110px;
 	border: solid 1px black ;
-	position: relative;
 	overflow: hidden;
 }
 
@@ -159,8 +158,7 @@ div#editor-bottom {
 
 #subtitle_container {
 	/*margin-left: 20px;*/
-  	padding: 10px;
-	border: solid 1px black ;
+  	/*padding: 10px;*/
 }
 
 #subtitle_container #controls_extra {
@@ -170,11 +168,11 @@ div#editor-bottom {
 }
 
 #subtitle_list {
-  	/*padding: 10px;*/
-	height: 200px;
+  	padding: 0px 10px;
+	height: 180px;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	/*border: solid 1px black;*/
+	border: solid 1px black;
 }
 
 #subtitle_list table {
