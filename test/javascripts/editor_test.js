@@ -373,15 +373,19 @@ $(document).ready(function(){
      //   track rendering
      //   resolution
 
-    test( "timeline resolution should work", function() {
-      var popcorn = Popcorn("#media");
-      var track;
-
-      track = new Track({ start_time: 4, end_time: 7}, popcorn);
-
-      equal(popcorn.getTrackEvents().length,1);
-      track.remove();
-      equal(popcorn.getTrackEvents().length,0);
+    test( "timeline resolution should work whether or not elements are visible", function() {
+      var media = $("#media")[0];
+      var timeline = new Timeline(media);
+      var summaryWidth = timeline.$summary.width();
+      var expandedWidth = timeline.$expanded.width();
+      var summaryWidthInSec = media.duration;
+      var expandedWidthInSec = 30;
+      equal(timeline.resolution(timeline.$summary),summaryWidth / summaryWidthInSec);
+      equal(timeline.resolution(timeline.$expanded),expandedWidth / expandedWidthInSec);
+      timeline.$summary.hide();
+      timeline.$expanded.hide();
+      equal(timeline.resolution(timeline.$summary),summaryWidth / summaryWidthInSec);
+      equal(timeline.resolution(timeline.$expanded),expandedWidth / expandedWidthInSec);
     });
 
 

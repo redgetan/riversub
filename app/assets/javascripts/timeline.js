@@ -1,6 +1,6 @@
-function Timeline () {
-  this.media = null;
+function Timeline (media) {
   this.setupElement();
+  this.setMedia(media);
 
   this.isScrubberVisible = true;
   this.force_scroll_window = false;
@@ -60,6 +60,8 @@ Timeline.prototype = {
     this.$time_indicator = $("#expanded .time_indicator");
     this.$filler = $("#expanded .filler");
 
+    this.expandedWidth = this.$expanded.width();
+    this.summaryWidth = this.$summary.width();
 
   },
 
@@ -405,20 +407,26 @@ Timeline.prototype = {
 
   // how many pixels per second
   resolution: function($container) {
-    var widthPixel = $container.width();
-    var widthSeconds = $container.attr("id") === "summary" ? 
-                         this.summaryTimelineWidthInSeconds() :
-                         this.expandedTimelineWidthInSeconds();
+    var widthPixel = this.getContainerWidthInPixels($container);
+    var widthSeconds = this.getContainerWidthInSeconds($container);
 
     return widthPixel / widthSeconds ;
   },
 
-  summaryTimelineWidthInSeconds: function() {
-    return this.media.duration || 30;
+  getContainerWidthInPixels: function($container) {
+    if ($container.attr("id") === "summary") {
+      return this.summaryWidth;
+    } else {
+      return this.expandedWidth;
+    } 
   },
 
-  expandedTimelineWidthInSeconds: function() {
-    return 30; //always 30 seconds
+  getContainerWidthInSeconds: function($container) {
+    if ($container.attr("id") === "summary") {
+      return this.media.duration || 30; 
+    } else {
+      return 30;
+    } 
   },
 
   isOutOfBounds: function($container,$el) {

@@ -182,14 +182,14 @@ div#media_container {
   /*margin-right: 15px;*/
 }
 
-div#media {
+div#iframe_container {
   position: relative;
   height: 200px;
   width: inherit;
   background-color: #000;
 }
 
-div#media #iframe_overlay {
+div#iframe_container #iframe_overlay {
   height: inherit;
   width: inherit;
   position: absolute;
@@ -198,7 +198,7 @@ div#media #iframe_overlay {
   opacity: 0;
 }
 
-div#media #iframe_container {
+div#iframe_container #media {
   height: inherit;
   width: 50%;
   margin: auto;

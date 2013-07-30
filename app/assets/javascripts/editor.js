@@ -20,8 +20,7 @@ function Editor (repo,options) {
   this.popcorn.volume(0.2);
 
   this.subtitleView = new SubtitleView(subtitles);
-  this.timeline = new Timeline();
-  this.timeline.setMedia(this.popcorn.media);
+  this.timeline = new Timeline(this.popcorn.media);
 
   this.trackMap = {}
   this.tracks = this.loadTracks(timings);
@@ -154,11 +153,11 @@ Editor.prototype = {
       this.$el.find("#repo_label").prepend(repo_owner);
     }
 
-    var media = this.options["media"] || "<div id='media'>" +
+    var media = this.options["media"] || "<div id='iframe_container'>" +
                                              "<div id='overlay_btn'><i class='icon-play'></i></div>" +
                                            "<div id='iframe_overlay'>" +
                                            "</div>" +
-                                           "<div id='iframe_container'></div>" +
+                                           "<div id='media'></div>" +
                                          "</div> ";
 
     this.$container.find("#media_container").prepend(media);
@@ -247,9 +246,9 @@ Editor.prototype = {
   loadMedia: function(url) {
     var popcorn;
     if (url == "") {
-      popcorn = Popcorn("#iframe_container");
+      popcorn = Popcorn("#media");
     } else {
-      popcorn = Popcorn.smart("#iframe_container",url);
+      popcorn = Popcorn.smart("#media",url);
     }
     return popcorn;
   },
