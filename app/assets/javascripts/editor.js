@@ -26,6 +26,7 @@ function Editor (repo,options) {
   this.tracks = this.loadTracks(timings);
   this.timeline.setTracks(this.tracks);
 
+
   this.changes = {
     tracks: {
       creates: [],
@@ -766,35 +767,35 @@ Editor.prototype = {
     } else {
       this.$saveBtn.attr("disabled","disabled");
     }
+    var creates = this.changes["tracks"]["creates"];
+    var updates = this.changes["tracks"]["updates"];
+    var destroys = this.changes["tracks"]["destroys"];
 
-    if (this.changes["tracks"]["creates"].length > 0 || 
-        this.changes["tracks"]["updates"].length > 0 ||
-        this.changes["tracks"]["destroys"].length > 0) {
+    if (creates.length > 0 || 
+        updates.length > 0 ||
+        destroys.length > 0) {
 
       $.ajax({
         url: "/repositories/" + this.repo.id +"/timings/save",
         type: "POST",
         data: { 
           timings: {
-            "creates": $.map(this.changes["tracks"]["creates"],function(track){ return track.getAttributes(); } ),
-            "updates": $.map(this.changes["tracks"]["updates"],function(track){ return track.getAttributes(); } ),
-            "destroys": this.changes["tracks"]["destroys"]
+            "creates": $.map(creates,function(track){ return track.getAttributes(); } ),
+            "updates": $.map(updates,function(track){ return track.getAttributes(); } ),
+            "destroys": destroys
           }
         },
         dataType: "json",
         success: function(data) {
-          var creates = data["creates"];
-          var updates = data["updates"];
-
-          if (creates.length > 0) this.setIds(creates);
-          if (updates.length > 0) {
-            for (var i = 0; i < updates.length; i++) {
-              var track = this.trackMap[updates[i].client_id];
+          if (data["creates"].length > 0) this.setIds(data["creates"]);
+          if (data["updates"].length > 0) {
+            for (var i = 0; i < data["updates"].length; i++) {
+              var track = this.trackMap[data["updates"][i].client_id];
               track.isSaved = true;
             }
           }
+          this.clearChanges(creates,updates,destroys);
           this.disabledOrEnableSaveButton();
-          this.clearChanges();
         }.bind(this),
         error: function(data,e,i) {
           this.disabledOrEnableSaveButton();
@@ -810,10 +811,10 @@ Editor.prototype = {
 
   },
 
-  clearChanges: function() {
-    this.changes["tracks"]["creates"] = [];
-    this.changes["tracks"]["updates"] = [];
-    this.changes["tracks"]["destroys"] = [];
+  clearChanges: function(creates,updates,destroys) {
+    this.changes["tracks"]["creates"].splice(0,creates.length);
+    this.changes["tracks"]["updates"].splice(0,updates.length);
+    this.changes["tracks"]["destroys"].splice(0,destroys.length);
   },
 
   seek: function(time,callback) {

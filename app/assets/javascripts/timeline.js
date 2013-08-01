@@ -1,10 +1,15 @@
-function Timeline (media) {
+function Timeline (media,tracks) {
   this.setupElement();
   this.setMedia(media);
+  this.setTracks(tracks);
 
   this.isScrubberVisible = true;
   this.force_scroll_window = false;
   this.windowSlideTimeoutQueue = [];
+
+  if (!this.initAfterMediaReadyCalled && this.media.readyState === 4) {
+    this.initAfterMediaReady();
+  }
 }
 
 Timeline.prototype = {
@@ -66,7 +71,7 @@ Timeline.prototype = {
   },
 
   setTracks: function(tracks) {
-    this.tracks = tracks;
+    this.tracks = tracks || [];
   },
 
   setMedia: function(media) {
@@ -151,6 +156,20 @@ Timeline.prototype = {
     this.renderSeekHead();
 
     this.renderTimeIndicator();
+
+    // trigger appear/disappear events
+    if (this.isOutOfBounds()) {
+      if (this.force_scroll_window || this.isScrubberVisible) {
+        this.$scrubber_expanded.trigger("disappear");
+        this.isScrubberVisible = false;
+        this.force_scroll_window = false;
+      }
+    } else {
+      if (!this.isScrubberVisible) {
+        this.$scrubber_expanded.trigger("appear");
+        this.isScrubberVisible = true;
+      } 
+    }
   },
 
   onTimelineSeek: function(event) {
@@ -160,6 +179,13 @@ Timeline.prototype = {
 
   onLoadedMetadata: function() {
     // events that should happen after loading metadata
+    if (!this.initAfterMediaReadyCalled) {
+      this.initAfterMediaReady();
+    }
+  },
+
+  initAfterMediaReady: function() {
+    this.initAfterMediaReadyCalled = true;
     this.$expanded.on("mousewheel",this.onExpandedTimelineScroll.bind(this));
 
     this.$window_slider.css("width",this.resolution(this.$summary) * 30);
@@ -169,6 +195,8 @@ Timeline.prototype = {
     this.$expanded_time_label.append(timeline_label);
 
     this.renderTracks();
+
+    this.current_window_slide = { start: 0, end: this.media.duration < 30 ? this.media.duration : 30 };
   },
 
   onGhostTrackStart: function(event,track) {
@@ -277,6 +305,10 @@ Timeline.prototype = {
     }
   },
 
+  seek: function(seconds,callback) {
+
+  },
+
   onSummaryMouseLeaveHandler: function(event) {
     if (!this.seekmode) {
       this.$time_float.hide();
@@ -365,19 +397,6 @@ Timeline.prototype = {
     this.renderInContainer(this.$summary, this.$scrubber_summary, { left: this.media.currentTime.toFixed(3) });
     this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
 
-    // trigger appear/disappear events
-    if (this.isOutOfBounds(this.$expanded,this.$scrubber_expanded)) {
-      if (this.force_scroll_window || this.isScrubberVisible) {
-        this.$scrubber_expanded.trigger("disappear");
-        this.isScrubberVisible = false;
-        this.force_scroll_window = false;
-      }
-    } else {
-      if (!this.isScrubberVisible) {
-        this.$scrubber_expanded.trigger("appear");
-        this.isScrubberVisible = true;
-      } 
-    }
   },
 
   onScrubberDisappear: function(event) {
@@ -429,26 +448,34 @@ Timeline.prototype = {
     } 
   },
 
-  isOutOfBounds: function($container,$el) {
-    var containerStart = $container.scrollLeft();
-    var containerEnd   = containerStart + $container.width();
-    var elRight        = this.getRightPos($el);
-
-    // console.log("start: " + containerStart + " end: "   + containerEnd + " el: "   +  elRight);
-
-    if (elRight >= containerStart && elRight <= containerEnd ) {
-      return false;
-    } else {
+  isOutOfBounds: function() {
+    // is current time with current_window_slide
+    if (this.media.currentTime < this.current_window_slide.start || 
+        this.media.currentTime > this.current_window_slide.end      ) {
       return true;
+    } else {
+      return false;
+    }
+  },
+
+  ensureCorrectWindowPosition: function() {
+    // check scrollLeft - it must be equal to index * this.summaryWidth, otherwise set it to that
+    var correctWindowPos = this.current_window_slide.start * this.resolution(this.$expanded) ;
+    if (this.$expanded.scrollLeft !== correctWindowPos) {
+      this.$expanded.animate({scrollLeft: correctWindowPos},300);
     }
   },
 
   scrollContainerToElementAndMoveWindowSlider: function($container,$el) {
     // if (!this.media.paused) {
-      var elRight = this.getRightPos($el);
-      var width = $container.width();
-      var index = Math.floor(elRight / width);
-      var pos   = index * width;
+
+      // find out which window_slide index to scroll element to
+      var window_slide_duration = 30;
+      var index = Math.floor(this.media.currentTime / window_slide_duration);
+      var pos   = index * window_slide_duration;
+
+      this.current_window_slide = { start: pos, end: pos + 30 > this.media.duration ? this.media.duration : pos + 30};
+
       var windowSlideTimeout;
 
       // if queue is not empty, clear all timeouts and replace it with our new one
@@ -461,9 +488,9 @@ Timeline.prototype = {
       }
 
       windowSlideTimeout = setTimeout(function() { 
-        $container.animate({scrollLeft: pos},300,function(){
+        $container.animate({scrollLeft: this.current_window_slide.start * this.resolution($container)},300,function(){
           // trigger appear/disappear events
-          if (this.isOutOfBounds(this.$expanded,this.$scrubber_expanded)) {
+          if (this.isOutOfBounds()) {
             if (this.isScrubberVisible) {
               this.$scrubber_expanded.trigger("disappear");
               this.isScrubberVisible = false;
@@ -479,6 +506,7 @@ Timeline.prototype = {
       }.bind(this),100);
 
       this.windowSlideTimeoutQueue.push(windowSlideTimeout);
+      this.$summary.trigger("window.scroll");
     // }
   },
 
@@ -536,6 +564,10 @@ Timeline.prototype = {
     // }
 
     return result;
+  },
+
+  on: function(event_name,callback) {
+    this.$summary.on(event_name,callback);  
   }
 
 };

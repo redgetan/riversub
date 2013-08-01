@@ -388,6 +388,22 @@ $(document).ready(function(){
       equal(timeline.resolution(timeline.$expanded),expandedWidth / expandedWidthInSec);
     });
 
+    asyncTest( "timeline isOutOfBounds should work independently of element visibility",4, function() {
+      var media = $("#media")[0];
+      var timeline = new Timeline(media);
+
+      equal(timeline.isOutOfBounds(),false);
+      deepEqual(timeline.current_window_slide,{start: 0, end: 30});
+      timeline.media.currentTime = 35;
+      equal(timeline.isOutOfBounds(),true);
+      timeline.on("window.scroll",function(){
+        console.log(timeline.current_window_slide);
+        deepEqual(timeline.current_window_slide,{start: 30, end: 60});
+        start();
+      });
+
+    });
+
 
   });
 

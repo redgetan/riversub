@@ -161,7 +161,9 @@ $(document).ready(function(){
   handleRoute();
 
   $('[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    // console.log(e.target);
+    if ($(e.target).attr("href") === "#timeline_tab") {
+      editor.timeline.ensureCorrectWindowPosition();
+    }
     // console.log(e.relatedTarget);
   })
 
