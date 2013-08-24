@@ -401,9 +401,9 @@ Editor.prototype = {
     // this.$pauseBtn.show();
     this.$overlay_btn.find("i").removeClass("icon-play");
     this.$overlay_btn.find("i").addClass("icon-pause");
-    if ($("#expanded:hover").length === 0) {
-      this.$overlay_btn.hide();
-    }
+    // if ($("#expanded:hover").length === 0) {
+    //   this.$overlay_btn.hide();
+    // }
   },
 
   onPause: function(event) {
