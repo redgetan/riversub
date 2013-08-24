@@ -75,11 +75,12 @@ Editor.prototype = {
                 "</div> " +
                 "<div id='editor-bottom' class='row'> " +
                   "<div class='span12'> " +
-                    "<ul class='nav nav-tabs span3'>" +
+                    "<ul class='nav nav-tabs span5'>" +
                       "<li class='active'><a href='#timeline_tab' data-toggle='tab'>Timeline</a></li>" +
                       "<li><a href='#subtitle_tab' data-toggle='tab'>Subtitle</a></li>" +
+                      "<li><a href='#download_tab' data-toggle='tab'>Download</a></li>" +
                     "</ul>" +
-                    "<div id='controls' class='span9'> " +
+                    "<div id='controls' class='span7'> " +
                       // "<div class='pull-left span1'> " +
                       //   "<button type='button' id='play_btn' class='btn'><i class='icon-play'></i></button> " +
                       //   "<button type='button' id='pause_btn' class='btn'><i class='icon-pause'></i></button> " +
@@ -91,14 +92,13 @@ Editor.prototype = {
                         // "</ul>" +
                       // "</div> " +
                       "<div class='btn-group pull-right'> " +
-                        "<a id='save_btn' class='btn btn-info'><i class='icon-save'></i> Save</a> " +
-                        "<a id='download_btn' class='btn' href='" + this.repo.subtitle_download_url + "'><i class='icon-download-alt'></i> Download</a> " +
-                        "<a id='help_btn' data-toggle='modal' data-target='#instructions_modal' class='btn'><i class='icon-question-sign'></i></a> " +
-                      "</div> " +
-                      "<div class='btn-group pull-right'> " +
                         "<a id='start_timing_btn' class='btn'><i class='icon-circle'></i> Start Timing</a> " +
                         "<a id='stop_timing_btn' class='btn'><i class='icon-circle'></i> Stop</a> " +
+                        "<a id='save_btn' class='btn btn-success'><i class='icon-save'></i> Save</a> " +
+                        "<a id='help_btn' data-toggle='modal' data-target='#instructions_modal' class='btn'><i class='icon-question-sign'></i></a> " +
                       "</div> " +
+                      // "<div class='btn-group pull-right'> " +
+                      // "</div> " +
                     "</div> " +
                   "</div> " + // .span12
 
@@ -107,16 +107,6 @@ Editor.prototype = {
                       "<div class='tab-pane active' id='timeline_tab'>" +
 
                         "<div id='timeline_container'>" +
-                          "<div id='keyboard-shortcuts' class='row'> " +
-                            "<div class='span12 '> " +
-                              "<span class='pull-right'>" +
-                                "<b>Keyboard Shortcuts: </b>  " +
-                                "<kbd class='light'>Shift</kbd> Start/Stop Timing " +
-                                "<kbd class='light'>Space</kbd> Play/Pause" +
-                                "<kbd class='light'>Esc</kbd>   Cancel " +
-                              "</span>" +
-                            "</div> " +
-                          "</div> " +
                         "</div> " +
 
                       "</div>" +
@@ -136,8 +126,25 @@ Editor.prototype = {
                         "</div> " +   // #subtitle_container
 
                       "</div>" +   // tab pane
+                      "<div class='tab-pane' id='download_tab'>" + 
+                        "<div id='download_container'> " +
+                          "<a id='download_btn' href='" + this.repo.subtitle_download_url + "'>" + this.repo.filename + "</a> " +
+                        "</div> " +   // #subtitle_container
+                      "</div>" +   // tab pane
                     "</div>" +     // tab content
 
+                  "</div> " + // .span12
+                  "<div class='span12'> " +
+                          "<div id='keyboard-shortcuts' class='row'> " +
+                            "<div class='span12 '> " +
+                              "<span class='pull-right'>" +
+                                "<b>Keyboard Shortcuts: </b>  " +
+                                "<kbd class='light'>Shift</kbd> Start/Stop Timing " +
+                                "<kbd class='light'>Space</kbd> Play/Pause" +
+                                "<kbd class='light'>Esc</kbd>   Cancel " +
+                              "</span>" +
+                            "</div> " +
+                          "</div> " +
                   "</div> " + // .span12
 
                 "</div> " +   // #editor-bottom.row

@@ -39,7 +39,7 @@ class TimingsController < ApplicationController
 
   def index
     @repo = Repository.find params[:repository_id]
-    send_data @repo.to_srt, :type => "text/plain", :filename => "#{@repo.name}.srt"
+    send_data @repo.to_srt, :type => "text/plain", :filename => "#{@repo.filename}"
   end
 
 end

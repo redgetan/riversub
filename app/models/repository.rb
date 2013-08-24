@@ -20,8 +20,8 @@ class Repository < ActiveRecord::Base
   scope :user_subtitled,        where("user_id IS NOT NULL")
   scope :recent,                order("updated_at DESC")
 
-  def name
-    "#{self.owner}_#{self.video.name}"
+  def filename
+    "#{self.owner}_#{self.video.name.downcase.gsub(/\s/,"_")}.srt"
   end
 
   def owner
@@ -73,6 +73,7 @@ class Repository < ActiveRecord::Base
     {
       :id => self.id,
       :video => self.video.serialize,
+      :filename => self.filename,
       :user => self.user.try(:serialize),
       :timings => self.timings.map(&:serialize),
       :url => self.url,
