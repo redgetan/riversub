@@ -220,7 +220,6 @@ div#subtitle_bar {
   height: 40px;
   line-height: 40px;
   font-weight: bold;
-  width: 100%;
 }
 
 div#avatar img {
@@ -352,4 +351,8 @@ form.sub {
 
 #benefits {
   margin-top: 40px;
+}
+
+#subtitle_editor_btn {
+  margin-top: 20px;
 }

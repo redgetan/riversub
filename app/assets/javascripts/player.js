@@ -49,7 +49,7 @@ Player.prototype = {
     $("#subtitle_display").css("background-color","black");
     $("#subtitle_display").css("opacity",0.8);
 
-    $("#subtitle_list").css("height","235px");
+    $("#subtitle_list").css("height","315px");
     $("#subtitle_list").find("th").first().remove(); // remove start heading
     $("#subtitle_list").find("th").first().remove(); // remove end   heading
     $("#subtitle_list").find(".start_time").closest("td").each(function(){

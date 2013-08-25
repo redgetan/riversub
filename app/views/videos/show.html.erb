@@ -23,6 +23,18 @@
           <div id='subtitle_bar' class='span7 center'> 
             <span id='subtitle_display' class='span5 center'></span> 
           </div> 
+
+          <div class='pull-right'> 
+          <% if @repo.user == current_user %>
+            <a id='subtitle_editor_btn' class='btn btn-success' href="<%= @repo.editor_url %>"><i class="icon-film"></i> Subtitle Editor</a>
+          <% else %>
+            <div>
+              <h6>
+                Authored by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> (View only)
+              </h6>
+            </div>
+          <% end %>
+          </div> 
         </div> 
       </div> 
       <div id='player-top-right' class='span5'> 
@@ -41,17 +53,6 @@
   </br>
     <div id='player-middle' class='row'> 
       <div class='span7'>
-        <div class='pull-right'> 
-          <% if @repo.user == current_user %>
-            <a id='subtitle_editor_btn' class='btn btn-danger' href="<%= @repo.editor_url %>"><i class="icon-film"></i> Subtitle Editor</a>
-          <% else %>
-            <div>
-              <h6>
-                Authored by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> (View only)
-              </h6>
-            </div>
-          <% end %>
-        </div> 
       </div>
     </div> 
 

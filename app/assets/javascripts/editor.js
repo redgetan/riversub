@@ -59,7 +59,7 @@ Editor.prototype = {
                   "</div> " +
                   "<div class='span12'> " +
                     "<div id='media_container'> " +
-                      "<div id='subtitle_bar' class='span6 center'> " +
+                      "<div id='subtitle_bar' class='span12 center'> " +
                         "<span id='subtitle_display' class='span5 center'></span> " +
                         "<input id='subtitle_edit' class='span5 center' type='text' maxlength='60' placeholder='Enter Subtitle Here'> " +
                       "</div> " +

@@ -232,8 +232,8 @@ $(document).ready(function(){
               equal(editor.media.currentTime,5);
               equal(numOfSeeks,1);
               start();
-            }); 
-          }); 
+            });
+          });
         });
       });
     });
@@ -273,7 +273,7 @@ $(document).ready(function(){
     test( "track needs start_time & end_time & popcorn object", function() {
       var popcorn = Popcorn("#media");
       var track;
-      
+
       throws(function() { track = new Track({},popcorn); });
       throws(function() { track = new Track({ start_time: 4, end_time: 7}); });
 
@@ -504,7 +504,7 @@ $(document).ready(function(){
 // [ ] what if 2 tracks trigger subtitleditmode simultaneously
 //      track 1 hits track 2 - both doesnt have sub yet
 // [x] when on subtitle edit focused. you switch tabs and come back. commands should be enabled. you can still play
-// [ ] dbl click edit + enter + dbl click edit should still work 
+// [ ] dbl click edit + enter + dbl click edit should still work
 // [ ] subtitleline edit. when move to another line. the inplaceedit should be gone
 // [x] must be able to drag seek head
 // [ ] click here for isntructions is not obvious
@@ -520,7 +520,8 @@ $(document).ready(function(){
 
 // [ ] Share buttons (twitter/facebook/google+) textbox url to paste in stuff
 //     somehow show orig youtube link
-// [ ] show other related videos (only ones that are subbed) when watching a video with sub 
-// [ ] startGhost + endGhost + removeTrack -> subtitleedit should be hidden. 
+// [ ] show other related videos (only ones that are subbed) when watching a video with sub
+// [ ] startGhost + endGhost + removeTrack -> subtitleedit should be hidden.
 // [ ] test enable/disable commands
+// [ ] scroll window to curr scrubber no longer working - broken during b0600252d609d78d4923c89111347b30ae02387d - suspect that when scrolling horizontally, window_slide.start/end not being updated
 
