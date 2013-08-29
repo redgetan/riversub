@@ -1,0 +1,40 @@
+<div class='header-section span12'></div>
+<div class='container'>
+  
+  <div class='row'>
+    <div class='navigation-links span6 offset5'>
+      <ul class="nav nav-pills">
+        <li><a href="<%= videos_anonymous_url %>">Anonymous</a></li>
+        <li class="active"><a href="<%= videos_community_url %>">Community</a></li>
+      </ul> 
+    </div>
+  </div>
+
+
+  <div class="videos span12">
+    <ul class="thumbnails user">
+      <% @repos.each do |repo| %>
+          <li class="span2">
+            <div class="thumbnail center">
+              <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span>
+              <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                <img src="<%= repo.thumbnail_url %>" alt="">
+              </a>
+              <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                <h6 class='video_name'><%= repo.video.name %></h6>
+              </a>
+              <span class='repo_owner'>
+                by <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
+              </span>
+              <div class='stats'>
+              </div>
+
+            </div>
+          </li>
+      <% end %>
+    </ul>
+  </div>
+
+
+  </div>
+</div>

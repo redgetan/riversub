@@ -356,3 +356,7 @@ form.sub {
 #subtitle_editor_btn {
   margin-top: 20px;
 }
+
+.navigation-links .nav-pills > .active > a, .nav-pills > .active > a:hover, .nav-pills > .active > a {
+  background-color: gray;
+}

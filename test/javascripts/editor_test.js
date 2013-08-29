@@ -524,4 +524,5 @@ $(document).ready(function(){
 // [ ] startGhost + endGhost + removeTrack -> subtitleedit should be hidden.
 // [ ] test enable/disable commands
 // [ ] scroll window to curr scrubber no longer working - broken during b0600252d609d78d4923c89111347b30ae02387d - suspect that when scrolling horizontally, window_slide.start/end not being updated
+// [ ] seeking to middle of track currently restarts the track instead of seeking to that time.
 

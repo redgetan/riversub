@@ -41,4 +41,17 @@ class VideosController < ApplicationController
     respond_to :html
   end
 
+  def index
+    @repos = Repository.anonymously_subtitled.recent.limit(12)
+    render action: "anonymous"
+  end
+
+  def anonymous
+    @repos = Repository.anonymously_subtitled.recent.limit(12)
+  end
+
+  def community
+    @repos = Repository.user_subtitled.recent.limit(12)
+  end
+
 end

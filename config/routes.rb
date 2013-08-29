@@ -14,6 +14,9 @@ River::Application.routes.draw do
     end
   end
 
+  get "videos",                                :to => "videos#index"
+  get "videos/anonymous",                      :to => "videos#anonymous"
+  get "videos/community",                      :to => "videos#community"
   post "/videos/sub",                          :to => "videos#sub",    :as => "sub_videos"
   get "/videos/:token",                        :to => "videos#show",   :as => "video"
   get "/videos/:token/editor",                 :to => "videos#editor", :as => "editor_video"
@@ -25,7 +28,6 @@ River::Application.routes.draw do
   post "/repositories/:repository_id/timings/save",       :to => "timings#save"
 
   get "about", :to => "home#about"
-  get "videos", :to => "home#videos"
   root :to => "home#index"
 
 
