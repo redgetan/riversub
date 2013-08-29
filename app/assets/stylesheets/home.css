@@ -357,6 +357,18 @@ form.sub {
   margin-top: 20px;
 }
 
+.navigation-links {
+  text-align: center;
+}
+
 .navigation-links .nav-pills > .active > a, .nav-pills > .active > a:hover, .nav-pills > .active > a {
   background-color: gray;
+}
+
+.navigation-links .nav-pills {
+  display: inline-block;  
+}
+
+.pagination {
+  text-align: center;
 }

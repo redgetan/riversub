@@ -42,16 +42,16 @@ class VideosController < ApplicationController
   end
 
   def index
-    @repos = Repository.anonymously_subtitled.recent.limit(12)
+    @repos = Repository.anonymously_subtitled.recent.page params[:page]
     render action: "anonymous"
   end
 
   def anonymous
-    @repos = Repository.anonymously_subtitled.recent.limit(12)
+    @repos = Repository.anonymously_subtitled.recent.page params[:page]
   end
 
   def community
-    @repos = Repository.user_subtitled.recent.limit(12)
+    @repos = Repository.user_subtitled.recent.page params[:page]
   end
 
 end

@@ -515,7 +515,6 @@ $(document).ready(function(){
 // [ ] let user know internet is slow
 
 // solr search - if no matches found (give suggestions)
-// paging (kaminari)
 // exception notification
 
 // [ ] Share buttons (twitter/facebook/google+) textbox url to paste in stuff
@@ -525,4 +524,6 @@ $(document).ready(function(){
 // [ ] test enable/disable commands
 // [ ] scroll window to curr scrubber no longer working - broken during b0600252d609d78d4923c89111347b30ae02387d - suspect that when scrolling horizontally, window_slide.start/end not being updated
 // [ ] seeking to middle of track currently restarts the track instead of seeking to that time.
+// [ ] instructions should show only "Adding Subtitles" initially, with lists being expandable/collapsible
+// [ ] make timeline scrolling more sensitive/ too slow and feels a bit buggy
 

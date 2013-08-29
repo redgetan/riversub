@@ -2,7 +2,7 @@
 <div class='container'>
   
   <div class='row'>
-    <div class='navigation-links span6 offset5'>
+    <div class='navigation-links span12'>
       <ul class="nav nav-pills">
         <li><a href="<%= videos_anonymous_url %>">Anonymous</a></li>
         <li class="active"><a href="<%= videos_community_url %>">Community</a></li>
@@ -35,6 +35,7 @@
     </ul>
   </div>
 
+  <%= paginate @repos,  :theme => 'bootstrap' %>
 
   </div>
 </div>
