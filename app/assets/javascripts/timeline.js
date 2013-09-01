@@ -223,7 +223,12 @@ Timeline.prototype = {
 
     var seconds = this.getSecondsFromCurrentPosition($timeline,$target,event.pageX);
 
-    if (!$target.hasClass("track")) {
+    if ($target.hasClass("track")) {
+      var track = $target.data("model");
+      if (!track.isGhost()) {
+        $timeline.trigger("timelineseek",[track.startTime()]);
+      }
+    } else {
       $timeline.trigger("timelineseek",[seconds]);
     }
   },
@@ -243,9 +248,7 @@ Timeline.prototype = {
 
     // seek
     if (this.seekmode) {
-      if (!$target.hasClass("track")) {
-        $timeline.trigger("timelineseek",[seconds]);
-      }
+      $timeline.trigger("timelineseek",[seconds]);
     }
   },
 

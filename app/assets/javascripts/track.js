@@ -80,6 +80,8 @@ Track.prototype = {
       containment: "parent",
       drag: this.onDraggableDrag.bind(this)
     });
+    this.$el_expanded.data("model",this);
+    this.$el_summary.data("model",this);
   },
 
   bindEvents: function() {
