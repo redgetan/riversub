@@ -372,3 +372,8 @@ form.sub {
 .pagination {
   text-align: center;
 }
+
+#instructions_modal .accordion-heading .accordion-toggle {
+  color: black;
+  font-weight: bold;
+}

@@ -79,30 +79,67 @@
         <h3 id="myModalLabel">Instructions</h3>
       </div>
       <div class="modal-body">
-        <ul>
-          <li>
-            <h4>Adding Subtitles</h4>
-            While the video is playing
-            </br>click the <a class='btn btn-mini'><i class='icon-circle' style="color: #B3192D;"></i> Start Timing</a> button to mark the beginning of a subtitle.
-            </br>click the <a class='btn btn-mini'><i class='icon-circle' style="color: #333;"></i> Stop </a> button to end the subtitle.
 
-          </li>
-          <li>
-            <h4>Editing Subtitles</h4>
-            Double click tracks <span class='track' style='width:10px; height: 13px;'></span> to to edit their subtitles 
-          </li>
-          <li>
-            <h4>Saving</h4>
-            click the <a class='btn btn-info btn-mini'><i class='icon-save'></i> Save</a> button to save your work.
-            </br>click the <a class='btn btn-mini'><i class='icon-download-alt'></i> Download</a> button to download the subtitles file in .srt format which you can simply upload to a youtube video (only if you're the owner) to add subtitles to it.
-          </li>
-          <li>
-            <h4>Keyboard Shortcuts</h4>
-            <kbd class='light'>Shift</kbd> once to Start Timing. Press it again to Stop Timing.
-            </br><kbd class='light'>Space</kbd> to play or pause the video
-            </br><kbd class='light'>Esc</kbd>   Cancel a timing or editing of subtitle
-          </li>
-        </ul>
+        <div class="accordion" id="accordion2">
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                1. Adding Subtitles
+              </a>
+            </div>
+            <div id="collapseOne" class="accordion-body collapse in">
+              <div class="accordion-inner">
+                While the video is playing
+                </br>click the <a class='btn btn-mini'><i class='icon-circle' style="color: #B3192D;"></i> Start Timing</a> button to mark the beginning of a subtitle.
+                </br>click the <a class='btn btn-mini'><i class='icon-circle' style="color: #333;"></i> Stop </a> button to end the subtitle.
+
+              </div>
+            </div>
+          </div>
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                2. Editing Subtitles
+              </a>
+            </div>
+            <div id="collapseTwo" class="accordion-body collapse">
+              <div class="accordion-inner">
+                Double click tracks <span class='track' style='width:10px; height: 13px;'></span> to to edit their subtitles 
+              </div>
+            </div>
+          </div>
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                3. Saving
+              </a>
+            </div>
+            <div id="collapseThree" class="accordion-body collapse">
+              <div class="accordion-inner">
+                click the <a class='btn btn-info btn-mini'><i class='icon-save'></i> Save</a> button to save your work.
+                </br>click the <a class='btn btn-mini'><i class='icon-download-alt'></i> Download</a> button to download the subtitles file in .srt format which you can simply upload to a youtube video (only if you're the owner) to add subtitles to it.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
+                4. Keyboard Shortcuts
+              </a>
+            </div>
+            <div id="collapseFour" class="accordion-body collapse">
+              <div class="accordion-inner">
+                <h4>Keyboard Shortcuts</h4>
+                <kbd class='light'>Shift</kbd> once to Start Timing. Press it again to Stop Timing.
+                </br><kbd class='light'>Space</kbd> to play or pause the video
+                </br><kbd class='light'>Esc</kbd>   Cancel a timing or editing of subtitle
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
       </div>
       <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
