@@ -315,9 +315,10 @@ Timeline.prototype = {
     }
   },
 
-  onExpandedTimelineScroll: function(event,delta){
-    this.$expanded.scrollLeft(this.$expanded.scrollLeft() - delta) ; 
-    var secondsToScroll = delta / this.resolution(this.$expanded);
+  onExpandedTimelineScroll: function(event,delta,deltaX,deltaY){
+    deltaX = -(deltaX * 2);
+    this.$expanded.scrollLeft(this.$expanded.scrollLeft() - deltaX) ; 
+    var secondsToScroll = deltaX / this.resolution(this.$expanded);
     var numPixelsToScrollSummary = this.resolution(this.$summary) * secondsToScroll;
     var oldWindowSliderLeft = parseFloat(this.$window_slider.css("left"));
     var newWindowSliderLeft = oldWindowSliderLeft - numPixelsToScrollSummary;
