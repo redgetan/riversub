@@ -68,12 +68,14 @@ River::Application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-    :address              => "smtp.gmail.com",
-    :port                 => 587,
-    :domain               => 'zeroplay.net',
-    :user_name            => 'simple.yuji@gmail.com',
-    :password             => 'iwtets90',
-    :authentication       => 'plain',
+    :address              => "smtp.zoho.com",
+    :port                 => 465,
+    :domain               => 'riversub.cc',
+    :user_name            => 'info@riversub.cc',
+    :password             => 'iwtetr9',
+    :authentication       => 'login',
+    :ssl                  => true,
+    :tls                  => true,
     :enable_starttls_auto => true
   }
 
