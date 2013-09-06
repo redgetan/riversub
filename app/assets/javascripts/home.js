@@ -79,7 +79,7 @@ var handleRoute = function() {
       $.ajax({
         url: "/users",
         type: "PUT",
-        data: $(this).serialize(), 
+        data: $(this).serialize(),
         success: function(data,status) {
           $form.find(".flash").remove();
           $form.prepend(data);
@@ -119,7 +119,7 @@ var handleRoute = function() {
       var formData = new FormData($form[0]);
 
       $.ajax({
-        url: '/users/change_avatar',  
+        url: '/users/change_avatar',
         type: 'PUT',
         data: formData,
         beforeSend: function() {
@@ -245,7 +245,7 @@ function openSubtitleEditor(url,$form) {
         window.location.href = data.redirect_url;
       },
       error: function(data) {
-        throw "Failed to subtitle video."; 
+        throw "Failed to subtitle video.";
       }
     });
   });

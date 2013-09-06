@@ -1,32 +1,33 @@
-function Track(attributes,popcorn,options) {
-  if (typeof popcorn === "undefined") throw "Missing popcorn object. Pass popcorn to new Track in 2nd argument";
-  this.popcorn = popcorn;
+// need to validate start_time/end_time
+// when track start time/endtime is set,
+//   it should be changed model.changedAttributes should have hash key size of > 0
+//   save button should be enabled
 
-  this.options = options || {};
+var Track = Backbone.Model.extend({
 
-  this.setAttributes(attributes);
+  initialize: function(attributes, options) {
 
-  this.setupElement();
-  this.bindEvents();
+    if (typeof options['popcorn'] === "undefined") throw "Missing popcorn object in Track options attribute";
+    this.popcorn = options['popcorn'];
+    this.isGhost = options['isGhost'] || false;
 
-  var subtitle = new Subtitle(attributes['subtitle']);
-  this.setSubtitle(subtitle);
-  this.trackEvent     = this.createTrackEvent(attributes.start_time,attributes.end_time);
+    var subtitle = new Subtitle(attributes['subtitle']);
+    this.setSubtitle(subtitle);
+    this.trackEvent     = this.createTrackEvent(attributes.start_time,attributes.end_time);
 
-  this.isSaved = typeof this.options['isSaved'] === "undefined" ? false : this.options['isSaved'];
-  this.isDeleted = false;
+    this.expandedView = new ExpandedTrackView({model: this});
+    this.summaryView = new SummaryTrackView({model: this});
 
-}
+    this.views = [this.expandedView,this.summaryView];
 
-Track.prototype = {
+    if (this.isGhost) {
+      Backbone.trigger("ghosttrackstart",this);
 
-  setAttributes: function(attributes) {
-    if (!attributes.hasOwnProperty("start_time") || !attributes.hasOwnProperty("end_time")) {
-      throw "Missing start_time or end_time attribute for Track";
-    }
+      _.each(this.views,function(view){
+        view.addGhost();
+      });
 
-    for (var prop in attributes) {
-      this[prop] = attributes[prop];
+      this.initial_subtitle_request = true;
     }
   },
 
@@ -38,90 +39,6 @@ Track.prototype = {
       client_id: this.trackEvent._id,
       subtitle_attributes: this.subtitle.getAttributes(),
     }
-  },
-
-  setupElement: function() {
-
-    this.$container_summary = $("#summary.timeline");
-
-    var el_summary = "<div id='" + this.id + "' class='track'>" +
-                     "</div>"
-
-    this.$el_summary = $(el_summary);
-    this.$container_summary.append(this.$el_summary);
-
-    this.$container_expanded = $("#expanded.timeline");
-
-    var el_expanded = "<div id='" + this.id + "' class='track'>" +
-                       "<button type='button' class='close corner'>×</button>" +
-                     "</div>"
-
-    this.$el_expanded = $(el_expanded);
-    this.$container_expanded.find("#track_viewport").append(this.$el_expanded);
-
-    if (this.options["isGhost"]) {
-      this.$el_summary.addClass("ghost");
-      this.$el_expanded.addClass("ghost");
-      this.$el_expanded.trigger("ghosttrackstart",[this]);
-      this.initial_subtitle_request = true;
-    }
-
-    this.$close = this.$el_expanded.find(".close");
-    this.$close.hide();
-
-    this.$el_expanded.resizable({
-      handles: 'e, w',
-      resize: this.onResizableResize.bind(this)
-    });
-
-    this.$el_expanded.draggable({
-      cursor: "move",
-      axis: "x",
-      containment: "parent",
-      drag: this.onDraggableDrag.bind(this)
-    });
-    this.$el_expanded.data("model",this);
-    this.$el_summary.data("model",this);
-  },
-
-  bindEvents: function() {
-    this.$el_expanded.on("mousedown",this.onMouseDownHandler.bind(this));
-    this.$el_summary.on("mousedown",this.onMouseDownHandler.bind(this));
-
-    this.$el_expanded.on("dblclick",this.onMouseDblClickHandler.bind(this));
-
-    this.$el_expanded.on("mouseenter",this.onMouseEnter.bind(this));
-    this.$el_expanded.on("mouseleave",this.onMouseLeave.bind(this));
-    this.$close.on("mousedown",this.onCloseMouseDown.bind(this));
-  },
-
-  onMouseEnter: function() {
-    this.$close.show();
-  },
-
-  onMouseLeave: function() {
-    this.$close.hide();
-  },
-
-  onCloseMouseDown: function(event) {
-    event.stopPropagation();
-    this.remove();
-  },
-
-  onMouseDownHandler: function(event) {
-    $(event.target).trigger("trackseek",[this.startTime()]);
-  },
-
-  onMouseDblClickHandler: function(event) {
-    this.$el_expanded.trigger("subtitleeditmode",[this]);
-  },
-
-  onResizableResize: function(event, ui) {
-    this.$el_expanded.trigger("trackresize",[this,ui]);
-  },
-
-  onDraggableDrag: function(event, ui) {
-    this.$el_expanded.trigger("trackdrag",[this,ui]);
   },
 
   setSubtitle: function(subtitle) {
@@ -141,8 +58,7 @@ Track.prototype = {
     time = Math.round(time * 1000) / 1000;
     this.trackEvent.start = time;
 
-    this.isSaved = false;
-    this.$el_expanded.trigger("trackchange",[this]);
+    Backbone.trigger("trackchange",this);
   },
 
   endTime: function() {
@@ -157,8 +73,7 @@ Track.prototype = {
     time = Math.round(time * 1000) / 1000;
     this.trackEvent.end = time;
 
-    this.isSaved = false;
-    this.$el_expanded.trigger("trackchange",[this]);
+    Backbone.trigger("trackchange",this);
   },
 
   text: function() {
@@ -166,8 +81,13 @@ Track.prototype = {
   },
 
   end: function(time) {
-    this.removeGhostClass();
-    this.$el_expanded.trigger("ghosttrackend",[this]);
+    this.isGhost = false;
+
+    Backbone.trigger("ghosttrackend",this);
+
+    _.each(this.views,function(view){
+      view.removeGhost();
+    });
 
     var duration = time - this.startTime();
 
@@ -176,20 +96,6 @@ Track.prototype = {
     }
 
     this.setEndTime(time);
-  },
-
-  removeGhostClass: function() {
-    if (this.$el_summary.hasClass("ghost")) {
-      this.$el_summary.removeClass("ghost");
-    }
-
-    if (this.$el_expanded.hasClass("ghost")) {
-      this.$el_expanded.removeClass("ghost");
-    }
-  },
-
-  isGhost: function() {
-    return this.$el_expanded.hasClass("ghost");
   },
 
   isRemoved: function() {
@@ -204,11 +110,11 @@ Track.prototype = {
       end:   endTime,
       onStart: function() {
         // console.log("track start: " + self);
-        $(document).trigger("trackstart",[self]);
+        Backbone.trigger("trackstart",self);
       },
       onEnd: function() {
         // console.log("track end: " + self);
-        $(document).trigger("trackend",[self]);
+        Backbone.trigger("trackend",self);
       }
     });
 
@@ -219,35 +125,38 @@ Track.prototype = {
 
   remove: function() {
     this.isDeleted = true;
-    if (this.isGhost()) {
-      this.end(this.endTime());  
+    if (this.isGhost) {
+      this.end(this.endTime());   // why do we need to end ghost track before removing it?
     }
-    this.$el_expanded.remove();
-    this.$el_summary.remove();
-
     this.trackEvent._running = false; // disallow trackend event from getting triggered
     this.popcorn.removeTrackEvent(this.trackEvent._id);
-    // this.subtitle.unmapTrack();
     this.subtitle.remove();
-    $(document).trigger("trackremove",this);
+
+    _.each(this.views,function(view){
+      view.remove();
+    });
+
+    Backbone.trigger("trackremove",this);
   },
 
   highlight: function() {
-    this.$el_summary.addClass("selected");
-    this.$el_expanded.addClass("selected");
+    _.each(this.views,function(view){
+      view.highlight();
+    });
   },
 
   unhighlight: function() {
-    this.$el_summary.removeClass("selected");
-    this.$el_expanded.removeClass("selected");
+    _.each(this.views,function(view){
+      view.unhighlight();
+    });
   },
 
   fadingHighlight: function() {
-    this.$el_expanded.effect("highlight", {color: "moccasin"}, 1000);
+    this.expandedView.fadingHighlight();
   },
 
   progressTime: function() {
-    if (this.isGhost()) {
+    if (this.isGhost) {
       return this.popcorn.currentTime();
     } else {
       return this.endTime();
@@ -257,4 +166,4 @@ Track.prototype = {
   toString: function() {
     return "Track(" + this.startTime() + "," + this.endTime() + ")";
   }
-};
+});

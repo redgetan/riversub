@@ -23,8 +23,8 @@ SubtitleView.prototype = {
   setupElement: function(subtitles) {
     this.$container = $("#subtitle_list");
 
-    var el = "<table class='table'>" + 
-                "<tr>" + 
+    var el = "<table class='table'>" +
+                "<tr>" +
                   "<th>Start</th>" +
                   "<th>End</th>" +
                   "<th>Text</th>" +
@@ -111,7 +111,7 @@ SubtitleView.prototype = {
 
     if (subtitle === null) { return; }
 
-    this.$container.trigger("subtitlelineclick",[subtitle]);
+    Backbone.trigger("subtitlelineclick",subtitle);
   },
 
   onDblClickHandler: function(event) {
@@ -121,7 +121,7 @@ SubtitleView.prototype = {
 
     if (subtitle === null) { return; }
 
-    this.$container.trigger("subtitlelinedblclick",[subtitle]);
+    Backbone.trigger("subtitlelinedblclick",subtitle);
   },
 
   onTrackChange: function(event,track) {
@@ -211,7 +211,7 @@ function Subtitle(attributes) {
   this.isDeleted = false;
   this.bindEvents();
 
-  this.$el.trigger("subtitlecreate",[this]);
+  Backbone.trigger("subtitlecreate",this);
 }
 
 Subtitle.prototype = {
@@ -222,7 +222,7 @@ Subtitle.prototype = {
       if (prop === "text") {
         if (this.track !== null ) {
           this.track.isSaved = false;
-          this.$el.trigger("trackchange",[this.track]);
+          this.$el.trigger("trackchange",this.track);
         }
       }
     }
@@ -247,7 +247,7 @@ Subtitle.prototype = {
 
     this.$container = $("#subtitle_container").find("table");
 
-    var el = "<tr class='subtitle'>" + 
+    var el = "<tr class='subtitle'>" +
                "<td>" +
                  "<div class='start_time'></div>" +
                "</td>" +
@@ -280,19 +280,19 @@ Subtitle.prototype = {
         callback: function(unused, enteredText) { this.setAttributes({ "text": enteredText}); return enteredText; }.bind(this),
         delegate: {
           didOpenEditInPlace: function($dom,settings) {
-            $dom.trigger("subtitlelineedit");
+            Backbone.trigger("subtitlelineedit");
 
             $dom.find(":input").attr("maxlength",60);
             $dom.find(":input").on("keyup",function(event) {
               var $input = $(event.target);
-              $input.trigger("subtitlelinekeyup",[$input.val()]);
+              Backbone.trigger("subtitlelinekeyup",$input.val());
             });
           }.bind(this),
           // shouldCloseEditInPlace: function() { return false; },
           didCloseEditInPlace: function($dom) {
-            $dom.trigger("subtitlelineblur");
+            Backbone.trigger("subtitlelineblur");
             // this.edit_sub_mode = false;
-          }.bind(this)  
+          }.bind(this)
         }
       });
     }
@@ -329,7 +329,7 @@ Subtitle.prototype = {
     // mark subtitle as isDeleted
     this.isDeleted = true;
 
-    $(document).trigger("subtitleremove",this);
+    Backbone.trigger("subtitleremove",this);
   },
 
   onMouseEnter: function() {
@@ -343,7 +343,7 @@ Subtitle.prototype = {
   render: function() {
     if (this.track !== null ) {
       this.$el.find(".start_time").text(this.track.startTime());
-      if (!this.track.isGhost()) {
+      if (!this.track.isGhost) {
         this.$el.find(".end_time").text(this.track.endTime());
       }
     } else {
@@ -357,7 +357,7 @@ Subtitle.prototype = {
     this.track = track;
     this.$el.addClass("mapped");
     this.render();
-    this.$el.trigger("subtitletrackmapped",[this]);
+    Backbone.trigger("subtitletrackmapped",this);
   },
 
   unmapTrack: function() {
@@ -368,12 +368,12 @@ Subtitle.prototype = {
 
   highlight: function() {
     this.$el.addClass("selected");
-    this.$el.trigger("subtitlehighlight",[this]);
+    Backbone.trigger("subtitlehighlight",this);
   },
 
   unhighlight: function() {
     this.$el.removeClass("selected");
-    this.$el.trigger("subtitleunhighlight",[this]);
+    Backbone.trigger("subtitleunhighlight",this);
   },
 
   openEditor: function(event) {
@@ -385,7 +385,7 @@ Subtitle.prototype = {
 
   hideEditorIfNeeded: function() {
     if (this.$text.hasClass("editInPlace-active")) {
-      this.$text.data("editor").handleSaveEditor({});  
+      this.$text.data("editor").handleSaveEditor({});
     }
   }
 

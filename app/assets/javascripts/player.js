@@ -70,7 +70,7 @@ Player.prototype = {
     if (url == "") {
       popcorn = Popcorn(targetSelector);
     } else {
-      url = url + "&controls=1"; // make sure youtube controls are shown 
+      url = url + "&controls=1"; // make sure youtube controls are shown
       popcorn = Popcorn.smart(targetSelector,url);
     }
     return popcorn;
@@ -116,7 +116,7 @@ Player.prototype = {
 
     if (typeof timings !== "undefined") {
       for (var i = 0; i < timings.length; i++) {
-        var track = new Track(timings[i], this.popcorn, { isSaved: true });
+        var track = new Track(timings[i], { popcorn: this.popcorn });
         this.trackMap[track.getAttributes().client_id] = track;
         tracks.push(track);
       };

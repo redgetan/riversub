@@ -18,7 +18,7 @@ Timeline.prototype = {
 
     this.$summary_container = $("#media_container");
 
-    var summary = "<div id='summary' class='timeline'>" + 
+    var summary = "<div id='summary' class='timeline'>" +
                      "<div class='scrubber'></div>" +
                      "<div class='window_slider'></div>" +
                    "</div>";
@@ -42,13 +42,13 @@ Timeline.prototype = {
       drag: this.onSeekHeadDragHandler.bind(this)
     });
 
-    var expanded = "<div id='expanded' class='timeline'>" + 
-                     "<div class='filler'>" + 
-                       "<div id='track_viewport'>" + 
+    var expanded = "<div id='expanded' class='timeline'>" +
+                     "<div class='filler'>" +
+                       "<div id='track_viewport'>" +
                          "<div class='scrubber'></div>" +
                          "<div class='time_indicator'>0</div>" +
                        "</div>" +
-                       "<div id='time_label'>" + 
+                       "<div id='time_label'>" +
                        "</div>" +
                      "</div>" +
                    "</div>";
@@ -125,13 +125,6 @@ Timeline.prototype = {
   bindEvents: function() {
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
-    $(document).on("timelineseek",this.onTimelineSeek.bind(this));
-
-    $(document).on("ghosttrackstart",this.onGhostTrackStart.bind(this));
-    $(document).on("ghosttrackend",this.onGhostTrackEnd.bind(this));
-    $(document).on("trackchange",this.onTrackChange.bind(this));
-    $(document).on("trackresize",this.onTrackResize.bind(this));
-    $(document).on("trackdrag",this.onTrackDrag.bind(this));
 
     this.$summary.on("mousedown",this.onMouseDownHandler.bind(this));
     this.$summary.on("mousemove",this.onMouseMoveHandler.bind(this));
@@ -148,7 +141,13 @@ Timeline.prototype = {
     this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
     this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
 
-    this.$scrubber_expanded.on("disappear",this.onScrubberDisappear.bind(this));
+    Backbone.on("timelineseek",this.onTimelineSeek.bind(this));
+    Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
+    Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
+    Backbone.on("trackchange",this.onTrackChange.bind(this));
+    Backbone.on("trackresize",this.onTrackResize.bind(this));
+    Backbone.on("trackdrag",this.onTrackDrag.bind(this));
+    Backbone.on("scrubberdisappear",this.onScrubberDisappear.bind(this));
   },
 
   onTimeUpdate: function(event) {
@@ -160,19 +159,19 @@ Timeline.prototype = {
     // trigger appear/disappear events
     if (this.isOutOfBounds()) {
       if (this.force_scroll_window || this.isScrubberVisible) {
-        this.$scrubber_expanded.trigger("disappear");
+        Backbone.trigger("scrubberdisappear");
         this.isScrubberVisible = false;
         this.force_scroll_window = false;
       }
     } else {
       if (!this.isScrubberVisible) {
-        this.$scrubber_expanded.trigger("appear");
+        Backbone.trigger("scrubberappear");
         this.isScrubberVisible = true;
-      } 
+      }
     }
   },
 
-  onTimelineSeek: function(event) {
+  onTimelineSeek: function() {
     // always scroll window, do not care if appeared/disappeared
     this.force_scroll_window = true;
   },
@@ -199,12 +198,12 @@ Timeline.prototype = {
     this.current_window_slide = { start: 0, end: this.media.duration < 30 ? this.media.duration : 30 };
   },
 
-  onGhostTrackStart: function(event,track) {
+  onGhostTrackStart: function(track) {
     this.trackFillProgressCallback = this.renderFillProgress.bind(this,track);
     this.media.addEventListener("timeupdate",this.trackFillProgressCallback);
   },
 
-  onGhostTrackEnd: function(event,track) {
+  onGhostTrackEnd: function(track) {
     this.media.removeEventListener("timeupdate",this.trackFillProgressCallback);
   },
 
@@ -225,11 +224,11 @@ Timeline.prototype = {
 
     if ($target.hasClass("track")) {
       var track = $target.data("model");
-      if (!track.isGhost()) {
-        $timeline.trigger("timelineseek",[track.startTime()]);
+      if (!track.isGhost) {
+        Backbone.trigger("timelineseek",track.startTime());
       }
     } else {
-      $timeline.trigger("timelineseek",[seconds]);
+      Backbone.trigger("timelineseek",seconds);
     }
   },
 
@@ -248,7 +247,7 @@ Timeline.prototype = {
 
     // seek
     if (this.seekmode) {
-      $timeline.trigger("timelineseek",[seconds]);
+      Backbone.trigger("timelineseek",seconds);
     }
   },
 
@@ -304,7 +303,7 @@ Timeline.prototype = {
 
     // if seekmode, seek
     if (this.seekmode) {
-      this.$summary.trigger("timelineseek",[seconds]);
+      Backbone.trigger("timelineseek",seconds);
     }
   },
 
@@ -320,7 +319,7 @@ Timeline.prototype = {
 
   onExpandedTimelineScroll: function(event,delta,deltaX,deltaY){
     deltaX = -(deltaX * 2);
-    this.$expanded.scrollLeft(this.$expanded.scrollLeft() - deltaX) ; 
+    this.$expanded.scrollLeft(this.$expanded.scrollLeft() - deltaX) ;
     var secondsToScroll = deltaX / this.resolution(this.$expanded);
     var numPixelsToScrollSummary = this.resolution(this.$summary) * secondsToScroll;
     var oldWindowSliderLeft = parseFloat(this.$window_slider.css("left"));
@@ -334,17 +333,17 @@ Timeline.prototype = {
     }
   },
 
-  onTrackChange: function(event,track) {
+  onTrackChange: function(track) {
     this.renderTrack(track);
   },
 
-  onTrackResize: function(event,track,trackView) {
-    var handle= $(event.target).css("cursor").split("-")[0]; 
+  onTrackResize: function(track,ui) {
+    var handle= $(event.target).css("cursor").split("-")[0];
 
     var $container = $(event.target).closest(".timeline");
 
-    var seconds = trackView.position.left / this.resolution($container);
-    var duration = trackView.size.width   / this.resolution($container);
+    var seconds = ui.position.left / this.resolution($container);
+    var duration = ui.size.width   / this.resolution($container);
 
     if (handle === "w") {
       track.setStartTime(seconds);
@@ -353,10 +352,10 @@ Timeline.prototype = {
     }
   },
 
-  onTrackDrag: function(event,track,trackView) {
+  onTrackDrag: function(track,ui) {
     var $container = $(event.target).closest(".timeline");
 
-    var seconds = trackView.position.left / this.resolution($container);
+    var seconds = ui.position.left / this.resolution($container);
 
     var origStartTime = track.startTime();
     var origEndTime = track.endTime();
@@ -377,8 +376,8 @@ Timeline.prototype = {
 
     var duration = track.endTime() - track.startTime();
 
-    this.renderInContainer(this.$summary,track.$el_summary,   { width: duration, left: track.startTime() });
-    this.renderInContainer(this.$expanded,track.$el_expanded, { width: duration, left: track.startTime() });
+    this.renderInContainer(this.$summary,track.summaryView.$el,   { width: duration, left: track.startTime() });
+    this.renderInContainer(this.$expanded,track.expandedView.$el, { width: duration, left: track.startTime() });
 
   },
 
@@ -408,9 +407,9 @@ Timeline.prototype = {
   },
 
   renderTimeIndicator: function() {
-    this.renderInContainer(this.$expanded,this.$time_indicator,{ 
+    this.renderInContainer(this.$expanded,this.$time_indicator,{
       left: this.media.currentTime.toFixed(3),
-      text: this.stringifyTime(this.media.currentTime) 
+      text: this.stringifyTime(this.media.currentTime)
     });
   },
 
@@ -441,20 +440,20 @@ Timeline.prototype = {
       return this.summaryWidth;
     } else {
       return this.expandedWidth;
-    } 
+    }
   },
 
   getContainerWidthInSeconds: function($container) {
     if ($container.attr("id") === "summary") {
-      return this.media.duration || 30; 
+      return this.media.duration || 30;
     } else {
       return 30;
-    } 
+    }
   },
 
   isOutOfBounds: function() {
     // is current time with current_window_slide
-    if (this.media.currentTime < this.current_window_slide.start || 
+    if (this.media.currentTime < this.current_window_slide.start ||
         this.media.currentTime > this.current_window_slide.end      ) {
       return true;
     } else {
@@ -487,30 +486,30 @@ Timeline.prototype = {
         for (var i = 0; i < this.windowSlideTimeoutQueue.length; i++) {
           windowSlideTimeout = this.windowSlideTimeoutQueue[i];
           clearTimeout(windowSlideTimeout);
-        }  
+        }
         this.windowSlideTimeoutQueue.length = 0;
       }
 
-      windowSlideTimeout = setTimeout(function() { 
+      windowSlideTimeout = setTimeout(function() {
         $container.animate({scrollLeft: this.current_window_slide.start * this.resolution($container)},300,function(){
           // trigger appear/disappear events
           if (this.isOutOfBounds()) {
             if (this.isScrubberVisible) {
-              this.$scrubber_expanded.trigger("disappear");
+              Backbone.trigger("scrubberdisappear");
               this.isScrubberVisible = false;
             }
           } else {
             if (!this.isScrubberVisible) {
-              this.$scrubber_expanded.trigger("appear");
+              Backbone.trigger("scrubberappear");
               this.isScrubberVisible = true;
-            } 
+            }
           }
-        }.bind(this)); 
+        }.bind(this));
         this.$window_slider.animate({ left: this.resolution(this.$summary) * 30 * index },300);
       }.bind(this),100);
 
       this.windowSlideTimeoutQueue.push(windowSlideTimeout);
-      this.$summary.trigger("window.scroll");
+      Backbone.trigger("window.scroll");
     // }
   },
 
@@ -526,10 +525,10 @@ Timeline.prototype = {
     var seconds = Math.floor(time % 60);
     var milliseconds = Math.floor(time * 1000) % 1000
 
-    var result = (hours < 10 ? "0" + hours : hours) + ":" + 
-                 (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+    var result = (hours < 10 ? "0" + hours : hours) + ":" +
+                 (minutes < 10 ? "0" + minutes : minutes) + ":" +
                  (seconds  < 10 ? "0" + seconds : seconds) + "." +
-                 (milliseconds  < 10 ? "00" + milliseconds : (milliseconds < 100 ? "0" + milliseconds : milliseconds)); 
+                 (milliseconds  < 10 ? "00" + milliseconds : (milliseconds < 100 ? "0" + milliseconds : milliseconds));
     return result;
   },
 
@@ -571,7 +570,7 @@ Timeline.prototype = {
   },
 
   on: function(event_name,callback) {
-    this.$summary.on(event_name,callback);  
+    this.$summary.on(event_name,callback);
   }
 
 };

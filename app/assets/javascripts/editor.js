@@ -1,3 +1,7 @@
+
+//     handle model syncing errors
+//     when track changes - this.disabledOrEnableSaveButton();
+
 function Editor (repo,options) {
   this.repo = repo || {};
   this.video = this.repo.video || {};
@@ -7,7 +11,7 @@ function Editor (repo,options) {
   this.currentGhostTrack = null;
   this.isGhostTrackStarted = false;
   this.isOnSubtitleEditMode = null;
-  
+
   this.options = options || {};
   var timings = this.repo.timings || [];
   var subtitles = $.map(timings,function(timing){ return timing.subtitle; });
@@ -110,7 +114,7 @@ Editor.prototype = {
                         "</div> " +
 
                       "</div>" +
-                      "<div class='tab-pane' id='subtitle_tab'>" + 
+                      "<div class='tab-pane' id='subtitle_tab'>" +
 
                         "<div id='subtitle_container'> " +
                           "<div id='subtitle_list'></div> " +
@@ -120,13 +124,13 @@ Editor.prototype = {
                             // "<span class='pull-left '> " +
                             //   "<select id='language_select' data-style='btn-inverse' class='selectpicker span2'>" +
                             //     "<option>Portuguese</option>" +
-                            //     "<option>Japanese</option>" + 
+                            //     "<option>Japanese</option>" +
                             //   "</select>" +
                             // "</span> " +
                         "</div> " +   // #subtitle_container
 
                       "</div>" +   // tab pane
-                      "<div class='tab-pane' id='download_tab'>" + 
+                      "<div class='tab-pane' id='download_tab'>" +
                         "<div id='download_container'> " +
                           "<a id='download_btn' href='" + this.repo.subtitle_download_url + "'>" + this.repo.filename + "</a> " +
                         "</div> " +   // #subtitle_container
@@ -156,7 +160,7 @@ Editor.prototype = {
 
     if (this.repo.user) {
       var repo_owner = "<span id='repo_owner'>" +
-                         "<a href='" + this.repo.owner_profile_url + "'>" + this.repo.owner + "</a>" + 
+                         "<a href='" + this.repo.owner_profile_url + "'>" + this.repo.owner + "</a>" +
                        "</span> / ";
       this.$el.find("#repo_label").prepend(repo_owner);
     }
@@ -225,7 +229,7 @@ Editor.prototype = {
     this.pause(function(){
       this.seek(0,function(){
         if (typeof callback !== "undefined") {
-          callback();  
+          callback();
         }
       });
     }.bind(this));
@@ -265,21 +269,23 @@ Editor.prototype = {
     $(document).on("click",this.onDocumentClick.bind(this));
     $(document).on("mousewheel",this.onDocumentScroll.bind(this));
     $(document).on("keyup",this.onKeyupHandler.bind(this));
-    $(document).on("timelineseek",this.onTimelineSeekHandler.bind(this));
-    $(document).on("trackseek",this.onTrackSeekHandler.bind(this));
-    $(document).on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
-    $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
-    $(document).on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
-    $(document).on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
-    $(document).on("subtitlelineblur",this.onSubtitleLineBlur.bind(this));
-    $(document).on("subtitlelinekeyup",this.onSubtitleLineKeyup.bind(this));
-    $(document).on("ghosttrackstart",this.onGhostTrackStart.bind(this));
-    $(document).on("ghosttrackend",this.onGhostTrackEnd.bind(this));
-    $(document).on("trackstart",this.onTrackStart.bind(this));
-    $(document).on("trackend",this.onTrackEnd.bind(this));
-    $(document).on("trackchange",this.onTrackChange.bind(this));
-    $(document).on("trackremove",this.onTrackRemove.bind(this));
-    $(document).on("pauseadjust",this.onPauseAdjust.bind(this));
+
+    Backbone.on("timelineseek",this.onTimelineSeekHandler.bind(this));
+    Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
+    Backbone.on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
+    Backbone.on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
+    Backbone.on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
+    Backbone.on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
+    Backbone.on("subtitlelineblur",this.onSubtitleLineBlur.bind(this));
+    Backbone.on("subtitlelinekeyup",this.onSubtitleLineKeyup.bind(this));
+    Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
+    Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
+    Backbone.on("trackstart",this.onTrackStart.bind(this));
+    Backbone.on("trackend",this.onTrackEnd.bind(this));
+    Backbone.on("trackchange",this.onTrackChange.bind(this));
+    Backbone.on("trackremove",this.onTrackRemove.bind(this));
+    Backbone.on("pauseadjust",this.onPauseAdjust.bind(this));
+
     this.$addSubtitleBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
     this.$saveBtn.on("click",this.onSaveBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
@@ -314,7 +320,7 @@ Editor.prototype = {
     }
   },
 
-  onDocumentScroll: function(event,delta) { 
+  onDocumentScroll: function(event,delta) {
     // disallow horizontal scroll
     if (event.originalEvent.wheelDeltaX !== 0) {
       event.preventDefault();
@@ -379,7 +385,7 @@ Editor.prototype = {
     if (track) {
       this.safeEndGhostTrack(track);
       track.remove();
-    }  
+    }
   },
 
   timeSubtitle: function() {
@@ -395,11 +401,11 @@ Editor.prototype = {
     }
   },
 
-  onTimelineSeekHandler: function(event,time) {
+  onTimelineSeekHandler: function(time) {
     this.seek(time);
   },
 
-  onTrackSeekHandler: function(event,time) {
+  onTrackSeekHandler: function(time) {
     this.seek(time);
   },
 
@@ -424,22 +430,22 @@ Editor.prototype = {
   onLoadedMetadata: function(event) {
     this.$startTimingBtn.removeAttr("disabled");
     this.enableCommands();
-    this.$el.trigger("editor.ready");
+    Backbone.trigger("editor.ready");
   },
 
-  onPauseAdjust: function(event,correctPauseTime) {
+  onPauseAdjust: function(correctPauseTime) {
   },
 
-  onSubtitleLineClick: function(event,subtitle) {
+  onSubtitleLineClick: function(subtitle) {
     this.seek(subtitle.track.startTime());
   },
 
-  onSubtitleLineDblClick: function(event,subtitle) {
+  onSubtitleLineDblClick: function(subtitle) {
     this.pause();
     subtitle.openEditor(event);
   },
 
-  onSubtitleEditMode: function(event,track) {
+  onSubtitleEditMode: function(track) {
     // can only get triggered one at a time
     if (this.isOnSubtitleEditMode) return;
 
@@ -472,7 +478,7 @@ Editor.prototype = {
     this.$subtitleEdit.effect("highlight", { color: "moccasin" },1000);
   },
 
-  onGhostTrackStart: function(event,track) {
+  onGhostTrackStart: function(track) {
     this.isGhostTrackStarted = true;
     this.currentGhostTrack = track;
     this.$startTimingBtn.hide();
@@ -480,7 +486,7 @@ Editor.prototype = {
     this.$addSubtitleBtn.attr("disabled","disabled");
   },
 
-  onGhostTrackEnd: function(event,track) {
+  onGhostTrackEnd: function(track) {
     this.isGhostTrackStarted = false;
     this.currentGhostTrack = null;
     this.currentTrack = null;
@@ -513,25 +519,13 @@ Editor.prototype = {
     this.popcorn.pause();
   },
 
-  onTrackChange: function(event,track) {
-    if (!track.isSaved) {
-      if (typeof track.getAttributes().id === "undefined") {
-        if (this.changes["tracks"]["creates"].indexOf(track) < 0) {
-          this.changes["tracks"]["creates"].push(track);
-        }
-      } else {
-        if (this.changes["tracks"]["updates"].indexOf(track) < 0) {
-          this.changes["tracks"]["updates"].push(track);
-        }
-      }
-    }
-
+  onTrackChange: function(track) {
     this.disabledOrEnableSaveButton();
   },
 
   disabledOrEnableSaveButton: function() {
-    var operationCount = this.changes.tracks.creates.length + 
-                         this.changes.tracks.updates.length + 
+    var operationCount = this.changes.tracks.creates.length +
+                         this.changes.tracks.updates.length +
                          this.changes.tracks.destroys.length;
 
     if (operationCount === 0) {
@@ -541,7 +535,7 @@ Editor.prototype = {
     }
   },
 
-  onTrackStart: function(event,track) {
+  onTrackStart: function(track) {
     this.currentTrack = track;
 
     var subtitle = track.subtitle;
@@ -549,16 +543,16 @@ Editor.prototype = {
     subtitle.highlight();
 
     if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
-      if (!track.isGhost()) {
+      if (!track.isGhost) {
         this.pause();
-        track.$el_expanded.trigger("subtitleeditmode",[track]);
+        Backbone.trigger("subtitleeditmode",track);
       }
     } else {
       this.showSubtitleInSubtitleBar(subtitle);
     }
   },
 
-  onTrackEnd: function(event,track) {
+  onTrackEnd: function(track) {
     this.currentTrack = null;
 
     this.hideSubtitleInSubtitleBar();
@@ -585,14 +579,13 @@ Editor.prototype = {
 
         this.safeEndGhostTrack(track,endTime);
         this.requestSubtitleFromUser(track);
-      } 
+      }
     }
   },
 
-  onTrackRemove: function(event,track) {
+  onTrackRemove: function(track) {
     // remove references to track that must be deleted
     var index = this.tracks.indexOf(track);
-    delete this.trackMap[track.client_id];
     this.tracks.splice(index,1);
 
     // remove references to track in changes hash
@@ -635,28 +628,28 @@ Editor.prototype = {
 
   togglePlayPause: function() {
     if (this.media.paused) {
-      this.play();  
+      this.play();
     } else {
-      this.pause();  
+      this.pause();
     }
   },
 
-  onSubtitleEditFocus: function(event) {
+  onSubtitleEditFocus: function() {
     if (this.$subtitleEdit.is(":visible")) {
       this.disableCommands();
     }
   },
 
-  onSubtitleEditBlur: function(event) {
+  onSubtitleEditBlur: function() {
 
     this.enableCommands();
   },
 
-  onSubtitleLineEdit: function(event) {
+  onSubtitleLineEdit: function() {
     this.disableCommands();
   },
 
-  onSubtitleLineBlur: function(event) {
+  onSubtitleLineBlur: function() {
     this.enableCommands();
   },
 
@@ -685,7 +678,7 @@ Editor.prototype = {
       this.$subtitleEdit.hide();
       this.$subtitleDisplay.show();
       this.play();
-    } 
+    }
 
     // enter key
     if (event.which == 13) {
@@ -694,17 +687,17 @@ Editor.prototype = {
       this.$subtitleEdit.hide();
       this.$subtitleDisplay.show();
       this.play();
-    } 
+    }
   },
 
-  onSubtitleLineKeyup: function(event,text) {
+  onSubtitleLineKeyup: function(text) {
     this.$subtitleDisplay.text(text);
   },
 
   onSubtitleDisplayDblClick: function(event) {
     var $target = $(event.target);
 
-    $target.trigger("subtitleeditmode",[this.currentTrack]);
+    Backbone.trigger("subtitleeditmode",this.currentTrack);
   },
 
   onPlayBtnClick: function(event) {
@@ -735,7 +728,7 @@ Editor.prototype = {
     try {
       return this.createGhostTrack();
     } catch(e) {
-      console.log(e);  
+      console.log(e);
     }
   },
 
@@ -743,7 +736,7 @@ Editor.prototype = {
     try {
       this.endGhostTrack(track,endTime);
     } catch(e) {
-      console.log(e);  
+      console.log(e);
       // this.$subtitleEdit.hide(0,function(){
       //   this.isOnSubtitleEditMode = false;
       // }.bind(this));
@@ -778,14 +771,14 @@ Editor.prototype = {
     var updates = this.changes["tracks"]["updates"];
     var destroys = this.changes["tracks"]["destroys"];
 
-    if (creates.length > 0 || 
+    if (creates.length > 0 ||
         updates.length > 0 ||
         destroys.length > 0) {
 
       $.ajax({
         url: "/repositories/" + this.repo.id +"/timings/save",
         type: "POST",
-        data: { 
+        data: {
           timings: {
             "creates": $.map(creates,function(track){ return track.getAttributes(); } ),
             "updates": $.map(updates,function(track){ return track.getAttributes(); } ),
@@ -797,8 +790,7 @@ Editor.prototype = {
           if (data["creates"].length > 0) this.setIds(data["creates"]);
           if (data["updates"].length > 0) {
             for (var i = 0; i < data["updates"].length; i++) {
-              var track = this.trackMap[data["updates"][i].client_id];
-              track.isSaved = true;
+              throw "unhandled";
             }
           }
           this.clearChanges(creates,updates,destroys);
@@ -849,11 +841,10 @@ Editor.prototype = {
     if (typeof timings !== "undefined") {
       for (var i = 0; i < timings.length; i++) {
         try {
-          var track = new Track(timings[i], this.popcorn, { isSaved: true });
-          this.trackMap[track.getAttributes().client_id] = track;
+          var track = new Track(timings[i], { popcorn: this.popcorn });
           tracks.push(track);
         } catch(e) {
-          console.log(e);
+          console.log(e.stack);
         }
       };
     }
@@ -873,8 +864,7 @@ Editor.prototype = {
       end_time: endTime
     };
 
-    var track = new Track(attributes, this.popcorn, { "isGhost": true});
-    this.trackMap[track.getAttributes().client_id] = track;
+    var track = new Track(attributes, { popcorn: this.popcorn, isGhost: true});
     this.tracks.push(track);
 
     return track;
@@ -893,11 +883,11 @@ Editor.prototype = {
   requestSubtitleFromUser: function(track) {
     if (track.initial_subtitle_request && !track.isRemoved()) {
       track.initial_subtitle_request = false;
-      track.$el_expanded.trigger("subtitleeditmode",[track]);
+      Backbone.trigger("subtitleeditmode",track);
     }
   },
 
-   /* When you're timing a track while media is playing, and you're very near the start of next track, 
+   /* When you're timing a track while media is playing, and you're very near the start of next track,
    *   pausing might result in scrubber being inside next track since pausing is not immediate (it takes a few millisec
    * This function would ensure that pausing would stop at current track
    * Would only run if media is currently playing, if its paused, don't do anything
@@ -915,7 +905,7 @@ Editor.prototype = {
       // console.log("[seeking] curr_track: " + this.currentTrack + " - track: " + track);
       // check if track that we want to pause  at is same as this.currentTrack
       // if not, seek back to track
-      
+
       if (track !== this.currentTrack) {
         var executeCallback = function() {
           this.popcorn.off("seeked",executeCallback);
@@ -937,7 +927,7 @@ Editor.prototype = {
     // if playing, pause playback to let user type subtitle
 
     this.pause();
-  }, 
+  },
 
     /*
    *   startTime should not be less than any existing track endTime
@@ -1033,10 +1023,10 @@ Editor.prototype = {
     var seconds = Math.floor(time % 60);
     var milliseconds = Math.floor(time * 1000) % 1000
 
-    var result = (hours < 10 ? "0" + hours : hours) + ":" + 
-                 (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+    var result = (hours < 10 ? "0" + hours : hours) + ":" +
+                 (minutes < 10 ? "0" + minutes : minutes) + ":" +
                  (seconds  < 10 ? "0" + seconds : seconds) + "." +
-                 (milliseconds  < 10 ? "00" + milliseconds : (milliseconds < 100 ? "0" + milliseconds : milliseconds)); 
+                 (milliseconds  < 10 ? "00" + milliseconds : (milliseconds < 100 ? "0" + milliseconds : milliseconds));
     return result;
   }
 }

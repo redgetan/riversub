@@ -17,7 +17,7 @@ $(document).ready(function(){
 
   editor = new Editor(repo,{ media: media, container: $("#test_container") } );
 
-  $(document).on("editor.ready", function(){
+  Backbone.on("editor.ready", function(){
 
     asyncTest( "createGhostTrack should create a new track", 1, function() {
       editor.resetState(function(){
@@ -113,8 +113,8 @@ $(document).ready(function(){
         var numOfGhostTrackStart = 0;
         var numOfGhostTrackEnd = 0;
 
-        $(document).on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
-        $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+        Backbone.on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
+        Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
         editor.seek(3,function(){
           var track = editor.createGhostTrack();
@@ -174,8 +174,8 @@ $(document).ready(function(){
         var numOfGhostTrackStart = 0;
         var numOfGhostTrackEnd = 0;
 
-        $(document).on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
-        $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+        Backbone.on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
+        Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
         editor.timeSubtitle();
         equal(numOfGhostTrackStart,1);
@@ -189,8 +189,8 @@ $(document).ready(function(){
         var numOfGhostTrackStart = 0;
         var numOfGhostTrackEnd = 0;
 
-        $(document).on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
-        $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+        Backbone.on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
+        Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
         editor.timeSubtitle();
         editor.timeSubtitle();
@@ -205,8 +205,8 @@ $(document).ready(function(){
         var numOfGhostTrackStart = 0;
         var numOfGhostTrackEnd = 0;
 
-        $(document).on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
-        $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+        Backbone.on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
+        Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
         editor.timeSubtitle();
         editor.cancelGhostTrack();
@@ -274,10 +274,10 @@ $(document).ready(function(){
       var popcorn = Popcorn("#media");
       var track;
 
-      throws(function() { track = new Track({},popcorn); });
+      throws(function() { track = new Track({},{popcorn: popcorn}); });
       throws(function() { track = new Track({ start_time: 4, end_time: 7}); });
 
-      track = new Track({ start_time: 4, end_time: 7}, popcorn);
+      track = new Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
       equal(track.toString(),"Track(4,7)");
     });
 
@@ -288,10 +288,10 @@ $(document).ready(function(){
       var numOfGhostTrackStart = 0;
       var numOfGhostTrackEnd = 0;
 
-      $(document).on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
-      $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+      Backbone.on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
+      Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
-      track = new Track({ start_time: 4, end_time: 7}, popcorn);
+      track = new Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
 
       track.remove();
       equal(numOfGhostTrackStart,0);
@@ -303,9 +303,9 @@ $(document).ready(function(){
       var track;
 
       var numOfGhostTrackStart = 0;
-      $(document).on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
+      Backbone.on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
 
-      track = new Track({ start_time: 4, end_time: 7}, popcorn,{ "isGhost": true});
+      track = new Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true });
 
       equal(numOfGhostTrackStart,1);
     });
@@ -315,9 +315,9 @@ $(document).ready(function(){
       var track;
 
       var numOfGhostTrackEnd = 0;
-      $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+      Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
-      track = new Track({ start_time: 4, end_time: 7}, popcorn,{ "isGhost": true});
+      track = new Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true});
 
       track.end(6);
       equal(numOfGhostTrackEnd,1);
@@ -328,9 +328,9 @@ $(document).ready(function(){
       var track;
 
       var numOfGhostTrackEnd = 0;
-      $(document).on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
+      Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
-      track = new Track({ start_time: 4, end_time: 7}, popcorn,{ "isGhost": true});
+      track = new Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true});
 
       track.remove();
       equal(numOfGhostTrackEnd,1);
@@ -340,7 +340,7 @@ $(document).ready(function(){
       var popcorn = Popcorn("#media");
       var track;
 
-      track = new Track({ start_time: 4, end_time: 7}, popcorn);
+      track = new Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
 
       equal(popcorn.getTrackEvents().length,1);
       track.remove();
@@ -349,7 +349,7 @@ $(document).ready(function(){
 
     // test( "removing a track should not trigger track end", function() {
     //   var popcorn = Popcorn("#media");
-    //   var track = new Track({},popcorn);
+    //   var track = new Track({},{ popcorn: popcorn });
 
 
     //   equal(editor.numTracks,1);
@@ -397,7 +397,6 @@ $(document).ready(function(){
       timeline.media.currentTime = 35;
       equal(timeline.isOutOfBounds(),true);
       timeline.on("window.scroll",function(){
-        console.log(timeline.current_window_slide);
         deepEqual(timeline.current_window_slide,{start: 30, end: 60});
         start();
       });
