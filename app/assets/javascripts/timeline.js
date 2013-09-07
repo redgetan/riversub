@@ -385,8 +385,8 @@ Timeline.prototype = {
   renderFillProgress: function(track) {
     var progress = track.progressTime() - track.startTime();
 
-    this.renderInContainer(this.$summary,track.$el_summary,  { width: progress, left: track.startTime() });
-    this.renderInContainer(this.$expanded,track.$el_expanded,{ width: progress, left: track.startTime() });
+    this.renderInContainer(this.$summary,track.summaryView.$el,  { width: progress, left: track.startTime() });
+    this.renderInContainer(this.$expanded,track.expandedView.$el,{ width: progress, left: track.startTime() });
   },
 
   renderSeekHead: function() {
@@ -509,7 +509,7 @@ Timeline.prototype = {
       }.bind(this),100);
 
       this.windowSlideTimeoutQueue.push(windowSlideTimeout);
-      Backbone.trigger("window.scroll");
+      this.$summary.trigger("window.scroll");
     // }
   },
 

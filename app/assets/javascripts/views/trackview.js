@@ -34,7 +34,8 @@ var TrackView = Backbone.View.extend({
   },
 
   render: function() {
-
+    // clean way of doing it?
+    this.subtitle.view.render();
   }
 
 });
@@ -64,8 +65,6 @@ var ExpandedTrackView = TrackView.extend({
     TrackView.prototype.initialize.call(this);
     this.$container = $("#expanded.timeline #track_viewport");
     this.setupElement();
-
-    this.listenTo(Backbone, "trackfadinghighlight", this.onTrackFadingHighlight);
   },
 
   setupElement: function() {
@@ -113,7 +112,7 @@ var ExpandedTrackView = TrackView.extend({
     this.model.remove();
   },
 
-  onTrackFadingHighlight: function() {
+  fadingHighlight: function() {
     this.$el.effect("highlight", {color: "moccasin"}, 1000);
   }
 

@@ -108,7 +108,6 @@ $(document).ready(function(){
     });
 
     asyncTest( "after createGhostTrack, seeking to time less than its startTime will automatically endGhostTrack and subsequently remove that invalid track of negative duration", 3, function() {
-      console.log("AFTER SEEKING LESS THAN START TIME");
       editor.resetState(function(){
         var numOfGhostTrackStart = 0;
         var numOfGhostTrackEnd = 0;
@@ -356,7 +355,6 @@ $(document).ready(function(){
     // });
 
 
-
     /*
      *
      *  ---------- TIMELINE TEST ---------------------
@@ -392,10 +390,12 @@ $(document).ready(function(){
       var media = $("#media")[0];
       var timeline = new Timeline(media);
 
+
       equal(timeline.isOutOfBounds(),false);
       deepEqual(timeline.current_window_slide,{start: 0, end: 30});
       timeline.media.currentTime = 35;
       equal(timeline.isOutOfBounds(),true);
+
       timeline.on("window.scroll",function(){
         deepEqual(timeline.current_window_slide,{start: 30, end: 60});
         start();
@@ -526,4 +526,21 @@ $(document).ready(function(){
 // [x] instructions should show only "Adding Subtitles" initially, with lists being expandable/collapsible
 // [x] make timeline scrolling more sensitive/ too slow and feels a bit buggy
 // [ ] update video demo
+// [ ] move 1st track to after 2nd track. clicking on 1st track wont work anymore. subtitle position is wrong
+// [ ] if youre a player. and you dblclick on subtitle line, there should be no errors 
+//       (currently its calling subtitle.openEditor - should only happen for editor, not player)
+// [ ] need to validate start_time/end_time
+// [ ] test track/subtitle changes two way should function properly highlighting/positioning scrolling
+// [ ] when track/subtitle is removed, other should be removed too
+// [ ] when track start time/endtime is set,
+// [ ]   it should be changed model.changedAttributes should have hash key size of > 0
+// [ ]   save button should be enabled
+// [ ] trackcollection should be responsible for highlighting/unhighlighting tracks listen to trackStart
+// [ ] remove this: if ($("#editor").size() === 1) {
+// [ ] dblclick on track/subtitle should show subtitleeditform on video plus subtitle text should be there
+// [ ] sorting subtitle logic is fucked up
+// [ ] handle model syncing 
 
+    // test( "moving track to position after next track should move subtitle position to next one as well", function() {
+    //   // how the fuck do you test this  
+    // });

@@ -1,0 +1,123 @@
+var SubtitleView = Backbone.View.extend({
+
+  tagName: "tr",
+  className: "subtitle",
+
+  events: {
+    "mouseenter": "onMouseEnter",  
+    "mouseleave": "onMouseLeave",  
+    "click .close": "onCloseClick",  
+  },
+
+  initialize: function() {
+    this.$container = $("#subtitle_list table");
+    this.$el.data("model",this.model);
+
+    this.listenTo(this.model,"change",this.render);
+    this.listenTo(this.model.track,"remove",this.remove);
+
+    this.setupElement();
+  },
+
+  setupElement: function() {
+    this.$container.append(this.$el);
+
+    var content = "<td>" +
+                    "<div class='start_time'></div>" +
+                  "</td>" +
+                  "<td>" +
+                    "<div class='end_time'></div>" +
+                  "</td>" +
+                  "<td>" +
+                    "<div class='text'></div>" +
+                    "<div class='delete'>" +
+                      "<button type='button' class='close'>×</button>" +
+                    "</div>" +
+                  "</td>";
+    this.$el.append(content);
+
+
+
+    this.$text = this.$el.find(".text");
+
+    this.$close = this.$el.find(".close");
+    this.$close.hide();
+
+    if ($("#editor").size() === 1) {
+      this.$el.find(".text").editInPlace({
+        editEvent: "none_delegated_by_parent",
+        bg_over: "transparent",
+        default_text: "",
+        callback: function(unused, enteredText) { this.setAttributes({ "text": enteredText}); return enteredText; }.bind(this),
+        delegate: {
+          didOpenEditInPlace: function($dom,settings) {
+            Backbone.trigger("subtitlelineedit");
+
+            $dom.find(":input").attr("maxlength",60);
+            $dom.find(":input").on("keyup",function(event) {
+              var $input = $(event.target);
+              Backbone.trigger("subtitlelinekeyup",$input.val());
+            });
+          }.bind(this),
+          // shouldCloseEditInPlace: function() { return false; },
+          didCloseEditInPlace: function($dom) {
+            Backbone.trigger("subtitlelineblur");
+            // this.edit_sub_mode = false;
+          }.bind(this)
+        }
+      });
+    }
+
+    this.render();
+  },
+
+
+  highlight: function() {
+    this.$el.addClass("selected");
+  },
+
+  unhighlight: function() {
+    this.$el.removeClass("selected");
+  },
+
+  render: function() {
+    if (this.model.track !== null ) {
+      this.$el.find(".start_time").text(this.model.startTime());
+      if (!this.model.track.isGhost) {
+        this.$el.find(".end_time").text(this.model.endTime());
+      }
+    } else {
+      this.$el.find(".start_time").text("");
+      this.$el.find(".end_time").text("");
+    }
+    this.$el.find(".text").text(this.model.get("text"));
+  },
+
+  onMouseEnter: function() {
+    this.$close.show();
+  },
+
+  onMouseLeave: function() {
+    this.$close.hide();
+  },
+
+  onCloseClick: function(event) {
+    event.stopPropagation();
+    this.remove();
+  },
+
+  openEditor: function(event) {
+    // no need to open again if its already opened
+    if (this.$text.hasClass("editInPlace-active")) return;
+
+    this.$text.data("editor").openEditor(event);
+  },
+
+  hideEditorIfNeeded: function() {
+    if (this.$text.hasClass("editInPlace-active")) {
+      this.$text.data("editor").handleSaveEditor({});
+    }
+  }
+
+
+});

@@ -1,7 +1,3 @@
-
-//     handle model syncing errors
-//     when track changes - this.disabledOrEnableSaveButton();
-
 function Editor (repo,options) {
   this.repo = repo || {};
   this.video = this.repo.video || {};
@@ -23,21 +19,12 @@ function Editor (repo,options) {
   this.popcorn = this.loadMedia(mediaSource);
   this.popcorn.volume(0.2);
 
-  this.subtitleView = new SubtitleView(subtitles);
+  this.subtitles = new Subtitles();
   this.timeline = new Timeline(this.popcorn.media);
 
   this.trackMap = {}
   this.tracks = this.loadTracks(timings);
   this.timeline.setTracks(this.tracks);
-
-
-  this.changes = {
-    tracks: {
-      creates: [],
-      updates: [],
-      destroys: []
-    }
-  };
 
   this.bindEvents();
 
@@ -287,7 +274,6 @@ Editor.prototype = {
     Backbone.on("pauseadjust",this.onPauseAdjust.bind(this));
 
     this.$addSubtitleBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
-    this.$saveBtn.on("click",this.onSaveBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
     this.$startTimingBtn.on("click",this.onStartTimingBtn.bind(this));
@@ -442,12 +428,11 @@ Editor.prototype = {
 
   onSubtitleLineDblClick: function(subtitle) {
     this.pause();
-    subtitle.openEditor(event);
   },
 
   onSubtitleEditMode: function(track) {
-    // can only get triggered one at a time
-    if (this.isOnSubtitleEditMode) return;
+    // can only get triggered one at a time unless its a different track
+    if (this.isOnSubtitleEditMode && track === this.currentTrack ) return;
 
     // set the lock flag
     this.isOnSubtitleEditMode = track;
@@ -463,7 +448,7 @@ Editor.prototype = {
   showSubtitleEdit: function(track) {
     // console.log("show edit");
     // get subtitle text to edit
-    var text = track.subtitle.text || "";
+    var text = track.subtitle.get("text") || "";
 
     // display the text in input
     this.$subtitleEdit.val(text);
@@ -520,19 +505,7 @@ Editor.prototype = {
   },
 
   onTrackChange: function(track) {
-    this.disabledOrEnableSaveButton();
-  },
-
-  disabledOrEnableSaveButton: function() {
-    var operationCount = this.changes.tracks.creates.length +
-                         this.changes.tracks.updates.length +
-                         this.changes.tracks.destroys.length;
-
-    if (operationCount === 0) {
-      this.$saveBtn.attr("disabled", "disabled");
-    } else {
-      this.$saveBtn.removeAttr("disabled");
-    }
+    // we want to save changes
   },
 
   onTrackStart: function(track) {
@@ -542,7 +515,7 @@ Editor.prototype = {
     track.highlight();
     subtitle.highlight();
 
-    if (typeof subtitle.text === "undefined" || /^\s*$/.test(subtitle.text) ) {
+    if (typeof subtitle.get("text") === "undefined" || /^\s*$/.test(subtitle.get("text")) ) {
       if (!track.isGhost) {
         this.pause();
         Backbone.trigger("subtitleeditmode",track);
@@ -561,8 +534,8 @@ Editor.prototype = {
     track.subtitle.unhighlight();
     track.subtitle.hideEditorIfNeeded();
 
-    if (typeof track.subtitle.text === "undefined" || /^\s*$/.test(track.subtitle.text) ) {
-      if (track.isGhost() && !track.isRemoved()) {
+    if (typeof track.subtitle.get("text") === "undefined" || /^\s*$/.test(track.subtitle.get("text")) ) {
+      if (track.isGhost && !track.isRemoved()) {
         // will reach this state if user presses space_key until startTime of next track,
         // in which it immediately stops since ghostTrack ends at starttime of next track
         // but it is not stopped by explicit user action which would be to release space_key, we would have
@@ -587,25 +560,6 @@ Editor.prototype = {
     // remove references to track that must be deleted
     var index = this.tracks.indexOf(track);
     this.tracks.splice(index,1);
-
-    // remove references to track in changes hash
-    index = this.changes["tracks"]["creates"].indexOf(track);
-    if (index >= 0) {
-      this.changes["tracks"]["creates"].splice(index,1);
-    }
-
-    index = this.changes["tracks"]["updates"].indexOf(track);
-    if (index >= 0) {
-      this.changes["tracks"]["updates"].splice(index,1);
-    }
-
-    // if track was previously saved to server, make sure to delete server side track as well
-    if (typeof track.id !== "undefined") {
-      this.changes["tracks"]["destroys"].push(track.id);
-    }
-
-    this.disabledOrEnableSaveButton();
-
 
     this.isOnSubtitleEditMode = null;
     this.$subtitleEdit.blur();
@@ -641,7 +595,6 @@ Editor.prototype = {
   },
 
   onSubtitleEditBlur: function() {
-
     this.enableCommands();
   },
 
@@ -668,7 +621,7 @@ Editor.prototype = {
     var text  = this.$subtitleEdit.val();
     var track = this.$subtitleEdit.data("track");
 
-    track.subtitle.setAttributes({ "text": text});
+    track.subtitle.set({ "text": text});
     this.$subtitleDisplay.text(text);
 
     // escape key
@@ -759,61 +712,6 @@ Editor.prototype = {
       this.safeEndGhostTrack(track);
       this.requestSubtitleFromUser(track);
     }.bind(this));
-  },
-
-  onSaveBtnClick: function(event) {
-    if (this.$saveBtn.attr("disabled") === "disabled") {
-      return;
-    } else {
-      this.$saveBtn.attr("disabled","disabled");
-    }
-    var creates = this.changes["tracks"]["creates"];
-    var updates = this.changes["tracks"]["updates"];
-    var destroys = this.changes["tracks"]["destroys"];
-
-    if (creates.length > 0 ||
-        updates.length > 0 ||
-        destroys.length > 0) {
-
-      $.ajax({
-        url: "/repositories/" + this.repo.id +"/timings/save",
-        type: "POST",
-        data: {
-          timings: {
-            "creates": $.map(creates,function(track){ return track.getAttributes(); } ),
-            "updates": $.map(updates,function(track){ return track.getAttributes(); } ),
-            "destroys": destroys
-          }
-        },
-        dataType: "json",
-        success: function(data) {
-          if (data["creates"].length > 0) this.setIds(data["creates"]);
-          if (data["updates"].length > 0) {
-            for (var i = 0; i < data["updates"].length; i++) {
-              throw "unhandled";
-            }
-          }
-          this.clearChanges(creates,updates,destroys);
-          this.disabledOrEnableSaveButton();
-        }.bind(this),
-        error: function(data,e,i) {
-          this.disabledOrEnableSaveButton();
-          try {
-            var result = JSON.parse(data);
-            alert(result.error);
-          } catch (e) {
-            alert("Something went wrong while saving. We will fix this problem shortly.");
-          }
-        }.bind(this)
-      });
-    }
-
-  },
-
-  clearChanges: function(creates,updates,destroys) {
-    this.changes["tracks"]["creates"].splice(0,creates.length);
-    this.changes["tracks"]["updates"].splice(0,updates.length);
-    this.changes["tracks"]["destroys"].splice(0,destroys.length);
   },
 
   seek: function(time,callback) {
@@ -969,7 +867,7 @@ Editor.prototype = {
       }.bind(this));
     }
     this.$subtitleDisplay.show();
-    this.$subtitleDisplay.text(subtitle.text);
+    this.$subtitleDisplay.text(subtitle.get("text"));
   },
 
   hideSubtitleInSubtitleBar: function(subtitle) {
@@ -987,16 +885,6 @@ Editor.prototype = {
     };
 
     return nextNearestEdgeTime;
-  },
-
-  setIds: function(timings) {
-    var track;
-    for (var i = 0; i < timings.length; i++) {
-      track = this.trackMap[timings[i].client_id];
-      track.id = timings[i].id;
-      track.subtitle.id = timings[i].subtitle.id;
-      track.isSaved = true;
-    };
   },
 
   clearTracks: function() {

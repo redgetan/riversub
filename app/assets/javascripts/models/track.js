@@ -1,8 +1,3 @@
-// need to validate start_time/end_time
-// when track start time/endtime is set,
-//   it should be changed model.changedAttributes should have hash key size of > 0
-//   save button should be enabled
-
 var Track = Backbone.Model.extend({
 
   initialize: function(attributes, options) {
@@ -11,9 +6,12 @@ var Track = Backbone.Model.extend({
     this.popcorn = options['popcorn'];
     this.isGhost = options['isGhost'] || false;
 
-    var subtitle = new Subtitle(attributes['subtitle']);
-    this.setSubtitle(subtitle);
+    this.subtitle = new Subtitle(attributes['subtitle'], {track: this});
+
+    // when trackEvent is created, trackstart event is triggered, received by editor.js and it 
+    // will use subtitle so by that time subtitle should already exist. Its very tightly coupled....
     this.trackEvent     = this.createTrackEvent(attributes.start_time,attributes.end_time);
+    
 
     this.expandedView = new ExpandedTrackView({model: this});
     this.summaryView = new SummaryTrackView({model: this});
@@ -29,6 +27,7 @@ var Track = Backbone.Model.extend({
 
       this.initial_subtitle_request = true;
     }
+
   },
 
   getAttributes: function(attributes) {
@@ -36,21 +35,15 @@ var Track = Backbone.Model.extend({
       id: this.id,
       start_time: this.startTime(),
       end_time: this.endTime(),
-      client_id: this.trackEvent._id,
       subtitle_attributes: this.subtitle.getAttributes(),
     }
-  },
-
-  setSubtitle: function(subtitle) {
-    this.subtitle = subtitle;
-    subtitle.setTrack(this);
   },
 
   startTime: function() {
     if (typeof this.trackEvent !== "undefined") {
       return this.trackEvent.start;
     } else {
-      return this.start_time;
+      return this.get("start_time");
     }
   },
 
@@ -65,7 +58,7 @@ var Track = Backbone.Model.extend({
     if (typeof this.trackEvent !== "undefined") {
       return this.trackEvent.end;
     } else {
-      return this.end_time;
+      return this.get("end_time");
     }
   },
 
@@ -77,7 +70,7 @@ var Track = Backbone.Model.extend({
   },
 
   text: function() {
-    return this.subtitle.text;
+    return this.subtitle.get("text");
   },
 
   end: function(time) {
@@ -130,7 +123,6 @@ var Track = Backbone.Model.extend({
     }
     this.trackEvent._running = false; // disallow trackend event from getting triggered
     this.popcorn.removeTrackEvent(this.trackEvent._id);
-    this.subtitle.remove();
 
     _.each(this.views,function(view){
       view.remove();

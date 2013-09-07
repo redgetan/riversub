@@ -14,7 +14,7 @@ function Player (repo,options) {
   this.popcorn = this.loadMedia(targetSelector,mediaSource);
   this.popcorn.volume(0.2);
 
-  this.subtitleView = new SubtitleView(subtitles);
+  this.subtitles = new Subtitles();
 
   this.trackMap = {}
   this.tracks = this.loadTracks(timings);
@@ -77,12 +77,12 @@ Player.prototype = {
   },
 
   bindEvents: function() {
-    $(document).on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
-    $(document).on("trackstart",this.onTrackStart.bind(this));
-    $(document).on("trackend",this.onTrackEnd.bind(this));
+    Backbone.on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
+    Backbone.on("trackstart",this.onTrackStart.bind(this));
+    Backbone.on("trackend",this.onTrackEnd.bind(this));
   },
 
-  onSubtitleLineClick: function(event,subtitle) {
+  onSubtitleLineClick: function(subtitle) {
     this.seek(subtitle.track.startTime());
   },
 
@@ -90,19 +90,19 @@ Player.prototype = {
     this.popcorn.currentTime(time);
   },
 
-  onTrackStart: function(event,track) {
+  onTrackStart: function(track) {
     var subtitle = track.subtitle;
     this.showSubtitleInSubtitleBar(subtitle);
     subtitle.highlight();
   },
 
-  onTrackEnd: function(event,track) {
+  onTrackEnd: function(track) {
     this.hideSubtitleInSubtitleBar(track.subtitle);
     track.subtitle.unhighlight();
   },
 
   showSubtitleInSubtitleBar: function(subtitle) {
-    this.$subtitleDisplay.text(subtitle.text);
+    this.$subtitleDisplay.text(subtitle.get("text"));
     this.$subtitleDisplay.css("padding","5px");
   },
 
