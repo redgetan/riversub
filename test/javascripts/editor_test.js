@@ -540,6 +540,7 @@ $(document).ready(function(){
 // [ ] dblclick on track/subtitle should show subtitleeditform on video plus subtitle text should be there
 // [ ] sorting subtitle logic is fucked up
 // [ ] handle model syncing 
+//       create/update/delete
 
     // test( "moving track to position after next track should move subtitle position to next one as well", function() {
     //   // how the fuck do you test this  

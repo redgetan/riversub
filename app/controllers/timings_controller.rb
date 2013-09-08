@@ -1,45 +1,37 @@
 class TimingsController < ApplicationController
 
-  def save
-    @repo = Repository.find params[:repository_id]
+  before_filter :get_repository
 
-    @creates = []
-    @updates = []
-
-    ActiveRecord::Base.transaction do
-      params[:timings].each do |action,values|
-        case action
-        when "creates"
-          values.each do |i, timing_param|
-            @timing = @repo.timings.create!(timing_param)
-            @creates << @timing
-          end
-        when "updates"
-          values.each do |i, timing_param|
-            id = timing_param.delete(:id)
-            @timing = @repo.timings.find(id)
-            @timing.update_attributes!(timing_param)
-            @updates << @timing
-          end
-        when "destroys"
-          values.each do |id|
-            @timing = @repo.timings.find(id)
-            @timing.destroy
-          end
-        else
-        end
-      end
+  def create
+    @timing = @repo.timings.build(params[:timing])
+    if @timing.save
+      render :json => {}, :status => 200
+    else
+      render :json => { :error => @timing.errors }, :status => 403
     end
+  end
 
-    render :json => { :creates => @creates.map(&:serialize),
-                      :updates => @updates.map(&:serialize)}.to_json, :status => 200
-  rescue ActiveRecord::RecordInvalid => e
-    render :json => { :error => e.record.errors }, :status => 403
+  def update
+    @timing = @repo.timings.find(params[:id])
+    if @timing.update_attributes(params[:timing])
+      render :json => {}, :status => 200
+    else
+      render :json => { :error => @timing.errors }, :status => 403
+    end
+  end
+
+  def destroy
+    @timing = @repo.timings.find(params[:id])
+    @timing.destroy
+    render :json => {}, :status => 200
   end
 
   def index
-    @repo = Repository.find params[:repository_id]
     send_data @repo.to_srt, :type => "text/plain", :filename => "#{@repo.filename}"
+  end
+
+  def get_respository
+    @repo = Repository.find params[:repository_id]
   end
 
 end

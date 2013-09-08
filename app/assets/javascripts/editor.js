@@ -85,7 +85,6 @@ Editor.prototype = {
                       "<div class='btn-group pull-right'> " +
                         "<a id='start_timing_btn' class='btn'><i class='icon-circle'></i> Start Timing</a> " +
                         "<a id='stop_timing_btn' class='btn'><i class='icon-circle'></i> Stop</a> " +
-                        "<a id='save_btn' class='btn btn-success'><i class='icon-save'></i> Save</a> " +
                         "<a id='help_btn' data-toggle='modal' data-target='#instructions_modal' class='btn'><i class='icon-question-sign'></i></a> " +
                       "</div> " +
                       // "<div class='btn-group pull-right'> " +
@@ -174,10 +173,6 @@ Editor.prototype = {
     this.$stopTimingBtn.hide();
 
     this.$addSubtitleBtn = $("#add_subtitle_btn");
-
-    this.$saveBtn = $("#save_btn");
-    this.$saveBtn.attr("disabled","disabled");
-    this.$saveBtn.tooltip({title: "Save changes"});
 
     this.$downloadBtn = $("#download_btn");
     this.$downloadBtn.tooltip({title: "Download subtitle file in .srt format"});
@@ -772,6 +767,7 @@ Editor.prototype = {
     var time = endTime || this.lastTimeUpdateTime;
     try {
       track.end(time);
+      track.save();
     } catch(e) {
       track.remove();
       throw e;
