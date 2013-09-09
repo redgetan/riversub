@@ -368,9 +368,11 @@ Editor.prototype = {
   },
 
   cancelGhostTrack: function() {
+    this.lastTrack = null;
+    this.isGhostTrackStarted = false;
+
     var track = this.currentGhostTrack;
     if (track) {
-      this.safeEndGhostTrack(track);
       track.remove();
     }
   },
@@ -493,7 +495,7 @@ Editor.prototype = {
     this.$startTimingBtn.show();
     this.$addSubtitleBtn.removeAttr("disabled");
     track.fadingHighlight();
-
+    track.save();
   },
 
   play: function() {
@@ -568,8 +570,6 @@ Editor.prototype = {
   },
 
   onTrackRemove: function(track) {
-    this.tracks.remove(track);
-
     this.isOnSubtitleEditMode = null;
     this.$subtitleEdit.blur();
     this.$subtitleEdit.hide();
@@ -781,11 +781,6 @@ Editor.prototype = {
     var time = endTime || this.lastTimeUpdateTime;
     try {
       track.end(time);
-      track.save({},{
-        error: function(data,response) {
-          console.log(response.responseText);
-        }  
-      });
     } catch(e) {
       track.remove();
       throw e;

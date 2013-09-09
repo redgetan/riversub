@@ -116,8 +116,6 @@ var Track = Backbone.Model.extend({
   end: function(time) {
     this.isGhost = false;
 
-    Backbone.trigger("ghosttrackend",this);
-
     _.each(this.views,function(view){
       view.removeGhost();
     });
@@ -129,6 +127,9 @@ var Track = Backbone.Model.extend({
     }
 
     this.setEndTime(time);
+    
+    Backbone.trigger("ghosttrackend",this);
+
   },
 
   isRemoved: function() {
@@ -158,14 +159,12 @@ var Track = Backbone.Model.extend({
 
   remove: function() {
     this.isDeleted = true;
-    if (this.isGhost) {
-      this.end(this.endTime());   // why do we need to end ghost track before removing it?
-    }
+
     this.trackEvent._running = false; // disallow trackend event from getting triggered
     this.popcorn.removeTrackEvent(this.trackEvent._id);
 
     this.destroy();
-    
+
     _.each(this.views,function(view){
       view.remove();
     });
