@@ -570,6 +570,7 @@ Editor.prototype = {
   },
 
   onTrackRemove: function(track) {
+    this.lastTrack = null;
     this.isOnSubtitleEditMode = null;
     this.$subtitleEdit.blur();
     this.$subtitleEdit.hide();
