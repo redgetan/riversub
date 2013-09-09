@@ -16,8 +16,8 @@
 //= require jquery.ui.draggable
 //= require jquery.ui.effect-highlight
 //= require twitter/bootstrap
-//= require lib/underscore.js
 
+//= require lib/underscore.js
 //= require lib/backbone.js
 
 //= require_tree ./lib/

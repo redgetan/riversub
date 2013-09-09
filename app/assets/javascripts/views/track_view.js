@@ -74,6 +74,8 @@ var ExpandedTrackView = TrackView.extend({
       resize: this.onResizableResize.bind(this)
     });
 
+    // http://jsfiddle.net/MrAdE/11/
+    // http://eruciform.com/static//jquidragcollide/jquery-ui-draggable-collision.js
     this.$el.draggable({
       cursor: "move",
       axis: "x",

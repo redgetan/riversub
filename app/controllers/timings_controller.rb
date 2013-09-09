@@ -30,7 +30,7 @@ class TimingsController < ApplicationController
     send_data @repo.to_srt, :type => "text/plain", :filename => "#{@repo.filename}"
   end
 
-  def get_respository
+  def get_repository
     @repo = Repository.find params[:repository_id]
   end
 
