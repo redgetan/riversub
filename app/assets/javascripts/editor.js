@@ -678,7 +678,7 @@ Editor.prototype = {
     try {
       this.endGhostTrack(track,endTime);
     } catch(e) {
-      console.log(e);
+      console.log(e.stack);
       // this.$subtitleEdit.hide(0,function(){
       //   this.isOnSubtitleEditMode = false;
       // }.bind(this));

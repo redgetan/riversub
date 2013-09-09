@@ -119,7 +119,6 @@ var SubtitleListView = Backbone.View.extend({
       // there is no view in that index yet, so just append it
       this.$el.append(subtitle.view.$el);            
     } else if ($subtitleAtTargetIndex[0] !== $subtitle[0]) {
-      console.log("shit");
       $subtitle.insertBefore($subtitleAtTargetIndex);
     } else {
 

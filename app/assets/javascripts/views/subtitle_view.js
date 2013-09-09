@@ -47,7 +47,10 @@ var SubtitleView = Backbone.View.extend({
         editEvent: "none_delegated_by_parent",
         bg_over: "transparent",
         default_text: "",
-        callback: function(unused, enteredText) { this.setAttributes({ "text": enteredText}); return enteredText; }.bind(this),
+        callback: function(unused, enteredText) { 
+          this.model.set("text",enteredText); 
+          return enteredText; 
+        }.bind(this),
         delegate: {
           didOpenEditInPlace: function($dom,settings) {
             Backbone.trigger("subtitlelineedit");
