@@ -24,8 +24,8 @@ var SubtitleListView = Backbone.View.extend({
     this.$container = $("#subtitle_list");
     this.setupElement();
 
+    this.listenTo(this.collection,"add",this.onModelAdd);
     this.listenTo(this.collection,"change",this.onModelChange);
-    Backbone.on("subtitletrackmapped",this.onSubtitleTrackMapped.bind(this));
     Backbone.on("trackstart",this.onTrackStart.bind(this));
   },
 
@@ -42,7 +42,7 @@ var SubtitleListView = Backbone.View.extend({
     this.$el.append(header);
   },
 
-  onSubtitleTrackMapped: function(subtitle) {
+  onModelAdd: function(subtitle) {
     this.renderPosition(subtitle);
   },
 
@@ -109,28 +109,20 @@ var SubtitleListView = Backbone.View.extend({
   },
 
   renderPosition: function(subtitle) {
-    // render positions of subtitles
-    // subtitle are arranged by start time
-    // while subtitle.startTime > start time of other people, keep looping until its less than, then thats where u insert it
-    // case 1: subtitle must be insert before all
-    // case 2: subtitle must be insert after all
-    // case 3: subtitle must be insert somewhere in middle
-    var fromIndex = this.collection.indexOf(subtitle);
-    var toIndex   = this.collection.length - 1;
+    var index = this.collection.indexOf(subtitle);
 
-    for (var i = 0; i < this.collection.length; i++) {
+    var $subtitle = subtitle.view.$el;
+    // find which subtitle is currently at that position
+    var $subtitleAtTargetIndex = this.$el.find("tr.subtitle").eq(index);
 
-      if (subtitle.startTime() > this.collection.at(i).startTime()) {
-        // continue
-      } else {
-        toIndex = i;
-        break;
-      }
-    };
+    if ($subtitleAtTargetIndex.length === 0) {
+      // there is no view in that index yet, so just append it
+      this.$el.append(subtitle.view.$el);            
+    } else if ($subtitleAtTargetIndex[0] !== $subtitle[0]) {
+      console.log("shit");
+      $subtitle.insertBefore($subtitleAtTargetIndex);
+    } else {
 
-    if (fromIndex !== toIndex) {
-      subtitle.view.$el.insertBefore(this.collection.at(toIndex).view.$el);
-      this.collection.move(fromIndex,toIndex);
     }
   },
 

@@ -10,7 +10,6 @@ function Editor (repo,options) {
 
   this.options = options || {};
   var timings = this.repo.timings || [];
-  var subtitles = $.map(timings,function(timing){ return timing.subtitle; });
   var mediaSource = typeof this.video.url === "undefined" ? "" : this.video.url;
 
   this.setupElement();
@@ -19,7 +18,7 @@ function Editor (repo,options) {
   this.popcorn = this.loadMedia(mediaSource);
   this.popcorn.volume(0.2);
 
-  this.subtitles = new Subtitles();
+  this.subtitles = new SubtitleSet();
   this.timeline = new Timeline(this.popcorn.media);
 
   this.trackMap = {}
@@ -264,7 +263,6 @@ Editor.prototype = {
     Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
     Backbone.on("trackstart",this.onTrackStart.bind(this));
     Backbone.on("trackend",this.onTrackEnd.bind(this));
-    Backbone.on("trackchange",this.onTrackChange.bind(this));
     Backbone.on("trackremove",this.onTrackRemove.bind(this));
     Backbone.on("pauseadjust",this.onPauseAdjust.bind(this));
 
@@ -497,10 +495,6 @@ Editor.prototype = {
       this.popcorn.on("pause",executeCallback);
     }
     this.popcorn.pause();
-  },
-
-  onTrackChange: function(track) {
-    // we want to save changes
   },
 
   onTrackStart: function(track) {

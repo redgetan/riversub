@@ -5,7 +5,6 @@ function Player (repo,options) {
   this.options = options || {};
 
   var timings = this.repo.timings || [];
-  var subtitles = $.map(timings,function(timing){ return timing.subtitle; });
   var mediaSource = typeof this.video.url === "undefined" ? "" : this.video.url;
 
   var targetSelector = this.options["targetSelector"] || "div#media";
@@ -14,7 +13,7 @@ function Player (repo,options) {
   this.popcorn = this.loadMedia(targetSelector,mediaSource);
   this.popcorn.volume(0.2);
 
-  this.subtitles = new Subtitles();
+  this.subtitles = new SubtitleSet();
 
   this.trackMap = {}
   this.tracks = this.loadTracks(timings);

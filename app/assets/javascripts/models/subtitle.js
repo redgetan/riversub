@@ -23,10 +23,6 @@ var Subtitle = Backbone.Model.extend({
     return this.track.endTime();
   },
 
-  setTrack: function(track) {
-    Backbone.trigger("subtitletrackmapped",this);
-  },
-
   highlight: function() {
     this.view.highlight();
   },
@@ -41,14 +37,29 @@ var Subtitle = Backbone.Model.extend({
 
   hideEditorIfNeeded: function() {
     this.view.hideEditorIfNeeded();
+  },
+
+  toString: function() {
+    return "Subtitle(" + this.get("text") + ")";  
   }
 
 });
 
-var Subtitles = Backbone.Collection.extend({
+var SubtitleSet = Backbone.Collection.extend({
   model: Subtitle,
 
   initialize: function(attributes, options) {
     this.view = new SubtitleListView({collection: this});
+    Backbone.on("subtitlecreate",this.onSubtitleCreate.bind(this));
+    this.listenTo(this,"change",this.sort);
+  },
+
+  onSubtitleCreate: function(subtitle) {
+    this.add(subtitle);
+  },
+
+  comparator: function(subtitle) {
+    return subtitle.startTime();  
   }
+
 });

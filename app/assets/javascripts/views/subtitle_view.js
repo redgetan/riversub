@@ -20,7 +20,6 @@ var SubtitleView = Backbone.View.extend({
   },
 
   setupElement: function() {
-    this.$container.append(this.$el);
 
     var content = "<td>" +
                     "<div class='start_time'></div>" +

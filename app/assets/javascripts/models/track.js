@@ -7,6 +7,7 @@ var Track = Backbone.Model.extend({
     this.isGhost = options['isGhost'] || false;
 
     this.subtitle = new Subtitle(attributes['subtitle'], {track: this});
+    Backbone.trigger("subtitlecreate",this.subtitle);
 
     // when trackEvent is created, trackstart event is triggered, received by editor.js and it 
     // will use subtitle so by that time subtitle should already exist. Its very tightly coupled....
@@ -28,6 +29,12 @@ var Track = Backbone.Model.extend({
       this.initial_subtitle_request = true;
     }
 
+    this.listenTo(this, "change", this.touchSubtitle);
+
+  },
+
+  touchSubtitle: function() {
+    this.subtitle.trigger("change",this.subtitle,{});
   },
 
   getAttributes: function(attributes) {
@@ -50,8 +57,7 @@ var Track = Backbone.Model.extend({
   setStartTime: function(time) {
     time = Math.round(time * 1000) / 1000;
     this.trackEvent.start = time;
-
-    Backbone.trigger("trackchange",this);
+    this.set("start_time",time);
   },
 
   endTime: function() {
@@ -65,8 +71,7 @@ var Track = Backbone.Model.extend({
   setEndTime: function(time) {
     time = Math.round(time * 1000) / 1000;
     this.trackEvent.end = time;
-
-    Backbone.trigger("trackchange",this);
+    this.set("end_time",time);
   },
 
   text: function() {

@@ -534,7 +534,7 @@ $(document).ready(function(){
 // [ ] when track/subtitle is removed, other should be removed too
 // [ ] when track start time/endtime is set,
 // [ ]   it should be changed model.changedAttributes should have hash key size of > 0
-// [ ]   save button should be enabled
+//       subtitle should trigger change
 // [ ] trackcollection should be responsible for highlighting/unhighlighting tracks listen to trackStart
 // [ ] remove this: if ($("#editor").size() === 1) {
 // [ ] dblclick on track/subtitle should show subtitleeditform on video plus subtitle text should be there

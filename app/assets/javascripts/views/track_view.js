@@ -33,11 +33,6 @@ var TrackView = Backbone.View.extend({
     Backbone.trigger("trackseek",this.model.startTime());
   },
 
-  render: function() {
-    // clean way of doing it?
-    this.subtitle.view.render();
-  }
-
 });
 
 var SummaryTrackView = TrackView.extend({

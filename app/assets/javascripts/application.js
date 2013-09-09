@@ -19,7 +19,6 @@
 //= require lib/underscore.js
 
 //= require lib/backbone.js
-//= require lib/backbone-relational.js
 
 //= require_tree ./lib/
 //= require_tree ./views/
