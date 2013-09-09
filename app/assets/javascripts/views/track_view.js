@@ -71,7 +71,8 @@ var ExpandedTrackView = TrackView.extend({
 
     this.$el.resizable({
       handles: 'e, w',
-      resize: this.onResizableResize.bind(this)
+      resize: this.onResizableResize.bind(this),
+      stop: this.onResizableStop.bind(this)
     });
 
     // http://jsfiddle.net/MrAdE/11/
@@ -80,7 +81,8 @@ var ExpandedTrackView = TrackView.extend({
       cursor: "move",
       axis: "x",
       containment: "parent",
-      drag: this.onDraggableDrag.bind(this)
+      drag: this.onDraggableDrag.bind(this),
+      stop: this.onDraggableStop.bind(this)
     });
   },
 
@@ -88,8 +90,16 @@ var ExpandedTrackView = TrackView.extend({
     Backbone.trigger("trackresize",this.model,ui);
   },
 
+  onResizableStop: function(event, ui) {
+    this.model.save();
+  },
+
   onDraggableDrag: function(event, ui) {
     Backbone.trigger("trackdrag",this.model,ui);
+  },
+
+  onDraggableStop: function(event, ui) {
+    this.model.save();
   },
 
   onMouseDblClick: function(event) {

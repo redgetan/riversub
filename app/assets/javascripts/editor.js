@@ -18,11 +18,13 @@ function Editor (repo,options) {
   this.popcorn = this.loadMedia(mediaSource);
   this.popcorn.volume(0.2);
 
+  this.repository = new Repository(repo);
+
   this.subtitles = new SubtitleSet();
   this.timeline = new Timeline(this.popcorn.media);
 
-  this.trackMap = {}
-  this.tracks = this.loadTracks(timings);
+  this.tracks = this.repository.tracks;
+  this.loadTracks(timings);
   this.timeline.setTracks(this.tracks);
 
   this.bindEvents();
@@ -124,8 +126,10 @@ Editor.prototype = {
 
                   "</div> " + // .span12
                   "<div class='span12'> " +
-                          "<div id='keyboard-shortcuts' class='row'> " +
-                            "<div class='span12 '> " +
+                          "<div class='row'> " +
+                            "<div id='status-bar' class='span3'> " +
+                            "</div> " +
+                            "<div id='keyboard-shortcuts' class='span9'> " +
                               "<span class='pull-right'>" +
                                 "<b>Keyboard Shortcuts: </b>  " +
                                 "<kbd class='light'>Shift</kbd> Start/Stop Timing " +
@@ -198,6 +202,7 @@ Editor.prototype = {
     this.$language_select.selectpicker();
 
     this.$keyboard_shortcuts = $("#keyboard-shortcuts");
+    this.$status_bar = $("#status-bar");
   },
 
 
@@ -265,6 +270,9 @@ Editor.prototype = {
     Backbone.on("trackend",this.onTrackEnd.bind(this));
     Backbone.on("trackremove",this.onTrackRemove.bind(this));
     Backbone.on("pauseadjust",this.onPauseAdjust.bind(this));
+    Backbone.on("trackrequest",this.onTrackRequest.bind(this));
+    Backbone.on("trackrequestsuccess",this.onTrackRequestSuccess.bind(this));
+    Backbone.on("trackrequesterror",this.onTrackRequestError.bind(this));
 
     this.$addSubtitleBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
@@ -415,6 +423,19 @@ Editor.prototype = {
   onPauseAdjust: function(correctPauseTime) {
   },
 
+  onTrackRequest: function() {
+    this.$status_bar.text("Saving...");
+  },
+
+  onTrackRequestSuccess: function() {
+    setTimeout(function(){ this.$status_bar.text(""); }.bind(this),500);
+  },
+
+  onTrackRequestError: function() {
+    this.$status_bar.text("Save Failed");
+    setTimeout(function(){ this.$status_bar.text(""); }.bind(this),500);
+  },
+
   onSubtitleLineClick: function(subtitle) {
     this.seek(subtitle.track.startTime());
   },
@@ -499,6 +520,7 @@ Editor.prototype = {
 
   onTrackStart: function(track) {
     this.currentTrack = track;
+    this.lastTrack = track;
 
     var subtitle = track.subtitle;
     track.highlight();
@@ -546,9 +568,7 @@ Editor.prototype = {
   },
 
   onTrackRemove: function(track) {
-    // remove references to track that must be deleted
-    var index = this.tracks.indexOf(track);
-    this.tracks.splice(index,1);
+    this.tracks.remove(track);
 
     this.isOnSubtitleEditMode = null;
     this.$subtitleEdit.blur();
@@ -584,6 +604,7 @@ Editor.prototype = {
   },
 
   onSubtitleEditBlur: function() {
+    this.lastTrack.save();
     this.enableCommands();
   },
 
@@ -591,7 +612,8 @@ Editor.prototype = {
     this.disableCommands();
   },
 
-  onSubtitleLineBlur: function() {
+  onSubtitleLineBlur: function(subtitle) {
+    subtitle.track.save();
     this.enableCommands();
   },
 
@@ -723,20 +745,17 @@ Editor.prototype = {
   },
 
   loadTracks: function(timings) {
-    var tracks = [];
 
     if (typeof timings !== "undefined") {
       for (var i = 0; i < timings.length; i++) {
         try {
           var track = new Track(timings[i], { popcorn: this.popcorn });
-          tracks.push(track);
+          this.tracks.add(track);
         } catch(e) {
           console.log(e.stack);
         }
       };
     }
-
-    return tracks;
   },
 
   createGhostTrack: function() {
@@ -752,7 +771,7 @@ Editor.prototype = {
     };
 
     var track = new Track(attributes, { popcorn: this.popcorn, isGhost: true});
-    this.tracks.push(track);
+    this.tracks.add(track);
 
     return track;
   },
@@ -761,7 +780,11 @@ Editor.prototype = {
     var time = endTime || this.lastTimeUpdateTime;
     try {
       track.end(time);
-      track.save();
+      track.save({},{
+        error: function(data,response) {
+          console.log(response.responseText);
+        }  
+      });
     } catch(e) {
       track.remove();
       throw e;
@@ -834,7 +857,7 @@ Editor.prototype = {
     var tracks = [];
 
     for (var i = this.tracks.length - 1; i >= 0; i--) {
-      var curr = this.tracks[i];
+      var curr = this.tracks.at(i);
       if (curr !== track) {
         // console.log("start: " + startTime + " end: " + endTime + " curr: " + curr);
         if (curr.startTime() <= startTime && startTime < curr.endTime() ||
@@ -867,10 +890,12 @@ Editor.prototype = {
   // either the end of media or the starttime next nearest track
   determineEndTime: function(startTime) {
     var nextNearestEdgeTime = this.media.duration;
+    var track;
 
     for (var i = this.tracks.length - 1; i >= 0; i--) {
-      if (this.tracks[i].startTime() > startTime && this.tracks[i].startTime() < nextNearestEdgeTime) {
-        nextNearestEdgeTime = this.tracks[i].startTime();
+      curr = this.tracks.at(i);
+      if (curr.startTime() > startTime && curr.startTime() < nextNearestEdgeTime) {
+        nextNearestEdgeTime = curr.startTime();
       }
     };
 
@@ -878,10 +903,7 @@ Editor.prototype = {
   },
 
   clearTracks: function() {
-    for (var i = this.tracks.length - 1; i >= 0; i--) {
-      this.tracks[i].remove();
-    };
-    this.tracks.length = 0;
+    this.tracks.reset();
   },
 
   printStack: function() {

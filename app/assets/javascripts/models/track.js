@@ -30,11 +30,28 @@ var Track = Backbone.Model.extend({
     }
 
     this.listenTo(this, "change", this.touchSubtitle);
+    this.listenTo(this, "request", this.onRequest);
 
   },
 
   touchSubtitle: function() {
     this.subtitle.trigger("change",this.subtitle,{});
+  },
+
+  onRequest: function() {
+    Backbone.trigger("trackrequest");  
+  },
+
+  save: function() {
+    Backbone.Model.prototype.save.call(this,{},{
+      success: function() {
+        Backbone.trigger("trackrequestsuccess");  
+      }.bind(this),
+      error: function(data,response) {
+        Backbone.trigger("trackrequesterror");  
+        console.log(response.responseText);
+      }  
+    });
   },
 
   getAttributes: function(attributes) {
@@ -44,6 +61,12 @@ var Track = Backbone.Model.extend({
       end_time: this.endTime(),
       subtitle_attributes: this.subtitle.getAttributes(),
     }
+  },
+
+  toJSON: function() {
+    var json = Backbone.Model.prototype.toJSON.call(this);
+    json["subtitle_attributes"] = this.subtitle.toJSON();
+    return json;
   },
 
   startTime: function() {
@@ -163,4 +186,17 @@ var Track = Backbone.Model.extend({
   toString: function() {
     return "Track(" + this.startTime() + "," + this.endTime() + ")";
   }
+});
+
+var TrackSet = Backbone.Collection.extend({
+  model: Track,
+
+  initialize: function(attributes, options) {
+    // setInterval(this.autoSaveTracks.bind(this),5000);
+  },
+
+  comparator: function(track) {
+    return track.startTime();  
+  }
+
 });

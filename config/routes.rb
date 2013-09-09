@@ -24,8 +24,10 @@ River::Application.routes.draw do
   get "/users/:username/videos/:token",        :to => "videos#show",   :as => "user_video"
   get "/users/:username/videos/:token/editor", :to => "videos#editor", :as => "editor_user_video"
 
-  get "/repositories/:repository_id/timings",             :to => "timings#index",:as => "repository_timings"
-  post "/repositories/:repository_id/timings/save",       :to => "timings#save"
+  resources "repositories", :only => [] do
+    resources "timings", :only => [:index, :create, :update, :destroy]
+  end
+
 
   get "about", :to => "home#about"
   root :to => "home#index"

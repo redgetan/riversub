@@ -12,6 +12,7 @@ class Timing < ActiveRecord::Base
   validates :start_time, :end_time, :subtitle, :presence => true
 
   validate :end_time_must_be_greater_than_start_time
+  validate :no_track_overlap
 
   accepts_nested_attributes_for :subtitle
 
@@ -26,6 +27,20 @@ class Timing < ActiveRecord::Base
 
     if self.end_time <= self.start_time
       errors.add(:end_time, "end_time must be greater than start time")
+    end
+  end
+
+  def no_track_overlap
+    tracks = []
+
+    self.repository.timings.each do |track|
+      if self != track && track.start_time <= self.start_time && self.start_time < track.end_time
+        tracks << track
+      end
+    end
+
+    if tracks.length != 0
+      errors.add(:end_time, "track overlap detected at #{tracks}")
     end
   end
 

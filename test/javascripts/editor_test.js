@@ -538,9 +538,10 @@ $(document).ready(function(){
 // [ ] trackcollection should be responsible for highlighting/unhighlighting tracks listen to trackStart
 // [ ] remove this: if ($("#editor").size() === 1) {
 // [ ] dblclick on track/subtitle should show subtitleeditform on video plus subtitle text should be there
-// [ ] sorting subtitle logic is fucked up
-// [ ] handle model syncing 
+// [x] sorting subtitle logic is fucked up
+// [x] handle model syncing 
 //       create/update/delete
+// [ ] when you move track through another, it gets fucked up. the other wont work properly anymore, popcorn issue
 
     // test( "moving track to position after next track should move subtitle position to next one as well", function() {
     //   // how the fuck do you test this  

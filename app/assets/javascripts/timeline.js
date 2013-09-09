@@ -363,7 +363,7 @@ Timeline.prototype = {
 
   renderTracks: function() {
     for (var i = 0; i < this.tracks.length; i++) {
-      this.renderTrack(this.tracks[i]);
+      this.renderTrack(this.tracks.at(i));
     };
   },
 

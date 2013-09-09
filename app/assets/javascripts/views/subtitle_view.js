@@ -63,7 +63,7 @@ var SubtitleView = Backbone.View.extend({
           }.bind(this),
           // shouldCloseEditInPlace: function() { return false; },
           didCloseEditInPlace: function($dom) {
-            Backbone.trigger("subtitlelineblur");
+            Backbone.trigger("subtitlelineblur",this.model);
             // this.edit_sub_mode = false;
           }.bind(this)
         }
