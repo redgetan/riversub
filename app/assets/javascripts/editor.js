@@ -604,7 +604,8 @@ Editor.prototype = {
   },
 
   onSubtitleEditBlur: function() {
-    this.lastTrack.save();
+    // if this.lastTrack is undefined (happens when track is removed)
+    if (this.lastTrack) this.lastTrack.save();
     this.enableCommands();
   },
 

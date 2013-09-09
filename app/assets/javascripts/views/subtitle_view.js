@@ -105,7 +105,7 @@ var SubtitleView = Backbone.View.extend({
 
   onCloseClick: function(event) {
     event.stopPropagation();
-    this.remove();
+    this.model.track.remove();
   },
 
   openEditor: function(event) {

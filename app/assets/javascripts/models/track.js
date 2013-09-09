@@ -54,6 +54,18 @@ var Track = Backbone.Model.extend({
     });
   },
 
+  destroy: function() {
+    Backbone.Model.prototype.destroy.call(this,{
+      success: function() {
+        Backbone.trigger("trackrequestsuccess");  
+      }.bind(this),
+      error: function(data,response) {
+        Backbone.trigger("trackrequesterror");  
+        console.log(response.responseText);
+      }  
+    });
+  },
+
   getAttributes: function(attributes) {
     return {
       id: this.id,
@@ -152,6 +164,8 @@ var Track = Backbone.Model.extend({
     this.trackEvent._running = false; // disallow trackend event from getting triggered
     this.popcorn.removeTrackEvent(this.trackEvent._id);
 
+    this.destroy();
+    
     _.each(this.views,function(view){
       view.remove();
     });
