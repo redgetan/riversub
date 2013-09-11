@@ -15,7 +15,7 @@ $(document).ready(function(){
     user: {}
   };
 
-  editor = new Editor(repo,{ media: media, container: $("#test_container") } );
+  editor = new River.ui.Editor({repo: repo, media: media, container: $("#test_container") } );
 
   Backbone.on("editor.ready", function(){
 
@@ -273,10 +273,10 @@ $(document).ready(function(){
       var popcorn = Popcorn("#media");
       var track;
 
-      throws(function() { track = new Track({},{popcorn: popcorn}); });
-      throws(function() { track = new Track({ start_time: 4, end_time: 7}); });
+      throws(function() { track = new River.model.Track({},{popcorn: popcorn}); });
+      throws(function() { track = new River.model.Track({ start_time: 4, end_time: 7}); });
 
-      track = new Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
+      track = new River.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
       equal(track.toString(),"Track(4,7)");
     });
 
@@ -290,7 +290,7 @@ $(document).ready(function(){
       Backbone.on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
       Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
-      track = new Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
+      track = new River.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
 
       track.remove();
       equal(numOfGhostTrackStart,0);
@@ -304,7 +304,7 @@ $(document).ready(function(){
       var numOfGhostTrackStart = 0;
       Backbone.on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
 
-      track = new Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true });
+      track = new River.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true });
 
       equal(numOfGhostTrackStart,1);
     });
@@ -316,7 +316,7 @@ $(document).ready(function(){
       var numOfGhostTrackEnd = 0;
       Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
-      track = new Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true});
+      track = new River.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true});
 
       track.end(6);
       equal(numOfGhostTrackEnd,1);
@@ -329,7 +329,7 @@ $(document).ready(function(){
       var numOfGhostTrackEnd = 0;
       Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
-      track = new Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true});
+      track = new River.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true});
 
       track.remove();
       equal(numOfGhostTrackEnd,1);
@@ -339,7 +339,7 @@ $(document).ready(function(){
       var popcorn = Popcorn("#media");
       var track;
 
-      track = new Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
+      track = new River.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
 
       equal(popcorn.getTrackEvents().length,1);
       track.remove();
@@ -348,7 +348,7 @@ $(document).ready(function(){
 
     // test( "removing a track should not trigger track end", function() {
     //   var popcorn = Popcorn("#media");
-    //   var track = new Track({},{ popcorn: popcorn });
+    //   var track = new River.model.Track({},{ popcorn: popcorn });
 
 
     //   equal(editor.numTracks,1);
@@ -373,7 +373,7 @@ $(document).ready(function(){
 
     test( "timeline resolution should work whether or not elements are visible", function() {
       var media = $("#media")[0];
-      var timeline = new Timeline(media);
+      var timeline = new River.ui.Timeline({media: media});
       var summaryWidth = timeline.$summary.width();
       var expandedWidth = timeline.$expanded.width();
       var summaryWidthInSec = media.duration;
@@ -388,7 +388,7 @@ $(document).ready(function(){
 
     asyncTest( "timeline isOutOfBounds should work independently of element visibility",4, function() {
       var media = $("#media")[0];
-      var timeline = new Timeline(media);
+      var timeline = new River.ui.Timeline({media: media});
 
 
       equal(timeline.isOutOfBounds(),false);

@@ -1,39 +1,61 @@
-function Editor (repo,options) {
-  this.repo = repo || {};
-  this.video = this.repo.video || {};
-  this.user = this.repo.user || {};
+river.ui.Editor = river.ui.BasePlayer.extend({
+  initialize: function(options) {
+    river.ui.BasePlayer.prototype.initialize.call(this,options);
 
-  this.currentTrack = null;
-  this.currentGhostTrack = null;
-  this.isGhostTrackStarted = false;
-  this.isOnSubtitleEditMode = null;
+    this.timeline.setTracks(this.tracks);
+    
+    // initally commands are disabled/ enabled only when things are loaded
+    this.disableCommands();
 
-  this.options = options || {};
-  var timings = this.repo.timings || [];
-  var mediaSource = typeof this.video.url === "undefined" ? "" : this.video.url;
+    this.currentTrack = null;
+    this.currentGhostTrack = null;
+    this.isGhostTrackStarted = false;
+    this.isOnSubtitleEditMode = null;
+  },
 
-  this.setupElement();
-  this.defineAttributeAccessors();
+  preRepositoryInitHook: function() {
+    this.timeline = new river.ui.Timeline({media: this.popcorn.media });
+  },
 
-  this.popcorn = this.loadMedia(mediaSource);
-  this.popcorn.volume(0.2);
+  bindEvents: function() {
+    river.ui.Player.prototype.bindEvents.call(this);
 
-  this.repository = new Repository(repo);
+    Backbone.on("timelineseek",this.onTimelineSeekHandler.bind(this));
+    Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
+    Backbone.on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
+    Backbone.on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
+    Backbone.on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
+    Backbone.on("subtitlelineblur",this.onSubtitleLineBlur.bind(this));
+    Backbone.on("subtitlelinekeyup",this.onSubtitleLineKeyup.bind(this));
+    Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
+    Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
+    Backbone.on("trackremove",this.onTrackRemove.bind(this));
+    Backbone.on("pauseadjust",this.onPauseAdjust.bind(this));
+    Backbone.on("trackrequest",this.onTrackRequest.bind(this));
+    Backbone.on("trackrequestsuccess",this.onTrackRequestSuccess.bind(this));
+    Backbone.on("trackrequesterror",this.onTrackRequestError.bind(this));
 
-  this.subtitles = new SubtitleSet();
-  this.timeline = new Timeline(this.popcorn.media);
+    $(document).on("click",this.onDocumentClick.bind(this));
+    $(document).on("mousewheel",this.onDocumentScroll.bind(this));
+    
+    this.$addSubtitleBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
+    this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
+    this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
+    this.$startTimingBtn.on("click",this.onStartTimingBtn.bind(this));
+    this.$stopTimingBtn.on("click",this.onStopTimingBtn.bind(this));
+    this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
+    this.$iframeOverlay.on("mouseenter",this.onIframeOverlayMouseEnter.bind(this));
+    this.$iframeOverlay.on("mouseleave",this.onIframeOverlayMouseLeave.bind(this));
+    this.$subtitleEdit.on("focus",this.onSubtitleEditFocus.bind(this));
+    this.$subtitleEdit.on("blur",this.onSubtitleEditBlur.bind(this));
+    this.$subtitleEdit.on("keyup",this.onSubtitleEditKeyup.bind(this));
+    this.$subtitleDisplay.on("dblclick",this.onSubtitleDisplayDblClick.bind(this));
+    this.media.addEventListener("pause",this.onPause.bind(this));
+    this.media.addEventListener("play",this.onPlay.bind(this));
+    this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
+    this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+  },
 
-  this.tracks = this.repository.tracks;
-  this.loadTracks(timings);
-  this.timeline.setTracks(this.tracks);
-
-  this.bindEvents();
-
-  // initally commands are disabled/ enabled only when things are loaded
-  this.disableCommands();
-}
-
-Editor.prototype = {
 
   setupElement: function() {
     this.$container = this.options["container"] || $("#main_container");
@@ -53,7 +75,7 @@ Editor.prototype = {
                     "<div id='media_container'> " +
                       "<div id='subtitle_bar' class='span12 center'> " +
                         "<span id='subtitle_display' class='span5 center'></span> " +
-                        "<input id='subtitle_edit' class='span5 center' type='text' maxlength='60' placeholder='Enter Subtitle Here'> " +
+                        "<input id='subtitle_edit' class='span7 center' type='text' maxlength='90' placeholder='Enter Subtitle Here'> " +
                       "</div> " +
                       "<div id='time_float'></div>" +
                       "<div id='seek_head'>" +
@@ -225,79 +247,6 @@ Editor.prototype = {
     this.$helpBtn.popover("show");
   },
 
-  defineAttributeAccessors: function() {
-    Object.defineProperty( this, "numTracks", {
-      get: function() {
-        return this.tracks.length;
-      },
-      enumerable: true
-    });
-
-    Object.defineProperty( this, "media", {
-      get: function() {
-        return this.popcorn.media;
-      },
-      enumerable: true
-    });
-  },
-
-  loadMedia: function(url) {
-    var popcorn;
-    if (url == "") {
-      popcorn = Popcorn("#media");
-    } else {
-      popcorn = Popcorn.smart("#media",url);
-    }
-    return popcorn;
-  },
-
-  bindEvents: function() {
-    $(document).on("click",this.onDocumentClick.bind(this));
-    $(document).on("mousewheel",this.onDocumentScroll.bind(this));
-    $(document).on("keyup",this.onKeyupHandler.bind(this));
-
-    Backbone.on("timelineseek",this.onTimelineSeekHandler.bind(this));
-    Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
-    Backbone.on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
-    Backbone.on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
-    Backbone.on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
-    Backbone.on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
-    Backbone.on("subtitlelineblur",this.onSubtitleLineBlur.bind(this));
-    Backbone.on("subtitlelinekeyup",this.onSubtitleLineKeyup.bind(this));
-    Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
-    Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
-    Backbone.on("trackstart",this.onTrackStart.bind(this));
-    Backbone.on("trackend",this.onTrackEnd.bind(this));
-    Backbone.on("trackremove",this.onTrackRemove.bind(this));
-    Backbone.on("pauseadjust",this.onPauseAdjust.bind(this));
-    Backbone.on("trackrequest",this.onTrackRequest.bind(this));
-    Backbone.on("trackrequestsuccess",this.onTrackRequestSuccess.bind(this));
-    Backbone.on("trackrequesterror",this.onTrackRequestError.bind(this));
-
-    this.$addSubtitleBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
-    this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
-    this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
-    this.$startTimingBtn.on("click",this.onStartTimingBtn.bind(this));
-    this.$stopTimingBtn.on("click",this.onStopTimingBtn.bind(this));
-    this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
-    this.$iframeOverlay.on("mouseenter",this.onIframeOverlayMouseEnter.bind(this));
-    this.$iframeOverlay.on("mouseleave",this.onIframeOverlayMouseLeave.bind(this));
-    this.$subtitleEdit.on("focus",this.onSubtitleEditFocus.bind(this));
-    this.$subtitleEdit.on("blur",this.onSubtitleEditBlur.bind(this));
-    this.$subtitleEdit.on("keyup",this.onSubtitleEditKeyup.bind(this));
-    this.$subtitleDisplay.on("dblclick",this.onSubtitleDisplayDblClick.bind(this));
-    this.media.addEventListener("pause",this.onPause.bind(this));
-    this.media.addEventListener("play",this.onPlay.bind(this));
-    this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
-    this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
-
-    $('a[data-toggle="tab"]').on('shown', this.onTabShown.bind(this));
-  },
-
-  onTabShown: function(event) {
-
-  },
-
   onDocumentClick: function(event) {
     if ($(event.target).attr("id") !== "subtitle_edit" && !$(event.target).hasClass("track")) {
       this.$subtitleEdit.hide(0,function(){
@@ -334,20 +283,6 @@ Editor.prototype = {
 
   onTimeUpdate: function(event) {
     this.lastTimeUpdateTime = this.media.currentTime;
-  },
-
-  // given container, element, and time position you want to position element on, it will
-  // position element on container on appropriate pixel location
-  renderInContainer: function($container,$el,property) {
-
-    for (var key in property) {
-      if (key === "text") {
-        $el.text(property[key]);
-      } else {
-        $el.css(key, this.resolution($container) * property[key]);
-      }
-    }
-
   },
 
   onKeyupHandler: function(event) {
@@ -399,19 +334,12 @@ Editor.prototype = {
   },
 
   onPlay: function(event) {
-    // this.$playBtn.hide();
-    // this.$pauseBtn.show();
     this.$overlay_btn.find("i").removeClass("icon-play");
     this.$overlay_btn.find("i").addClass("icon-pause");
-    // if ($("#expanded:hover").length === 0) {
-    //   this.$overlay_btn.hide();
-    // }
   },
 
   onPause: function(event) {
     this.seek(this.lastTimeUpdateTime);
-    // this.$pauseBtn.hide();
-    // this.$playBtn.show();
     this.$overlay_btn.find("i").removeClass("icon-pause");
     this.$overlay_btn.find("i").addClass("icon-play");
   },
@@ -436,10 +364,6 @@ Editor.prototype = {
   onTrackRequestError: function() {
     this.$status_bar.text("Save Failed");
     setTimeout(function(){ this.$status_bar.text(""); }.bind(this),500);
-  },
-
-  onSubtitleLineClick: function(subtitle) {
-    this.seek(subtitle.track.startTime());
   },
 
   onSubtitleLineDblClick: function(subtitle) {
@@ -746,20 +670,6 @@ Editor.prototype = {
     this.popcorn.currentTime(time);
   },
 
-  loadTracks: function(timings) {
-
-    if (typeof timings !== "undefined") {
-      for (var i = 0; i < timings.length; i++) {
-        try {
-          var track = new Track(timings[i], { popcorn: this.popcorn });
-          this.tracks.add(track);
-        } catch(e) {
-          console.log(e.stack);
-        }
-      };
-    }
-  },
-
   createGhostTrack: function() {
 
     var startTime = Math.round(this.media.currentTime * 1000) / 1000;
@@ -772,7 +682,7 @@ Editor.prototype = {
       end_time: endTime
     };
 
-    var track = new Track(attributes, { popcorn: this.popcorn, isGhost: true});
+    var track = new river.model.Track(attributes, { popcorn: this.popcorn, isGhost: true});
     this.tracks.add(track);
 
     return track;
@@ -926,4 +836,5 @@ Editor.prototype = {
                  (milliseconds  < 10 ? "00" + milliseconds : (milliseconds < 100 ? "0" + milliseconds : milliseconds));
     return result;
   }
-}
+
+});

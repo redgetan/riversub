@@ -1,21 +1,19 @@
-function Timeline (media,tracks) {
-  this.setupElement();
-  this.setMedia(media);
-  this.setTracks(tracks);
+river.ui.Timeline = Backbone.View.extend({
+  initialize: function(options) {
+    this.setupElement();
 
-  this.isScrubberVisible = true;
-  this.force_scroll_window = false;
-  this.windowSlideTimeoutQueue = [];
+    this.setMedia(options["media"]);
 
-  if (!this.initAfterMediaReadyCalled && this.media.readyState === 4) {
-    this.initAfterMediaReady();
-  }
-}
+    this.isScrubberVisible = true;
+    this.force_scroll_window = false;
+    this.windowSlideTimeoutQueue = [];
 
-Timeline.prototype = {
+    if (!this.initAfterMediaReadyCalled && this.media.readyState === 4) {
+      this.initAfterMediaReady();
+    }
+  },
 
   setupElement: function() {
-
     this.$summary_container = $("#media_container");
 
     var summary = "<div id='summary' class='timeline'>" +
@@ -568,6 +566,5 @@ Timeline.prototype = {
     this.$summary.on(event_name,callback);
   }
 
-};
-
+});
 

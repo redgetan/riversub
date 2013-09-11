@@ -20,7 +20,15 @@
 //= require lib/underscore.js
 //= require lib/backbone.js
 
+//= require namespace.js
+
 //= require_tree ./lib/
-//= require_tree ./views/
+
+//= require ui/base_player.js
+
+//= require_tree ./ui/
+
+
 //= require_tree ./models/
 //= require_tree .
+

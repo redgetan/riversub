@@ -50,7 +50,7 @@ var handleRoute = function() {
   if (new RegExp("/videos/.+/editor").test(location.pathname)) {
     var repo = $("#editor_data").data("repo") ;
     $("#editor_data").remove();
-    editor = new Editor(repo);
+    editor = new river.ui.Editor({repo: repo});
 
     var has_seen_instructions = getCookie("has_seen_instructions");
     if (!has_seen_instructions) {
@@ -64,7 +64,7 @@ var handleRoute = function() {
   } else if (new RegExp("/videos/.+").test(location.pathname)) {
     var repo = $("#player").data("repo") ;
     $("#player").removeAttr("data-repo");
-    player = new Player(repo);
+    player = new river.ui.Player({repo: repo, url_options: "&controls=1"});
   } else if (new RegExp("/users/edit").test(location.pathname)) {
     // hide all forms initially
     $("div#edit_user_content form").each(function(){

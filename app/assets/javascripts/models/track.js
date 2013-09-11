@@ -1,4 +1,4 @@
-var Track = Backbone.Model.extend({
+river.model.Track = Backbone.Model.extend({
 
   initialize: function(attributes, options) {
 
@@ -6,16 +6,16 @@ var Track = Backbone.Model.extend({
     this.popcorn = options['popcorn'];
     this.isGhost = options['isGhost'] || false;
 
-    this.subtitle = new Subtitle(attributes['subtitle'], {track: this});
+    this.subtitle = new river.model.Subtitle(attributes['subtitle'], {track: this});
     Backbone.trigger("subtitlecreate",this.subtitle);
 
-    // when trackEvent is created, trackstart event is triggered, received by editor.js and it 
+    // when trackEvent is created, trackstart event is triggered, received by editor.js and it
     // will use subtitle so by that time subtitle should already exist. Its very tightly coupled....
     this.trackEvent     = this.createTrackEvent(attributes.start_time,attributes.end_time);
-    
 
-    this.expandedView = new ExpandedTrackView({model: this});
-    this.summaryView = new SummaryTrackView({model: this});
+
+    this.expandedView = new river.ui.ExpandedTrack({model: this});
+    this.summaryView  = new river.ui.SummaryTrack({model: this});
 
     this.views = [this.expandedView,this.summaryView];
 
@@ -39,30 +39,30 @@ var Track = Backbone.Model.extend({
   },
 
   onRequest: function() {
-    Backbone.trigger("trackrequest");  
+    Backbone.trigger("trackrequest");
   },
 
   save: function() {
     Backbone.Model.prototype.save.call(this,{},{
       success: function() {
-        Backbone.trigger("trackrequestsuccess");  
+        Backbone.trigger("trackrequestsuccess");
       }.bind(this),
       error: function(data,response) {
-        Backbone.trigger("trackrequesterror");  
+        Backbone.trigger("trackrequesterror");
         console.log(response.responseText);
-      }  
+      }
     });
   },
 
   destroy: function() {
     Backbone.Model.prototype.destroy.call(this,{
       success: function() {
-        Backbone.trigger("trackrequestsuccess");  
+        Backbone.trigger("trackrequestsuccess");
       }.bind(this),
       error: function(data,response) {
-        Backbone.trigger("trackrequesterror");  
+        Backbone.trigger("trackrequesterror");
         console.log(response.responseText);
-      }  
+      }
     });
   },
 
@@ -127,7 +127,7 @@ var Track = Backbone.Model.extend({
     }
 
     this.setEndTime(time);
-    
+
     Backbone.trigger("ghosttrackend",this);
 
   },
@@ -201,15 +201,15 @@ var Track = Backbone.Model.extend({
   }
 });
 
-var TrackSet = Backbone.Collection.extend({
-  model: Track,
+river.model.TrackSet = Backbone.Collection.extend({
+  model: river.model.Track,
 
   initialize: function(attributes, options) {
     // setInterval(this.autoSaveTracks.bind(this),5000);
   },
 
   comparator: function(track) {
-    return track.startTime();  
+    return track.startTime();
   }
 
 });

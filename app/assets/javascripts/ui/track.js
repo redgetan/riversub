@@ -1,4 +1,4 @@
-var TrackView = Backbone.View.extend({
+river.ui.Track = Backbone.View.extend({
 
   tagName: "div",
   className: "track",
@@ -9,6 +9,8 @@ var TrackView = Backbone.View.extend({
 
   initialize: function() {
     this.$el.data("model",this.model);
+
+    this.attachViewToContainer();
 
     this.listenTo(this.model, "change", this.render);
   },
@@ -33,22 +35,29 @@ var TrackView = Backbone.View.extend({
     Backbone.trigger("trackseek",this.model.startTime());
   },
 
+  attachViewToContainer: function() {
+    this.getContainer().append(this.$el);
+  },
+
+  getContainer: function() {
+    throw "TrackView#getContainer not implemented";
+  }
+
 });
 
-var SummaryTrackView = TrackView.extend({
+river.ui.SummaryTrack = river.ui.Track.extend({
   initialize: function() {
-    TrackView.prototype.initialize.call(this);
-    this.$container = $("#summary.timeline");
-    this.setupElement();
+    river.ui.Track.prototype.initialize.call(this);
   },
-  setupElement: function() {
-    this.$container.append(this.$el);
+
+  getContainer: function() {
+    return $("#summary.timeline");
   }
 });
 
-var ExpandedTrackView = TrackView.extend({
+river.ui.ExpandedTrack = river.ui.Track.extend({
   events: function(){
-    return _.extend({},TrackView.prototype.events,{
+    return _.extend({},river.ui.Track.prototype.events,{
       "dblclick": "onMouseDblClick",
       "mouseenter": "onMouseEnter",
       "mouseleave": "onMouseLeave",
@@ -57,13 +66,15 @@ var ExpandedTrackView = TrackView.extend({
   },
 
   initialize: function() {
-    TrackView.prototype.initialize.call(this);
-    this.$container = $("#expanded.timeline #track_viewport");
+    river.ui.Track.prototype.initialize.call(this);
     this.setupElement();
   },
 
+  getContainer: function() {
+    return $("#expanded.timeline #track_viewport");
+  },
+
   setupElement: function() {
-    this.$container.append(this.$el);
     this.$close = $("<button type='button' class='close corner'>×</button>");
     this.$close.hide();
 

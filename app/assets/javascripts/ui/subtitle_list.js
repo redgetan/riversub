@@ -1,15 +1,4 @@
-Array.prototype.move = function (old_index, new_index) {
-    if (new_index >= this.length) {
-        var k = new_index - this.length;
-        while ((k--) + 1) {
-            this.push(undefined);
-        }
-    }
-    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
-    return this; // for testing purposes
-};
-
-var SubtitleListView = Backbone.View.extend({
+river.ui.SubtitleList = Backbone.View.extend({
 
   tagName: "table",
   className: "table",
@@ -74,7 +63,7 @@ var SubtitleListView = Backbone.View.extend({
   onTrackStart: function(track) {
     if (this.selectedSubtitle) this.selectedSubtitle.unhighlight();
 
-    var subtitle = track.subtitle;  
+    var subtitle = track.subtitle;
     this.selectedSubtitle = subtitle;
 
     subtitle.highlight();
@@ -86,7 +75,7 @@ var SubtitleListView = Backbone.View.extend({
     var $el = subtitle.view.$el;
 
     if (this.isOutOfBounds($container,$el)) {
-      this.scrollContainerToElement($container,$el);  
+      this.scrollContainerToElement($container,$el);
     }
   },
 
@@ -117,7 +106,7 @@ var SubtitleListView = Backbone.View.extend({
 
     if ($subtitleAtTargetIndex.length === 0) {
       // there is no view in that index yet, so just append it
-      this.$el.append(subtitle.view.$el);            
+      this.$el.append(subtitle.view.$el);
     } else if ($subtitleAtTargetIndex[0] !== $subtitle[0]) {
       $subtitle.insertBefore($subtitleAtTargetIndex);
     } else {

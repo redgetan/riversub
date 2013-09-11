@@ -1,12 +1,12 @@
-var SubtitleView = Backbone.View.extend({
+river.ui.Subtitle = Backbone.View.extend({
 
   tagName: "tr",
   className: "subtitle",
 
   events: {
-    "mouseenter": "onMouseEnter",  
-    "mouseleave": "onMouseLeave",  
-    "click .close": "onCloseClick",  
+    "mouseenter": "onMouseEnter",
+    "mouseleave": "onMouseLeave",
+    "click .close": "onCloseClick",
   },
 
   initialize: function() {
@@ -47,15 +47,15 @@ var SubtitleView = Backbone.View.extend({
         editEvent: "none_delegated_by_parent",
         bg_over: "transparent",
         default_text: "",
-        callback: function(unused, enteredText) { 
-          this.model.set("text",enteredText); 
-          return enteredText; 
+        callback: function(unused, enteredText) {
+          this.model.set("text",enteredText);
+          return enteredText;
         }.bind(this),
         delegate: {
           didOpenEditInPlace: function($dom,settings) {
             Backbone.trigger("subtitlelineedit");
 
-            $dom.find(":input").attr("maxlength",60);
+            $dom.find(":input").attr("maxlength",90);
             $dom.find(":input").on("keyup",function(event) {
               var $input = $(event.target);
               Backbone.trigger("subtitlelinekeyup",$input.val());
