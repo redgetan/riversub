@@ -322,6 +322,10 @@ river.ui.Timeline = Backbone.View.extend({
     var oldWindowSliderLeft = parseFloat(this.$window_slider.css("left"));
     var newWindowSliderLeft = oldWindowSliderLeft - numPixelsToScrollSummary;
 
+    // update current_window_slide
+    this.current_window_slide.start -= secondsToScroll;
+    this.current_window_slide.end -= secondsToScroll;
+
     // cannot go beyond the min/max left
     var maxLeft = this.$summary.width() - this.$window_slider.width();
     var minLeft = 0;
