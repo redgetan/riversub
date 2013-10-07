@@ -40,7 +40,7 @@ river.ui.Track = Backbone.View.extend({
   },
 
   getContainer: function() {
-    throw "TrackView#getContainer not implemented";
+    throw new Error("TrackView#getContainer not implemented");
   }
 
 });

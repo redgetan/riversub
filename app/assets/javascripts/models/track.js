@@ -2,7 +2,7 @@ river.model.Track = Backbone.Model.extend({
 
   initialize: function(attributes, options) {
 
-    if (typeof options['popcorn'] === "undefined") throw "Missing popcorn object in Track options attribute";
+    if (typeof options['popcorn'] === "undefined") throw new Error("Missing popcorn object in Track options attribute");
     this.popcorn = options['popcorn'];
     this.isGhost = options['isGhost'] || false;
 
@@ -26,11 +26,12 @@ river.model.Track = Backbone.Model.extend({
         view.addGhost();
       });
 
-      this.initial_subtitle_request = true;
     }
 
     this.listenTo(this, "change", this.touchSubtitle);
     this.listenTo(this, "request", this.onRequest);
+    
+    this.initial_subtitle_request = true;
 
   },
 
@@ -43,6 +44,8 @@ river.model.Track = Backbone.Model.extend({
   },
 
   save: function() {
+    if (this.isGhost) return;
+    
     Backbone.Model.prototype.save.call(this,{},{
       success: function() {
         Backbone.trigger("trackrequestsuccess");
@@ -114,21 +117,21 @@ river.model.Track = Backbone.Model.extend({
   },
 
   end: function(time) {
+    var duration = time - this.startTime();
+
+    if (duration <= 0) {
+      throw new Error("Track Duration of " + duration + " is invalid");
+    }
+
+    this.setEndTime(time);
+    
+    Backbone.trigger("ghosttrackend",this);
+
     this.isGhost = false;
 
     _.each(this.views,function(view){
       view.removeGhost();
     });
-
-    var duration = time - this.startTime();
-
-    if (duration <= 0) {
-      throw "Track Duration of " + duration + " is invalid";
-    }
-
-    this.setEndTime(time);
-
-    Backbone.trigger("ghosttrackend",this);
 
   },
 
@@ -158,6 +161,10 @@ river.model.Track = Backbone.Model.extend({
   },
 
   remove: function() {
+    if (this.isGhost) {
+      this.end(this.endTime());  
+    }
+    
     this.isDeleted = true;
 
     this.trackEvent._running = false; // disallow trackend event from getting triggered

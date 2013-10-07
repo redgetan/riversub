@@ -3,7 +3,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     river.ui.BasePlayer.prototype.initialize.call(this,options);
 
     this.timeline.setTracks(this.tracks);
-    
+
     // initally commands are disabled/ enabled only when things are loaded
     this.disableCommands();
 
@@ -37,7 +37,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $(document).on("click",this.onDocumentClick.bind(this));
     $(document).on("mousewheel",this.onDocumentScroll.bind(this));
-    
+
     this.$addSubtitleBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
@@ -264,7 +264,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   getSecondsFromCurrentPosition: function($target,eventPageX) {
-    $container = this.$progress_bar;
+    var $container = this.$progress_bar;
 
     var containerX = $container.position().left;
     var posX = eventPageX - containerX;
@@ -452,14 +452,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     track.highlight();
     subtitle.highlight();
 
-    if (typeof subtitle.get("text") === "undefined" || /^\s*$/.test(subtitle.get("text")) ) {
-      if (!track.isGhost) {
-        this.pause();
-        Backbone.trigger("subtitleeditmode",track);
-      }
-    } else {
-      this.showSubtitleInSubtitleBar(subtitle);
-    }
+    this.showSubtitleInSubtitleBar(subtitle);
   },
 
   onTrackEnd: function(track) {
@@ -488,9 +481,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         }
 
         this.safeEndGhostTrack(track,endTime);
-        this.requestSubtitleFromUser(track);
       }
+
+      this.requestSubtitleFromUser(track);
     }
+
   },
 
   onTrackRemove: function(track) {
@@ -587,7 +582,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onSubtitleDisplayDblClick: function(event) {
     var $target = $(event.target);
 
-    Backbone.trigger("subtitleeditmode",this.currentTrack);
+    this.requestSubtitleFromUser(this.currentTrack);
   },
 
   onPlayBtnClick: function(event) {
@@ -755,8 +750,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var tracks = this.getOverlapTracks(startTime,endTime,track) ;
 
     if (tracks.length != 0) {
-      throw "Track Overlap Detected. Track(" + startTime + "," + endTime + ") " +
-        "would overlap with " + $.map(tracks,function(track) { return track.toString(); });
+      throw new Error("Track Overlap Detected. Track(" + startTime + "," + endTime + ") " +
+        "would overlap with " + $.map(tracks,function(track) { return track.toString(); })
+      );
     }
   },
 
@@ -810,6 +806,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   clearTracks: function() {
+    for (var i = this.tracks.models.length - 1; i >= 0; i--) {
+      this.tracks.models[i].remove();
+    }
     this.tracks.reset();
   },
 

@@ -8,6 +8,8 @@ river.ui.Timeline = Backbone.View.extend({
     this.force_scroll_window = false;
     this.windowSlideTimeoutQueue = [];
 
+    this.tracks = new river.model.TrackSet();
+
     if (!this.initAfterMediaReadyCalled && this.media.readyState === 4) {
       this.initAfterMediaReady();
     }
@@ -69,7 +71,7 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   setTracks: function(tracks) {
-    this.tracks = tracks || [];
+    this.tracks = tracks ;
   },
 
   setMedia: function(media) {

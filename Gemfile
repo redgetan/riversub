@@ -43,6 +43,7 @@ group :development, :test do
   gem "factory_girl_rails", "~> 4.0"
   gem 'qunit-rails'
   gem "teabag"
+  #gem "rbtrace", :path => "/Users/reg/ruby/rbtrace"
 end
 
 # To use ActiveModel has_secure_password

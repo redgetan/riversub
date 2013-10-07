@@ -15,7 +15,9 @@ $(document).ready(function(){
     user: {}
   };
 
-  editor = new River.ui.Editor({repo: repo, media: media, container: $("#test_container") } );
+  Backbone.Model.prototype.sync = function(){}; // disable saving to server
+
+  editor = new river.ui.Editor({repo: repo, media: media, container: $("#test_container"), targetSelector: "video#media" } );
 
   Backbone.on("editor.ready", function(){
 
@@ -273,10 +275,10 @@ $(document).ready(function(){
       var popcorn = Popcorn("#media");
       var track;
 
-      throws(function() { track = new River.model.Track({},{popcorn: popcorn}); });
-      throws(function() { track = new River.model.Track({ start_time: 4, end_time: 7}); });
+      throws(function() { track = new river.model.Track({},{popcorn: popcorn}); });
+      throws(function() { track = new river.model.Track({ start_time: 4, end_time: 7}); });
 
-      track = new River.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
+      track = new river.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
       equal(track.toString(),"Track(4,7)");
     });
 
@@ -290,7 +292,7 @@ $(document).ready(function(){
       Backbone.on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
       Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
-      track = new River.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
+      track = new river.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
 
       track.remove();
       equal(numOfGhostTrackStart,0);
@@ -304,7 +306,7 @@ $(document).ready(function(){
       var numOfGhostTrackStart = 0;
       Backbone.on("ghosttrackstart",function() { numOfGhostTrackStart += 1; });
 
-      track = new River.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true });
+      track = new river.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true });
 
       equal(numOfGhostTrackStart,1);
     });
@@ -316,7 +318,7 @@ $(document).ready(function(){
       var numOfGhostTrackEnd = 0;
       Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
-      track = new River.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true});
+      track = new river.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true});
 
       track.end(6);
       equal(numOfGhostTrackEnd,1);
@@ -329,7 +331,7 @@ $(document).ready(function(){
       var numOfGhostTrackEnd = 0;
       Backbone.on("ghosttrackend",function() { numOfGhostTrackEnd += 1; });
 
-      track = new River.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true});
+      track = new river.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn, isGhost: true});
 
       track.remove();
       equal(numOfGhostTrackEnd,1);
@@ -339,7 +341,7 @@ $(document).ready(function(){
       var popcorn = Popcorn("#media");
       var track;
 
-      track = new River.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
+      track = new river.model.Track({ start_time: 4, end_time: 7}, { popcorn: popcorn });
 
       equal(popcorn.getTrackEvents().length,1);
       track.remove();
@@ -348,7 +350,7 @@ $(document).ready(function(){
 
     // test( "removing a track should not trigger track end", function() {
     //   var popcorn = Popcorn("#media");
-    //   var track = new River.model.Track({},{ popcorn: popcorn });
+    //   var track = new river.model.Track({},{ popcorn: popcorn });
 
 
     //   equal(editor.numTracks,1);
@@ -373,7 +375,7 @@ $(document).ready(function(){
 
     test( "timeline resolution should work whether or not elements are visible", function() {
       var media = $("#media")[0];
-      var timeline = new River.ui.Timeline({media: media});
+      var timeline = new river.ui.Timeline({media: media});
       var summaryWidth = timeline.$summary.width();
       var expandedWidth = timeline.$expanded.width();
       var summaryWidthInSec = media.duration;
@@ -388,7 +390,7 @@ $(document).ready(function(){
 
     asyncTest( "timeline isOutOfBounds should work independently of element visibility",4, function() {
       var media = $("#media")[0];
-      var timeline = new River.ui.Timeline({media: media});
+      var timeline = new river.ui.Timeline({media: media});
 
 
       equal(timeline.isOutOfBounds(),false);
@@ -527,7 +529,7 @@ $(document).ready(function(){
 // [x] make timeline scrolling more sensitive/ too slow and feels a bit buggy
 // [ ] update video demo
 // [ ] move 1st track to after 2nd track. clicking on 1st track wont work anymore. subtitle position is wrong
-// [ ] if youre a player. and you dblclick on subtitle line, there should be no errors 
+// [ ] if youre a player. and you dblclick on subtitle line, there should be no errors
 //       (currently its calling subtitle.openEditor - should only happen for editor, not player)
 // [ ] need to validate start_time/end_time
 // [ ] test track/subtitle changes two way should function properly highlighting/positioning scrolling
@@ -539,10 +541,15 @@ $(document).ready(function(){
 // [ ] remove this: if ($("#editor").size() === 1) {
 // [ ] dblclick on track/subtitle should show subtitleeditform on video plus subtitle text should be there
 // [x] sorting subtitle logic is fucked up
-// [x] handle model syncing 
+// [x] handle model syncing
 //       create/update/delete
 // [ ] when you move track through another, it gets fucked up. the other wont work properly anymore, popcorn issue
+// [x] fix backbone integration
+// [x] scrolling timeline sohuld update current_window_slide
+// [ ] sometimes the user would have endtime all the way till duraiton of video.
+//       (add feature to determine - how did he arrive at that mistake)
+//       (undo that mistake - right now, delete is at bottom right corner which you can't click when its too far out)
 
     // test( "moving track to position after next track should move subtitle position to next one as well", function() {
-    //   // how the fuck do you test this  
+    //   // how the fuck do you test this
     // });
