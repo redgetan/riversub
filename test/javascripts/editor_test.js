@@ -363,6 +363,23 @@ $(document).ready(function(){
      *
      */
 
+
+    cases: 
+      when you scroll expanded timeline
+        when paused
+          slide below 0
+            start/end of current_window_slide should be 0 and window_width
+          slide bet 0 and max
+            start/end of current_window_slide should changed to equivalent to amount of scrolling
+          slide above max
+            start/end of current_window_slide should be max - window_width and max
+
+
+        when playing
+          start/end of current_window_slide should move only a few milliseconds and get back to
+          orig position
+
+
      // presence of expanded should not affect:
      //   summary window sliding
      //     current window start/end

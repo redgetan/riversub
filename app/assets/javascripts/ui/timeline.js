@@ -4,6 +4,8 @@ river.ui.Timeline = Backbone.View.extend({
 
     this.setMedia(options["media"]);
 
+    this.window_slide_duration = 30;
+
     this.isScrubberVisible = true;
     this.force_scroll_window = false;
     this.windowSlideTimeoutQueue = [];
@@ -184,7 +186,8 @@ river.ui.Timeline = Backbone.View.extend({
 
   initAfterMediaReady: function() {
     this.initAfterMediaReadyCalled = true;
-    this.$expanded.on("mousewheel",this.onExpandedTimelineScroll.bind(this));
+    this.onExpandedTimelineScrollCallback = this.onExpandedTimelineScroll.bind(this);
+    this.$expanded.on("mousewheel",this.onExpandedTimelineScrollCallback);
 
     this.$window_slider.css("width",this.resolution(this.$summary) * 30);
     this.$filler.css("width",this.resolution(this.$expanded) * this.media.duration);
@@ -324,16 +327,35 @@ river.ui.Timeline = Backbone.View.extend({
     var oldWindowSliderLeft = parseFloat(this.$window_slider.css("left"));
     var newWindowSliderLeft = oldWindowSliderLeft - numPixelsToScrollSummary;
 
-    // update current_window_slide
-    this.current_window_slide.start -= secondsToScroll;
-    this.current_window_slide.end -= secondsToScroll;
-
     // cannot go beyond the min/max left
     var maxLeft = this.$summary.width() - this.$window_slider.width();
     var minLeft = 0;
+
     if (newWindowSliderLeft >= minLeft && newWindowSliderLeft <= maxLeft) {
+      this.updateCurrentWindowSlideRelative(secondsToScroll);
       this.$window_slider.css("left",newWindowSliderLeft);
     }
+  },
+
+  updateCurrentWindowSlideRelative: function(secondsToScroll) {
+    var newStart = this.current_window_slide.start - secondsToScroll;
+    var newEnd =   this.current_window_slide.end   - secondsToScroll;
+    this.updateCurrentWindowSlide(newStart,newEnd);
+  },
+
+  updateCurrentWindowSlideAbsolute: function(startSeconds) {
+    var newStart = startSeconds;
+    var newEnd =   startSeconds + this.window_slide_duration;
+    this.updateCurrentWindowSlide(newStart,newEnd);
+  },
+
+  updateCurrentWindowSlide: function(newStart,newEnd) {
+    if (newStart < 0 || newEnd > this.media.duration) return;
+
+    this.current_window_slide.start = newStart;
+    this.current_window_slide.end   = newEnd;
+
+    // console.log(this.current_window_slide);
   },
 
   onTrackResize: function(track,ui) {
@@ -472,11 +494,8 @@ river.ui.Timeline = Backbone.View.extend({
     // if (!this.media.paused) {
 
       // find out which window_slide index to scroll element to
-      var window_slide_duration = 30;
-      var index = Math.floor(this.media.currentTime / window_slide_duration);
-      var pos   = index * window_slide_duration;
-
-      this.current_window_slide = { start: pos, end: pos + 30 > this.media.duration ? this.media.duration : pos + 30};
+      var index = Math.floor(this.media.currentTime / this.window_slide_duration);
+      var startTime   = index * this.window_slide_duration;
 
       var windowSlideTimeout;
 
@@ -490,7 +509,19 @@ river.ui.Timeline = Backbone.View.extend({
       }
 
       windowSlideTimeout = setTimeout(function() {
-        $container.animate({scrollLeft: this.current_window_slide.start * this.resolution($container)},300,function(){
+        this.$expanded.off("mousewheel",this.onExpandedTimelineScrollCallback);
+        $container.animate({scrollLeft: startTime * this.resolution($container)},300,function(){
+
+          // make sure scrolling callback only gets enabled after a second to prevent choppy scroll
+          // otherwise, onExpandedTimelineScrollCallback will do extra scrolling that resulted from residual scroll
+          // 
+          setTimeout(function(){ 
+            this.$expanded.on("mousewheel",this.onExpandedTimelineScrollCallback)
+          }.bind(this),500);
+          
+
+          this.updateCurrentWindowSlideAbsolute(startTime);
+
           // trigger appear/disappear events
           if (this.isOutOfBounds()) {
             if (this.isScrubberVisible) {
@@ -504,8 +535,8 @@ river.ui.Timeline = Backbone.View.extend({
             }
           }
         }.bind(this));
-        this.$window_slider.animate({ left: this.resolution(this.$summary) * 30 * index },300);
-      }.bind(this),100);
+        this.$window_slider.animate({ left: this.resolution(this.$summary) * this.window_slide_duration * index },300);
+      }.bind(this),300);
 
       this.windowSlideTimeoutQueue.push(windowSlideTimeout);
       this.$summary.trigger("window.scroll");
