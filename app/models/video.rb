@@ -15,8 +15,13 @@ class Video < ActiveRecord::Base
       :id => self.id,
       :name => self.name,
       :genre => self.genre,
-      :url => self.url
+      :url => self.url,
+      :duration => self.duration
     }
+  end
+
+  def duration
+    self.metadata["data"]["duration"] # youtube video duration  
   end
 
   def generate_token

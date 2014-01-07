@@ -1,8 +1,15 @@
 river.ui.Timeline = Backbone.View.extend({
+  /**
+    options:
+      @media    - media DOM element 
+      @duration - duration of video (based on metadata, will exist even if media is not available)
+  */
+
   initialize: function(options) {
     this.setupElement();
 
     this.setMedia(options["media"]);
+    this.mediaDuration = options["mediaDuration"]; 
 
     this.window_slide_duration = 30;
 
@@ -10,11 +17,7 @@ river.ui.Timeline = Backbone.View.extend({
     this.force_scroll_window = false;
     this.windowSlideTimeoutQueue = [];
 
-    this.tracks = new river.model.TrackSet();
-
-    if (!this.initAfterMediaReadyCalled && this.media.readyState === 4) {
-      this.initAfterMediaReady();
-    }
+    this.current_window_slide = { start: 0, end: this.mediaDuration < 30 ? this.mediaDuration : 30 };
   },
 
   setupElement: function() {
@@ -30,6 +33,7 @@ river.ui.Timeline = Backbone.View.extend({
     this.$scrubber_summary = $("#summary .scrubber");
     this.$window_slider = $("#summary .window_slider");
     this.$window_slider.css("left",0);
+    this.$window_slider.css("width",this.resolution(this.$summary) * 30);
 
     this.$time_float = $("#time_float");
     this.$time_float.hide();
@@ -61,19 +65,29 @@ river.ui.Timeline = Backbone.View.extend({
 
     this.$expanded = $("#expanded");
     this.$expanded_track_viewport = $("#track_viewport");
-    this.$expanded_time_label = $("#time_label");
 
-    this.$scrubber_expanded = $("#expanded .scrubber");
-    this.$time_indicator = $("#expanded .time_indicator");
+    // expanded timeline filler
     this.$filler = $("#expanded .filler");
+    this.$filler.css("width",this.resolution(this.$expanded) * this.mediaDuration);
+
+    // scrubber
+    this.$scrubber_expanded = $("#expanded .scrubber");
+
+    // current time display indicator
+    this.$time_indicator = $("#expanded .time_indicator");
+
+    // timeline label
+    var timeline_label = this.createTimeLabelHTMLString(this.$filler.width(),this.mediaDuration);
+    this.$expanded_time_label = $("#time_label");
+    this.$expanded_time_label.append(timeline_label);
 
     this.expandedWidth = this.$expanded.width();
     this.summaryWidth = this.$summary.width();
-
   },
 
   setTracks: function(tracks) {
     this.tracks = tracks ;
+    this.renderTracks();
   },
 
   setMedia: function(media) {
@@ -125,9 +139,10 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   bindEvents: function() {
-    this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
 
+    this.onExpandedTimelineScrollCallback = this.onExpandedTimelineScroll.bind(this);
+    this.$expanded.on("mousewheel",this.onExpandedTimelineScrollCallback);
     this.$summary.on("mousedown",this.onMouseDownHandler.bind(this));
     this.$summary.on("mousemove",this.onMouseMoveHandler.bind(this));
     this.$summary.on("mouseup",this.onMouseUpHandler.bind(this));
@@ -175,29 +190,6 @@ river.ui.Timeline = Backbone.View.extend({
   onTimelineSeek: function() {
     // always scroll window, do not care if appeared/disappeared
     this.force_scroll_window = true;
-  },
-
-  onLoadedMetadata: function() {
-    // events that should happen after loading metadata
-    if (!this.initAfterMediaReadyCalled) {
-      this.initAfterMediaReady();
-    }
-  },
-
-  initAfterMediaReady: function() {
-    this.initAfterMediaReadyCalled = true;
-    this.onExpandedTimelineScrollCallback = this.onExpandedTimelineScroll.bind(this);
-    this.$expanded.on("mousewheel",this.onExpandedTimelineScrollCallback);
-
-    this.$window_slider.css("width",this.resolution(this.$summary) * 30);
-    this.$filler.css("width",this.resolution(this.$expanded) * this.media.duration);
-
-    var timeline_label = this.createTimeLabelHTMLString(this.$filler.width(),this.media.duration);
-    this.$expanded_time_label.append(timeline_label);
-
-    this.renderTracks();
-
-    this.current_window_slide = { start: 0, end: this.media.duration < 30 ? this.media.duration : 30 };
   },
 
   onGhostTrackStart: function(track) {
@@ -290,7 +282,7 @@ river.ui.Timeline = Backbone.View.extend({
   renderTimeFloat: function(seconds) {
     // do not allow seeking to negative duration
     if (seconds < 0) seconds = 0;
-    if (seconds > this.media.duration) seconds = this.media.duration;
+    if (seconds > this.mediaDuration) seconds = this.mediaDuration;
 
     this.$time_float.text(this.stringifyTimeShort(seconds));
     this.$time_float.css("left",event.pageX - this.$time_float.width() / 2);
@@ -350,7 +342,7 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   updateCurrentWindowSlide: function(newStart,newEnd) {
-    if (newStart < 0 || newEnd > this.media.duration) return;
+    if (newStart < 0 || newEnd > this.mediaDuration) return;
 
     this.current_window_slide.start = newStart;
     this.current_window_slide.end   = newEnd;
@@ -466,7 +458,7 @@ river.ui.Timeline = Backbone.View.extend({
 
   getContainerWidthInSeconds: function($container) {
     if ($container.attr("id") === "summary") {
-      return this.media.duration || 30;
+      return this.mediaDuration || 30;
     } else {
       return 30;
     }

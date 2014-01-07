@@ -28,6 +28,10 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.bindEvents();
   },
 
+  mediaDuration: function() {
+    return this.repo.video.duration;
+  },
+
   preRepositoryInitHook: function() {
     // subclass implements callback if needed
   },

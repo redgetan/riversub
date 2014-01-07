@@ -14,7 +14,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   preRepositoryInitHook: function() {
-    this.timeline = new river.ui.Timeline({media: this.popcorn.media });
+    this.timeline = new river.ui.Timeline({media: this.popcorn.media, mediaDuration: this.mediaDuration() });
   },
 
   bindEvents: function() {
@@ -276,7 +276,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   // how many pixels per second
   resolution: function($container) {
     var widthPixel = $container.width();
-    var widthSeconds = this.media.duration;
+    var widthSeconds = this.mediaDuration();
 
     return widthPixel / widthSeconds ;
   },
@@ -636,7 +636,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     var endTime   = this.determineEndTime(track.startTime());
 
-    if (endTime === this.media.duration) {
+    if (endTime === this.mediaDuration()) {
       endTime = this.media.currentTime + trackDuration;
     }
 
@@ -647,7 +647,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   seek: function(time,callback) {
-    if (time < 0 || time > this.media.duration) {
+    if (time < 0 || time > this.mediaDuration()) {
       if (typeof callback !== "undefined") {
         callback();
       }
@@ -792,7 +792,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   // either the end of media or the starttime next nearest track
   determineEndTime: function(startTime) {
-    var nextNearestEdgeTime = this.media.duration;
+    var nextNearestEdgeTime = this.mediaDuration();
     var track;
 
     for (var i = this.tracks.length - 1; i >= 0; i--) {

@@ -1,10 +1,14 @@
-sometimes stop doesnt turn back to start timing
-start timing confusing
-shift doesnt always work
-
-handle saving - set url of model/collection
 =====
 
+- when no internet connection
+  - "There is no internet connection."
+  - gray out video player. dont show play button
+  - use duration of video stored in DB
+
+- use intro.js to make help more easier
+- going to videos page (http://www.riversub.cc/videos/BGDiqKuUT0E), original yt url is not obvious, plus i can't click on youtube icon in the player, why make the subtitle bar span the whole thing?
+- 'x' for deleting track shouldnt be at bottom right, upper left maybe
+- when i hover over track, it should show me subtitle for that track
 - a repo can have multiple subtitles
 - can fork an existing repo
 
