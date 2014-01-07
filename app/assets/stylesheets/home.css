@@ -178,7 +178,7 @@ div.videos li.selected {
 div#media_container {
   /*padding: 10px;*/
   width: inherit;
-  border-top: solid 1px black ;
+  border: solid 1px black ;
   /*margin-right: 15px;*/
 }
 

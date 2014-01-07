@@ -2,7 +2,16 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   initialize: function(options) {
     river.ui.BasePlayer.prototype.initialize.call(this,options);
+  },
+
+  setupElement: function() {
+    river.ui.BasePlayer.prototype.setupElement.call(this);
     this.hideEditing();
+
+    this.$el = $("#player");
+
+    this.$subtitleEditorBtn = $("#subtitle_editor_btn");
+    this.$subtitleEditorBtn.tooltip({title: "Opens Editor in new tab", placement: 'bottom'});
   },
 
   hideEditing: function() {

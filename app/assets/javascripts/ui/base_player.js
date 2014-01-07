@@ -26,6 +26,17 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.loadTracks(timings);
 
     this.bindEvents();
+
+    this.displayNoInternetConnectionIfNeeded();
+  },
+
+  displayNoInternetConnectionIfNeeded: function() {
+    if (!navigator.onLine) {
+      var height = this.$mediaContainer.css("height");
+      this.$mediaContainer.html("<div style='height: " + height + ";line-height: " + height + ";text-align: center'>" + 
+                                  "No Internet Connection" + 
+                                "</div>");
+    }
   },
 
   mediaDuration: function() {
@@ -53,18 +64,14 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   setupElement: function() {
-    this.$el = $("#player");
-
     this.$subtitleBar = $("#subtitle_bar");
-
-    this.$subtitleEditorBtn = $("#subtitle_editor_btn");
-    this.$subtitleEditorBtn.tooltip({title: "Opens Editor in new tab", placement: 'bottom'});
 
     this.$downloadBtn = $("#download_btn");
     this.$downloadBtn.tooltip({title: "Download subtitle file in .srt format"});
 
-
     this.$subtitleDisplay = $("#subtitle_display");
+
+    this.$mediaContainer = $("#media_container");
   },
 
   loadMedia: function(targetSelector,url) {

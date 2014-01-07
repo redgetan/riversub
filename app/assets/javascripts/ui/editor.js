@@ -56,11 +56,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
   },
 
-
-  setupElement: function() {
-    this.$container = this.options["container"] || $("#main_container");
-
-    var el = "<div class='container'>" +
+  getEditorElement: function() {
+    return  "<div class='container'>" +
               "<div id='editor'> " +
                 "<div id='editor-top' class='row'> " +
                   "<div class='span12'> " +
@@ -165,8 +162,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                 "</div> " +   // #editor-bottom.row
               "</div>" +  // #editor
             "</div>";  // container
+  },
 
+  setupElement: function() {
+    this.$container = this.options["container"] || $("#main_container");
+
+    var el = this.getEditorElement();
     this.$container.append(el);
+
+    river.ui.BasePlayer.prototype.setupElement.call(this);
+
     this.$el = $("#editor");
 
     if (this.repo.user) {
@@ -183,9 +188,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                                            "<div id='media'></div>" +
                                          "</div> ";
 
-    this.$container.find("#media_container").prepend(media);
-
-    this.$subtitleBar = $("#subtitle_bar");
+    this.$mediaContainer = this.$container.find("#media_container")
+    this.$mediaContainer.prepend(media);
 
     this.$playBtn = $("#play_btn");
     this.$pauseBtn = $("#pause_btn");
@@ -199,16 +203,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$addSubtitleBtn = $("#add_subtitle_btn");
 
-    this.$downloadBtn = $("#download_btn");
-    this.$downloadBtn.tooltip({title: "Download subtitle file in .srt format"});
     this.$helpBtn = $("#help_btn");
     this.$helpBtn.tooltip({title: "Help"});
     this.$helpBtn.popover({content: "Click Here for Instructions", placement: "top", trigger: "manual"});
     this.$helpBtn.on("click",function() {
       $(this).popover("hide");
     });
-
-    this.$subtitleDisplay = $("#subtitle_display");
 
     this.$subtitleEdit = $("#subtitle_edit");
     this.$subtitleEdit.hide();

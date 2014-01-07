@@ -62,7 +62,6 @@ div#editor-bottom {
 
 #summary.timeline {
 	height: 15px;
-	border: solid 1px black ;
 	position: relative;
 	overflow: hidden;
 }
