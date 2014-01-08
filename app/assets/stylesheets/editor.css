@@ -142,6 +142,8 @@ div#editor-bottom {
 	position: relative;
 	/*vertical-align: bottom;*/
 	top: 70px;
+	float: left;
+	padding: 2px;
 }
 
 
