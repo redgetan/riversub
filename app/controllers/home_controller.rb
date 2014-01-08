@@ -13,6 +13,9 @@ class HomeController < ApplicationController
   def about
   end
 
+  def how_it_works
+  end
+
   def tutorial
   end
 

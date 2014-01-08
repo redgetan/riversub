@@ -30,6 +30,7 @@ River::Application.routes.draw do
 
 
   get "about", :to => "home#about"
+  get "how_it_works", :to => "home#how_it_works"
   root :to => "home#index"
 
 

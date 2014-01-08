@@ -313,6 +313,7 @@ river.ui.Timeline = Backbone.View.extend({
 
   onExpandedTimelineScroll: function(event,delta,deltaX,deltaY){
     deltaX = -(deltaX * 2);
+    console.log(this.$expanded.scrollLeft);
     this.$expanded.scrollLeft(this.$expanded.scrollLeft() - deltaX) ;
     var secondsToScroll = deltaX / this.resolution(this.$expanded);
     var numPixelsToScrollSummary = this.resolution(this.$summary) * secondsToScroll;
