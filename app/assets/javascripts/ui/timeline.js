@@ -6,10 +6,10 @@ river.ui.Timeline = Backbone.View.extend({
   */
 
   initialize: function(options) {
+    this.mediaDuration = options.mediaDuration; 
     this.setupElement();
 
-    this.setMedia(options["media"]);
-    this.mediaDuration = options["mediaDuration"]; 
+    this.setMedia(options.media);
 
     this.window_slide_duration = 30;
 
@@ -31,6 +31,8 @@ river.ui.Timeline = Backbone.View.extend({
     this.$summary_container.find("#subtitle_bar").after(summary);
     this.$summary = $("#summary");
     this.$scrubber_summary = $("#summary .scrubber");
+
+    // window slider
     this.$window_slider = $("#summary .window_slider");
     this.$window_slider.css("left",0);
     this.$window_slider.css("width",this.resolution(this.$summary) * 30);
@@ -81,8 +83,6 @@ river.ui.Timeline = Backbone.View.extend({
     this.$expanded_time_label = $("#time_label");
     this.$expanded_time_label.append(timeline_label);
 
-    this.expandedWidth = this.$expanded.width();
-    this.summaryWidth = this.$summary.width();
   },
 
   setTracks: function(tracks) {
@@ -313,7 +313,6 @@ river.ui.Timeline = Backbone.View.extend({
 
   onExpandedTimelineScroll: function(event,delta,deltaX,deltaY){
     deltaX = -(deltaX * 2);
-    console.log(this.$expanded.scrollLeft);
     this.$expanded.scrollLeft(this.$expanded.scrollLeft() - deltaX) ;
     var secondsToScroll = deltaX / this.resolution(this.$expanded);
     var numPixelsToScrollSummary = this.resolution(this.$summary) * secondsToScroll;
@@ -451,8 +450,10 @@ river.ui.Timeline = Backbone.View.extend({
 
   getContainerWidthInPixels: function($container) {
     if ($container.attr("id") === "summary") {
+      this.summaryWidth  = this.summaryWidth  || this.$summary.width();
       return this.summaryWidth;
     } else {
+      this.expandedWidth = this.expandedWidth || this.$expanded.width();
       return this.expandedWidth;
     }
   },
