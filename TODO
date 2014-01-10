@@ -1,15 +1,20 @@
 *************************
 *
 *
-*  Get your viewers to 
+*  Get your viewers to
 *  CAPTION/SUBTITLE your Youtube Videos for you
-*   
+*
 *
 **************************
 
-  
 
 
+[ ] Intro.js
+[ ] Give list of 1 minute videos that a user can start adding captions to
+[ ] Add Preview button
+[ ] Change "Videos" to "Browse"
+[ ] Add FB/twitter/URL share button in viewing
+[ ] Allow user to click the youtube icon link when viewing the video/ right now its overlayed by #subtitle_bar
 
 
 
@@ -29,9 +34,10 @@
       2. Paste Url/
 
 
-    Viewers 
+    Viewers
       1. Paste Youtube Url (GIF)
       2. Start Timing      (GIF)
+
       3. Add   Text        (GIF)
       4. Make Adjustments  (GIF)
         adjusting timing (drag/resize)
@@ -40,13 +46,44 @@
       6. View/Share
       7. Sync with Youtube
 
-[ ] add "Help" tab at layout page
-    - detailed instructions
+      --
+      1. Choose a Video
+      2. Start Adding Captions
+      3. Preview your work
+      4. Let others watch your captioned video
+
+[ ] add "Tutorial" tab at layout page
+
     1. Navigating          (HTML5 video with captions)
-    2. Editing             
+      a. scrolling through expanded timeline
+      b. clicking on summary timeline
+      c. explaining window_slide
+      d. dragging scrubber to view which part of video it is
+      e. via subtitle tab
+
+    2. Editing
+      a. adjust timing
+        i.   resize
+        ii.  drag
+        iii. while video is playing
+      b. adjust text
+        i.   double click subtitle_bar
+        ii.  double click track
+        iii. double click subtitle list item
+
     3. Keyboard Shortcuts
-    4. Saving 
+      a. start timing
+      b. stop timing
+      c. cancel timing
+
+    4. Saving
+      a. autosave
+      b. preventing modification by other users
+
     5. Exporting Captions to Youtube
+      a. download .srt
+      b. if you own the youtube video
+      c. if you don't own the youtube video
 
  going to videos page (http://www.riversub.cc/videos/BGDiqKuUT0E), original yt url is not obvious, plus i can't click on youtube icon in the player, why make the subtitle bar span the whole thing?
 

@@ -23,12 +23,12 @@ river.ui.Timeline = Backbone.View.extend({
   setupElement: function() {
     this.$summary_container = $("#media_container");
 
-    var summary = "<div id='summary' class='timeline'>" +
+    var summary = "<div id='summary' class='timeline' >" +
                      "<div class='scrubber'></div>" +
                      "<div class='window_slider'></div>" +
                    "</div>";
 
-    this.$summary_container.find("#subtitle_bar").after(summary);
+    this.$summary_container.find("#viewing_screen").after(summary);
     this.$summary = $("#summary");
     this.$scrubber_summary = $("#summary .scrubber");
 

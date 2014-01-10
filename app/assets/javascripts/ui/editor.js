@@ -70,9 +70,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                   "</div> " +
                   "<div class='span12'> " +
                     "<div id='media_container'> " +
-                      "<div id='subtitle_bar' class='span12 center'> " +
-                        "<span id='subtitle_display' class='span5 center'></span> " +
-                        "<input id='subtitle_edit' class='span7 center' type='text' maxlength='90' placeholder='Enter Subtitle Here'> " +
+                      "<div id='viewing_screen' >" +
+                        "<div id='subtitle_bar' class='span12 center'> " +
+                          "<span id='subtitle_display' class='span5 center'></span> " +
+                          "<input id='subtitle_edit' class='span7 center' type='text' maxlength='90' placeholder='Enter Subtitle Here'> " +
+                        "</div> " +
                       "</div> " +
                       "<div id='time_float'></div>" +
                       "<div id='seek_head'>" +
@@ -105,7 +107,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<div class='btn-group pull-right'> " +
                         "<a id='start_timing_btn' class='btn'><i class='icon-circle'></i> Start Timing</a> " +
                         "<a id='stop_timing_btn' class='btn'><i class='icon-circle'></i> Stop</a> " +
-                        "<a id='help_btn' data-toggle='modal' data-target='#instructions_modal' class='btn'><i class='icon-question-sign'></i></a> " +
+                        "<a id='help_btn' class='btn'><i class='icon-question-sign'></i></a> " +
                       "</div> " +
                       // "<div class='btn-group pull-right'> " +
                       // "</div> " +
@@ -185,11 +187,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                                              "<div id='overlay_btn'><i class='icon-play'></i></div>" +
                                            "<div id='iframe_overlay'>" +
                                            "</div>" +
-                                           "<div id='media'></div>" +
+                                           "<div id='media' ></div>" +
                                          "</div> ";
 
-    this.$mediaContainer = this.$container.find("#media_container")
-    this.$mediaContainer.prepend(media);
+    this.$mediaContainer.find("#viewing_screen").prepend(media);
 
     this.$playBtn = $("#play_btn");
     this.$pauseBtn = $("#pause_btn");
@@ -203,12 +204,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$addSubtitleBtn = $("#add_subtitle_btn");
 
+    this.intro = introJs();
+
     this.$helpBtn = $("#help_btn");
     this.$helpBtn.tooltip({title: "Help"});
-    this.$helpBtn.popover({content: "Click Here for Instructions", placement: "top", trigger: "manual"});
-    this.$helpBtn.on("click",function() {
-      $(this).popover("hide");
-    });
+    // this.$helpBtn.popover({content: "Click Here for Instructions", placement: "top", trigger: "manual"});
+    this.$helpBtn.on("click",this.intro.start.bind(this.intro));
 
     this.$subtitleEdit = $("#subtitle_edit");
     this.$subtitleEdit.hide();
@@ -227,6 +228,45 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$status_bar = $("#status-bar");
   },
 
+  setupIntroJS: function() {
+    this.intro.setOptions({
+      steps: [
+        {
+          element: "#viewing_screen",
+          intro: "This is where video and its subtitles that you add gets displayed"
+        },
+        {
+          element: "#summary.timeline",
+          intro: "This is seek bar. It shows you the subtitles youve added during the entire duration of video. Clicking on a green track would take you to the exact time in video where that subtitle appears",
+        },
+        {
+          element: "#expanded.timeline",
+          intro: "This shows you 30 second window of where you are currently at in the video. Clicking on a green track would also take you the time in video where the subtitle appears",
+          position: 'top'
+        },
+        {
+          element: "#start_timing_btn",
+          intro: "To add a subtitle, you let the video play, and the moment you want you're text to start, you press this button. Try it now. ",
+        },
+        {
+          element: "#stop_timing_btn",
+          intro: "Now press stop when you want your text to end",
+        },
+        {
+          element: "#subtitle_bar",
+          intro: "Here is where you type in the text",
+        }
+      ]
+    });
+
+    this.intro.onchange(function() {
+      if (this.intro._currentStep === 5) {
+        if (!$("#subtitle_edit").is(":visible")) {
+          this.requestSubtitleFromUser(this.currentTrack);
+        }
+      }
+    }.bind(this));
+  },
 
   resetState: function(callback) {
     this.clearTracks();
@@ -348,6 +388,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$startTimingBtn.removeAttr("disabled");
     this.enableCommands();
     Backbone.trigger("editor.ready");
+    this.setupIntroJS();
   },
 
   onPauseAdjust: function(correctPauseTime) {
@@ -399,6 +440,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     // show the input bar
     this.$subtitleEdit.show();
+
     this.$subtitleEdit.focus();
     this.$subtitleEdit.effect("highlight", { color: "moccasin" },1000);
   },
@@ -407,7 +449,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.isGhostTrackStarted = true;
     this.currentGhostTrack = track;
     this.$startTimingBtn.hide();
-    this.$stopTimingBtn.show();
+    this.$stopTimingBtn.show({
+      complete: function() {
+        if (this.intro._currentStep === 3) { // 3 represents 3rd step where user has to press "Start Timing"
+          $(".introjs-nextbutton").trigger("click");
+        }
+      }.bind(this)
+    });
     this.$addSubtitleBtn.attr("disabled","disabled");
   },
 
@@ -415,7 +463,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.isGhostTrackStarted = false;
     this.currentGhostTrack = null;
     this.currentTrack = null;
-    this.$stopTimingBtn.hide();
+    this.$stopTimingBtn.hide({
+      complete: function() {
+        if (this.intro._currentStep === 4) { // 4 represents 4rd step where user has to press "Stop Timing"
+          $(".introjs-nextbutton").trigger("click");
+        }
+      }.bind(this)
+    });
     this.$startTimingBtn.show();
     this.$addSubtitleBtn.removeAttr("disabled");
     track.fadingHighlight();
