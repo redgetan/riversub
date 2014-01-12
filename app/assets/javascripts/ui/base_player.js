@@ -31,7 +31,7 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   displayNoInternetConnectionIfNeeded: function() {
-    if (!navigator.onLine) {
+    if (!navigator.onLine && !this.options.local) {
       var height = this.$mediaContainer.css("height");
       this.$mediaContainer.html("<div style='height: " + height + ";line-height: " + height + ";text-align: center'>" + 
                                   "No Internet Connection" + 
@@ -71,7 +71,17 @@ river.ui.BasePlayer = Backbone.View.extend({
 
     this.$subtitleDisplay = $("#subtitle_display");
 
-    this.$mediaContainer = $("#media_container");
+    this.$mediaContainer = this.$mediaContainer || $("#media_container");
+
+    var media = this.options["media"] || "<div id='iframe_container'>" +
+                                             "<div id='overlay_btn'><i class='icon-play'></i></div>" +
+                                           "<div id='iframe_overlay'>" +
+                                           "</div>" +
+                                           "<div id='media'></div>" +
+                                         "</div> ";
+
+    this.$mediaContainer.prepend(media);
+
   },
 
   loadMedia: function(targetSelector,url) {

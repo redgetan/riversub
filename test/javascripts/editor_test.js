@@ -1,4 +1,10 @@
 // setup video container
+// tests
+//   1. double clicking subtitle_bar should allow you to edit subtitles
+//   2. right after timing, subtitleeditmode should get triggered once
+//   3. make clicking on video screen to play work again
+//   4. summary should reflect expanded
+//      - when adjusting track size/position, it should be reflected
 
 var editor;
 
@@ -17,7 +23,7 @@ $(document).ready(function(){
 
   Backbone.Model.prototype.sync = function(){}; // disable saving to server
 
-  editor = new river.ui.Editor({repo: repo, media: media, container: $("#test_container"), targetSelector: "video#media" } );
+  editor = new river.ui.Editor({repo: repo, media: media, local: true, container: $("#test_container"), targetSelector: "video#media" } );
 
   Backbone.on("editor.ready", function(){
 

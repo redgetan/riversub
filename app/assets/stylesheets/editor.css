@@ -306,6 +306,11 @@ div#keyboard-shortcuts {
 	font-size: 10px;
 }
 
+#viewing_screen {
+	background-color: black;
+	text-align: center;
+}
+
 /*#language_select {
 	width: 150px;	
 }*/

@@ -150,8 +150,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                           "<div class='row'> " +
                             "<div id='status-bar' class='span3'> " +
                             "</div> " +
-                            "<div id='keyboard-shortcuts' class='span9'> " +
-                              "<span class='pull-right'>" +
+                            "<div id='keyboard-shortcuts' class='span6 pull-right'> " +
+                              "<span>" +
                                 "<b>Keyboard Shortcuts: </b>  " +
                                 "<kbd class='light'>Shift</kbd> Start/Stop Timing " +
                                 "<kbd class='light'>Space</kbd> Play/Pause" +
@@ -172,6 +172,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var el = this.getEditorElement();
     this.$container.append(el);
 
+    this.$mediaContainer = $("#viewing_screen");
+
     river.ui.BasePlayer.prototype.setupElement.call(this);
 
     this.$el = $("#editor");
@@ -182,15 +184,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                        "</span> / ";
       this.$el.find("#repo_label").prepend(repo_owner);
     }
-
-    var media = this.options["media"] || "<div id='iframe_container'>" +
-                                             "<div id='overlay_btn'><i class='icon-play'></i></div>" +
-                                           "<div id='iframe_overlay'>" +
-                                           "</div>" +
-                                           "<div id='media' ></div>" +
-                                         "</div> ";
-
-    this.$mediaContainer.find("#viewing_screen").prepend(media);
 
     this.$playBtn = $("#play_btn");
     this.$pauseBtn = $("#pause_btn");
@@ -212,7 +205,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$helpBtn.on("click",this.intro.start.bind(this.intro));
 
     this.$subtitleEdit = $("#subtitle_edit");
-    this.$subtitleEdit.hide();
+    this.hideSubtitleEdit();
 
     this.$iframeOverlay = $("#iframe_overlay");
     this.$overlay_btn = $("#overlay_btn");
@@ -254,18 +247,20 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         },
         {
           element: "#subtitle_bar",
-          intro: "Here is where you type in the text",
+          intro: "Here is where you type in the text. Press [Enter] after you're done typing",
+        },
+        {
+          element: "#keyboard-shortcuts",
+          intro: "Instead of using your mouse, you can also use the keyboard for controlling the editor. Try play/pausing the video using [space]. Then create another subtitle track using [shift]",
+          position: "top",
+        },
+        {
+          element: "#expanded.timeline",
+          intro: "To edit a previous subtitle that you created. simply double click a green track",
         }
       ]
     });
 
-    this.intro.onchange(function() {
-      if (this.intro._currentStep === 5) {
-        if (!$("#subtitle_edit").is(":visible")) {
-          this.requestSubtitleFromUser(this.currentTrack);
-        }
-      }
-    }.bind(this));
   },
 
   resetState: function(callback) {
@@ -289,9 +284,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onDocumentClick: function(event) {
     if ($(event.target).attr("id") !== "subtitle_edit" && !$(event.target).hasClass("track")) {
-      this.$subtitleEdit.hide(0,function(){
-        this.isOnSubtitleEditMode = null;
-      }.bind(this));
+      this.hideSubtitleEdit();
       this.$subtitleDisplay.show();
     }
   },
@@ -361,7 +354,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       // second time, you stop timing
       var track = this.currentGhostTrack;
       this.safeEndGhostTrack(track);
-      this.requestSubtitleFromUser(track);
     }
   },
 
@@ -412,6 +404,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onSubtitleEditMode: function(track) {
+    console.log("EDIT MODE MARIO !!!!!!!!!");
+    if (track.isRemoved()) return;
+
     // can only get triggered one at a time unless its a different track
     if (this.isOnSubtitleEditMode && track === this.currentTrack ) return;
 
@@ -446,6 +441,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onGhostTrackStart: function(track) {
+    console.log("GHOST TRACK START");
     this.isGhostTrackStarted = true;
     this.currentGhostTrack = track;
     this.$startTimingBtn.hide();
@@ -536,8 +532,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
         this.safeEndGhostTrack(track,endTime);
       }
-
-      this.requestSubtitleFromUser(track);
+      
+      // if track is empty, we would only request once the  user to enter something
+      if (track.initial_subtitle_request) {
+        track.initial_subtitle_request = false;
+        this.requestSubtitleFromUser(track);
+      }
     }
 
   },
@@ -546,7 +546,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.lastTrack = null;
     this.isOnSubtitleEditMode = null;
     this.$subtitleEdit.blur();
-    this.$subtitleEdit.hide();
+    this.hideSubtitleEdit();
   },
 
   onIframeOverlayClick: function(event) {
@@ -614,7 +614,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (event.which == 27) {
       this.isOnSubtitleEditMode = null;
       this.$subtitleEdit.blur();
-      this.$subtitleEdit.hide();
+      this.hideSubtitleEdit();
       this.$subtitleDisplay.show();
       this.play();
     }
@@ -623,7 +623,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (event.which == 13) {
       this.isOnSubtitleEditMode = null;
       this.$subtitleEdit.blur();
-      this.$subtitleEdit.hide();
+      this.hideSubtitleEdit();
       this.$subtitleDisplay.show();
       this.play();
     }
@@ -676,9 +676,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.endGhostTrack(track,endTime);
     } catch(e) {
       console.log(e.stack);
-      // this.$subtitleEdit.hide(0,function(){
-      //   this.isOnSubtitleEditMode = false;
-      // }.bind(this));
     }
   },
 
@@ -748,10 +745,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   requestSubtitleFromUser: function(track) {
-    if (track.initial_subtitle_request && !track.isRemoved()) {
-      track.initial_subtitle_request = false;
-      Backbone.trigger("subtitleeditmode",track);
-    }
+    Backbone.trigger("subtitleeditmode",track);
   },
 
    /* When you're timing a track while media is playing, and you're very near the start of next track,
@@ -832,9 +826,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   showSubtitleInSubtitleBar: function(subtitle) {
     // console.log("show sub display");
     if (this.$subtitleEdit.is(':visible')) {
-      this.$subtitleEdit.hide(0,function(){
-        this.isOnSubtitleEditMode = null;
-      }.bind(this));
+      this.hideSubtitleEdit();
     }
     this.$subtitleDisplay.show();
     this.$subtitleDisplay.text(subtitle.get("text"));
@@ -842,6 +834,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   hideSubtitleInSubtitleBar: function(subtitle) {
     this.$subtitleDisplay.text("");
+  },
+
+  hideSubtitleEdit: function() {
+    this.$subtitleEdit.hide(0,function(){
+      this.isOnSubtitleEditMode = null;
+
+      if (this.intro._currentStep === 5) { // 5 represents 5th step where user has to press "Type Subtitle text"
+        this.showSubtitleEdit(this.currentTrack);
+      }
+    }.bind(this));
   },
 
   // either the end of media or the starttime next nearest track

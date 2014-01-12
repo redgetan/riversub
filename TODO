@@ -9,6 +9,9 @@
 
 
 
+[ ] if internet is slow, which is the case for most people, riversub becomes unusable
+     - download video locally, and get riversub to use that
+[ ] WHen I'm signed in as sum1, i should be able to still edit anonymous videos.
 [ ] Intro.js
 [ ] Give list of 1 minute videos that a user can start adding captions to
 [ ] Add Preview button
@@ -47,8 +50,8 @@
       7. Sync with Youtube
 
       --
-      1. Choose a Video
-      2. Start Adding Captions
+      1. Choose a Video To Subtitle
+      2. Add Captions
       3. Preview your work
       4. Let others watch your captioned video
 

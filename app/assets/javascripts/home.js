@@ -50,7 +50,20 @@ var handleRoute = function() {
   if (new RegExp("/videos/.+/editor").test(location.pathname)) {
     var repo = $("#editor_data").data("repo") ;
     $("#editor_data").remove();
-    editor = new river.ui.Editor({repo: repo});
+
+    var repo = {
+      video: { duration: 64},
+      user: {}
+    };
+
+    var media = "<video id='media' width='320px' poster='/poster.png'>" +
+                 "<source id='mp4' src='/trailer.mp4' type=\"video/mp4; codecs='avc1, mp4a'\">" +
+                 "<p>Your user agent does not support the HTML5 Video element.</p>" +
+               "</video>";
+
+
+    editor = new river.ui.Editor({repo: repo, media: media, local: true, targetSelector: "video#media"});
+
 
     var has_seen_instructions = getCookie("has_seen_instructions");
     if (!has_seen_instructions) {
