@@ -73,14 +73,9 @@ river.ui.BasePlayer = Backbone.View.extend({
 
     this.$mediaContainer = this.$mediaContainer || $("#media_container");
 
-    var media = this.options["media"] || "<div id='iframe_container'>" +
-                                             "<div id='overlay_btn'><i class='icon-play'></i></div>" +
-                                           "<div id='iframe_overlay'>" +
-                                           "</div>" +
-                                           "<div id='media'></div>" +
-                                         "</div> ";
+    var media = this.options["media"];
 
-    this.$mediaContainer.prepend(media);
+    this.$mediaContainer.find("#iframe_container").append(media);
 
   },
 

@@ -71,6 +71,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                   "<div class='span12'> " +
                     "<div id='media_container'> " +
                       "<div id='viewing_screen' >" +
+                        "<div id='iframe_container'>" +
+                          "<div id='iframe_overlay'>" +
+                          "</div>" +
+                          "<div id='overlay_btn'><i class='icon-play'></i></div>" +
+                        "</div> " +
                         "<div id='subtitle_bar' class='span12 center'> " +
                           "<span id='subtitle_display' class='span5 center'></span> " +
                           "<input id='subtitle_edit' class='span7 center' type='text' maxlength='90' placeholder='Enter Subtitle Here'> " +

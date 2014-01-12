@@ -309,6 +309,8 @@ div#keyboard-shortcuts {
 #viewing_screen {
 	background-color: black;
 	text-align: center;
+	width: inherit;
+	height: inherit;
 }
 
 /*#language_select {

@@ -2,7 +2,7 @@
 // tests
 //   1. double clicking subtitle_bar should allow you to edit subtitles
 //   2. right after timing, subtitleeditmode should get triggered once
-//   3. make clicking on video screen to play work again
+// x 3. make clicking on video screen to play work again
 //   4. summary should reflect expanded
 //      - when adjusting track size/position, it should be reflected
 
