@@ -95,8 +95,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                   "<div class='span12'> " +
                     "<ul class='nav nav-tabs span5'>" +
                       "<li class='active'><a href='#timeline_tab' data-toggle='tab'>Timeline</a></li>" +
-                      "<li><a href='#subtitle_tab' data-toggle='tab'>Subtitle</a></li>" +
-                      "<li><a href='#download_tab' data-toggle='tab'>Download</a></li>" +
+                      "<li id='subtitle_tab_anchor' ><a href='#subtitle_tab' data-toggle='tab'>Subtitle</a></li>" +
+                      "<li id='download_tab_anchor' ><a href='#download_tab' data-toggle='tab'>Download</a></li>" +
                     "</ul>" +
                     "<div id='controls' class='span7'> " +
                       // "<div class='pull-left span1'> " +
@@ -231,20 +231,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       steps: [
         {
           element: "#viewing_screen",
-          intro: "This is where video and its subtitles that you add gets displayed"
-        },
-        {
-          element: "#summary.timeline",
-          intro: "This is seek bar. It shows you the subtitles youve added during the entire duration of video. Clicking on a green track would take you to the exact time in video where that subtitle appears",
+          intro: "This is the main video screen. Click to Play or Pause the video. Try it now."
         },
         {
           element: "#expanded.timeline",
-          intro: "This shows you 30 second window of where you are currently at in the video. Clicking on a green track would also take you the time in video where the subtitle appears",
+          intro: "This shows you 30 second window of where you are currently at in the video. Try scrolling forwards/backwards using the mousewheel or trackpad",
           position: 'top'
         },
         {
           element: "#start_timing_btn",
-          intro: "To add a subtitle, you let the video play, and the moment you want you're text to start, you press this button. Try it now. ",
+          intro: "To add a subtitle that starts at current time, click this button. Try it now.",
         },
         {
           element: "#stop_timing_btn",
@@ -260,8 +256,21 @@ river.ui.Editor = river.ui.BasePlayer.extend({
           position: "top",
         },
         {
+          element: "#summary.timeline",
+          intro: "This is seek bar. It shows you the subtitles youve added during the entire duration of video. Try to play/pause the video again using [space]. The blue bar shows you the current 30 second window that you're at. Now, try clicking outside the blue bar, and then try clicking the green tracks",
+        },
+        {
           element: "#expanded.timeline",
           intro: "To edit a previous subtitle that you created. simply double click a green track",
+        },
+        {
+          element: "#subtitle_tab_anchor",
+          intro: "Another way to view the subtitles that you've created is throught the subtitles tab. Click it now",
+        },
+        {
+          element: "#subtitle_container",
+          intro: "Double click one of the subtitle texts to edit it. After you try that, try play and pause the video. Then try adding a subtitle either using the button or [shift] key",
+          position: "top"
         }
       ]
     });
@@ -452,7 +461,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$startTimingBtn.hide();
     this.$stopTimingBtn.show({
       complete: function() {
-        if (this.intro._currentStep === 3) { // 3 represents 3rd step where user has to press "Start Timing"
+        if (this.intro._currentStep === 2) { 
           $(".introjs-nextbutton").trigger("click");
         }
       }.bind(this)
@@ -466,7 +475,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.currentTrack = null;
     this.$stopTimingBtn.hide({
       complete: function() {
-        if (this.intro._currentStep === 4) { // 4 represents 4rd step where user has to press "Stop Timing"
+        if (this.intro._currentStep === 3) { 
           $(".introjs-nextbutton").trigger("click");
         }
       }.bind(this)
@@ -665,7 +674,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onStopTimingBtn: function(event) {
     var track = this.currentGhostTrack;
     this.safeEndGhostTrack(track);
-    this.requestSubtitleFromUser(track);
   },
 
   safeCreateGhostTrack: function() {
@@ -698,7 +706,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.seek(endTime,function(){
       this.safeEndGhostTrack(track);
-      this.requestSubtitleFromUser(track);
     }.bind(this));
   },
 
@@ -845,7 +852,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$subtitleEdit.hide(0,function(){
       this.isOnSubtitleEditMode = null;
 
-      if (this.intro._currentStep === 5) { // 5 represents 5th step where user has to press "Type Subtitle text"
+      if (this.intro._currentStep === 4) { 
         this.showSubtitleEdit(this.currentTrack);
       }
     }.bind(this));
