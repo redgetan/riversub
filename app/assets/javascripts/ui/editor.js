@@ -228,6 +228,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   setupIntroJS: function() {
     this.intro.setOptions({
+      keyboardNavigation: true,
+      exitOnOverlayClick: false,
       steps: [
         {
           element: "#viewing_screen",
@@ -275,6 +277,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       ]
     });
 
+    this.intro.onafterchange(function(targetElement){
+      var stepsToDisabledNextButton = [2,3];
+      if (stepsToDisabledNextButton.indexOf(this.intro._currentStep) !== -1) { 
+        $(".introjs-nextbutton").addClass("introjs-disabled");
+      }
+    }.bind(this));
   },
 
   resetState: function(callback) {
@@ -462,6 +470,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$stopTimingBtn.show({
       complete: function() {
         if (this.intro._currentStep === 2) { 
+          $(".introjs-nextbutton").removeClass("introjs-disabled");
           $(".introjs-nextbutton").trigger("click");
         }
       }.bind(this)
@@ -476,6 +485,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$stopTimingBtn.hide({
       complete: function() {
         if (this.intro._currentStep === 3) { 
+          $(".introjs-nextbutton").removeClass("introjs-disabled");
           $(".introjs-nextbutton").trigger("click");
         }
       }.bind(this)
