@@ -171,8 +171,8 @@
         } else if(e.keyCode === 37) {
           //left arrow
           _previousStep.call(self);
-        } else if (e.keyCode === 39 || e.keyCode === 13) {
-          //right arrow or enter
+        } else if (e.keyCode === 39) {
+          //right arrow 
           _nextStep.call(self);
           //prevent default behaviour on hitting Enter, to prevent steps being skipped in some browsers
           if(e.preventDefault) {
@@ -530,6 +530,8 @@
       var nextTooltipButton = document.createElement('a');
 
       nextTooltipButton.onclick = function() {
+        if (nextTooltipButton.className.split(" ").indexOf("introjs-disabled") !== -1) return;
+
         if (self._introItems.length - 1 != self._currentStep) {
           _nextStep.call(self);
         }
@@ -542,6 +544,8 @@
       var prevTooltipButton = document.createElement('a');
 
       prevTooltipButton.onclick = function() {
+        if (prevTooltipButton.className.split(" ").indexOf("introjs-disabled") !== -1) return;
+
         if (self._currentStep != 0) {
           _previousStep.call(self);
         }
@@ -597,7 +601,7 @@
     }
 
     //Set focus on "next" button, so that hitting Enter always moves you onto the next step
-    nextTooltipButton.focus();
+    // nextTooltipButton.focus();
 
     //add target element position style
     targetElement.element.className += ' introjs-showElement';
@@ -634,6 +638,10 @@
       } else {
         window.scrollBy(0, bottom + 100); // 70px + 30px padding from edge to look nice
       }
+    }
+
+    if (typeof (this._introAfterChangeCallback) !== 'undefined') {
+        this._introAfterChangeCallback.call(this, targetElement.element);
     }
   }
 
@@ -864,6 +872,14 @@
         this._introChangeCallback = providedCallback;
       } else {
         throw new Error('Provided callback for onchange was not a function.');
+      }
+      return this;
+    },
+    onafterchange: function(providedCallback) {
+      if (typeof (providedCallback) === 'function') {
+        this._introAfterChangeCallback = providedCallback;
+      } else {
+        throw new Error('Provided callback for onafterchange was not a function');
       }
       return this;
     },
