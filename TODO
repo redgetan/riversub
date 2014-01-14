@@ -11,15 +11,20 @@
 
 [ ] if internet is slow, which is the case for most people, riversub becomes unusable
      - download video locally, and get riversub to use that
-[ ] WHen I'm signed in as sum1, i should be able to still edit anonymous videos.
+
+Jan 13
+[x] WHen I'm signed in as sum1, i should be able to still edit anonymous videos.
 [ ] Intro.js
-[ ] Give list of 1 minute videos that a user can start adding captions to
+[ ] Remove "Try Editor", just show "videos recently subtitled"
+[ ] Try 3 Minute Guided Walkthrough Now
 [ ] Add Preview button
-[ ] Change "Videos" to "Browse"
-[ ] Add FB/twitter/URL share button in viewing
+[ ] Add URL share button in viewing
+
+Jan 14
 [ ] Allow user to click the youtube icon link when viewing the video/ right now its overlayed by #subtitle_bar
-
-
+[ ] Give list of 1 minute videos that a user can start adding captions to
+[ ] Change "Videos" to "Browse"
+[ ] Add FB/Twitter Sign In
 
 [x] when no internet connection
     - "There is no internet connection."
