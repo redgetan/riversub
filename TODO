@@ -19,7 +19,11 @@ Jan 13
   - will take you to editor without an user owning that repo such that changes wont be saved
 
 Jan 14
-[ ] Intro.js (add explanation of blue button on top + share url section)
+[ ] Intro.js enhancement
+  - add explanation of blue button on top + share url section
+  - move to keyboard shortcuts after pressing enter on subtitle text input
+
+
 [ ] Add URL share button in viewing
 [ ] Add Preview button
 

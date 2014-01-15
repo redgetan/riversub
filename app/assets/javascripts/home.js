@@ -164,13 +164,6 @@ $(document).ready(function(){
 
   handleRoute();
 
-  $('[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    if ($(e.target).attr("href") === "#timeline_tab") {
-      editor.timeline.ensureCorrectWindowPosition();
-    }
-    // console.log(e.relatedTarget);
-  })
-
   $("#layout_new_project_btn").tooltip({title: "Subtitle Video", placement: "bottom"});
 
   $(".new_project").hover(function(event) {

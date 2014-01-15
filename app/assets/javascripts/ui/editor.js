@@ -47,6 +47,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     $(document).on("click",this.onDocumentClick.bind(this));
     $(document).on("mousewheel",this.onDocumentScroll.bind(this));
 
+
+    $('[data-toggle="tab"]').on('shown.bs.tab', this.onTabShown.bind(this));
+
     this.$addSubtitleBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
@@ -63,6 +66,20 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+  },
+
+  onTabShown: function (e) {
+    if ($(e.target).attr("href") === "#timeline_tab") {
+      this.timeline.ensureCorrectWindowPosition();
+    }
+
+    if ($(e.target).attr("href") === "#subtitle_tab") {
+      if (this.intro._currentStep === 8) { 
+        $(".introjs-nextbutton").removeClass("introjs-disabled");
+        $(".introjs-nextbutton").trigger("click");
+      }
+    }
+
   },
 
   getEditorElement: function() {
@@ -216,10 +233,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$helpBtn = $("#help_btn");
     this.$helpBtn.tooltip({title: "Help"});
     this.$helpBtn.popover({content: "Click Here to Start Walkthrough", placement: "top", trigger: "manual"});
-    this.$helpBtn.on("click",function(){
-      $(this).popover("hide");
+    this.$helpBtn.on("click",function(target){
+      this.$helpBtn.popover("hide");
       this.intro.start();
-    });
+    }.bind(this));
 
     this.$subtitleEdit = $("#subtitle_edit");
     this.hideSubtitleEdit();
@@ -275,7 +292,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         },
         {
           element: "#expanded.timeline",
-          intro: "To edit a previous subtitle that you created. simply double click a green track",
+          intro: "To edit a previous subtitle that you created. simply double click a green/red track",
+          position: "left",
         },
         {
           element: "#subtitle_tab_anchor",
@@ -283,14 +301,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         },
         {
           element: "#subtitle_container",
-          intro: "Double click one of the subtitle texts to edit it. After you try that, try play and pause the video. Then try adding a subtitle either using the button or [shift] key",
-          position: "top"
+          intro: "Double click one of the subtitle texts to edit it. After you try that, try play/pause the video using [space]. Then try adding a subtitle using the [shift] key",
+          position: "left"
         }
       ]
     });
 
     this.intro.onafterchange(function(targetElement){
-      var stepsToDisabledNextButton = [2,3];
+      var stepsToDisabledNextButton = [2,3,4,8];
       if (stepsToDisabledNextButton.indexOf(this.intro._currentStep) !== -1) { 
         $(".introjs-nextbutton").addClass("introjs-disabled");
       }
@@ -317,7 +335,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onDocumentClick: function(event) {
-    if ($(event.target).attr("id") !== "subtitle_edit" && !$(event.target).hasClass("track")) {
+    if ($(event.target).attr("id") !== "subtitle_edit" 
+        && !$(event.target).hasClass("track")) {
       this.hideSubtitleEdit();
       this.$subtitleDisplay.show();
     }
@@ -866,9 +885,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   showSubtitleInSubtitleBar: function(subtitle) {
     // console.log("show sub display");
-    if (this.$subtitleEdit.is(':visible')) {
-      this.hideSubtitleEdit();
-    }
+    this.hideSubtitleEdit();
     this.$subtitleDisplay.show();
     this.$subtitleDisplay.text(subtitle.get("text"));
   },
@@ -878,11 +895,18 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   hideSubtitleEdit: function() {
+    if (!this.$subtitleEdit.is(':visible')) return;
+
     this.$subtitleEdit.hide(0,function(){
       this.isOnSubtitleEditMode = null;
 
-      if (this.intro._currentStep === 4) { 
-        this.showSubtitleEdit(this.currentTrack);
+      if (this.intro._currentStep === 4 ) { 
+        if (this.currentTrack.text().length === 0 ) {
+          this.showSubtitleEdit(this.currentTrack);
+        } else {
+          $(".introjs-nextbutton").removeClass("introjs-disabled");
+          $(".introjs-nextbutton").trigger("click");
+        }
       }
     }.bind(this));
   },
