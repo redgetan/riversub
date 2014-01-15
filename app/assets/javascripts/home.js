@@ -53,7 +53,7 @@ var handleRoute = function() {
 
     var repo = {
       video: { duration: 64},
-      user: {}
+      user: null
     };
 
     var media = "<video id='media' width='320px' poster='/poster.png'>" +

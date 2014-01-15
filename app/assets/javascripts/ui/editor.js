@@ -32,6 +32,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     Backbone.on("trackremove",this.onTrackRemove.bind(this));
     Backbone.on("pauseadjust",this.onPauseAdjust.bind(this));
     Backbone.on("trackrequest",this.onTrackRequest.bind(this));
+    Backbone.on("editor.sync",this.onEditorSync.bind(this));
     Backbone.on("trackrequestsuccess",this.onTrackRequestSuccess.bind(this));
     Backbone.on("trackrequesterror",this.onTrackRequestError.bind(this));
 
@@ -412,6 +413,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$status_bar.text("Saving...");
   },
 
+  onEditorSync: function(syncMethod,model) {
+    if (this.repo.user) {
+      Backbone.Model.prototype[syncMethod].call(model,{},{
+        success: this.onTrackRequestSuccess, 
+        error:   this.onTrackRequestError
+      });
+    }
+  },
+
   onTrackRequestSuccess: function() {
     setTimeout(function(){ this.$status_bar.text(""); }.bind(this),500);
   },
@@ -426,7 +436,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onSubtitleEditMode: function(track) {
-    console.log("EDIT MODE MARIO !!!!!!!!!");
     if (track.isRemoved()) return;
 
     // can only get triggered one at a time unless its a different track
@@ -463,7 +472,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onGhostTrackStart: function(track) {
-    console.log("GHOST TRACK START");
     this.isGhostTrackStarted = true;
     this.currentGhostTrack = track;
     this.$startTimingBtn.hide();

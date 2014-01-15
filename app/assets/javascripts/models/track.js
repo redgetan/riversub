@@ -45,28 +45,11 @@ river.model.Track = Backbone.Model.extend({
 
   save: function() {
     if (this.isGhost) return;
-    
-    Backbone.Model.prototype.save.call(this,{},{
-      success: function() {
-        Backbone.trigger("trackrequestsuccess");
-      }.bind(this),
-      error: function(data,response) {
-        Backbone.trigger("trackrequesterror");
-        console.log(response.responseText);
-      }
-    });
+    Backbone.trigger("editor.sync","save",this);
   },
 
   destroy: function() {
-    Backbone.Model.prototype.destroy.call(this,{
-      success: function() {
-        Backbone.trigger("trackrequestsuccess");
-      }.bind(this),
-      error: function(data,response) {
-        Backbone.trigger("trackrequesterror");
-        console.log(response.responseText);
-      }
-    });
+    Backbone.trigger("editor.sync","destroy",this);
   },
 
   getAttributes: function(attributes) {
