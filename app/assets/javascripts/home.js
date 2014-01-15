@@ -53,7 +53,8 @@ var handleRoute = function() {
 
     var repo = {
       video: { duration: 64},
-      user: null
+      user: null,
+      is_guided_walkthrough: "true"
     };
 
     var media = "<video id='media' width='320px' poster='/poster.png'>" +
@@ -63,16 +64,6 @@ var handleRoute = function() {
 
 
     editor = new river.ui.Editor({repo: repo, media: media, local: true, targetSelector: "video#media"});
-
-
-    var has_seen_instructions = getCookie("has_seen_instructions");
-    if (!has_seen_instructions) {
-      setTimeout(editor.guideUser.bind(editor),2000);
-    }
-
-    $('#instructions_modal').on('hidden', function () {
-      setCookie("has_seen_instructions","yes",365);
-    })
 
   } else if (new RegExp("/videos/.+").test(location.pathname)) {
     var repo = $("#player").data("repo") ;

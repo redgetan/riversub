@@ -70,6 +70,10 @@ class Repository < ActiveRecord::Base
     end.join
   end
 
+  def guided_walkthrough?
+    self.editor_url == GUIDED_WALKTHROUGH_URL
+  end
+
 
   def serialize
     {
@@ -82,7 +86,8 @@ class Repository < ActiveRecord::Base
       :owner => self.owner,
       :owner_profile_url => self.owner_profile_url,
       :editor_url => self.editor_url,
-      :subtitle_download_url => self.subtitle_download_url
+      :subtitle_download_url => self.subtitle_download_url,
+      :is_guided_walkthrough => self.guided_walkthrough?
     }
   end
 

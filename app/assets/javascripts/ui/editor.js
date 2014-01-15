@@ -11,10 +11,18 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.currentGhostTrack = null;
     this.isGhostTrackStarted = false;
     this.isOnSubtitleEditMode = null;
+
+    this.showGuidedWalkthroughWelcome();
   },
 
   preRepositoryInitHook: function() {
     this.timeline = new river.ui.Timeline({media: this.popcorn.media, mediaDuration: this.mediaDuration() });
+  },
+
+  showGuidedWalkthroughWelcome: function() {
+    if (this.repo.is_guided_walkthrough) {
+      setTimeout(this.guideUser.bind(this),1000);
+    }
   },
 
   bindEvents: function() {
@@ -207,8 +215,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$helpBtn = $("#help_btn");
     this.$helpBtn.tooltip({title: "Help"});
-    // this.$helpBtn.popover({content: "Click Here for Instructions", placement: "top", trigger: "manual"});
-    this.$helpBtn.on("click",this.intro.start.bind(this.intro));
+    this.$helpBtn.popover({content: "Click Here to Start Walkthrough", placement: "top", trigger: "manual"});
+    this.$helpBtn.on("click",function(){
+      $(this).popover("hide");
+      this.intro.start();
+    });
 
     this.$subtitleEdit = $("#subtitle_edit");
     this.hideSubtitleEdit();
