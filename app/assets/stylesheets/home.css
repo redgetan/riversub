@@ -217,7 +217,7 @@ div#subtitle_bar {
   background-color: #000;
   color: white;
   height: 40px;
-  line-height: 40px;
+  line-height: 21px;
   font-weight: bold;
 }
 
@@ -403,4 +403,13 @@ form.sub {
 
 .random_videos_btn {
   margin: 30px 0px;  
+}
+
+
+#media_contols {
+  
+}
+
+#share_container {
+  margin-bottom: 0px;
 }

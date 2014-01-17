@@ -13,36 +13,40 @@
           <% end %>
           <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
         </h5>
-        <h6 id='video_url'>
-          <a href="<%= @repo.video.url%>"><%= @repo.video.url %></a>
-        </h6> 
+        <div class="input-prepend pull-right" id="share_container">
+          <button class="btn" type="button">Share</button>
+          <input class="span4" type="text" value="<%= @repo.url %>" onclick="this.select()">
+        </div>
       </div> 
       <div id='player-top-left' class='span7'> 
         <div id='media_container'> 
           <div id='media'></div> 
-          <div id='subtitle_bar' class='span7 center'> 
+          <div id='subtitle_bar' class='span5 center'> 
             <span id='subtitle_display' class='span5 center'></span> 
           </div> 
+        </div> 
 
-          <div class='pull-right'> 
-          <% if @repo.user == current_user %>
-            <a id='subtitle_editor_btn' class='btn btn-success' href="<%= @repo.editor_url %>"><i class="icon-film"></i> Subtitle Editor</a>
-          <% else %>
-            <div>
-              <h6>
-                Authored by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> (View only)
-              </h6>
-            </div>
-          <% end %>
-          </div> 
+        <div class='row media_controls'> 
+          <div class="span7">
+            <% if @repo.user == current_user %>
+              <a id='subtitle_editor_btn' class='btn btn-danger pull-right' href="<%= @repo.editor_url %>"><i class="icon-film"></i> subtitle editor</a>
+            <% else %>
+              <div>
+                <h6>
+                  Authored by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> (View only)
+                </h6>
+              </div>
+            <% end %>
+          </div>
         </div> 
       </div> 
+
       <div id='player-top-right' class='span5'> 
         <div id='subtitle_container'> 
           <div id='subtitle_list'></div> 
           <div id='controls_extra' class='row'> 
             <div class='btn-group pull-right'> 
-              <a id='download_btn' class='btn' href='<%= @repo.subtitle_download_url %>'><i class='icon-download-alt'></i> Download</a> 
+              <!-- <a id='download_btn' class='btn' href='<%= @repo.subtitle_download_url %>'><i class='icon-download-alt'></i> Download</a>  -->
             </div> 
           </div> 
         </div> 

@@ -16,7 +16,8 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   hideEditing: function() {
     $("#subtitle_bar").css("background","none");
-    $("#subtitle_bar").css("margin-top","-70px");
+    $("#subtitle_bar").css("margin-top","-80px");
+    $("#subtitle_bar").css("margin-left","80px");
     $("#subtitle_bar").css("z-index","6");
     $("#subtitle_bar").css("position","absolute");
 
