@@ -51,19 +51,17 @@ var handleRoute = function() {
     var repo = $("#editor_data").data("repo") ;
     $("#editor_data").remove();
 
-    var repo = {
-      video: { duration: 64},
-      user: null,
-      is_guided_walkthrough: "true"
-    };
-
-    var media = "<video id='media' width='320px' poster='/poster.png'>" +
-                 "<source id='mp4' src='/trailer.mp4' type=\"video/mp4; codecs='avc1, mp4a'\">" +
-                 "<p>Your user agent does not support the HTML5 Video element.</p>" +
-               "</video>";
+    // // local
+    // var repo = {
+    //   video: { duration: 64},
+    //   user: null,
+    //   is_guided_walkthrough: true
+    // };
 
 
-    editor = new river.ui.Editor({repo: repo, media: media, local: true, targetSelector: "video#media"});
+    // editor = new river.ui.Editor({repo: repo, media: media, local: true, targetSelector: "video#media"});
+    
+    editor = new river.ui.Editor({repo: repo});
 
   } else if (new RegExp("/videos/.+").test(location.pathname)) {
     var repo = $("#player").data("repo") ;

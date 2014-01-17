@@ -194,6 +194,8 @@ river.model.Track = Backbone.Model.extend({
 river.model.TrackSet = Backbone.Collection.extend({
   model: river.model.Track,
 
+  localStorage: new Backbone.LocalStorage("river-local"),
+
   initialize: function(attributes, options) {
     // setInterval(this.autoSaveTracks.bind(this),5000);
   },

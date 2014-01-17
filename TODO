@@ -22,6 +22,9 @@ Jan 14
 [ ] Intro.js enhancement
   - add explanation of blue button on top + share url section
   - move to keyboard shortcuts after pressing enter on subtitle text input
+[ ] backbone localstorage (fix prob where certain backbone events are not getting triggered for guide walkthrough - as its not being saved to server)
+            or
+    just create anonymous user
 
 
 [ ] Add URL share button in viewing

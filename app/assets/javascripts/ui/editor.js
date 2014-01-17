@@ -13,6 +13,18 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.isOnSubtitleEditMode = null;
 
     this.showGuidedWalkthroughWelcome();
+    this.useLocalStorageIfNeeded();
+  },
+
+  useLocalStorageIfNeeded: function() {
+    var self = this;
+    Backbone.getSyncMethod = function(model) {
+      if(self.repo.is_guided_walkthrough) {
+        return Backbone.localSync;
+      }
+
+      return Backbone.ajaxSync;
+    };
   },
 
   preRepositoryInitHook: function() {
@@ -41,8 +53,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     Backbone.on("pauseadjust",this.onPauseAdjust.bind(this));
     Backbone.on("trackrequest",this.onTrackRequest.bind(this));
     Backbone.on("editor.sync",this.onEditorSync.bind(this));
-    Backbone.on("trackrequestsuccess",this.onTrackRequestSuccess.bind(this));
-    Backbone.on("trackrequesterror",this.onTrackRequestError.bind(this));
 
     $(document).on("click",this.onDocumentClick.bind(this));
     $(document).on("mousewheel",this.onDocumentScroll.bind(this));
@@ -444,12 +454,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onEditorSync: function(syncMethod,model) {
-    if (this.repo.user) {
+    // if (this.repo.user) {
       Backbone.Model.prototype[syncMethod].call(model,{},{
-        success: this.onTrackRequestSuccess, 
-        error:   this.onTrackRequestError
+        success: this.onTrackRequestSuccess.bind(this), 
+        error:   this.onTrackRequestError.bind(this)
       });
-    }
+    // }
   },
 
   onTrackRequestSuccess: function() {
