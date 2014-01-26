@@ -74,6 +74,9 @@ class Repository < ActiveRecord::Base
     self.editor_url == GUIDED_WALKTHROUGH_URL
   end
 
+  def version_for(target_user)
+    self.class.where("video_id = ? AND user_id = ?",self.video_id,target_user.id).first
+  end
 
   def serialize
     {

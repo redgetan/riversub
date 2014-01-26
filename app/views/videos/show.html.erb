@@ -7,11 +7,15 @@
   <div id='player' data-repo='<%= @repo.serialize.to_json %>'>
     <div id='player-top' class='row'> 
       <div class='span12'> 
-        <h5 id='repo_label'>
+        <h5 id='repo_label' class="span7">
+          <span class="pull-left">
+            <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
+          </span>
           <% if @repo.user %>
-            <span id='repo_owner'><a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a></span> /
+            <span class="pull-right">
+              by: <a class="owner_label" href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> 
+            </span>
           <% end %>
-          <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
         </h5>
         <div class="input-prepend pull-right" id="share_container">
           <button class="btn" type="button">Share</button>
@@ -26,17 +30,17 @@
           </div> 
         </div> 
 
-        <div class='row media_controls'> 
+        <div class='row' id="media_controls"> 
           <div class="span7">
-            <% if @repo.user == current_user %>
-              <a id='subtitle_editor_btn' class='btn btn-danger pull-right' href="<%= @repo.editor_url %>"><i class="icon-film"></i> subtitle editor</a>
-            <% else %>
-              <div>
-                <h6>
-                  Authored by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> (View only)
-                </h6>
-              </div>
-            <% end %>
+            <h5>
+              <% if @repo.user == current_user %>
+                <a class='subtitle_editor_btn river_btn pull-right' href="<%= @repo.editor_url %>"><i class="icon-random"></i> Edit</a>
+              <% elsif @user_version = @repo.version_for(current_user) %>
+                <a class='view_version_btn river_btn pull-right' href="<%= @user_version.url %>"><i class="icon-random"></i> View Your Version</a>
+              <% else %>
+                <a class='river_btn new_repo_btn pull-right' href="#"><i class="icon-random"></i> Create Sub</a>
+              <% end %>
+            </h5>
           </div>
         </div> 
       </div> 

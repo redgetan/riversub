@@ -177,8 +177,12 @@ div.videos li.selected {
 div#media_container {
   /*padding: 10px;*/
   width: inherit;
-  border: solid 1px black ;
+  border: solid 1px gray ;
   /*margin-right: 15px;*/
+}
+
+#player div#media_container {
+  border: solid 1px lightgray;
 }
 
 div#iframe_container {
@@ -357,10 +361,6 @@ form.sub {
   margin-top: 40px;
 }
 
-#subtitle_editor_btn {
-  margin-top: 20px;
-}
-
 .navigation-links {
   text-align: center;
 }
@@ -406,10 +406,45 @@ form.sub {
 }
 
 
-#media_contols {
-  
+#media_controls {
+  /*margin-top: 10px;  */
 }
 
 #share_container {
   margin-bottom: 0px;
+}
+
+#repo_label {
+  margin-left: 0px;
+}
+
+a.owner_label:hover {
+  background-color: lightcoral;  
+  color: white;
+}
+
+a.owner_label {
+  background-color: lightgoldenrodyellow;  
+  color: lightslategrey;
+  padding: 0px 5px;
+}
+
+.river_btn:hover {
+  text-decoration: none;
+}
+
+.river_btn {
+  background-color: lightpink;  
+  color: brown;
+  border: solid 1px brown;
+  padding: 5px 10px;
+}
+
+
+.nav-tabs {
+  border-bottom: none; 
+}
+
+.nav-tabs>.active>a, .nav-tabs>.active>a:hover, .nav-tabs>.active>a:focus {
+  border-bottom-color: #ddd;  
 }

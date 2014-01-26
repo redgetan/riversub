@@ -182,8 +182,10 @@ $(document).ready(function(){
 
     var url = $(this).find(".media_url").val();
 
+    $(this).find(".sub_btn").button('loading');
+
     try {
-      openSubtitleEditor(url,$(this));
+      openSubtitleEditor(url);
     } catch(e) {
       handleOpenSubtitleEditorError(e,$(this));
       throw e;
@@ -191,7 +193,14 @@ $(document).ready(function(){
 
   });
 
+  $(".new_repo_btn").on("click",function(event) {
+    event.preventDefault();
+    var url = player.repo.video.url;
+    openSubtitleEditor(url);
+  });
+
 });
+
 
 function handleOpenSubtitleEditorError(e,$form) {
   $form.find(".control-group").addClass("error");
@@ -205,26 +214,22 @@ function handleOpenSubtitleEditorError(e,$form) {
   $form.find(".sub_btn").button('reset');
 }
 
-function openSubtitleEditor(url,$form) {
+function openSubtitleEditor(url) {
 
   if (!url.match(/youtube/)) {
     throw "Only youtube urls are allowed";
   }
-
-  $form.find(".sub_btn").button('loading');
 
   getMetadata(url,function(data){
     metadata  = data;
 
     if (typeof metadata["error"] !== "undefined") {
       var e = "Invalid youtube Url - " + metadata["error"]["message"];
-      handleOpenSubtitleEditorError(e);
       throw e;
     }
 
     if (!isEmbeddable(metadata)) {
       var e = "Video is not embeddable. Try another url.";
-      handleOpenSubtitleEditorError(e);
       throw e;
     }
 
@@ -240,7 +245,8 @@ function openSubtitleEditor(url,$form) {
         window.location.href = data.redirect_url;
       },
       error: function(data) {
-        throw "Failed to subtitle video.";
+        var e = JSON.parse(data.responseText).error;
+        alert(e);
       }
     });
   });

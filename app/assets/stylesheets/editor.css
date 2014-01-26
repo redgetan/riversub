@@ -44,7 +44,6 @@ div#player #video_url {
 
 div#editor #controls,
 div#player #controls {
-	margin-top: 10px;
 }
 
 textarea#transcript {
@@ -52,7 +51,7 @@ textarea#transcript {
 }
 
 div#editor-bottom {
-	margin-top: 30px;
+	margin-top: 20px;
 }
 
 #timeline_container {
@@ -68,7 +67,7 @@ div#editor-bottom {
 
 #expanded.timeline {
 	height: 110px;
-	border: solid 1px black ;
+	border: solid 1px lightgray ;
 	overflow: hidden;
 }
 
@@ -171,7 +170,7 @@ div#editor-bottom {
 
 #download_container {
 	height: 110px;
-	border: solid 1px black;
+	border: solid 1px lightgray;
 	line-height: 110px;
 	text-align: center;
 }
@@ -181,7 +180,7 @@ div#editor-bottom {
 	height: 180px;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	border: solid 1px black;
+	border: solid 1px lightgray;
 }
 
 #subtitle_list table {
@@ -317,3 +316,7 @@ div#keyboard-shortcuts {
 /*#language_select {
 	width: 150px;	
 }*/
+
+#editor-bottom .nav-tabs {
+	margin-bottom: 10px;
+}
