@@ -17,10 +17,6 @@
             </span>
           <% end %>
         </h5>
-        <div class="input-prepend pull-right" id="share_container">
-          <button class="btn" type="button">Share</button>
-          <input class="span4" type="text" value="<%= @repo.url %>" onclick="this.select()">
-        </div>
       </div> 
       <div id='player-top-left' class='span7'> 
         <div id='media_container'> 
@@ -33,9 +29,10 @@
         <div class='row' id="media_controls"> 
           <div class="span7">
             <h5>
+                <a disabled="disabled" class='share_btn river_btn pull-left' href="#" data-toggle='modal' data-target='#share_modal'>Share</a>
               <% if @repo.user == current_user %>
                 <a class='subtitle_editor_btn river_btn pull-right' href="<%= @repo.editor_url %>"><i class="icon-random"></i> Edit</a>
-              <% elsif @user_version = @repo.version_for(current_user) %>
+              <% elsif current_user && @user_version = @repo.version_for(current_user) %>
                 <a class='view_version_btn river_btn pull-right' href="<%= @user_version.url %>"><i class="icon-random"></i> View Your Version</a>
               <% else %>
                 <a class='river_btn new_repo_btn pull-right' href="#"><i class="icon-random"></i> Create Sub</a>

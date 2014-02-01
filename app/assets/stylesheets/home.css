@@ -346,7 +346,7 @@ form.sub {
 }
 
 .modal-body {
-  background-color: lightgoldenrodyellow;
+  background-color: darkseagreen;
 }
 
 #new_project_modal.fade.in {
@@ -440,6 +440,12 @@ a.owner_label {
   padding: 5px 10px;
 }
 
+.share_btn {
+  background-color: white;
+  border: solid 1px black;
+  color: black;
+}
+
 
 .nav-tabs {
   border-bottom: none; 
@@ -447,4 +453,8 @@ a.owner_label {
 
 .nav-tabs>.active>a, .nav-tabs>.active>a:hover, .nav-tabs>.active>a:focus {
   border-bottom-color: #ddd;  
+}
+
+#share_modal .input-prepend  {
+  margin: 60px 0px;
 }

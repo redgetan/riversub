@@ -172,6 +172,14 @@ $(document).ready(function(){
     $(this).find("h6").css("color","gray");
   });
 
+  $(".share_btn").on("click",function(event) {
+    event.preventDefault();
+  });
+
+  $('#share_modal').on('shown', function () {
+    $(this).find("input").select();
+  })
+
   $(".sub_btn").on("click",function(event) {
     event.preventDefault();
     $(this).closest("form").trigger("submit");

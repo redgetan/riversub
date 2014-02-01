@@ -169,5 +169,23 @@
       </div>
     </div>
 
+
+
+    <div id="share_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Share your Work</h3>
+      </div>
+      <div class="modal-body center">
+        <div class="input-prepend" >
+          <button class="btn btn-danger" type="button">Link</button>
+          <input class="span4" value="<%= @repo.url if @repo %>" type="text" onclick="this.select()">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+    </div>
+
 </body>
 </html>

@@ -30,13 +30,13 @@ Jan 16
 Jan 17
 [x] Going to a video that's not owned by me, there should be a "Create Sub" link that forks
     - if i already own a version, show my version
-[ ] on video view, start_time/end_time should be hidden
-[ ] share link is ugly - better positioning needed
+[x] share link is ugly - better positioning needed
 [ ] Complete How it Works
 [ ] Intro.js enhancement - add explanation of blue button on top + share url section
 [ ] Add Preview button
 [ ] Change "Videos" to "Browse"
 [ ] Add FB/Twitter Sign In
+[ ] on video view, start_time/end_time should be hidden
 
 Jan 18
 [ ] No more anonymous videos/confusing
