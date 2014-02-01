@@ -321,7 +321,7 @@ div#how-it-works-background {
   position: absolute;
   z-index: -1;
   width: 100%;
-  height: 300px;
+  height: 500px;
   border-top: solid 1px #ccc;
   border-bottom: solid 1px #ccc;
 }
@@ -457,4 +457,13 @@ a.owner_label {
 
 #share_modal .input-prepend  {
   margin: 60px 0px;
+}
+
+#how-it-works-container span {
+  font-size: 14px;
+}
+
+#how-it-works-container a {
+  padding: 0px 5px;
+  background-color:  lightgoldenrodyellow;
 }
