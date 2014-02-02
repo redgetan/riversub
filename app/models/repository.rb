@@ -22,6 +22,8 @@ class Repository < ActiveRecord::Base
   scope :user_subtitled,        where("user_id IS NOT NULL")
   scope :recent,                order("updated_at DESC")
 
+  GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"
+
   def filename
     "#{self.owner}_#{self.video.name.downcase.gsub(/\s/,"_")}.srt"
   end
@@ -71,7 +73,11 @@ class Repository < ActiveRecord::Base
   end
 
   def guided_walkthrough?
-    self.editor_url == GUIDED_WALKTHROUGH_URL
+    self.video.url == GUIDED_WALKTHROUGH_YOUTUBE_URL
+  end
+
+  def self.guided_walkthrough
+    self.joins(:video).where(["url = ?",'http://www.youtube.com/watch?v=6tNTcZOpZ7c']).first
   end
 
   def version_for(target_user)

@@ -320,3 +320,7 @@ div#keyboard-shortcuts {
 #editor-bottom .nav-tabs {
 	margin-bottom: 10px;
 }
+
+a#preview_btn {
+	background-color: lightcoral;
+}

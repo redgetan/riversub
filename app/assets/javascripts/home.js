@@ -224,6 +224,12 @@ function handleOpenSubtitleEditorError(e,$form) {
 
 function openSubtitleEditor(url) {
 
+  // check if loggedin
+  if ($("#login_presence").data("logged-in").length == 0) {
+    alert("You must login to create subtitles");
+    return;
+  }
+
   if (!url.match(/youtube/)) {
     throw "Only youtube urls are allowed";
   }

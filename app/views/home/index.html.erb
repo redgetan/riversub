@@ -19,7 +19,7 @@
       <div class='span6 center'>
         <div id="guided-walkthrough">
           Try the 3 minute </br>
-          <a href="<%= GUIDED_WALKTHROUGH_URL %>" class="btn btn-danger btn-large walkthrough_btn">Guided Walkthrough</a>
+          <a href="<%= @guided_walkthrough_repo.editor_url %>" class="btn btn-danger btn-large walkthrough_btn">Guided Walkthrough</a>
         </div>
       </div>
     </div>
@@ -73,7 +73,7 @@
             <li>
               <div class='step'>
                 <h4>Add captions</h4>
-                <span>Use our FREE online editor to add captions right in the browser. Try the <a href="#">3 minute guided walkthrough now.</a></span>
+                <span>Use our FREE online editor to add captions right in the browser. Try the <a href="<%= @guided_walkthrough_repo.editor_url %>">3 minute guided walkthrough now.</a></span>
               </div>
               <div class='video_usage'>
                   

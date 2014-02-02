@@ -1,16 +1,14 @@
 <div class='header-section span12'></div>
 <div class='container'>
-  
-  <div class='row'>
-    <div class='navigation-links span12'>
-      <ul class="nav nav-pills">
-        <li><a href="<%= videos_anonymous_url %>">Anonymous</a></li>
-        <li class="active"><a href="<%= videos_community_url %>">Community</a></li>
-      </ul> 
+
+  <div class='row center'>
+    <div class="span12">
+      <span class="title river_gray">Recently Added</span>
     </div>
   </div>
 
-
+<div class='header-section span12'></div>
+  
   <div class="videos span12">
     <ul class="thumbnails user">
       <% @repos.each do |repo| %>
@@ -35,7 +33,9 @@
     </ul>
   </div>
 
-  <%= paginate @repos,  :theme => 'bootstrap' %>
+  <div class="span12">
+    <%= paginate @repos,  :theme => 'bootstrap' %>
+  </div>
 
   </div>
 </div>

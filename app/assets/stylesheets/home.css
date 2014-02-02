@@ -431,11 +431,12 @@ a.owner_label {
 
 .river_btn:hover {
   text-decoration: none;
+  color: brown;
 }
 
 .river_btn {
-  background-color: lightpink;  
-  color: brown;
+  background-color: lightcoral;  
+  color: white;
   border: solid 1px brown;
   padding: 5px 10px;
 }
@@ -465,5 +466,15 @@ a.owner_label {
 
 #how-it-works-container a {
   padding: 0px 5px;
-  background-color:  lightgoldenrodyellow;
+  background-color:  lightcoral;
+  color: white;
+}
+
+#how-it-works-container a:hover {
+  /*background-color:  lightcoral;*/
+  color: cyan;
+}
+
+.river_gray {
+  color: #777;  
 }

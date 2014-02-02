@@ -100,6 +100,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     "<h5 id='repo_label'>" +
                       "<a href=" + this.repo.url + ">" + this.repo.video.name + "</a>" +
                     "</h5>" +
+                    "<h5 class='pull-right'>" +
+                      "<a id='preview_btn' target='_blank' href=" + this.repo.url + " class='label label-important'>Preview</a>" +
+                    "</h5>" +
                     // "<h6 id='video_url'>" +
                     //   "<a href=" + this.repo.video.url + ">" + this.repo.video.url + "</a>" +
                     // "</h6> " +
@@ -133,6 +136,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<li class='active'><a href='#timeline_tab' data-toggle='tab'>Timeline</a></li>" +
                       "<li id='subtitle_tab_anchor' ><a href='#subtitle_tab' data-toggle='tab'>Subtitle</a></li>" +
                       "<li id='download_tab_anchor' ><a href='#download_tab' data-toggle='tab'>Download</a></li>" +
+                      "<li><a id='help_btn' class='' href='#'><i class='icon-question-sign'></i></a></li>" +
+
+                        
                     "</ul>" +
                     "<div id='controls' class='span7'> " +
                       // "<div class='pull-left span1'> " +
@@ -148,7 +154,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<div class='btn-group pull-right'> " +
                         "<a id='start_timing_btn' class='btn'><i class='icon-circle'></i> Start Timing</a> " +
                         "<a id='stop_timing_btn' class='btn'><i class='icon-circle'></i> Stop</a> " +
-                        "<a id='help_btn' class='btn'><i class='icon-question-sign'></i></a> " +
                       "</div> " +
                       // "<div class='btn-group pull-right'> " +
                       // "</div> " +
@@ -240,6 +245,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.intro = introJs();
 
+    this.$previewBtn = $("#preview_btn");
+    this.$previewBtn.tooltip({title: "See how it'll look in public"});
+
     this.$helpBtn = $("#help_btn");
     this.$helpBtn.tooltip({title: "Help"});
     this.$helpBtn.popover({content: "Click Here to Start Walkthrough", placement: "top", trigger: "manual"});
@@ -312,6 +320,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         {
           element: "#subtitle_container",
           intro: "Double click one of the subtitle texts to edit it. After you try that, try play/pause the video using [space]. Then try adding a subtitle using the [shift] key",
+          position: "left"
+        },
+        {
+          element: "#preview_btn",
+          intro: "Finally, to see how your subtitles look in public, you can click the preview button. That's the end of The Walkthrough. Congratz for finishing it.",
           position: "left"
         }
       ]
