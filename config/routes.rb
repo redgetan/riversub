@@ -4,13 +4,19 @@ River::Application.routes.draw do
   protocol = Rails.env.development? ? "http://" : "https://"
 
   scope :protocol => protocol, :constraints => { :protocol => protocol } do
-    devise_for :users, :controllers => { :registrations => "registrations" }
+    devise_for :users, :controllers => { :registrations => "registrations", :omniauth_callbacks => "users/omniauth_callbacks" }
+    # devise_for :users, :controllers => {  }
   end
+
 
   scope :protocol => protocol, :constraints => { :protocol => protocol } do
     devise_scope :user do
       put "/users/change_avatar",  :to => "registrations#change_avatar", :as => "user_change_avatar"
       get "/users/:username",      :to => "users#show",                  :as => "user"
+    end
+
+    devise_scope :user do
+      get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
     end
   end
 
