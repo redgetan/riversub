@@ -17,32 +17,14 @@ class User < ActiveRecord::Base
 
   has_many :repositories
   has_many :videos, :through => :repositories
+  has_many :identities
 
   attr_accessor :login
 
   mount_uploader :avatar, AvatarUploader
 
-  before_save do
-    self.username.downcase! 
-  end
-
-  def self.find_for_facebook_oauth(auth)
-    where(auth.slice(:provider, :uid)).first_or_create do |user|
-      user.provider = auth.provider
-      user.uid = auth.uid
-      user.email = auth.info.email
-      user.password = Devise.friendly_token[0,20]
-      user.name = auth.info.name   # assuming the user model has a name
-      user.image = auth.info.image # assuming the user model has an image
-    end
-  end
-
-  def self.new_with_session(params, session)
-    super.tap do |user|
-      if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
-        user.email = data["email"] if user.email.blank?
-      end
-    end
+  before_create do
+    self.username.downcase!
   end
 
   def self.find_for_database_authentication(warden_conditions)
@@ -52,6 +34,44 @@ class User < ActiveRecord::Base
     else
       where(conditions).first
     end
+  end
+
+  def self.create_with_omniauth!(auth) 
+    user = self.new
+    user.email             = auth.info.email
+    user.password          = Devise.friendly_token[0,20]
+    user.username          = normalized_and_unique_username(auth.info.name)   
+    user.remote_avatar_url = large_image_size(auth) 
+    user.save!
+    user
+  end
+
+  def self.large_image_size(auth)
+    if auth.provider == "facebook"
+      "#{auth.info.image}?type=large"
+    else
+      auth.info.image
+    end
+  end
+
+  def self.normalized_and_unique_username(username)
+    username = self.normalize_username(username)
+    self.ensure_uniqueness_of_username(username)
+  end
+
+  def self.normalize_username(username)
+    username.split("\s").join("_").downcase
+  end
+
+  def self.ensure_uniqueness_of_username(username)
+    i = 0
+    # ensure uniqueness of username
+    while self.find_by_username(username)
+      i += 1
+      username = "#{username}_#{i}"
+    end
+
+    username
   end
 
   def serialize

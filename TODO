@@ -34,19 +34,19 @@ Jan 17
 [x] Complete How it Works
 [x] No more anonymous videos/confusing
 [x] Add Preview button
-[ ] press enter "after sub_btn modal" should work
 
 Feb 15
 [ ] Add FB/Twitter Sign In
 [ ] Fix bug where summary timeline gets out of sync with expanded timeline after adjusting expanded timeline track
+[ ] Flash message on login/logout improve it centered: green color, padding/margin should be appropriate
 
 Feb 19
 [ ] Layout change back to old but remove
   [ ] (try editor/watch + no more anonymous videos + only allow guided walkthrough)
   [ ] before someone can sub/he needs to login but also show that he can try DEMO
+[ ] shorten demo instructions
 
 Feb 20
-  [ ] SSL everywhere
 
 Jan 18
 
@@ -83,6 +83,7 @@ Jan 18
 **************************
 
 
+[ ] SSL everywhere
 [ ] in video page, show list of other videos that user can browse (maybe bottom/side/top) for more discoverability
 [ ] add feedback button
 [ ] add forums ???

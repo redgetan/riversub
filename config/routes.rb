@@ -4,8 +4,10 @@ River::Application.routes.draw do
   protocol = Rails.env.development? ? "http://" : "https://"
 
   scope :protocol => protocol, :constraints => { :protocol => protocol } do
-    devise_for :users, :controllers => { :registrations => "registrations", :omniauth_callbacks => "users/omniauth_callbacks" }
-    # devise_for :users, :controllers => {  }
+    devise_for :users, :controllers => { 
+      :registrations => "registrations", 
+      :omniauth_callbacks => "users/omniauth_callbacks" 
+    }
   end
 
 
@@ -15,9 +17,6 @@ River::Application.routes.draw do
       get "/users/:username",      :to => "users#show",                  :as => "user"
     end
 
-    devise_scope :user do
-      get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
-    end
   end
 
   get "videos",                                :to => "videos#index"
