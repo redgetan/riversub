@@ -35,17 +35,24 @@ Jan 17
 [x] No more anonymous videos/confusing
 [x] Add Preview button
 
-Feb 15
+Feb 19
 [x] Add FB login
 
-Feb 19
-[ ] Add Youtube login
+Feb 20
+[x] Add Google + login
 [ ] Add javascript exception notifier
 [ ] Clicking a button that requires authentication should show login prompt instead of alert
   [ ] Show a link "Try Demo"
 
 [ ] shorten demo instructions
 [ ] zoom 125% - assume that's the users view
+  [  ] fix navbar font-sizes make it smaller
+  [  ] space between navbar and video player in http://localhost:3000/users/dbkyolee/videos/2iK4YD6w5tc1z2u2B3utxQ is too big, make it smaller
+  [  ] can't see keyboard shortcuts
+  [  ] make editor be similar to size of 110%
+  [  ] make sure subtitle tab keyboard shortcuts is visible
+
+[ ] Create Sub button is broken (add tests) [not logged in]
 
 Getting Users Plan:
 [ ] subtitle a video; post it on a forum with permalink of subtitled video;
@@ -94,6 +101,7 @@ Jan 18
 **************************
 
 
+[ ] Allow user to increment decrement start/end time in subtitle tab
 [ ] SSL everywhere
 [ ] in video page, show list of other videos that user can browse (maybe bottom/side/top) for more discoverability
 [ ] add feedback button

@@ -6,18 +6,23 @@
             <div class='header-section span12'></div>
             <%= render "devise/shared/links" %>
 
-            <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name)) do |f| %>
-              <%= devise_error_messages! %>
+            <div class="or_login_separator center">
+              or
+            </div>
 
-              </br><%= f.text_field :username, :placeholder => "username", class: "span4" %>
+            <div class="signup_container center span3">
+              <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name)) do |f| %>
+                <%= devise_error_messages! %>
 
-              </br><%= f.email_field :email, :placeholder => "email", class: "span4" %>
+                </br><%= f.text_field :username, :placeholder => "username", class: "span3" %>
 
-              </br><%= f.password_field :password, :placeholder => "password", class: "span4" %>
+                </br><%= f.email_field :email, :placeholder => "email", class: "span3" %>
 
-              <div><%= f.submit "Sign up", :class => 'btn pull-right' %></div>
-            <% end %>
+                </br><%= f.password_field :password, :placeholder => "password", class: "span3" %>
 
+                </br><%= f.submit "Sign up", :class => 'btn btn-inverse pull-right' %>
+              <% end %>
+            </div>
         </div>
     </div>
 </div>

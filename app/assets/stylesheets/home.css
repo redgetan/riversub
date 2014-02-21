@@ -483,3 +483,34 @@ a.owner_label {
   width: 50%;
   margin: auto;  
 }
+
+ul.social_login_buttons {
+  list-style: none;
+  margin: 0px;
+}
+
+ul.social_login_buttons li {
+  margin: 10px 0px;    
+}
+
+ul.social_login_buttons i {
+  margin-right: 5px;
+}
+
+ul.social_login_buttons a {
+  width: 200px;
+  text-align: left;
+}
+
+.sign_in_container .forgot_password {
+  font-size: 12px;
+}
+
+.sign_in_container label[for=user_remember_me] {
+  font-size: 12px;
+  width: 0px !important;
+}
+
+.or_login_separator {
+  margin-top: 15px;
+}

@@ -5,32 +5,32 @@
         <div class='span4 offset4'>
           <div class='header-section span12'></div>
           <%= render "devise/shared/links" %>
+          
+          <div class="or_login_separator center">
+            or
+          </div>
 
-          <%= form_for(resource, :as => resource_name, :url => session_url(resource_name)) do |f| %>
-            <%= devise_error_messages! %>
-
-            <div>
-              </br><%= f.text_field :login, :placeholder => 'Username or Email', class: "span4" %>
-
-              </br><%= f.password_field :password, :placeholder => 'password', class: "span4" %>
-
-            </div>
-            <div  >
-              <div class="pull-left">
-                <% if devise_mapping.rememberable? %>
-                  <%= f.check_box :remember_me, :style => 'float: left;margin-right:5px' %>
-                  <%= f.label :remember_me, :style => 'white-space: nowrap; width: 130px; color: gray;' %>
-                <% end %>
+          <div class="sign_in_container center">
+            <%= form_for(resource, :as => resource_name, :url => session_url(resource_name)) do |f| %>
+              <%= devise_error_messages! %>
+              <div>
+                </br><%= f.text_field :login, :placeholder => 'Username or Email', class: "span3" %>
+                </br><%= f.password_field :password, :placeholder => 'password', class: "span3" %>
               </div>
-                <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
-                  <%= link_to "Forgot your password?", new_password_url(resource_name), :style => "color: gray;" %><br />
-                <% end -%>
-            </ul>
-
-
-            </br><div><%= f.submit "Sign in", :class => 'btn pull-right' %></div>
-
-          <% end %>
+              <div class="span3 center">
+                <% if devise_mapping.rememberable? %>
+                  <div class="pull-left remember_me">
+                    <%= f.check_box :remember_me, :style => 'float: left;margin-right:5px' %>
+                    <%= f.label :remember_me, :style => 'white-space: nowrap; width: 130px; color: gray;' %>
+                  </div>
+                <% end %>
+                <% if devise_mapping.recoverable? && controller_name != 'passwords' %>
+                  <%= link_to "Forgot password", new_password_url(resource_name), :style => "color: gray;", :class => "forgot_password pull-right" %><br />
+                <% end %>
+              </ul>
+              </br><div><%= f.submit "Sign in", :class => 'btn btn-inverse pull-right' %></div>
+            <% end %>
+          </div>
 
         </div>
     </div>

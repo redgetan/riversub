@@ -7,5 +7,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     sign_in_and_redirect @identity.user, event: :authentication
   end
 
-  def facebook; omniauth; end
+  def facebook;      omniauth; end
+  def google_oauth2; omniauth; end
 end

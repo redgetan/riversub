@@ -1,6 +1,6 @@
 </br>
 
-<div class="center">
+<div class="social_login_container center">
   <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
     <%= link_to "Didn't receive confirmation instructions?", new_confirmation_url(resource_name) %><br />
   <% end -%>
@@ -10,16 +10,15 @@
   <% end -%>
 
   <%- if devise_mapping.omniauthable? %>
-    <%- resource_class.omniauth_providers.each do |provider| %>
-    <a class="btn btn-facebook" href="<%= user_omniauth_authorize_path(provider) %>">
-      <i class="fa fa-facebook"></i> | Sign in with <%= provider.to_s.titleize %>
-    </a>
-    <% end -%>
+    <ul class="social_login_buttons">
+      <% resource_class.omniauth_providers.each do |provider| %>
+      <li>
+        <a class="btn btn-<%= social_button_provider_name(provider) %>" href="<%= user_omniauth_authorize_path(provider) %>">
+          <i class="fa fa-<%= font_awesome_provider_name(provider) %>"></i> Sign in with <%= user_facing_provider_name(provider).to_s.titleize %>
+        </a>
+      </li>
+      <% end %>
+    </ul>
   <% end -%>
-
-  </br>
-  </br>
-  or
-  </br>
 </div>
 
