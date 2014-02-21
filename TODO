@@ -36,15 +36,26 @@ Jan 17
 [x] Add Preview button
 
 Feb 15
-[ ] Add FB/Twitter Sign In
-[ ] Fix bug where summary timeline gets out of sync with expanded timeline after adjusting expanded timeline track
-[ ] Flash message on login/logout improve it centered: green color, padding/margin should be appropriate
+[x] Add FB login
 
 Feb 19
+[ ] Add Youtube login
+[ ] Add javascript exception notifier
+[ ] Clicking a button that requires authentication should show login prompt instead of alert
+  [ ] Show a link "Try Demo"
+
+[ ] shorten demo instructions
+[ ] zoom 125% - assume that's the users view
+
+Getting Users Plan:
+[ ] subtitle a video; post it on a forum with permalink of subtitled video;
+
+
+Feb 20
+[ ] Fix bug where summary timeline gets out of sync with expanded timeline after adjusting expanded timeline track
 [ ] Layout change back to old but remove
   [ ] (try editor/watch + no more anonymous videos + only allow guided walkthrough)
   [ ] before someone can sub/he needs to login but also show that he can try DEMO
-[ ] shorten demo instructions
 
 Feb 20
 
