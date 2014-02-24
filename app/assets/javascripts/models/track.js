@@ -2,6 +2,7 @@ river.model.Track = Backbone.Model.extend({
 
   initialize: function(attributes, options) {
 
+    console.log("initialize TRACK");
     if (typeof options['popcorn'] === "undefined") throw new Error("Missing popcorn object in Track options attribute");
     this.popcorn = options['popcorn'];
     this.isGhost = options['isGhost'] || false;
@@ -129,11 +130,11 @@ river.model.Track = Backbone.Model.extend({
       start: startTime,
       end:   endTime,
       onStart: function() {
-        // console.log("track start: " + self);
+        console.log("track start: " + self);
         Backbone.trigger("trackstart",self);
       },
       onEnd: function() {
-        // console.log("track end: " + self);
+        console.log("track end: " + self);
         Backbone.trigger("trackend",self);
       }
     });

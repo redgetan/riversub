@@ -95,4 +95,7 @@ River::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
+
+  get '/:username/:token',        to: 'videos#show',   as: 'user_video_short'
+  get '/:username/:token/editor', to: 'videos#editor', as: 'editor_user_video_short'
 end

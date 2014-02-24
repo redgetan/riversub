@@ -40,49 +40,34 @@ Feb 19
 
 Feb 20
 [x] Add Google + login
-[ ] Add javascript exception notifier
-[ ] Clicking a button that requires authentication should show login prompt instead of alert
+
+Feb 22
+[x] Clicking a button that requires authentication should show login modal instead of alert
   [ ] Show a link "Try Demo"
 
-[ ] shorten demo instructions
-[ ] zoom 125% - assume that's the users view
-  [  ] fix navbar font-sizes make it smaller
-  [  ] space between navbar and video player in http://localhost:3000/users/dbkyolee/videos/2iK4YD6w5tc1z2u2B3utxQ is too big, make it smaller
-  [  ] can't see keyboard shortcuts
-  [  ] make editor be similar to size of 110%
-  [  ] make sure subtitle tab keyboard shortcuts is visible
+[x] shorten demo instructions
+[x] zoom 125% - assume that's the users view
+  [x ] fix navbar font-sizes make it smaller
+  [x ] space between navbar and video player in http://localhost:3000/users/dbkyolee/videos/2iK4YD6w5tc1z2u2B3utxQ is too big, make it smaller
+  [x ] can't see keyboard shortcuts
+  [x ] make editor be similar to size of 110%
+  [x ] make sure subtitle tab keyboard shortcuts is visible
 
-[ ] Create Sub button is broken (add tests) [not logged in]
+Feb 23
+[x] refactor home.js such that it doesnt route based on url, but based on what current 'controller' + 'action' is.
+  [x] do a routing dispatch
 
-Getting Users Plan:
-[ ] subtitle a video; post it on a forum with permalink of subtitled video;
-
-
-Feb 20
 [ ] Fix bug where summary timeline gets out of sync with expanded timeline after adjusting expanded timeline track
 [ ] Layout change back to old but remove
   [ ] (try editor/watch + no more anonymous videos + only allow guided walkthrough)
   [ ] before someone can sub/he needs to login but also show that he can try DEMO
 
-Feb 20
+
+Feb 25
+[ ] switch from amazon to digital ocean
 
 Jan 18
 
-[ ] Add page - Give list of 1 minute videos that a user can start adding captions to
-  - filters:
-    backend
-      duration: < 4 minute (just focus on this)
-      tag:      minecraft,vlog,retro,tutorial,prank,italian
-    frontend
-      [random]             button
-         show:
-           video title (link)
-           views
-           thumbnail
-           tags
-           date_updated
-
-      [Subtitle Editor]    button
 
 [x] when no internet connection
     - "There is no internet connection."
@@ -100,7 +85,24 @@ Jan 18
 *
 **************************
 
+[ ] add more tests for editor
+[ ] Add javascript exception notifier
+[ ] list of videos - instead of showing thumbnails in a 2 x 6 grid, show things vertically where videos are embedded already and can be played right away with subs and you can see the subtitle pane also right away and "Create Sub" button is visible for each entry as well the author/date of creation/language/date/etc...
+[ ] Add page - Give list of 1 minute videos that a user can start adding captions to
+  - filters:
+    backend
+      duration: < 4 minute (just focus on this)
+      tag:      minecraft,vlog,retro,tutorial,prank,italian
+    frontend
+      [random]             button
+         show:
+           video title (link)
+           views
+           thumbnail
+           tags
+           date_updated
 
+      [Subtitle Editor]    button
 [ ] Allow user to increment decrement start/end time in subtitle tab
 [ ] SSL everywhere
 [ ] in video page, show list of other videos that user can browse (maybe bottom/side/top) for more discoverability

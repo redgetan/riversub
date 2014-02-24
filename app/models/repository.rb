@@ -40,6 +40,14 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def short_url
+    if self.user
+      user_video_short_url(self.user,self.video)
+    else
+      video_url(self.video)
+    end
+  end
+
   def owner_profile_url
     if self.user
       user_url(self.user)

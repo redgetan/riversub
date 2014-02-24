@@ -2,17 +2,16 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   initialize: function(options) {
     river.ui.BasePlayer.prototype.initialize.call(this,options);
-  },
-
-  setupElement: function() {
-    river.ui.BasePlayer.prototype.setupElement.call(this);
     this.hideEditing();
 
     this.$el = $("#player");
 
     this.$subtitleEditorBtn = $("#subtitle_editor_btn");
     this.$subtitleEditorBtn.tooltip({title: "Opens Editor in new tab", placement: 'bottom'});
+  },
 
+  setupElement: function() {
+    river.ui.BasePlayer.prototype.setupElement.call(this);
   },
 
   hideEditing: function() {
@@ -36,6 +35,13 @@ river.ui.Player = river.ui.BasePlayer.extend({
     });
     $("#subtitle_list").find(".delete").each(function(){
       $(this).remove();
+    });
+
+    // remove subtitle lines that are blank
+    $(".subtitle").each(function(){
+      if ($(this).find(".text").text().length === 0) {
+        $(this).remove();  
+      }
     });
 
     $("#media").css("height","315px");

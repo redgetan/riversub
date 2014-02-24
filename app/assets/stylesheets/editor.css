@@ -23,6 +23,7 @@ text.time {
 
 div#editor {
 	margin-top: 10px;
+	font-size: 12px;
 }
 
 div#editor #repo_label,
@@ -177,7 +178,7 @@ div#editor-bottom {
 
 #subtitle_list {
   	padding: 0px 10px;
-	height: 180px;
+	height: 160px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	border: solid 1px lightgray;
@@ -187,7 +188,13 @@ div#editor-bottom {
 	width: 100%;
 }
 
-#subtitle_list table td {
+#editor #subtitle_list table td,
+#editor #subtitle_list table th {
+	padding: 0px;
+	line-height: 14px
+}
+
+#player #subtitle_list td {
 	padding: 0px;
 }
 
@@ -209,10 +216,6 @@ div#editor-bottom {
 	/*border: solid 1px gray;*/
 }
 
-.subtitle button.close {
-	opacity: 0.9;
-}
-
 .subtitle.selected {
 	background-color: lightcoral !important;
 	color: white;
@@ -230,7 +233,6 @@ div#editor-bottom {
 .subtitle .end_time {
 	width: 60px;
 	margin-right: 10px;
-	height: 20px;
 }
 
 .subtitle .text {
@@ -244,7 +246,7 @@ div#editor-bottom {
 }
 
 .subtitle .delete {
-	width: 10px;
+	width: 40px;
 	float: right;
 }
 

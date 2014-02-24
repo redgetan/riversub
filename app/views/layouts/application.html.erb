@@ -12,6 +12,10 @@
 
   <%= csrf_meta_tags %>
   <script>
+    // set current controller action
+    river.route = "<%= params[:controller] %>" + "#" + "<%= params[:action] %>";
+
+    // google analytics
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -22,6 +26,18 @@
   </script>
 </head>
 <body>
+    <!-- 
+      facebook javascript sdk 
+      https://developers.facebook.com/docs/plugins/share-button/
+    -->
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=1465538213665903";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 
     <div class="navbar navbar-fixed-top" id="header">
       <div class="navbar-inner">
@@ -34,7 +50,7 @@
           </ul>
 
           <ul class="nav pull-right">
-            <li><button id='layout_new_project_btn' class='btn btn-info' data-toggle='modal' data-target='#new_project_modal'><i class='icon-facetime-video'></i> </button></li>
+            <li><button id='layout_new_project_btn' class='btn btn-info btn-small' data-toggle='modal' data-target='#new_project_modal'><i class='icon-facetime-video'></i> </button></li>
             <li class="divider-vertical"></li>
             <% if user_signed_in?  %>
               <li class="dropdown">
@@ -130,9 +146,6 @@
 
 
       </div>
-      <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-      </div>
     </div>
 
 
@@ -165,26 +178,43 @@
           </div>
 
       </div>
-      <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-      </div>
     </div>
 
 
-
-    <div id="share_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Share your Work</h3>
-      </div>
-      <div class="modal-body center">
-        <div class="input-prepend" >
-          <button class="btn btn-danger" type="button">Link</button>
-          <input class="span4" value="<%= @repo.url if @repo %>" type="text" onclick="this.select()">
+    <% if @repo %>
+      <div id="share_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModalLabel">Share</h3>
+        </div>
+        <div class="modal-body">
+          <div class="social_share_container row">
+            <div class="span offset1">
+              <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.short_url %>" target="_blank">
+                 <%= image_tag "fb-32.png" %>
+              </a>
+            </div>
+            <div class="span">
+              <a href="https://plus.google.com/share?url=<%= @repo.short_url %>" target="_blank">
+                 <%= image_tag "gplus-32.png"  %>
+              </a>
+            </div>
+          </div>
+          <div class="row">
+            <h5 class="span1 offset1" style="position: relative; top: -5px; margin-right: -20px;">Link</h5>
+            <input class="span4 share_link_input" value="<%= @repo.short_url %>" type="text" onclick="this.select()">
+          </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <% end %>
+
+    <div id="login_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Login</h3>
+      </div>
+      <div class="modal-body ">
+        <%= render "devise/shared/login" %>
       </div>
     </div>
 

@@ -84,7 +84,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
 
     if ($(e.target).attr("href") === "#subtitle_tab") {
-      if (this.intro._currentStep === 8) { 
+      if (this.intro._currentStep === 13) { 
         $(".introjs-nextbutton").removeClass("introjs-disabled");
         $(".introjs-nextbutton").trigger("click");
       }
@@ -280,20 +280,27 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       steps: [
         {
           element: "#viewing_screen",
-          intro: "This is the main video screen. Click to Play or Pause the video. Try it now."
+          intro: "This is the main screen. Click to Play or Pause the video."
         },
         {
           element: "#expanded.timeline",
-          intro: "This shows you 30 second window of where you are currently at in the video. Try scrolling forwards/backwards using the mousewheel or trackpad",
+          intro: "This shows you 30 second window of where you are currently at in the video. ",
+          position: 'top'
+        },
+        {
+          element: "#expanded.timeline",
+          intro: "Try scrolling forwards/backwards using the mousewheel or trackpad",
           position: 'top'
         },
         {
           element: "#start_timing_btn",
           intro: "To add a subtitle that starts at current time, click this button. Try it now.",
+          position: 'left'
         },
         {
           element: "#stop_timing_btn",
           intro: "Now press stop when you want your text to end",
+          position: 'left'
         },
         {
           element: "#subtitle_bar",
@@ -301,39 +308,64 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         },
         {
           element: "#keyboard-shortcuts",
-          intro: "Instead of using your mouse, you can also use the keyboard for controlling the editor. Try play/pausing the video using [space]. Then create another subtitle track using [shift]",
+          intro: "Instead of using your mouse, you can also use the keyboard for controlling the editor.",
+          position: "top",
+        },
+        {
+          element: "#keyboard-shortcuts",
+          intro: "Try play/pausing the video using [space]. ",
+          position: "top",
+        },
+        {
+          element: "#keyboard-shortcuts",
+          intro: "Now press [shift] once to start a subtitle, and press [shift] again to end it",
           position: "top",
         },
         {
           element: "#summary.timeline",
-          intro: "This is seek bar. It shows you the subtitles youve added during the entire duration of video. Try to play/pause the video again using [space]. The blue bar shows you the current 30 second window that you're at. Now, try clicking outside the blue bar, and then try clicking the green tracks",
+          intro: "This is seek bar. It shows you the subtitles youve added during the entire duration of video. ",
+        },
+        {
+          element: "#summary.timeline",
+          intro: "The blue bar shows you the current 30 second window that you're at. ",
+        },
+        {
+          element: "#summary.timeline",
+          intro: "Now, try clicking outside the blue bar, and then try clicking the green tracks",
         },
         {
           element: "#expanded.timeline",
           intro: "To edit a previous subtitle that you created. simply double click a green/red track",
-          position: "left",
+          position: "top"
         },
         {
           element: "#subtitle_tab_anchor",
           intro: "Another way to view the subtitles that you've created is throught the subtitles tab. Click it now",
+          position: "top"
         },
         {
           element: "#subtitle_container",
           intro: "Double click one of the subtitle texts to edit it. After you try that, try play/pause the video using [space]. Then try adding a subtitle using the [shift] key",
+          position: "top"
+        },
+        {
+          element: "#preview_btn",
+          intro: "Finally, to see how your subtitles look in public, you can click the preview button. ",
           position: "left"
         },
         {
           element: "#preview_btn",
-          intro: "Finally, to see how your subtitles look in public, you can click the preview button. That's the end of The Walkthrough. Congratz for finishing it.",
+          intro: "That's the end of The Walkthrough. Congratz for finishing it.",
           position: "left"
         }
       ]
     });
 
     this.intro.onafterchange(function(targetElement){
-      var stepsToDisabledNextButton = [2,3,4,8];
+      var stepsToDisabledNextButton = [3,4,5,13];
       if (stepsToDisabledNextButton.indexOf(this.intro._currentStep) !== -1) { 
         $(".introjs-nextbutton").addClass("introjs-disabled");
+        $(".introjs-prevbutton").addClass("introjs-disabled");
       }
     }.bind(this));
   },
@@ -530,7 +562,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$startTimingBtn.hide();
     this.$stopTimingBtn.show({
       complete: function() {
-        if (this.intro._currentStep === 2) { 
+        if (this.intro._currentStep === 3) { 
           $(".introjs-nextbutton").removeClass("introjs-disabled");
           $(".introjs-nextbutton").trigger("click");
         }
@@ -545,7 +577,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.currentTrack = null;
     this.$stopTimingBtn.hide({
       complete: function() {
-        if (this.intro._currentStep === 3) { 
+        if (this.intro._currentStep === 4) { 
           $(".introjs-nextbutton").removeClass("introjs-disabled");
           $(".introjs-nextbutton").trigger("click");
         }
@@ -923,7 +955,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$subtitleEdit.hide(0,function(){
       this.isOnSubtitleEditMode = null;
 
-      if (this.intro._currentStep === 4 ) { 
+      if (this.intro._currentStep === 5 ) { 
         if (this.currentTrack.text().length === 0 ) {
           this.showSubtitleEdit(this.currentTrack);
         } else {

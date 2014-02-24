@@ -2,7 +2,7 @@ class VideosController < ApplicationController
 
   def sub
     if !current_user
-      render :json => { :error => "You must login to create subtitles" }, :status => 403 and return
+      render :json => { :error => "You must login to create subtitles"}, :status => 401 and return
     end
 
     metadata = params[:video_metadata]

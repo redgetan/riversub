@@ -105,7 +105,7 @@ a.new_project:hover {
 }
 
 .navbar .nav {
-  font-size: 16px;  
+  font-size: 14px;  
 }
 
 .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
@@ -115,7 +115,7 @@ a.new_project:hover {
 
 .navbar-inner .brand {
   margin-left: 0px;
-  font-size: 30px;
+  font-size: 26px;
 }
 
 /* temporary fix to https://github.com/twitter/bootstrap/issues/5704  */
@@ -129,8 +129,6 @@ margin-left:-1px;
 }
 
 #header {
-  padding-top: 10px;
-  padding-bottom: 10px;
   background-color: white;
 }
 
@@ -142,7 +140,7 @@ margin-left:-1px;
 }
 
 div#main_container {
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 #description {
@@ -187,7 +185,7 @@ div#media_container {
 
 div#iframe_container {
   position: relative;
-  height: 200px;
+  height: 160px;
   width: inherit;
   background-color: #000;
 }
@@ -345,8 +343,12 @@ form.sub {
   margin-top: 50px;
 }
 
+.modal-header, .modal-footer {
+  background-color: #A3D4A3;  
+}
+
 .modal-body {
-  background-color: darkseagreen;
+  /*background-color: darkseagreen;*/
 }
 
 #new_project_modal.fade.in {
@@ -445,6 +447,7 @@ a.owner_label {
   background-color: white;
   border: solid 1px black;
   color: black;
+  margin-right: 10px;
 }
 
 
@@ -502,7 +505,8 @@ ul.social_login_buttons a {
   text-align: left;
 }
 
-.sign_in_container .forgot_password {
+.sign_in_container .forgot_password, 
+.sign_in_container .sign_up {
   font-size: 12px;
 }
 
@@ -513,4 +517,26 @@ ul.social_login_buttons a {
 
 .or_login_separator {
   margin-top: 15px;
+}
+
+.delete_sub_line,
+.delete_sub_line:hover {
+  text-decoration: none;  
+  font-weight: bold;
+  color: maroon;
+}
+
+#editor .nav-tabs>li>a {
+  line-height: 12px;  
+}
+
+.share_link_input {
+  border: 2px solid #cccccc !important;
+  -webkit-border-radius: 0px !important; 
+  border-radius: 0px !important; 
+}
+
+.social_share_container {
+  margin-bottom: 20px;
+  margin-left: 20px;
 }

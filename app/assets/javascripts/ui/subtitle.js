@@ -6,7 +6,7 @@ river.ui.Subtitle = Backbone.View.extend({
   events: {
     "mouseenter": "onMouseEnter",
     "mouseleave": "onMouseLeave",
-    "click .close": "onCloseClick",
+    "click .delete_sub_line": "onCloseClick",
   },
 
   initialize: function() {
@@ -30,7 +30,7 @@ river.ui.Subtitle = Backbone.View.extend({
                   "<td>" +
                     "<div class='text'></div>" +
                     "<div class='delete'>" +
-                      "<button type='button' class='close'>×</button>" +
+                      "<a href='#' class='delete_sub_line'>delete</a>" +
                     "</div>" +
                   "</td>";
     this.$el.append(content);
@@ -39,7 +39,7 @@ river.ui.Subtitle = Backbone.View.extend({
 
     this.$text = this.$el.find(".text");
 
-    this.$close = this.$el.find(".close");
+    this.$close = this.$el.find(".delete_sub_line");
     this.$close.hide();
 
     if ($("#editor").size() === 1) {

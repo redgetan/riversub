@@ -31,5 +31,6 @@
 
 
 //= require_tree ./models/
+//= require_tree ./controller/
 //= require_tree .
 

@@ -23,7 +23,7 @@ var getMetadata = function(url,done) {
   $.ajax({
     url: "https://gdata.youtube.com/feeds/api/videos/" + videoId + "?v=2&alt=jsonc",
     type: "GET",
-    dataType: "json",
+    dataType: "jsonp",
     success: function(data) {
       done(data);
     },
@@ -45,122 +45,13 @@ var isEmbeddable = function(metadata) {
   }
 };
 
-// handles page specific javascript
-var handleRoute = function() {
-  if (new RegExp("/videos/.+/editor").test(location.pathname)) {
-    var repo = $("#editor_data").data("repo") ;
-    $("#editor_data").remove();
-
-    // // local
-    // var repo = {
-    //   video: { duration: 64},
-    //   user: null,
-    //   is_guided_walkthrough: true
-    // };
-
-
-    // editor = new river.ui.Editor({repo: repo, media: media, local: true, targetSelector: "video#media"});
-    
-    editor = new river.ui.Editor({repo: repo});
-
-  } else if (new RegExp("/videos/.+").test(location.pathname)) {
-    var repo = $("#player").data("repo") ;
-    $("#player").removeAttr("data-repo");
-    player = new river.ui.Player({repo: repo, url_options: "&controls=1"});
-  } else if (new RegExp("/users/edit").test(location.pathname)) {
-    // hide all forms initially
-    $("div#edit_user_content form").each(function(){
-      $(this).hide();
-    });
-
-    $("#edit_user_content form").on("submit", function(event) {
-      event.preventDefault();
-
-      var $form = $(event.target);
-
-      $.ajax({
-        url: "/users",
-        type: "PUT",
-        data: $(this).serialize(),
-        success: function(data,status) {
-          $form.find(".flash").remove();
-          $form.prepend(data);
-        },
-        error: function(data) {
-          $form.find(".flash").remove();
-          $form.prepend(data.responseText);
-        }
-      });
-    });
-
-    $("#edit_user_sidebar a").on("click",function(event){
-      var $target = $(event.target);
-      $target.closest("ul").find(".active").removeClass("active");
-      $target.closest("li").addClass("active");
-
-      // hide previous active form
-      var $prevActiveForm = $("div#edit_user_content form.active");
-      if ($prevActiveForm) {
-        $prevActiveForm.removeClass("active");
-        $prevActiveForm.hide();
-      }
-
-      // determine which form to show
-      var profile_type = $target.attr("id");
-
-      // show form
-      var $form = $("form#edit_" + profile_type);
-      $form.show();
-      $form.addClass("active");
-    });
-
-    $("form#edit_account input#user_avatar").on("change",function(event){
-      // http://stackoverflow.com/questions/166221/how-can-i-upload-files-asynchronously-with-jquery
-
-      var $form = $("form#edit_account");
-      var formData = new FormData($form[0]);
-
-      $.ajax({
-        url: '/users/change_avatar',
-        type: 'PUT',
-        data: formData,
-        beforeSend: function() {
-
-        },
-        success: function(data) {
-          var avatarUrl = data;
-          $("div#avatar img").attr("src",avatarUrl);
-        },
-        error: function(data) {
-          $form.find(".flash").remove();
-          $form.prepend(data.responseText);
-        },
-        //Options to tell JQuery not to process data or worry about content-type
-        cache: false,
-        contentType: false,
-        processData: false
-      });
-
-    });
-
-
-    // by default account tab is active
-
-    var activeTab;
-    if (window.location.hash) {
-      activeTab = window.location.hash;
-    } else {
-      activeTab = "#account";
-    }
-    $("#edit_user_sidebar a" + activeTab).trigger("click");
-
-  }
-};
-
 
 $(document).ready(function(){
 
-  handleRoute();
+  var action = river.controller[river.route];
+  if (typeof action !== "undefined") {
+    action.call();  
+  }
 
   $("#layout_new_project_btn").tooltip({title: "Subtitle Video", placement: "bottom"});
 
@@ -224,12 +115,6 @@ function handleOpenSubtitleEditorError(e,$form) {
 
 function openSubtitleEditor(url) {
 
-  // check if loggedin
-  if ($("#login_presence").data("logged-in").length == 0) {
-    alert("You must login to create subtitles");
-    return;
-  }
-
   if (!url.match(/youtube/)) {
     throw "Only youtube urls are allowed";
   }
@@ -259,8 +144,13 @@ function openSubtitleEditor(url) {
         window.location.href = data.redirect_url;
       },
       error: function(data) {
-        var e = JSON.parse(data.responseText).error;
-        alert(e);
+        var error_type = JSON.parse(data.responseText).error_type;
+        if (data.status === 401) {
+          // if error due to user not logged in, show login modal
+          $("#login_modal").modal();
+        } else {
+          throw data.responseText;
+        }
       }
     });
   });

@@ -1,4 +1,4 @@
-</br>
+<% is_signup = params[:controller] == "registrations" %>
 
 <div class="social_login_container center">
   <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
@@ -14,7 +14,12 @@
       <% resource_class.omniauth_providers.each do |provider| %>
       <li>
         <a class="btn btn-<%= social_button_provider_name(provider) %>" href="<%= user_omniauth_authorize_path(provider) %>">
-          <i class="fa fa-<%= font_awesome_provider_name(provider) %>"></i> Sign in with <%= user_facing_provider_name(provider).to_s.titleize %>
+          <i class="fa fa-<%= font_awesome_provider_name(provider) %>"></i>
+          <% if is_signup %>
+            Signup with <%= user_facing_provider_name(provider).to_s.titleize %>
+          <% else %>
+            Login with <%= user_facing_provider_name(provider).to_s.titleize %>
+          <% end %>
         </a>
       </li>
       <% end %>
