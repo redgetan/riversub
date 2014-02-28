@@ -33,11 +33,7 @@ class Repository < ActiveRecord::Base
   end
 
   def url
-    if self.user
-      user_video_url(self.user,self.video)
-    else
-      video_url(self.video)
-    end
+    short_url
   end
 
   def short_url
@@ -58,8 +54,12 @@ class Repository < ActiveRecord::Base
 
 
   def editor_url
+    editor_short_url
+  end
+
+  def editor_short_url
     if self.user
-      editor_user_video_url(self.user,self.video)
+      editor_user_video_short_url(self.user,self.video)
     else
       editor_video_url(self.video)
     end
