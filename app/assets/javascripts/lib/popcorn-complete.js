@@ -251,7 +251,8 @@
         duration = self.media.duration;
 
         //  Check for no duration info (NaN)
-        videoDurationPlus = duration != duration ? Number.MAX_VALUE : duration + 1;
+        var videoDurationPadding = 3;
+        videoDurationPlus = duration != duration ? Number.MAX_VALUE : duration + videoDurationPadding;
 
         Popcorn.addTrackEvent( self, {
           start: videoDurationPlus,
