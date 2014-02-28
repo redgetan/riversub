@@ -12,12 +12,7 @@ class HomeController < ApplicationController
   end
 
   def about
-  end
-
-  def how_it_works
-  end
-
-  def tutorial
+    @guided_walkthrough_repo = Repository.guided_walkthrough
   end
 
 end

@@ -148,10 +148,10 @@ div#main_container {
   font-family: sans-serif;
   margin-top: 10px;
 
-/*  margin-top: 100px;
+  margin-top: 100px;
   color: black;
   white-space: nowrap;
-*/}
+}
 
 div#media_input {
 }
@@ -469,13 +469,13 @@ a.owner_label {
 
 #how-it-works-container a {
   padding: 0px 5px;
-  background-color:  lightcoral;
-  color: white;
+  /*background-color:  lightcoral;*/
+  /*color: white;*/
 }
 
 #how-it-works-container a:hover {
   /*background-color:  lightcoral;*/
-  color: cyan;
+  /*color: cyan;*/
 }
 
 .river_gray {
