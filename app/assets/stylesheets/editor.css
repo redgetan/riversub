@@ -23,7 +23,6 @@ text.time {
 
 div#editor {
 	margin-top: 10px;
-	font-size: 12px;
 }
 
 div#editor #repo_label,
@@ -53,6 +52,7 @@ textarea#transcript {
 
 div#editor-bottom {
 	margin-top: 20px;
+	font-size: 12px;
 }
 
 #timeline_container {

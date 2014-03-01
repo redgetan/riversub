@@ -53,7 +53,13 @@ $(document).ready(function(){
     action.call();  
   }
 
-  $("#layout_new_project_btn").tooltip({title: "Subtitle Video", placement: "bottom"});
+  $("#layout_new_project_btn").hover(
+    function(){
+      $(this).addClass("btn-info");
+    },function(){
+      $(this).removeClass("btn-info");
+    }
+  );
 
   $(".new_project").hover(function(event) {
     $(this).find("i").css("background-color","green");
@@ -148,6 +154,7 @@ function openSubtitleEditor(url) {
         if (data.status === 401) {
           // if error due to user not logged in, show login modal
           $("#login_modal").modal();
+          $("form.sub").find(".sub_btn").button('reset');
         } else {
           throw data.responseText;
         }

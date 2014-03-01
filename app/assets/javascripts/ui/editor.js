@@ -355,7 +355,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         },
         {
           element: "#preview_btn",
-          intro: "That's the end of The Walkthrough. Congratz for finishing it.",
+          intro: "That's the end of the walkthrough. If you enjoyed it, don't forget to sign up!",
           position: "left"
         }
       ]

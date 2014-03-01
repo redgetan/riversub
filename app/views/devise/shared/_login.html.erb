@@ -23,7 +23,7 @@
       <% end %>
     </ul>
     </br>
-    <a href="#" class="sign_up pull-left">Sign up</a>
+    <%= link_to "Sign up", new_user_registration_url, class: "sign_up pull-left" %>
     <div><%= f.submit "Login", :class => 'btn btn-inverse pull-right' %></div>
   <% end %>
 </div>
