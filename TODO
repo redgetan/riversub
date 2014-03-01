@@ -57,17 +57,18 @@ Feb 23
 [x] refactor home.js such that it doesnt route based on url, but based on what current 'controller' + 'action' is.
   [x] do a routing dispatch
 
-[ ] Fix bug where summary timeline gets out of sync with expanded timeline after adjusting expanded timeline track
-[ ] font is too small in video editor subtitle show/ it should be bold when typing it in
-[ ] sign up link in login modal not working
-[ ] Add "Try Demo" link
-[ ] At end of guided walkthrough, get user to signup
+Mar 1
+[x] font is too small in video editor subtitle show/ it should be bold when typing it in
+[x] sign up link in login modal not working
+[x] Add "Try Demo" link
+[x] At end of guided walkthrough, get user to signup
 [x] Layout change back to old but remove
-  [ ] (try editor/watch + no more anonymous videos + only allow guided walkthrough)
-  [ ] before someone can sub/he needs to login but also show that he can try DEMO
+  [x] (try editor/watch + no more anonymous videos + only allow guided walkthrough)
+  [x] before someone can sub/he needs to login but also show that he can try DEMO
 
 
-Feb 25
+Mar 4
+[ ] Fix bug where summary timeline gets out of sync with expanded timeline after adjusting expanded timeline track
 [ ] switch from amazon to digital ocean
 
 Jan 18
