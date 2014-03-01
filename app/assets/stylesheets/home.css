@@ -336,7 +336,7 @@ span.repo_owner {
 
 form.sub {
   height: 30px;
-  margin: 30px 0;
+  margin: 10px 0;
 }
 
 #demo-container form.sub {
@@ -539,4 +539,8 @@ ul.social_login_buttons a {
 .social_share_container {
   margin-bottom: 20px;
   margin-left: 20px;
+}
+
+.call_to_action {
+  text-align: center;
 }
