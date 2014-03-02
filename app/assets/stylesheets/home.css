@@ -148,7 +148,6 @@ div#main_container {
   font-family: sans-serif;
   margin-top: 10px;
 
-  margin-bottom: 30px;
   color: black;
   white-space: nowrap;
 }
@@ -292,7 +291,7 @@ div.videos .thumbnails.user .thumbnail {
 }
 
 div#demo {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 div#demo-background {
@@ -538,13 +537,14 @@ ul.social_login_buttons a {
   margin-left: 20px;
 }
 
+.demo-video,
 .call-to-action {
-  text-align: center;
+  /*text-align: center;*/
   margin-top: 50px;
 }
 
 .demo_btn {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .sign_up_container,
@@ -552,4 +552,8 @@ ul.social_login_buttons a {
   border: solid 1px #bbb;
   padding: 20px;
   margin-top: 20px;
+}
+
+.main-heading {
+  margin-bottom: 25px;
 }

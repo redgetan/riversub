@@ -68,6 +68,9 @@ Mar 1
 
 
 Mar 4
+[ ] timeline should show text for each track, otherwise i wont know which one is which
+[ ] disable cc on player, otherwise, our cc conflicts with youtube cc
+[ ] allow one to change start/end on subtitle tab
 [ ] Fix bug where summary timeline gets out of sync with expanded timeline after adjusting expanded timeline track
 [ ] switch from amazon to digital ocean
 

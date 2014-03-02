@@ -38,6 +38,7 @@ river.ui.Subtitle = Backbone.View.extend({
 
 
     this.$text = this.$el.find(".text");
+    this.$text.text(this.model.text);
 
     this.$close = this.$el.find(".delete_sub_line");
     this.$close.hide();
