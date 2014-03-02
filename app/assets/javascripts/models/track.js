@@ -2,7 +2,6 @@ river.model.Track = Backbone.Model.extend({
 
   initialize: function(attributes, options) {
 
-    console.log("initialize TRACK");
     if (typeof options['popcorn'] === "undefined") throw new Error("Missing popcorn object in Track options attribute");
     this.popcorn = options['popcorn'];
     this.isGhost = options['isGhost'] || false;
@@ -31,7 +30,7 @@ river.model.Track = Backbone.Model.extend({
 
     this.listenTo(this, "change", this.touchSubtitle);
     this.listenTo(this, "request", this.onRequest);
-    
+
     this.initial_subtitle_request = true;
 
   },
@@ -108,7 +107,7 @@ river.model.Track = Backbone.Model.extend({
     }
 
     this.setEndTime(time);
-    
+
     Backbone.trigger("ghosttrackend",this);
 
     this.isGhost = false;
@@ -130,11 +129,9 @@ river.model.Track = Backbone.Model.extend({
       start: startTime,
       end:   endTime,
       onStart: function() {
-        console.log("track start: " + self);
         Backbone.trigger("trackstart",self);
       },
       onEnd: function() {
-        console.log("track end: " + self);
         Backbone.trigger("trackend",self);
       }
     });
@@ -146,9 +143,9 @@ river.model.Track = Backbone.Model.extend({
 
   remove: function() {
     if (this.isGhost) {
-      this.end(this.endTime());  
+      this.end(this.endTime());
     }
-    
+
     this.isDeleted = true;
 
     this.trackEvent._running = false; // disallow trackend event from getting triggered
