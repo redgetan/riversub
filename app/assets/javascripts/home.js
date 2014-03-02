@@ -61,7 +61,7 @@ $(document).ready(function(){
     }
   );
 
-  $(".new_project").hover(function(event) {
+  $(".new_project_user_btn").hover(function(event) {
     $(this).find("i").css("background-color","green");
     $(this).find("h6").css("color","green");
   },function(event){

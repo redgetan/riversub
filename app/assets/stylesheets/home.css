@@ -54,18 +54,18 @@
   color: green;
 }
 
-a.new_project {
+a.new_project_user_btn {
   height: 163px;  
   display: block;
   position: relative;
   text-decoration: none;
 }
 
-a.new_project:hover {
+a.new_project_user_btn:hover {
   background-color: lightgoldenrodyellow;
 }
 
-.new_project .icon-plus {
+.new_project_user_btn .icon-plus {
   -webkit-border-radius: 15px;
   line-height: 30px;
   top: 30%;
@@ -78,7 +78,7 @@ a.new_project:hover {
   color: white;
 }
 
-.new_project h6 {
+.new_project_user_btn h6 {
   position: absolute;
   width: 100%;
   top: 50%;
