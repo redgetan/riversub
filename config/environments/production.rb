@@ -83,6 +83,6 @@ River::Application.configure do
   config.to_prepare { RegistrationsController.force_ssl }
   config.to_prepare { Devise::PasswordsController.force_ssl }
 
-  Rails.application.routes.default_url_options[:host] = 'www.riversub.cc'
+  Rails.application.routes.default_url_options[:host] = 'riversub.cc'
 
 end
