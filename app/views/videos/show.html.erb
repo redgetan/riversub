@@ -26,8 +26,13 @@
             <h5>
               <span class="pull-left">
                 <% if @repo.user %>
-                Authored by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> 
+                  <div class="subtitler">
+                    Subtitled by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> 
+                  </div>
                 <% end %>
+                <div class="uploader">
+                  Video owned by: <a href="<%= @repo.video.uploader_url %>"><%= @repo.video.uploader_username %></a> 
+                </div>
               </span>
               <% if @repo.user == current_user %>
                 <a class='btn btn-success ubtitle_editor_btn pull-right' href="<%= @repo.editor_url %>"><i class="icon-random"></i> Edit</a>
