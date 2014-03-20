@@ -15,6 +15,7 @@ class Video < ActiveRecord::Base
       :id => self.id,
       :name => self.name,
       :genre => self.genre,
+      :url => self.url,
       :uploader_url => self.uploader_url,
       :uploader_username => self.uploader_username,
       :duration => self.duration
