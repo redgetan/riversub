@@ -7,7 +7,7 @@ set :rvm_type, :system
 set :myconfig, {
   :production => {
     :user => "hatch",
-    :host => "www.zeroplay.net"
+    :host => "162.243.222.38"
   },
   :staging => {
     :user => "hatch",
