@@ -84,7 +84,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
 
     if ($(e.target).attr("href") === "#subtitle_tab") {
-      if (this.intro._currentStep === 13) { 
+      if (this.intro._currentStep === 11) { 
         $(".introjs-nextbutton").removeClass("introjs-disabled");
         $(".introjs-nextbutton").trigger("click");
       }
@@ -276,21 +276,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   setupIntroJS: function() {
     this.intro.setOptions({
       keyboardNavigation: true,
+      exitOnEsc: false,
       exitOnOverlayClick: false,
       steps: [
         {
           element: "#viewing_screen",
           intro: "This is the main screen. Click to Play or Pause the video."
-        },
-        {
-          element: "#expanded.timeline",
-          intro: "This shows you 30 second window of where you are currently at in the video. ",
-          position: 'top'
-        },
-        {
-          element: "#expanded.timeline",
-          intro: "Try scrolling forwards/backwards using the mousewheel or trackpad",
-          position: 'top'
         },
         {
           element: "#start_timing_btn",
@@ -327,7 +318,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         },
         {
           element: "#summary.timeline",
-          intro: "The blue bar shows you the current 30 second window that you're at. ",
+          intro: "The blue bar corresponds to the 30 second timeline that's shown below.",
         },
         {
           element: "#summary.timeline",
@@ -335,7 +326,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         },
         {
           element: "#expanded.timeline",
-          intro: "To edit a previous subtitle that you created. simply double click a green/red track",
+          intro: "Double click one of the green tracks to edit the subtitle text.",
           position: "top"
         },
         {
@@ -345,7 +336,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         },
         {
           element: "#subtitle_container",
-          intro: "Double click one of the subtitle texts to edit it. After you try that, try play/pause the video using [space]. Then try adding a subtitle using the [shift] key",
+          intro: "Double click one of the subtitle texts to edit it. ",
           position: "top"
         },
         {
@@ -362,7 +353,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     });
 
     this.intro.onafterchange(function(targetElement){
-      var stepsToDisabledNextButton = [3,4,5,13];
+      var stepsToDisabledNextButton = [1,2,3,11];
       if (stepsToDisabledNextButton.indexOf(this.intro._currentStep) !== -1) { 
         $(".introjs-nextbutton").addClass("introjs-disabled");
         $(".introjs-prevbutton").addClass("introjs-disabled");
@@ -562,7 +553,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$startTimingBtn.hide();
     this.$stopTimingBtn.show({
       complete: function() {
-        if (this.intro._currentStep === 3) { 
+        if (this.intro._currentStep === 1) { 
           $(".introjs-nextbutton").removeClass("introjs-disabled");
           $(".introjs-nextbutton").trigger("click");
         }
@@ -577,7 +568,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.currentTrack = null;
     this.$stopTimingBtn.hide({
       complete: function() {
-        if (this.intro._currentStep === 4) { 
+        if (this.intro._currentStep === 2) { 
           $(".introjs-nextbutton").removeClass("introjs-disabled");
           $(".introjs-nextbutton").trigger("click");
         }
@@ -955,7 +946,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$subtitleEdit.hide(0,function(){
       this.isOnSubtitleEditMode = null;
 
-      if (this.intro._currentStep === 5 ) { 
+      if (this.intro._currentStep === 3 ) { 
         if (this.currentTrack.text().length === 0 ) {
           this.showSubtitleEdit(this.currentTrack);
         } else {
