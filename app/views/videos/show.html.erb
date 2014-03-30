@@ -1,7 +1,5 @@
 <% set_meta_tags :site => 'Riversub', :title => "#{@repo.video.name}", :description => "Watch a Youtube Video with user generated captions/subtitles" %>
 
-<div class='header-section span12'></div>
-
 <div class='container '>
 
   <div id='player' data-repo='<%= @repo.serialize.to_json %>'>
@@ -13,25 +11,25 @@
           </span>
         </h5>
       </div> 
-      <div id='player-top-left' class='span7'> 
+      <div id='player-top-left' class='span12'> 
         <div id='media_container'> 
           <div id='media'></div> 
-          <div id='subtitle_bar' class='span5 center'> 
+          <div id='subtitle_bar' class='span8 center'> 
             <span id='subtitle_display' class='span5 center'></span> 
           </div> 
         </div> 
 
         <div class='row' id="media_controls"> 
-          <div class="span7">
+          <div class="span12">
             <h5>
               <span class="pull-left">
                 <% if @repo.user %>
-                  <div class="subtitler">
-                    Subtitled by: <a href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> 
+                  <div class="subtitler pull-left">
+                    Subtitler: <a class="subtitler_name" href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> 
                   </div>
                 <% end %>
-                <div class="uploader">
-                  Video owned by: <a href="<%= @repo.video.uploader_url %>"><%= @repo.video.uploader_username %></a> 
+                <div class="owner pull-left">
+                  Owner: <a class="owner_name" href="<%= @repo.video.uploader_url %>"><%= @repo.video.uploader_username %></a> 
                 </div>
               </span>
               <% if @repo.user == current_user %>
@@ -47,7 +45,7 @@
         </div> 
       </div> 
 
-      <div id='player-top-right' class='span5'> 
+      <div id='player-top-right' class='span12'> 
         <div id='subtitle_container'> 
           <div id='subtitle_list'></div> 
           <div id='controls_extra' class='row'> 

@@ -194,6 +194,10 @@ div#editor-bottom {
 	line-height: 14px
 }
 
+#player {
+	margin-top: 20px;
+}
+
 #player #subtitle_list td {
 	padding: 0px;
 }

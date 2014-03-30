@@ -15,16 +15,21 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   hideEditing: function() {
-    $("#subtitle_bar").css("background","none");
-    $("#subtitle_bar").css("margin-top","-80px");
-    $("#subtitle_bar").css("margin-left","80px");
+    $("#subtitle_bar").css("background-color","rgba(255,0,0,0)");
+
+    $("#subtitle_bar").css("margin-top","-100px");
+    $("#subtitle_bar").css("margin-left","160px");
     $("#subtitle_bar").css("z-index","6");
     $("#subtitle_bar").css("position","absolute");
+    $("#subtitle_bar").css("line-height","25px");
 
     $("#subtitle_display").css("background-color","black");
     $("#subtitle_display").css("opacity",0.8);
+    $("#subtitle_display").css("font-size","20px");
 
-    $("#subtitle_list").css("height","315px");
+    $(".subtitle .text").css("font-size","18px");
+    $(".subtitle .text").css("width","900px");
+    $("#subtitle_list").css("height","200px");
     $("#subtitle_list").find("th").first().remove(); // remove start heading
     $("#subtitle_list").find("th").first().remove(); // remove end   heading
     $("#subtitle_list").find(".start_time").closest("td").each(function(){
@@ -37,6 +42,8 @@ river.ui.Player = river.ui.BasePlayer.extend({
       $(this).remove();
     });
 
+    $("#media_controls").css("margin-bottom","10px");
+
     // remove subtitle lines that are blank
     $(".subtitle").each(function(){
       if ($(this).find(".text").text().length === 0) {
@@ -44,7 +51,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
       }
     });
 
-    $("#media").css("height","315px");
+    $("#media").css("height","450px");
   },
 
 });
