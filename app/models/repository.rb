@@ -24,6 +24,10 @@ class Repository < ActiveRecord::Base
 
   GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"
 
+  def self.homepage_autoplay_repo
+    self.find(Setting.get(:homepage_autoplay_repository_id).to_i)
+  end
+
   def filename
     "#{self.owner}_#{self.video.name.downcase.gsub(/\s/,"_")}.srt"
   end

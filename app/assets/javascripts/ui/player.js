@@ -55,3 +55,27 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
 });
+
+river.ui.MiniPlayer = river.ui.Player.extend({
+
+  initialize: function(options) {
+    river.ui.Player.prototype.initialize.call(this,options);
+  },
+
+  hideEditing: function() {
+    river.ui.Player.prototype.hideEditing.call(this);
+    $("#media").css("height","300px");
+    $("#media").css("width","400px");
+
+    $("#subtitle_bar").css("margin-top","-50px");
+    $("#subtitle_bar").css("margin-left","50px");
+    $("#subtitle_bar").css("z-index","6");
+    $("#subtitle_bar").css("position","absolute");
+    $("#subtitle_bar").css("line-height","25px");
+
+    $("#subtitle_display").css("background-color","black");
+    $("#subtitle_display").css("opacity",0.8);
+    $("#subtitle_display").css("font-size","18px");
+  }
+
+});

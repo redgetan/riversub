@@ -4,8 +4,12 @@ river.model.Subtitle = Backbone.Model.extend({
   },
 
   initialize: function(attributes, options) {
+    this.options = options;
+    
     this.track = options["track"];
-    this.view = new river.ui.Subtitle({model: this});
+    if (this.options.view_enabled) {
+      this.view = new river.ui.Subtitle({model: this});
+    }
   },
 
   getAttributes: function() {
@@ -24,11 +28,15 @@ river.model.Subtitle = Backbone.Model.extend({
   },
 
   highlight: function() {
-    this.view.highlight();
+    if (this.options.view_enabled) {
+      this.view.highlight();
+    }
   },
 
   unhighlight: function() {
-    this.view.unhighlight();
+    if (this.options.view_enabled) {
+      this.view.unhighlight();
+    }
   },
 
   openEditor: function(event) {
@@ -51,9 +59,12 @@ river.model.SubtitleSet = Backbone.Collection.extend({
   model: river.model.Subtitle,
 
   initialize: function(attributes, options) {
-    this.view = new river.ui.SubtitleList({collection: this});
+    this.options = options;
+    if (this.options.view_enabled) {
+      this.view = new river.ui.SubtitleList({collection: this});
+      this.listenTo(this,"change",this.sort);
+    }
     Backbone.on("subtitlecreate",this.onSubtitleCreate.bind(this));
-    this.listenTo(this,"change",this.sort);
   },
 
   onSubtitleCreate: function(subtitle) {

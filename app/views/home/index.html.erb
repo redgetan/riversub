@@ -8,8 +8,13 @@
     </div>
     <div class='row'>
       <div class='span6'>
-        <iframe class="youtube-player" type="text/html" width="420" height="260" src="http://www.youtube.com/embed/pkGnKog3S2E" allowfullscreen frameborder="0">
-        </iframe>
+        <div id="player" data-repo='<%= @autoplay_repo.serialize.to_json %>'>
+          <div id='autoplay_video_label'>Sample</div>
+          <div id='media'></div> 
+          <div id='subtitle_bar' class='span4 center'> 
+            <span id='subtitle_display' class='span4 center'></span> 
+          </div> 
+        </div>
       </div>
       <div class='span6 call-to-action'>
         <p id='description'>Subtitle Tool for Youtube Videos</p>

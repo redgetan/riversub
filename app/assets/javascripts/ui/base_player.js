@@ -10,6 +10,10 @@ river.ui.BasePlayer = Backbone.View.extend({
     var timings = this.repo.timings || [];
     var mediaSource = typeof this.video.url === "undefined" ? "" : this.video.url;
 
+    if (typeof this.options.view_enabled === "undefined" ) {
+      this.options.view_enabled = true;
+    }
+
     this.setupElement();
     this.popcorn = this.loadMedia(targetSelector,mediaSource);
     this.popcorn.volume(0.2);
@@ -19,7 +23,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.preRepositoryInitHook();
 
     this.repository = new river.model.Repository(this.repo);
-    this.subtitles  = new river.model.SubtitleSet();
+    this.subtitles  = new river.model.SubtitleSet("",this.options);
 
     this.tracks = this.repository.tracks;
     this.loadTracks(timings);
@@ -125,10 +129,12 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   loadTracks: function(timings) {
+    var options = $.extend(this.options,{ popcorn: this.popcorn });
+
     if (typeof timings !== "undefined") {
       for (var i = 0; i < timings.length; i++) {
         try {
-          var track = new river.model.Track(timings[i], { popcorn: this.popcorn });
+          var track = new river.model.Track(timings[i],options);
           this.tracks.add(track);
         } catch(e) {
           console.log(e.stack);

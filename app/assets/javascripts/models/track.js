@@ -6,7 +6,9 @@ river.model.Track = Backbone.Model.extend({
     this.popcorn = options['popcorn'];
     this.isGhost = options['isGhost'] || false;
 
-    this.subtitle = new river.model.Subtitle(attributes['subtitle'], {track: this});
+    var options = $.extend(options,{track: this});
+    
+    this.subtitle = new river.model.Subtitle(attributes['subtitle'], options);
     Backbone.trigger("subtitlecreate",this.subtitle);
 
     // when trackEvent is created, trackstart event is triggered, received by editor.js and it
