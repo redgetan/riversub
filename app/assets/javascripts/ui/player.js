@@ -67,15 +67,15 @@ river.ui.MiniPlayer = river.ui.Player.extend({
     $("#media").css("height","300px");
     $("#media").css("width","400px");
 
-    $("#subtitle_bar").css("margin-top","-50px");
-    $("#subtitle_bar").css("margin-left","50px");
+    $("#subtitle_bar").css("margin-top","-70px");
+    $("#subtitle_bar").css("margin-left","10px");
     $("#subtitle_bar").css("z-index","6");
     $("#subtitle_bar").css("position","absolute");
     $("#subtitle_bar").css("line-height","25px");
 
     $("#subtitle_display").css("background-color","black");
     $("#subtitle_display").css("opacity",0.8);
-    $("#subtitle_display").css("font-size","18px");
+    $("#subtitle_display").css("font-size","16px");
   }
 
 });
