@@ -18,7 +18,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     $("#subtitle_bar").css("background-color","rgba(255,0,0,0)");
 
     $("#subtitle_bar").css("margin-top","-100px");
-    $("#subtitle_bar").css("margin-left","160px");
+    $("#subtitle_bar").css("margin-left","80px");
     $("#subtitle_bar").css("z-index","6");
     $("#subtitle_bar").css("position","absolute");
     $("#subtitle_bar").css("line-height","25px");
