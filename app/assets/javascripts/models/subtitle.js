@@ -60,6 +60,11 @@ river.model.SubtitleSet = Backbone.Collection.extend({
 
   initialize: function(attributes, options) {
     this.options = options;
+
+    if (typeof this.options.view_enabled === "undefined" ) {
+      this.options.view_enabled = true;
+    }
+
     if (this.options.view_enabled) {
       this.view = new river.ui.SubtitleList({collection: this});
       this.listenTo(this,"change",this.sort);
