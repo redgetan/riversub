@@ -62,6 +62,10 @@ river.ui.MiniPlayer = river.ui.Player.extend({
     river.ui.Player.prototype.initialize.call(this,options);
   },
 
+  setVolume: function(value) {
+    this.popcorn.volume(value);
+  },
+
   hideEditing: function() {
     river.ui.Player.prototype.hideEditing.call(this);
     $("#media").css("height","300px");

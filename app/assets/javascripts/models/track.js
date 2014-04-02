@@ -6,6 +6,11 @@ river.model.Track = Backbone.Model.extend({
     this.popcorn = options['popcorn'];
     this.isGhost = options['isGhost'] || false;
 
+
+    if (typeof options.view_enabled === "undefined" ) {
+      options.view_enabled = true;
+    }
+
     var options = $.extend(options,{track: this});
     
     this.subtitle = new river.model.Subtitle(attributes['subtitle'], options);

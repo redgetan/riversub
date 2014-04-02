@@ -10,10 +10,6 @@ river.ui.BasePlayer = Backbone.View.extend({
     var timings = this.repo.timings || [];
     var mediaSource = typeof this.video.url === "undefined" ? "" : this.video.url;
 
-    if (typeof this.options.view_enabled === "undefined" ) {
-      this.options.view_enabled = true;
-    }
-
     this.setupElement();
     this.popcorn = this.loadMedia(targetSelector,mediaSource);
     this.popcorn.volume(0.2);
