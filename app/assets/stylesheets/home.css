@@ -38,6 +38,7 @@
 
 .header-section {
   background-color: white;
+  opacity: 0;
   height: 50px;
 }
 
@@ -146,6 +147,7 @@ margin-left:-1px;
 
 div#main_container {
   margin-top: 30px;
+  margin-bottom: 50px;
 }
 
 #description {
@@ -187,6 +189,10 @@ div#media_container {
 #player div#media_container {
   border: solid 1px lightgray;
   margin-top: -60px;
+}
+
+#player.dark div#media_container {
+  border: solid 1px black;
 }
 
 div#iframe_container {
@@ -428,15 +434,17 @@ form.sub {
 
 #player #repo_label a{
   color: #333;
+  border: solid 1px gray;
+  padding: 5px;
+}
+
+#player.dark #repo_label a{
+  color: white;
 }
 
 #player #repo_label {
   text-align: center;
   margin-bottom: 20px;
-}
-
-#player #subtitle_list table th{
-  text-align: center;
 }
 
 a.owner_label:hover {
@@ -582,6 +590,14 @@ ul.social_login_buttons a {
   margin-bottom: 25px;
 }
 
+#player.dark {
+  background-color: black;
+}
+
+#player.dark .subtitler {
+  color: floralwhite;
+}
+
 .subtitler, .owner {
   line-height: 40px;
   margin-right: 10px;
@@ -600,10 +616,9 @@ ul.social_login_buttons a {
 }
 
 footer {
-  /*background-color: #4C4C4C;  */
+  background-color: white;  
   height: 50px;
   border-top: solid 1px #ccc;
-  margin-top: 50px;
 }
 
 footer ul {
@@ -646,3 +661,25 @@ footer ul li a:hover{
   padding: 0px 20px;
   text-align: center;
 }
+
+#login-background {
+  background-image: url("ricepaper_v3.png");
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 580px;
+  margin-top: 10px;
+}
+
+#white-bar {
+  background-color:  white;  
+  width: 100%;
+  height: 10px;
+  position: absolute;
+  margin-top: 10px;
+}
+
+#player.dark #white-bar {
+  background-color:  black;  
+}
+

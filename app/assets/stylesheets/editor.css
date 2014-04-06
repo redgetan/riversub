@@ -180,18 +180,33 @@ div#editor-bottom {
 	height: 160px;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	border: solid 1px lightgray;
+	/*border: solid 1px lightgray;*/
 }
 
 #subtitle_list table {
 	width: 100%;
 }
 
+
 #editor #subtitle_list table td,
 #editor #subtitle_list table th {
 	padding: 0px;
 	line-height: 14px
 }
+
+#player.dark #subtitle_list {
+	color: floralwhite;
+}
+
+#player #subtitle_list table td,
+#player #subtitle_list table th {
+	border-top: none;
+}
+
+#player #subtitle_list table th{
+  text-align: center;
+}
+
 
 #player {
 	margin-top: 20px;

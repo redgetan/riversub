@@ -21,10 +21,10 @@
       <% if devise_mapping.recoverable? && controller_name != 'passwords' %>
         <%= link_to "Forgot password", new_password_url(resource_name), :style => "color: gray;", :class => "forgot_password pull-right" %><br />
       <% end %>
-    </ul>
-    </br>
-    <%= link_to "Sign up", new_user_registration_url, class: "sign_up pull-left" %>
-    <div><%= f.submit "Login", :class => 'btn btn-inverse pull-right' %></div>
+      </br>
+      <%= link_to "Sign up", new_user_registration_url, class: "sign_up pull-left" %>
+      <div><%= f.submit "Login", :class => 'btn btn-inverse pull-right' %></div>
+    </div>
   <% end %>
 </div>
 
