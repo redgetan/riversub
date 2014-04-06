@@ -434,7 +434,6 @@ form.sub {
 
 #player #repo_label a{
   color: #333;
-  border: solid 1px gray;
   padding: 5px;
 }
 
@@ -443,6 +442,7 @@ form.sub {
 }
 
 #player #repo_label {
+  border: solid 1px gray;
   text-align: center;
   margin-bottom: 20px;
 }
