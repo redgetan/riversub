@@ -116,12 +116,10 @@ river.ui.BasePlayer = Backbone.View.extend({
 
   showSubtitleInSubtitleBar: function(subtitle) {
     this.$subtitleDisplay.text(subtitle.get("text"));
-    this.$subtitleDisplay.css("padding","5px");
   },
 
   hideSubtitleInSubtitleBar: function(subtitle) {
     this.$subtitleDisplay.text("");
-    this.$subtitleDisplay.css("padding","0px");
   },
 
   loadTracks: function(timings) {

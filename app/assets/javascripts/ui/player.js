@@ -27,9 +27,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
     $("#subtitle_display").css("opacity",0.8);
     $("#subtitle_display").css("font-size","20px");
 
-    $(".subtitle .text").css("font-size","18px");
-    $(".subtitle .text").css("width","900px");
-    $("#subtitle_list").css("height","200px");
+    $(".subtitle .text").css("font-size","14px");
+    $(".subtitle .text").css("width","350px");
+    $("#subtitle_list").css("height","500px");
     $("#subtitle_list").find("th").first().remove(); // remove start heading
     $("#subtitle_list").find("th").first().remove(); // remove end   heading
     $("#subtitle_list").find(".start_time").closest("td").each(function(){
@@ -51,7 +51,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
       }
     });
 
-    $("#media").css("height","450px");
+    $("#media").css("height","600px");
   },
 
 });
@@ -71,15 +71,16 @@ river.ui.MiniPlayer = river.ui.Player.extend({
     $("#media").css("height","300px");
     $("#media").css("width","400px");
 
-    $("#subtitle_bar").css("margin-top","-70px");
+    $("#subtitle_bar").css("margin-top","-35px");
     $("#subtitle_bar").css("margin-left","10px");
     $("#subtitle_bar").css("z-index","6");
     $("#subtitle_bar").css("position","absolute");
-    $("#subtitle_bar").css("line-height","25px");
+    $("#subtitle_bar").css("line-height","16px");
 
     $("#subtitle_display").css("background-color","black");
     $("#subtitle_display").css("opacity",0.8);
-    $("#subtitle_display").css("font-size","16px");
+    $("#subtitle_display").css("font-size","12px");
+    $("#subtitle_display").css("padding","3px");
   }
 
 });

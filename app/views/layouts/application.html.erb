@@ -47,7 +47,7 @@
           <a class="brand" href="<%= root_url %>"> Riversub</a>
           <ul class="nav menu-nav">
             <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li>
-            <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'about' %>"><a href="<%= about_url %>">About</a></li>
+            <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">FAQ</a></li>
             <!-- <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'tutorial' %>"><a href="/tutorial">Tutorial</a></li> -->
           </ul>
 
@@ -90,6 +90,17 @@
       </div>
       <%= yield %>
     </div>
+
+    <footer>
+      <div class="container">
+        <ul>
+          <li class="sitename">Riversub.cc © 2014. All Rights Reserved</li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="mailto:info@riversub.cc">Feedback</a></li>
+        </ul>
+      </div>
+    </footer>
 
 
     <!-- Modal -->

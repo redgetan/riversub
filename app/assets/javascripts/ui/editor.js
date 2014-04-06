@@ -271,6 +271,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$keyboard_shortcuts = $("#keyboard-shortcuts");
     this.$status_bar = $("#status-bar");
+
+    $("footer").hide();
   },
 
   setupIntroJS: function() {

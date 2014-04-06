@@ -11,8 +11,12 @@ class HomeController < ApplicationController
     respond_to :html
   end
 
+  def faq
+    # @guided_walkthrough_repo = Repository.guided_walkthrough
+  end
+
   def about
-    @guided_walkthrough_repo = Repository.guided_walkthrough
+    
   end
 
 end

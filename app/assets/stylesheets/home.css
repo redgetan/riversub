@@ -41,6 +41,10 @@
   height: 50px;
 }
 
+#summary-container {
+  margin-top: 30px;
+}
+
 #summary-container .thumbnail {
   border: none;
   box-shadow: none;
@@ -130,6 +134,7 @@ margin-left:-1px;
 
 #header {
   background-color: white;
+  border-bottom: solid 1px #ccc;
 }
 
 .center {
@@ -181,6 +186,7 @@ div#media_container {
 
 #player div#media_container {
   border: solid 1px lightgray;
+  margin-top: -60px;
 }
 
 div#iframe_container {
@@ -304,7 +310,7 @@ div#demo-background {
   position: absolute;
   z-index: -1;
   width: 100%;
-  height: 360px;
+  height: 340px;
   margin-top: 10px;
   border-top: solid 1px #ccc;
   border-bottom: solid 1px #ccc;
@@ -412,8 +418,25 @@ form.sub {
   margin-bottom: 0px;
 }
 
-#repo_label {
+#editor #repo_label {
   margin-left: 0px;
+}
+
+#editor #repo_label a{
+  color: #777;
+}
+
+#player #repo_label a{
+  color: #333;
+}
+
+#player #repo_label {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#player #subtitle_list table th{
+  text-align: center;
 }
 
 a.owner_label:hover {
@@ -540,7 +563,7 @@ ul.social_login_buttons a {
 .demo-video,
 .call-to-action {
   /*text-align: center;*/
-  margin-top: 50px;
+  margin-top: 10px;
 }
 
 .demo_btn {
@@ -552,6 +575,7 @@ ul.social_login_buttons a {
   border: solid 1px #bbb;
   padding: 20px;
   margin-top: 20px;
+  margin-bottom: 60px;
 }
 
 .main-heading {
@@ -573,4 +597,52 @@ ul.social_login_buttons a {
   color: white;
   font-weight: bold;
   opacity: 0.8;  
+}
+
+footer {
+  /*background-color: #4C4C4C;  */
+  height: 50px;
+  border-top: solid 1px #ccc;
+  margin-top: 50px;
+}
+
+footer ul {
+  list-style: none;
+}
+
+footer ul li{
+  padding: 10px;
+  float: right;
+}
+
+footer ul li.sitename{
+  float: left;
+  color: #gray;
+}
+
+footer ul li a{
+  color: #777;
+}
+
+footer ul li a:hover{
+  text-decoration: none;
+  color: #333;
+}
+
+.footer_divider {
+  height: 40px;
+  margin: 0 9px;
+  border-left: 1px solid #f2f2f2;
+  border-right: 1px solid #ffffff;
+}
+
+#player .left_side {
+  /*border: solid 1px black;*/
+  margin-top: 20px;
+  margin-left: 30px;
+}
+
+.login_header {
+  padding: 0px 20px;
+  text-align: center;
 }

@@ -1,17 +1,26 @@
 <% set_meta_tags :site => 'Riversub', :title => "#{@repo.video.name}", :description => "Watch a Youtube Video with user generated captions/subtitles" %>
 
-<div class='container '>
+<div class=''>
 
   <div id='player' data-repo='<%= @repo.serialize.to_json %>'>
     <div id='player-top' class='row'> 
-      <div class='span10 offset1'> 
-        <h5 id='repo_label' class="span10">
-          <span class="pull-left">
+      <div class="span5 left_side">
+        <h5 id='repo_label'>
+          <span>
             <a href="<%= @repo.short_url %>"><%= @repo.video.name %></a>
           </span>
         </h5>
-      </div> 
-      <div id='player-top-left' class='span10 offset1'> 
+        <div id='subtitle_container'> 
+          <div id='subtitle_list'></div> 
+          <div id='controls_extra' class='row'> 
+            <div class='btn-group pull-right'> 
+              <!-- <a id='download_btn' class='btn' href='<%= @repo.subtitle_download_url %>'><i class='icon-download-alt'></i> Download</a>  -->
+            </div> 
+          </div> 
+        </div> 
+      </div>
+
+      <div id='player-top-left' class='span10'> 
         <div id='media_container'> 
           <div id='media'></div> 
           <div id='subtitle_bar' class='span8 center'> 
@@ -28,9 +37,6 @@
                     Subtitler: <a class="subtitler_name" href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> 
                   </div>
                 <% end %>
-                <div class="owner pull-left">
-                  Owner: <a class="owner_name" href="<%= @repo.video.uploader_url %>"><%= @repo.video.uploader_username %></a> 
-                </div>
               </span>
               <% if @repo.user == current_user %>
                 <a class='btn btn-success ubtitle_editor_btn pull-right' href="<%= @repo.editor_url %>"><i class="icon-random"></i> Edit</a>
@@ -44,26 +50,8 @@
           </div>
         </div> 
       </div> 
-
-      <div id='player-top-right' class='span10 offset1'> 
-        <div id='subtitle_container'> 
-          <div id='subtitle_list'></div> 
-          <div id='controls_extra' class='row'> 
-            <div class='btn-group pull-right'> 
-              <!-- <a id='download_btn' class='btn' href='<%= @repo.subtitle_download_url %>'><i class='icon-download-alt'></i> Download</a>  -->
-            </div> 
-          </div> 
-        </div> 
-      </div> 
-
-
     </div> 
 
-  </br>
-    <div id='player-middle' class='row'> 
-      <div class='span7'>
-      </div>
-    </div> 
 
   </div>    
 </div>    

@@ -25,8 +25,7 @@ div#editor {
 	margin-top: 10px;
 }
 
-div#editor #repo_label,
-div#player #repo_label {
+div#editor #repo_label {
 	float: left;
 }
 
@@ -196,6 +195,8 @@ div#editor-bottom {
 
 #player {
 	margin-top: 20px;
+	width: 1250px;
+	margin: auto;
 }
 
 #player #subtitle_list td {
@@ -216,12 +217,12 @@ div#editor-bottom {
 
 
 .subtitle:hover {
-	background-color: moccasin;
+	background-color: #8ca0ff;
 	/*border: solid 1px gray;*/
 }
 
 .subtitle.selected {
-	background-color: lightcoral !important;
+	background-color: #AF687F !important;
 	color: white;
 	/*border: solid 1px gray;*/
 }
