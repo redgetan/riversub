@@ -344,10 +344,11 @@ div#keyboard-shortcuts {
 	margin-bottom: 10px;
 }
 
+#editor #media_container {
+	border: solid 1px gray;
+}
+
 a#preview_btn {
 	background-color: lightcoral;
 }
 
-#editor #media_container {
-	border: solid 1px gray;
-}
