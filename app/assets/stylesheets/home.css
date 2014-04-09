@@ -182,12 +182,10 @@ div.videos li.selected {
 div#media_container {
   /*padding: 10px;*/
   width: inherit;
-  border: solid 1px gray ;
   /*margin-right: 15px;*/
 }
 
 #player div#media_container {
-  border: solid 1px lightgray;
   margin-top: -60px;
 }
 
@@ -417,7 +415,7 @@ form.sub {
 
 
 #media_controls {
-  /*margin-top: 10px;  */
+  margin-left: 20px;  
 }
 
 #share_container {
@@ -655,6 +653,7 @@ footer ul li a:hover{
   /*border: solid 1px black;*/
   margin-top: 20px;
   margin-left: 30px;
+  display: inline-block;
 }
 
 .login_header {
@@ -671,15 +670,28 @@ footer ul li a:hover{
   margin-top: 10px;
 }
 
-#white-bar {
-  background-color:  white;  
-  width: 100%;
-  height: 10px;
+#player-background {
+  background-image: url("ricepaper_v3.png");
   position: absolute;
-  margin-top: 10px;
+  z-index: -1;
+  width: 100%;
+  height: 670px;
+  /*margin-top: 10px;*/
+}
+
+#white-bar {
+  background-image: url("ricepaper_v3.png");
+  width: 100%;
+  height: 50px;
+  position: absolute;
+  margin-top: -53px;
 }
 
 #player.dark #white-bar {
   background-color:  black;  
 }
 
+#player-top-left {
+  margin-left: 20px;
+  display: inline-block;
+}

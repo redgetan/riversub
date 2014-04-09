@@ -16,10 +16,15 @@ class Video < ActiveRecord::Base
       :name => self.name,
       :genre => self.genre,
       :url => self.url,
+      :aspect_ratio => self.aspect_ratio,
       :uploader_url => self.uploader_url,
       :uploader_username => self.uploader_username,
       :duration => self.duration
     }
+  end
+
+  def aspect_ratio
+    self.metadata["data"]["aspectRatio"] 
   end
 
   def duration

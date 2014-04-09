@@ -209,6 +209,7 @@ div#editor-bottom {
 
 
 #player {
+	text-align: center;
 	margin-top: 20px;
 	width: 1250px;
 	margin: auto;
@@ -345,4 +346,8 @@ div#keyboard-shortcuts {
 
 a#preview_btn {
 	background-color: lightcoral;
+}
+
+#editor #media_container {
+	border: solid 1px gray;
 }

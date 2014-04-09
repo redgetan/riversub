@@ -17,7 +17,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
   hideEditing: function() {
     $("#subtitle_bar").css("background-color","rgba(255,0,0,0)");
 
-    $("#subtitle_bar").css("margin-top","-80px");
+    $("#subtitle_bar").css("margin-top","-75px");
     $("#subtitle_bar").css("margin-left","80px");
     $("#subtitle_bar").css("z-index","6");
     $("#subtitle_bar").css("position","absolute");
@@ -51,8 +51,22 @@ river.ui.Player = river.ui.BasePlayer.extend({
       }
     });
 
-    $("#media").css("height","600px");
+    this.letterBoxMedia();
   },
+
+  letterBoxMedia: function() {
+    if (this.options.repo.video.aspect_ratio === "widescreen") {
+      // convert 16:9 to 4:3
+      $("#media").css("width","780px");
+      $("#media").css("height","600px");
+    } else {
+      // convert 4:3 to 1:1
+      $("#media").css("width","600px");
+      $("#media").css("height","600px");
+      $("#subtitle_bar").removeClass("span8");
+      $("#subtitle_bar").addClass("span6");
+    }
+  }
 
 });
 

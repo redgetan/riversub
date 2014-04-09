@@ -1,10 +1,11 @@
 <% set_meta_tags :site => 'Riversub', :title => "#{@repo.video.name}", :description => "Watch a Youtube Video with user generated captions/subtitles" %>
 
-<div class=''>
+<div>
+  <div id="player-background"></div>
 
   <div id='player' data-repo='<%= @repo.serialize.to_json %>'>
     <div id='player-top' class='row'> 
-      <div class="span5 left_side">
+      <div class="left_side">
         <h5 id='repo_label'>
           <div>
             <a href="<%= @repo.short_url %>"><%= @repo.video.name %></a>
@@ -20,7 +21,7 @@
         </div> 
       </div>
 
-      <div id='player-top-left' class='span10'> 
+      <div id='player-top-left'> 
         <div id="white-bar"></div>
         <div id='media_container'> 
           <div id='media'></div> 
@@ -29,8 +30,8 @@
           </div> 
         </div> 
 
-        <div class='row' id="media_controls"> 
-          <div class="span10">
+        <div class='row' > 
+          <div id="media_controls">
             <h5>
               <span class="pull-left">
                 <% if @repo.user %>
