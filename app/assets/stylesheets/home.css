@@ -185,11 +185,11 @@ div#media_container {
   /*margin-right: 15px;*/
 }
 
-#player div#media_container {
+#river_player div#media_container {
   margin-top: -60px;
 }
 
-#player.dark div#media_container {
+#river_player.dark div#media_container {
   border: solid 1px black;
 }
 
@@ -430,16 +430,16 @@ form.sub {
   color: #777;
 }
 
-#player #repo_label a{
+#river_player #repo_label a{
   color: #333;
   padding: 5px;
 }
 
-#player.dark #repo_label a{
+#river_player.dark #repo_label a{
   color: white;
 }
 
-#player #repo_label {
+#river_player #repo_label {
   border: solid 1px gray;
   text-align: center;
   margin-bottom: 20px;
@@ -588,11 +588,11 @@ ul.social_login_buttons a {
   margin-bottom: 25px;
 }
 
-#player.dark {
+#river_player.dark {
   background-color: black;
 }
 
-#player.dark .subtitler {
+#river_player.dark .subtitler {
   color: floralwhite;
 }
 
@@ -649,7 +649,7 @@ footer ul li a:hover{
   border-right: 1px solid #ffffff;
 }
 
-#player .left_side {
+#river_player .left_side {
   /*border: solid 1px black;*/
   margin-top: 20px;
   margin-left: 30px;
@@ -687,7 +687,7 @@ footer ul li a:hover{
   margin-top: -53px;
 }
 
-#player.dark #white-bar {
+#river_player.dark #white-bar {
   background-color:  black;  
 }
 

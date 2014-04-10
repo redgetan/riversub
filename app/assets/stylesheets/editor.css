@@ -30,19 +30,19 @@ div#editor #repo_label {
 }
 
 div#editor #repo_owner, 
-div#player #repo_owner {
+div#river_player #repo_owner {
 	color: gray;
 }
 
 div#editor #video_url, 
-div#player #video_url {
+div#river_player #video_url {
 	/*float: left;*/
 	color: gray;
 	float: right;
 }
 
 div#editor #controls,
-div#player #controls {
+div#river_player #controls {
 }
 
 textarea#transcript {
@@ -194,28 +194,28 @@ div#editor-bottom {
 	line-height: 14px
 }
 
-#player.dark #subtitle_list {
+#river_player.dark #subtitle_list {
 	color: floralwhite;
 }
 
-#player #subtitle_list table td,
-#player #subtitle_list table th {
+#river_player #subtitle_list table td,
+#river_player #subtitle_list table th {
 	border-top: none;
 }
 
-#player #subtitle_list table th{
+#river_player #subtitle_list table th{
   text-align: center;
 }
 
 
-#player {
+#river_player {
 	text-align: center;
 	margin-top: 20px;
 	width: 1250px;
 	margin: auto;
 }
 
-#player #subtitle_list td {
+#river_player #subtitle_list td {
 	padding: 0px;
 }
 
