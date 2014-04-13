@@ -25,7 +25,8 @@ class Repository < ActiveRecord::Base
   GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"
 
   def self.homepage_autoplay_repo
-    self.find(Setting.get(:homepage_autoplay_repository_id).to_i)
+    repo_id = Setting.get(:homepage_autoplay_repository_id).to_s.to_i
+    self.find_by_id(repo_id)
   end
 
   def filename

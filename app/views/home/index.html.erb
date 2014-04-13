@@ -8,7 +8,7 @@
     </div>
     <div class='row'>
       <div class='span6'>
-        <div id="river_player" data-repo='<%= @autoplay_repo.serialize.to_json %>'>
+        <div id="river_player" data-repo='<%= @autoplay_repo ? @autoplay_repo.serialize.to_json : "" %>'>
           <div id='autoplay_video_label'>Sample</div>
           <div id='media'></div> 
           <div id='subtitle_bar' class='span5 center'> 
