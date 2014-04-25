@@ -161,9 +161,14 @@ river.ui.Timeline = Backbone.View.extend({
     Backbone.on("timelineseek",this.onTimelineSeek.bind(this));
     Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
     Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
+    Backbone.on("trackchange",this.onTrackChange.bind(this));
     Backbone.on("trackresize",this.onTrackResize.bind(this));
     Backbone.on("trackdrag",this.onTrackDrag.bind(this));
     Backbone.on("scrubberdisappear",this.onScrubberDisappear.bind(this));
+  },
+
+  onTrackChange: function(track) {
+    this.renderTrack(track);
   },
 
   onTimeUpdate: function(event) {

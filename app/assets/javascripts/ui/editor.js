@@ -46,7 +46,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     Backbone.on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
     Backbone.on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
     Backbone.on("subtitlelineblur",this.onSubtitleLineBlur.bind(this));
-    Backbone.on("subtitlelinekeyup",this.onSubtitleLineKeyup.bind(this));
+    Backbone.on("subtitletextkeyup",this.onSubtitleTextKeyup.bind(this));
     Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
     Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
     Backbone.on("trackremove",this.onTrackRemove.bind(this));
@@ -739,7 +739,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
-  onSubtitleLineKeyup: function(text) {
+  onSubtitleTextKeyup: function(text) {
     this.$subtitleDisplay.text(text);
   },
 

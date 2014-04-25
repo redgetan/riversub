@@ -37,6 +37,9 @@ river.ui.Subtitle = Backbone.View.extend({
 
 
 
+    this.$startTime = this.$el.find(".start_time");
+    this.$endTime   = this.$el.find(".end_time");
+
     this.$text = this.$el.find(".text");
     this.$text.text(this.model.text);
 
@@ -44,34 +47,78 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$close.hide();
 
     if ($("#editor").size() === 1) {
-      this.$el.find(".text").editInPlace({
-        editEvent: "none_delegated_by_parent",
-        bg_over: "transparent",
-        default_text: "",
-        callback: function(unused, enteredText) {
-          this.model.set("text",enteredText);
-          return enteredText;
-        }.bind(this),
-        delegate: {
-          didOpenEditInPlace: function($dom,settings) {
-            Backbone.trigger("subtitlelineedit");
-
-            $dom.find(":input").attr("maxlength",90);
-            $dom.find(":input").on("keyup",function(event) {
-              var $input = $(event.target);
-              Backbone.trigger("subtitlelinekeyup",$input.val());
-            });
-          }.bind(this),
-          // shouldCloseEditInPlace: function() { return false; },
-          didCloseEditInPlace: function($dom) {
-            Backbone.trigger("subtitlelineblur",this.model);
-            // this.edit_sub_mode = false;
-          }.bind(this)
-        }
-      });
+      this.editableStartEndTime();
+      this.editableText();
     }
 
     this.render();
+  },
+
+  editableStartEndTime: function() {
+    this.setupEditInPlace(this.$startTime, this.editStartTimeFinished, this.didOpenStartEndTime);
+    this.setupEditInPlace(this.$endTime,   this.editEndTimeFinished,   this.didOpenStartEndTime);
+  },
+
+  editableText: function() {
+    this.setupEditInPlace(this.$text, this.editTextFinished, this.didOpenText);
+  },
+
+  setupEditInPlace: function($el, callback, didOpenEditInPlace) {
+    $el.editInPlace({
+      editEvent: "none_delegated_by_parent",
+      bg_over: "transparent",
+      default_text: "",
+      callback: callback.bind(this),
+      delegate: {
+        didOpenEditInPlace:  didOpenEditInPlace.bind(this),
+        didCloseEditInPlace: this.didCloseEditInPlace.bind(this)
+      }
+    });
+  },
+
+  didOpenStartEndTime: function($dom,settings) {
+    Backbone.trigger("subtitlelineedit");
+
+    $dom.find(":input").attr("maxlength",10);
+    $dom.find(":input").css("width","50px");
+
+    $dom.find(":input").on("keyup",function(event) {
+      if (!$.isNumeric(String.fromCharCode(event.which))) {
+        event.preventDefault();
+      } 
+    });
+  },
+
+  didOpenText: function($dom,settings) {
+    Backbone.trigger("subtitlelineedit");
+
+    $dom.find(":input").attr("maxlength",90);
+
+    $dom.find(":input").on("keyup",function(event) {
+      var $input = $(event.target);
+      Backbone.trigger("subtitletextkeyup",$input.val());
+    });
+  },
+
+  didCloseEditInPlace: function($dom) {
+    Backbone.trigger("subtitlelineblur",this.model);
+  },
+
+  editStartTimeFinished: function(unused, enteredText) { 
+    var time = parseFloat(enteredText);
+    this.model.track.setStartTime(time);
+    return enteredText;
+  },
+
+  editEndTimeFinished: function(unused, enteredText) { 
+    var time = parseFloat(enteredText);
+    this.model.track.setEndTime(time);
+    return enteredText;
+  },
+
+  editTextFinished: function(unused, enteredText) { 
+    this.model.set("text",enteredText);
+    return enteredText;
   },
 
 
@@ -109,11 +156,11 @@ river.ui.Subtitle = Backbone.View.extend({
     this.model.track.remove();
   },
 
-  openEditor: function(event) {
+  openEditor: function(event, $el) {
     // no need to open again if its already opened
-    if (this.$text.hasClass("editInPlace-active")) return;
+    if ($el.hasClass("editInPlace-active")) return;
 
-    this.$text.data("editor").openEditor(event);
+    $el.data("editor").openEditor(event);
   },
 
   hideEditorIfNeeded: function() {

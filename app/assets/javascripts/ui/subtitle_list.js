@@ -57,7 +57,7 @@ river.ui.SubtitleList = Backbone.View.extend({
     if (subtitle === null) { return; }
 
     Backbone.trigger("subtitlelinedblclick",subtitle);
-    subtitle.openEditor(event);
+    subtitle.openEditor(event, $target);
   },
 
   onTrackStart: function(track) {
