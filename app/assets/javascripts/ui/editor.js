@@ -152,10 +152,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         // "</ul>" +
                       // "</div> " +
                       "<div id='open_close_btns' class='btn-group pull-right'> " +
-                        "<a id='start_timing_btn' class='btn btn-primary'><i class='icon-chevron-left'></i> Open</a> " +
-                        "<a id='stop_timing_btn' class='btn btn-primary'><i class='icon-chevron-right'></i> Close</a> " +
+                        "<a id='start_timing_btn' class='btn btn-primary'>Open</a> " +
+                        "<a id='stop_timing_btn' class='btn btn-primary'>Close</a> " +
                       "</div> " +
-                      "<a id='add_sub_btn' class='btn btn-primary pull-right'><i class='icon-plus'></i> Add </a> " +
+                      "<a id='add_sub_btn' class='btn btn-primary pull-right'><i class='icon-plus'></i></a> " +
                       // "<div class='btn-group pull-right'> " +
                       // "</div> " +
                     "</div> " +
