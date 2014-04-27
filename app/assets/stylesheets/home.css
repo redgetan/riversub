@@ -696,3 +696,8 @@ footer ul li a:hover{
   margin-left: 20px;
   display: inline-block;
 }
+
+.btn-primary {
+  background-image: none;
+  opacity: 0.65;
+}

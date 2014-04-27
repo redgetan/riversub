@@ -275,11 +275,11 @@ div#editor-bottom {
 }
 
 #controls #start_timing_btn i {
-	color: #B3192D;
+	color: #81CFA6;
 }
 
 #controls #stop_timing_btn i {
-	color: #333;
+	color: #81CFA6;
 }
 
 div#player-bottom {
@@ -355,3 +355,6 @@ a#preview_btn {
 	background-color: lightcoral;
 }
 
+#open_close_btns {
+	width: 73px;
+}

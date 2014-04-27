@@ -151,9 +151,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         //   "<button href='#subtitle_tab' class='btn' type='button' data-toggle='tab'>Subtitle</button>" +
                         // "</ul>" +
                       // "</div> " +
-                      "<div class='btn-group pull-right'> " +
-                        "<a id='start_timing_btn' class='btn'><i class='icon-circle'></i> Start Timing</a> " +
-                        "<a id='stop_timing_btn' class='btn'><i class='icon-circle'></i> Stop</a> " +
+                      "<div id='open_close_btns' class='btn-group pull-right'> " +
+                        "<a id='start_timing_btn' class='btn btn-primary'><i class='icon-chevron-left'></i> Open</a> "  +
+                        "<a id='stop_timing_btn' class='btn btn-primary'><i class='icon-chevron-right'></i> Close</a> " +
                       "</div> " +
                       // "<div class='btn-group pull-right'> " +
                       // "</div> " +
@@ -199,7 +199,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                             "<div id='keyboard-shortcuts' class='span6 pull-right'> " +
                               "<span>" +
                                 "<b>Keyboard Shortcuts: </b>  " +
-                                "<kbd class='light'>Shift</kbd> Start/Stop Timing " +
+                                "<kbd class='light'>Shift</kbd> Open/Close " +
                                 "<kbd class='light'>Space</kbd> Play/Pause" +
                                 "<kbd class='light'>Esc</kbd>   Cancel " +
                               "</span>" +
@@ -287,12 +287,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         },
         {
           element: "#start_timing_btn",
-          intro: "To add a subtitle that starts at current time, click this button. Try it now.",
+          intro: "To add a subtitle that starts at current time, click 'open'. Try it now.",
           position: 'left'
         },
         {
           element: "#stop_timing_btn",
-          intro: "Now press stop when you want your text to end",
+          intro: "Now click 'close' when you want your text to end",
           position: 'left'
         },
         {
@@ -338,7 +338,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         },
         {
           element: "#subtitle_container",
-          intro: "Double click one of the subtitle texts to edit it. ",
+          intro: "Double click the 'start', 'end', or 'text' section to edit the time or text of subtitle. ",
           position: "top"
         },
         {
@@ -574,9 +574,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
           $(".introjs-nextbutton").removeClass("introjs-disabled");
           $(".introjs-nextbutton").trigger("click");
         }
+        this.$startTimingBtn.show();
       }.bind(this)
     });
-    this.$startTimingBtn.show();
     this.$addSubtitleBtn.removeAttr("disabled");
     track.fadingHighlight();
     track.save();
