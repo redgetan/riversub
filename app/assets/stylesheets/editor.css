@@ -355,6 +355,10 @@ a#preview_btn {
 	background-color: lightcoral;
 }
 
+#add_sub_btn {
+	margin-right: 20px;
+}
+
 #open_close_btns {
 	width: 73px;
 }

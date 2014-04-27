@@ -60,7 +60,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $('[data-toggle="tab"]').on('shown.bs.tab', this.onTabShown.bind(this));
 
-    this.$addSubtitleBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
+    this.$addSubBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
     this.$startTimingBtn.on("click",this.onStartTimingBtn.bind(this));
@@ -152,9 +152,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         // "</ul>" +
                       // "</div> " +
                       "<div id='open_close_btns' class='btn-group pull-right'> " +
-                        "<a id='start_timing_btn' class='btn btn-primary'><i class='icon-chevron-left'></i> Open</a> "  +
+                        "<a id='start_timing_btn' class='btn btn-primary'><i class='icon-chevron-left'></i> Open</a> " +
                         "<a id='stop_timing_btn' class='btn btn-primary'><i class='icon-chevron-right'></i> Close</a> " +
                       "</div> " +
+                      "<a id='add_sub_btn' class='btn btn-primary pull-right'><i class='icon-plus'></i> Add </a> " +
                       // "<div class='btn-group pull-right'> " +
                       // "</div> " +
                     "</div> " +
@@ -241,7 +242,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$stopTimingBtn = $("#stop_timing_btn");
     this.$stopTimingBtn.hide();
 
-    this.$addSubtitleBtn = $("#add_subtitle_btn");
+    this.$addSubBtn = $("#add_sub_btn");
+    this.$addSubBtn.attr("disabled","disabled");
 
     this.intro = introJs();
 
@@ -479,6 +481,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onLoadedMetadata: function(event) {
     this.$startTimingBtn.removeAttr("disabled");
+    this.$addSubBtn.removeAttr("disabled");
     this.enableCommands();
     Backbone.trigger("editor.ready");
     this.setupIntroJS();
@@ -561,7 +564,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         }
       }.bind(this)
     });
-    this.$addSubtitleBtn.attr("disabled","disabled");
+    this.$addSubBtn.attr("disabled","disabled");
   },
 
   onGhostTrackEnd: function(track) {
@@ -577,7 +580,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         this.$startTimingBtn.show();
       }.bind(this)
     });
-    this.$addSubtitleBtn.removeAttr("disabled");
+    this.$addSubBtn.removeAttr("disabled");
     track.fadingHighlight();
     track.save();
   },
@@ -706,11 +709,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     $(document).off("keyup");
     $(document).on("keyup",this.onKeyupHandler.bind(this));
     this.$startTimingBtn.removeAttr("disabled");
+    this.$addSubBtn.removeAttr("disabled");
   },
 
   disableCommands: function(event) {
     $(document).off("keyup");
     this.$startTimingBtn.attr("disabled","disabled");
+    this.$addSubBtn.attr("disabled","disabled");
   },
 
   onSubtitleEditKeyup: function(event) {
@@ -789,14 +794,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onAddSubtitleBtnClick: function(event) {
-    if (this.$addSubtitleBtn.attr("disabled") == "disabled") return;
+    if (this.$addSubBtn.attr("disabled") == "disabled") return;
     // add a track
     var trackDuration = 5;
     var track = this.safeCreateGhostTrack();
 
     var endTime   = this.determineEndTime(track.startTime());
 
-    if (endTime === this.mediaDuration()) {
+    if (this.media.currentTime + trackDuration < endTime) {
       endTime = this.media.currentTime + trackDuration;
     }
 
