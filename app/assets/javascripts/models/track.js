@@ -111,7 +111,12 @@ river.model.Track = Backbone.Model.extend({
     return this.subtitle.get("text");
   },
 
+  // use to end a ghosttrack
   end: function(time) {
+    if (!this.isGhost) {
+      console.log("[WARN] ending a track that is no longer ghost.");
+    }
+
     var duration = time - this.startTime();
 
     if (duration <= 0) {
@@ -121,7 +126,6 @@ river.model.Track = Backbone.Model.extend({
     this.setEndTime(time);
 
     Backbone.trigger("ghosttrackend",this);
-
     this.isGhost = false;
 
     _.each(this.views,function(view){

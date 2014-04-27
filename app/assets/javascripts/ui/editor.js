@@ -608,6 +608,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackStart: function(track) {
+    // console.log("ontrackstart" + track.toString());
     this.currentTrack = track;
     this.lastTrack = track;
 
@@ -619,6 +620,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackEnd: function(track) {
+    // console.log("ontrackend" + track.toString());
     this.currentTrack = null;
 
     this.hideSubtitleInSubtitleBar();
@@ -777,6 +779,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.safeEndGhostTrack(track);
   },
 
+  // returns null if unsuccessful
   safeCreateGhostTrack: function() {
     try {
       return this.createGhostTrack();
@@ -799,15 +802,22 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var trackDuration = 5;
     var track = this.safeCreateGhostTrack();
 
-    var endTime   = this.determineEndTime(track.startTime());
+    if (track) {
+      var endTime   = this.determineEndTime(track.startTime());
 
-    if (this.media.currentTime + trackDuration < endTime) {
-      endTime = this.media.currentTime + trackDuration;
+      // if seeking to less than start time next track, we have to endGhostTrack ourselves
+      // otherwise, if were seeking to start time of next track, we simply let onTrackEnd to trigger safeEndGhostTrack,
+      //            and avoid calling safeEndGhostTrack again
+      if (this.media.currentTime + trackDuration < endTime) {
+        endTime = this.media.currentTime + trackDuration;
+
+        this.seek(endTime,function(){
+          this.safeEndGhostTrack(track);
+        }.bind(this));
+      } else {
+        this.seek(endTime);
+      }
     }
-
-    this.seek(endTime,function(){
-      this.safeEndGhostTrack(track);
-    }.bind(this));
   },
 
   seek: function(time,callback) {
@@ -851,6 +861,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var time = endTime || this.lastTimeUpdateTime;
     try {
       track.end(time);
+
+      // // we seek a little after endTime to trigger trackend (which will request input from user)
+      if (this.popcorn.paused()) {
+        this.seek(time + 0.01);
+      }
     } catch(e) {
       track.remove();
       throw e;
@@ -864,41 +879,31 @@ river.ui.Editor = river.ui.BasePlayer.extend({
    /* When you're timing a track while media is playing, and you're very near the start of next track,
    *   pausing might result in scrubber being inside next track since pausing is not immediate (it takes a few millisec
    * This function would ensure that pausing would stop at current track
-   * Would only run if media is currently playing, if its paused, don't do anything
    */
   ensurePauseAtTrack: function(track,callback) {
-    if (this.popcorn.paused()) {
-      callback();
-      return;
-    }
-
     var seekBackToTrack = function() {
       // make sure to remove this callback
       this.media.removeEventListener("pause",seekBackToTrack);
 
-      // console.log("[seeking] curr_track: " + this.currentTrack + " - track: " + track);
-      // check if track that we want to pause  at is same as this.currentTrack
-      // if not, seek back to track
-
-      if (track !== this.currentTrack) {
-        var executeCallback = function() {
-          this.popcorn.off("seeked",executeCallback);
-          callback();
-        }.bind(this);
-
-        this.popcorn.on("seeked",executeCallback);
-
-        var timeSlightlyBeforeTrackEnd = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
-        this.seek(timeSlightlyBeforeTrackEnd);
-      } else {
+      var executeCallback = function() {
+        this.popcorn.off("seeked",executeCallback);
         callback();
-      }
+      }.bind(this);
+
+      this.popcorn.on("seeked",executeCallback);
+
+      var timeSlightlyBeforeTrackEnd = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
+      this.seek(timeSlightlyBeforeTrackEnd);
 
     }.bind(this);
 
     this.media.addEventListener("pause",seekBackToTrack);
 
-    // if playing, pause playback to let user type subtitle
+    // if already paused, manually trigger the callback to seek to right time
+    if (this.popcorn.paused()) {
+      seekBackToTrack();
+      return;
+    }
 
     this.pause();
   },
@@ -938,6 +943,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   showSubtitleInSubtitleBar: function(subtitle) {
     // console.log("show sub display");
+    // its possible that this gets triggered when we are still on subtitleEditMode
+    // i.e ghostrack hit start time of next track (ontrackend, subtitleEditMode, 
+    //     then next track ontrackstart gets triggered which calls this function )
+    if (this.isOnSubtitleEditMode) return;
     this.hideSubtitleEdit();
     this.$subtitleDisplay.show();
     this.$subtitleDisplay.text(subtitle.get("text"));
