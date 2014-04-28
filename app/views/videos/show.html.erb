@@ -1,8 +1,6 @@
 <% set_meta_tags :site => 'Riversub', :title => "#{@repo.video.name}", :description => "Watch a Youtube Video with user generated captions/subtitles" %>
 
 <div>
-  <div id="player-background"></div>
-
   <div id='river_player' data-repo='<%= @repo.serialize.to_json %>'>
     <div id='player-top' class='row'> 
       <div class="left_side">
@@ -21,7 +19,7 @@
         </div> 
       </div>
 
-      <div id='player-top-left'> 
+      <div id='player-top-left'>
         <div id="white-bar"></div>
         <div id='media_container'> 
           <div id='media'></div> 
@@ -55,5 +53,5 @@
     </div> 
 
 
-  </div>    
+  </div>
 </div>    
