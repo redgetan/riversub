@@ -176,11 +176,14 @@ div#editor-bottom {
 }
 
 #subtitle_list {
-  	padding: 0px 10px;
+	padding: 0px 10px;
 	height: 160px;
 	overflow-y: auto;
 	overflow-x: hidden;
-	/*border: solid 1px lightgray;*/
+}
+
+#editor #subtitle_list {
+	border: solid 1px lightgray;
 }
 
 #subtitle_list table {
@@ -274,11 +277,11 @@ div#editor-bottom {
 }
 
 #controls #start_timing_btn i {
-	color: #B3192D;
+	color: #81CFA6;
 }
 
 #controls #stop_timing_btn i {
-	color: #333;
+	color: #81CFA6;
 }
 
 div#player-bottom {
@@ -354,3 +357,10 @@ a#preview_btn {
 	background-color: lightcoral;
 }
 
+#add_sub_btn {
+	margin-right: 10px;
+}
+
+#open_close_btns {
+	width: 60px;
+}

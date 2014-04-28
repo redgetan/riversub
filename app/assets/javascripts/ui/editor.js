@@ -46,7 +46,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     Backbone.on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
     Backbone.on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
     Backbone.on("subtitlelineblur",this.onSubtitleLineBlur.bind(this));
-    Backbone.on("subtitlelinekeyup",this.onSubtitleLineKeyup.bind(this));
+    Backbone.on("subtitletextkeyup",this.onSubtitleTextKeyup.bind(this));
     Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
     Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
     Backbone.on("trackremove",this.onTrackRemove.bind(this));
@@ -60,7 +60,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $('[data-toggle="tab"]').on('shown.bs.tab', this.onTabShown.bind(this));
 
-    this.$addSubtitleBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
+    this.$addSubBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
     this.$startTimingBtn.on("click",this.onStartTimingBtn.bind(this));
@@ -151,10 +151,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         //   "<button href='#subtitle_tab' class='btn' type='button' data-toggle='tab'>Subtitle</button>" +
                         // "</ul>" +
                       // "</div> " +
-                      "<div class='btn-group pull-right'> " +
-                        "<a id='start_timing_btn' class='btn'><i class='icon-circle'></i> Start Timing</a> " +
-                        "<a id='stop_timing_btn' class='btn'><i class='icon-circle'></i> Stop</a> " +
+                      "<div id='open_close_btns' class='btn-group pull-right'> " +
+                        "<a id='start_timing_btn' class='btn btn-primary'>Open</a> " +
+                        "<a id='stop_timing_btn' class='btn btn-primary'>Close</a> " +
                       "</div> " +
+                      "<a id='add_sub_btn' class='btn btn-primary pull-right'><i class='icon-plus'></i></a> " +
                       // "<div class='btn-group pull-right'> " +
                       // "</div> " +
                     "</div> " +
@@ -199,7 +200,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                             "<div id='keyboard-shortcuts' class='span6 pull-right'> " +
                               "<span>" +
                                 "<b>Keyboard Shortcuts: </b>  " +
-                                "<kbd class='light'>Shift</kbd> Start/Stop Timing " +
+                                "<kbd class='light'>Shift</kbd> Open/Close " +
                                 "<kbd class='light'>Space</kbd> Play/Pause" +
                                 "<kbd class='light'>Esc</kbd>   Cancel " +
                               "</span>" +
@@ -241,7 +242,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$stopTimingBtn = $("#stop_timing_btn");
     this.$stopTimingBtn.hide();
 
-    this.$addSubtitleBtn = $("#add_subtitle_btn");
+    this.$addSubBtn = $("#add_sub_btn");
+    this.$addSubBtn.attr("disabled","disabled");
 
     this.intro = introJs();
 
@@ -287,12 +289,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         },
         {
           element: "#start_timing_btn",
-          intro: "To add a subtitle that starts at current time, click this button. Try it now.",
+          intro: "To add a subtitle that starts at current time, click 'open'. Try it now.",
           position: 'left'
         },
         {
           element: "#stop_timing_btn",
-          intro: "Now press stop when you want your text to end",
+          intro: "Now click 'close' when you want your text to end",
           position: 'left'
         },
         {
@@ -338,7 +340,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         },
         {
           element: "#subtitle_container",
-          intro: "Double click one of the subtitle texts to edit it. ",
+          intro: "Double click the 'start', 'end', or 'text' section to edit the time or text of subtitle. ",
           position: "top"
         },
         {
@@ -479,6 +481,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onLoadedMetadata: function(event) {
     this.$startTimingBtn.removeAttr("disabled");
+    this.$addSubBtn.removeAttr("disabled");
     this.enableCommands();
     Backbone.trigger("editor.ready");
     this.setupIntroJS();
@@ -561,7 +564,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         }
       }.bind(this)
     });
-    this.$addSubtitleBtn.attr("disabled","disabled");
+    this.$addSubBtn.attr("disabled","disabled");
   },
 
   onGhostTrackEnd: function(track) {
@@ -574,10 +577,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
           $(".introjs-nextbutton").removeClass("introjs-disabled");
           $(".introjs-nextbutton").trigger("click");
         }
+        this.$startTimingBtn.show();
       }.bind(this)
     });
-    this.$startTimingBtn.show();
-    this.$addSubtitleBtn.removeAttr("disabled");
+    this.$addSubBtn.removeAttr("disabled");
     track.fadingHighlight();
     track.save();
   },
@@ -605,6 +608,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackStart: function(track) {
+    // console.log("ontrackstart" + track.toString());
     this.currentTrack = track;
     this.lastTrack = track;
 
@@ -616,6 +620,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackEnd: function(track) {
+    // console.log("ontrackend" + track.toString());
     this.currentTrack = null;
 
     this.hideSubtitleInSubtitleBar();
@@ -706,11 +711,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     $(document).off("keyup");
     $(document).on("keyup",this.onKeyupHandler.bind(this));
     this.$startTimingBtn.removeAttr("disabled");
+    this.$addSubBtn.removeAttr("disabled");
   },
 
   disableCommands: function(event) {
     $(document).off("keyup");
     this.$startTimingBtn.attr("disabled","disabled");
+    this.$addSubBtn.attr("disabled","disabled");
   },
 
   onSubtitleEditKeyup: function(event) {
@@ -739,7 +746,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
-  onSubtitleLineKeyup: function(text) {
+  onSubtitleTextKeyup: function(text) {
     this.$subtitleDisplay.text(text);
   },
 
@@ -772,6 +779,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.safeEndGhostTrack(track);
   },
 
+  // returns null if unsuccessful
   safeCreateGhostTrack: function() {
     try {
       return this.createGhostTrack();
@@ -789,20 +797,27 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onAddSubtitleBtnClick: function(event) {
-    if (this.$addSubtitleBtn.attr("disabled") == "disabled") return;
+    if (this.$addSubBtn.attr("disabled") == "disabled") return;
     // add a track
     var trackDuration = 5;
     var track = this.safeCreateGhostTrack();
 
-    var endTime   = this.determineEndTime(track.startTime());
+    if (track) {
+      var endTime   = this.determineEndTime(track.startTime());
 
-    if (endTime === this.mediaDuration()) {
-      endTime = this.media.currentTime + trackDuration;
+      // if seeking to less than start time next track, we have to endGhostTrack ourselves
+      // otherwise, if were seeking to start time of next track, we simply let onTrackEnd to trigger safeEndGhostTrack,
+      //            and avoid calling safeEndGhostTrack again
+      if (this.media.currentTime + trackDuration < endTime) {
+        endTime = this.media.currentTime + trackDuration;
+
+        this.seek(endTime,function(){
+          this.safeEndGhostTrack(track);
+        }.bind(this));
+      } else {
+        this.seek(endTime);
+      }
     }
-
-    this.seek(endTime,function(){
-      this.safeEndGhostTrack(track);
-    }.bind(this));
   },
 
   seek: function(time,callback) {
@@ -846,6 +861,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var time = endTime || this.lastTimeUpdateTime;
     try {
       track.end(time);
+
+      // // we seek a little after endTime to trigger trackend (which will request input from user)
+      if (this.popcorn.paused()) {
+        this.seek(time + 0.01);
+      }
     } catch(e) {
       track.remove();
       throw e;
@@ -859,41 +879,31 @@ river.ui.Editor = river.ui.BasePlayer.extend({
    /* When you're timing a track while media is playing, and you're very near the start of next track,
    *   pausing might result in scrubber being inside next track since pausing is not immediate (it takes a few millisec
    * This function would ensure that pausing would stop at current track
-   * Would only run if media is currently playing, if its paused, don't do anything
    */
   ensurePauseAtTrack: function(track,callback) {
-    if (this.popcorn.paused()) {
-      callback();
-      return;
-    }
-
     var seekBackToTrack = function() {
       // make sure to remove this callback
       this.media.removeEventListener("pause",seekBackToTrack);
 
-      // console.log("[seeking] curr_track: " + this.currentTrack + " - track: " + track);
-      // check if track that we want to pause  at is same as this.currentTrack
-      // if not, seek back to track
-
-      if (track !== this.currentTrack) {
-        var executeCallback = function() {
-          this.popcorn.off("seeked",executeCallback);
-          callback();
-        }.bind(this);
-
-        this.popcorn.on("seeked",executeCallback);
-
-        var timeSlightlyBeforeTrackEnd = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
-        this.seek(timeSlightlyBeforeTrackEnd);
-      } else {
+      var executeCallback = function() {
+        this.popcorn.off("seeked",executeCallback);
         callback();
-      }
+      }.bind(this);
+
+      this.popcorn.on("seeked",executeCallback);
+
+      var timeSlightlyBeforeTrackEnd = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
+      this.seek(timeSlightlyBeforeTrackEnd);
 
     }.bind(this);
 
     this.media.addEventListener("pause",seekBackToTrack);
 
-    // if playing, pause playback to let user type subtitle
+    // if already paused, manually trigger the callback to seek to right time
+    if (this.popcorn.paused()) {
+      seekBackToTrack();
+      return;
+    }
 
     this.pause();
   },
@@ -933,6 +943,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   showSubtitleInSubtitleBar: function(subtitle) {
     // console.log("show sub display");
+    // its possible that this gets triggered when we are still on subtitleEditMode
+    // i.e ghostrack hit start time of next track (ontrackend, subtitleEditMode, 
+    //     then next track ontrackstart gets triggered which calls this function )
+    if (this.isOnSubtitleEditMode) return;
     this.hideSubtitleEdit();
     this.$subtitleDisplay.show();
     this.$subtitleDisplay.text(subtitle.get("text"));

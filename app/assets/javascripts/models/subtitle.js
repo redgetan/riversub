@@ -39,8 +39,8 @@ river.model.Subtitle = Backbone.Model.extend({
     }
   },
 
-  openEditor: function(event) {
-    this.view.openEditor(event);
+  openEditor: function(event, $el) {
+    this.view.openEditor(event, $el);
   },
 
   hideEditorIfNeeded: function() {

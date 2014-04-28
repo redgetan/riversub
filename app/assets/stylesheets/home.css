@@ -56,7 +56,7 @@
 }
 
 .icon-plus {
-  color: green;
+  /*color: green;*/
 }
 
 a.new_project_user_btn {
@@ -577,7 +577,7 @@ ul.social_login_buttons a {
   border: solid 1px #bbb;
   padding: 20px;
   margin-top: 20px;
-  margin-bottom: 60px;
+  margin-bottom: 100px;
 }
 
 .main-heading {
@@ -646,6 +646,7 @@ footer ul li a:hover{
   /*border: solid 1px black;*/
   margin-top: 20px;
   margin-left: 30px;
+  width: 350px;
   display: inline-block;
 }
 
@@ -686,10 +687,15 @@ footer ul li a:hover{
   display: inline-block;
 }
 
+
 .white #white-bar {
     background-image: url("ricepaper_v3.png");
     width: 100%;
     height: 50px;
     position: absolute;
     margin-top: -53px;
+}
+.btn-primary {
+  background-image: none;
+  opacity: 0.65;
 }

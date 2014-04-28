@@ -11,8 +11,6 @@ river.ui.Track = Backbone.View.extend({
     this.$el.data("model",this.model);
 
     this.attachViewToContainer();
-
-    this.listenTo(this.model, "change", this.render);
   },
 
   addGhost: function() {
