@@ -60,6 +60,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $('[data-toggle="tab"]').on('shown.bs.tab', this.onTabShown.bind(this));
 
+    this.$addSubInput.on("keyup",this.onAddSubtitleInputKeyup.bind(this));
     this.$addSubBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
@@ -76,6 +77,26 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+  },
+
+  onAddSubtitleInputKeyup: function(event) {
+    // enter key
+    if (event.which == 13 ) {
+      var track = this.currentGhostTrack;
+      this.safeEndGhostTrack(track);
+      this.$addSubInput.val("");
+    } else if (!this.isGhostTrackStarted && this.$addSubInput.val().trim() !== "") {
+      this.safeCreateGhostTrack();
+      this.play();
+    }
+
+    var track = this.currentGhostTrack;
+    if (track) {
+      var text = this.$addSubInput.val();
+      track.subtitle.set({ "text": text});
+      this.$subtitleDisplay.text(text);
+    }
+    console.log(event.which);
   },
 
   onTabShown: function (e) {
@@ -155,7 +176,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<a id='start_timing_btn' class='btn btn-primary'>Open</a> " +
                         "<a id='stop_timing_btn' class='btn btn-primary'>Close</a> " +
                       "</div> " +
-                      "<a id='add_sub_btn' class='btn btn-primary pull-right'><i class='icon-plus'></i></a> " +
+                      "<div id='add_sub_container' class='input-append pull-right'> " +
+                        "<input id='add_sub_input' class='span3' type='text' placeholder='type subtitle here'>" + 
+                        "<a id='add_sub_btn' class='btn btn-primary'><i class='icon-plus'></i></a> " +
+                      "</div> " +
                       // "<div class='btn-group pull-right'> " +
                       // "</div> " +
                     "</div> " +
@@ -241,6 +265,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$stopTimingBtn = $("#stop_timing_btn");
     this.$stopTimingBtn.hide();
+
+    this.$addSubInput = $("#add_sub_input");
 
     this.$addSubBtn = $("#add_sub_btn");
     this.$addSubBtn.attr("disabled","disabled");
@@ -424,12 +450,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onKeyupHandler: function(event) {
     // shift key
     if (event.which === 16) {
-      this.timeSubtitle();
+      // this.timeSubtitle();
     }
 
     // space key
     if (event.which === 32) {
-      this.togglePlayPause();
+      // this.togglePlayPause();
     }
 
     // escape key
@@ -608,6 +634,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackStart: function(track) {
+    this.$addSubInput.attr("disabled","disabled");   
+
     // console.log("ontrackstart" + track.toString());
     this.currentTrack = track;
     this.lastTrack = track;
@@ -620,6 +648,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackEnd: function(track) {
+    this.$startTimingBtn.removeAttr("disabled");
     // console.log("ontrackend" + track.toString());
     this.currentTrack = null;
 
@@ -797,27 +826,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onAddSubtitleBtnClick: function(event) {
-    if (this.$addSubBtn.attr("disabled") == "disabled") return;
-    // add a track
-    var trackDuration = 5;
-    var track = this.safeCreateGhostTrack();
+    if (!this.isGhostTrackStarted) return;
 
-    if (track) {
-      var endTime   = this.determineEndTime(track.startTime());
-
-      // if seeking to less than start time next track, we have to endGhostTrack ourselves
-      // otherwise, if were seeking to start time of next track, we simply let onTrackEnd to trigger safeEndGhostTrack,
-      //            and avoid calling safeEndGhostTrack again
-      if (this.media.currentTime + trackDuration < endTime) {
-        endTime = this.media.currentTime + trackDuration;
-
-        this.seek(endTime,function(){
-          this.safeEndGhostTrack(track);
-        }.bind(this));
-      } else {
-        this.seek(endTime);
-      }
-    }
+    var track = this.currentGhostTrack;
+    this.safeEndGhostTrack(track);
+    this.$addSubInput.val("");
   },
 
   seek: function(time,callback) {
