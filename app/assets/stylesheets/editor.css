@@ -352,11 +352,11 @@ div#keyboard-shortcuts {
 }
 
 a#preview_btn {
-	background-color: lightcoral;
+	/*background-color: lightcoral;*/
 }
 
 #add_sub_btn {
-	margin-right: 10px;
+	/*margin-right: 10px;*/
 }
 
 #open_close_btns {

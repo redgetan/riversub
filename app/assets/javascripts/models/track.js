@@ -123,10 +123,13 @@ river.model.Track = Backbone.Model.extend({
       throw new Error("Track Duration of " + duration + " is invalid");
     }
 
-    this.setEndTime(time);
-
     Backbone.trigger("ghosttrackend",this);
+
+    // isGhost must be set to false first before setting endTime so that by 
+    // the time ui/subtitle.js calls on 'changed' callback (render), it'll display endTime
     this.isGhost = false;
+
+    this.setEndTime(time);
 
     _.each(this.views,function(view){
       view.removeGhost();
