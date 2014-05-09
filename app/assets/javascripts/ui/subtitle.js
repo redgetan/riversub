@@ -133,7 +133,6 @@ river.ui.Subtitle = Backbone.View.extend({
   render: function() {
     if (this.model.track !== null ) {
       this.$el.find(".start_time").text(this.model.startTime());
-      console.log("rending sub...");
       if (!this.model.track.isGhost) {
         this.$el.find(".end_time").text(this.model.endTime());
       }

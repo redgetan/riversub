@@ -182,7 +182,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       //   "<a id='stop_timing_btn' class='btn btn-primary'>Close</a> " +
                       // "</div> " +
                       "<div id='add_sub_container' class='input-append pull-right'> " +
-                        "<input id='add_sub_input' class='span3' type='text' placeholder='type subtitle here'>" + 
+                        "<input id='add_sub_input' class='span3' type='text' placeholder='type here and press [enter]'>" + 
                         "<a id='add_sub_btn' class='btn btn-primary'>Add</a> " +
                       "</div> " +
                       // "<div class='btn-group pull-right'> " +
@@ -526,12 +526,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onEditorSync: function(syncMethod,model) {
-    // if (this.repo.user) {
+    if (syncMethod === "save" ) {
       Backbone.Model.prototype[syncMethod].call(model,{},{
         success: this.onTrackRequestSuccess.bind(this), 
         error:   this.onTrackRequestError.bind(this)
       });
-    // }
+    } else {
+      Backbone.Model.prototype[syncMethod].call(model,{
+        success: this.onTrackRequestSuccess.bind(this), 
+        error:   this.onTrackRequestError.bind(this)
+      });
+     }
   },
 
   onTrackRequestSuccess: function() {
@@ -834,6 +839,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     var track = this.currentGhostTrack;
     this.safeEndGhostTrack(track);
+    this.$addSubInput.focus();
   },
 
   seek: function(time,callback) {
