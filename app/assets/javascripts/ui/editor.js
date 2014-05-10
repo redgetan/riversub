@@ -12,7 +12,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.isGhostTrackStarted = false;
     this.isOnSubtitleEditMode = null;
 
-    this.showGuidedWalkthroughWelcome();
+    // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
   },
 
@@ -835,10 +835,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onAddSubtitleBtnClick: function(event) {
-    if (!this.isGhostTrackStarted) return;
+    if (this.isGhostTrackStarted) {
+      var track = this.currentGhostTrack;
+      this.safeEndGhostTrack(track);
+    }
 
-    var track = this.currentGhostTrack;
-    this.safeEndGhostTrack(track);
     this.$addSubInput.focus();
   },
 
