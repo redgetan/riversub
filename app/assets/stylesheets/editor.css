@@ -353,6 +353,8 @@ div#keyboard-shortcuts {
 
 a#preview_btn {
 	/*background-color: lightcoral;*/
+	font-size: 14px;
+	padding: 5px 10px;
 }
 
 #add_sub_btn {

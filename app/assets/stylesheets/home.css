@@ -185,6 +185,10 @@ div#media_container {
   /*margin-right: 15px;*/
 }
 
+#demo #river_player {
+  margin-left: 40px;
+}
+
 #river_player div#media_container {
   margin-top: -60px;
 }

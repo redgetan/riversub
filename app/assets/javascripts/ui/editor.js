@@ -11,6 +11,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.currentGhostTrack = null;
     this.isGhostTrackStarted = false;
     this.isOnSubtitleEditMode = null;
+    this.safeEndGhostLock = false;
 
     // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
@@ -60,6 +61,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $('[data-toggle="tab"]').on('shown.bs.tab', this.onTabShown.bind(this));
 
+    this.$publishBtn.on("click",this.onPublishBtnClick.bind(this));
     this.$addSubInput.on("keyup",this.onAddSubtitleInputKeyup.bind(this));
     this.$addSubInput.on("blur",this.onAddSubtitleInputBlur.bind(this));
     this.$addSubBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
@@ -80,6 +82,27 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
   },
 
+  onPublishBtnClick: function(event) {
+    if (this.$publishBtn.attr("disabled") == "disabled") return;
+
+    $.ajax({
+      url: this.repo.publish_url,
+      type: "POST",
+      data: {
+        token: this.repo.token
+      },
+      dataType: "json",
+      success: function(data) {
+        window.location.href = window.location.href;
+      },
+      error: function(data) {
+        alert("Publish failed. We would look into this shortly.");
+        throw data.responseText;
+      }
+    });
+
+  },
+
   onAddSubtitleInputKeyup: function(event) {
     // enter key
     if (event.which == 13 ) {
@@ -96,7 +119,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       track.subtitle.set({ "text": text});
       this.$subtitleDisplay.text(text);
     }
-    console.log(event.which);
   },
 
   onAddSubtitleInputBlur: function(event) {
@@ -129,7 +151,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<a href=" + this.repo.url + ">" + this.repo.video.name + "</a>" +
                     "</h5>" +
                     "<h5 class='pull-right'>" +
-                      "<a id='preview_btn' target='_blank' href=" + this.repo.url + " class='label '>Preview</a>" +
+                      "<a id='publish_btn' class='btn btn-success'>Publish</a>" +
+                      "<a id='preview_btn' target='_blank' href=" + this.repo.url + " class='label'>View</a>" +
                     "</h5>" +
                     // "<h6 id='video_url'>" +
                     //   "<a href=" + this.repo.video.url + ">" + this.repo.video.url + "</a>" +
@@ -278,8 +301,18 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.intro = introJs();
 
+    this.$publishBtn = $("#publish_btn");
+
+    this.$publishBtn.tooltip({title: "Make video public"});
+
     this.$previewBtn = $("#preview_btn");
-    this.$previewBtn.tooltip({title: "See how it'll look in public"});
+
+    if (this.repo.is_published) {
+      this.$previewBtn.tooltip({title: "See how it'll look in public"});
+      this.$publishBtn.hide();
+    } else {
+      this.$previewBtn.hide();
+    }
 
     // this.$helpBtn = $("#help_btn");
     // this.$helpBtn.tooltip({title: "Help"});
@@ -304,6 +337,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$keyboard_shortcuts = $("#keyboard-shortcuts");
     this.$status_bar = $("#status-bar");
+
+
 
     $("footer").hide();
   },
@@ -600,7 +635,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         }
       }.bind(this)
     });
-    this.$addSubBtn.attr("disabled","disabled");
   },
 
   onGhostTrackEnd: function(track) {
@@ -618,9 +652,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         this.$startTimingBtn.show();
       }.bind(this)
     });
-    this.$addSubBtn.removeAttr("disabled");
     track.fadingHighlight();
-    track.save();
   },
 
   play: function() {
@@ -826,20 +858,22 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
+  // should only get called one at a time
   safeEndGhostTrack: function(track,endTime) {
+    if (this.safeEndGhostLock) return;
+
+    this.safeEndGhostLock = true
+
     try {
       this.endGhostTrack(track,endTime);
     } catch(e) {
       console.log(e.stack);
     }
+
+    this.safeEndGhostLock = false
   },
 
   onAddSubtitleBtnClick: function(event) {
-    if (this.isGhostTrackStarted) {
-      var track = this.currentGhostTrack;
-      this.safeEndGhostTrack(track);
-    }
-
     this.$addSubInput.focus();
   },
 

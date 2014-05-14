@@ -15,10 +15,10 @@
           <li class="span2">
             <div class="thumbnail center">
               <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span>
-              <a href="<%= repo.short_url %>" id="<%= repo.id %>" class="video" >
+              <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
                 <img src="<%= repo.thumbnail_url %>" alt="">
               </a>
-              <a href="<%= repo.short_url %>" id="<%= repo.id %>" class="video" >
+              <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
                 <h6 class='video_name'><%= repo.video.name %></h6>
               </a>
               <span class='repo_owner'>

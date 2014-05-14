@@ -19,24 +19,23 @@ River::Application.routes.draw do
 
   end
 
+  get "faq", :to => "home#faq"
+
   get "videos",                                :to => "videos#index"
   get "videos/anonymous",                      :to => "videos#anonymous"
   get "videos/community",                      :to => "videos#community"
-  post "/videos/sub",                          :to => "videos#sub",    :as => "sub_videos"
-  get "/videos/:token",                        :to => "videos#show",   :as => "video"
-  get "/videos/:token/editor",                 :to => "videos#editor", :as => "editor_video"
-
-  get "/users/:username/videos/:token",        :to => "videos#show",   :as => "user_video"
-  get "/users/:username/videos/:token/editor", :to => "videos#editor", :as => "editor_user_video"
+  post "videos/sub",                           :to => "videos#sub",    :as => "sub_videos"
+  post "videos/publish",                       :to => "videos#publish",:as => "publish_videos"
 
   resources "repositories", :only => [] do
     resources "timings", :only => [:index, :create, :update, :destroy]
   end
 
+  get "/:token",                        to: "videos#show",   as: "video"
+  get "/:token/editor",                 to: "videos#editor", as: "editor_video"
+  get '/:username/:token',              to: 'videos#show',   as: 'user_video'
+  get '/:username/:token/editor',       to: 'videos#editor', as: 'editor_user_video'
 
-  get "about", :to => "home#about"
-  get "faq", :to => "home#faq"
-  get "how_it_works", :to => "home#how_it_works"
   root :to => "home#index"
 
 
@@ -96,7 +95,4 @@ River::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
-
-  get '/:username/:token',        to: 'videos#show',   as: 'user_video_short'
-  get '/:username/:token/editor', to: 'videos#editor', as: 'editor_user_video_short'
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140330220356) do
+ActiveRecord::Schema.define(:version => 20140513232309) do
 
   create_table "conversations", :force => true do |t|
     t.string   "subject",    :default => ""
@@ -62,10 +62,12 @@ ActiveRecord::Schema.define(:version => 20140330220356) do
   add_index "receipts", ["notification_id"], :name => "index_receipts_on_notification_id"
 
   create_table "repositories", :force => true do |t|
-    t.integer  "video_id",   :null => false
+    t.integer  "video_id",     :null => false
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "token"
+    t.boolean  "is_published"
   end
 
   create_table "settings", :force => true do |t|
