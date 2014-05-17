@@ -59,7 +59,7 @@ div#editor-bottom {
 #summary.timeline {
 	height: 15px;
 	position: relative;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 #expanded.timeline {
@@ -70,10 +70,11 @@ div#editor-bottom {
 }
 
 .window_slider {
-	border: solid 2px blue;
+	border: solid 1px white;
 	position: absolute;
-	height: 12px;
-	background-color: lightblue;
+	height: 5px;
+	background-color: rgb(83, 103, 240);
+	top: 15px;
 	opacity: 0.5;
 	z-index: 5;
 }
@@ -132,7 +133,7 @@ div#editor-bottom {
 	background-color: #A3D4A3;
 	position: absolute !important;
 	border: solid 1px gray;
-	font-size: 10px;
+	/*font-size: 10px;*/
 	cursor: text;
 }
 
@@ -328,7 +329,7 @@ div#seek_head {
 	width: 10px;
 	height: 20px;
 	position: absolute;
-	margin-top: -5px;
+	margin-top: 0px;
 	margin-left: -4px;
 	z-index: 5;
 }

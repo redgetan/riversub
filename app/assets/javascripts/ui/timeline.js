@@ -36,7 +36,6 @@ river.ui.Timeline = Backbone.View.extend({
     this.$window_slider = $("#summary .window_slider");
     this.$window_slider.css("left",0);
     this.$window_slider.css("width",this.resolution(this.$summary) * 30);
-    this.$window_slider.css("display","none");
 
     this.$time_float = $("#time_float");
     this.$time_float.hide();
