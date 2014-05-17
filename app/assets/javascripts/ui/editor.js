@@ -63,6 +63,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     $('[data-toggle="tab"]').on('shown.bs.tab', this.onTabShown.bind(this));
 
     this.$publishBtn.on("click",this.onPublishBtnClick.bind(this));
+    this.$addSubInput.on("focus",this.onAddSubtitleInputFocus.bind(this));
     this.$addSubInput.on("keyup",this.onAddSubtitleInputKeyup.bind(this));
     this.$addSubInput.on("blur",this.onAddSubtitleInputBlur.bind(this));
     this.$addSubBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
@@ -104,6 +105,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   },
 
+  onAddSubtitleInputFocus: function(event) {
+    this.disableCommands();
+  },
+
   onAddSubtitleInputKeyup: function(event) {
     // enter key
     if (event.which == 13 ) {
@@ -127,6 +132,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (track) {
       this.safeEndGhostTrack(track);
     }
+    this.enableCommands();
   },
 
   onTabShown: function (e) {
@@ -496,7 +502,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     // space key
     if (event.which === 32) {
-      // this.togglePlayPause();
+      this.togglePlayPause();
     }
 
     // escape key

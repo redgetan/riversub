@@ -189,7 +189,7 @@ div#media_container {
   margin-left: 40px;
 }
 
-#river_player div#media_container {
+#river_player div#media {
   margin-top: -60px;
 }
 
@@ -621,6 +621,7 @@ footer {
   background-color: white;  
   height: 50px;
   border-top: solid 1px #ccc;
+  clear: both;
 }
 
 footer ul {
@@ -658,7 +659,11 @@ footer ul li a:hover{
   margin-top: 20px;
   margin-left: 30px;
   width: 350px;
-  display: inline-block;
+  float: left;
+}
+
+#river_player .right_side {
+  float: left;
 }
 
 .login_header {
@@ -694,11 +699,6 @@ footer ul li a:hover{
 
 #river_player.dark #white-bar {
   background-color:  black;  
-}
-
-#player-top-left {
-  margin-left: 20px;
-  display: inline-block;
 }
 
 .btn-primary {
