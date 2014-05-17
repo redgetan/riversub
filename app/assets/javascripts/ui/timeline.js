@@ -157,6 +157,7 @@ river.ui.Timeline = Backbone.View.extend({
     this.$seek_head.on("mousedown",this.onSeekHeadMouseDownHandler.bind(this));
     this.$seek_head.on("mouseup",this.onSeekHeadMouseUpHandler.bind(this));
 
+    this.$expanded.on("dblclick",this.onExpandedTimelineDblClick.bind(this));
     this.$expanded.on("mousedown",this.onMouseDownHandler.bind(this));
     this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
     this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
@@ -172,6 +173,10 @@ river.ui.Timeline = Backbone.View.extend({
 
   onTrackChange: function(track) {
     this.renderTrack(track);
+  },
+
+  onExpandedTimelineDblClick: function(event) {
+    Backbone.trigger("expandedtimelinedblclick");
   },
 
   onTimeUpdate: function(event) {

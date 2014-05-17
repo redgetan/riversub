@@ -42,6 +42,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     river.ui.Player.prototype.bindEvents.call(this);
 
     Backbone.on("timelineseek",this.onTimelineSeekHandler.bind(this));
+    Backbone.on("expandedtimelinedblclick",this.onExpandedTimelineDblClick.bind(this));
     Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
     Backbone.on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
     Backbone.on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
@@ -889,6 +890,29 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$addSubInput.focus();
   },
 
+  onExpandedTimelineDblClick: function(event) {
+    // add a track
+    var trackDuration = 4;
+    var track = this.safeCreateGhostTrack();
+
+    if (track) {
+      var endTime   = this.determineEndTime(track.startTime());
+
+      // if seeking to less than start time next track, we have to endGhostTrack ourselves
+      // otherwise, if were seeking to start time of next track, we simply let onTrackEnd to trigger safeEndGhostTrack,
+      //            and avoid calling safeEndGhostTrack again
+      if (this.media.currentTime + trackDuration < endTime) {
+        endTime = this.media.currentTime + trackDuration;
+
+        this.seek(endTime,function(){
+          this.safeEndGhostTrack(track);
+        }.bind(this));
+      } else {
+        this.seek(endTime);
+      }
+    }
+  },
+
   seek: function(time,callback) {
     if (time < 0 || time > this.mediaDuration()) {
       if (typeof callback !== "undefined") {
@@ -931,10 +955,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     try {
       track.end(time);
 
-      // // // we seek a little after endTime to trigger trackend (which will request input from user)
-      // if (this.popcorn.paused()) {
-      //   this.seek(time + 0.01);
-      // }
+      if (this.popcorn.paused()) {
+        // manually trigger onTrackEnd callback to request input from user
+        this.onTrackEnd(track);
+      }
     } catch(e) {
       track.remove();
       throw e;
