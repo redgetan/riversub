@@ -15,7 +15,7 @@ class Repository < ActiveRecord::Base
   validates :video_id, :presence => true
   validates :token, :uniqueness => true, on: :create
 
-  before_create :generate_token
+  before_validation :generate_token
 
 
   # scope :with_timings_count, select("repositories.*, COUNT(timings.id) timings_count")
@@ -114,9 +114,11 @@ class Repository < ActiveRecord::Base
   end
 
   def generate_token
-    self.token = loop do
-      random_token = SecureRandom.urlsafe_base64(8)
-      break random_token unless self.class.where(token: random_token).exists?
+    unless self.token
+      self.token = loop do
+        random_token = SecureRandom.urlsafe_base64(8)
+        break random_token unless self.class.where(token: random_token).exists?
+      end
     end
   end
 

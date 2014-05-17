@@ -155,15 +155,18 @@ div#editor-bottom {
 	/*background-color: moccasin;*/
 }
 
-.track:hover .track_text {
+.track_text {
+  position: relative;
+  white-space: nowrap;
+  padding: 5px;
+}
+
+.track .track_text {
   background-color: transparent;
   border: none;
   overflow: hidden;
   display: block;
   z-index: 1;
-  position: relative;
-  white-space: nowrap;
-  padding: 5px;
 }
 
 .track:hover .track_text {
