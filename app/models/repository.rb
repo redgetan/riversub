@@ -13,7 +13,7 @@ class Repository < ActiveRecord::Base
   attr_accessible :video_id, :user_id, :token, :is_published
 
   validates :video_id, :presence => true
-  validates :token, :uniqueness => true
+  validates :token, :uniqueness => true, on: :create
 
   before_create :generate_token
 
