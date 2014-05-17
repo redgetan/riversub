@@ -12,9 +12,6 @@ text.time {
 	margin-right: 5px;
 }
 
-#subtitle_display {
-}
-
 #subtitle_edit {
 	background-color: black;	
 	color: white;
@@ -118,8 +115,9 @@ div#editor-bottom {
 	width: 90px;
 	font: normal 15px Helvetica;
 	position: absolute;
+	top: 0px;
 	z-index: 3;
-	background-color: rgba(255,255,255,0.5);
+	background-color: rgba(128,128,128,0.5);
 }
 
 .track.ghost {
@@ -154,7 +152,31 @@ div#editor-bottom {
 	background-color: lightcoral ;
 }
 .track:hover {
-	background-color: moccasin;
+	/*background-color: moccasin;*/
+}
+
+.track:hover .track_text {
+  background-color: transparent;
+  border: none;
+  overflow: hidden;
+  display: block;
+  z-index: 1;
+  position: relative;
+  white-space: nowrap;
+  padding: 5px;
+}
+
+.track:hover .track_text {
+	background-color: ghostwhite;
+	border: solid 1px gray;
+	overflow: visible;
+	display: inline-block;
+	z-index: 2;
+}
+
+
+#editor #subtitle_bar {
+	position: relative;
 }
 
 #subtitle_container {

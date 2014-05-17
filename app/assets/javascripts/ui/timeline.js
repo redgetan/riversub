@@ -36,6 +36,7 @@ river.ui.Timeline = Backbone.View.extend({
     this.$window_slider = $("#summary .window_slider");
     this.$window_slider.css("left",0);
     this.$window_slider.css("width",this.resolution(this.$summary) * 30);
+    this.$window_slider.css("display","none");
 
     this.$time_float = $("#time_float");
     this.$time_float.hide();
@@ -54,12 +55,12 @@ river.ui.Timeline = Backbone.View.extend({
                      "<div class='filler'>" +
                        "<div id='track_viewport'>" +
                          "<div class='scrubber'></div>" +
-                         "<div class='time_indicator'>0</div>" +
                        "</div>" +
                        "<div id='time_label'>" +
                        "</div>" +
                      "</div>" +
                    "</div>";
+                        
 
 
     this.$expanded_container = $("#timeline_container");
@@ -76,7 +77,9 @@ river.ui.Timeline = Backbone.View.extend({
     this.$scrubber_expanded = $("#expanded .scrubber");
 
     // current time display indicator
-    this.$time_indicator = $("#expanded .time_indicator");
+    this.$time_indicator = $("<div class='time_indicator'>0</div>");
+    $("#subtitle_bar").append(this.$time_indicator);
+    
 
     // timeline label
     var timeline_label = this.createTimeLabelHTMLString(this.$filler.width(),this.mediaDuration);
@@ -221,14 +224,7 @@ river.ui.Timeline = Backbone.View.extend({
 
     var seconds = this.getSecondsFromCurrentPosition($timeline,$target,event.pageX);
 
-    if ($target.hasClass("track")) {
-      var track = $target.data("model");
-      if (!track.isGhost) {
-        Backbone.trigger("timelineseek",track.startTime());
-      }
-    } else {
-      Backbone.trigger("timelineseek",seconds);
-    }
+    Backbone.trigger("timelineseek",seconds);
   },
 
   onMouseMoveHandler: function(event) {
@@ -426,7 +422,7 @@ river.ui.Timeline = Backbone.View.extend({
 
   renderTimeIndicator: function() {
     this.renderInContainer(this.$expanded,this.$time_indicator,{
-      left: this.media.currentTime.toFixed(3),
+      // left: this.media.currentTime.toFixed(3),
       text: this.stringifyTime(this.media.currentTime)
     });
   },
