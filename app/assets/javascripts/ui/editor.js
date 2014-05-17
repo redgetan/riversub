@@ -531,7 +531,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackSeekHandler: function(time) {
-    this.seek(time);
+    this.seek(time, function() {
+      this.playTillEndOfTrack();
+    }.bind(this));
+  },
+
+  playTillEndOfTrack: function() {
+    this.pauseOnTrackEnd = true;
+    this.play();
   },
 
   onPlay: function(event) {
@@ -699,6 +706,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     track.subtitle.unhighlight();
     track.subtitle.hideEditorIfNeeded();
 
+    if (this.pauseOnTrackEnd) {
+      this.pauseOnTrackEnd = false;
+      this.pause();
+    } 
+
     if (track.isGhost && !track.isRemoved()) {
       // will reach this state if user presses space_key until startTime of next track,
       // in which it immediately stops since ghostTrack ends at starttime of next track
@@ -715,7 +727,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       }
 
       this.safeEndGhostTrack(track,endTime);
-    }
+    } 
       
       // if track is empty, we would only request once the  user to enter something
     if (typeof track.subtitle.get("text") === "undefined" || /^\s*$/.test(track.subtitle.get("text")) ) {
@@ -919,10 +931,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     try {
       track.end(time);
 
-      // // we seek a little after endTime to trigger trackend (which will request input from user)
-      if (this.popcorn.paused()) {
-        this.seek(time + 0.01);
-      }
+      // // // we seek a little after endTime to trigger trackend (which will request input from user)
+      // if (this.popcorn.paused()) {
+      //   this.seek(time + 0.01);
+      // }
     } catch(e) {
       track.remove();
       throw e;

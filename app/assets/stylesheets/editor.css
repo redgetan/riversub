@@ -63,6 +63,7 @@ div#editor-bottom {
 }
 
 #expanded.timeline {
+	cursor: cell;
 	height: 110px;
 	border: solid 1px lightgray ;
 	overflow: hidden;
@@ -132,6 +133,7 @@ div#editor-bottom {
 	position: absolute !important;
 	border: solid 1px gray;
 	font-size: 10px;
+	cursor: text;
 }
 
 .track .close {

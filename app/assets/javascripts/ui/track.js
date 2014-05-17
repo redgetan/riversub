@@ -71,6 +71,7 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
     this.setupElement();
 
     this.listenTo(this.model,"change",this.render);
+    this.listenTo(this.model.subtitle,"change",this.render);
   },
 
   render: function() {
