@@ -21,12 +21,13 @@
       </h5>
       <div class="share_edit center">
         <% if @repo.user == current_user %>
-        <a class='btn share_btn' href="#" data-toggle='modal' data-target='#share_modal'>Share</a>
-          <a class='btn btn-success subtitle_editor_btn' href="<%= @repo.editor_url %>"><i class="icon-random"></i> Edit</a>
+          <a class='share_btn river_btn' href="#" data-toggle='modal' data-target='#share_modal'>Share</a>
+          <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
+          <a class='new_repo_btn river_btn' href="#"><i class="icon-random"></i> Create</a>
         <% elsif current_user && @user_version = @repo.version_for(current_user) %>
-          <a class='btn btn-success view_version_btn' href="<%= @user_version.url %>"><i class="icon-random"></i> View Your Version</a>
+          <a class='view_version_btn river_btn' href="<%= @user_version.url %>"><i class="icon-random"></i> View Your Version</a>
         <% else %>
-          <a class='btn btn-success new_repo_btn' href="#"><i class="icon-random"></i> Create Sub</a>
+          <a class='new_repo_btn river_btn' href="#"><i class="icon-random"></i> Create</a>
         <% end %>
       </div>
     </div>
