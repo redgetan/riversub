@@ -339,13 +339,12 @@ river.ui.Timeline = Backbone.View.extend({
 
   onMoveLeftBtnClick: function(event) {
     event.preventDefault();
-    this.scrollContainerToTime(this.media.currentTime - 10);
+    this.scrollContainerToTime(this.current_window_slide.start - 10);
   },
 
   onMoveRightBtnClick: function(event) {
     event.preventDefault();
-    this.scrollContainerToTime(this.media.currentTime + 10);
-    // this.scrollWindow(-10);
+    this.scrollContainerToTime(this.current_window_slide.start + 10);
   },
 
   scrollWindow: function(secondsToScroll) {
@@ -451,8 +450,10 @@ river.ui.Timeline = Backbone.View.extend({
 
   },
 
-  onScrubberDisappear: function(event) {
-    this.scrollToScrubberAndMoveWindowSlider();
+  onScrubberDisappear: function() {
+    if (!this.media.paused) {
+      this.scrollToScrubberAndMoveWindowSlider();
+    }
   },
 
   renderTimeIndicator: function() {
@@ -567,7 +568,7 @@ river.ui.Timeline = Backbone.View.extend({
           }
         }
       }.bind(this));
-      this.$window_slider.animate({ left: this.resolution(this.$summary) * this.window_slide_duration * index },300);
+      this.$window_slider.animate({ left: this.resolution(this.$summary) * startTime },300);
     }.bind(this),300);
 
     this.windowSlideTimeoutQueue.push(windowSlideTimeout);
