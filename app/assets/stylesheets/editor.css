@@ -392,3 +392,35 @@ a#preview_btn {
 #open_close_btns {
 	width: 60px;
 }
+
+#timeline_tab .move_left_btn{
+	position: relative;
+	top: -70px;
+	z-index: 20;
+	left: -27px;
+	border: solid 1px gray;
+	padding: 3px;
+	color: gray;
+	text-decoration: none;
+}
+
+#timeline_tab .move_right_btn{
+	position: relative;
+	top: -70px;
+	z-index: 20;
+	left: 940px;
+	border: solid 1px gray;
+	padding: 3px;
+	color: gray;
+	text-decoration: none;
+}
+
+#timeline_tab .move_left_btn:hover,
+#timeline_tab .move_right_btn:hover {
+	background-color: gray;
+	color: white;
+}
+
+.timeline_tab_content {
+	overflow: visible;
+}

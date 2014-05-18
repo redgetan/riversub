@@ -59,11 +59,20 @@ river.ui.Timeline = Backbone.View.extend({
                        "</div>" +
                      "</div>" +
                    "</div>";
-                        
 
+    var move_left_btn = "<a href='#' class='move_left_btn'>" +
+                         "<i class='icon-chevron-left'></i>" +
+                        "</a>";
+
+    var move_right_btn = "<a href='#' class='move_right_btn'>" +
+                           "<i class='icon-chevron-right'></i>" +
+                         "</a>";
 
     this.$expanded_container = $("#timeline_container");
     this.$expanded_container.prepend(expanded);
+
+    this.$expanded_container.append(move_left_btn);
+    this.$expanded_container.append(move_right_btn);
 
     this.$expanded = $("#expanded");
     this.$expanded_track_viewport = $("#track_viewport");
@@ -84,6 +93,9 @@ river.ui.Timeline = Backbone.View.extend({
     var timeline_label = this.createTimeLabelHTMLString(this.$filler.width(),this.mediaDuration);
     this.$expanded_time_label = $("#time_label");
     this.$expanded_time_label.append(timeline_label);
+
+    this.$move_left_btn = $(".move_left_btn");
+    this.$move_right_btn = $(".move_right_btn");
 
   },
 
@@ -160,6 +172,9 @@ river.ui.Timeline = Backbone.View.extend({
     this.$expanded.on("mousedown",this.onMouseDownHandler.bind(this));
     this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
     this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
+
+    this.$move_left_btn.on("click",this.onMoveLeftBtnClick.bind(this));
+    this.$move_right_btn.on("click",this.onMoveRightBtnClick.bind(this));
 
     Backbone.on("timelineseek",this.onTimelineSeek.bind(this));
     Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
@@ -318,8 +333,23 @@ river.ui.Timeline = Backbone.View.extend({
 
   onExpandedTimelineScroll: function(event,delta,deltaX,deltaY){
     deltaX = -(deltaX * 2);
-    this.$expanded.scrollLeft(this.$expanded.scrollLeft() - deltaX) ;
     var secondsToScroll = deltaX / this.resolution(this.$expanded);
+    this.scrollWindow(secondsToScroll);
+  },
+
+  onMoveLeftBtnClick: function(event) {
+    event.preventDefault();
+    this.scrollWindow(10);
+  },
+
+  onMoveRightBtnClick: function(event) {
+    event.preventDefault();
+    this.scrollWindow(-10);
+  },
+
+  scrollWindow: function(secondsToScroll) {
+    var deltaX = secondsToScroll * this.resolution(this.$expanded);
+    this.$expanded.scrollLeft(this.$expanded.scrollLeft() - deltaX) ;
     var numPixelsToScrollSummary = this.resolution(this.$summary) * secondsToScroll;
     var oldWindowSliderLeft = parseFloat(this.$window_slider.css("left"));
     var newWindowSliderLeft = oldWindowSliderLeft - numPixelsToScrollSummary;

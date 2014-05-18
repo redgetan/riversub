@@ -221,12 +221,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                   "</div> " + // .span12
 
                   "<div class='span12'> " +
-                    "<div class='tab-content'>" +
+                    "<div class='tab-content timeline_tab_content'>" +
                       "<div class='tab-pane active' id='timeline_tab'>" +
 
                         "<div id='timeline_container'>" +
                         "</div> " +
-
                       "</div>" +
                       "<div class='tab-pane' id='subtitle_tab'>" +
 
