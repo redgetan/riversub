@@ -2,34 +2,34 @@
 
 <div id="player-background"></div>
 
-<div id='river_player' data-repo='<%= @repo.serialize.to_json %>'>
+<div id='river_player' class='show' data-repo='<%= @repo.serialize.to_json %>'>
   <div class="left_side">
     <h5 id='repo_label'>
       <div>
         <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
       </div>
     </h5>
-    <div class='row' > 
-      <div id="media_controls">
-        <h5>
-          <span class="pull-left">
-            <% if @repo.user %>
-              <div class="subtitler pull-left">
-                Subtitler: <a class="subtitler_name" href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> 
-              </div>
-            <% end %>
-          </span>
-          <% if @repo.user == current_user %>
-            <a class='btn btn-success ubtitle_editor_btn pull-right' href="<%= @repo.editor_url %>"><i class="icon-random"></i> Edit</a>
-          <% elsif current_user && @user_version = @repo.version_for(current_user) %>
-            <a class='btn btn-success view_version_btn pull-right' href="<%= @user_version.url %>"><i class="icon-random"></i> View Your Version</a>
-          <% else %>
-            <a class='btn btn-success new_repo_btn pull-right' href="#"><i class="icon-random"></i> Create Sub</a>
+    <div id="media_controls">
+      <h5>
+        <span class="pull-left">
+          <% if @repo.user %>
+            <div class="subtitler pull-left">
+              subber: <a class="subtitler_name" href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> 
+            </div>
           <% end %>
-          <a class='btn share_btn pull-right' href="#" data-toggle='modal' data-target='#share_modal'>Share</a>
-        </h5>
+        </span>
+      </h5>
+      <div class="share_edit center">
+        <% if @repo.user == current_user %>
+        <a class='btn share_btn' href="#" data-toggle='modal' data-target='#share_modal'>Share</a>
+          <a class='btn btn-success subtitle_editor_btn' href="<%= @repo.editor_url %>"><i class="icon-random"></i> Edit</a>
+        <% elsif current_user && @user_version = @repo.version_for(current_user) %>
+          <a class='btn btn-success view_version_btn' href="<%= @user_version.url %>"><i class="icon-random"></i> View Your Version</a>
+        <% else %>
+          <a class='btn btn-success new_repo_btn' href="#"><i class="icon-random"></i> Create Sub</a>
+        <% end %>
       </div>
-    </div> 
+    </div>
     <div id='subtitle_container'> 
       <div id='subtitle_list'></div> 
       <div id='controls_extra' class='row'> 
@@ -41,7 +41,6 @@
   </div>
 
   <div class='right_side'> 
-    <div id="white-bar"></div>
     <div id='media_container'> 
       <div id='media'></div> 
       <div id='subtitle_bar' class='span8 center'> 
