@@ -339,12 +339,13 @@ river.ui.Timeline = Backbone.View.extend({
 
   onMoveLeftBtnClick: function(event) {
     event.preventDefault();
-    this.scrollWindow(10);
+    this.scrollContainerToTime(this.media.currentTime - 10);
   },
 
   onMoveRightBtnClick: function(event) {
     event.preventDefault();
-    this.scrollWindow(-10);
+    this.scrollContainerToTime(this.media.currentTime + 10);
+    // this.scrollWindow(-10);
   },
 
   scrollWindow: function(secondsToScroll) {
@@ -451,7 +452,7 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   onScrubberDisappear: function(event) {
-    this.scrollContainerToElementAndMoveWindowSlider(this.$expanded,this.$scrubber_expanded);
+    this.scrollToScrubberAndMoveWindowSlider();
   },
 
   renderTimeIndicator: function() {
@@ -519,57 +520,58 @@ river.ui.Timeline = Backbone.View.extend({
     }
   },
 
-  scrollContainerToElementAndMoveWindowSlider: function($container,$el) {
-    // if (!this.media.paused) {
-
+  scrollToScrubberAndMoveWindowSlider: function() {
       // find out which window_slide index to scroll element to
       var index = Math.floor(this.media.currentTime / this.window_slide_duration);
       var startTime   = index * this.window_slide_duration;
+      this.scrollContainerToTime(startTime);
+  },
 
-      var windowSlideTimeout;
 
-      // if queue is not empty, clear all timeouts and replace it with our new one
-      if (this.windowSlideTimeoutQueue) {
-        for (var i = 0; i < this.windowSlideTimeoutQueue.length; i++) {
-          windowSlideTimeout = this.windowSlideTimeoutQueue[i];
-          clearTimeout(windowSlideTimeout);
-        }
-        this.windowSlideTimeoutQueue.length = 0;
+  scrollContainerToTime: function(startTime) {
+    var windowSlideTimeout;
+
+    // if queue is not empty, clear all timeouts and replace it with our new one
+    if (this.windowSlideTimeoutQueue) {
+      for (var i = 0; i < this.windowSlideTimeoutQueue.length; i++) {
+        windowSlideTimeout = this.windowSlideTimeoutQueue[i];
+        clearTimeout(windowSlideTimeout);
       }
+      this.windowSlideTimeoutQueue.length = 0;
+    }
 
-      windowSlideTimeout = setTimeout(function() {
-        this.$expanded.off("mousewheel",this.onExpandedTimelineScrollCallback);
-        $container.animate({scrollLeft: startTime * this.resolution($container)},300,function(){
+    windowSlideTimeout = setTimeout(function() {
+      this.$expanded.off("mousewheel",this.onExpandedTimelineScrollCallback);
+      this.$expanded.animate({scrollLeft: startTime * this.resolution(this.$expanded)},300,function(){
 
-          // make sure scrolling callback only gets enabled after a second to prevent choppy scroll
-          // otherwise, onExpandedTimelineScrollCallback will do extra scrolling that resulted from residual scroll
-          // 
-          setTimeout(function(){ 
-            this.$expanded.on("mousewheel",this.onExpandedTimelineScrollCallback)
-          }.bind(this),500);
-          
+        // make sure scrolling callback only gets enabled after a second to prevent choppy scroll
+        // otherwise, onExpandedTimelineScrollCallback will do extra scrolling that resulted from residual scroll
+        // 
+        setTimeout(function(){ 
+          this.$expanded.on("mousewheel",this.onExpandedTimelineScrollCallback)
+        }.bind(this),500);
+        
 
-          this.updateCurrentWindowSlideAbsolute(startTime);
+        this.updateCurrentWindowSlideAbsolute(startTime);
 
-          // trigger appear/disappear events
-          if (this.isOutOfBounds()) {
-            if (this.isScrubberVisible) {
-              Backbone.trigger("scrubberdisappear");
-              this.isScrubberVisible = false;
-            }
-          } else {
-            if (!this.isScrubberVisible) {
-              Backbone.trigger("scrubberappear");
-              this.isScrubberVisible = true;
-            }
+        // trigger appear/disappear events
+        if (this.isOutOfBounds()) {
+          if (this.isScrubberVisible) {
+            Backbone.trigger("scrubberdisappear");
+            this.isScrubberVisible = false;
           }
-        }.bind(this));
-        this.$window_slider.animate({ left: this.resolution(this.$summary) * this.window_slide_duration * index },300);
-      }.bind(this),300);
+        } else {
+          if (!this.isScrubberVisible) {
+            Backbone.trigger("scrubberappear");
+            this.isScrubberVisible = true;
+          }
+        }
+      }.bind(this));
+      this.$window_slider.animate({ left: this.resolution(this.$summary) * this.window_slide_duration * index },300);
+    }.bind(this),300);
 
-      this.windowSlideTimeoutQueue.push(windowSlideTimeout);
-      this.$summary.trigger("window.scroll");
-    // }
+    this.windowSlideTimeoutQueue.push(windowSlideTimeout);
+    this.$summary.trigger("window.scroll");
   },
 
   getRightPos: function($el) {
