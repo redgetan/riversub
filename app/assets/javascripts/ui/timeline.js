@@ -201,10 +201,9 @@ river.ui.Timeline = Backbone.View.extend({
 
     // trigger appear/disappear events
     if (this.isOutOfBounds()) {
-      if (this.force_scroll_window || this.isScrubberVisible) {
+      if (this.isScrubberVisible) {
         Backbone.trigger("scrubberdisappear");
         this.isScrubberVisible = false;
-        this.force_scroll_window = false;
       }
     } else {
       if (!this.isScrubberVisible) {
@@ -451,8 +450,9 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   onScrubberDisappear: function() {
-    if (!this.media.paused) {
+    if (this.force_scroll_window || !this.media.paused) {
       this.scrollToScrubberAndMoveWindowSlider();
+      this.force_scroll_window = false;
     }
   },
 
