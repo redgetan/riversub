@@ -12,9 +12,6 @@ text.time {
 	margin-right: 5px;
 }
 
-#subtitle_display {
-}
-
 #subtitle_edit {
 	background-color: black;	
 	color: white;
@@ -62,20 +59,22 @@ div#editor-bottom {
 #summary.timeline {
 	height: 15px;
 	position: relative;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 #expanded.timeline {
+	cursor: cell;
 	height: 110px;
 	border: solid 1px lightgray ;
 	overflow: hidden;
 }
 
 .window_slider {
-	border: solid 2px blue;
+	border: solid 1px white;
 	position: absolute;
-	height: 12px;
-	background-color: lightblue;
+	height: 5px;
+	background-color: rgb(83, 103, 240);
+	top: 15px;
 	opacity: 0.5;
 	z-index: 5;
 }
@@ -118,8 +117,9 @@ div#editor-bottom {
 	width: 90px;
 	font: normal 15px Helvetica;
 	position: absolute;
+	top: 0px;
 	z-index: 3;
-	background-color: rgba(255,255,255,0.5);
+	background-color: rgba(128,128,128,0.5);
 }
 
 .track.ghost {
@@ -133,7 +133,8 @@ div#editor-bottom {
 	background-color: #A3D4A3;
 	position: absolute !important;
 	border: solid 1px gray;
-	font-size: 10px;
+	/*font-size: 10px;*/
+	cursor: text;
 }
 
 .track .close {
@@ -154,7 +155,34 @@ div#editor-bottom {
 	background-color: lightcoral ;
 }
 .track:hover {
-	background-color: moccasin;
+	/*background-color: moccasin;*/
+}
+
+.track_text {
+  position: relative;
+  white-space: nowrap;
+  padding: 5px;
+}
+
+.track .track_text {
+  background-color: transparent;
+  border: none;
+  overflow: hidden;
+  display: block;
+  z-index: 1;
+}
+
+.track:hover .track_text {
+	background-color: ghostwhite;
+	border: solid 1px gray;
+	overflow: visible;
+	display: inline-block;
+	z-index: 2;
+}
+
+
+#editor #subtitle_bar {
+	position: relative;
 }
 
 #subtitle_container {
@@ -303,7 +331,7 @@ div#seek_head {
 	width: 10px;
 	height: 20px;
 	position: absolute;
-	margin-top: -5px;
+	margin-top: 0px;
 	margin-left: -4px;
 	z-index: 5;
 }
@@ -354,13 +382,47 @@ div#keyboard-shortcuts {
 }
 
 a#preview_btn {
-	background-color: lightcoral;
+	/*background-color: lightcoral;*/
+	font-size: 14px;
+	padding: 5px 10px;
 }
 
 #add_sub_btn {
-	margin-right: 10px;
+	/*margin-right: 10px;*/
 }
 
 #open_close_btns {
 	width: 60px;
+}
+
+#timeline_tab .move_left_btn{
+	position: relative;
+	top: -70px;
+	z-index: 20;
+	left: -27px;
+	border: solid 1px gray;
+	padding: 3px;
+	color: gray;
+	text-decoration: none;
+}
+
+#timeline_tab .move_right_btn{
+	position: relative;
+	top: -70px;
+	z-index: 20;
+	left: 940px;
+	border: solid 1px gray;
+	padding: 3px;
+	color: gray;
+	text-decoration: none;
+}
+
+#timeline_tab .move_left_btn:hover,
+#timeline_tab .move_right_btn:hover {
+	background-color: gray;
+	color: white;
+}
+
+.timeline_tab_content {
+	overflow: visible;
 }

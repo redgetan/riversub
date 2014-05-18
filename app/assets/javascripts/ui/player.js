@@ -42,8 +42,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
       $(this).remove();
     });
 
-    $("#media_controls").css("margin-bottom","10px");
-
     // remove subtitle lines that are blank
     $(".subtitle").each(function(){
       if ($(this).find(".text").text().length === 0) {

@@ -11,8 +11,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.currentGhostTrack = null;
     this.isGhostTrackStarted = false;
     this.isOnSubtitleEditMode = null;
+    this.safeEndGhostLock = false;
 
-    this.showGuidedWalkthroughWelcome();
+    // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
   },
 
@@ -41,6 +42,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     river.ui.Player.prototype.bindEvents.call(this);
 
     Backbone.on("timelineseek",this.onTimelineSeekHandler.bind(this));
+    Backbone.on("expandedtimelinedblclick",this.onExpandedTimelineDblClick.bind(this));
     Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
     Backbone.on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
     Backbone.on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
@@ -60,6 +62,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $('[data-toggle="tab"]').on('shown.bs.tab', this.onTabShown.bind(this));
 
+    this.$publishBtn.on("click",this.onPublishBtnClick.bind(this));
+    this.$addSubInput.on("focus",this.onAddSubtitleInputFocus.bind(this));
+    this.$addSubInput.on("keyup",this.onAddSubtitleInputKeyup.bind(this));
+    this.$addSubInput.on("blur",this.onAddSubtitleInputBlur.bind(this));
     this.$addSubBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
@@ -76,6 +82,57 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+  },
+
+  onPublishBtnClick: function(event) {
+    if (this.$publishBtn.attr("disabled") == "disabled") return;
+
+    $.ajax({
+      url: this.repo.publish_url,
+      type: "POST",
+      data: {
+        token: this.repo.token
+      },
+      dataType: "json",
+      success: function(data) {
+        window.location.href = window.location.href;
+      },
+      error: function(data) {
+        alert("Publish failed. We would look into this shortly.");
+        throw data.responseText;
+      }
+    });
+
+  },
+
+  onAddSubtitleInputFocus: function(event) {
+    this.disableCommands();
+  },
+
+  onAddSubtitleInputKeyup: function(event) {
+    // enter key
+    if (event.which == 13 ) {
+      var track = this.currentGhostTrack;
+      this.safeEndGhostTrack(track);
+    } else if (!this.isGhostTrackStarted && this.$addSubInput.val().trim() !== "") {
+      this.safeCreateGhostTrack();
+      this.play();
+    }
+
+    var track = this.currentGhostTrack;
+    if (track) {
+      var text = this.$addSubInput.val();
+      track.subtitle.set({ "text": text});
+      this.$subtitleDisplay.text(text);
+    }
+  },
+
+  onAddSubtitleInputBlur: function(event) {
+    var track = this.currentGhostTrack;
+    if (track) {
+      this.safeEndGhostTrack(track);
+    }
+    this.enableCommands();
   },
 
   onTabShown: function (e) {
@@ -101,7 +158,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<a href=" + this.repo.url + ">" + this.repo.video.name + "</a>" +
                     "</h5>" +
                     "<h5 class='pull-right'>" +
-                      "<a id='preview_btn' target='_blank' href=" + this.repo.url + " class='label label-important'>Preview</a>" +
+                      "<a id='publish_btn' class='btn btn-success'>Publish</a>" +
+                      "<a id='preview_btn' target='_blank' href=" + this.repo.url + " class='label'>View</a>" +
                     "</h5>" +
                     // "<h6 id='video_url'>" +
                     //   "<a href=" + this.repo.video.url + ">" + this.repo.video.url + "</a>" +
@@ -136,9 +194,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<li class='active'><a href='#timeline_tab' data-toggle='tab'>Timeline</a></li>" +
                       "<li id='subtitle_tab_anchor' ><a href='#subtitle_tab' data-toggle='tab'>Subtitle</a></li>" +
                       "<li id='download_tab_anchor' ><a href='#download_tab' data-toggle='tab'>Download</a></li>" +
-                      "<li><a id='help_btn' class='' href='#'><i class='icon-question-sign'></i></a></li>" +
-
-                        
+                      // "<li><a id='help_btn' class='' href='#'><i class='icon-question-sign'></i></a></li>" +
                     "</ul>" +
                     "<div id='controls' class='span7'> " +
                       // "<div class='pull-left span1'> " +
@@ -151,23 +207,25 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         //   "<button href='#subtitle_tab' class='btn' type='button' data-toggle='tab'>Subtitle</button>" +
                         // "</ul>" +
                       // "</div> " +
-                      "<div id='open_close_btns' class='btn-group pull-right'> " +
-                        "<a id='start_timing_btn' class='btn btn-primary'>Open</a> " +
-                        "<a id='stop_timing_btn' class='btn btn-primary'>Close</a> " +
+                      // "<div id='open_close_btns' class='btn-group pull-right'> " +
+                      //   "<a id='start_timing_btn' class='btn btn-primary'>Open</a> " +
+                      //   "<a id='stop_timing_btn' class='btn btn-primary'>Close</a> " +
+                      // "</div> " +
+                      "<div id='add_sub_container' class='input-append pull-right'> " +
+                        "<input id='add_sub_input' class='span3' type='text' placeholder='type here and press [enter]'>" + 
+                        "<a id='add_sub_btn' class='btn btn-primary'>Add</a> " +
                       "</div> " +
-                      "<a id='add_sub_btn' class='btn btn-primary pull-right'><i class='icon-plus'></i></a> " +
                       // "<div class='btn-group pull-right'> " +
                       // "</div> " +
                     "</div> " +
                   "</div> " + // .span12
 
                   "<div class='span12'> " +
-                    "<div class='tab-content'>" +
+                    "<div class='tab-content timeline_tab_content'>" +
                       "<div class='tab-pane active' id='timeline_tab'>" +
 
                         "<div id='timeline_container'>" +
                         "</div> " +
-
                       "</div>" +
                       "<div class='tab-pane' id='subtitle_tab'>" +
 
@@ -197,14 +255,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                           "<div class='row'> " +
                             "<div id='status-bar' class='span3'> " +
                             "</div> " +
-                            "<div id='keyboard-shortcuts' class='span6 pull-right'> " +
-                              "<span>" +
-                                "<b>Keyboard Shortcuts: </b>  " +
-                                "<kbd class='light'>Shift</kbd> Open/Close " +
-                                "<kbd class='light'>Space</kbd> Play/Pause" +
-                                "<kbd class='light'>Esc</kbd>   Cancel " +
-                              "</span>" +
-                            "</div> " +
+                            // "<div id='keyboard-shortcuts' class='span6 pull-right'> " +
+                            //   "<span>" +
+                            //     "<b>Keyboard Shortcuts: </b>  " +
+                            //     "<kbd class='light'>Shift</kbd> Open/Close " +
+                            //     "<kbd class='light'>Space</kbd> Play/Pause" +
+                            //     "<kbd class='light'>Esc</kbd>   Cancel " +
+                            //   "</span>" +
+                            // "</div> " +
                           "</div> " +
                   "</div> " + // .span12
 
@@ -242,21 +300,33 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$stopTimingBtn = $("#stop_timing_btn");
     this.$stopTimingBtn.hide();
 
+    this.$addSubInput = $("#add_sub_input");
+
     this.$addSubBtn = $("#add_sub_btn");
     this.$addSubBtn.attr("disabled","disabled");
 
     this.intro = introJs();
 
-    this.$previewBtn = $("#preview_btn");
-    this.$previewBtn.tooltip({title: "See how it'll look in public"});
+    this.$publishBtn = $("#publish_btn");
 
-    this.$helpBtn = $("#help_btn");
-    this.$helpBtn.tooltip({title: "Help"});
-    this.$helpBtn.popover({content: "Click Here to Start Walkthrough", placement: "top", trigger: "manual"});
-    this.$helpBtn.on("click",function(target){
-      this.$helpBtn.popover("hide");
-      this.intro.start();
-    }.bind(this));
+    this.$publishBtn.tooltip({title: "Make video public"});
+
+    this.$previewBtn = $("#preview_btn");
+
+    if (this.repo.is_published) {
+      this.$previewBtn.tooltip({title: "See how it'll look in public"});
+      this.$publishBtn.hide();
+    } else {
+      this.$previewBtn.hide();
+    }
+
+    // this.$helpBtn = $("#help_btn");
+    // this.$helpBtn.tooltip({title: "Help"});
+    // this.$helpBtn.popover({content: "Click Here to Start Walkthrough", placement: "top", trigger: "manual"});
+    // this.$helpBtn.on("click",function(target){
+    //   this.$helpBtn.popover("hide");
+    //   this.intro.start();
+    // }.bind(this));
 
     this.$subtitleEdit = $("#subtitle_edit");
     this.hideSubtitleEdit();
@@ -273,6 +343,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$keyboard_shortcuts = $("#keyboard-shortcuts");
     this.$status_bar = $("#status-bar");
+
+
 
     $("footer").hide();
   },
@@ -424,7 +496,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onKeyupHandler: function(event) {
     // shift key
     if (event.which === 16) {
-      this.timeSubtitle();
+      // this.timeSubtitle();
     }
 
     // space key
@@ -465,7 +537,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackSeekHandler: function(time) {
-    this.seek(time);
+    this.seek(time, function() {
+      this.playTillEndOfTrack();
+    }.bind(this));
+  },
+
+  playTillEndOfTrack: function() {
+    this.pauseOnTrackEnd = true;
+    this.play();
   },
 
   onPlay: function(event) {
@@ -495,12 +574,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onEditorSync: function(syncMethod,model) {
-    // if (this.repo.user) {
+    if (syncMethod === "save" ) {
       Backbone.Model.prototype[syncMethod].call(model,{},{
         success: this.onTrackRequestSuccess.bind(this), 
         error:   this.onTrackRequestError.bind(this)
       });
-    // }
+    } else {
+      Backbone.Model.prototype[syncMethod].call(model,{
+        success: this.onTrackRequestSuccess.bind(this), 
+        error:   this.onTrackRequestError.bind(this)
+      });
+     }
   },
 
   onTrackRequestSuccess: function() {
@@ -564,10 +648,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         }
       }.bind(this)
     });
-    this.$addSubBtn.attr("disabled","disabled");
   },
 
   onGhostTrackEnd: function(track) {
+    this.$addSubInput.val("");
+
     this.isGhostTrackStarted = false;
     this.currentGhostTrack = null;
     this.currentTrack = null;
@@ -580,9 +665,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         this.$startTimingBtn.show();
       }.bind(this)
     });
-    this.$addSubBtn.removeAttr("disabled");
     track.fadingHighlight();
-    track.save();
   },
 
   play: function() {
@@ -629,26 +712,31 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     track.subtitle.unhighlight();
     track.subtitle.hideEditorIfNeeded();
 
-    if (typeof track.subtitle.get("text") === "undefined" || /^\s*$/.test(track.subtitle.get("text")) ) {
-      if (track.isGhost && !track.isRemoved()) {
-        // will reach this state if user presses space_key until startTime of next track,
-        // in which it immediately stops since ghostTrack ends at starttime of next track
-        // but it is not stopped by explicit user action which would be to release space_key, we would have
-        // known that track should end at that point and ghost status should be removed
-        //
-        // thus, in this case, we automatically remove ghost status of the track knowing that it is
-        // the maximum endTime of the current track since it can't go beyond start time of next track
-        var endTime = Math.floor(this.media.currentTime * 1000) / 1000;
-        var overlapTracks = this.getOverlapTracks(track.startTime(),endTime,track);
+    if (this.pauseOnTrackEnd) {
+      this.pauseOnTrackEnd = false;
+      this.pause();
+    } 
 
-        if (overlapTracks.length != 0) {
-          endTime = track.endTime();
-        }
+    if (track.isGhost && !track.isRemoved()) {
+      // will reach this state if user presses space_key until startTime of next track,
+      // in which it immediately stops since ghostTrack ends at starttime of next track
+      // but it is not stopped by explicit user action which would be to release space_key, we would have
+      // known that track should end at that point and ghost status should be removed
+      //
+      // thus, in this case, we automatically remove ghost status of the track knowing that it is
+      // the maximum endTime of the current track since it can't go beyond start time of next track
+      var endTime = Math.floor(this.media.currentTime * 1000) / 1000;
+      var overlapTracks = this.getOverlapTracks(track.startTime(),endTime,track);
 
-        this.safeEndGhostTrack(track,endTime);
+      if (overlapTracks.length != 0) {
+        endTime = track.endTime();
       }
+
+      this.safeEndGhostTrack(track,endTime);
+    } 
       
       // if track is empty, we would only request once the  user to enter something
+    if (typeof track.subtitle.get("text") === "undefined" || /^\s*$/.test(track.subtitle.get("text")) ) {
       if (track.initial_subtitle_request) {
         track.initial_subtitle_request = false;
         this.requestSubtitleFromUser(track);
@@ -788,18 +876,28 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
+  // should only get called one at a time
   safeEndGhostTrack: function(track,endTime) {
+    if (this.safeEndGhostLock) return;
+
+    this.safeEndGhostLock = true
+
     try {
       this.endGhostTrack(track,endTime);
     } catch(e) {
       console.log(e.stack);
     }
+
+    this.safeEndGhostLock = false
   },
 
   onAddSubtitleBtnClick: function(event) {
-    if (this.$addSubBtn.attr("disabled") == "disabled") return;
+    this.$addSubInput.focus();
+  },
+
+  onExpandedTimelineDblClick: function(event) {
     // add a track
-    var trackDuration = 5;
+    var trackDuration = 4;
     var track = this.safeCreateGhostTrack();
 
     if (track) {
@@ -862,9 +960,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     try {
       track.end(time);
 
-      // // we seek a little after endTime to trigger trackend (which will request input from user)
       if (this.popcorn.paused()) {
-        this.seek(time + 0.01);
+        // manually trigger onTrackEnd callback to request input from user
+        this.onTrackEnd(track);
       }
     } catch(e) {
       track.remove();

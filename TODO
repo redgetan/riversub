@@ -8,6 +8,14 @@
 **************************
 
 
+commit 1
+[ ] if you startGhostTrack and then you dblclick somewhere outside track, it'll end at end of player
+
+commit 2
+[ ] while ghosttrackstarted, if dlbclick inside track, seek to that exact time, not the start of the track
+
+
+
 
 [ ] if internet is slow, which is the case for most people, riversub becomes unusable
      - download video locally, and get riversub to use that

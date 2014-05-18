@@ -184,9 +184,24 @@ div#media_container {
   /*margin-right: 15px;*/
 }
 
-#river_player div#media_container {
-  margin-top: -60px;
+#demo #river_player {
+  margin-left: 40px;
 }
+
+#river_player.show div#media_container {
+  margin-top: 30px;
+  overflow: hidden;
+}
+
+#river_player.show div#media {
+  margin-top: -65px;
+  margin-left: 40px;
+}
+
+#demo-container #river_player div#media {
+  margin-top: 0px;
+}
+
 
 #river_player.dark div#media_container {
   border: solid 1px black;
@@ -417,6 +432,24 @@ form.sub {
   margin-left: 20px;  
 }
 
+#river_player #media_controls {
+  height: 30px;
+  margin: 20px 0px ;
+}
+
+#river_player .subtitler {
+  margin-top: -5px;
+  line-height: 30px;
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: left;
+}
+
+#river_player #subtitle_list table th {
+  display: none;
+}
+
 #share_container {
   margin-bottom: 0px;
 }
@@ -468,7 +501,6 @@ a.owner_label {
   background-color: white;
   border: solid 1px black;
   color: black;
-  margin-right: 10px;
 }
 
 
@@ -589,6 +621,14 @@ ul.social_login_buttons a {
   margin-right: 10px;
 }
 
+#river_player.dark {
+  background-color: black;
+}
+
+#river_player.dark .subtitler {
+  color: floralwhite;
+}
+
 #autoplay_video_label {
   position: absolute;
   margin-left: 30px;
@@ -602,14 +642,18 @@ ul.social_login_buttons a {
 }
 
 footer {
+    
   background-color: black;  
   border-top: solid 1px #AF687F;
-  
   position: absolute;
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
   height: 30px;
+  background-color: white;  
+  height: 50px;
+  border-top: solid 1px #ccc;
+  clear: both;
 }
 
 footer ul {
@@ -647,7 +691,11 @@ footer ul li a:hover{
   margin-top: 20px;
   margin-left: 30px;
   width: 350px;
-  display: inline-block;
+  float: left;
+}
+
+#river_player .right_side {
+  float: left;
 }
 
 .login_header {
@@ -671,11 +719,19 @@ footer ul li a:hover{
   /*margin-top: 10px;*/
 }
 
-
 #river_player.white {
   background-image: url('ricepaper_v3.png');    
   background-color:  white;
   color: black;
+
+}
+
+#white-bar {
+  background-image: url("ricepaper_v3.png");
+  width: 780px;
+  height: 50px;
+  position: absolute;
+  margin-top: -53px;
 }
 
 #river_player.white #repo_label a{
@@ -687,7 +743,6 @@ footer ul li a:hover{
   display: inline-block;
 }
 
-
 .white #white-bar {
     background-image: url("ricepaper_v3.png");
     width: 100%;
@@ -695,6 +750,7 @@ footer ul li a:hover{
     position: absolute;
     margin-top: -53px;
 }
+    
 .btn-primary {
   background-image: none;
   opacity: 0.65;

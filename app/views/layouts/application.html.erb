@@ -194,19 +194,19 @@
         <div class="modal-body">
           <div class="social_share_container row">
             <div class="span offset1">
-              <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.short_url %>" target="_blank">
+              <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.url %>" target="_blank">
                  <%= image_tag "fb-32.png" %>
               </a>
             </div>
             <div class="span">
-              <a href="https://plus.google.com/share?url=<%= @repo.short_url %>" target="_blank">
+              <a href="https://plus.google.com/share?url=<%= @repo.url %>" target="_blank">
                  <%= image_tag "gplus-32.png"  %>
               </a>
             </div>
           </div>
           <div class="row">
             <h5 class="span1 offset1" style="position: relative; top: -5px; margin-right: -20px;">Link</h5>
-            <input class="span4 share_link_input" value="<%= @repo.short_url %>" type="text" onclick="this.select()">
+            <input class="span4 share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@ river.model.Track = Backbone.Model.extend({
     }
 
     var options = $.extend(options,{track: this});
-    
+
     this.subtitle = new river.model.Subtitle(attributes['subtitle'], options);
     Backbone.trigger("subtitlecreate",this.subtitle);
 
@@ -123,15 +123,23 @@ river.model.Track = Backbone.Model.extend({
       throw new Error("Track Duration of " + duration + " is invalid");
     }
 
+    // isGhost must be set to false first before setting endTime so that by
+    // the time ui/subtitle.js calls on 'changed' callback (render), it'll display endTime
+    this.isGhost = false;
+
     this.setEndTime(time);
 
+    // call ghosttarckend only after isGhost is set to false to allow proper saving on onGhostTrackEnd callback
+    // since we prevent isGhost tracks from being saved
+    // also, since we save after ghosttrack has ended, we need to make sure endTime has been set properly
     Backbone.trigger("ghosttrackend",this);
-    this.isGhost = false;
+
 
     _.each(this.views,function(view){
       view.removeGhost();
     });
 
+    this.save();
   },
 
   isRemoved: function() {
@@ -158,10 +166,6 @@ river.model.Track = Backbone.Model.extend({
   },
 
   remove: function() {
-    if (this.isGhost) {
-      this.end(this.endTime());
-    }
-
     this.isDeleted = true;
 
     this.trackEvent._running = false; // disallow trackend event from getting triggered
@@ -172,6 +176,9 @@ river.model.Track = Backbone.Model.extend({
     _.each(this.views,function(view){
       view.remove();
     });
+
+    // we need to trigger ghosttrackend on remove so that ghosttrackstart can get triggered again
+    Backbone.trigger("ghosttrackend",this);
 
     Backbone.trigger("trackremove",this);
   },

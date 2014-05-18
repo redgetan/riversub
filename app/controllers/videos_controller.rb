@@ -1,10 +1,6 @@
 class VideosController < ApplicationController
 
   def sub
-    if !current_user
-      render :json => { :error => "You must login to create subtitles"}, :status => 401 and return
-    end
-
     metadata = params[:video_metadata]
 
     # if video already exist not need to create another one
@@ -13,40 +9,52 @@ class VideosController < ApplicationController
                     :name => metadata[:data][:title],
                     :metadata => metadata,
                   })
-    #
-    @repo = Repository.where(:user_id => current_user.try(:id), 
-                             :video_id => @video.id)
-                      .first_or_create!
+    @repo = if current_user
+              Repository.where(:user_id => current_user.id, 
+                               :video_id => @video.id)
+                        .first_or_create!
+            else
+              Repository.create!(:video_id => @video.id)
+            end
 
     render :json => { :redirect_url => @repo.editor_url } 
   rescue ActiveRecord::RecordInvalid => e
     render :json => { :error => e.message }, :status => 403
   end
 
+  def publish
+    @repo = Repository.find_by_token! params[:token]
+
+    if @repo.update_attributes!(is_published: true)
+      render :json => {}, :status => 200
+    else
+      render :json => { :error => @repo.errors.full_messages }, :status => 403
+    end
+  end
+
   def editor
-    @user  = User.find_by_username params[:username]
-    if @user && @user != current_user 
+    @repo = Repository.find_by_token! params[:token]
+
+    if @repo.user && @repo.user != current_user 
       render :text => "you do not have permission to edit the subtitles", :status => 403 and return
     end
-    @video = Video.find_by_token!   params[:token]
-
-    @repo = Repository.where(:user_id => @user.try(:id), :video_id => @video.id).first
 
     respond_to :html
   end
 
 
   def show
-    @user  = User.find_by_username params[:username]
-    @video = Video.find_by_token!   params[:token]
+    @repo = Repository.find_by_token! params[:token]
 
-    @repo = Repository.where(:user_id => @user.try(:id), :video_id => @video.id).first
-                      
-    respond_to :html
+    if @repo.is_published
+      respond_to :html
+    else
+      render :text => "Video is not published" , :status => 404
+    end
   end
 
   def index
-    @repos = Repository.user_subtitled.recent.page params[:page]
+    @repos = Repository.published.recent.page params[:page]
   end
 
 end
