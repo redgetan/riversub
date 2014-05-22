@@ -106,7 +106,7 @@ a.new_project_user_btn:hover {
 .navbar-inner {
   background-image: none;
   border: none;
-  background-color: black;
+  background-color: white;
 }
 
 .navbar .nav {
@@ -134,8 +134,8 @@ margin-left:-1px;
 }
 
 #header {
-  background-color: #fff;
-  border-bottom: solid 1px #AF687F;
+  background-color: white;
+  border-bottom: solid 1px #ccc;
 }
 
 .center {
@@ -463,13 +463,16 @@ form.sub {
 }
 
 #river_player #repo_label a{
-  color: #fff;
+  color: #333;
   padding: 5px;
 }
 
+#river_player.dark #repo_label a{
+  color: white;
+}
+
 #river_player #repo_label {
-  color: #fff;
-  border: solid 1px #8CA0FF;
+  border: solid 1px gray;
   text-align: center;
   margin-bottom: 20px;
 }
@@ -616,11 +619,6 @@ ul.social_login_buttons a {
   margin-bottom: 25px;
 }
 
-.subtitler, .owner {
-  line-height: 40px;
-  margin-right: 10px;
-}
-
 #river_player.dark {
   background-color: black;
 }
@@ -642,14 +640,6 @@ ul.social_login_buttons a {
 }
 
 footer {
-    
-  background-color: black;  
-  border-top: solid 1px #AF687F;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 30px;
   background-color: white;  
   height: 50px;
   border-top: solid 1px #ccc;
@@ -661,17 +651,17 @@ footer ul {
 }
 
 footer ul li{
-  padding: 10px 10px 0 10px;
+  padding: 10px;
   float: right;
 }
 
 footer ul li.sitename{
   float: left;
-  color: #fff;
+  color: gray;
 }
 
 footer ul li a{
-  color: #fff;
+  color: #777;
 }
 
 footer ul li a:hover{
@@ -713,17 +703,12 @@ footer ul li a:hover{
 }
 
 #player-background {
-  background-color: #000;
+  background-image: url("ricepaper_v3.png");
+  position: absolute;
   z-index: -1;
   width: 100%;
+  height: 670px;
   /*margin-top: 10px;*/
-}
-
-#river_player.white {
-  background-image: url('ricepaper_v3.png');    
-  background-color:  white;
-  color: black;
-
 }
 
 #white-bar {
@@ -734,23 +719,10 @@ footer ul li a:hover{
   margin-top: -53px;
 }
 
-#river_player.white #repo_label a{
-  color: black;
+#river_player.dark #white-bar {
+  background-color:  black;  
 }
 
-#player-top-left {
-  margin-left: 20px;
-  display: inline-block;
-}
-
-.white #white-bar {
-    background-image: url("ricepaper_v3.png");
-    width: 100%;
-    height: 50px;
-    position: absolute;
-    margin-top: -53px;
-}
-    
 .btn-primary {
   background-image: none;
   opacity: 0.65;

@@ -46,11 +46,8 @@
         <div class="container nav-container">
           <a class="brand" href="<%= root_url %>"> Riversub</a>
           <ul class="nav menu-nav">
-            <li class="divider-vertical"></li>
             <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li>
-            <li class="divider-vertical"></li>
             <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">FAQ</a></li>
-            <li class="divider-vertical"></li>
             <!-- <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'tutorial' %>"><a href="/tutorial">Tutorial</a></li> -->
           </ul>
 
@@ -78,22 +75,22 @@
         </div>
       </div>
     </div>
-    
+
     <div id="main_container">
-            <div id="flash_container">
-                <% if flash[:error] %>
-                <div id="flash_error" class="flash alert alert-block"><%= flash[:error] %></div>
-                <% end %>
-                <% if flash[:notice] %>
-                <div id="flash_error" class="flash alert alert-block"><%= flash[:notice] %></div>
-                <% end %>
-                <% if flash[:alert] %>
-                <div id="flash_error" class="flash alert alert-block"><%= flash[:alert] %></div>
-                <% end %>
-                </div>
-            <%= yield %> 
+      <div id="flash_container">
+        <% if flash[:error] %>
+          <div id="flash_error" class="flash alert alert-block"><%= flash[:error] %></div>
+        <% end %>
+        <% if flash[:notice] %>
+          <div id="flash_error" class="flash alert alert-block"><%= flash[:notice] %></div>
+        <% end %>
+        <% if flash[:alert] %>
+          <div id="flash_error" class="flash alert alert-block"><%= flash[:alert] %></div>
+        <% end %>
+      </div>
+      <%= yield %>
     </div>
-    
+
     <footer>
       <div class="container">
         <ul>
