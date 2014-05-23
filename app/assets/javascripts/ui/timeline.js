@@ -240,7 +240,7 @@ river.ui.Timeline = Backbone.View.extend({
       $timeline = $target;
     }
 
-    var seconds = this.getSecondsFromCurrentPosition($timeline,$target,event.pageX);
+    var seconds = this.getSecondsFromCurrentPosition($timeline,event.pageX);
 
     Backbone.trigger("timelineseek",seconds);
   },
@@ -256,7 +256,7 @@ river.ui.Timeline = Backbone.View.extend({
       $timeline = $target;
     }
 
-    var seconds = this.getSecondsFromCurrentPosition($timeline,$target,event.pageX);
+    var seconds = this.getSecondsFromCurrentPosition($timeline,event.pageX);
 
     // seek
     if (this.seekmode) {
@@ -264,7 +264,7 @@ river.ui.Timeline = Backbone.View.extend({
     }
   },
 
-  getSecondsFromCurrentPosition: function($container,$target,eventPageX) {
+  getSecondsFromCurrentPosition: function($container,eventPageX) {
     var timelineX = $container.position().left;
     var posX = eventPageX - timelineX;
     var seconds = posX / this.resolution($container) + $container.scrollLeft() / this.resolution($container);
@@ -283,9 +283,7 @@ river.ui.Timeline = Backbone.View.extend({
   onSummaryMouseMoveHandler: function(event) {
     // move and update time float
     var $target = $(event.target);
-    var seconds = this.getSecondsFromCurrentPosition(this.$summary,$target,event.pageX);
-
-    this.renderTimeFloat(seconds);
+    this.renderTimeFloat(event.pageX);
   },
 
   onSeekHeadMouseDownHandler: function(event) {
@@ -298,21 +296,21 @@ river.ui.Timeline = Backbone.View.extend({
     this.$time_float.hide();
   },
 
-  renderTimeFloat: function(seconds) {
+  renderTimeFloat: function(posX) {
+    var seconds = this.getSecondsFromCurrentPosition(this.$summary,posX);
+
     // do not allow seeking to negative duration
     if (seconds < 0) seconds = 0;
     if (seconds > this.mediaDuration) seconds = this.mediaDuration;
 
     this.$time_float.text(this.stringifyTimeShort(seconds));
-    this.$time_float.css("left",event.pageX - this.$time_float.width() / 2);
+    this.$time_float.css("left",posX - this.$time_float.width() / 2);
   },
 
   onSeekHeadDragHandler: function(event) {
     // move and update time float
     var $target = $(event.target);
-    var seconds = this.getSecondsFromCurrentPosition(this.$summary,$target,event.pageX);
-
-    this.renderTimeFloat(seconds);
+    this.renderTimeFloat(event.pageX);
 
     // if seekmode, seek
     if (this.seekmode) {
