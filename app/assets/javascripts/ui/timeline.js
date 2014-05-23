@@ -190,7 +190,7 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   onExpandedTimelineDblClick: function(event) {
-    Backbone.trigger("expandedtimelinedblclick");
+    Backbone.trigger("expandedtimelinedblclick", event);
   },
 
   onTimeUpdate: function(event) {
@@ -382,7 +382,7 @@ river.ui.Timeline = Backbone.View.extend({
     // console.log(this.current_window_slide);
   },
 
-  onTrackResize: function(track,ui) {
+  onTrackResize: function(event,track,ui) {
     var handle= $(event.target).css("cursor").split("-")[0];
 
     var $container = $(event.target).closest(".timeline");
@@ -397,7 +397,7 @@ river.ui.Timeline = Backbone.View.extend({
     }
   },
 
-  onTrackDrag: function(track,ui) {
+  onTrackDrag: function(event,track,ui) {
     var $container = $(event.target).closest(".timeline");
 
     var seconds = ui.position.left / this.resolution($container);

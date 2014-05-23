@@ -896,6 +896,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onExpandedTimelineDblClick: function(event) {
+    var $target = $(event.target);
+
+    if ($target.hasClass("track") || $target.hasClass("track_text")) {
+      return;  
+    }
+
     // add a track
     var trackDuration = 4;
     var track = this.safeCreateGhostTrack();
