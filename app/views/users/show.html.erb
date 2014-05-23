@@ -43,10 +43,10 @@
                 <% @user.repositories.each do |repo| %>
                 <li class='span2 center'>
                   <div class='thumbnail'>
-                    <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                    <a href="<%= repo.editor_url %>" id="<%= repo.id %>" class="video" >
                       <img src="<%= repo.thumbnail_url %>" alt="" >
                     </a>
-                    <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                    <a href="<%= repo.editor_url %>" id="<%= repo.id %>" class="video" >
                       <h6 class='video_name'><%= repo.video.name %></h6>
                     </a>
                     <ul id='stats' class="unstyled">
