@@ -457,8 +457,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onDocumentClick: function(event) {
-    if ($(event.target).attr("id") !== "subtitle_edit" 
-        && !$(event.target).hasClass("track")) {
+    var $target = $(event.target);
+    var isNotSubtitleEdit = $target.attr("id") !== "subtitle_edit" ;
+
+    var isNotSubtitleEditTrack = true;
+
+    if ($target.hasClass("track") && this.$subtitleEdit.data("track")) {
+      var $currentEditTrack = this.$subtitleEdit.data("track").expandedView.$el;
+      isNotSubtitleEditTrack = $target !== $currentEditTrack;
+    }
+
+    if (isNotSubtitleEdit && isNotSubtitleEditTrack) {
       this.hideSubtitleEdit();
       this.$subtitleDisplay.show();
     }
@@ -748,7 +757,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTrackRemove: function(track) {
     this.lastTrack = null;
     this.isOnSubtitleEditMode = null;
-    this.$subtitleEdit.blur();
     this.hideSubtitleEdit();
   },
 
@@ -818,7 +826,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // escape key
     if (event.which == 27) {
       this.isOnSubtitleEditMode = null;
-      this.$subtitleEdit.blur();
       this.hideSubtitleEdit();
       this.$subtitleDisplay.show();
       this.play();
@@ -827,7 +834,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // enter key
     if (event.which == 13) {
       this.isOnSubtitleEditMode = null;
-      this.$subtitleEdit.blur();
       this.hideSubtitleEdit();
       this.$subtitleDisplay.show();
       this.play();
@@ -1062,6 +1068,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   hideSubtitleEdit: function() {
     if (!this.$subtitleEdit.is(':visible')) return;
+
+    this.$subtitleEdit.blur();
 
     this.$subtitleEdit.hide(0,function(){
       this.isOnSubtitleEditMode = null;
