@@ -458,16 +458,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onDocumentClick: function(event) {
     var $target = $(event.target);
-    var isNotSubtitleEdit = $target.attr("id") !== "subtitle_edit" ;
+    var isSubtitleEdit = $target.attr("id") === "subtitle_edit" ;
 
-    var isNotSubtitleEditTrack = true;
+    var isSubtitleEditTrack = false;
 
     if ($target.hasClass("track") && this.$subtitleEdit.data("track")) {
-      var $currentEditTrack = this.$subtitleEdit.data("track").expandedView.$el;
-      isNotSubtitleEditTrack = $target !== $currentEditTrack;
+      isSubtitleEditTrack = $target.data("model") === this.$subtitleEdit.data("track");
     }
 
-    if (isNotSubtitleEdit && isNotSubtitleEditTrack) {
+    if (isSubtitleEdit || isSubtitleEditTrack) {
+    } else {
       this.hideSubtitleEdit();
       this.$subtitleDisplay.show();
     }
