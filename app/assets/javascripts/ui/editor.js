@@ -39,9 +39,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   bindEvents: function() {
-    river.ui.Player.prototype.bindEvents.call(this);
+    river.ui.BasePlayer.prototype.bindEvents.call(this);
 
-    Backbone.on("timelineseek",this.onTimelineSeekHandler.bind(this));
     Backbone.on("expandedtimelinedblclick",this.onExpandedTimelineDblClick.bind(this));
     Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
     Backbone.on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
@@ -541,10 +540,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
-  onTimelineSeekHandler: function(time) {
-    this.seek(time);
-  },
-
   onTrackSeekHandler: function(time) {
     this.seek(time, function() {
       this.playTillEndOfTrack();
@@ -675,28 +670,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       }.bind(this)
     });
     track.fadingHighlight();
-  },
-
-  play: function() {
-    this.popcorn.play();
-  },
-
-  pause: function(callback) {
-
-    if (typeof callback !== "undefined") {
-      if (this.popcorn.paused()) {
-        callback();
-        return;
-      }
-
-      var executeCallback = function() {
-        this.popcorn.off("pause",executeCallback);
-        callback();
-      }.bind(this);
-
-      this.popcorn.on("pause",executeCallback);
-    }
-    this.popcorn.pause();
   },
 
   onTrackStart: function(track) {
