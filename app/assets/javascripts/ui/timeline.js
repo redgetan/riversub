@@ -383,18 +383,13 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   onTrackResize: function(event,track,ui) {
-    var handle= $(event.target).css("cursor").split("-")[0];
-
     var $container = $(event.target).closest(".timeline");
 
     var seconds = ui.position.left / this.resolution($container);
     var duration = ui.size.width   / this.resolution($container);
 
-    if (handle === "w") {
-      track.setStartTime(seconds);
-    } else {
-      track.setEndTime(seconds + duration);
-    }
+    track.setStartTime(seconds);
+    track.setEndTime(seconds + duration);
   },
 
   onTrackDrag: function(event,track,ui) {
