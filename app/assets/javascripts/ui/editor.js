@@ -39,9 +39,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   bindEvents: function() {
-    river.ui.Player.prototype.bindEvents.call(this);
+    river.ui.BasePlayer.prototype.bindEvents.call(this);
 
-    Backbone.on("timelineseek",this.onTimelineSeekHandler.bind(this));
     Backbone.on("expandedtimelinedblclick",this.onExpandedTimelineDblClick.bind(this));
     Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
     Backbone.on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
@@ -457,8 +456,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onDocumentClick: function(event) {
-    if ($(event.target).attr("id") !== "subtitle_edit" 
-        && !$(event.target).hasClass("track")) {
+    var $target = $(event.target);
+    var isSubtitleEdit = $target.attr("id") === "subtitle_edit" ;
+
+    var isSubtitleEditTrack = false;
+
+    if ($target.hasClass("track") && this.$subtitleEdit.data("track")) {
+      isSubtitleEditTrack = $target.data("model") === this.$subtitleEdit.data("track");
+    }
+
+    if (isSubtitleEdit || isSubtitleEditTrack) {
+    } else {
       this.hideSubtitleEdit();
       this.$subtitleDisplay.show();
     }
@@ -530,10 +538,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       var track = this.currentGhostTrack;
       this.safeEndGhostTrack(track);
     }
-  },
-
-  onTimelineSeekHandler: function(time) {
-    this.seek(time);
   },
 
   onTrackSeekHandler: function(time) {
@@ -668,28 +672,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     track.fadingHighlight();
   },
 
-  play: function() {
-    this.popcorn.play();
-  },
-
-  pause: function(callback) {
-
-    if (typeof callback !== "undefined") {
-      if (this.popcorn.paused()) {
-        callback();
-        return;
-      }
-
-      var executeCallback = function() {
-        this.popcorn.off("pause",executeCallback);
-        callback();
-      }.bind(this);
-
-      this.popcorn.on("pause",executeCallback);
-    }
-    this.popcorn.pause();
-  },
-
   onTrackStart: function(track) {
     // console.log("ontrackstart" + track.toString());
     this.currentTrack = track;
@@ -748,7 +730,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTrackRemove: function(track) {
     this.lastTrack = null;
     this.isOnSubtitleEditMode = null;
-    this.$subtitleEdit.blur();
     this.hideSubtitleEdit();
   },
 
@@ -818,7 +799,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // escape key
     if (event.which == 27) {
       this.isOnSubtitleEditMode = null;
-      this.$subtitleEdit.blur();
       this.hideSubtitleEdit();
       this.$subtitleDisplay.show();
       this.play();
@@ -827,7 +807,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // enter key
     if (event.which == 13) {
       this.isOnSubtitleEditMode = null;
-      this.$subtitleEdit.blur();
       this.hideSubtitleEdit();
       this.$subtitleDisplay.show();
       this.play();
@@ -896,6 +875,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onExpandedTimelineDblClick: function(event) {
+    var $target = $(event.target);
+
+    if ($target.hasClass("track") || $target.hasClass("track_text")) {
+      return;  
+    }
+
     // add a track
     var trackDuration = 4;
     var track = this.safeCreateGhostTrack();
@@ -1056,6 +1041,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   hideSubtitleEdit: function() {
     if (!this.$subtitleEdit.is(':visible')) return;
+
+    this.$subtitleEdit.blur();
 
     this.$subtitleEdit.hide(0,function(){
       this.isOnSubtitleEditMode = null;

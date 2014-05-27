@@ -35,7 +35,7 @@ River::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-  config.action_mailer.default_url_options = { :host => 'dev.riversub.cc:3000' }
-  Rails.application.routes.default_url_options[:host] = 'dev.riversub.cc:3000'
+  config.action_mailer.default_url_options = { :host => 'dev.yasub.cc:3000' }
+  Rails.application.routes.default_url_options[:host] = 'dev.yasub.cc:3000'
 
 end

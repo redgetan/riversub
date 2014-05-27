@@ -68,11 +68,10 @@ River::Application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-    :address              => "smtp.zoho.com",
+    :address              => "smtp.gmail.com",
     :port                 => 465,
-    :domain               => 'riversub.cc',
-    :user_name            => 'info@riversub.cc',
-    :password             => 'iwtetr9',
+    :user_name            => 'simple.yuji@gmail.com',
+    :password             => 'iwtets90',
     :authentication       => 'login',
     :ssl                  => true,
     :tls                  => true,
@@ -83,6 +82,6 @@ River::Application.configure do
   config.to_prepare { RegistrationsController.force_ssl }
   config.to_prepare { Devise::PasswordsController.force_ssl }
 
-  Rails.application.routes.default_url_options[:host] = 'www.riversub.cc'
+  Rails.application.routes.default_url_options[:host] = 'www.yasub.com'
 
 end

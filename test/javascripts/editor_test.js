@@ -519,7 +519,6 @@ $(document).ready(function(){
 // [ ] think about when ghost track becomes null
 // [ ]   endGhosttrack
 // [ ] fix GA analytics
-// [ ] change all zeroplay to riversub
 // [ ] test ensurePauseAtTrack
 // [ ] test endGhost while playing
 // [ ] test endGhost while paused

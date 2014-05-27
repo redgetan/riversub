@@ -14,13 +14,6 @@ river.model.Subtitle = Backbone.Model.extend({
     this.listenTo(this, "change", this.onChanged);
   },
 
-  getAttributes: function() {
-    return {
-      id:   this.id,
-      text: this.text
-    }
-  },
-
   onChanged: function() {
 
   },

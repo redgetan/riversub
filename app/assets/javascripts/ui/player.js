@@ -6,19 +6,74 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     this.$el = $("#river_player");
 
+    this.timeline.setTracks(this.tracks);
+
     this.$subtitleEditorBtn = $("#subtitle_editor_btn");
     this.$subtitleEditorBtn.tooltip({title: "Opens Editor in new tab", placement: 'bottom'});
   },
 
   setupElement: function() {
     river.ui.BasePlayer.prototype.setupElement.call(this);
+    this.$iframeOverlay = $("#iframe_overlay");
+    this.$overlay_btn = $("#overlay_btn");
+  },
+
+  preRepositoryInitHook: function() {
+    this.timeline = new river.ui.Timeline({media: this.popcorn.media, mediaDuration: this.mediaDuration() });
+  },
+
+  onIframeOverlayClick: function(event) {
+    this.togglePlayPause();
+  },
+
+  onIframeOverlayMouseEnter: function(event) {
+    this.$overlay_btn.show();
+  },
+
+  onIframeOverlayMouseLeave: function(event) {
+    if (!this.media.paused) {
+      this.$overlay_btn.hide();
+    }
+  },
+
+  onPlay: function(event) {
+    this.$overlay_btn.find("i").removeClass("icon-play");
+    this.$overlay_btn.find("i").addClass("icon-pause");
+  },
+
+  onPause: function(event) {
+    this.seek(this.lastTimeUpdateTime);
+    this.$overlay_btn.find("i").removeClass("icon-pause");
+    this.$overlay_btn.find("i").addClass("icon-play");
+  },
+
+  togglePlayPause: function() {
+    if (this.media.paused) {
+      this.play();
+    } else {
+      this.pause();
+    }
+  },
+
+  bindEvents: function() {
+    river.ui.BasePlayer.prototype.bindEvents.call(this);
+    Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
+    console.log("shitman");
+    this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
+    this.$iframeOverlay.on("mouseenter",this.onIframeOverlayMouseEnter.bind(this));
+    this.$iframeOverlay.on("mouseleave",this.onIframeOverlayMouseLeave.bind(this));
+    this.media.addEventListener("pause",this.onPause.bind(this));
+    this.media.addEventListener("play",this.onPlay.bind(this));
+  },
+
+  onTrackSeekHandler: function(time) {
+    this.seek(time);
   },
 
   hideEditing: function() {
     $("#subtitle_bar").css("background-color","rgba(255,0,0,0)");
 
     $("#subtitle_bar").css("margin-top","-75px");
-    $("#subtitle_bar").css("margin-left","80px");
     $("#subtitle_bar").css("z-index","6");
     $("#subtitle_bar").css("position","absolute");
     $("#subtitle_bar").css("line-height","25px");
@@ -49,7 +104,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
       }
     });
 
-    this.letterBoxMedia();
+    // this.letterBoxMedia();
   },
 
   letterBoxMedia: function() {
@@ -71,11 +126,21 @@ river.ui.Player = river.ui.BasePlayer.extend({
 river.ui.MiniPlayer = river.ui.Player.extend({
 
   initialize: function(options) {
-    river.ui.Player.prototype.initialize.call(this,options);
+    river.ui.BasePlayer.prototype.initialize.call(this,options);
+    this.hideEditing();
+    this.$el = $("#river_player");
+  },
+
+  preRepositoryInitHook: function() {
+    // override player's hook - set to empty
   },
 
   setVolume: function(value) {
     this.popcorn.volume(value);
+  },
+
+  bindEvents: function() {
+    river.ui.BasePlayer.prototype.bindEvents.call(this);
   },
 
   hideEditing: function() {

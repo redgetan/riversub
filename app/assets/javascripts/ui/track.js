@@ -110,7 +110,7 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
   },
 
   onResizableResize: function(event, ui) {
-    Backbone.trigger("trackresize",this.model,ui);
+    Backbone.trigger("trackresize",event,this.model,ui);
   },
 
   onResizableStop: function(event, ui) {
@@ -118,7 +118,7 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
   },
 
   onDraggableDrag: function(event, ui) {
-    Backbone.trigger("trackdrag",this.model,ui);
+    Backbone.trigger("trackdrag",event,this.model,ui);
   },
 
   onDraggableStop: function(event, ui) {

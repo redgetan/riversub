@@ -11,7 +11,7 @@
 
 
   <meta name="google-site-verification" content="3gU-6xVgVkfOP_HFn8yPECp5UT-3mmA9SwkgwO4f97Y" />
-  
+
   <%= csrf_meta_tags %>
   <script>
     // set current controller action
@@ -28,8 +28,8 @@
   </script>
 </head>
 <body>
-    <!-- 
-      facebook javascript sdk 
+    <!--
+      facebook javascript sdk
       https://developers.facebook.com/docs/plugins/share-button/
     -->
     <div id="fb-root"></div>
@@ -44,7 +44,7 @@
     <div class="navbar navbar-fixed-top" id="header">
       <div class="navbar-inner">
         <div class="container nav-container">
-          <a class="brand" href="<%= root_url %>"> Riversub</a>
+          <a class="brand" href="<%= root_url %>"> Yasub</a>
           <ul class="nav menu-nav">
             <li class="divider-vertical"></li>
             <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li>
@@ -97,10 +97,10 @@
     <footer>
       <div class="container">
         <ul>
-          <li class="sitename">Riversub.cc © 2014. All Rights Reserved</li>
+          <li class="sitename">Yasub © 2014. All Rights Reserved</li>
           <li><a href="#">Terms</a></li>
           <li><a href="#">Privacy</a></li>
-          <li><a href="mailto:info@riversub.cc">Feedback</a></li>
+          <li><a href="mailto:info@yasub.com">Feedback</a></li>
         </ul>
       </div>
     </footer>
@@ -138,7 +138,7 @@
             </div>
             <div id="collapseTwo" class="accordion-body collapse">
               <div class="accordion-inner">
-                Double click tracks <span class='track' style='width:10px; height: 13px;'></span> to to edit their subtitles 
+                Double click tracks <span class='track' style='width:10px; height: 13px;'></span> to to edit their subtitles
               </div>
             </div>
           </div>

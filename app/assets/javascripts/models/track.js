@@ -64,15 +64,6 @@ river.model.Track = Backbone.Model.extend({
     Backbone.trigger("editor.sync","destroy",this);
   },
 
-  getAttributes: function(attributes) {
-    return {
-      id: this.id,
-      start_time: this.startTime(),
-      end_time: this.endTime(),
-      subtitle_attributes: this.subtitle.getAttributes(),
-    }
-  },
-
   toJSON: function() {
     var json = Backbone.Model.prototype.toJSON.call(this);
     json["subtitle_attributes"] = this.subtitle.toJSON();

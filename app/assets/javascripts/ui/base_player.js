@@ -90,9 +90,14 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   bindEvents: function() {
+    Backbone.on("timelineseek",this.onTimelineSeekHandler.bind(this));
     Backbone.on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
     Backbone.on("trackstart",this.onTrackStart.bind(this));
     Backbone.on("trackend",this.onTrackEnd.bind(this));
+  },
+
+  onTimelineSeekHandler: function(time) {
+    this.seek(time);
   },
 
   onSubtitleLineClick: function(subtitle) {
@@ -135,6 +140,29 @@ river.ui.BasePlayer = Backbone.View.extend({
         }
       };
     }
+  },
+
+  play: function() {
+    this.popcorn.play();
+  },
+
+  pause: function(callback) {
+
+    if (typeof callback !== "undefined") {
+      if (this.popcorn.paused()) {
+        callback();
+        return;
+      }
+
+      var executeCallback = function() {
+        this.popcorn.off("pause",executeCallback);
+        callback();
+      }.bind(this);
+
+      this.popcorn.on("pause",executeCallback);
+    }
+    this.popcorn.pause();
   }
+
 
 });

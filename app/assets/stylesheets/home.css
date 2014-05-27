@@ -195,7 +195,8 @@ div#media_container {
 
 #river_player.show div#media {
   margin-top: -65px;
-  margin-left: 40px;
+  width: 780px;
+  height: 600px;
 }
 
 #demo-container #river_player div#media {
@@ -214,6 +215,13 @@ div#iframe_container {
   background-color: #000;
 }
 
+#river_player div#iframe_container {
+  position: relative;
+  height: inherit;
+  width: inherit;
+  background-color: #000;
+}
+
 div#iframe_container #iframe_overlay {
   height: inherit;
   width: inherit;
@@ -221,6 +229,24 @@ div#iframe_container #iframe_overlay {
   z-index: 2;
   background-color: white;
   opacity: 0;
+}
+
+#river_player.show #iframe_overlay {
+  height: 500px;
+}
+
+#river_player.show .time_indicator {
+  top: 20px;
+}
+
+#river_player.show #seek_head_body {
+  height: 20px;
+}
+
+#river_player.show #overlay_btn .icon-play, 
+#river_player.show #overlay_btn .icon-pause {
+  font-size: 40px;  
+  border: solid 5px white;
 }
 
 div#iframe_container #media {
@@ -377,6 +403,25 @@ form.sub {
 
 #summary-container .thumbnail img {
   height: 70px;
+}
+
+#river_player #summary.timeline {
+  background-color: cadetblue;
+}
+
+#blackbar {
+  background-color: black;
+  width: inherit;
+  height: 20px;
+}
+
+#river_player .window_slider {
+  display: none;
+}
+
+#river_player .track {
+  border: solid 2px currentcolor;
+  background-color: salmon;
 }
 
 #demo .benefits {
