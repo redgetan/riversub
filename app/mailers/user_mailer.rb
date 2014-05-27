@@ -1,9 +1,9 @@
 class UserMailer < ActionMailer::Base
-  default from: "info@riversub.cc"
+  default from: "info@yasub.com"
 
   def welcome_email(user)
     @user = user
-    @url  = "http://www.riversub.cc/"
-    mail(:to => user.email, :subject => "Welcome to River Subtitles")
+    @url  = "http://www.yasub.com/"
+    mail(:to => user.email, :subject => "Welcome to Yasub")
   end
 end
