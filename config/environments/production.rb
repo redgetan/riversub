@@ -70,9 +70,8 @@ River::Application.configure do
   config.action_mailer.smtp_settings = {
     :address              => "smtp.gmail.com",
     :port                 => 465,
-    :domain               => 'yasub.com',
-    :user_name            => 'info@yasub.com',
-    :password             => 'iwtetr9',
+    :user_name            => 'simple.yuji@gmail.com',
+    :password             => 'iwtets90',
     :authentication       => 'login',
     :ssl                  => true,
     :tls                  => true,
