@@ -206,7 +206,7 @@ div#editor-bottom {
 #subtitle_list {
 	padding: 0px 10px;
 	height: 160px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	overflow-x: hidden;
 }
 
@@ -240,9 +240,11 @@ div#editor-bottom {
 
 
 #river_player {
+    color: #fff;
+    background-color: #000;
 	text-align: center;
 	margin-top: 20px;
-	width: 1250px;
+	width: 100%;
 	margin: auto;
 }
 

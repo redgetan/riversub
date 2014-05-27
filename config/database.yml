@@ -4,7 +4,7 @@ defaults: &defaults
   host: localhost
   pool: 5
   timeout: 5000
-
+  
 development:
   database: river_development
   <<: *defaults
