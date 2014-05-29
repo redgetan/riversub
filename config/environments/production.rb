@@ -66,23 +66,21 @@ River::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   config.action_mailer.delivery_method = :smtp
-
+  
   config.action_mailer.smtp_settings = {
-    :address              => "smtp.zoho.com",
-    :port                 => 465,
-    :domain               => 'riversub.cc',
-    :user_name            => 'info@riversub.cc',
-    :password             => 'iwtetr9',
-    :authentication       => 'login',
-    :ssl                  => true,
-    :tls                  => true,
-    :enable_starttls_auto => true
+    :address   => "smtp.mandrillapp.com",
+    :port      => 465, # ports 587 and 2525 are also supported with STARTTLS
+    :enable_starttls_auto => true, # detects and uses STARTTLS
+    :user_name => "hassan@yasub.com",
+    :password  => "UfFUzJ-HJHxIkqHlmji8MA", # SMTP password is any valid API key
+    :authentication => 'login', # Mandrill supports 'plain' or 'login'
+    :domain => 'yasub.com', # your domain to identify your server when connecting
   }
 
   config.to_prepare { Devise::SessionsController.force_ssl }
   config.to_prepare { RegistrationsController.force_ssl }
   config.to_prepare { Devise::PasswordsController.force_ssl }
 
-  Rails.application.routes.default_url_options[:host] = 'riversub.cc'
+  Rails.application.routes.default_url_options[:host] = 'www.yasub.com'
 
 end

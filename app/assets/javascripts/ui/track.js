@@ -29,8 +29,11 @@ river.ui.Track = Backbone.View.extend({
     this.$el.removeClass("selected");
   },
 
-  onMouseDown: function() {
-    Backbone.trigger("trackseek",this.model.startTime());
+  onMouseDown: function(event) {
+    if (!this.model.isGhost) {
+      event.stopPropagation();
+      Backbone.trigger("trackseek",this.model.startTime());
+    }
   },
 
   attachViewToContainer: function() {
@@ -66,6 +69,13 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
   initialize: function() {
     river.ui.Track.prototype.initialize.call(this);
     this.setupElement();
+
+    this.listenTo(this.model,"change",this.render);
+    this.listenTo(this.model.subtitle,"change",this.render);
+  },
+
+  render: function() {
+    this.$textDisplay.text(this.model.text());
   },
 
   getContainer: function() {
@@ -74,9 +84,13 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
 
   setupElement: function() {
     this.$close = $("<button type='button' class='close corner'>×</button>");
+    this.$close.css("position", "absolute");
     this.$close.hide();
-
     this.$el.append(this.$close);
+
+    this.$textDisplay = $("<div class='track_text'>" + this.model.text() + "</div>");
+
+    this.$el.append(this.$textDisplay);
 
     this.$el.resizable({
       handles: 'e, w',
@@ -96,7 +110,7 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
   },
 
   onResizableResize: function(event, ui) {
-    Backbone.trigger("trackresize",this.model,ui);
+    Backbone.trigger("trackresize",event,this.model,ui);
   },
 
   onResizableStop: function(event, ui) {
@@ -104,7 +118,7 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
   },
 
   onDraggableDrag: function(event, ui) {
-    Backbone.trigger("trackdrag",this.model,ui);
+    Backbone.trigger("trackdrag",event,this.model,ui);
   },
 
   onDraggableStop: function(event, ui) {

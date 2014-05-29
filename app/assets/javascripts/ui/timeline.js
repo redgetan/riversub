@@ -13,6 +13,8 @@ river.ui.Timeline = Backbone.View.extend({
 
     this.window_slide_duration = 30;
 
+    this.disable_expanded = options.disable_expanded || false;
+
     this.isScrubberVisible = true;
     this.force_scroll_window = false;
     this.windowSlideTimeoutQueue = [];
@@ -32,11 +34,6 @@ river.ui.Timeline = Backbone.View.extend({
     this.$summary = $("#summary");
     this.$scrubber_summary = $("#summary .scrubber");
 
-    // window slider
-    this.$window_slider = $("#summary .window_slider");
-    this.$window_slider.css("left",0);
-    this.$window_slider.css("width",this.resolution(this.$summary) * 30);
-
     this.$time_float = $("#time_float");
     this.$time_float.hide();
 
@@ -50,39 +47,59 @@ river.ui.Timeline = Backbone.View.extend({
       drag: this.onSeekHeadDragHandler.bind(this)
     });
 
-    var expanded = "<div id='expanded' class='timeline'>" +
-                     "<div class='filler'>" +
-                       "<div id='track_viewport'>" +
-                         "<div class='scrubber'></div>" +
-                         "<div class='time_indicator'>0</div>" +
-                       "</div>" +
-                       "<div id='time_label'>" +
-                       "</div>" +
-                     "</div>" +
-                   "</div>";
-
-
-    this.$expanded_container = $("#timeline_container");
-    this.$expanded_container.prepend(expanded);
-
-    this.$expanded = $("#expanded");
-    this.$expanded_track_viewport = $("#track_viewport");
-
-    // expanded timeline filler
-    this.$filler = $("#expanded .filler");
-    this.$filler.css("width",this.resolution(this.$expanded) * this.mediaDuration);
-
-    // scrubber
-    this.$scrubber_expanded = $("#expanded .scrubber");
-
     // current time display indicator
-    this.$time_indicator = $("#expanded .time_indicator");
+    this.$time_indicator = $("<div class='time_indicator'>0</div>");
+    $("#subtitle_bar").append(this.$time_indicator);
 
-    // timeline label
-    var timeline_label = this.createTimeLabelHTMLString(this.$filler.width(),this.mediaDuration);
-    this.$expanded_time_label = $("#time_label");
-    this.$expanded_time_label.append(timeline_label);
+    if (!this.disable_expanded) {
+      // window slider
+      this.$window_slider = $("#summary .window_slider");
+      this.$window_slider.css("left",0);
+      this.$window_slider.css("width",this.resolution(this.$summary) * 30);
 
+      var expanded = "<div id='expanded' class='timeline'>" +
+                       "<div class='filler'>" +
+                         "<div id='track_viewport'>" +
+                           "<div class='scrubber'></div>" +
+                         "</div>" +
+                         "<div id='time_label'>" +
+                         "</div>" +
+                       "</div>" +
+                     "</div>";
+
+      var move_left_btn = "<a href='#' class='move_left_btn'>" +
+                           "<i class='icon-chevron-left'></i>" +
+                          "</a>";
+
+      var move_right_btn = "<a href='#' class='move_right_btn'>" +
+                             "<i class='icon-chevron-right'></i>" +
+                           "</a>";
+
+      this.$expanded_container = $("#timeline_container");
+      this.$expanded_container.prepend(expanded);
+
+      this.$expanded_container.append(move_left_btn);
+      this.$expanded_container.append(move_right_btn);
+
+      this.$expanded = $("#expanded");
+      this.$expanded_track_viewport = $("#track_viewport");
+
+      // expanded timeline filler
+      this.$filler = $("#expanded .filler");
+      this.$filler.css("width",this.resolution(this.$expanded) * this.mediaDuration);
+
+      // scrubber
+      this.$scrubber_expanded = $("#expanded .scrubber");
+
+
+      // timeline label
+      var timeline_label = this.createTimeLabelHTMLString(this.$filler.width(),this.mediaDuration);
+      this.$expanded_time_label = $("#time_label");
+      this.$expanded_time_label.append(timeline_label);
+
+      this.$move_left_btn = $(".move_left_btn");
+      this.$move_right_btn = $(".move_right_btn");
+    }
   },
 
   setTracks: function(tracks) {
@@ -141,8 +158,6 @@ river.ui.Timeline = Backbone.View.extend({
   bindEvents: function() {
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
 
-    this.onExpandedTimelineScrollCallback = this.onExpandedTimelineScroll.bind(this);
-    this.$expanded.on("mousewheel",this.onExpandedTimelineScrollCallback);
     this.$summary.on("mousedown",this.onMouseDownHandler.bind(this));
     this.$summary.on("mousemove",this.onMouseMoveHandler.bind(this));
     this.$summary.on("mouseup",this.onMouseUpHandler.bind(this));
@@ -154,21 +169,33 @@ river.ui.Timeline = Backbone.View.extend({
     this.$seek_head.on("mousedown",this.onSeekHeadMouseDownHandler.bind(this));
     this.$seek_head.on("mouseup",this.onSeekHeadMouseUpHandler.bind(this));
 
-    this.$expanded.on("mousedown",this.onMouseDownHandler.bind(this));
-    this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
-    this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
+    if (!this.disable_expanded) {
+      this.onExpandedTimelineScrollCallback = this.onExpandedTimelineScroll.bind(this);
+      this.$expanded.on("mousewheel",this.onExpandedTimelineScrollCallback);
+      this.$expanded.on("dblclick",this.onExpandedTimelineDblClick.bind(this));
+      this.$expanded.on("mousedown",this.onMouseDownHandler.bind(this));
+      this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
+      this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
 
-    Backbone.on("timelineseek",this.onTimelineSeek.bind(this));
-    Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
-    Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
-    Backbone.on("trackchange",this.onTrackChange.bind(this));
-    Backbone.on("trackresize",this.onTrackResize.bind(this));
-    Backbone.on("trackdrag",this.onTrackDrag.bind(this));
-    Backbone.on("scrubberdisappear",this.onScrubberDisappear.bind(this));
+      this.$move_left_btn.on("click",this.onMoveLeftBtnClick.bind(this));
+      this.$move_right_btn.on("click",this.onMoveRightBtnClick.bind(this));
+
+      Backbone.on("timelineseek",this.onTimelineSeek.bind(this));
+      Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
+      Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
+      Backbone.on("trackchange",this.onTrackChange.bind(this));
+      Backbone.on("trackresize",this.onTrackResize.bind(this));
+      Backbone.on("trackdrag",this.onTrackDrag.bind(this));
+      Backbone.on("scrubberdisappear",this.onScrubberDisappear.bind(this));
+    }
   },
 
   onTrackChange: function(track) {
     this.renderTrack(track);
+  },
+
+  onExpandedTimelineDblClick: function(event) {
+    Backbone.trigger("expandedtimelinedblclick", event);
   },
 
   onTimeUpdate: function(event) {
@@ -177,17 +204,18 @@ river.ui.Timeline = Backbone.View.extend({
 
     this.renderTimeIndicator();
 
-    // trigger appear/disappear events
-    if (this.isOutOfBounds()) {
-      if (this.force_scroll_window || this.isScrubberVisible) {
-        Backbone.trigger("scrubberdisappear");
-        this.isScrubberVisible = false;
-        this.force_scroll_window = false;
-      }
-    } else {
-      if (!this.isScrubberVisible) {
-        Backbone.trigger("scrubberappear");
-        this.isScrubberVisible = true;
+    if (!this.disable_expanded) {
+      // trigger appear/disappear events
+      if (this.isOutOfBounds()) {
+        if (this.isScrubberVisible) {
+          Backbone.trigger("scrubberdisappear");
+          this.isScrubberVisible = false;
+        }
+      } else {
+        if (!this.isScrubberVisible) {
+          Backbone.trigger("scrubberappear");
+          this.isScrubberVisible = true;
+        }
       }
     }
   },
@@ -207,6 +235,7 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   onMouseDownHandler: function(event) {
+    console.log("fuck you");
     this.seekmode = true;
     // given pixel position, find out what seconds in time it corresponds to
 
@@ -219,16 +248,10 @@ river.ui.Timeline = Backbone.View.extend({
       $timeline = $target;
     }
 
-    var seconds = this.getSecondsFromCurrentPosition($timeline,$target,event.pageX);
+    var seconds = this.getSecondsFromCurrentPosition($timeline,event.pageX);
 
-    if ($target.hasClass("track")) {
-      var track = $target.data("model");
-      if (!track.isGhost) {
-        Backbone.trigger("timelineseek",track.startTime());
-      }
-    } else {
-      Backbone.trigger("timelineseek",seconds);
-    }
+    console.log(seconds);
+    Backbone.trigger("timelineseek",seconds);
   },
 
   onMouseMoveHandler: function(event) {
@@ -242,7 +265,7 @@ river.ui.Timeline = Backbone.View.extend({
       $timeline = $target;
     }
 
-    var seconds = this.getSecondsFromCurrentPosition($timeline,$target,event.pageX);
+    var seconds = this.getSecondsFromCurrentPosition($timeline,event.pageX);
 
     // seek
     if (this.seekmode) {
@@ -250,7 +273,7 @@ river.ui.Timeline = Backbone.View.extend({
     }
   },
 
-  getSecondsFromCurrentPosition: function($container,$target,eventPageX) {
+  getSecondsFromCurrentPosition: function($container,eventPageX) {
     var timelineX = $container.position().left;
     var posX = eventPageX - timelineX;
     var seconds = posX / this.resolution($container) + $container.scrollLeft() / this.resolution($container);
@@ -269,9 +292,7 @@ river.ui.Timeline = Backbone.View.extend({
   onSummaryMouseMoveHandler: function(event) {
     // move and update time float
     var $target = $(event.target);
-    var seconds = this.getSecondsFromCurrentPosition(this.$summary,$target,event.pageX);
-
-    this.renderTimeFloat(seconds);
+    this.renderTimeFloat(event.pageX);
   },
 
   onSeekHeadMouseDownHandler: function(event) {
@@ -284,30 +305,27 @@ river.ui.Timeline = Backbone.View.extend({
     this.$time_float.hide();
   },
 
-  renderTimeFloat: function(seconds) {
+  renderTimeFloat: function(posX) {
+    var seconds = this.getSecondsFromCurrentPosition(this.$summary,posX);
+
     // do not allow seeking to negative duration
     if (seconds < 0) seconds = 0;
     if (seconds > this.mediaDuration) seconds = this.mediaDuration;
 
     this.$time_float.text(this.stringifyTimeShort(seconds));
-    this.$time_float.css("left",event.pageX - this.$time_float.width() / 2);
+    this.$time_float.css("left",posX - this.$time_float.width() / 2);
   },
 
   onSeekHeadDragHandler: function(event) {
     // move and update time float
     var $target = $(event.target);
-    var seconds = this.getSecondsFromCurrentPosition(this.$summary,$target,event.pageX);
-
-    this.renderTimeFloat(seconds);
+    this.renderTimeFloat(event.pageX);
 
     // if seekmode, seek
     if (this.seekmode) {
+      var seconds = this.getSecondsFromCurrentPosition(this.$summary,event.pageX);
       Backbone.trigger("timelineseek",seconds);
     }
-  },
-
-  seek: function(seconds,callback) {
-
   },
 
   onSummaryMouseLeaveHandler: function(event) {
@@ -318,8 +336,23 @@ river.ui.Timeline = Backbone.View.extend({
 
   onExpandedTimelineScroll: function(event,delta,deltaX,deltaY){
     deltaX = -(deltaX * 2);
-    this.$expanded.scrollLeft(this.$expanded.scrollLeft() - deltaX) ;
     var secondsToScroll = deltaX / this.resolution(this.$expanded);
+    this.scrollWindow(secondsToScroll);
+  },
+
+  onMoveLeftBtnClick: function(event) {
+    event.preventDefault();
+    this.scrollContainerToTime(this.current_window_slide.start - 10);
+  },
+
+  onMoveRightBtnClick: function(event) {
+    event.preventDefault();
+    this.scrollContainerToTime(this.current_window_slide.start + 10);
+  },
+
+  scrollWindow: function(secondsToScroll) {
+    var deltaX = secondsToScroll * this.resolution(this.$expanded);
+    this.$expanded.scrollLeft(this.$expanded.scrollLeft() - deltaX) ;
     var numPixelsToScrollSummary = this.resolution(this.$summary) * secondsToScroll;
     var oldWindowSliderLeft = parseFloat(this.$window_slider.css("left"));
     var newWindowSliderLeft = oldWindowSliderLeft - numPixelsToScrollSummary;
@@ -355,22 +388,17 @@ river.ui.Timeline = Backbone.View.extend({
     // console.log(this.current_window_slide);
   },
 
-  onTrackResize: function(track,ui) {
-    var handle= $(event.target).css("cursor").split("-")[0];
-
+  onTrackResize: function(event,track,ui) {
     var $container = $(event.target).closest(".timeline");
 
     var seconds = ui.position.left / this.resolution($container);
     var duration = ui.size.width   / this.resolution($container);
 
-    if (handle === "w") {
-      track.setStartTime(seconds);
-    } else {
-      track.setEndTime(seconds + duration);
-    }
+    track.setStartTime(seconds);
+    track.setEndTime(seconds + duration);
   },
 
-  onTrackDrag: function(track,ui) {
+  onTrackDrag: function(event,track,ui) {
     var $container = $(event.target).closest(".timeline");
 
     var seconds = ui.position.left / this.resolution($container);
@@ -416,19 +444,23 @@ river.ui.Timeline = Backbone.View.extend({
 
   renderScrubber: function(time) {
     this.renderInContainer(this.$summary, this.$scrubber_summary, { left: this.media.currentTime.toFixed(3) });
-    this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
+
+    if (!this.disable_expanded) {
+      this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
+    }
 
   },
 
-  onScrubberDisappear: function(event) {
-    this.scrollContainerToElementAndMoveWindowSlider(this.$expanded,this.$scrubber_expanded);
+  onScrubberDisappear: function() {
+    if (this.force_scroll_window || !this.media.paused) {
+      this.scrollToScrubberAndMoveWindowSlider();
+      this.force_scroll_window = false;
+    }
   },
 
   renderTimeIndicator: function() {
-    this.renderInContainer(this.$expanded,this.$time_indicator,{
-      left: this.media.currentTime.toFixed(3),
-      text: this.stringifyTime(this.media.currentTime)
-    });
+    var time = this.stringifyTime(this.media.currentTime);
+    this.$time_indicator.text(time);
   },
 
   // given container, element, and time position you want to position element on, it will
@@ -489,57 +521,58 @@ river.ui.Timeline = Backbone.View.extend({
     }
   },
 
-  scrollContainerToElementAndMoveWindowSlider: function($container,$el) {
-    // if (!this.media.paused) {
-
+  scrollToScrubberAndMoveWindowSlider: function() {
       // find out which window_slide index to scroll element to
       var index = Math.floor(this.media.currentTime / this.window_slide_duration);
       var startTime   = index * this.window_slide_duration;
+      this.scrollContainerToTime(startTime);
+  },
 
-      var windowSlideTimeout;
 
-      // if queue is not empty, clear all timeouts and replace it with our new one
-      if (this.windowSlideTimeoutQueue) {
-        for (var i = 0; i < this.windowSlideTimeoutQueue.length; i++) {
-          windowSlideTimeout = this.windowSlideTimeoutQueue[i];
-          clearTimeout(windowSlideTimeout);
-        }
-        this.windowSlideTimeoutQueue.length = 0;
+  scrollContainerToTime: function(startTime) {
+    var windowSlideTimeout;
+
+    // if queue is not empty, clear all timeouts and replace it with our new one
+    if (this.windowSlideTimeoutQueue) {
+      for (var i = 0; i < this.windowSlideTimeoutQueue.length; i++) {
+        windowSlideTimeout = this.windowSlideTimeoutQueue[i];
+        clearTimeout(windowSlideTimeout);
       }
+      this.windowSlideTimeoutQueue.length = 0;
+    }
 
-      windowSlideTimeout = setTimeout(function() {
-        this.$expanded.off("mousewheel",this.onExpandedTimelineScrollCallback);
-        $container.animate({scrollLeft: startTime * this.resolution($container)},300,function(){
+    windowSlideTimeout = setTimeout(function() {
+      this.$expanded.off("mousewheel",this.onExpandedTimelineScrollCallback);
+      this.$expanded.animate({scrollLeft: startTime * this.resolution(this.$expanded)},300,function(){
 
-          // make sure scrolling callback only gets enabled after a second to prevent choppy scroll
-          // otherwise, onExpandedTimelineScrollCallback will do extra scrolling that resulted from residual scroll
-          // 
-          setTimeout(function(){ 
-            this.$expanded.on("mousewheel",this.onExpandedTimelineScrollCallback)
-          }.bind(this),500);
-          
+        // make sure scrolling callback only gets enabled after a second to prevent choppy scroll
+        // otherwise, onExpandedTimelineScrollCallback will do extra scrolling that resulted from residual scroll
+        // 
+        setTimeout(function(){ 
+          this.$expanded.on("mousewheel",this.onExpandedTimelineScrollCallback)
+        }.bind(this),500);
+        
 
-          this.updateCurrentWindowSlideAbsolute(startTime);
+        this.updateCurrentWindowSlideAbsolute(startTime);
 
-          // trigger appear/disappear events
-          if (this.isOutOfBounds()) {
-            if (this.isScrubberVisible) {
-              Backbone.trigger("scrubberdisappear");
-              this.isScrubberVisible = false;
-            }
-          } else {
-            if (!this.isScrubberVisible) {
-              Backbone.trigger("scrubberappear");
-              this.isScrubberVisible = true;
-            }
+        // trigger appear/disappear events
+        if (this.isOutOfBounds()) {
+          if (this.isScrubberVisible) {
+            Backbone.trigger("scrubberdisappear");
+            this.isScrubberVisible = false;
           }
-        }.bind(this));
-        this.$window_slider.animate({ left: this.resolution(this.$summary) * this.window_slide_duration * index },300);
-      }.bind(this),300);
+        } else {
+          if (!this.isScrubberVisible) {
+            Backbone.trigger("scrubberappear");
+            this.isScrubberVisible = true;
+          }
+        }
+      }.bind(this));
+      this.$window_slider.animate({ left: this.resolution(this.$summary) * startTime },300);
+    }.bind(this),300);
 
-      this.windowSlideTimeoutQueue.push(windowSlideTimeout);
-      this.$summary.trigger("window.scroll");
-    // }
+    this.windowSlideTimeoutQueue.push(windowSlideTimeout);
+    this.$summary.trigger("window.scroll");
   },
 
   getRightPos: function($el) {

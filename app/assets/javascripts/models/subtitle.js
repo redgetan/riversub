@@ -10,13 +10,12 @@ river.model.Subtitle = Backbone.Model.extend({
     if (this.options.view_enabled) {
       this.view = new river.ui.Subtitle({model: this});
     }
+
+    this.listenTo(this, "change", this.onChanged);
   },
 
-  getAttributes: function() {
-    return {
-      id:   this.id,
-      text: this.text
-    }
+  onChanged: function() {
+
   },
 
   startTime: function() {

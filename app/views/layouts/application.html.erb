@@ -11,7 +11,7 @@
 
 
   <meta name="google-site-verification" content="3gU-6xVgVkfOP_HFn8yPECp5UT-3mmA9SwkgwO4f97Y" />
-  
+
   <%= csrf_meta_tags %>
   <script>
     // set current controller action
@@ -27,9 +27,9 @@
     ga('send', 'pageview');
   </script>
 </head>
-<body>
-    <!-- 
-      facebook javascript sdk 
+<body class="white">
+    <!--
+      facebook javascript sdk
       https://developers.facebook.com/docs/plugins/share-button/
     -->
     <div id="fb-root"></div>
@@ -41,10 +41,10 @@
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
 
-    <div class="navbar navbar-fixed-top" id="header">
+    <nav class="navbar navbar-fixed-top" id="header">
       <div class="navbar-inner">
         <div class="container nav-container">
-          <a class="brand" href="<%= root_url %>"> Riversub</a>
+          <a class="brand" href="<%= root_url %>"> Yasub</a>
           <ul class="nav menu-nav">
             <li class="divider-vertical"></li>
             <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li>
@@ -77,7 +77,7 @@
           </ul>
         </div>
       </div>
-    </div>
+    </nav>
     
     <div id="main_container">
             <div id="flash_container">
@@ -97,10 +97,10 @@
     <footer>
       <div class="container">
         <ul>
-          <li class="sitename">Riversub.cc © 2014. All Rights Reserved</li>
+          <li class="sitename">Yasub © 2014. All Rights Reserved</li>
           <li><a href="#">Terms</a></li>
           <li><a href="#">Privacy</a></li>
-          <li><a href="mailto:info@riversub.cc">Feedback</a></li>
+          <li><a href="mailto:info@yasub.com">Feedback</a></li>
         </ul>
       </div>
     </footer>
@@ -138,7 +138,7 @@
             </div>
             <div id="collapseTwo" class="accordion-body collapse">
               <div class="accordion-inner">
-                Double click tracks <span class='track' style='width:10px; height: 13px;'></span> to to edit their subtitles 
+                Double click tracks <span class='track' style='width:10px; height: 13px;'></span> to to edit their subtitles
               </div>
             </div>
           </div>
@@ -194,19 +194,19 @@
         <div class="modal-body">
           <div class="social_share_container row">
             <div class="span offset1">
-              <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.short_url %>" target="_blank">
+              <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.url %>" target="_blank">
                  <%= image_tag "fb-32.png" %>
               </a>
             </div>
             <div class="span">
-              <a href="https://plus.google.com/share?url=<%= @repo.short_url %>" target="_blank">
+              <a href="https://plus.google.com/share?url=<%= @repo.url %>" target="_blank">
                  <%= image_tag "gplus-32.png"  %>
               </a>
             </div>
           </div>
           <div class="row">
             <h5 class="span1 offset1" style="position: relative; top: -5px; margin-right: -20px;">Link</h5>
-            <input class="span4 share_link_input" value="<%= @repo.short_url %>" type="text" onclick="this.select()">
+            <input class="span4 share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
           </div>
         </div>
       </div>

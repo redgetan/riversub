@@ -1,6 +1,6 @@
-<% set_meta_tags :site => 'Riversub', :title => 'Subtitle Tool for Youtube Videos', :description => "Riversub lets you subtitle & caption Youtube Videos." %>
+<% set_meta_tags :site => 'Yasub', :title => 'Subtitle Tool for Youtube Videos', :description => "Yasub lets you subtitle & caption Youtube Videos." %>
 
-<div id='demo' >
+<div id='demo'>
   <div id='demo-background'>
   </div>
   <div id='demo-container' class='container'>
@@ -17,18 +17,19 @@
         </div>
       </div>
       <div class='span6 call-to-action'>
-        <p id='description'>Video Subtitle Tool</p>
-        <span>lets you subtitle existing online videos using just your web browser. </span>
+      <p id='description'>Video Subtitle Tool</p>
+        <p></p>
         </br>
-        <h4>Features</h4>
         <ul>
-          <li>FREE</li>
+          <li>Subtitle existing online videos for FREE</li>
           <li>Supports Any Language</li>
           <li>Works even for videos you do not own</li>
           <li>Unobtrusive (subtitles will not cover the video)</li>
           <li>Currently supports Youtube only</li>
         </ul>
-        <a class="btn btn-danger btn-large demo_btn" href="<%= @guided_walkthrough_repo.editor_url %>">Try the Demo</a> 
+        </br>
+        <a class="btn btn-danger btn-large start_subtitling_btn" data-toggle='modal' data-target='#new_project_modal'>Start Subtitling</a>
+      </br>
       </div>
     </div>
   </div>
@@ -39,7 +40,7 @@
     <div class="videos span12">
       <h4 class="center">Recently created</h4>
       <ul class="thumbnails user">
-        <% Repository.user_subtitled.recent.limit(6).each do |repo| %>
+        <% Repository.published.recent.limit(6).each do |repo| %>
             <li class="span2">
               <div class="thumbnail center">
                 <span class='repo_owner'>

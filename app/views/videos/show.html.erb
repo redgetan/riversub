@@ -1,57 +1,56 @@
-<% set_meta_tags :site => 'Riversub', :title => "#{@repo.video.name}", :description => "Watch a Youtube Video with user generated captions/subtitles" %>
+<% set_meta_tags :site => 'Yasub', :title => "#{@repo.video.name}", :description => "Watch a Youtube Video with user generated captions/subtitles" %>
 
-<div>
-  <div id='river_player' data-repo='<%= @repo.serialize.to_json %>'>
-    <div id='player-top' class='row'> 
-      <div class="left_side">
-        <h5 id='repo_label'>
-          <div>
-            <a href="<%= @repo.short_url %>"><%= @repo.video.name %></a>
-          </div>
-        </h5>
-        <div id='subtitle_container'> 
-          <div id='subtitle_list'></div> 
-          <div id='controls_extra' class='row'> 
-            <div class='btn-group pull-right'> 
-              <!-- <a id='download_btn' class='btn' href='<%= @repo.subtitle_download_url %>'><i class='icon-download-alt'></i> Download</a>  -->
-            </div> 
-          </div> 
-        </div> 
+
+<div id="player-background">
+<div id='river_player' class='show' data-repo='<%= @repo.serialize.to_json %>'>
+  <div class="left_side">
+    <h5 id='repo_label'>
+      <div>
+        <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
       </div>
-
-      <div id='player-top-left'>
-        <div id="white-bar"></div>
-        <div id='media_container'> 
-          <div id='media'></div> 
-          <div id='subtitle_bar' class='span8 center'> 
-            <span id='subtitle_display' class='span5 center'></span> 
-          </div> 
-        </div> 
-
-        <div class='row' > 
-          <div id="media_controls">
-            <h5>
-              <span class="pull-left">
-                <% if @repo.user %>
-                  <div class="subtitler pull-left">
-                    Subtitler: <a class="subtitler_name" href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> 
-                  </div>
-                <% end %>
-              </span>
-              <% if @repo.user == current_user %>
-                <a class='btn btn-success ubtitle_editor_btn pull-right' href="<%= @repo.editor_url %>"><i class="icon-random"></i> Edit</a>
-              <% elsif current_user && @user_version = @repo.version_for(current_user) %>
-                <a class='btn btn-success view_version_btn pull-right' href="<%= @user_version.url %>"><i class="icon-random"></i> View Your Version</a>
-              <% else %>
-                <a class='btn btn-success new_repo_btn pull-right' href="#"><i class="icon-random"></i> Create Sub</a>
-              <% end %>
-              <a class='btn share_btn pull-right' href="#" data-toggle='modal' data-target='#share_modal'>Share</a>
-            </h5>
-          </div>
+    </h5>
+    <div id="media_controls">
+      <div class="share_edit center">
+        <% if @repo.user == current_user %>
+          <a class='share_btn river_btn' href="#" data-toggle='modal' data-target='#share_modal'>Share</a>
+          <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
+          <a class='new_repo_btn river_btn' href="#"><i class="icon-random"></i> Create</a>
+        <% elsif current_user && @user_version = @repo.version_for(current_user) %>
+          <a class='view_version_btn river_btn' href="<%= @user_version.url %>"><i class="icon-random"></i> View Your Version</a>
+        <% else %>
+          <a class='new_repo_btn river_btn' href="#"><i class="icon-random"></i> Create</a>
+        <% end %>
+      </div>
+    </div>
+    <div id='subtitle_container'> 
+      <div id='subtitle_list'></div> 
+      <div id='controls_extra' class='row'> 
+        <div class='btn-group pull-right'> 
+          <!-- <a id='download_btn' class='btn' href='<%= @repo.subtitle_download_url %>'><i class='icon-download-alt'></i> Download</a>  -->
         </div> 
       </div> 
     </div> 
-
-
   </div>
+
+  <div class='right_side span10'> 
+    <div id='media_container'> 
+      <div id='viewing_screen' >
+        <div id='iframe_container'>
+          <div id='iframe_overlay'>
+          </div>
+          <div id='overlay_btn'><i class='icon-play'></i></div>
+        </div>
+        <div id='subtitle_bar' class='span10 center'>
+          <div id='subtitle_display' class='span6 center'></div>
+        </div>
+      </div>
+      <div id='time_float'></div>
+      <div id='seek_head'>
+        <div id='seek_head_corner'></div>
+        <div id='seek_head_body'></div>
+      </div>
+      <div id='blackbar'></div>
+    </div> 
+  </div> 
+</div>
 </div>    
