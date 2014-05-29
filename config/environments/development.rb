@@ -16,6 +16,19 @@ River::Application.configure do
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
 
+config.action_mailer.delivery_method = :smtp
+  
+  config.action_mailer.smtp_settings = {
+    :address   => "smtp.mandrillapp.com",
+    :port      => 587, # ports 587 and 2525 are also supported with STARTTLS
+    :enable_starttls_auto => true, # detects and uses STARTTLS
+    :user_name => "hassan@yasub.com",
+    :password  => "UfFUzJ-HJHxIkqHlmji8MA", # SMTP password is any valid API key
+    :authentication => 'login', # Mandrill supports 'plain' or 'login'
+    :domain => 'yasub.com', # your domain to identify your server when connecting
+  }
+
+
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
 
@@ -35,7 +48,7 @@ River::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-  config.action_mailer.default_url_options = { :host => 'dev.yasub.cc:3000' }
-  Rails.application.routes.default_url_options[:host] = 'dev.yasub.cc:3000'
+  config.action_mailer.default_url_options = { :host => 'dev.yasub.com:3000' }
+  Rails.application.routes.default_url_options[:host] = 'dev.yasub.com:3000'
 
 end

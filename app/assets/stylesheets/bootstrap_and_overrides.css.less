@@ -13,6 +13,7 @@
 @fontAwesomeWoffPath: asset-path("fontawesome-webfont.woff?v=3.0.2");
 @fontAwesomeTtfPath: asset-path("fontawesome-webfont.ttf?v=3.0.2");
 
+
 // Font Awesome
 @import "fontawesome";
 
@@ -30,35 +31,39 @@
 // Example:
 // @linkColor: #ff0000;
 
-
 html {
   position: relative;
   min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 30px;
-}
-
-.navbar .divider-vertical {
-    border-left: 1px solid #AF687F;
-    border-right: none;
-}
-
-.navbar .brand {
     color: #fff;
-    text-shadow: none;
+    overflow-x: hidden;
+    margin-bottom: 50px;
 }
 
-.navbar .nav > li > a {
-    color: #fff;
-    text-shadow: none;
+body.white {
+    color: #333;
 }
 
-.navbar .nav > li:hover > a {
-    color: #8CA0FF;
+.navbar .nav li.dropdown > .dropdown-toggle .caret {
+    border-top-color: #fff;
+    border-bottom-color: #fff;
+    }
+
+        .navbar .nav li.dropdown.open.active > .dropdown-toggle .caret {
+            border-top-color: #8CA0FF;                
+            border-bottom-color: #8CA0FF;
+        }
+
+    .white .navbar .nav li.dropdown > .dropdown-toggle .caret  {
+        border-top-color: #777777;
+        border-bottom-color: #777777;
 }
+    .white .navbar .nav li.dropdown.open.active > .dropdown-toggle .caret {
+            border-top-color: #555555;                
+            border-bottom-color: #555555;
+        }
 
 /*
 .btn-info:hover, .btn-info:focus {

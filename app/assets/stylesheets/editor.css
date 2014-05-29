@@ -240,13 +240,15 @@ div#editor-bottom {
 
 
 #river_player {
+    text-align: center;
+    margin-top: 20px;
+    margin: auto;
     color: #fff;
-    background-color: #000;
-	text-align: center;
-	margin-top: 20px;
-	width: 100%;
-	margin: auto;
 }
+
+    .white #river_player {
+        color: #333;
+    }
 
 #river_player #subtitle_list td {
 	padding: 0px;
