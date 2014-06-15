@@ -580,11 +580,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onEditorSync: function(syncMethod,model) {
     if (syncMethod === "save" ) {
       Backbone.Model.prototype[syncMethod].call(model,{},{
+        timeout: 10000,
         success: this.onTrackRequestSuccess.bind(this), 
         error:   this.onTrackRequestError.bind(this)
       });
     } else {
       Backbone.Model.prototype[syncMethod].call(model,{
+        timeout: 10000,
         success: this.onTrackRequestSuccess.bind(this), 
         error:   this.onTrackRequestError.bind(this)
       });
@@ -598,7 +600,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTrackRequestError: function() {
     this.$status_bar.text("Save Failed");
     this.$status_bar.addClass("failed");
-    
+
     setTimeout(function(){ 
       this.$status_bar.text(""); 
       this.$status_bar.removeClass("failed");
