@@ -428,3 +428,13 @@ a#preview_btn {
 .timeline_tab_content {
 	overflow: visible;
 }
+
+#editor #status-bar {
+	color: black;
+	font-size: 14px;
+}
+
+#editor #status-bar.failed {
+	color: red;
+	font-size: 20px;
+}

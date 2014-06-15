@@ -597,7 +597,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTrackRequestError: function() {
     this.$status_bar.text("Save Failed");
-    setTimeout(function(){ this.$status_bar.text(""); }.bind(this),500);
+    this.$status_bar.addClass("failed");
+    
+    setTimeout(function(){ 
+      this.$status_bar.text(""); 
+      this.$status_bar.removeClass("failed");
+    }.bind(this),3000);
   },
 
   onSubtitleLineDblClick: function(subtitle) {
