@@ -304,11 +304,15 @@ div#iframe_container #media {
 #overlay_btn {
   position: absolute;
   top: 50%;
-  left: 20%;
+  left: 50%;
   width: 100px;
   height: 100px;
   margin: -50px 0 0 -50px;
   /*background: url(bigplay.svg) no-repeat;*/
+}
+
+#editor #overlay_btn {
+  left: 20%;
 }
 
 div#subtitle_bar {
