@@ -25,10 +25,11 @@
           <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
           <a class='new_repo_btn river_btn' href="#"><i class="icon-random"></i> Create</a>
         <% elsif current_user && @user_version = @repo.version_for(current_user) %>
-          <a class='view_version_btn river_btn' href="<%= @user_version.url %>"><i class="icon-random"></i> View Your Version</a>
+          <a class='view_version_btn river_btn' href="<%= @user_version.url %>"><i class="icon-random"></i> Your Version</a>
         <% else %>
           <a class='new_repo_btn river_btn' href="#"><i class="icon-random"></i> Create</a>
         <% end %>
+        <a id='download_btn' class='river_btn' href='<%= @repo.subtitle_download_url %>'><i class='icon-download-alt'></i> </a> 
       </div>
     </div>
     <div id='subtitle_container'> 
@@ -59,7 +60,6 @@
       </div>
       <div id='blackbar'></div>
     </div> 
-    <a id='download_btn' class='river_btn' href='<%= @repo.subtitle_download_url %>'><i class='icon-download-alt'></i> Download</a> 
   </div> 
 </div>
 </div>    
