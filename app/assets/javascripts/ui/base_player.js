@@ -66,7 +66,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$subtitleBar = $("#subtitle_bar");
 
     this.$downloadBtn = $("#download_btn");
-    this.$downloadBtn.tooltip({title: "Download subtitle file in .srt format"});
+    this.$downloadBtn.tooltip({title: "Download subtitle file in .srt format", placement: "left"});
 
     this.$subtitleDisplay = $("#subtitle_display");
 

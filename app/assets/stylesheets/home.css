@@ -870,3 +870,8 @@ footer ul li a:hover{
 .thumbnail {
     background-color: #fff;
 }
+
+#download_btn {
+  float: right;
+  margin-top: 20px;
+}
