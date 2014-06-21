@@ -235,7 +235,6 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   onMouseDownHandler: function(event) {
-    console.log("fuck you");
     this.seekmode = true;
     // given pixel position, find out what seconds in time it corresponds to
 
@@ -250,7 +249,6 @@ river.ui.Timeline = Backbone.View.extend({
 
     var seconds = this.getSecondsFromCurrentPosition($timeline,event.pageX);
 
-    console.log(seconds);
     Backbone.trigger("timelineseek",seconds);
   },
 

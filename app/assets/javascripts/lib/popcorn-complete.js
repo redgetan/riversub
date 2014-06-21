@@ -11278,7 +11278,7 @@ var wikiCallback;
 
   Popcorn.youtube = function( container, url, options ) {
     if ( typeof console !== "undefined" && console.warn ) {
-      console.warn( "Deprecated player 'youtube'. Please use Popcorn.HTMLYouTubeVideoElement directly." );
+      // console.warn( "Deprecated player 'youtube'. Please use Popcorn.HTMLYouTubeVideoElement directly." );
     }
 
     var media = Popcorn.HTMLYouTubeVideoElement( container ),

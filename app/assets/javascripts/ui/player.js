@@ -58,7 +58,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
   bindEvents: function() {
     river.ui.BasePlayer.prototype.bindEvents.call(this);
     Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
-    console.log("shitman");
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
     this.$iframeOverlay.on("mouseenter",this.onIframeOverlayMouseEnter.bind(this));
     this.$iframeOverlay.on("mouseleave",this.onIframeOverlayMouseLeave.bind(this));
@@ -100,7 +99,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     // remove subtitle lines that are blank
     $(".subtitle").each(function(){
       if ($(this).find(".text").text().length === 0) {
-        $(this).remove();  
+        $(this).remove();
       }
     });
 
