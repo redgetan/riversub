@@ -234,6 +234,10 @@ div#media_container {
   margin-left: 40px;
 }
 
+#river_player.show {
+  min-width: 1300px;
+}
+
 #river_player.show div#media_container {
   margin-top: 30px;
   overflow: hidden;
