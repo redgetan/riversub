@@ -268,7 +268,7 @@ div#editor-bottom {
 
 
 .subtitle:hover {
-	background-color: #8ca0ff;
+	background-color: rgba(83, 103, 240, 0.5);
 	/*border: solid 1px gray;*/
 }
 
@@ -284,12 +284,21 @@ div#editor-bottom {
 	float: left;
 	display: block;
 	padding: 2px;
+	cursor: text;
 }
 
 .subtitle .start_time,
 .subtitle .end_time {
 	width: 60px;
 	margin-right: 10px;
+}
+
+.subtitle .start_time:hover,
+.subtitle .end_time:hover,
+.subtitle .text:hover {
+	border: solid 1px rgba(83, 103, 240,0.5);
+	color: black;
+	background-color: white !important;
 }
 
 .subtitle .text {

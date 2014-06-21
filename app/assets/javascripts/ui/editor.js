@@ -560,6 +560,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.seek(this.lastTimeUpdateTime);
     this.$overlay_btn.find("i").removeClass("icon-pause");
     this.$overlay_btn.find("i").addClass("icon-play");
+    this.$overlay_btn.show();
   },
 
   onLoadedMetadata: function(event) {
