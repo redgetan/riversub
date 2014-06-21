@@ -1,7 +1,7 @@
 <% set_meta_tags :site => 'Yasub', :title => "#{@repo.video.name}", :description => "Watch a Youtube Video with user generated captions/subtitles" %>
 
 
-<div class="background">
+<div class="background"></div>
 <div id='river_player' class='show' data-repo='<%= @repo.serialize.to_json %>'>
   <div class="left_side">
     <h5 id='repo_label'>
@@ -62,4 +62,3 @@
     </div> 
   </div> 
 </div>
-</div>    
