@@ -78,9 +78,7 @@ River::Application.configure do
     :domain => 'yasub.com', # your domain to identify your server when connecting
   }
 
-  config.to_prepare { Devise::SessionsController.force_ssl }
-  config.to_prepare { RegistrationsController.force_ssl }
-  config.to_prepare { Devise::PasswordsController.force_ssl }
+  config.force_ssl
 
   Rails.application.routes.default_url_options[:host] = 'www.yasub.com'
 
