@@ -479,10 +479,8 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   onScrubberDisappear: function() {
-    if (this.force_scroll_window || !this.media.paused) {
-      this.scrollToScrubberAndMoveWindowSlider();
-      this.force_scroll_window = false;
-    }
+    this.scrollToScrubberAndMoveWindowSlider();
+    this.force_scroll_window = false;
   },
 
   renderTimeIndicator: function() {
