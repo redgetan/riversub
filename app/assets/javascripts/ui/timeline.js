@@ -6,12 +6,14 @@ river.ui.Timeline = Backbone.View.extend({
   */
 
   initialize: function(options) {
+    this.WINDOW_WIDTH_IN_SECONDS = 30;
+
     this.mediaDuration = options.mediaDuration; 
     this.setupElement();
 
     this.setMedia(options.media);
 
-    this.window_slide_duration = 30;
+    this.window_slide_duration = this.WINDOW_WIDTH_IN_SECONDS;
 
     this.disable_expanded = options.disable_expanded || false;
 
@@ -19,7 +21,8 @@ river.ui.Timeline = Backbone.View.extend({
     this.force_scroll_window = false;
     this.windowSlideTimeoutQueue = [];
 
-    this.current_window_slide = { start: 0, end: this.mediaDuration < 30 ? this.mediaDuration : 30 };
+    this.current_window_slide = { start: 0, end: this.mediaDuration < this.WINDOW_WIDTH_IN_SECONDS ? this.mediaDuration : this.WINDOW_WIDTH_IN_SECONDS };
+    this.prevScrollerHandlerPageX = null;    
   },
 
   setupElement: function() {
@@ -55,31 +58,24 @@ river.ui.Timeline = Backbone.View.extend({
       // window slider
       this.$window_slider = $("#summary .window_slider");
       this.$window_slider.css("left",0);
-      this.$window_slider.css("width",this.resolution(this.$summary) * 30);
+      this.$window_slider.css("width",this.resolution(this.$summary) * this.WINDOW_WIDTH_IN_SECONDS);
 
       var expanded = "<div id='expanded' class='timeline'>" +
                        "<div class='filler'>" +
+                         "<div id='time_label'>" +
+                         "</div>" +
                          "<div id='track_viewport'>" +
                            "<div class='scrubber'></div>" +
                          "</div>" +
-                         "<div id='time_label'>" +
-                         "</div>" +
                        "</div>" +
-                     "</div>";
-
-      var move_left_btn = "<a href='#' class='move_left_btn'>" +
-                           "<i class='icon-chevron-left'></i>" +
-                          "</a>";
-
-      var move_right_btn = "<a href='#' class='move_right_btn'>" +
-                             "<i class='icon-chevron-right'></i>" +
-                           "</a>";
+                     "</div>" +
+                     "<div id='timeline_scroller'>" +
+                       "<div id='scroller_handle'>" +
+                       "</div>" + 
+                     "</div>"; 
 
       this.$expanded_container = $("#timeline_container");
       this.$expanded_container.prepend(expanded);
-
-      this.$expanded_container.append(move_left_btn);
-      this.$expanded_container.append(move_right_btn);
 
       this.$expanded = $("#expanded");
       this.$expanded_track_viewport = $("#track_viewport");
@@ -97,9 +93,36 @@ river.ui.Timeline = Backbone.View.extend({
       this.$expanded_time_label = $("#time_label");
       this.$expanded_time_label.append(timeline_label);
 
-      this.$move_left_btn = $(".move_left_btn");
-      this.$move_right_btn = $(".move_right_btn");
+      this.$timeline_scroller = $("#timeline_scroller");
+      this.$scroller_handle = $("#scroller_handle");
+      this.$scroller_handle.css("left",0);
+
+      this.$scroller_handle.draggable({
+        cursor: "move",
+        axis: "x",
+        containment: "parent",
+        drag: this.onScrollerHandleDrag.bind(this),
+        stop: this.onScrollerHandleStop.bind(this)
+      });
     }
+  },
+
+  onScrollerHandleDrag: function(event) {
+    if (!this.prevScrollerHandlerPageX) {
+      this.prevScrollerHandlerPageX = event.pageX;    
+    }
+    var deltaX = event.pageX - this.prevScrollerHandlerPageX;
+    this.prevScrollerHandlerPageX = event.pageX;    
+
+    var scrollFactor = this.mediaDuration/this.WINDOW_WIDTH_IN_SECONDS;
+    deltaX = -(deltaX * scrollFactor);
+    var secondsToScroll = deltaX / this.resolution(this.$expanded);
+
+    this.scrollWindow(secondsToScroll);
+  },
+
+  onScrollerHandleStop: function(event) {
+    this.prevScrollerHandlerPageX = null;
   },
 
   setTracks: function(tracks) {
@@ -131,13 +154,13 @@ river.ui.Timeline = Backbone.View.extend({
 
       for (var x = 0; x < 5; x++) {
         if (x === 0) {
-          label =    "<g transform='translate(" + xPos + ",-15)' style='opacity: 1;'>" +
+          label =    "<g transform='translate(" + xPos + ",-2)' style='opacity: 1;'>" +
                        "<line class='tick' y2='3' x2='0'></line>" +
-                       "<text class='time' fill='#777777' y='13' x='0' text-anchor='middle'>" + time + "</text>" +
+                       "<text class='time' fill='#777777' y='-2' x='0' text-anchor='middle'>" + time + "</text>" +
                      "</g>";
         } else {
-          label =    "<g transform='translate(" + xPos + ",-15)' style='opacity: 1;'>" +
-                       "<line class='tick' y2='4' x2='0'></line>" +
+          label =    "<g transform='translate(" + xPos + ",-5)' style='opacity: 1;'>" +
+                       "<line class='tick' y2='5' x2='0'></line>" +
                      "</g>";
         }
 
@@ -176,9 +199,6 @@ river.ui.Timeline = Backbone.View.extend({
       this.$expanded.on("mousedown",this.onMouseDownHandler.bind(this));
       this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
       this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
-
-      this.$move_left_btn.on("click",this.onMoveLeftBtnClick.bind(this));
-      this.$move_right_btn.on("click",this.onMoveRightBtnClick.bind(this));
 
       Backbone.on("timelineseek",this.onTimelineSeek.bind(this));
       Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
@@ -332,20 +352,29 @@ river.ui.Timeline = Backbone.View.extend({
     }
   },
 
+  onTimelineScrollerScroll: function(event) {
+
+  },
+
   onExpandedTimelineScroll: function(event,delta,deltaX,deltaY){
     deltaX = -(deltaX * 2);
     var secondsToScroll = deltaX / this.resolution(this.$expanded);
     this.scrollWindow(secondsToScroll);
+    this.updateScrollerHandlePosition(secondsToScroll);
   },
 
-  onMoveLeftBtnClick: function(event) {
-    event.preventDefault();
-    this.scrollContainerToTime(this.current_window_slide.start - 10);
-  },
+  updateScrollerHandlePosition: function(secondsToScroll) {
+    var numPixelsToScrollSummary = this.resolution(this.$summary) * secondsToScroll;
+    var oldWindowSliderLeft = parseFloat(this.$scroller_handle.css("left"));
+    var newWindowSliderLeft = oldWindowSliderLeft - numPixelsToScrollSummary;
 
-  onMoveRightBtnClick: function(event) {
-    event.preventDefault();
-    this.scrollContainerToTime(this.current_window_slide.start + 10);
+    // cannot go beyond the min/max left
+    var maxLeft = this.$summary.width() - this.$scroller_handle.width();
+    var minLeft = 0;
+
+    if (newWindowSliderLeft >= minLeft && newWindowSliderLeft <= maxLeft) {
+      this.$scroller_handle.css("left",newWindowSliderLeft);
+    }
   },
 
   scrollWindow: function(secondsToScroll) {
@@ -495,9 +524,9 @@ river.ui.Timeline = Backbone.View.extend({
 
   getContainerWidthInSeconds: function($container) {
     if ($container.attr("id") === "summary") {
-      return this.mediaDuration || 30;
+      return this.mediaDuration || this.WINDOW_WIDTH_IN_SECONDS;
     } else {
-      return 30;
+      return this.WINDOW_WIDTH_IN_SECONDS;
     }
   },
 
@@ -567,6 +596,7 @@ river.ui.Timeline = Backbone.View.extend({
         }
       }.bind(this));
       this.$window_slider.animate({ left: this.resolution(this.$summary) * startTime },300);
+      this.$scroller_handle.animate({ left: this.resolution(this.$summary) * startTime },300);
     }.bind(this),300);
 
     this.windowSlideTimeoutQueue.push(windowSlideTimeout);

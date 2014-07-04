@@ -94,6 +94,7 @@ div#editor-bottom {
 #expanded #time_label {
 	height: 15px;
 	width: inherit;
+	border-bottom: solid 1px lightgray;
 }
 
 .progress_bar {
@@ -447,4 +448,17 @@ a#preview_btn {
 #editor #status-bar.failed {
 	color: red;
 	font-size: 20px;
+}
+
+#timeline_scroller {
+	height: 15px;
+	border-bottom: solid 1px lightgray;
+	border-left: solid 1px lightgray;
+	border-right: solid 1px lightgray;
+}
+
+#timeline_scroller #scroller_handle {
+	height: inherit;
+	width: 50px;
+	background-color: lightgray;
 }
