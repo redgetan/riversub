@@ -21,7 +21,7 @@
       </h5>
       <div class="share_edit center">
         <a class='share_btn river_btn' href="#" data-toggle='modal' data-target='#share_modal'>Share</a>
-        <% if @repo.user == current_user %>
+        <% if @repo.user.nil? || @repo.user == current_user %>
           <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
           <a class='new_repo_btn river_btn' href="#"><i class="icon-random"></i> Create</a>
         <% elsif current_user && @user_version = @repo.version_for(current_user) %>
