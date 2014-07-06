@@ -983,8 +983,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
       this.popcorn.on("seeked",executeCallback);
 
-      var timeSlightlyBeforeTrackEnd = Math.floor((track.endTime() - 0.01) * 1000) / 1000;
-      this.seek(timeSlightlyBeforeTrackEnd);
+      this.seek(track.startTime());
 
     }.bind(this);
 
