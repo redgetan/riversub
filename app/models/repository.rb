@@ -25,6 +25,7 @@ class Repository < ActiveRecord::Base
   scope :anonymously_subtitled, where("user_id IS NULL")
   scope :user_subtitled,        where("user_id IS NOT NULL")
   scope :published,             where("is_published is true")
+  scope :unpublished,           where("is_published is NULL")
   scope :recent,                order("updated_at DESC")
 
   GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"

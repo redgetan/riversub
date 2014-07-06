@@ -22,8 +22,7 @@ River::Application.routes.draw do
   get "faq", :to => "home#faq"
 
   get "videos",                                :to => "videos#index"
-  get "videos/anonymous",                      :to => "videos#anonymous"
-  get "videos/community",                      :to => "videos#community"
+  get "videos/unpublished",                    :to => "videos#unpublished"
   post "videos/sub",                           :to => "videos#sub",    :as => "sub_videos"
   post "videos/publish",                       :to => "videos#publish",:as => "publish_videos"
 

@@ -43,6 +43,7 @@ GEM
     binding_of_caller (0.7.1)
       debug_inspector (>= 0.0.1)
     builder (3.0.4)
+    cancan (1.6.10)
     capistrano (2.15.4)
       highline
       net-scp (>= 1.0.0)
@@ -265,6 +266,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  cancan
   capistrano (~> 2.15.4)
   capistrano-unicorn
   carrierwave

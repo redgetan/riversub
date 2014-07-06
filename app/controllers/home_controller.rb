@@ -6,11 +6,6 @@ class HomeController < ApplicationController
     respond_to :html
   end
 
-  def videos
-    @repos = Repository.all
-    respond_to :html
-  end
-
   def faq
     # @guided_walkthrough_repo = Repository.guided_walkthrough
   end

@@ -84,6 +84,10 @@ class User < ActiveRecord::Base
     }  
   end
 
+  def admin?
+    !!self.is_admin  
+  end
+
   def to_param
     self.username  
   end

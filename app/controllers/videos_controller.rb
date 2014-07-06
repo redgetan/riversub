@@ -57,4 +57,12 @@ class VideosController < ApplicationController
     @repos = Repository.published.recent.page params[:page]
   end
 
+  def unpublished
+    unless current_user && current_user.admin?
+      render :text => "you do not have permission to access that page", :status => 403 and return
+    end
+
+    @repos = Repository.unpublished.recent
+  end
+
 end
