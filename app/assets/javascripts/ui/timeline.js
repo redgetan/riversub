@@ -17,9 +17,7 @@ river.ui.Timeline = Backbone.View.extend({
 
     this.disable_expanded = options.disable_expanded || false;
 
-    this.isScrubberVisible = true;
-    this.force_scroll_window = false;
-    this.windowSlideTimeoutQueue = [];
+    this.lastWindowSlideTimeout = null;
 
     this.current_window_slide = { start: 0, end: this.mediaDuration < this.WINDOW_WIDTH_IN_SECONDS ? this.mediaDuration : this.WINDOW_WIDTH_IN_SECONDS };
     this.prevScrollerHandlerPageX = null;    
@@ -200,13 +198,11 @@ river.ui.Timeline = Backbone.View.extend({
       this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
       this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
 
-      Backbone.on("timelineseek",this.onTimelineSeek.bind(this));
       Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
       Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
       Backbone.on("trackchange",this.onTrackChange.bind(this));
       Backbone.on("trackresize",this.onTrackResize.bind(this));
       Backbone.on("trackdrag",this.onTrackDrag.bind(this));
-      Backbone.on("scrubberdisappear",this.onScrubberDisappear.bind(this));
     }
   },
 
@@ -225,24 +221,14 @@ river.ui.Timeline = Backbone.View.extend({
     this.renderTimeIndicator();
 
     if (!this.disable_expanded) {
-      // trigger appear/disappear events
-      if (this.isOutOfBounds()) {
-        if (this.isScrubberVisible) {
-          Backbone.trigger("scrubberdisappear");
-          this.isScrubberVisible = false;
-        }
-      } else {
-        if (!this.isScrubberVisible) {
-          Backbone.trigger("scrubberappear");
-          this.isScrubberVisible = true;
-        }
-      }
+      this.scrollWindowIfOutOfBounds();
     }
   },
 
-  onTimelineSeek: function() {
-    // always scroll window, do not care if appeared/disappeared
-    this.force_scroll_window = true;
+  scrollWindowIfOutOfBounds: function() {
+    if (this.isOutOfBounds()) {
+      this.scrollToScrubberAndMoveWindowSlider();
+    }
   },
 
   onGhostTrackStart: function(track) {
@@ -352,10 +338,6 @@ river.ui.Timeline = Backbone.View.extend({
     }
   },
 
-  onTimelineScrollerScroll: function(event) {
-
-  },
-
   onExpandedTimelineScroll: function(event,delta,deltaX,deltaY){
     deltaX = -(deltaX * 2);
     var secondsToScroll = deltaX / this.resolution(this.$expanded);
@@ -368,13 +350,9 @@ river.ui.Timeline = Backbone.View.extend({
     var oldWindowSliderLeft = parseFloat(this.$scroller_handle.css("left"));
     var newWindowSliderLeft = oldWindowSliderLeft - numPixelsToScrollSummary;
 
-    // cannot go beyond the min/max left
-    var maxLeft = this.$summary.width() - this.$scroller_handle.width();
-    var minLeft = 0;
+    newWindowSliderLeft = this.normalizeTargetXPosInContainer(this.$summary, this.$scroller_handle, newWindowSliderLeft);
 
-    if (newWindowSliderLeft >= minLeft && newWindowSliderLeft <= maxLeft) {
-      this.$scroller_handle.css("left",newWindowSliderLeft);
-    }
+    this.$scroller_handle.css("left",newWindowSliderLeft);
   },
 
   scrollWindow: function(secondsToScroll) {
@@ -384,14 +362,10 @@ river.ui.Timeline = Backbone.View.extend({
     var oldWindowSliderLeft = parseFloat(this.$window_slider.css("left"));
     var newWindowSliderLeft = oldWindowSliderLeft - numPixelsToScrollSummary;
 
-    // cannot go beyond the min/max left
-    var maxLeft = this.$summary.width() - this.$window_slider.width();
-    var minLeft = 0;
+    newWindowSliderLeft = this.normalizeTargetXPosInContainer(this.$summary, this.$window_slider, newWindowSliderLeft);
 
-    if (newWindowSliderLeft >= minLeft && newWindowSliderLeft <= maxLeft) {
-      this.updateCurrentWindowSlideRelative(secondsToScroll);
-      this.$window_slider.css("left",newWindowSliderLeft);
-    }
+    this.updateCurrentWindowSlideRelative(secondsToScroll);
+    this.$window_slider.css("left",newWindowSliderLeft);
   },
 
   updateCurrentWindowSlideRelative: function(secondsToScroll) {
@@ -478,11 +452,6 @@ river.ui.Timeline = Backbone.View.extend({
 
   },
 
-  onScrubberDisappear: function() {
-    this.scrollToScrubberAndMoveWindowSlider();
-    this.force_scroll_window = false;
-  },
-
   renderTimeIndicator: function() {
     var time = this.stringifyTime(this.media.currentTime);
     this.$time_indicator.text(time);
@@ -555,15 +524,18 @@ river.ui.Timeline = Backbone.View.extend({
 
 
   scrollContainerToTime: function(startTime) {
+    console.log(startTime);
     var windowSlideTimeout;
 
-    // if queue is not empty, clear all timeouts and replace it with our new one
-    if (this.windowSlideTimeoutQueue) {
-      for (var i = 0; i < this.windowSlideTimeoutQueue.length; i++) {
-        windowSlideTimeout = this.windowSlideTimeoutQueue[i];
-        clearTimeout(windowSlideTimeout);
+    // return from function if target timeout is similar to what we already have
+    if (this.lastWindowSlideTimeout) {
+      if (this.lastWindowSlideTimeout.startTime == startTime) {
+        return; 
+      } else {
+        // clear previous timeout if its not the same target time
+        clearTimeout(this.lastWindowSlideTimeout.windowSlideTimeout);
+        this.lastWindowSlideTimeout = null;
       }
-      this.windowSlideTimeoutQueue.length = 0;
     }
 
     windowSlideTimeout = setTimeout(function() {
@@ -577,28 +549,31 @@ river.ui.Timeline = Backbone.View.extend({
           this.$expanded.on("mousewheel",this.onExpandedTimelineScrollCallback)
         }.bind(this),500);
         
-
         this.updateCurrentWindowSlideAbsolute(startTime);
-
-        // trigger appear/disappear events
-        if (this.isOutOfBounds()) {
-          if (this.isScrubberVisible) {
-            Backbone.trigger("scrubberdisappear");
-            this.isScrubberVisible = false;
-          }
-        } else {
-          if (!this.isScrubberVisible) {
-            Backbone.trigger("scrubberappear");
-            this.isScrubberVisible = true;
-          }
-        }
       }.bind(this));
-      this.$window_slider.animate({ left: this.resolution(this.$summary) * startTime },300);
-      this.$scroller_handle.animate({ left: this.resolution(this.$summary) * startTime },300);
+
+      var xPos = this.resolution(this.$summary) * startTime;
+      var windowSliderXPos = this.normalizeTargetXPosInContainer(this.$summary, this.$window_slider, xPos); 
+      var scrollerHandleXPos = this.normalizeTargetXPosInContainer(this.$summary, this.$scroller_handle, xPos); 
+
+      this.$window_slider.animate({ left:  windowSliderXPos },300);
+      this.$scroller_handle.animate({ left: scrollerHandleXPos },300);
     }.bind(this),300);
 
-    this.windowSlideTimeoutQueue.push(windowSlideTimeout);
+    this.lastWindowSlideTimeout = { startTime: startTime, timeout: windowSlideTimeout };
     this.$summary.trigger("window.scroll");
+  },
+
+  normalizeTargetXPosInContainer: function($container, $el, xPos) {
+    // cannot go beyond the min/max left
+    var maxLeft = $container.width() - $el.width();
+    var minLeft = 0;
+    var pos = xPos;
+
+    if (pos < minLeft) pos = minLeft;
+    if (pos > maxLeft) pos = maxLeft;
+
+    return pos;
   },
 
   getRightPos: function($el) {
