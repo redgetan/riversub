@@ -524,7 +524,6 @@ river.ui.Timeline = Backbone.View.extend({
 
 
   scrollContainerToTime: function(startTime) {
-    console.log(startTime);
     var windowSlideTimeout;
 
     // return from function if target timeout is similar to what we already have
