@@ -26,7 +26,7 @@
                 <% @user.repositories.each do |repo| %>
                 <li class='span2 center'>
                   <div class='thumbnail'>
-                    <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                    <a href="<%= user_signed_in? && current_user == @user ? repo.editor_url : repo.url %>" id="<%= repo.id %>" class="video" >
                       <img src="<%= repo.thumbnail_url %>" alt="" >
                     </a>
                     <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
