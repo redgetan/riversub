@@ -23,7 +23,7 @@
                     </div>
                   </li>
                 <% end %>
-                <% @user.repositories.each do |repo| %>
+                <% @repositories.each do |repo| %>
                 <li class='span2 center'>
                   <div class='thumbnail'>
                     <a href="<%= user_signed_in? && current_user == @user ? repo.editor_url : repo.url %>" id="<%= repo.id %>" class="video" >
