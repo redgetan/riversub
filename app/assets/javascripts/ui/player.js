@@ -103,7 +103,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
       }
     });
 
-    // this.letterBoxMedia();
+    this.letterBoxMedia();
   },
 
   letterBoxMedia: function() {
@@ -115,8 +115,10 @@ river.ui.Player = river.ui.BasePlayer.extend({
       // convert 4:3 to 1:1
       $("#media").css("width","600px");
       $("#media").css("height","600px");
+      this.$mediaContainer.css("width", "600px");
       $("#subtitle_bar").removeClass("span8");
-      $("#subtitle_bar").addClass("span6");
+      $("#subtitle_bar").css("width", "600px");
+      $("#subtitle_display").css("width", "400px");
     }
   }
 
