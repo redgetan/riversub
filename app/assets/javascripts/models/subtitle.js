@@ -42,10 +42,6 @@ river.model.Subtitle = Backbone.Model.extend({
     this.view.openEditor(event, $el);
   },
 
-  hideEditorIfNeeded: function() {
-    this.view.hideEditorIfNeeded();
-  },
-
   toString: function() {
     return "Subtitle(" + this.get("text") + ")";
   }

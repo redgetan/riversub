@@ -700,7 +700,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     track.unhighlight();
     track.subtitle.unhighlight();
-    track.subtitle.hideEditorIfNeeded();
 
     if (this.pauseOnTrackEnd) {
       this.pauseOnTrackEnd = false;

@@ -1,6 +1,6 @@
 river.ui.SubtitleList = Backbone.View.extend({
 
-  tagName: "table",
+  tagName: "div",
   className: "table",
 
   events: {
@@ -21,11 +21,11 @@ river.ui.SubtitleList = Backbone.View.extend({
   setupElement: function() {
     this.$container.append(this.$el);
 
-    var header =     "<tr>" +
-                       "<th>Start</th>" +
-                       "<th>End</th>" +
-                       "<th>Text</th>" +
-                     "</tr>";
+    var header =     "<div class='header clear'>" +
+                       "<div>Start</div>" +
+                       "<div>End</div>" +
+                       "<div>Text</div>" +
+                     "</div>";
 
 
     this.$el.append(header);
@@ -57,7 +57,6 @@ river.ui.SubtitleList = Backbone.View.extend({
     if (subtitle === null) { return; }
 
     Backbone.trigger("subtitlelinedblclick",subtitle);
-    subtitle.openEditor(event, $target);
   },
 
   onTrackStart: function(track) {
@@ -102,7 +101,7 @@ river.ui.SubtitleList = Backbone.View.extend({
 
     var $subtitle = subtitle.view.$el;
     // find which subtitle is currently at that position
-    var $subtitleAtTargetIndex = this.$el.find("tr.subtitle").eq(index);
+    var $subtitleAtTargetIndex = this.$el.find(".subtitle").eq(index);
 
     if ($subtitleAtTargetIndex.length === 0) {
       // there is no view in that index yet, so just append it

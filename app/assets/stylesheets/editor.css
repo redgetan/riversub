@@ -215,30 +215,17 @@ div#editor-bottom {
 	border: solid 1px lightgray;
 }
 
-#subtitle_list table {
-	width: 100%;
+#subtitle_list .clear {
+	clear: both;
 }
 
-
-#editor #subtitle_list table td,
-#editor #subtitle_list table th {
-	padding: 0px;
-	line-height: 14px
+#subtitle_list .table .header div {
+	float: left;
 }
 
 #river_player.dark #subtitle_list {
 	color: floralwhite;
 }
-
-#river_player #subtitle_list table td,
-#river_player #subtitle_list table th {
-	border-top: none;
-}
-
-#river_player #subtitle_list table th{
-  text-align: center;
-}
-
 
 #river_player {
     text-align: center;
@@ -247,20 +234,23 @@ div#editor-bottom {
     color: #fff;
 }
 
-    .white #river_player {
-        color: #333;
-    }
+.white #river_player {
+    color: #333;
+}
 
 #river_player #subtitle_list td {
 	padding: 0px;
 }
 
 .subtitle {
+	height: 24px;
+	text-align: left;
 /*	height: auto;
 	display: inline-block;
 	margin-top: -5px;
 	width: 100%;
-*/}
+*/
+}
 
 .subtitle.mapped {
 /*	background-color: peachpuff;
@@ -284,8 +274,6 @@ div#editor-bottom {
 .subtitle .text {
 	float: left;
 	display: block;
-	padding: 2px;
-	cursor: text;
 }
 
 .subtitle .start_time,
@@ -294,13 +282,29 @@ div#editor-bottom {
 	margin-right: 10px;
 }
 
-.subtitle .start_time:hover,
-.subtitle .end_time:hover,
-.subtitle .text:hover {
+#river_player .subtitle .start_time:hover,
+#river_player .subtitle .end_time:hover,
+#river_player .subtitle .text:hover {
 	border: solid 1px rgba(83, 103, 240,0.5);
 	color: black;
 	background-color: white !important;
 }
+
+#river_player .subtitle .text {
+  font-size: 14px;
+  width: 350px;
+  padding: 2px;
+}
+
+
+#editor .subtitle .start_time input:hover,
+#editor .subtitle .end_time input:hover,
+#editor .subtitle .text input:hover {
+	border: solid 1px rgba(83, 103, 240,0.5);
+	color: black;
+	background-color: white !important;
+}
+
 
 .subtitle .text {
 	width: 240px;
@@ -315,6 +319,10 @@ div#editor-bottom {
 .subtitle .delete {
 	width: 40px;
 	float: right;
+}
+
+.subtitle.selected .delete a {
+	color: white;
 }
 
 #controls #start_timing_btn i {
@@ -461,4 +469,69 @@ a#preview_btn {
 	height: inherit;
 	width: 50px;
 	background-color: lightgray;
+}
+
+.sub_text_area {
+	border: none;
+	background: transparent;
+}
+
+.selected div .sub_text_area {
+	color: white;
+}
+
+.sub_text_area:hover {
+/*	background-color: white !important;
+	color: black !important;
+*/}
+
+.start_time .sub_text_area,
+.end_time .sub_text_area,
+.text .sub_text_area {
+	width: 60px;
+	color: black;
+}
+
+.text .sub_text_area {
+	width: 150px;
+	cursor: text;
+}
+
+#river_player .text {
+	cursor: text;
+}
+
+
+.sub_text_area:focus {
+	/*background: #B7FCF6;*/
+	background-color: white;
+	resize: none;
+	color: black !important;
+	border: solid 1px lightgray;
+}
+
+
+textarea {
+	border-radius: 0px;
+}
+
+#river_player .subtitle {
+	float: left;
+}
+
+#river_player .subtitle .text {
+	display: table-cell;
+}
+
+#river_player .subtitle .text span {
+	word-wrap: break-word;
+}
+
+#river_player .subtitle {
+	display: inline-table;	
+	padding-right: 20px;
+}
+
+#editor .header div {
+	width: 70px;
 }

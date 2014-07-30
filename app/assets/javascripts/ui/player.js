@@ -108,15 +108,12 @@ river.ui.Player = river.ui.BasePlayer.extend({
     $("#subtitle_display").css("opacity",0.8);
     $("#subtitle_display").css("font-size","20px");
 
-    $(".subtitle .text").css("font-size","14px");
-    $(".subtitle .text").css("width","350px");
     $("#subtitle_list").css("height","500px");
-    $("#subtitle_list").find("th").first().remove(); // remove start heading
-    $("#subtitle_list").find("th").first().remove(); // remove end   heading
-    $("#subtitle_list").find(".start_time").closest("td").each(function(){
+    $("#subtitle_list .table .header").remove(); // remove heading
+    $("#subtitle_list").find(".start_time").each(function(){
       $(this).remove();
     });
-    $("#subtitle_list").find(".end_time").closest("td").each(function(){
+    $("#subtitle_list").find(".end_time").each(function(){
       $(this).remove();
     });
     $("#subtitle_list").find(".delete").each(function(){
