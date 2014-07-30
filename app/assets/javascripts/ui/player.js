@@ -10,12 +10,15 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     this.$subtitleEditorBtn = $("#subtitle_editor_btn");
     this.$subtitleEditorBtn.tooltip({title: "Opens Editor in new tab", placement: 'bottom'});
+      
   },
 
   setupElement: function() {
     river.ui.BasePlayer.prototype.setupElement.call(this);
     this.$iframeOverlay = $("#iframe_overlay");
     this.$overlay_btn = $("#overlay_btn");
+    this.$timer;
+    this.$fadeInBuffer = false;
   },
 
   preRepositoryInitHook: function() {
@@ -29,6 +32,31 @@ river.ui.Player = river.ui.BasePlayer.extend({
   onIframeOverlayMouseEnter: function(event) {
     this.$overlay_btn.show();
   },
+
+  onIframeOverlayMouseMove: function(event) {
+
+        if (!this.$fadeInBuffer) {
+            if (this.$timer) {
+                clearTimeout(this.$timer);
+                this.$timer = 0;
+            }
+           $(".icon-pause").fadeIn();
+           $('html').css({
+                cursor: ''
+            });
+        } else {
+            this.$fadeInBuffer = false;
+        }
+
+    this.$timer = setTimeout(function () {
+            $(".icon-pause").fadeOut();
+            $('html').css({
+                cursor: 'none'
+            });
+            this.$fadeInBuffer = true;
+        }, 2000)
+
+},
 
   onIframeOverlayMouseLeave: function(event) {
     if (!this.media.paused) {
@@ -59,8 +87,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     river.ui.BasePlayer.prototype.bindEvents.call(this);
     Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
-    this.$iframeOverlay.on("mouseenter",this.onIframeOverlayMouseEnter.bind(this));
-    this.$iframeOverlay.on("mouseleave",this.onIframeOverlayMouseLeave.bind(this));
+    this.$iframeOverlay.on("mousemove",this.onIframeOverlayMouseMove.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
   },
