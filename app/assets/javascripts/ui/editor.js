@@ -519,7 +519,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   cancelGhostTrack: function() {
-    this.lastTrack = null;
     this.isGhostTrackStarted = false;
 
     var track = this.currentGhostTrack;
@@ -683,7 +682,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTrackStart: function(track) {
     // console.log("ontrackstart" + track.toString());
     this.currentTrack = track;
-    this.lastTrack = track;
 
     var subtitle = track.subtitle;
     track.highlight();
@@ -735,7 +733,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackRemove: function(track) {
-    this.lastTrack = null;
     this.isOnSubtitleEditMode = null;
     this.hideSubtitleEdit();
   },
@@ -769,8 +766,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onSubtitleEditBlur: function() {
-    // if this.lastTrack is undefined (happens when track is removed)
-    if (this.lastTrack) this.lastTrack.save();
+    var track = this.$subtitleEdit.data("track")
+    track.save();
     this.enableCommands();
   },
 

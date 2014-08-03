@@ -43,12 +43,11 @@ river.model.Track = Backbone.Model.extend({
   },
 
   onChanged: function() {
-    this.touchSubtitle();
     Backbone.trigger("trackchange", this);
   },
 
-  touchSubtitle: function() {
-    this.subtitle.trigger("change",this.subtitle,{});
+  updateSubtitleAttributes: function() {
+    this.set("subtitle",_.clone(this.subtitle.attributes));
   },
 
   onRequest: function() {
@@ -57,7 +56,9 @@ river.model.Track = Backbone.Model.extend({
 
   save: function() {
     if (this.isGhost) return;
-    Backbone.trigger("editor.sync","save",this);
+    if (this.hasChanged()) {
+      Backbone.trigger("editor.sync","save",this);
+    }
   },
 
   destroy: function() {

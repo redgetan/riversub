@@ -5,7 +5,7 @@ class TimingsController < ApplicationController
   def create
     @timing = @repo.timings.build(params[:timing])
     if @timing.save
-      render :json => @timing.to_json, :status => 200
+      render :json => @timing.serialize.to_json, :status => 200
     else
       render :json => { :error => @timing.errors }, :status => 403
     end
@@ -14,7 +14,7 @@ class TimingsController < ApplicationController
   def update
     @timing = @repo.timings.find(params[:id])
     if @timing.update_attributes(params[:timing])
-      render :json => @timing.to_json, :status => 200
+      render :json => @timing.serialize.to_json, :status => 200
     else
       render :json => { :error => @timing.errors }, :status => 403
     end

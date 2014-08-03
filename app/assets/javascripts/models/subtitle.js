@@ -15,7 +15,7 @@ river.model.Subtitle = Backbone.Model.extend({
   },
 
   onChanged: function() {
-
+    this.track.updateSubtitleAttributes();
   },
 
   startTime: function() {
