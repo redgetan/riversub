@@ -157,8 +157,10 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   onMouseClick: function(event) {
-    if (!this.$el.hasClass("selected")) {
-      this.highlight();
+    if ($("#editor").size() === 1) {
+      if (!this.$el.hasClass("selected")) {
+        this.highlight();
+      }
     }
   },
 
