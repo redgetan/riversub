@@ -282,14 +282,14 @@ div#editor-bottom {
 	margin-right: 10px;
 }
 
-#river_player .subtitle .start_time:hover,
+/*#river_player .subtitle .start_time:hover,
 #river_player .subtitle .end_time:hover,
 #river_player .subtitle .text:hover {
 	border: solid 1px rgba(83, 103, 240,0.5);
 	color: black;
 	background-color: white !important;
 }
-
+*/
 #river_player .subtitle .text {
   font-size: 14px;
   width: 350px;
@@ -496,11 +496,6 @@ a#preview_btn {
 	width: 150px;
 	cursor: text;
 }
-
-#river_player .text {
-	cursor: text;
-}
-
 
 .sub_text_area:focus {
 	/*background: #B7FCF6;*/

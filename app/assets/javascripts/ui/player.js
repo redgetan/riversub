@@ -41,18 +41,12 @@ river.ui.Player = river.ui.BasePlayer.extend({
                 this.$timer = 0;
             }
            $(".icon-pause").fadeIn();
-           $('html').css({
-                cursor: ''
-            });
         } else {
             this.$fadeInBuffer = false;
         }
 
     this.$timer = setTimeout(function () {
             $(".icon-pause").fadeOut();
-            $('html').css({
-                cursor: 'none'
-            });
             this.$fadeInBuffer = true;
         }, 2000)
 
