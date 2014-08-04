@@ -286,7 +286,9 @@ div#iframe_container #iframe_overlay {
 }
 
 #river_player.show .time_indicator {
-  top: 20px;
+  position: relative;
+  top: -25px;
+  color: white;
 }
 
 #river_player.show #seek_head_body {
@@ -330,6 +332,10 @@ div#subtitle_bar {
 
 div#avatar img {
   margin-bottom: 20px;
+}
+
+#river_player #subtitle_display {
+  width: 520px;
 }
 
 div#avatar .thumbnail {

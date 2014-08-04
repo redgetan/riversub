@@ -35,7 +35,13 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$overlay_btn.show();
   },
 
-  onIframeOverlayMouseMove: function(event) {
+  onIframeOverlayMouseLeave: function(event) {
+    if (!this.media.paused) {
+      this.$overlay_btn.hide();
+    }
+  },
+
+  onMediaMouseMove: function(event) {
 
         if (!this.$fadeInBuffer) {
             if (this.$timer) {
@@ -52,12 +58,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
             this.$fadeInBuffer = true;
         }, 2000)
 
-},
-
-  onIframeOverlayMouseLeave: function(event) {
-    if (!this.media.paused) {
-      this.$overlay_btn.hide();
-    }
   },
 
   onPlay: function(event) {
@@ -83,7 +83,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
     river.ui.BasePlayer.prototype.bindEvents.call(this);
     Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
-    this.$iframeOverlay.on("mousemove",this.onIframeOverlayMouseMove.bind(this));
+    this.$iframeOverlay.on("mouseenter",this.onIframeOverlayMouseEnter.bind(this));
+    this.$iframeOverlay.on("mouseleave",this.onIframeOverlayMouseLeave.bind(this));
+    this.$iframeOverlay.on("mousemove",this.onMediaMouseMove.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
   },
@@ -93,10 +95,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   hideEditing: function() {
+    this.$iframeOverlay.css("height","450px");
     this.$subtitleBar.css("background-color","rgba(255,0,0,0)");
-    this.$subtitleBar.css("margin-top","-75px");
     this.$subtitleBar.css("z-index","6");
-    this.$subtitleBar.css("position","absolute");
     this.$subtitleBar.css("line-height","25px");
 
     this.$subtitleDisplay.css("background-color","black");
@@ -122,20 +123,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
       }
     });
 
-    this.letterBoxMedia();
-  },
+    this.$media.css("height","550px");
 
-  letterBoxMedia: function() {
-    if (this.options.repo.video.aspect_ratio === "widescreen") {
-      // convert 16:9 to 4:3
-      this.$media.css("width","780px");
-      this.$media.css("height","600px");
-    } else {
-      // convert 4:3 to 1:1
-      this.$media.css("width","600px");
-      this.$media.css("height","600px");
-    }
-  }
+  },
 
 });
 
