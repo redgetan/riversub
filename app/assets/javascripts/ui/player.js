@@ -17,6 +17,8 @@ river.ui.Player = river.ui.BasePlayer.extend({
     river.ui.BasePlayer.prototype.setupElement.call(this);
     this.$iframeOverlay = $("#iframe_overlay");
     this.$overlay_btn = $("#overlay_btn");
+    this.$subtitleList = $("#subtitle_list");
+    this.$media = $("#media");
     this.$timer;
     this.$fadeInBuffer = false;
   },
@@ -91,26 +93,25 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   hideEditing: function() {
-    $("#subtitle_bar").css("background-color","rgba(255,0,0,0)");
+    this.$subtitleBar.css("background-color","rgba(255,0,0,0)");
+    this.$subtitleBar.css("margin-top","-75px");
+    this.$subtitleBar.css("z-index","6");
+    this.$subtitleBar.css("position","absolute");
+    this.$subtitleBar.css("line-height","25px");
 
-    $("#subtitle_bar").css("margin-top","-75px");
-    $("#subtitle_bar").css("z-index","6");
-    $("#subtitle_bar").css("position","absolute");
-    $("#subtitle_bar").css("line-height","25px");
+    this.$subtitleDisplay.css("background-color","black");
+    this.$subtitleDisplay.css("opacity",0.8);
+    this.$subtitleDisplay.css("font-size","20px");
 
-    $("#subtitle_display").css("background-color","black");
-    $("#subtitle_display").css("opacity",0.8);
-    $("#subtitle_display").css("font-size","20px");
-
-    $("#subtitle_list").css("height","500px");
-    $("#subtitle_list .table .header").remove(); // remove heading
-    $("#subtitle_list").find(".start_time").each(function(){
+    this.$subtitleList.css("height","500px");
+    this.$subtitleList.find(".table .header").remove(); // remove heading
+    this.$subtitleList.find(".start_time").each(function(){
       $(this).remove();
     });
-    $("#subtitle_list").find(".end_time").each(function(){
+    this.$subtitleList.find(".end_time").each(function(){
       $(this).remove();
     });
-    $("#subtitle_list").find(".delete").each(function(){
+    this.$subtitleList.find(".delete").each(function(){
       $(this).remove();
     });
 
@@ -127,12 +128,12 @@ river.ui.Player = river.ui.BasePlayer.extend({
   letterBoxMedia: function() {
     if (this.options.repo.video.aspect_ratio === "widescreen") {
       // convert 16:9 to 4:3
-      $("#media").css("width","780px");
-      $("#media").css("height","600px");
+      this.$media.css("width","780px");
+      this.$media.css("height","600px");
     } else {
       // convert 4:3 to 1:1
-      $("#media").css("width","600px");
-      $("#media").css("height","600px");
+      this.$media.css("width","600px");
+      this.$media.css("height","600px");
     }
   }
 
@@ -160,19 +161,19 @@ river.ui.MiniPlayer = river.ui.Player.extend({
 
   hideEditing: function() {
     river.ui.Player.prototype.hideEditing.call(this);
-    $("#media").css("height","300px");
-    $("#media").css("width","400px");
+    this.$media.css("height","300px");
+    this.$media.css("width","400px");
 
-    $("#subtitle_bar").css("margin-top","-35px");
-    $("#subtitle_bar").css("margin-left","10px");
-    $("#subtitle_bar").css("z-index","6");
-    $("#subtitle_bar").css("position","absolute");
-    $("#subtitle_bar").css("line-height","16px");
+    this.$subtitleBar.css("margin-top","-35px");
+    this.$subtitleBar.css("margin-left","10px");
+    this.$subtitleBar.css("z-index","6");
+    this.$subtitleBar.css("position","absolute");
+    this.$subtitleBar.css("line-height","16px");
 
-    $("#subtitle_display").css("background-color","black");
-    $("#subtitle_display").css("opacity",0.8);
-    $("#subtitle_display").css("font-size","12px");
-    $("#subtitle_display").css("padding","3px");
+    this.$subtitleDisplay.css("background-color","black");
+    this.$subtitleDisplay.css("opacity",0.8);
+    this.$subtitleDisplay.css("font-size","12px");
+    this.$subtitleDisplay.css("padding","3px");
   }
 
 });
