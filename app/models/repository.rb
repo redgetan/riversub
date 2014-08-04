@@ -1,3 +1,5 @@
+require_dependency 'lib/language'
+
 class Repository < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
@@ -93,6 +95,11 @@ class Repository < ActiveRecord::Base
 
   def version_for(target_user)
     self.class.where("video_id = ? AND user_id = ?",self.video_id,target_user.id).first
+  end
+
+  def language
+    code = super || "en"
+    ::Language::CODES[code] 
   end
 
   def serialize

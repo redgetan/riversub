@@ -12,9 +12,10 @@
     <div id="media_controls">
       <h5>
         <span class="pull-left">
+          subtitle: <%= @repo.language %> 
           <% if @repo.user %>
             <div class="subtitler pull-left">
-              subber: <a class="subtitler_name" href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> 
+              by: <a class="subtitler_name" href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> 
             </div>
           <% end %>
         </span>

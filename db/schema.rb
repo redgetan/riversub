@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140706130653) do
+ActiveRecord::Schema.define(:version => 20140804174014) do
 
   create_table "conversations", :force => true do |t|
     t.string   "subject",    :default => ""
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20140706130653) do
     t.datetime "updated_at",   :null => false
     t.string   "token"
     t.boolean  "is_published"
+    t.string   "language"
   end
 
   create_table "settings", :force => true do |t|
