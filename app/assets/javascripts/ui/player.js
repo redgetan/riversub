@@ -104,7 +104,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$subtitleDisplay.css("opacity",0.8);
     this.$subtitleDisplay.css("font-size","20px");
 
-    this.$subtitleList.css("height","500px");
+    this.$subtitleList.css("height","300px");
     this.$subtitleList.find(".table .header").remove(); // remove heading
     this.$subtitleList.find(".start_time").each(function(){
       $(this).remove();

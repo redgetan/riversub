@@ -46,6 +46,10 @@ class Video < ActiveRecord::Base
     end
   end
 
+  def published_repositories
+    self.repositories.published  
+  end
+
   def to_param
     self.token  
   end

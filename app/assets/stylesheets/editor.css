@@ -266,7 +266,11 @@ div#editor-bottom {
 .subtitle.selected {
 	background-color: #AF687F !important;
 	color: white;
-	/*border: solid 1px gray;*/
+}
+
+#river_player .subtitle.selected {
+	color: black;
+	border: solid 1px gray;
 }
 
 .subtitle .start_time,
@@ -524,7 +528,8 @@ textarea {
 
 #river_player .subtitle {
 	display: inline-table;	
-	padding-right: 20px;
+	width: inherit;
+	margin-right: 20px;
 }
 
 #editor .header div {

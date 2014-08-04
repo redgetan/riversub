@@ -9,37 +9,58 @@
         <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
       </div>
     </h5>
-    <div id="media_controls">
-      <h5>
-        <span class="pull-left">
-          subtitle: <%= @repo.language %> 
-          <% if @repo.user %>
-            <div class="subtitler pull-left">
-              by: <a class="subtitler_name" href="<%= @repo.owner_profile_url %>"><%= @repo.owner %></a> 
-            </div>
-          <% end %>
-        </span>
-      </h5>
-      <div class="share_edit center">
-        <a class='share_btn river_btn' href="#" data-toggle='modal' data-target='#share_modal'>Share</a>
-        <% if @repo.user.nil? || @repo.user == current_user %>
-          <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
-          <a class='new_repo_btn river_btn' href="#"><i class="icon-random"></i> Create</a>
-        <% elsif current_user && @user_version = @repo.version_for(current_user) %>
-          <a class='view_version_btn river_btn' href="<%= @user_version.url %>"><i class="icon-random"></i> Your Version</a>
-        <% else %>
-          <a class='new_repo_btn river_btn' href="#"><i class="icon-random"></i> Create</a>
+    <div id="repo_current_subtitle">
+      <div id="language" class="pull-right">
+        <span><%= @repo.language_pretty %></span>
+      </div>
+      <div id="subtitler" class="pull-right">
+        <% if @repo.user %>
+          <h5>
+            by:
+            <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= @repo.user.username %></a>
+            <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
+          </h5>
         <% end %>
-        <a id='download_btn' class='river_btn' href='<%= @repo.subtitle_download_url %>'><i class='icon-download-alt'></i> </a> 
       </div>
     </div>
-    <div id='subtitle_container'> 
-      <div id='subtitle_list'></div> 
-      <div id='controls_extra' class='row'> 
-        <div class='btn-group pull-right'> 
-        </div> 
-      </div> 
-    </div> 
+    <div id="contribute" class="section_block">
+      <h5 class="section_header">Contribute</h5>
+      <% if @repo.user.nil? || @repo.user == current_user %>
+        <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
+        <a class='new_repo_btn river_btn' href="#">New Subtitle</a>
+      <% elsif current_user && @user_version = @repo.version_for(current_user) %>
+        <a class='view_version_btn river_btn' href="<%= @user_version.url %>">Your Version</a>
+      <% else %>
+        <a class='new_repo_btn river_btn' href="#">New Subtitle</a>
+      <% end %>
+    </div>
+    <div id="available_subtitles" class="section_block">
+      <h5 class="section_header">Other Subtitles</h5>
+      <ul>
+        <% @repo.published_repositories.reject{ |repo| repo == @repo }.each do |repo| %>
+          <li>
+            <a href="<%= repo.url %>"><%= repo.language_display %></a>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <div id="share_edit" class="section_block">
+      <h5 class="section_header">Share</h5>
+      <table>
+        <tr>
+          <td class="left">link:</td>
+          <td class="right">
+            <input class="span3 share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
+          </td>
+        </tr>
+        <tr>
+          <td class="left">save:</td>
+          <td class="right">
+            <a id='download_btn' href='<%= @repo.subtitle_download_url %>'>Download</a> 
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 
   <div class='right_side span10'> 
@@ -60,6 +81,14 @@
         <div id='seek_head_body'></div>
       </div>
       <div id='blackbar'></div>
+    </div> 
+    <div id='subtitle_container' class="section_block"> 
+      <h5 class="section_header">Transcript</h5>
+      <div id='subtitle_list'></div> 
+      <div id='controls_extra' class='row'> 
+        <div class='btn-group pull-right'> 
+        </div> 
+      </div> 
     </div> 
   </div> 
 </div>

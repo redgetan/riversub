@@ -47,7 +47,7 @@ class Repository < ActiveRecord::Base
   end
 
   def anonymous?
-    self.owner == ANONYMOUS_USERNAME
+    self.user.nil?
   end
 
   def url
@@ -98,8 +98,27 @@ class Repository < ActiveRecord::Base
   end
 
   def language
-    code = super || "en"
-    ::Language::CODES[code] 
+    super || "en"
+  end
+
+  def language_pretty
+    ::Language::CODES[language] 
+  end
+
+  def language_display
+    if anonymous?
+      self.language_pretty
+    else
+      "#{self.language_pretty} - #{self.user.username}"  
+    end
+  end
+
+  def published_repositories
+    self.video.published_repositories  
+  end
+
+  def user_avatar_thumb_url
+    user.avatar.thumb.url
   end
 
   def serialize
