@@ -27,12 +27,8 @@
       <h5 class="section_header">Contribute</h5>
       <% if @repo.user.nil? || @repo.user == current_user %>
         <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
-        <a class='new_repo_btn river_btn' href="#">New Subtitle</a>
-      <% elsif current_user && @user_version = @repo.version_for(current_user) %>
-        <a class='view_version_btn river_btn' href="<%= @user_version.url %>">Your Version</a>
-      <% else %>
-        <a class='new_repo_btn river_btn' href="#">New Subtitle</a>
       <% end %>
+      <a class='new_repo_btn river_btn' href="#">New Subtitle</a>
     </div>
     <div id="available_subtitles" class="section_block">
       <h5 class="section_header">Other Subtitles</h5>
