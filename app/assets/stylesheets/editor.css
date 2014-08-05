@@ -296,7 +296,7 @@ div#editor-bottom {
 */
 #river_player .subtitle .text {
   font-size: 14px;
-  width: 350px;
+  width: inherit;
   padding: 2px;
 }
 
