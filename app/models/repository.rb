@@ -1,5 +1,3 @@
-require_dependency 'lib/language'
-
 class Repository < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
