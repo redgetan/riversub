@@ -4,7 +4,7 @@ class VideosController < ApplicationController
     metadata = params[:video_metadata]
 
     # if video already exist not need to create another one
-    @video = Video.where(:url => params[:media_url])
+    @video = Video.where(:url => params[:media_url].gsub(/https/,"http"))
                   .first_or_create!({
                     :name => metadata[:data][:title],
                     :metadata => metadata,
