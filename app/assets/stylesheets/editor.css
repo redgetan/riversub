@@ -268,11 +268,6 @@ div#editor-bottom {
 	color: white;
 }
 
-#river_player .subtitle.selected {
-	color: black;
-	border: solid 1px gray;
-}
-
 .subtitle .start_time,
 .subtitle .end_time,
 .subtitle .text {
