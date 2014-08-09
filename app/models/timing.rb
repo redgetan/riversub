@@ -1,6 +1,6 @@
 class Timing < ActiveRecord::Base
   attr_accessible :video_id, :start_time, :end_time, :subtitle_id, :client_id,
-                  :subtitle_attributes
+                  :subtitle_attributes, :repository_id
 
   # used as an id to for client tracks to identify which server timing it maps to
   # useful when doing bulk updates where more than 1 track is returned back to client

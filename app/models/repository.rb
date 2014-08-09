@@ -64,6 +64,10 @@ class Repository < ActiveRecord::Base
     editor_video_url(self.token)
   end
 
+  def editor_setup_url
+    editor_video_setup_url(self.token)
+  end
+
   def thumbnail_url
     self.video.metadata["data"]["thumbnail"]["sqDefault"]
   end
@@ -111,8 +115,37 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def full_display
+    if anonymous?
+      "#{self.video.name} - [#{self.language_pretty}]"
+    else
+      "#{self.video.name} - [#{self.language_pretty}] by #{self.user.username}"
+    end
+  end
+
   def published_repositories
     self.video.published_repositories  
+  end
+
+  def other_published_repositories
+    self.published_repositories.reject{ |repo| repo == self }  
+  end
+
+  def copy_timing_from!(other_token)
+    other_repo = self.class.find_by_token!(other_token)
+
+    Timing.transaction do
+      other_repo.timings.map do |timing|
+        Timing.create!({
+          repository_id: self.id,
+          start_time: timing.start_time,
+          end_time: timing.end_time,
+          subtitle_attributes: {
+            text: ""
+          }
+        })
+      end
+    end
   end
 
   def user_avatar_thumb_url
@@ -128,6 +161,7 @@ class Repository < ActiveRecord::Base
       :timings => self.timings.map(&:serialize),
       :url => self.url,
       :token => self.token,
+      :language_pretty => self.language_pretty,
       :owner => self.owner,
       :owner_profile_url => self.owner_profile_url,
       :editor_url => self.editor_url,

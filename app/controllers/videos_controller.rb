@@ -17,7 +17,8 @@ class VideosController < ApplicationController
               Repository.create!(:video_id => @video.id)
             end
 
-    render :json => { :redirect_url => @repo.editor_url } 
+
+    render :json => { :redirect_url => @repo.editor_setup_url } 
   rescue ActiveRecord::RecordInvalid => e
     render :json => { :error => e.message }, :status => 403
   end
@@ -30,6 +31,22 @@ class VideosController < ApplicationController
     else
       render :json => { :error => @repo.errors.full_messages }, :status => 403
     end
+  end
+
+  def setup
+    @repo = Repository.find_by_token! params[:token]
+    
+    if @repo.language.present?
+      redirect_to @repo.editor_url and return
+    end
+
+    @repo_fork = Repository.find_by_token(params[:forked_repo_token]) || @repo.other_published_repositories.first
+  end
+
+  def finish_setup
+    @repo = Repository.find_by_token! params[:token]  
+    @repo.copy_timing_from!(params[:copy_timing_from])
+    redirect_to @repo.editor_url
   end
 
   def editor

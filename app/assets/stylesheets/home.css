@@ -258,7 +258,7 @@ div#media_container {
   border: solid 1px black;
 }
 
-div#iframe_container {
+#editor div#iframe_container {
   position: relative;
   height: 160px;
   width: inherit;
@@ -549,10 +549,12 @@ form.sub {
 
 #editor #repo_label {
   margin-left: 0px;
+  padding: 5px;
 }
 
 #editor #repo_label a{
   color: #777;
+  font-size: 16px;
 }
 
 #river_player #repo_label {
@@ -917,6 +919,14 @@ footer ul li a:hover{
   border: solid 1px gray;
 }
 
+#editor #language {
+  color: #777;
+  margin: 10px 0px;
+  padding: 5px;
+  font-size: 25px;
+  border: solid 1px #ccc;
+}
+
 #language {
   margin: 15px;
   padding: 15px;
@@ -964,4 +974,16 @@ footer ul li a:hover{
 #river_player #subtitle_container .section_header {
   background: none;
   color: #333;
+}
+
+#continue_btn {
+  text-align: right;
+  font-size: 20px;
+  padding: 10px;
+}
+
+#repo_setup_form_list {
+  border: solid 1px gray;  
+  padding: 10px;
+  margin-bottom: 40px;
 }

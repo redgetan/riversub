@@ -156,6 +156,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     "<h5 id='repo_label'>" +
                       "<a href=" + this.repo.url + ">" + this.repo.video.name + "</a>" +
                     "</h5>" +
+                    "<div id='language' class='pull-left'>" +
+                      "<span>" + this.repo.language_pretty + "</span>" +
+                    "</div>" +
                     "<h5 class='pull-right'>" +
                       "<a id='publish_btn' class='btn btn-success'>Publish</a>" +
                       "<a id='preview_btn' target='_blank' href=" + this.repo.url + " class='label'>View</a>" +

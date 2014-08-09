@@ -31,6 +31,8 @@ River::Application.routes.draw do
   end
 
   get "/:token",                        to: "videos#show",   as: "video"
+  get "/:token/setup",                  to: "videos#setup",  as: "editor_video_setup"
+  post "/:token/finish_setup",          to: "videos#finish_setup",  as: "editor_video_finish_setup"
   get "/:token/editor",                 to: "videos#editor", as: "editor_video"
   get '/:username/:token',              to: 'videos#show',   as: 'user_video'
   get '/:username/:token/editor',       to: 'videos#editor', as: 'editor_user_video'
