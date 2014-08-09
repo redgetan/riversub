@@ -947,6 +947,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         // manually trigger onTrackEnd callback to request input from user
         this.onTrackEnd(track);
       }
+      track.subtitle.view.render(); //temp hack to fix bug
     } catch(e) {
       track.remove();
       throw e;
