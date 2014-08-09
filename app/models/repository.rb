@@ -99,12 +99,12 @@ class Repository < ActiveRecord::Base
     self.class.where("video_id = ? AND user_id = ?",self.video_id,target_user.id).first
   end
 
-  def language
-    super || "en"
+  def current_language
+    language || "en"
   end
 
   def language_pretty
-    ::Language::CODES[language] 
+    ::Language::CODES[current_language] 
   end
 
   def language_display
