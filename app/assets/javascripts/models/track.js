@@ -117,6 +117,10 @@ river.model.Track = Backbone.Model.extend({
     this.isGhost = false;
 
     this.setEndTime(time);
+    
+    // another hack (for some reason setEndTime 
+    // which is suppoed to call track#onChanged doesnt trigger trackchange)
+    Backbone.trigger("trackchange", this); 
 
     // call ghosttarckend only after isGhost is set to false to allow proper saving on onGhostTrackEnd callback
     // since we prevent isGhost tracks from being saved

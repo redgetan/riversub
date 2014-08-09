@@ -884,20 +884,19 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var track = this.safeCreateGhostTrack();
 
     if (track) {
-      var endTime   = this.determineEndTime(track.startTime());
+      var nextNeighborTrackStartTime  = this.determineEndTime(track.startTime());
 
-      // if seeking to less than start time next track, we have to endGhostTrack ourselves
-      // otherwise, if were seeking to start time of next track, we simply let onTrackEnd to trigger safeEndGhostTrack,
-      //            and avoid calling safeEndGhostTrack again
-      if (this.media.currentTime + trackDuration < endTime) {
-        endTime = this.media.currentTime + trackDuration;
+      var targetEndTime = this.media.currentTime + trackDuration;
 
-        this.seek(endTime,function(){
-          this.safeEndGhostTrack(track);
-        }.bind(this));
-      } else {
-        this.seek(endTime);
+      // if it will overlap next track, use next track's start time instead and give a few seconds gap
+      if (targetEndTime >= nextNeighborTrackStartTime) {
+        targetEndTime = nextNeighborTrackStartTime - 0.20;
       }
+
+
+      this.seek(targetEndTime,function(){
+        this.safeEndGhostTrack(track);
+      }.bind(this));
     }
   },
 
