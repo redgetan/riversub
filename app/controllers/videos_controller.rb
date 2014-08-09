@@ -45,7 +45,12 @@ class VideosController < ApplicationController
 
   def finish_setup
     @repo = Repository.find_by_token! params[:token]  
-    @repo.copy_timing_from!(params[:copy_timing_from])
+    @repo.update_attributes!(language: params[:language_code])
+
+    if params[:copy_timing_from]
+      @repo.copy_timing_from!(params[:copy_timing_from]) 
+    end
+    
     redirect_to @repo.editor_url
   end
 

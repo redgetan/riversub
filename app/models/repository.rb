@@ -10,7 +10,7 @@ class Repository < ActiveRecord::Base
   has_many :subtitles
   has_many :timings
 
-  attr_accessible :video_id, :user_id, :token, :is_published
+  attr_accessible :video_id, :user_id, :token, :is_published, :language
 
   validates :video_id, :presence => true
   validates :token, :uniqueness => true, on: :create
