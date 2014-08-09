@@ -421,6 +421,7 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   renderTrack: function(track) {
+    if (track.isGhost) return;
 
     var duration = track.endTime() - track.startTime();
 
