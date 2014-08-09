@@ -724,15 +724,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
       this.safeEndGhostTrack(track,endTime);
     } 
-      
-      // if track is empty, we would only request once the  user to enter something
-    if (typeof track.subtitle.get("text") === "undefined" || /^\s*$/.test(track.subtitle.get("text")) ) {
-      if (track.initial_subtitle_request) {
-        track.initial_subtitle_request = false;
-        this.requestSubtitleFromUser(track);
-      }
-    }
-
   },
 
   onTrackRemove: function(track) {

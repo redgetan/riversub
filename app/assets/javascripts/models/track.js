@@ -37,9 +37,6 @@ river.model.Track = Backbone.Model.extend({
 
     this.listenTo(this, "change", this.onChanged);
     this.listenTo(this, "request", this.onRequest);
-
-    this.initial_subtitle_request = true;
-
   },
 
   onChanged: function() {
