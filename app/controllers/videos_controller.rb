@@ -9,14 +9,7 @@ class VideosController < ApplicationController
                     :name => metadata[:data][:title],
                     :metadata => metadata,
                   })
-    @repo = if current_user
-              Repository.where(:user_id => current_user.id, 
-                               :video_id => @video.id)
-                        .first_or_create!
-            else
-              Repository.create!(:video_id => @video.id)
-            end
-
+    @repo = Repository.create!(:video_id => @video.id)
 
     render :json => { :redirect_url => @repo.editor_setup_url } 
   rescue ActiveRecord::RecordInvalid => e
@@ -47,7 +40,7 @@ class VideosController < ApplicationController
     @repo = Repository.find_by_token! params[:token]  
     @repo.update_attributes!(language: params[:language_code])
 
-    if params[:copy_timing_from]
+    if params[:copy_timing_from].present?
       @repo.copy_timing_from!(params[:copy_timing_from]) 
     end
     
