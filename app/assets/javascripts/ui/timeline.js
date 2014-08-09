@@ -57,6 +57,7 @@ river.ui.Timeline = Backbone.View.extend({
       this.$window_slider = $("#summary .window_slider");
       this.$window_slider.css("left",0);
       this.$window_slider.css("width",this.resolution(this.$summary) * this.WINDOW_WIDTH_IN_SECONDS);
+      if (this.mediaDuration < this.WINDOW_WIDTH_IN_SECONDS) this.$window_slider.hide();
 
       var expanded = "<div id='expanded' class='timeline'>" +
                        "<div class='filler'>" +
