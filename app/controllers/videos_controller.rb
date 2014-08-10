@@ -9,7 +9,14 @@ class VideosController < ApplicationController
                     :name => metadata[:data][:title],
                     :metadata => metadata,
                   })
-    @repo = Repository.create!(:video_id => @video.id)
+
+    @repo = if current_user
+              Repository.where(:user_id => current_user.id,
+                               :video_id => @video.id)
+                        .first_or_create!
+            else
+              Repository.create!(:video_id => @video.id)
+            end
 
     render :json => { :redirect_url => @repo.editor_setup_url } 
   rescue ActiveRecord::RecordInvalid => e
