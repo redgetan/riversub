@@ -896,6 +896,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
       this.seek(targetEndTime,function(){
         this.safeEndGhostTrack(track);
+        this.requestSubtitleFromUser(track);
       }.bind(this));
     }
   },
