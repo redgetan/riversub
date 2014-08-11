@@ -13,7 +13,7 @@ class VideosController < ApplicationController
     @repo = if current_user
               Repository.where(:user_id => current_user.id,
                                :video_id => @video.id)
-                        .first_or_create!
+                        .create!
             else
               Repository.create!(:video_id => @video.id)
             end
