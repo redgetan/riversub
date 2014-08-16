@@ -109,20 +109,23 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onAddSubtitleInputKeyup: function(event) {
-    // enter key
-    if (event.which == 13 ) {
-      var track = this.currentGhostTrack;
-      this.safeEndGhostTrack(track);
-    } else if (!this.isGhostTrackStarted && this.$addSubInput.val().trim() !== "") {
-      this.safeCreateGhostTrack();
-      this.play();
+    // if video is playing pause it
+    if (!this.media.paused) {
+      this.pause();
     }
 
-    var track = this.currentGhostTrack;
-    if (track) {
+    // enter key
+    if (event.which == 13 ) {
       var text = this.$addSubInput.val();
-      track.subtitle.set({ "text": text});
-      this.$subtitleDisplay.text(text);
+
+      this.addTrack({
+        preEndGhostCallback: function(track){
+          track.subtitle.set({ "text": text});
+          this.$subtitleDisplay.text(text);
+          this.play();
+        }.bind(this)
+      });
+      
     }
   },
 
@@ -879,26 +882,57 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       return;  
     }
 
-    // add a track
-    var trackDuration = 4;
-    var track = this.safeCreateGhostTrack();
-
-    if (track) {
-      var nextNeighborTrackStartTime  = this.determineEndTime(track.startTime());
-
-      var targetEndTime = this.media.currentTime + trackDuration;
-
-      // if it will overlap next track, use next track's start time instead and give a few seconds gap
-      if (targetEndTime >= nextNeighborTrackStartTime) {
-        targetEndTime = nextNeighborTrackStartTime - 0.20;
-      }
-
-
-      this.seek(targetEndTime,function(){
-        this.safeEndGhostTrack(track);
+    this.addTrack({
+      postEndGhostCallback: function(track){
         this.requestSubtitleFromUser(track);
-      }.bind(this));
+      }.bind(this)
+    });
+  },
+
+  addTrack: function(callbacks) {
+    var startTime;
+    var endTime;
+    var trackDuration = 4;
+    var currentTime = this.media.currentTime;
+    var padding = 0.20;
+
+    if (currentTime > trackDuration) {
+      endTime   = currentTime;   
+      startTime = endTime - trackDuration;   
+
+      // possible to overlap prev track
+      var prevNearestEdgeTime = this.prevNearestEdgeTime(currentTime);
+      if (startTime < prevNearestEdgeTime) {
+        startTime = prevNearestEdgeTime + padding;
+      }
+    } else {
+      startTime   = currentTime;   
+      endTime     = startTime + trackDuration;   
+
+      // possible to overlap next track
+      var nextNearestEdgeTime = this.nextNearestEdgeTime(currentTime);
+      if (endTime > nextNearestEdgeTime) {
+        endTime = nextNearestEdgeTime - padding;
+      }
     }
+
+    this.seek(startTime,function(){
+      var track = this.safeCreateGhostTrack();
+
+      if (track) {
+        this.seek(endTime,function(){
+          if (typeof callbacks.preEndGhostCallback !== "undefined") {
+            callbacks.preEndGhostCallback(track);
+          }
+
+          this.safeEndGhostTrack(track);
+
+          if (typeof callbacks.postEndGhostCallback !== "undefined") {
+            callbacks.postEndGhostCallback(track);
+          }
+        }.bind(this));
+      }
+    }.bind(this));
   },
 
   seek: function(time,callback) {
@@ -923,7 +957,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   createGhostTrack: function() {
 
     var startTime = Math.round(this.media.currentTime * 1000) / 1000;
-    var endTime   = this.determineEndTime(startTime);
+    var endTime   = this.nextNearestEdgeTime(startTime);
 
     this.validateNoTrackOverlap(startTime,endTime);
 
@@ -1056,14 +1090,29 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }.bind(this));
   },
 
-  // either the end of media or the starttime next nearest track
-  determineEndTime: function(startTime) {
-    var nextNearestEdgeTime = this.mediaDuration();
-    var track;
+   // either the start of media or the endTime of prev nearest track
+  prevNearestEdgeTime: function(startTime) {
+    var prevNearestEdgeTime = 0;
+    var curr;
 
     for (var i = this.tracks.length - 1; i >= 0; i--) {
       curr = this.tracks.at(i);
-      if (curr.startTime() > startTime && curr.startTime() < nextNearestEdgeTime) {
+      if (curr.endTime() < startTime && curr.endTime() > prevNearestEdgeTime) {
+        prevNearestEdgeTime = curr.endTime();
+      }
+    };
+
+    return prevNearestEdgeTime;
+  },
+
+  // either the end of media or the starttime next nearest track
+  nextNearestEdgeTime: function(time) {
+    var nextNearestEdgeTime = this.mediaDuration();
+    var curr;
+
+    for (var i = this.tracks.length - 1; i >= 0; i--) {
+      curr = this.tracks.at(i);
+      if (curr.startTime() > time && curr.startTime() < nextNearestEdgeTime) {
         nextNearestEdgeTime = curr.startTime();
       }
     };

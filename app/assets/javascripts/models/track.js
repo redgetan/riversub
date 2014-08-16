@@ -44,7 +44,7 @@ river.model.Track = Backbone.Model.extend({
   },
 
   updateSubtitleAttributes: function() {
-    this.set("subtitle",_.clone(this.subtitle.attributes));
+    this.attributes.subtitle = _.clone(this.subtitle.attributes);
   },
 
   onRequest: function() {
@@ -63,6 +63,7 @@ river.model.Track = Backbone.Model.extend({
   },
 
   toJSON: function() {
+    console.log("calling toJSON");
     var json = Backbone.Model.prototype.toJSON.call(this);
     json["subtitle_attributes"] = this.subtitle.toJSON();
     return json;
