@@ -105,7 +105,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onAddSubtitleInputFocus: function(event) {
-    // this.disableCommands();
+    this.disableCommands();
   },
 
   onAddSubtitleInputKeyup: function(event) {
@@ -793,14 +793,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   enableCommands: function(event) {
     $(document).off("keyup");
     $(document).on("keyup",this.onKeyupHandler.bind(this));
-    this.$startTimingBtn.removeAttr("disabled");
-    this.$addSubBtn.removeAttr("disabled");
+    // this.$startTimingBtn.removeAttr("disabled");
+    // this.$addSubBtn.removeAttr("disabled");
   },
 
   disableCommands: function(event) {
     $(document).off("keyup");
-    this.$startTimingBtn.attr("disabled","disabled");
-    this.$addSubBtn.attr("disabled","disabled");
+    // this.$startTimingBtn.attr("disabled","disabled");
+    // this.$addSubBtn.attr("disabled","disabled");
   },
 
   onSubtitleEditKeyup: function(event) {
