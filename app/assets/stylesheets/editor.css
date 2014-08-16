@@ -451,6 +451,8 @@ a#preview_btn {
 	color: black;
 	font-size: 14px;
 	margin-top: 10px;
+	text-align: right;
+	float: right;
 }
 
 #editor #status-bar.failed {
