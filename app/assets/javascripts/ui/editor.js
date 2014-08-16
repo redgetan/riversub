@@ -545,7 +545,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   timeSubtitle: function() {
     if (!this.isGhostTrackStarted) {
     // first time, you start timing
-      this.safeCreateGhostTrack();
+      this.safeCreateGhostTrack(this.media.currentTime);
       this.play();
     } else {
       // second time, you stop timing
@@ -851,7 +851,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onStartTimingBtn: function(event) {
     if (this.$startTimingBtn.attr("disabled") == "disabled") return;
-    this.safeCreateGhostTrack();
+    this.safeCreateGhostTrack(this.media.currentTime);
     this.play();
   },
 
@@ -861,9 +861,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   // returns null if unsuccessful
-  safeCreateGhostTrack: function() {
+  safeCreateGhostTrack: function(startTime) {
     try {
-      return this.createGhostTrack();
+      return this.createGhostTrack(startTime);
     } catch(e) {
       console.log(e);
     }
@@ -933,23 +933,21 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.validateNoTrackOverlap(startTime, endTime);
 
-    this.seek(startTime,function(){
-      var track = this.safeCreateGhostTrack();
+    var track = this.safeCreateGhostTrack(startTime);
 
-      if (track) {
-        this.seek(endTime,function(){
-          if (typeof callbacks.preEndGhostCallback !== "undefined") {
-            callbacks.preEndGhostCallback(track);
-          }
+    if (track) {
+      this.seek(endTime,function(){
+        if (typeof callbacks.preEndGhostCallback !== "undefined") {
+          callbacks.preEndGhostCallback(track);
+        }
 
-          this.safeEndGhostTrack(track);
+        this.safeEndGhostTrack(track);
 
-          if (typeof callbacks.postEndGhostCallback !== "undefined") {
-            callbacks.postEndGhostCallback(track);
-          }
-        }.bind(this));
-      }
-    }.bind(this));
+        if (typeof callbacks.postEndGhostCallback !== "undefined") {
+          callbacks.postEndGhostCallback(track);
+        }
+      }.bind(this));
+    }
   },
 
   seek: function(time,callback) {
@@ -971,9 +969,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.popcorn.currentTime(time);
   },
 
-  createGhostTrack: function() {
+  createGhostTrack: function(startTime) {
 
-    var startTime = Math.round(this.media.currentTime * 1000) / 1000;
+    var startTime = Math.round(startTime * 1000) / 1000;
     var endTime   = this.nextNearestEdgeTime(startTime);
 
     this.validateNoTrackOverlap(startTime,endTime);
