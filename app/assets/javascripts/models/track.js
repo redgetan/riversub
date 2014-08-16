@@ -44,7 +44,7 @@ river.model.Track = Backbone.Model.extend({
   },
 
   updateSubtitleAttributes: function() {
-    this.attributes.subtitle = _.clone(this.subtitle.attributes);
+    this.set("subtitle",_.clone(this.subtitle.attributes));
   },
 
   onRequest: function() {

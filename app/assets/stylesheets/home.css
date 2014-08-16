@@ -244,7 +244,7 @@ div#media_container {
 }
 
 #river_player.show div#media {
-  margin-top: -65px;
+  margin-top: 0px;
   width: 780px;
   height: 600px;
 }

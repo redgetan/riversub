@@ -95,7 +95,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   hideEditing: function() {
-    this.$iframeOverlay.css("height","450px");
+    this.$iframeOverlay.css("height","350px");
     this.$subtitleBar.css("background-color","rgba(255,0,0,0)");
     this.$subtitleBar.css("z-index","6");
     this.$subtitleBar.css("line-height","25px");
@@ -123,8 +123,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
       }
     });
 
-    this.$media.css("height","550px");
-
+    this.$media.css("height","450px");
   },
 
 });
