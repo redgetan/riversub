@@ -10,7 +10,7 @@ class Repository < ActiveRecord::Base
   has_many :subtitles
   has_many :timings
 
-  attr_accessible :video_id, :user_id, :token, :is_published, :language
+  attr_accessible :video_id, :user_id, :token, :is_published, :language, :parent_repository_id
 
   validates :video_id, :presence => true
   validates :token, :uniqueness => true, on: :create
@@ -135,6 +135,8 @@ class Repository < ActiveRecord::Base
     other_repo = self.class.find_by_token!(other_token)
 
     Timing.transaction do
+      self.update_attributes!(parent_repository_id: other_repo.id)
+
       other_repo.timings.map do |timing|
         Timing.create!({
           repository_id: self.id,
@@ -167,6 +169,7 @@ class Repository < ActiveRecord::Base
       :editor_url => self.editor_url,
       :publish_url => self.publish_url,
       :subtitle_download_url => self.subtitle_download_url,
+      :parent_repository_id => self.parent_repository_id,
       :is_published => self.is_published,
       :is_guided_walkthrough => self.guided_walkthrough?
     }
