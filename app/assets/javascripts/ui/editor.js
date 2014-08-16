@@ -892,7 +892,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   addTrack: function(callbacks) {
     var startTime;
     var endTime;
-    var trackDuration = 4;
+    var trackDuration = 3;
     var currentTime = this.media.currentTime;
     var padding = 0.20;
 
