@@ -987,3 +987,7 @@ footer ul li a:hover{
   padding: 10px;
   margin-bottom: 40px;
 }
+
+#river_player .track {
+  margin-top: -2px;
+}
