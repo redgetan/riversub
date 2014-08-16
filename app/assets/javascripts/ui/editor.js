@@ -105,7 +105,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onAddSubtitleInputFocus: function(event) {
-    this.disableCommands();
+    // this.disableCommands();
   },
 
   onAddSubtitleInputKeyup: function(event) {
@@ -117,7 +117,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // enter key
     if (event.which == 13 ) {
       var text = this.$addSubInput.val();
+      this.addSubtitledTrack(text);
+    }
+  },
 
+  addSubtitledTrack: function(text) {
+    try {
       this.addTrack({
         preEndGhostCallback: function(track){
           track.subtitle.set({ "text": text});
@@ -125,7 +130,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
           this.play();
         }.bind(this)
       });
-      
+    } catch (e) {
+      if (e.name === "track_overlap") {
+        this.showErrorOnStatusBar("Overlap Detected");  
+      } 
+      console.log(e.message);
     }
   },
 
@@ -604,13 +613,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackRequestError: function() {
-    this.$status_bar.text("Save Failed");
+    this.showErrorOnStatusBar("Save Failed");
+  },
+
+  showErrorOnStatusBar: function(msg) {
+    this.$status_bar.text(msg);
     this.$status_bar.addClass("failed");
 
     setTimeout(function(){ 
       this.$status_bar.text(""); 
       this.$status_bar.removeClass("failed");
-    }.bind(this),3000);
+    }.bind(this),2000);
   },
 
   onSubtitleLineDblClick: function(subtitle) {
@@ -872,7 +885,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onAddSubtitleBtnClick: function(event) {
-    this.$addSubInput.focus();
+    var text = this.$addSubInput.val();
+    this.addSubtitledTrack(text);
   },
 
   onExpandedTimelineDblClick: function(event) {
@@ -895,13 +909,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var trackDuration = 3;
     var currentTime = this.media.currentTime;
     var padding = 0.20;
+    var minWidthSeconds = 0.50;
+    var prevNearestEdgeTime = this.prevNearestEdgeTime(currentTime);
+    var nextNearestEdgeTime = this.nextNearestEdgeTime(currentTime);
 
-    if (currentTime > trackDuration) {
+    if (currentTime > trackDuration && (currentTime - prevNearestEdgeTime) > minWidthSeconds ) {
       endTime   = currentTime;   
       startTime = endTime - trackDuration;   
 
       // possible to overlap prev track
-      var prevNearestEdgeTime = this.prevNearestEdgeTime(currentTime);
       if (startTime < prevNearestEdgeTime) {
         startTime = prevNearestEdgeTime + padding;
       }
@@ -910,11 +926,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       endTime     = startTime + trackDuration;   
 
       // possible to overlap next track
-      var nextNearestEdgeTime = this.nextNearestEdgeTime(currentTime);
       if (endTime > nextNearestEdgeTime) {
         endTime = nextNearestEdgeTime - padding;
       }
     }
+
+    this.validateNoTrackOverlap(startTime, endTime);
 
     this.seek(startTime,function(){
       var track = this.safeCreateGhostTrack();
@@ -1031,9 +1048,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var tracks = this.getOverlapTracks(startTime,endTime,track) ;
 
     if (tracks.length != 0) {
-      throw new Error("Track Overlap Detected. Track(" + startTime + "," + endTime + ") " +
-        "would overlap with " + $.map(tracks,function(track) { return track.toString(); })
-      );
+      throw {
+        name: "track_overlap",
+        message: "Track Overlap Detected. Track(" + startTime + "," + endTime + ") " +
+                 "would overlap with " + $.map(tracks,function(track) { return track.toString(); })
+      };
     }
   },
 

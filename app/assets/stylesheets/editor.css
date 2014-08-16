@@ -450,6 +450,7 @@ a#preview_btn {
 #editor #status-bar {
 	color: black;
 	font-size: 14px;
+	margin-top: 10px;
 }
 
 #editor #status-bar.failed {
