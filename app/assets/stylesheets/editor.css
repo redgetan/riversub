@@ -117,8 +117,9 @@ div#editor-bottom {
 	height: 20px;
 	width: 90px;
 	font: normal 15px Helvetica;
-	position: absolute;
-	top: 0px;
+  position: relative;
+  top: -25px;
+  color: white;
 	z-index: 3;
 	background-color: rgba(128,128,128,0.5);
 }

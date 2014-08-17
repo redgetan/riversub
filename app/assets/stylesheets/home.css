@@ -198,7 +198,6 @@ div#main_container {
 }
 
 #description {
-  font-size: 30px;
   font-family: sans-serif;
   margin-top: 10px;
   white-space: nowrap;
@@ -285,11 +284,6 @@ div#iframe_container #iframe_overlay {
   height: 500px;
 }
 
-#river_player.show .time_indicator {
-  position: relative;
-  top: -25px;
-  color: white;
-}
 
 #river_player.show #seek_head_body {
   height: 20px;
