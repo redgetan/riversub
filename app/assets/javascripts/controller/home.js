@@ -7,6 +7,8 @@ $.extend(river.controller,{
       url_options: "&iv_load_policy=3",
       view_enabled: false
     });
+
+    player.seek(26); // gangnam style demo video start here
   }
 });
 
