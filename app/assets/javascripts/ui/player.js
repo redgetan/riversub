@@ -7,10 +7,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$el = $("#river_player");
 
     this.timeline.setTracks(this.tracks);
-
-    this.$subtitleEditorBtn = $("#subtitle_editor_btn");
-    this.$subtitleEditorBtn.tooltip({title: "Opens Editor in new tab", placement: 'bottom'});
-      
   },
 
   setupElement: function() {
@@ -140,10 +136,6 @@ river.ui.MiniPlayer = river.ui.Player.extend({
     // override player's hook - set to empty
   },
 
-  setVolume: function(value) {
-    this.popcorn.volume(value);
-  },
-
   bindEvents: function() {
     river.ui.BasePlayer.prototype.bindEvents.call(this);
   },
@@ -158,11 +150,18 @@ river.ui.MiniPlayer = river.ui.Player.extend({
     this.$subtitleBar.css("z-index","6");
     this.$subtitleBar.css("position","absolute");
     this.$subtitleBar.css("line-height","16px");
+    this.$subtitleBar.css("width","380px");
 
     this.$subtitleDisplay.css("background-color","black");
     this.$subtitleDisplay.css("opacity",0.8);
     this.$subtitleDisplay.css("font-size","12px");
     this.$subtitleDisplay.css("padding","3px");
+    this.$subtitleDisplay.css("width","260px");
+
+    this.$overlay_btn.hide();
+    $("#time_float").hide();
+    $("#seek_head").hide();
+    $("#blackbar").css("height","10px");
   }
 
 });

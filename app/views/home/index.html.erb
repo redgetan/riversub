@@ -10,14 +10,11 @@
       <div class='span6'>
         <div id="river_player" data-repo='<%= @autoplay_repo ? @autoplay_repo.serialize.to_json : "" %>'>
           <div id='autoplay_video_label'>Sample</div>
-          <div id='media'></div> 
-          <div id='subtitle_bar' class='span5 center'> 
-            <span id='subtitle_display' class='span4 center'></span> 
-          </div> 
+          <%= render 'videos/player' %>
         </div>
       </div>
       <div class='span6 call-to-action'>
-      <h3 id='description'>Add Subtitles to Any Youtube Video</h3>
+      <h3 id='description'>Add Subtitles to a Youtube Video</h3>
         <div class='row'>
           <form class="sub">
             <div class="control-group">
