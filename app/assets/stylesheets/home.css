@@ -690,7 +690,7 @@ ul.social_login_buttons a {
 .demo-video,
 .call-to-action {
   /*text-align: center;*/
-  margin-top: 10px;
+  margin-top: 70px;
 }
 
 .call-to-action {
@@ -990,4 +990,8 @@ footer ul li a:hover{
 
 #river_player .track {
   margin-top: -2px;
+}
+
+#demo .sub {
+  margin-left: 20px;
 }
