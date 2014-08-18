@@ -142,15 +142,19 @@ river.ui.MiniPlayer = river.ui.Player.extend({
 
   hideEditing: function() {
     river.ui.Player.prototype.hideEditing.call(this);
-    this.$media.css("height","300px");
-    this.$media.css("width","400px");
+    this.$media.css("height","199px");
+    this.$media.css("width","350px");
+    this.$media.css("padding","40px 0px");
+    this.$mediaContainer.css("width","350px");
+
+    this.$iframeOverlay.hide();
 
     this.$subtitleBar.css("margin-top","-35px");
     this.$subtitleBar.css("margin-left","10px");
     this.$subtitleBar.css("z-index","6");
     this.$subtitleBar.css("position","absolute");
     this.$subtitleBar.css("line-height","16px");
-    this.$subtitleBar.css("width","380px");
+    this.$subtitleBar.css("width","330px");
 
     this.$subtitleDisplay.css("background-color","black");
     this.$subtitleDisplay.css("opacity",0.8);
