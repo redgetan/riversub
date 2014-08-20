@@ -13,6 +13,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.isOnSubtitleEditMode = null;
     this.safeEndGhostLock = false;
 
+    // temp hack. ugly
+    if (!this.repo.parent_repository_id) {
+      $(".header #original").hide();
+    }
     // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
   },

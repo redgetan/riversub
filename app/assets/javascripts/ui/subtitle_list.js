@@ -25,7 +25,7 @@ river.ui.SubtitleList = Backbone.View.extend({
                        "<div>Start</div>" +
                        "<div>End</div>" +
                        "<div id='header_text'>Text</div>" +
-                       "<div>Original</div>" +
+                       "<div id='original'>Original</div>" +
                      "</div>";
 
 

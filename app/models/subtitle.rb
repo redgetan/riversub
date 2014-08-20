@@ -7,7 +7,7 @@ class Subtitle < ActiveRecord::Base
     {
       :id => self.id,
       :text => self.text,
-      :parent_text => self.parent_text
+      :parent_text => self.parent_text.to_s
     }
   end
 
