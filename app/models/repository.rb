@@ -143,7 +143,8 @@ class Repository < ActiveRecord::Base
           start_time: timing.start_time,
           end_time: timing.end_time,
           subtitle_attributes: {
-            text: ""
+            text: "",
+            parent_text: timing.subtitle.text
           }
         })
       end

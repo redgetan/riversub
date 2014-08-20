@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140816175352) do
+ActiveRecord::Schema.define(:version => 20140820000602) do
 
   create_table "conversations", :force => true do |t|
     t.string   "subject",    :default => ""
@@ -90,8 +90,9 @@ ActiveRecord::Schema.define(:version => 20140816175352) do
 
   create_table "subtitles", :force => true do |t|
     t.string   "text"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "parent_text"
   end
 
   create_table "timings", :force => true do |t|

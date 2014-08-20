@@ -1,5 +1,5 @@
 class Subtitle < ActiveRecord::Base
-  attr_accessible :text
+  attr_accessible :text, :parent_text
 
   has_one    :timing
 
@@ -7,6 +7,7 @@ class Subtitle < ActiveRecord::Base
     {
       :id => self.id,
       :text => self.text,
+      :parent_text => self.parent_text
     }
   end
 
