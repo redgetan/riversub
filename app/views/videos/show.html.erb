@@ -30,16 +30,18 @@
       <% end %>
       <a class='new_repo_btn river_btn' href="#">New Subtitle</a>
     </div>
-    <div id="available_subtitles" class="section_block">
-      <h5 class="section_header">Other Subtitles</h5>
-      <ul>
-        <% @repo.other_published_repositories.each do |repo| %>
-          <li>
-            <a href="<%= repo.url %>"><%= repo.language_display %></a>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+    <% if @repo.other_published_repositories.present? %>
+      <div id="available_subtitles" class="section_block">
+        <h5 class="section_header">Other Subtitles</h5>
+        <ul>
+          <% @repo.other_published_repositories.each do |repo| %>
+            <li>
+              <a href="<%= repo.url %>"><%= repo.language_display %></a>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
     <div id="share_edit" class="section_block">
       <h5 class="section_header">Share</h5>
       <table>
