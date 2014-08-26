@@ -28,7 +28,7 @@
       <% if @repo.user.nil? || @repo.user == current_user %>
         <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
       <% end %>
-      <a class='new_repo_btn river_btn' href="#">New Subtitle</a>
+      <a class='new_repo_btn river_btn' data-forked-repo-token="<%= @repo.token %>" href="#">New Subtitle</a>
     </div>
     <% if @repo.other_published_repositories.present? %>
       <div id="available_subtitles" class="section_block">

@@ -101,7 +101,8 @@ $(document).ready(function(){
   $(".new_repo_btn").on("click",function(event) {
     event.preventDefault();
     var url = player.repo.video.url;
-    openSubtitleEditor(url);
+    var forkedRepoToken = $(event.target).data("forked-repo-token");
+    openSubtitleEditor(url, forkedRepoToken);
   });
 
 });
@@ -119,7 +120,7 @@ function handleOpenSubtitleEditorError(e,$form) {
   $form.find(".sub_btn").button('reset');
 }
 
-function openSubtitleEditor(url) {
+function openSubtitleEditor(url, forkedRepoToken) {
 
   if (!url.match(/youtube/)) {
     throw "Only youtube urls are allowed";
@@ -147,7 +148,12 @@ function openSubtitleEditor(url) {
       },
       dataType: "json",
       success: function(data,status) {
-        window.location.href = data.redirect_url;
+        if (typeof forkedRepoToken !== "undefined") {
+          var redirectUrl = data.redirect_url + "?forked_repo_token=" + forkedRepoToken;
+        } else {
+          var redirectUrl = data.redirect_url;
+        }
+        window.location.href = redirectUrl;
       },
       error: function(data) {
         var error_type = JSON.parse(data.responseText).error_type;
