@@ -2,6 +2,7 @@
 class User < ActiveRecord::Base
 
   include ActiveModel::Validations
+  include Rails.application.routes.url_helpers
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
@@ -25,6 +26,11 @@ class User < ActiveRecord::Base
 
   before_create do
     self.username.downcase!
+  end
+
+  def self.recent_contributors(num_of_entries = 10)
+    joins(:repositories).where("repositories.id IN (?)",
+                                Repository.recent_user_subtitled_published_ids(num_of_entries))
   end
 
   def self.find_for_database_authentication(warden_conditions)
@@ -72,6 +78,10 @@ class User < ActiveRecord::Base
     end
 
     username
+  end
+
+  def url
+    user_url(self)
   end
 
   def serialize

@@ -14,8 +14,10 @@
         </div>
       </div>
       <div class='span6 call-to-action'>
-      <h3 id='description'>Add Subtitles to a Youtube Video</h3>
-        <div class='row'>
+      <h3 id='description'>Subtitle your Favorite Videos</h3>
+<!--       <p>Here is a tool that allows you to subtitle someone else youtube video.  </p>
+      <p>It includes a FREE subtitle editor and you can join any groups to subtitle multiple videos ranging from video games to</p>
+ -->        <div class='row'>
           <form class="sub">
             <div class="control-group">
               <div class="input-append">
@@ -26,38 +28,46 @@
           </form>
         </div>
       </br>
-      </div>
+<!--       <ul>
+        <li>Instantly add subtitles to any youtube video.</li>
+        <li>Create or Join a subtitle group</li>
+        <li>To find out more, you can read How it Works or the F.A.Q. section</li>
+      </ul>
+ -->      </div>
     </div>
   </div>
 </div>
 
-<div id='summary-container' class='container'>
-  <div class='row'>
-    <div class="videos span12">
-      <h4 class="center">Recently created</h4>
-      <ul class="thumbnails user">
-        <% Repository.published.recent.limit(6).each do |repo| %>
-            <li class="span2">
-              <div class="thumbnail center">
-                <span class='repo_owner'>
-                  by <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
-                </span>
-                <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                  <img src="<%= repo.thumbnail_url %>" alt="">
-                </a>
-                <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                  <h6 class='video_name'><%= repo.video.name %></h6>
-                </a>
-                <div class='stats'>
+<div id='summary-container'>
+  <div class='container'>
+    <div class='row'>
+      <div class="videos span12">
+        <h4 class="center">Recently created</h4>
+        <ul class="thumbnails user">
+          <% Repository.published.recent.limit(6).each do |repo| %>
+              <li class="span2">
+                <div class="thumbnail center">
+                  <span class='repo_owner'>
+                    by <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
+                  </span>
+                  <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                    <img src="<%= repo.thumbnail_url %>" alt="">
+                  </a>
+                  <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                    <h6 class='video_name'><%= repo.video.name %></h6>
+                  </a>
+                  <div class='stats'>
+                  </div>
+                  <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span>
+
                 </div>
-                <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span>
+              </li>
+          <% end %>
+        </ul>
+      </div>
+      <div class='header-section span12'></div>
 
-              </div>
-            </li>
-        <% end %>
-      </ul>
     </div>
-
   </div>
 </div>
 

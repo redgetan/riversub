@@ -2,7 +2,7 @@ class Repository < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
 
-  paginates_per 12
+  paginates_per 30
 
   belongs_to :video
   belongs_to :user
@@ -31,6 +31,16 @@ class Repository < ActiveRecord::Base
   GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"
   ANONYMOUS_USERNAME = "default"
 
+  def self.recent_user_subtitled_published_ids(num_of_entries = 10)
+    Repository.select("max(id) AS repo_id")
+              .published
+              .user_subtitled
+              .recent
+              .group("user_id")
+              .limit(num_of_entries)
+              .map(&:repo_id)  
+  end
+
   def self.homepage_autoplay_repo
     repo_id = Setting.get(:homepage_autoplay_repository_id).to_s.to_i
     self.find_by_id(repo_id)
@@ -53,8 +63,8 @@ class Repository < ActiveRecord::Base
   end
 
   def owner_profile_url
-    if self.user
-      user_url(self.user)
+    if user
+      user.url
     else
       "#"
     end
@@ -153,6 +163,12 @@ class Repository < ActiveRecord::Base
 
   def user_avatar_thumb_url
     user.avatar.thumb.url
+  end
+
+  def transcript
+    self.timings.map do |timing|
+      timing.subtitle.text
+    end.join(". ")
   end
 
   def serialize
