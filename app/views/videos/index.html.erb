@@ -15,7 +15,7 @@
     <div id="recent_contributors" class="section_block">
       <h5 class="section_header"> Recent Contributors </h5>
       <ul>
-        <% User.recent_contributors.each do |user| %>
+        <% User.recent_contributors.reverse.each do |user| %>
           <li>
             <a class="user_avatar" href="<%= user.try(:url) %>"><%= image_tag user.avatar.thumb.url %></a>
             <a class="" href="<%= user.try(:url) %>"><%= user.username %></a>
