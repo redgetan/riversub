@@ -76,7 +76,7 @@ class VideosController < ApplicationController
   end
 
   def index
-    @repos = Repository.published.recent.page params[:page]
+    @repos = Repository.includes(timings: :subtitle).published.recent.page params[:page]
   end
 
   def unpublished

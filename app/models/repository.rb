@@ -2,7 +2,7 @@ class Repository < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
 
-  paginates_per 30
+  paginates_per 20
 
   belongs_to :video
   belongs_to :user
