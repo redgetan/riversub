@@ -216,11 +216,13 @@ div.videos {
 .video_name {
   margin-bottom: 0px;
   overflow: hidden;
-}
-
-#summary-container .video_name {
   line-height: 12px;
   height: 24px;
+}
+
+.video_index .video_name {
+  line-height: initial;
+  height: initial;
 }
 
 div.videos li.selected {
