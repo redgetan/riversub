@@ -38,6 +38,11 @@ div#river_player #video_url {
 	float: right;
 }
 
+div#editor #controls {
+	border: solid 2px lightslategrey;	
+	float: right;
+}
+
 div#editor #controls,
 div#river_player #controls {
 }
@@ -420,8 +425,20 @@ a#preview_btn {
 	padding: 5px 10px;
 }
 
+#add_sub_container {
+	margin-bottom: 0px;
+}
+
+#add_sub_input {
+  font-size: 18px;
+  width: 442px;
+  border-radius: 0px;
+}
+
 #add_sub_btn {
-	/*margin-right: 10px;*/
+	width: 60px;
+	border-radius: 0px;
+	font-weight: bolder;
 }
 
 #open_close_btns {
@@ -454,6 +471,10 @@ a#preview_btn {
 #timeline_tab .move_right_btn:hover {
 	background-color: gray;
 	color: white;
+}
+
+#editor-bottom .tab-content {
+	margin-top: 20px;
 }
 
 .timeline_tab_content {
