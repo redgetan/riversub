@@ -214,7 +214,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<li id='download_tab_anchor' ><a href='#download_tab' data-toggle='tab'>Download</a></li>" +
                       // "<li><a id='help_btn' class='' href='#'><i class='icon-question-sign'></i></a></li>" +
                     "</ul>" +
-                    "<div id='controls' class='span7'> " +
+                    "<div id='controls' class='span6'> " +
                       // "<div class='pull-left span1'> " +
                       //   "<button type='button' id='play_btn' class='btn'><i class='icon-play'></i></button> " +
                       //   "<button type='button' id='pause_btn' class='btn'><i class='icon-pause'></i></button> " +
@@ -230,7 +230,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       //   "<a id='stop_timing_btn' class='btn btn-primary'>Close</a> " +
                       // "</div> " +
                       "<div id='add_sub_container' class='input-append pull-right'> " +
-                        "<input id='add_sub_input' class='span3' type='text' placeholder='type here and press enter'>" + 
+                        "<input id='add_sub_input' class='' type='text' placeholder='type here and press enter'>" + 
                         "<a id='add_sub_btn' class='btn btn-primary'>Add</a> " +
                       "</div> " +
                       // "<div class='btn-group pull-right'> " +
