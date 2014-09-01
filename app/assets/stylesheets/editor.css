@@ -189,6 +189,7 @@ div#editor-bottom {
 
 #editor #subtitle_bar {
 	position: relative;
+	margin-top: 10px;
 }
 
 #subtitle_container {
