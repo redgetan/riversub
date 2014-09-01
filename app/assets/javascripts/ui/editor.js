@@ -13,6 +13,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.isOnSubtitleEditMode = null;
     this.safeEndGhostLock = false;
 
+    this.MINIMUM_TRACK_DURATION = 0.50;
+    this.DEFAULT_TRACK_DURATION = 3;
+    this.TRACK_MARGIN = 0.20;
+
     // temp hack. ugly
     if (!this.repo.parent_repository_id) {
       $(".header #original").hide();
@@ -907,34 +911,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   addTrack: function(callbacks) {
-    var startTime;
-    var endTime;
-    var trackDuration = 3;
     var currentTime = this.media.currentTime;
-    var padding = 0.20;
-    var minWidthSeconds = 0.50;
-    var prevNearestEdgeTime = this.prevNearestEdgeTime(currentTime);
-    var nextNearestEdgeTime = this.nextNearestEdgeTime(currentTime);
 
-    if (currentTime > trackDuration && (currentTime - prevNearestEdgeTime) > minWidthSeconds ) {
-      endTime   = currentTime;   
-      startTime = endTime - trackDuration;   
-
-      // possible to overlap prev track
-      if (startTime < prevNearestEdgeTime) {
-        startTime = prevNearestEdgeTime + padding;
-      }
-    } else {
-      startTime   = currentTime;   
-      endTime     = startTime + trackDuration;   
-
-      // possible to overlap next track
-      if (endTime > nextNearestEdgeTime) {
-        endTime = nextNearestEdgeTime - padding;
-      }
-    }
-
-    this.validateNoTrackOverlap(startTime, endTime);
+    var trackSlot = this.getTrackSlot(currentTime);
+    var startTime = trackSlot.startTime;
+    var endTime   = trackSlot.endTime;
 
     var track = this.safeCreateGhostTrack(startTime);
 
@@ -950,6 +931,73 @@ river.ui.Editor = river.ui.BasePlayer.extend({
           callbacks.postEndGhostCallback(track);
         }
       }.bind(this));
+    }
+  },
+
+  getTrackSlot: function(currentTime) {
+    var prevNearestEdgeTime = this.prevNearestEdgeTime(currentTime);
+    var nextNearestEdgeTime = this.nextNearestEdgeTime(currentTime);
+
+    if (currentTime > this.DEFAULT_TRACK_DURATION && (currentTime - prevNearestEdgeTime) > this.MINIMUM_TRACK_DURATION ) {
+      endTime   = currentTime;   
+      startTime = endTime - this.DEFAULT_TRACK_DURATION;   
+
+      // possible to overlap prev track
+      if (startTime < prevNearestEdgeTime) {
+        startTime = prevNearestEdgeTime + this.TRACK_MARGIN;
+      }
+    } else {
+      startTime   = currentTime;   
+      endTime     = startTime + this.DEFAULT_TRACK_DURATION;   
+
+      // possible to overlap next track
+      if (endTime > nextNearestEdgeTime) {
+        endTime = nextNearestEdgeTime - this.TRACK_MARGIN;
+      }
+
+      // possible that end less than start due to TRACK_MARGIN
+      if (endTime < startTime) {
+        endTime = startTime;
+      }
+    }
+
+    var overlapTracks = this.getOverlapTracks(startTime,endTime) ;
+    
+    if (overlapTracks.length !== 0) {
+      var trackSlot = this.getNextAvailableTrackSlot(startTime);
+      startTime = trackSlot.startTime;
+      endTime   = trackSlot.endTime;
+    }
+
+    return {
+      startTime: startTime,
+      endTime: endTime
+    }
+  },
+
+  getNextAvailableTrackSlot: function(time) {
+    var timeGap;
+    var curr;
+    var next;
+
+    for (var i = 0; i < this.tracks.length; i++) {
+      curr = this.tracks.at(i);
+      next = this.tracks.at(i + 1);
+
+      if (curr.endTime() < time) continue;
+
+      if (typeof next === "undefined") {
+        timeGap = this.mediaDuration() - curr.endTime();
+      } else {
+        timeGap = next.startTime() - curr.endTime();
+      }
+
+      if (timeGap >= this.MINIMUM_TRACK_DURATION) break;
+    }
+
+    return {
+      startTime: curr.endTime(),
+      endTime: curr.endTime() + Math.min(timeGap, this.DEFAULT_TRACK_DURATION)
     }
   },
 
