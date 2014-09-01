@@ -667,7 +667,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$subtitleEdit.show();
 
     this.$subtitleEdit.focus();
-    this.$subtitleEdit.effect("highlight", { color: "moccasin" },1000);
   },
 
   onGhostTrackStart: function(track) {
