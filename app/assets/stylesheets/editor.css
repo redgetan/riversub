@@ -39,7 +39,6 @@ div#river_player #video_url {
 }
 
 div#editor #controls {
-	border: solid 2px lightslategrey;	
 	float: right;
 }
 
@@ -430,8 +429,9 @@ a#preview_btn {
 }
 
 #add_sub_input {
+  border: solid 1px cornflowerblue;	
   font-size: 18px;
-  width: 361px;
+  width: 300px;
   border-radius: 0px;
 }
 
