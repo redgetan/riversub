@@ -59,7 +59,7 @@ river.ui.SummaryTrack = river.ui.Track.extend({
 river.ui.ExpandedTrack = river.ui.Track.extend({
   events: function(){
     return _.extend({},river.ui.Track.prototype.events,{
-      "click": "onMouseClick",
+      "dblclick": "onMouseClick",
       "mouseenter": "onMouseEnter",
       "mouseleave": "onMouseLeave",
       "mousedown .close": "onCloseMouseDown"
