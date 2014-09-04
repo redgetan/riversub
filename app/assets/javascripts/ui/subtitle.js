@@ -15,6 +15,7 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$el.data("model",this.model);
 
     this.listenTo(this.model,"change",this.render);
+    this.listenTo(this.model.track,"change",this.render);
     this.listenTo(this.model.track,"remove",this.remove);
 
     this.setupElement();
