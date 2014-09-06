@@ -997,6 +997,10 @@ footer a:hover{
   padding: 10px;
 }
 
+#repo_setup_form {
+  margin-bottom: 100px;
+}
+
 #repo_setup_form_list {
   border: solid 1px gray;  
   padding: 10px;
