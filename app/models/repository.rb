@@ -171,6 +171,14 @@ class Repository < ActiveRecord::Base
     end.join(". ")
   end
 
+  def owned_by?(target_user)
+    if user
+      self.user == target_user 
+    else
+      true # anonymous repo belong to everyone
+    end
+  end
+
   def serialize
     {
       :id => self.id,

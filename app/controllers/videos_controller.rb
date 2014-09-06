@@ -57,7 +57,7 @@ class VideosController < ApplicationController
   def editor
     @repo = Repository.find_by_token! params[:token]
 
-    if @repo.user && @repo.user != current_user 
+    unless @repo.owned_by? current_user
       render :text => "you do not have permission to edit the subtitles", :status => 403 and return
     end
 

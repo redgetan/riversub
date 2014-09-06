@@ -25,7 +25,7 @@
     </div>
     <div id="contribute" class="section_block">
       <h5 class="section_header">Contribute</h5>
-      <% if @repo.user.nil? || @repo.user == current_user %>
+      <% if @repo.owned_by? current_user  %>
         <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
       <% end %>
       <a class='new_repo_btn river_btn' data-forked-repo-token="<%= @repo.token %>" href="#">New Subtitle</a>
