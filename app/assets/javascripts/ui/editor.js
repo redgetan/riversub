@@ -174,7 +174,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                 "<div id='editor-top' class='row'> " +
                   "<div class='span12'> " +
                     "<h5 id='repo_label'>" +
-                      "<a href=" + this.repo.url + ">" + this.repo.video.name + "</a>" +
+                      "<a href=" + this.repo.url + ">" + this.repo.video.name.substring(0,70) + "</a>" +
                     "</h5>" +
                     "<div id='language' class='pull-left'>" +
                       "<span>" + this.repo.language_pretty + "</span>" +
