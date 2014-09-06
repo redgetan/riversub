@@ -448,23 +448,26 @@ a#preview_btn {
 #timeline_tab .move_left_btn{
 	position: relative;
 	top: -70px;
-	z-index: 20;
+	z-index: 10;
 	left: -27px;
 	border: solid 1px gray;
 	padding: 3px;
 	color: gray;
+	font-weight: bold;
 	text-decoration: none;
+	display: inline-table;
 }
 
 #timeline_tab .move_right_btn{
 	position: relative;
 	top: -70px;
-	z-index: 20;
+	z-index: 10;
 	left: 940px;
 	border: solid 1px gray;
 	padding: 3px;
 	color: gray;
 	text-decoration: none;
+	display: inline-table;
 }
 
 #timeline_tab .move_left_btn:hover,

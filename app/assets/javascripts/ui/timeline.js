@@ -86,6 +86,20 @@ river.ui.Timeline = Backbone.View.extend({
       // scrubber
       this.$scrubber_expanded = $("#expanded .scrubber");
 
+      var move_left_btn = "<a href='#' class='move_left_btn'>" +
+                           "<i class='icon-chevron-left'></i>" +
+                          "</a>";
+
+      var move_right_btn = "<a href='#' class='move_right_btn'>" +
+                             "<i class='icon-chevron-right'></i>" +
+                           "</a>";
+
+      this.$expanded_container.append(move_left_btn);
+      this.$expanded_container.append(move_right_btn);
+
+      this.$move_left_btn = $(".move_left_btn");
+      this.$move_right_btn = $(".move_right_btn");
+
 
       // timeline label
       var timeline_label = this.createTimeLabelHTMLString(this.$filler.width(),this.mediaDuration);
@@ -133,7 +147,7 @@ river.ui.Timeline = Backbone.View.extend({
 
   setScrollerColor: function() {
     this.$scroller_handle.css("background-color","gray");
-    this.$timeline_scroller.css("background-color","#DBDBDB");
+    this.$timeline_scroller.css("background-color","rgb(240,240,240)");
   },
 
   resetScrollerColor: function() {
@@ -200,6 +214,9 @@ river.ui.Timeline = Backbone.View.extend({
     this.$summary.on("mousedown",this.onMouseDownHandler.bind(this));
     this.$summary.on("mousemove",this.onMouseMoveHandler.bind(this));
     this.$summary.on("mouseup",this.onMouseUpHandler.bind(this));
+
+    this.$move_left_btn.on("click",this.onMoveLeftBtnClick.bind(this));
+    this.$move_right_btn.on("click",this.onMoveRightBtnClick.bind(this));
 
     this.$summary.on("mouseenter",this.onSummaryMouseEnterHandler.bind(this));
     this.$summary.on("mousemove",this.onSummaryMouseMoveHandler.bind(this));
@@ -361,6 +378,16 @@ river.ui.Timeline = Backbone.View.extend({
     var secondsToScroll = deltaX / this.resolution(this.$expanded);
     this.scrollWindow(secondsToScroll);
     this.updateScrollerHandlePosition(secondsToScroll);
+  },
+
+  onMoveLeftBtnClick: function(event) {
+    event.preventDefault();
+    this.scrollContainerToTime(this.current_window_slide.start - 10);
+  },
+
+  onMoveRightBtnClick: function(event) {
+    event.preventDefault();
+    this.scrollContainerToTime(this.current_window_slide.start + 10);
   },
 
   updateScrollerHandlePosition: function(secondsToScroll) {
