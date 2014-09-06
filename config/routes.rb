@@ -24,7 +24,6 @@ River::Application.routes.draw do
   get "videos",                                :to => "videos#index"
   get "videos/unpublished",                    :to => "videos#unpublished"
   post "videos/sub",                           :to => "videos#sub",    :as => "sub_videos"
-  post "videos/publish",                       :to => "videos#publish",:as => "publish_videos"
 
   resources "repositories", :only => [] do
     resources "timings", :only => [:index, :create, :update, :destroy]
@@ -33,6 +32,7 @@ River::Application.routes.draw do
   get "/:token",                        to: "videos#show",   as: "video"
   get "/:token/setup",                  to: "videos#setup",  as: "editor_video_setup"
   post "/:token/finish_setup",          to: "videos#finish_setup",  as: "editor_video_finish_setup"
+  post "/:token/publish",               to: "videos#publish", as: "publish_videos"
   get "/:token/editor",                 to: "videos#editor", as: "editor_video"
   get '/:username/:token',              to: 'videos#show',   as: 'user_video'
   get '/:username/:token/editor',       to: 'videos#editor', as: 'editor_user_video'

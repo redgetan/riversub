@@ -97,9 +97,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     $.ajax({
       url: this.repo.publish_url,
       type: "POST",
-      data: {
-        token: this.repo.token
-      },
       dataType: "json",
       success: function(data) {
         window.location.href = window.location.href;

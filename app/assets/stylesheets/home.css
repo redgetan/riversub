@@ -243,6 +243,14 @@ div#media_container {
   min-width: 1300px;
 }
 
+#river_player.private .river_btn {
+  background-color: transparent;
+}
+
+#river_player.private #share_edit {
+  display: none;
+}
+
 #river_player.show div#media_container {
   margin-top: 30px;
   overflow: hidden;
@@ -591,6 +599,7 @@ a.owner_label {
   color: #333;
   border: solid 1px gray;
   padding: 5px 10px;
+  cursor: pointer;
 }
 
 .white_btn {
@@ -799,7 +808,6 @@ footer a:hover{
 #river_player .left_side {
   /*border: solid 1px black;*/
   margin-top: 20px;
-  margin-left: 30px;
   width: 400px;
   float: left;
 }
@@ -1041,4 +1049,9 @@ footer a:hover{
 
 #recent_contributors .user_avatar img {
   width: 25px;
+}
+
+#river_player #publish_btn {
+  background-color: rgb(127, 202, 154) !important;
+  font-size: 20px;
 }

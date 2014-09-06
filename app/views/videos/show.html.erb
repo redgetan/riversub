@@ -2,7 +2,7 @@
 
 
 <div class="background"></div>
-<div id='river_player' class='show' data-repo='<%= @repo.serialize.to_json %>'>
+<div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
   <div class="left_side">
     <h5 id='repo_label'>
       <div>
@@ -23,6 +23,15 @@
         <% end %>
       </div>
     </div>
+    <% unless @repo.is_published? %>
+      <div id="finalize" class="section_block" style="height: 140px;">
+        <h5 class="section_header">Status</h5>
+        <p style="padding: 10px;">This video is currently private. To make it visible to the public, click publish.</p>
+        <%= form_tag @repo.publish_url, method: "post" do %>
+          <%= submit_tag 'Publish', class: "river_btn", id: "publish_btn" %>
+        <% end %>
+      </div>
+    <% end %>
     <div id="contribute" class="section_block">
       <h5 class="section_header">Contribute</h5>
       <% if @repo.owned_by? current_user  %>
@@ -54,22 +63,22 @@
         <tr>
           <td class="left">save:</td>
           <td class="right">
-            <a id='download_btn' href='<%= @repo.subtitle_download_url %>'>Download</a> 
+            <a id='download_btn' href='<%= @repo.subtitle_download_url %>'>Download</a>
           </td>
         </tr>
       </table>
     </div>
   </div>
 
-  <div class='right_side span10'> 
+  <div class='right_side span10'>
     <%= render 'player' %>
-    <div id='subtitle_container' class="section_block"> 
+    <div id='subtitle_container' class="section_block">
       <h5 class="section_header">Transcript</h5>
-      <div id='subtitle_list'></div> 
-      <div id='controls_extra' class='row'> 
-        <div class='btn-group pull-right'> 
-        </div> 
-      </div> 
-    </div> 
-  </div> 
+      <div id='subtitle_list'></div>
+      <div id='controls_extra' class='row'>
+        <div class='btn-group pull-right'>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

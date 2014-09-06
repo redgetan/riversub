@@ -16,6 +16,7 @@ class Repository < ActiveRecord::Base
   validates :token, :uniqueness => true, on: :create
 
   before_validation :generate_token
+  before_save :auto_publish_anonymous_repo
 
 
   # scope :with_timings_count, select("repositories.*, COUNT(timings.id) timings_count")
@@ -83,7 +84,7 @@ class Repository < ActiveRecord::Base
   end
 
   def publish_url
-    publish_videos_url
+    publish_videos_url(self)
   end
 
   def subtitle_download_url
@@ -179,6 +180,10 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def visible_to_user?(target_user)
+   is_published? || owned_by?(target_user)
+  end
+
   def serialize
     {
       :id => self.id,
@@ -206,6 +211,12 @@ class Repository < ActiveRecord::Base
         random_token = SecureRandom.urlsafe_base64(8)
         break random_token unless self.class.where(token: random_token).exists?
       end
+    end
+  end
+
+  def auto_publish_anonymous_repo
+    unless user
+      self.is_published = true
     end
   end
 

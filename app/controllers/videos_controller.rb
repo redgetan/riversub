@@ -27,7 +27,10 @@ class VideosController < ApplicationController
     @repo = Repository.find_by_token! params[:token]
 
     if @repo.update_attributes!(is_published: true)
-      render :json => {}, :status => 200
+      respond_to do |format|
+        format.html  { redirect_to @repo.url  }
+        format.json  { render :json => {}, :status => 200 }
+      end
     else
       render :json => { :error => @repo.errors.full_messages }, :status => 403
     end
@@ -68,10 +71,10 @@ class VideosController < ApplicationController
   def show
     @repo = Repository.find_by_token! params[:token]
 
-    if @repo.is_published
+    if @repo.visible_to_user?(current_user)
       respond_to :html
     else
-      render :text => "Video is not published" , :status => 404
+      render_404
     end
   end
 
