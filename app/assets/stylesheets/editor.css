@@ -430,15 +430,12 @@ a#preview_btn {
 }
 
 #add_sub_input {
-  border: solid 1px cornflowerblue;	
   font-size: 18px;
   width: 300px;
-  border-radius: 0px;
 }
 
 #add_sub_btn {
 	width: 60px;
-	border-radius: 0px;
 	font-weight: bolder;
 }
 

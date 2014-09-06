@@ -241,6 +241,7 @@ div#media_container {
 
 #river_player.show {
   min-width: 1300px;
+  margin-bottom: 30px;
 }
 
 #river_player.private .river_btn {
@@ -756,11 +757,17 @@ ul.social_login_buttons a {
 footer {
   width: 100%;
   background-color: black;  
-  position: relative;
-  /* Set the fixed height of the footer here */
-  height: 50px; 
+  clear: both;
+  border-top: solid 1px #ccc;
+  height: 40px; 
   color: #fff;
-  text-align: right;
+  box-shadow: 0px 500px 0px 500px black;
+}
+
+.white footer {
+    background-color: white;
+    box-shadow: 0px 500px 0px 500px white;
+    color: gray;
 }
 
 footer .sitename {
@@ -773,11 +780,6 @@ footer ul {
 
 footer ul li {
   float: right;
-}
-
-.white footer {
-    background-color: transparent;
-    color: gray;
 }
 
 footer ul li{
