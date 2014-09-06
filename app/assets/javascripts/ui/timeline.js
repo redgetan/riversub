@@ -96,6 +96,11 @@ river.ui.Timeline = Backbone.View.extend({
       this.$scroller_handle = $("#scroller_handle");
       this.$scroller_handle.css("left",0);
 
+      this.$timeline_scroller.hover(
+        this.setScrollerColor.bind(this),
+        this.resetScrollerColor.bind(this)
+      );
+
       this.$scroller_handle.draggable({
         cursor: "move",
         axis: "x",
@@ -107,6 +112,7 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   onScrollerHandleDrag: function(event) {
+    this.setScrollerColor();
     if (!this.prevScrollerHandlerPageX) {
       this.prevScrollerHandlerPageX = event.pageX;    
     }
@@ -121,7 +127,18 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   onScrollerHandleStop: function(event) {
+    this.resetScrollerColor();
     this.prevScrollerHandlerPageX = null;
+  },
+
+  setScrollerColor: function() {
+    this.$scroller_handle.css("background-color","gray");
+    this.$timeline_scroller.css("background-color","#DBDBDB");
+  },
+
+  resetScrollerColor: function() {
+    this.$scroller_handle.css("background-color","lightgray");
+    this.$timeline_scroller.css("background-color","transparent");
   },
 
   setTracks: function(tracks) {
