@@ -119,9 +119,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.pause();
     }
 
+    var text = this.$addSubInput.val();
+    // show what is being typed on video
+    this.$subtitleDisplay.text(text);
+
     // enter key
     if (event.which == 13 ) {
-      var text = this.$addSubInput.val();
       this.addSubtitledTrack(text);
     }
   },
