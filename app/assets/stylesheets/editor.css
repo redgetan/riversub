@@ -226,6 +226,7 @@ div#editor-bottom {
 	border-bottom: solid 1px lightgray;
 }
 
+#editor #subtitle_list #original,
 #editor #subtitle_list #header_text {
 	width: 320px;
 }
@@ -325,6 +326,7 @@ div#editor-bottom {
 .subtitle .text,
 .subtitle .parent_text {
 	width: 320px;
+	height: 20px;
 }
 
 .subtitle input.inplace_field {

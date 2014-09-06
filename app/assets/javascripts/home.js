@@ -2,6 +2,7 @@
 
 var popcorn;
 var editor;
+var repo;
 var player;
 var metadata;
 

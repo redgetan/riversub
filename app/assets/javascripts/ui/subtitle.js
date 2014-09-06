@@ -42,12 +42,13 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$close.hide();
 
     if ($("#editor").size() === 1) {
-      var parentText = "<div class='parent_text'></div>";
-      this.$text.after(parentText);
+      if (repo.parent_repository_id) {
+        var parentText = "<div class='parent_text'></div>";
+        this.$text.before(parentText);
 
-      this.$parentText = this.$el.find(".parent_text");
-      this.$parentText.text(this.model.get("parent_text"));
-
+        this.$parentText = this.$el.find(".parent_text");
+        this.$parentText.text(this.model.get("parent_text"));
+      }
       this.editableStartEndTime();
       this.editableText();
     } else {
