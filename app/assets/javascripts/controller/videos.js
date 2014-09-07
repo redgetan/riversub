@@ -8,7 +8,7 @@ $.extend(river.controller,{
     // add ?local=true to url to test locally w/o internet connection
     if (location.search.match("local=true")) {
       repo = {
-         video: { duration: 64},
+         video: { duration: 64, name: "Local"},
          user: null,
          is_guided_walkthrough: false
        };
