@@ -344,12 +344,12 @@ div#editor-bottom {
 	color: white;
 }
 
-#controls #start_timing_btn i {
-	color: #81CFA6;
+#controls #start_timing_btn {
 }
 
-#controls #stop_timing_btn i {
-	color: #81CFA6;
+#controls #stop_timing_btn {
+	background-color: lightcoral;
+	color: white;
 }
 
 div#player-bottom {
@@ -429,16 +429,24 @@ a#preview_btn {
 
 #add_sub_container {
 	margin-bottom: 0px;
+	margin-left: 5px;
+	border: solid 1px gray;
+}
+
+#main_controls button {
+	background-color: beige;
 }
 
 #add_sub_input {
-  font-size: 18px;
+  font-size: 16px;
   width: 300px;
+  border-radius: 0px;
 }
 
 #add_sub_btn {
 	width: 60px;
 	font-weight: bolder;
+  border-radius: 0px;
 }
 
 #open_close_btns {

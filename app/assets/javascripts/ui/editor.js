@@ -16,6 +16,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.MINIMUM_TRACK_DURATION = 0.50;
     this.DEFAULT_TRACK_DURATION = 3;
     this.TRACK_MARGIN = 0.20;
+    this.SEEK_DURATION = 5;
+
+    this.startTiming = false;
 
     // temp hack. ugly
     if (!this.repo.parent_repository_id) {
@@ -76,6 +79,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$addSubBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
+    this.$backwardBtn.on("click",this.onBackwardBtnClick.bind(this));
+    this.$forwardBtn.on("click",this.onForwardBtnClick.bind(this));
     this.$startTimingBtn.on("click",this.onStartTimingBtn.bind(this));
     this.$stopTimingBtn.on("click",this.onStopTimingBtn.bind(this));
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
@@ -193,7 +198,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<div id='iframe_container'>" +
                           "<div id='iframe_overlay'>" +
                           "</div>" +
-                          "<div id='overlay_btn'><i class='icon-play'></i></div>" +
                         "</div> " +
                         "<div id='subtitle_bar' class='span12 center'> " +
                           "<span id='subtitle_display' class='span5 center'></span> " +
@@ -218,27 +222,19 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<li id='download_tab_anchor' ><a href='#download_tab' data-toggle='tab'>Download</a></li>" +
                       // "<li><a id='help_btn' class='' href='#'><i class='icon-question-sign'></i></a></li>" +
                     "</ul>" +
-                    "<div id='controls' class='span6'> " +
-                      // "<div class='pull-left span1'> " +
-                      //   "<button type='button' id='play_btn' class='btn'><i class='icon-play'></i></button> " +
-                      //   "<button type='button' id='pause_btn' class='btn'><i class='icon-pause'></i></button> " +
-                      // "</div> " +
-                      // "<div class='pull-left span3 offset4'> " +
-                        // "<ul class='nav nav-tabs btn-group'>" +
-                        //   "<button href='#timeline_tab' class='btn' type='button' data-toggle='tab'>Timeline</button>" +
-                        //   "<button href='#subtitle_tab' class='btn' type='button' data-toggle='tab'>Subtitle</button>" +
-                        // "</ul>" +
-                      // "</div> " +
-                      // "<div id='open_close_btns' class='btn-group pull-right'> " +
-                      //   "<a id='start_timing_btn' class='btn btn-primary'>Open</a> " +
-                      //   "<a id='stop_timing_btn' class='btn btn-primary'>Close</a> " +
-                      // "</div> " +
+                    "<div id='controls' class='span8'> " +
                       "<div id='add_sub_container' class='input-append pull-right'> " +
-                        "<input id='add_sub_input' class='' type='text' placeholder='type here and press enter'>" + 
+                        "<input id='add_sub_input' class='' type='text' placeholder='Enter Subtitle Here'>" + 
                         "<a id='add_sub_btn' class='btn btn-primary'>Add</a> " +
                       "</div> " +
-                      // "<div class='btn-group pull-right'> " +
-                      // "</div> " +
+                      "<div id='main_controls' class='pull-right'> " +
+                        "<button type='button' id='backward_btn' class='river_btn'><i class='icon-backward'></i></button> " +
+                        "<button type='button' id='play_btn' class='river_btn'><i class='icon-play'></i></button> " +
+                        "<button type='button' id='pause_btn' class='river_btn'><i class='icon-pause'></i></button> " +
+                        "<button type='button' id='forward_btn' class='river_btn'><i class='icon-forward'></i></button> " +
+                        "<button id='start_timing_btn' class='river_btn'><i class='icon-film'></i></button> " +
+                        "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i></button> " +
+                      "</div> " +
                     "</div> " +
                   "</div> " + // .span12
 
@@ -316,6 +312,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$pauseBtn = $("#pause_btn");
     this.$pauseBtn.hide();
 
+    this.$backwardBtn = $("#backward_btn");
+    this.$forwardBtn = $("#forward_btn");
+
     this.$startTimingBtn = $("#start_timing_btn");
     this.$startTimingBtn.attr("disabled","disabled");
 
@@ -330,13 +329,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.intro = introJs();
 
     this.$publishBtn = $("#publish_btn");
-
-    this.$publishBtn.tooltip({title: "Make video public"});
-
     this.$previewBtn = $("#preview_btn");
 
     if (this.repo.is_published) {
-      this.$previewBtn.tooltip({title: "See how it'll look in public"});
       this.$publishBtn.hide();
     } else {
       this.$previewBtn.hide();
@@ -354,7 +349,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.hideSubtitleEdit();
 
     this.$iframeOverlay = $("#iframe_overlay");
-    this.$overlay_btn = $("#overlay_btn");
 
     this.$video_name = $("#video_name");
 
@@ -367,6 +361,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$status_bar = $("#status-bar");
 
 
+    // tooltips
+    this.$backwardBtn.tooltip({title: "Back"});
+    this.$forwardBtn.tooltip({title: "Forward"});
+    this.$playBtn.tooltip({title: "Play"});
+    this.$pauseBtn.tooltip({title: "Pause"});
+    this.$startTimingBtn.tooltip({title: "Open Text Segment"});
+    this.$stopTimingBtn.tooltip({title: "Close Text Segment"});
+    this.$publishBtn.tooltip({title: "Make video public"});
+    this.$previewBtn.tooltip({title: "See how it'll look in public"});
 
     $("footer").hide();
   },
@@ -574,15 +577,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPlay: function(event) {
-    this.$overlay_btn.find("i").removeClass("icon-play");
-    this.$overlay_btn.find("i").addClass("icon-pause");
+    this.$playBtn.hide();
+    this.$pauseBtn.show();
   },
 
   onPause: function(event) {
     this.seek(this.lastTimeUpdateTime);
-    this.$overlay_btn.find("i").removeClass("icon-pause");
-    this.$overlay_btn.find("i").addClass("icon-play");
-    this.$overlay_btn.show();
+    this.$pauseBtn.hide();
+    this.$playBtn.show();
   },
 
   onLoadedMetadata: function(event) {
@@ -676,8 +678,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onGhostTrackStart: function(track) {
     this.isGhostTrackStarted = true;
     this.currentGhostTrack = track;
-    this.$startTimingBtn.hide();
+    this.$startTimingBtn.hide({duration: 0});
     this.$stopTimingBtn.show({
+      duration: 0,
       complete: function() {
         if (this.intro._currentStep === 1) { 
           $(".introjs-nextbutton").removeClass("introjs-disabled");
@@ -694,12 +697,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.currentGhostTrack = null;
     this.currentTrack = null;
     this.$stopTimingBtn.hide({
+      duration: 0,
       complete: function() {
         if (this.intro._currentStep === 2) { 
           $(".introjs-nextbutton").removeClass("introjs-disabled");
           $(".introjs-nextbutton").trigger("click");
         }
-        this.$startTimingBtn.show();
+        this.$startTimingBtn.show({duration: 0});
       }.bind(this)
     });
     track.fadingHighlight();
@@ -746,6 +750,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       }
 
       this.safeEndGhostTrack(track,endTime);
+      if (this.startTiming) {
+        this.startTiming = false; 
+        this.requestSubtitleFromUser(track);
+      }
     } 
   },
 
@@ -759,13 +767,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onIframeOverlayMouseEnter: function(event) {
-    this.$overlay_btn.show();
   },
 
   onIframeOverlayMouseLeave: function(event) {
-    if (!this.media.paused) {
-      this.$overlay_btn.hide();
-    }
   },
 
   togglePlayPause: function() {
@@ -846,18 +850,23 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onPlayBtnClick: function(event) {
     this.play();
-    this.$playBtn.hide();
-    this.$pauseBtn.show();
   },
 
   onPauseBtnClick: function(event) {
     this.pause();
-    this.$pauseBtn.hide();
-    this.$playBtn.show();
+  },
+
+  onBackwardBtnClick: function(event) {
+    this.seek(this.media.currentTime - this.SEEK_DURATION);
+  },
+
+  onForwardBtnClick: function(event) {
+    this.seek(this.media.currentTime + this.SEEK_DURATION);
   },
 
   onStartTimingBtn: function(event) {
     if (this.$startTimingBtn.attr("disabled") == "disabled") return;
+    this.startTiming = true;
     this.safeCreateGhostTrack(this.media.currentTime);
     this.play();
   },
@@ -865,6 +874,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onStopTimingBtn: function(event) {
     var track = this.currentGhostTrack;
     this.safeEndGhostTrack(track);
+    if (this.startTiming) {
+      this.startTiming = false; 
+      this.requestSubtitleFromUser(track);
+    }
   },
 
   // returns null if unsuccessful
