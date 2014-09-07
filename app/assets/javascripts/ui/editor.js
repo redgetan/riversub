@@ -198,6 +198,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<div id='iframe_container'>" +
                           "<div id='iframe_overlay'>" +
                           "</div>" +
+                          "<div id='overlay_btn'><i class='icon-play'></i></div>" +
                         "</div> " +
                         "<div id='subtitle_bar' class='span12 center'> " +
                           "<span id='subtitle_display' class='span5 center'></span> " +
@@ -315,6 +316,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$backwardBtn = $("#backward_btn");
     this.$forwardBtn = $("#forward_btn");
 
+    this.$backwardBtn.hide();
+    this.$forwardBtn.hide();
+
     this.$startTimingBtn = $("#start_timing_btn");
     this.$startTimingBtn.attr("disabled","disabled");
 
@@ -349,6 +353,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.hideSubtitleEdit();
 
     this.$iframeOverlay = $("#iframe_overlay");
+    this.$overlay_btn = $("#overlay_btn");
 
     this.$video_name = $("#video_name");
 
@@ -577,12 +582,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPlay: function(event) {
+    this.$overlay_btn.find("i").removeClass("icon-play");
+    this.$overlay_btn.find("i").addClass("icon-pause");
     this.$playBtn.hide();
     this.$pauseBtn.show();
   },
 
   onPause: function(event) {
     this.seek(this.lastTimeUpdateTime);
+    this.$overlay_btn.find("i").removeClass("icon-pause");
+    this.$overlay_btn.find("i").addClass("icon-play");
+    this.$overlay_btn.show();
     this.$pauseBtn.hide();
     this.$playBtn.show();
   },
@@ -767,9 +777,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onIframeOverlayMouseEnter: function(event) {
+    this.$overlay_btn.show();
   },
 
   onIframeOverlayMouseLeave: function(event) {
+    if (!this.media.paused) {
+      this.$overlay_btn.hide();
+    }
   },
 
   togglePlayPause: function() {
