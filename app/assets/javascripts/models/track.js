@@ -62,6 +62,16 @@ river.model.Track = Backbone.Model.extend({
     Backbone.trigger("editor.sync","destroy",this);
   },
 
+  openEditor: function() {
+    this.expandedView.openEditor();
+    this.highlight();
+  },
+
+  closeEditor: function() {
+    this.expandedView.closeEditor();
+    this.unhighlight();
+  },
+
   toJSON: function() {
     console.log("calling toJSON");
     var json = Backbone.Model.prototype.toJSON.call(this);
@@ -181,6 +191,14 @@ river.model.Track = Backbone.Model.extend({
     _.each(this.views,function(view){
       view.highlight();
     });
+  },
+
+  suppress: function() {
+    this.expandedView.suppress();
+  },
+
+  unsuppress: function() {
+    this.expandedView.unsuppress();
   },
 
   unhighlight: function() {

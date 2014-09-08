@@ -82,23 +82,6 @@ river.ui.Subtitle = Backbone.View.extend({
     return $textArea;
   },
 
-  resizeInput: function() {
-    // I'm assuming that 1 letter will expand the input by 10 pixels
-    var oneLetterWidth = 6.3;
-
-    // I'm also assuming that input will resize when at least five characters
-    // are typed
-    var minCharacters = 10;
-    var len = $(this).val().length;
-    if (len > minCharacters) {
-        // increase width
-        $(this).width(100 + (len - minCharacters) * oneLetterWidth);
-    } else {
-        // restore minimal width;
-        $(this).width(100);
-    }
-  },
-
   editableStartEndTime: function() {
     this.$startTime.append(this.createInput(this.subtitleStartEndTimeKeyUp.bind(this)));
     this.$endTime.append(this.createInput(this.subtitleStartEndTimeKeyUp.bind(this)));
@@ -119,7 +102,7 @@ river.ui.Subtitle = Backbone.View.extend({
 
     this.$text.find("input").on("blur", this.editTextFinished.bind(this));
 
-    this.$text.find("input").on("keydown", this.resizeInput);
+    this.$text.find("input").on("keydown", river.utility.resizeInput);
 
   },
 
@@ -201,7 +184,7 @@ river.ui.Subtitle = Backbone.View.extend({
 
         textHolder.val(this.model.get("text"));
 
-        this.resizeInput.bind(textHolder).call();
+        river.utility.resizeInput.bind(textHolder).call();
       } else {
         startTimeHolder.text(this.model.startTime());
 

@@ -139,6 +139,7 @@ div#editor-bottom {
 	background-color: #A3D4A3;
 	position: absolute !important;
 	border: solid 1px gray;
+	overflow: hidden;
 	/*font-size: 10px;*/
 	cursor: text;
 }
@@ -160,29 +161,39 @@ div#editor-bottom {
 .track.selected:hover {
 	background-color: lightcoral ;
 }
-.track:hover {
-	/*background-color: moccasin;*/
+
+.track.suppressed {
+	overflow: hidden !important;	
 }
 
-.track_text {
-  position: relative;
-  white-space: nowrap;
-  padding: 5px;
+.track.suppressed .track_text {
+	z-index: 0 !important;
+}
+
+.track.focused,
+.track:hover {
+	overflow: visible;
+}
+
+.track .ui-resizable-handle {
+	z-index: 1 !important; 
 }
 
 .track .track_text {
+	width: 100px;
+  position: relative;
+  white-space: nowrap;
+  padding: 5px;
   background-color: transparent;
   border: none;
-  overflow: hidden;
-  display: block;
+  display: inline-block;
   z-index: 1;
 }
 
-.track:hover .track_text {
+.track          .track_text:focus,
+.track:hover    .track_text {
 	background-color: ghostwhite;
 	border: solid 1px gray;
-	overflow: visible;
-	display: inline-block;
 	z-index: 2;
 }
 

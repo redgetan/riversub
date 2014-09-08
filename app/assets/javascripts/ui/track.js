@@ -29,6 +29,14 @@ river.ui.Track = Backbone.View.extend({
     this.$el.removeClass("selected");
   },
 
+  suppress: function() {
+    this.$el.addClass("suppressed");
+  },
+
+  unsuppress: function() {
+    this.$el.removeClass("suppressed");
+  },
+
   onMouseDown: function(event) {
     if (!this.model.isGhost) {
       event.stopPropagation();
@@ -69,13 +77,18 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
   initialize: function() {
     river.ui.Track.prototype.initialize.call(this);
     this.setupElement();
+    this.bindEvents();
+    this.render();
 
     this.listenTo(this.model,"change",this.render);
     this.listenTo(this.model.subtitle,"change",this.render);
   },
 
   render: function() {
-    this.$textDisplay.text(this.model.text());
+    if (this.model.text()) {
+      this.$textDisplay.val(this.model.text());
+      river.utility.resizeInput.bind(this.$textDisplay).call();
+    }
   },
 
   getContainer: function() {
@@ -88,9 +101,19 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
     this.$close.hide();
     this.$el.append(this.$close);
 
-    this.$textDisplay = $("<div class='track_text'>" + this.model.text() + "</div>");
-
+    this.$textDisplay = $("<input class='track_text' placeholder='Enter Text'>");
     this.$el.append(this.$textDisplay);
+  },
+
+  bindEvents: function() {
+    this.$textDisplay.on("keydown", river.utility.resizeInput);
+    this.$textDisplay.on("focus", this.onTextDisplayFocus.bind(this));
+    this.$textDisplay.on("blur", this.onTextDisplayBlur.bind(this));
+    this.$textDisplay.on("keyup", this.onTextDisplayKeyup.bind(this));
+    this.$el.hover(
+      this.onTrackHoverIn.bind(this), 
+      this.onTrackHoverOut.bind(this)
+    );
 
     this.$el.resizable({
       handles: 'e, w',
@@ -109,8 +132,35 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
     });
   },
 
+  onTrackHoverIn: function() {
+    Backbone.trigger("trackhoverin",this.model);
+  },
+
+  onTrackHoverOut: function() {
+    Backbone.trigger("trackhoverout",this.model);
+  },
+
+  onTextDisplayFocus: function() {
+    this.$el.addClass("focused");
+    Backbone.trigger("trackinputfocus",this.model);
+  },
+
+  onTextDisplayBlur: function() {
+    this.$el.removeClass("focused");
+    Backbone.trigger("trackinputblur",this.model);
+  },
+
+  onTextDisplayKeyup: function() {
+    var $input = $(event.target);
+    var text = $input.val();
+
+    this.model.subtitle.set({ "text": text});
+
+    Backbone.trigger("trackinputkeyup",event, text, this.model);
+  },
+
   onResizableResize: function(event, ui) {
-    Backbone.trigger("trackresize",event,this.model,ui);
+    Backbone.trigger("trackresize",event,this.model,ui);''
   },
 
   onResizableStop: function(event, ui) {
@@ -140,6 +190,14 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
   onCloseMouseDown: function(event) {
     event.stopPropagation();
     this.model.remove();
+  },
+
+  openEditor: function() {
+    this.$textDisplay.focus();
+  },
+
+  closeEditor: function() {
+    this.$textDisplay.blur();
   },
 
   fadingHighlight: function() {

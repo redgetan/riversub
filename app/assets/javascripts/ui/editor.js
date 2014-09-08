@@ -10,7 +10,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.currentTrack = null;
     this.currentGhostTrack = null;
     this.isGhostTrackStarted = false;
-    this.isOnSubtitleEditMode = null;
     this.safeEndGhostLock = false;
 
     this.MINIMUM_TRACK_DURATION = 0.50;
@@ -62,6 +61,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
     Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
     Backbone.on("trackremove",this.onTrackRemove.bind(this));
+    Backbone.on("trackinputfocus",this.onTrackInputFocus.bind(this));
+    Backbone.on("trackinputblur",this.onTrackInputBlur.bind(this));
+    Backbone.on("trackinputkeyup",this.onTrackInputKeyup.bind(this));
+    Backbone.on("trackhoverin",this.onTrackHoverIn.bind(this));
+    Backbone.on("trackhoverout",this.onTrackHoverOut.bind(this));
     Backbone.on("pauseadjust",this.onPauseAdjust.bind(this));
     Backbone.on("trackrequest",this.onTrackRequest.bind(this));
     Backbone.on("editor.sync",this.onEditorSync.bind(this));
@@ -86,9 +90,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
     this.$iframeOverlay.on("mouseenter",this.onIframeOverlayMouseEnter.bind(this));
     this.$iframeOverlay.on("mouseleave",this.onIframeOverlayMouseLeave.bind(this));
-    this.$subtitleEdit.on("focus",this.onSubtitleEditFocus.bind(this));
-    this.$subtitleEdit.on("blur",this.onSubtitleEditBlur.bind(this));
-    this.$subtitleEdit.on("keyup",this.onSubtitleEditKeyup.bind(this));
     this.$subtitleDisplay.on("dblclick",this.onSubtitleDisplayDblClick.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
@@ -112,6 +113,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       }
     });
 
+  },
+
+  onTimelineSeekHandler: function(time) {
+    river.ui.BasePlayer.prototype.onTimelineSeekHandler.call(this,time);
+    this.pauseOnTrackEnd = false; // interrupt play till end behavior
   },
 
   onAddSubtitleInputFocus: function(event) {
@@ -202,7 +208,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "</div> " +
                         "<div id='subtitle_bar' class='span12 center'> " +
                           "<span id='subtitle_display' class='span5 center'></span> " +
-                          "<input id='subtitle_edit' class='span7 center' type='text' maxlength='90' placeholder='Enter Subtitle Here'> " +
                         "</div> " +
                       "</div> " +
                       "<div id='time_float'></div>" +
@@ -349,9 +354,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     //   this.intro.start();
     // }.bind(this));
 
-    this.$subtitleEdit = $("#subtitle_edit");
-    this.hideSubtitleEdit();
-
     this.$iframeOverlay = $("#iframe_overlay");
     this.$overlay_btn = $("#overlay_btn");
 
@@ -371,8 +373,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$forwardBtn.tooltip({title: "Forward"});
     this.$playBtn.tooltip({title: "Play"});
     this.$pauseBtn.tooltip({title: "Pause"});
-    this.$startTimingBtn.tooltip({title: "Open Text Segment"});
-    this.$stopTimingBtn.tooltip({title: "Close Text Segment"});
+    this.$startTimingBtn.tooltip({title: "Mark Start of Subtitle"});
+    this.$stopTimingBtn.tooltip({title: "Mark End of Subtitle"});
     this.$publishBtn.tooltip({title: "Make video public"});
     this.$previewBtn.tooltip({title: "See how it'll look in public"});
 
@@ -472,7 +474,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.currentTrack = null;
     this.currentGhostTrack = null;
     this.isGhostTrackStarted = false;
-    this.isOnSubtitleEditMode = null;
     this.pause(function(){
       this.seek(0,function(){
         if (typeof callback !== "undefined") {
@@ -487,20 +488,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onDocumentClick: function(event) {
-    var $target = $(event.target);
-    var isSubtitleEdit = $target.attr("id") === "subtitle_edit" ;
-
-    var isSubtitleEditTrack = false;
-
-    if ($target.hasClass("track") && this.$subtitleEdit.data("track")) {
-      isSubtitleEditTrack = $target.data("model") === this.$subtitleEdit.data("track");
-    }
-
-    if (isSubtitleEdit || isSubtitleEditTrack) {
-    } else {
-      this.hideSubtitleEdit();
-      this.$subtitleDisplay.show();
-    }
   },
 
   onDocumentScroll: function(event,delta) {
@@ -541,6 +528,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // space key
     if (event.which === 32) {
       this.togglePlayPause();
+    }
+
+    if (event.which == 13) {
+      this.play();
     }
 
     // escape key
@@ -653,14 +644,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onSubtitleEditMode: function(track) {
     if (track.isRemoved()) return;
 
-    // can only get triggered one at a time unless its a different track
-    if (this.isOnSubtitleEditMode && track === this.currentTrack ) return;
-
-    // set the lock flag
-    this.isOnSubtitleEditMode = track;
-
-    this.$subtitleEdit.data("track",track);
-
     this.ensurePauseAtTrack(track,function() {
       this.showSubtitleEdit(track);
     }.bind(this));
@@ -668,21 +651,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   showSubtitleEdit: function(track) {
-    // console.log("show edit");
-    // get subtitle text to edit
-    var text = track.subtitle.get("text") || "";
-
-    // display the text in input
-    this.$subtitleEdit.val(text);
-
-
-    // make sure sub display is hidden
-    this.$subtitleDisplay.hide();
-
-    // show the input bar
-    this.$subtitleEdit.show();
-
-    this.$subtitleEdit.focus();
+    track.openEditor();
   },
 
   onGhostTrackStart: function(track) {
@@ -705,7 +674,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.isGhostTrackStarted = false;
     this.currentGhostTrack = null;
-    this.currentTrack = null;
     this.$stopTimingBtn.hide({
       duration: 0,
       complete: function() {
@@ -721,6 +689,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTrackStart: function(track) {
     // console.log("ontrackstart" + track.toString());
+    this.closeEditorOnNewTrack(track);
     this.currentTrack = track;
 
     var subtitle = track.subtitle;
@@ -732,8 +701,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTrackEnd: function(track) {
     // console.log("ontrackend" + track.toString());
-    this.currentTrack = null;
-
     this.hideSubtitleInSubtitleBar();
 
     track.unhighlight();
@@ -741,7 +708,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if (this.pauseOnTrackEnd) {
       this.pauseOnTrackEnd = false;
-      this.pause();
+      this.ensurePauseAtTrack(track);
     } 
 
     if (track.isGhost && !track.isRemoved()) {
@@ -767,9 +734,35 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     } 
   },
 
+  closeEditorOnNewTrack: function(track) {
+    if (this.currentTrack && track !== this.currentTrack) {
+      this.currentTrack.closeEditor();
+    }
+  },
+
   onTrackRemove: function(track) {
-    this.isOnSubtitleEditMode = null;
-    this.hideSubtitleEdit();
+  },
+
+  onTrackInputFocus: function(track) {
+    this.disableCommands();
+  },
+
+  onTrackInputBlur: function(track) {
+    track.save();
+    track.unsuppress();
+    this.enableCommands();
+  },
+
+  onTrackHoverIn: function(track) {
+    if (this.currentTrack && this.currentTrack !== track) {
+      this.currentTrack.suppress();
+    }
+  },
+
+  onTrackHoverOut: function(track) {
+    if (this.currentTrack && this.currentTrack !== track) {
+      this.currentTrack.unsuppress();
+    }
   },
 
   onIframeOverlayClick: function(event) {
@@ -792,18 +785,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     } else {
       this.pause();
     }
-  },
-
-  onSubtitleEditFocus: function() {
-    if (this.$subtitleEdit.is(":visible")) {
-      this.disableCommands();
-    }
-  },
-
-  onSubtitleEditBlur: function() {
-    var track = this.$subtitleEdit.data("track")
-    track.save();
-    this.enableCommands();
   },
 
   onSubtitleLineEdit: function() {
@@ -829,26 +810,19 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onSubtitleEditKeyup: function(event) {
-    var text  = this.$subtitleEdit.val();
-    var track = this.$subtitleEdit.data("track");
-
     track.subtitle.set({ "text": text});
+  },
+
+  onTrackInputKeyup: function(event, text, track) {
     this.$subtitleDisplay.text(text);
 
-    // escape key
-    if (event.which == 27) {
-      this.isOnSubtitleEditMode = null;
-      this.hideSubtitleEdit();
-      this.$subtitleDisplay.show();
-      this.play();
-    }
+    // escape key or enter key
+    if (event.which == 27 || event.which == 13) {
+      track.closeEditor();
 
-    // enter key
-    if (event.which == 13) {
-      this.isOnSubtitleEditMode = null;
-      this.hideSubtitleEdit();
-      this.$subtitleDisplay.show();
-      this.play();
+      this.seek(track.endTime(), function() {
+        this.play();
+      }.bind(this));
     }
   },
 
@@ -1096,12 +1070,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
       var executeCallback = function() {
         this.popcorn.off("seeked",executeCallback);
-        callback();
+        if (typeof callback !== "undefined") {
+          callback();
+        }
       }.bind(this);
 
       this.popcorn.on("seeked",executeCallback);
 
-      this.seek(track.startTime());
+      this.seek(track.endTime() - 0.01);
 
     }.bind(this);
 
@@ -1156,33 +1132,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // its possible that this gets triggered when we are still on subtitleEditMode
     // i.e ghostrack hit start time of next track (ontrackend, subtitleEditMode, 
     //     then next track ontrackstart gets triggered which calls this function )
-    if (this.isOnSubtitleEditMode) return;
-    this.hideSubtitleEdit();
     this.$subtitleDisplay.show();
     this.$subtitleDisplay.text(subtitle.get("text"));
   },
 
   hideSubtitleInSubtitleBar: function(subtitle) {
     this.$subtitleDisplay.text("");
-  },
-
-  hideSubtitleEdit: function() {
-    if (!this.$subtitleEdit.is(':visible')) return;
-
-    this.$subtitleEdit.blur();
-
-    this.$subtitleEdit.hide(0,function(){
-      this.isOnSubtitleEditMode = null;
-
-      if (this.intro._currentStep === 3 ) { 
-        if (this.currentTrack.text().length === 0 ) {
-          this.showSubtitleEdit(this.currentTrack);
-        } else {
-          $(".introjs-nextbutton").removeClass("introjs-disabled");
-          $(".introjs-nextbutton").trigger("click");
-        }
-      }
-    }.bind(this));
   },
 
    // either the start of media or the endTime of prev nearest track
