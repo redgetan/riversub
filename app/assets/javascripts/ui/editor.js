@@ -52,7 +52,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     river.ui.BasePlayer.prototype.bindEvents.call(this);
 
     Backbone.on("expandedtimelinedblclick",this.onExpandedTimelineDblClick.bind(this));
-    Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
     Backbone.on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
     Backbone.on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
     Backbone.on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
@@ -115,9 +114,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   },
 
-  onTimelineSeekHandler: function(time) {
-    river.ui.BasePlayer.prototype.onTimelineSeekHandler.call(this,time);
+  onTimelineSeekHandler: function(time, $target) {
     this.pauseOnTrackEnd = false; // interrupt play till end behavior
+
+    if ($target.hasClass("track")) {
+      this.seek(time, function() {
+        this.playTillEndOfTrack();
+      }.bind(this));
+    } else {
+      this.seek(time);  
+    }
   },
 
   onAddSubtitleInputFocus: function(event) {
@@ -559,12 +565,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       var track = this.currentGhostTrack;
       this.safeEndGhostTrack(track);
     }
-  },
-
-  onTrackSeekHandler: function(time) {
-    this.seek(time, function() {
-      this.playTillEndOfTrack();
-    }.bind(this));
   },
 
   playTillEndOfTrack: function() {
@@ -1175,15 +1175,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.tracks.models[i].remove();
     }
     this.tracks.reset();
-  },
-
-  printStack: function() {
-    var e = new Error('dummy');
-    var stack = e.stack.replace(/^[^\(]+?[\n$]/gm, '')
-        .replace(/^\s+at\s+/gm, '')
-        .replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@')
-        .split('\n');
-    console.log(stack);
   },
 
   stringifyTime: function(time) {

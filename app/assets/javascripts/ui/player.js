@@ -77,17 +77,12 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   bindEvents: function() {
     river.ui.BasePlayer.prototype.bindEvents.call(this);
-    Backbone.on("trackseek",this.onTrackSeekHandler.bind(this));
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
     this.$iframeOverlay.on("mouseenter",this.onIframeOverlayMouseEnter.bind(this));
     this.$iframeOverlay.on("mouseleave",this.onIframeOverlayMouseLeave.bind(this));
     this.$iframeOverlay.on("mousemove",this.onMediaMouseMove.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
-  },
-
-  onTrackSeekHandler: function(time) {
-    this.seek(time);
   },
 
   hideEditing: function() {

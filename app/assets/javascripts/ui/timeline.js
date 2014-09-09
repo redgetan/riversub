@@ -281,16 +281,21 @@ river.ui.Timeline = Backbone.View.extend({
 
     var $target = $(event.target);
     var $timeline;
+    var track = null;
+    var seconds;
 
-    if (!$target.hasClass("timeline")) {
-      $timeline = $target.closest(".timeline");
-    } else {
-      $timeline = $target;
+    if ($target.hasClass("track") && !$target.data("model").isGhost) {
+      seconds = $target.data("model").startTime();
+    } else { 
+      if (!$target.hasClass("timeline")) {
+        $timeline = $target.closest(".timeline");
+      } else {
+        $timeline = $target;
+      }
+      seconds = this.getSecondsFromCurrentPosition($timeline,event.pageX);
     }
 
-    var seconds = this.getSecondsFromCurrentPosition($timeline,event.pageX);
-
-    Backbone.trigger("timelineseek",seconds);
+    Backbone.trigger("timelineseek",seconds, $target);
   },
 
   onMouseMoveHandler: function(event) {

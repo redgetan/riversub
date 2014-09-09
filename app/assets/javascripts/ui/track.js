@@ -3,10 +3,6 @@ river.ui.Track = Backbone.View.extend({
   tagName: "div",
   className: "track",
 
-  events: {
-    "mousedown": "onMouseDown"
-  },
-
   initialize: function() {
     this.$el.data("model",this.model);
 
@@ -35,13 +31,6 @@ river.ui.Track = Backbone.View.extend({
 
   unsuppress: function() {
     this.$el.removeClass("suppressed");
-  },
-
-  onMouseDown: function(event) {
-    if (!this.model.isGhost) {
-      event.stopPropagation();
-      Backbone.trigger("trackseek",this.model.startTime());
-    }
   },
 
   attachViewToContainer: function() {
