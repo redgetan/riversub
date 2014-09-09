@@ -39,7 +39,8 @@ div#river_player #video_url {
 }
 
 div#editor #controls {
-	float: right;
+	width: 600px;
+	margin: auto;
 }
 
 div#editor #controls,
@@ -56,6 +57,7 @@ div#editor-bottom {
 }
 
 #timeline_container {
+	height: 128px;
   	/*padding: 10px;*/
 	/*border: solid 1px black ;*/
 }
@@ -121,9 +123,10 @@ div#editor-bottom {
 	height: 20px;
 	width: 90px;
 	font: normal 15px Helvetica;
-  position: relative;
-  top: -25px;
+  position: absolute;
   color: white;
+  left: 0px;
+  display: inline;
 	z-index: 3;
 	background-color: rgba(128,128,128,0.5);
 }
@@ -425,7 +428,7 @@ div#keyboard-shortcuts {
 }*/
 
 #editor-bottom .nav-tabs {
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 }
 
 #editor #media_container {
@@ -445,7 +448,7 @@ a#preview_btn {
 }
 
 #main_controls button {
-	background-color: beige;
+	background-color: white;
 }
 
 #add_sub_input {
@@ -458,6 +461,10 @@ a#preview_btn {
 	width: 60px;
 	font-weight: bolder;
   border-radius: 0px;
+}
+
+#add_sub_options {
+	margin-left: 5px;
 }
 
 #open_close_btns {
@@ -496,7 +503,7 @@ a#preview_btn {
 }
 
 #editor-bottom .tab-content {
-	margin-top: 20px;
+	margin-bottom: 30px;
 }
 
 .timeline_tab_content {

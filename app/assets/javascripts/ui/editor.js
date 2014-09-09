@@ -19,6 +19,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.startTiming = false;
 
+    // options
+    this.addSubBackward = false;
+
     // temp hack. ugly
     if (!this.repo.parent_repository_id) {
       $(".header #original").hide();
@@ -80,6 +83,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$addSubInput.on("keyup",this.onAddSubtitleInputKeyup.bind(this));
     this.$addSubInput.on("blur",this.onAddSubtitleInputBlur.bind(this));
     this.$addSubBtn.on("click",this.onAddSubtitleBtnClick.bind(this));
+    this.$addSubBackwardCheckbox.on("click",this.onAddSubBackwardCheckboxClick.bind(this));
     this.$playBtn.on("click",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("click",this.onPauseBtnClick.bind(this));
     this.$backwardBtn.on("click",this.onBackwardBtnClick.bind(this));
@@ -228,26 +232,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                 "</div> " +
                 "<div id='editor-bottom' class='row'> " +
                   "<div class='span12'> " +
-                    "<ul class='nav nav-tabs span4'>" +
+                    "<ul class='nav nav-tabs span12'>" +
                       "<li class='active'><a href='#timeline_tab' data-toggle='tab'>Timeline</a></li>" +
                       "<li id='subtitle_tab_anchor' ><a href='#subtitle_tab' data-toggle='tab'>Subtitle</a></li>" +
-                      "<li id='download_tab_anchor' ><a href='#download_tab' data-toggle='tab'>Download</a></li>" +
+                      "<li id='download_tab_anchor' class='pull-right'><a href='#download_tab' data-toggle='tab'>Download</a></li>" +
                       // "<li><a id='help_btn' class='' href='#'><i class='icon-question-sign'></i></a></li>" +
                     "</ul>" +
-                    "<div id='controls' class='span8'> " +
-                      "<div id='add_sub_container' class='input-append pull-right'> " +
-                        "<input id='add_sub_input' class='' type='text' placeholder='Enter Subtitle Here'>" + 
-                        "<a id='add_sub_btn' class='btn btn-primary'>Add</a> " +
-                      "</div> " +
-                      "<div id='main_controls' class='pull-right'> " +
-                        "<button type='button' id='backward_btn' class='river_btn'><i class='icon-backward'></i></button> " +
-                        "<button type='button' id='play_btn' class='river_btn'><i class='icon-play'></i></button> " +
-                        "<button type='button' id='pause_btn' class='river_btn'><i class='icon-pause'></i></button> " +
-                        "<button type='button' id='forward_btn' class='river_btn'><i class='icon-forward'></i></button> " +
-                        "<button id='start_timing_btn' class='river_btn'><i class='icon-film'></i></button> " +
-                        "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i></button> " +
-                      "</div> " +
-                    "</div> " +
                   "</div> " + // .span12
 
                   "<div class='span12'> " +
@@ -281,6 +271,27 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     "</div>" +     // tab content
 
                   "</div> " + // .span12
+                  "<div id='controls' class=''> " +
+                    "<div id='text_control' class='pull-right'> " +
+                      "<div id='add_sub_container' class='input-append '> " +
+                        "<input id='add_sub_input' class='' type='text' placeholder='Enter Subtitle Here'>" + 
+                        "<a id='add_sub_btn' class='btn btn-primary'>Add</a> " +
+                      "</div> " +
+                      "<div id='add_sub_options' class='pull-right'> " +
+                        "<label class='checkbox'>" + 
+                          "<input type='checkbox' id='add_sub_backward_checkbox'> Reverse" +
+                        "</label>" +
+                      "</div> " +
+                    "</div> " +
+                    "<div id='main_controls' class='pull-right'> " +
+                      "<button type='button' id='backward_btn' class='river_btn'><i class='icon-backward'></i></button> " +
+                      "<button type='button' id='play_btn' class='river_btn'><i class='icon-play'></i></button> " +
+                      "<button type='button' id='pause_btn' class='river_btn'><i class='icon-pause'></i></button> " +
+                      "<button type='button' id='forward_btn' class='river_btn'><i class='icon-forward'></i></button> " +
+                      "<button id='start_timing_btn' class='river_btn'><i class='icon-film'></i></button> " +
+                      "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i></button> " +
+                    "</div> " +
+                  "</div> " +
                   "<div class='span12'> " +
                           "<div class='row'> " +
                             "<div id='status-bar' class='span3'> " +
@@ -340,6 +351,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$addSubBtn = $("#add_sub_btn");
     this.$addSubBtn.attr("disabled","disabled");
+
+    this.$addSubBackwardCheckbox = $("#add_sub_backward_checkbox");
 
     this.intro = introJs();
 
@@ -897,6 +910,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.addSubtitledTrack(text);
   },
 
+  onAddSubBackwardCheckboxClick: function(event) {
+    this.addSubBackward = this.$addSubBackwardCheckbox.is(":checked");
+  },
+
   onExpandedTimelineDblClick: function(event) {
     var $target = $(event.target);
 
@@ -940,12 +957,22 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var nextNearestEdgeTime = this.nextNearestEdgeTime(currentTime);
 
     if (currentTime > this.DEFAULT_TRACK_DURATION && (currentTime - prevNearestEdgeTime) > this.MINIMUM_TRACK_DURATION ) {
-      endTime   = currentTime;   
-      startTime = endTime - this.DEFAULT_TRACK_DURATION;   
+      if (this.addSubBackward) {
+        endTime   = currentTime;   
+        startTime = endTime - this.DEFAULT_TRACK_DURATION;   
+      } else {
+        startTime = currentTime;   
+        endTime   = startTime + this.DEFAULT_TRACK_DURATION;   
+      }
 
       // possible to overlap prev track
       if (startTime < prevNearestEdgeTime) {
         startTime = prevNearestEdgeTime + this.TRACK_MARGIN;
+      }
+
+      // possible to overlap next track
+      if (endTime > nextNearestEdgeTime) {
+        endTime = nextNearestEdgeTime - this.TRACK_MARGIN;
       }
     } else {
       startTime   = currentTime;   

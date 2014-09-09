@@ -50,7 +50,7 @@ river.ui.Timeline = Backbone.View.extend({
 
     // current time display indicator
     this.$time_indicator = $("<div class='time_indicator'>0</div>");
-    $("#subtitle_bar").after(this.$time_indicator);
+    $("#subtitle_bar").append(this.$time_indicator);
 
     if (!this.disable_expanded) {
       // window slider
