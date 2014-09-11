@@ -66,8 +66,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     Backbone.on("trackinputfocus",this.onTrackInputFocus.bind(this));
     Backbone.on("trackinputblur",this.onTrackInputBlur.bind(this));
     Backbone.on("trackinputkeyup",this.onTrackInputKeyup.bind(this));
-    Backbone.on("trackhoverin",this.onTrackHoverIn.bind(this));
-    Backbone.on("trackhoverout",this.onTrackHoverOut.bind(this));
     Backbone.on("pauseadjust",this.onPauseAdjust.bind(this));
     Backbone.on("trackrequest",this.onTrackRequest.bind(this));
     Backbone.on("editor.sync",this.onEditorSync.bind(this));
@@ -664,7 +662,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   showSubtitleEdit: function(track) {
-    track.openEditor();
+    if ($(".tab-pane.active").attr("id") === "subtitle_tab" ) {
+      track.subtitle.openEditor();
+    } else {
+     track.openEditor();
+    }
   },
 
   onGhostTrackStart: function(track) {
@@ -762,20 +764,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTrackInputBlur: function(track) {
     track.save();
-    track.unsuppress();
     this.enableCommands();
-  },
-
-  onTrackHoverIn: function(track) {
-    if (this.currentTrack && this.currentTrack !== track) {
-      this.currentTrack.suppress();
-    }
-  },
-
-  onTrackHoverOut: function(track) {
-    if (this.currentTrack && this.currentTrack !== track) {
-      this.currentTrack.unsuppress();
-    }
   },
 
   onIframeOverlayClick: function(event) {

@@ -165,14 +165,6 @@ div#editor-bottom {
 	background-color: lightcoral ;
 }
 
-.track.suppressed {
-	overflow: hidden !important;	
-}
-
-.track.suppressed .track_text {
-	z-index: 0 !important;
-}
-
 .track.focused,
 .track:hover {
 	overflow: visible;
@@ -198,6 +190,10 @@ div#editor-bottom {
 	background-color: ghostwhite;
 	border: solid 1px gray;
 	z-index: 2;
+}
+
+.track.selected .track_text:focus {
+	z-index: 3;
 }
 
 

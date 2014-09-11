@@ -284,8 +284,16 @@ river.ui.Timeline = Backbone.View.extend({
     var track = null;
     var seconds;
 
-    if ($target.hasClass("track") && !$target.data("model").isGhost) {
-      seconds = $target.data("model").startTime();
+    if ($target.hasClass("track")) {
+      track = $target.data("model");
+    }
+
+    if ($target.hasClass("track_text")) {
+      track = $target.parent().data("model");
+    }
+
+    if (track && !track.isGhost) {
+      seconds = track.startTime();
     } else { 
       if (!$target.hasClass("timeline")) {
         $timeline = $target.closest(".timeline");
@@ -299,6 +307,8 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   onMouseMoveHandler: function(event) {
+    if (!this.seekmode) return;
+
     // given pixel position, find out what seconds in time it corresponds to
     var $target = $(event.target);
     var $timeline;
@@ -312,9 +322,7 @@ river.ui.Timeline = Backbone.View.extend({
     var seconds = this.getSecondsFromCurrentPosition($timeline,event.pageX);
 
     // seek
-    if (this.seekmode) {
-      Backbone.trigger("timelineseek",seconds);
-    }
+    Backbone.trigger("timelineseek",seconds, $target);
   },
 
   getSecondsFromCurrentPosition: function($container,eventPageX) {
@@ -368,7 +376,7 @@ river.ui.Timeline = Backbone.View.extend({
     // if seekmode, seek
     if (this.seekmode) {
       var seconds = this.getSecondsFromCurrentPosition(this.$summary,event.pageX);
-      Backbone.trigger("timelineseek",seconds);
+      Backbone.trigger("timelineseek",seconds, $target);
     }
   },
 

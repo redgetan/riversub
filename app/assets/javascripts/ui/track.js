@@ -25,14 +25,6 @@ river.ui.Track = Backbone.View.extend({
     this.$el.removeClass("selected");
   },
 
-  suppress: function() {
-    this.$el.addClass("suppressed");
-  },
-
-  unsuppress: function() {
-    this.$el.removeClass("suppressed");
-  },
-
   attachViewToContainer: function() {
     this.getContainer().append(this.$el);
   },
@@ -183,6 +175,10 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
 
   openEditor: function() {
     this.$textDisplay.focus();
+  },
+
+  isEditorOpen: function() {
+    return this.$textDisplay.is(":focus");
   },
 
   closeEditor: function() {

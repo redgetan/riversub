@@ -38,8 +38,8 @@ river.model.Subtitle = Backbone.Model.extend({
     }
   },
 
-  openEditor: function(event, $el) {
-    this.view.openEditor(event, $el);
+  openEditor: function() {
+    this.view.openEditor();
   },
 
   toString: function() {

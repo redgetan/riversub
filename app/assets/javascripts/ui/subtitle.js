@@ -211,4 +211,8 @@ river.ui.Subtitle = Backbone.View.extend({
     this.model.track.remove();
   },
 
+  openEditor: function() {
+    this.$text.find("input").focus();  
+  }
+
 });

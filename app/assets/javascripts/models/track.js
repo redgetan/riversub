@@ -68,8 +68,10 @@ river.model.Track = Backbone.Model.extend({
   },
 
   closeEditor: function() {
-    this.expandedView.closeEditor();
-    this.unhighlight();
+    if (this.expandedView.isEditorOpen()) {
+      this.expandedView.closeEditor();
+      this.unhighlight();
+    }
   },
 
   toJSON: function() {
@@ -190,14 +192,6 @@ river.model.Track = Backbone.Model.extend({
     _.each(this.views,function(view){
       view.highlight();
     });
-  },
-
-  suppress: function() {
-    this.expandedView.suppress();
-  },
-
-  unsuppress: function() {
-    this.expandedView.unsuppress();
   },
 
   unhighlight: function() {
