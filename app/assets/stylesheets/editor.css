@@ -118,19 +118,6 @@ div#editor-bottom {
 	z-index: 1;
 }
 
-.time_indicator {
-	border: solid 1px black;
-	height: 20px;
-	width: 90px;
-	font: normal 15px Helvetica;
-  position: absolute;
-  color: white;
-  left: 0px;
-  display: inline;
-	z-index: 3;
-	background-color: rgba(128,128,128,0.5);
-}
-
 .track.ghost {
 	border: dotted 1px gray;
 	background-color: lightcoral
@@ -196,11 +183,6 @@ div#editor-bottom {
 	z-index: 3;
 }
 
-
-#editor #subtitle_bar {
-	position: relative;
-	margin-top: 10px;
-}
 
 #subtitle_container {
 	/*margin-left: 20px;*/

@@ -83,6 +83,8 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
     this.$el.append(this.$close);
 
     this.$textDisplay = $("<input class='track_text' placeholder='Enter Text'>");
+    this.$textDisplay.attr("maxlength", 90);
+    
     this.$el.append(this.$textDisplay);
   },
 

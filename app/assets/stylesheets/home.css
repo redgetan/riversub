@@ -334,10 +334,37 @@ div#iframe_container #media {
 div#subtitle_bar {
   background-color: #000;
   color: white;
-  height: 40px;
   line-height: 21px;
   font-weight: bold;
+  position: relative;
 }
+
+#river_player #subtitle_bar {
+  height: 60px;
+}
+
+#editor #subtitle_bar {
+  height: 40px;
+  margin-top: 10px;
+}
+
+.time_indicator {
+  border: solid 1px black;
+  height: 20px;
+  width: 90px;
+  font: normal 15px Helvetica;
+  position: absolute;
+  color: white;
+  left: 0px;
+  display: inline;
+  z-index: 3;
+  background-color: rgba(128,128,128,0.5);
+}
+
+#river_player .time_indicator {
+  top: 15px;
+}
+
 
 div#avatar img {
   margin-bottom: 20px;
