@@ -513,9 +513,14 @@ a#preview_btn {
 #editor #status-bar {
 	color: black;
 	font-size: 14px;
-	margin-top: 10px;
-	text-align: right;
-	float: right;
+	/*margin-top: 10px;*/
+	/*text-align: right;*/
+	/*float: right;*/
+	height: 30px;
+	/*border: solid;*/
+}
+
+#editor .subtitle:hover .sub_text_area {
 }
 
 #editor #status-bar.failed {

@@ -271,6 +271,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     "</div>" +     // tab content
 
                   "</div> " + // .span12
+                  "<div id='status-bar' class='span2 pull-left'> " +
+                  "</div> " +
                   "<div id='controls' class=''> " +
                     "<div id='text_control' class='pull-right'> " +
                       "<div id='add_sub_container' class='input-append '> " +
@@ -294,8 +296,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                   "</div> " +
                   "<div class='span12'> " +
                           "<div class='row'> " +
-                            "<div id='status-bar' class='span3'> " +
-                            "</div> " +
                             // "<div id='keyboard-shortcuts' class='span6 pull-right'> " +
                             //   "<span>" +
                             //     "<b>Keyboard Shortcuts: </b>  " +
