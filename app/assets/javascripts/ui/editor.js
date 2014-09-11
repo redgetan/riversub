@@ -129,6 +129,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onSubtitleLineClick: function(subtitle) {
+    this.pauseOnTrackEnd = false; // interrupt play till end behavior
+    
     var time = subtitle.track.startTime();
     
     this.seek(time, function() {
