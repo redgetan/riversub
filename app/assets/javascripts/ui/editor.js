@@ -128,6 +128,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
+  onSubtitleLineClick: function(subtitle) {
+    var time = subtitle.track.startTime();
+    
+    this.seek(time, function() {
+      this.playTillEndOfTrack();
+    }.bind(this));
+  },
+
   onAddSubtitleInputFocus: function(event) {
     this.disableCommands();
   },
