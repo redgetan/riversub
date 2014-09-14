@@ -220,7 +220,7 @@ div#editor-bottom {
 
 #editor #subtitle_list #original,
 #editor #subtitle_list #header_text {
-	width: 320px;
+	width: 350px;
 }
 
 
@@ -254,8 +254,8 @@ div#editor-bottom {
 .subtitle {
 	height: 24px;
 	text-align: left;
+	display: inline-table;
 /*	height: auto;
-	display: inline-block;
 	margin-top: -5px;
 	width: 100%;
 */
@@ -314,11 +314,17 @@ div#editor-bottom {
 	background-color: white !important;
 }
 
+#editor .subtitle {
+	height: 20px;
+}
+
+#editor .subtitle:hover {
+	height: 20px;
+}
 
 .subtitle .text,
 .subtitle .parent_text {
-	width: 320px;
-	height: 20px;
+	width: 350px;
 }
 
 .subtitle input.inplace_field {
@@ -330,10 +336,15 @@ div#editor-bottom {
 .subtitle .delete {
 	width: 40px;
 	float: right;
+	text-align: center;
+	margin: 0px 15px;
 }
 
-.subtitle.selected .delete a {
-	color: white;
+.subtitle .delete a,
+.subtitle .delete a:hover {
+  text-decoration: none;  
+  font-size: 16px;
+  color: black;
 }
 
 #controls #start_timing_btn {
@@ -532,6 +543,10 @@ a#preview_btn {
 /*	background-color: white !important;
 	color: black !important;
 */}
+
+#add_sub_options {
+	display: none;
+}
 
 .start_time .sub_text_area,
 .end_time .sub_text_area,

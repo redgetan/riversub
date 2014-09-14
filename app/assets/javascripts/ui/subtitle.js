@@ -27,7 +27,7 @@ river.ui.Subtitle = Backbone.View.extend({
                   "<div class='end_time'></div>" +
                   "<div class='text'></div>" +
                   "<div class='delete'>" +
-                    "<a href='#' class='delete_sub_line'>delete</a>" +
+                    "<a href='#' class='delete_sub_line'>x</a>" +
                   "</div>";
     this.$el.append(content);
 
@@ -43,10 +43,10 @@ river.ui.Subtitle = Backbone.View.extend({
 
     if ($("#editor").size() === 1) {
       if (repo.parent_repository_id) {
-        var parentText = "<div class='parent_text'></div>";
+        var parentText = "<div class='parent_text'><span></span></div>";
         this.$text.before(parentText);
 
-        this.$parentText = this.$el.find(".parent_text");
+        this.$parentText = this.$el.find(".parent_text span");
         this.$parentText.text(this.model.get("parent_text"));
       }
       this.editableStartEndTime();

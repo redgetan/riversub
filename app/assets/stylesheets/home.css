@@ -710,13 +710,6 @@ ul.social_login_buttons a {
   margin-top: 15px;
 }
 
-.delete_sub_line,
-.delete_sub_line:hover {
-  text-decoration: none;  
-  font-weight: bold;
-  color: maroon;
-}
-
 #editor .nav-tabs>li>a {
   line-height: 12px;  
 }
