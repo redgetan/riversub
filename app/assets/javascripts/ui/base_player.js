@@ -38,6 +38,10 @@ river.ui.BasePlayer = Backbone.View.extend({
     }
   },
 
+  setVolume: function(level) {
+    this.popcorn.volume(level);
+  },
+
   mediaDuration: function() {
     return this.repo.video.duration;
   },

@@ -4,11 +4,10 @@ $.extend(river.controller,{
     $("#river_player").removeAttr("data-repo");
     player = new river.ui.MiniPlayer({
       repo: repo, 
-      url_options: "&iv_load_policy=3",
+      url_options: "&autoplay=1&loop=0&iv_load_policy=3",
       view_enabled: false
     });
 
-    player.seek(26); // gangnam style demo video start here
+    player.setVolume(0);
   }
 });
-

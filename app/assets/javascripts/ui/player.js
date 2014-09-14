@@ -90,6 +90,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$subtitleBar.css("background-color","rgba(255,0,0,0)");
     this.$subtitleBar.css("z-index","6");
     this.$subtitleBar.css("line-height","25px");
+    this.$subtitleBar.addClass("span10");
 
     this.$subtitleDisplay.css("background-color","black");
     this.$subtitleDisplay.css("opacity",0.8);
@@ -137,10 +138,9 @@ river.ui.MiniPlayer = river.ui.Player.extend({
 
   hideEditing: function() {
     river.ui.Player.prototype.hideEditing.call(this);
-    this.$media.css("height","199px");
-    this.$media.css("width","350px");
-    this.$media.css("padding","40px 0px");
-    this.$mediaContainer.css("width","350px");
+    this.$media.css("height","300px");
+    this.$media.css("width","400px");
+    this.$mediaContainer.css("width","400px");
 
     this.$iframeOverlay.hide();
 
@@ -149,18 +149,17 @@ river.ui.MiniPlayer = river.ui.Player.extend({
     this.$subtitleBar.css("z-index","6");
     this.$subtitleBar.css("position","absolute");
     this.$subtitleBar.css("line-height","16px");
-    this.$subtitleBar.css("width","330px");
+    this.$subtitleBar.addClass("span5");
 
     this.$subtitleDisplay.css("background-color","black");
     this.$subtitleDisplay.css("opacity",0.8);
     this.$subtitleDisplay.css("font-size","12px");
     this.$subtitleDisplay.css("padding","3px");
-    this.$subtitleDisplay.css("width","260px");
 
     this.$overlay_btn.hide();
     $("#time_float").hide();
     $("#seek_head").hide();
-    $("#blackbar").css("height","10px");
+    $("#blackbar").css("height","5px");
   }
 
 });

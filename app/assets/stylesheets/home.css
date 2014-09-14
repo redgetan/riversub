@@ -199,8 +199,10 @@ div#main_container {
 }
 
 #description {
+  font-size: 30px;
   font-family: sans-serif;
   margin-top: 10px;
+  color: black;
   white-space: nowrap;
 }
 
@@ -372,6 +374,10 @@ div#avatar img {
 
 #river_player #subtitle_display {
   width: 540px;
+}
+
+#demo #river_player #subtitle_display {
+  width: 250px;
 }
 
 div#avatar .thumbnail {
@@ -730,7 +736,7 @@ ul.social_login_buttons a {
 .demo-video,
 .call-to-action {
   /*text-align: center;*/
-  margin-top: 80px;
+  margin-top: 10px;
 }
 
 .call-to-action {
@@ -745,7 +751,7 @@ ul.social_login_buttons a {
 
 .white .call-to-action {
   /*text-align: center;*/
-  color: #000;
+  color: #333;
 }
 
 .demo_btn {
@@ -779,6 +785,7 @@ ul.social_login_buttons a {
   color: white;
   font-weight: bold;
   opacity: 0.8;  
+  z-index: 1;
 }
 
 footer {
