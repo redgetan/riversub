@@ -4,9 +4,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.timeline.setTracks(this.tracks);
 
-    // initally commands are disabled/ enabled only when things are loaded
-    this.disableCommands();
-
     this.currentTrack = null;
     this.currentGhostTrack = null;
     this.isGhostTrackStarted = false;
@@ -72,6 +69,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $(document).on("click",this.onDocumentClick.bind(this));
     $(document).on("mousewheel",this.onDocumentScroll.bind(this));
+    $(document).on("keyup",this.onKeyupHandler.bind(this));
 
 
     $('[data-toggle="tab"]').on('shown.bs.tab', this.onTabShown.bind(this));
@@ -139,7 +137,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onAddSubtitleInputFocus: function(event) {
-    this.disableCommands();
   },
 
   onAddSubtitleInputKeyup: function(event) {
@@ -180,7 +177,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (track) {
       this.safeEndGhostTrack(track);
     }
-    this.enableCommands();
   },
 
   onTabShown: function (e) {
@@ -612,7 +608,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onLoadedMetadata: function(event) {
     this.$startTimingBtn.removeAttr("disabled");
     this.$addSubBtn.removeAttr("disabled");
-    this.enableCommands();
     Backbone.trigger("editor.ready");
     this.setupIntroJS();
   },
@@ -769,12 +764,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackInputFocus: function(track) {
-    this.disableCommands();
   },
 
   onTrackInputBlur: function(track) {
     track.save();
-    this.enableCommands();
   },
 
   onIframeOverlayClick: function(event) {
@@ -800,26 +793,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onSubtitleLineEdit: function() {
-    this.disableCommands();
   },
 
   onSubtitleLineBlur: function(subtitle) {
     subtitle.track.save();
-    this.enableCommands();
   },
 
-  enableCommands: function(event) {
-    $(document).off("keyup");
-    $(document).on("keyup",this.onKeyupHandler.bind(this));
-    // this.$startTimingBtn.removeAttr("disabled");
-    // this.$addSubBtn.removeAttr("disabled");
-  },
-
-  disableCommands: function(event) {
-    $(document).off("keyup");
-    // this.$startTimingBtn.attr("disabled","disabled");
-    // this.$addSubBtn.attr("disabled","disabled");
-  },
 
   onSubtitleEditKeyup: function(event) {
     track.subtitle.set({ "text": text});
