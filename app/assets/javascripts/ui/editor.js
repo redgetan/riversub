@@ -69,7 +69,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $(document).on("click",this.onDocumentClick.bind(this));
     $(document).on("mousewheel",this.onDocumentScroll.bind(this));
-    $(document).on("keyup",this.onKeyupHandler.bind(this));
+    $(document).on("keydown",this.onDocumentKeydown.bind(this));
 
 
     $('[data-toggle="tab"]').on('shown.bs.tab', this.onTabShown.bind(this));
@@ -542,10 +542,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.lastTimeUpdateTime = this.media.currentTime;
   },
 
-  onKeyupHandler: function(event) {
+  onDocumentKeydown: function(event) {
     // shift key
     if (event.which === 16) {
       // this.timeSubtitle();
+    }
+
+    // backspace
+    if (event.which === 8) {
+      // we use backspace for deleting something. 
+      // prevent user from accidentally going back to prev page
+      event.preventDefault();
     }
 
     // space key
