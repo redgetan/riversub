@@ -24,8 +24,6 @@ $.extend(river.controller,{
       $("#editor_data").remove();
       editor = new river.ui.Editor({repo: repo});
     }
-
-    $("#subtitle_tab_anchor a").tab("show");
   }
 });
 

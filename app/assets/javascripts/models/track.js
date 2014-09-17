@@ -1,5 +1,4 @@
 river.model.Track = Backbone.Model.extend({
-
   initialize: function(attributes, options) {
 
     if (typeof options['popcorn'] === "undefined") throw new Error("Missing popcorn object in Track options attribute");
@@ -20,7 +19,6 @@ river.model.Track = Backbone.Model.extend({
     // will use subtitle so by that time subtitle should already exist. Its very tightly coupled....
     this.trackEvent     = this.createTrackEvent(attributes.start_time,attributes.end_time);
 
-
     this.expandedView = new river.ui.ExpandedTrack({model: this});
     this.summaryView  = new river.ui.SummaryTrack({model: this});
 
@@ -32,15 +30,46 @@ river.model.Track = Backbone.Model.extend({
       _.each(this.views,function(view){
         view.addGhost();
       });
-
     }
 
     this.listenTo(this, "change", this.onChanged);
+    this.listenTo(this, "add", this.onAdd);
     this.listenTo(this, "request", this.onRequest);
+    Backbone.on("editorseek", this.unsetPauseOnTrackEnd.bind(this));
+  },
+
+  prev: function() {
+    var index = this.collection.indexOf(this);
+    return this.collection.at(index - 1);
+  },
+
+  next: function() {
+    var index = this.collection.indexOf(this);
+    return this.collection.at(index + 1);
+  },
+
+  setPauseOnTrackEnd: function() {
+    this.pauseOnTrackEnd = true;
+  },
+
+  unsetPauseOnTrackEnd: function() {
+    this.pauseOnTrackEnd = false;
+  },
+
+  shouldPauseOnTrackEnd: function() {
+    return this.pauseOnTrackEnd;
   },
 
   onChanged: function() {
     Backbone.trigger("trackchange", this);
+  },
+
+  onAdd: function() {
+    Backbone.trigger("trackadd", this);
+  },
+
+  removeGhost: function() {
+    this.isGhost = false;
   },
 
   updateSubtitleAttributes: function() {
@@ -126,7 +155,7 @@ river.model.Track = Backbone.Model.extend({
 
     // isGhost must be set to false first before setting endTime so that by
     // the time ui/subtitle.js calls on 'changed' callback (render), it'll display endTime
-    this.isGhost = false;
+    this.removeGhost();
 
     this.setEndTime(time);
     
@@ -177,6 +206,7 @@ river.model.Track = Backbone.Model.extend({
     this.popcorn.removeTrackEvent(this.trackEvent._id);
 
     this.destroy();
+    this.subtitle.remove();
 
     _.each(this.views,function(view){
       view.remove();
@@ -192,12 +222,16 @@ river.model.Track = Backbone.Model.extend({
     _.each(this.views,function(view){
       view.highlight();
     });
+
+    this.subtitle.highlight();
   },
 
   unhighlight: function() {
     _.each(this.views,function(view){
       view.unhighlight();
     });
+
+    this.subtitle.unhighlight();
   },
 
   fadingHighlight: function() {

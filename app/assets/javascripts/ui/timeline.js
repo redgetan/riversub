@@ -236,12 +236,17 @@ river.ui.Timeline = Backbone.View.extend({
       Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
       Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
       Backbone.on("trackchange",this.onTrackChange.bind(this));
+      Backbone.on("trackadd",this.onTrackAdd.bind(this));
       Backbone.on("trackresize",this.onTrackResize.bind(this));
       Backbone.on("trackdrag",this.onTrackDrag.bind(this));
     }
   },
 
   onTrackChange: function(track) {
+    this.renderTrack(track);
+  },
+
+  onTrackAdd: function(track) {
     this.renderTrack(track);
   },
 
@@ -289,7 +294,8 @@ river.ui.Timeline = Backbone.View.extend({
     }
 
     if ($target.hasClass("track_text")) {
-      track = $target.parent().data("model");
+      $target = $target.parent();
+      track = $target.data("model");
     }
 
     if (track && !track.isGhost) {

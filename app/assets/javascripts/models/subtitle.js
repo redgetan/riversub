@@ -16,6 +16,12 @@ river.model.Subtitle = Backbone.Model.extend({
 
   onChanged: function() {
     this.track.updateSubtitleAttributes();
+    Backbone.trigger("subtitlechange", this);
+  },
+
+  remove: function() {
+    this.collection.remove(this);
+    this.view.remove();
   },
 
   startTime: function() {
@@ -38,8 +44,8 @@ river.model.Subtitle = Backbone.Model.extend({
     }
   },
 
-  openEditor: function() {
-    this.view.openEditor();
+  openEditor: function(options) {
+    this.view.openEditor(options);
   },
 
   toString: function() {

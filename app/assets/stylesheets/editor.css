@@ -254,7 +254,7 @@ div#editor-bottom {
 .subtitle {
 	height: 24px;
 	text-align: left;
-	display: inline-table;
+	/*display: inline-table;*/
 /*	height: auto;
 	margin-top: -5px;
 	width: 100%;
@@ -268,13 +268,19 @@ div#editor-bottom {
 
 
 .subtitle:hover {
-	background-color: rgba(83, 103, 240, 0.5);
+	background-color: beige;
 	/*border: solid 1px gray;*/
 }
 
-.subtitle.selected {
-	background-color: #AF687F !important;
+.subtitle.selected .text span {
+	background-color: gray !important;
 	color: white;
+	padding: 5px;
+}
+
+#editor .subtitle.selected {
+	background-color: #C4E0E9 !important;
+	color: black;
 }
 
 .subtitle .start_time,
@@ -533,16 +539,18 @@ a#preview_btn {
 .sub_text_area {
 	border: none;
 	background: transparent;
+	vertical-align: top;
+	height: 16px;
+	line-height: 18px;
 }
 
 .selected div .sub_text_area {
 	color: white;
 }
 
-.sub_text_area:hover {
-/*	background-color: white !important;
-	color: black !important;
-*/}
+#editor .selected div .sub_text_area {
+	color: black;
+}
 
 #add_sub_options {
 	display: none;

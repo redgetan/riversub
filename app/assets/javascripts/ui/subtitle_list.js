@@ -47,6 +47,10 @@ river.ui.SubtitleList = Backbone.View.extend({
 
     if (subtitle === null) { return; }
 
+    var field = $target.parent().attr("class");
+
+    subtitle.openEditor({field: field});
+
     Backbone.trigger("subtitlelineclick",subtitle);
   },
 

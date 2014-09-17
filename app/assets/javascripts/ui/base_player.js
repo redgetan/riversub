@@ -43,7 +43,7 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   mediaDuration: function() {
-    return this.repo.video.duration;
+    return Math.floor(parseFloat(this.repo.video.duration) * 1000) / 1000;
   },
 
   preRepositoryInitHook: function() {

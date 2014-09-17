@@ -1,6 +1,9 @@
 river.ui.Player = river.ui.BasePlayer.extend({
 
   initialize: function(options) {
+    this.IFRAME_OVERLAY_NON_AD_OVERLAPPING_FACTOR = 2.3;
+    this.SUBTITLE_CENTER_FACTOR = 1.4;
+
     river.ui.BasePlayer.prototype.initialize.call(this,options);
     this.hideEditing();
 
@@ -86,15 +89,16 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   hideEditing: function() {
-    this.$iframeOverlay.css("height","350px");
+    this.$iframeOverlay.css("height",this.$mediaContainer.width() / this.IFRAME_OVERLAY_NON_AD_OVERLAPPING_FACTOR);
+
     this.$subtitleBar.css("background-color","rgba(255,0,0,0)");
     this.$subtitleBar.css("z-index","6");
     this.$subtitleBar.css("line-height","25px");
-    this.$subtitleBar.addClass("span10");
 
     this.$subtitleDisplay.css("background-color","black");
     this.$subtitleDisplay.css("opacity",0.8);
-    this.$subtitleDisplay.css("font-size","20px");
+    this.$subtitleDisplay.css("font-size","17px");
+    this.$subtitleDisplay.css("width",this.$mediaContainer.width() / this.SUBTITLE_CENTER_FACTOR);
 
     this.$subtitleList.css("height","300px");
     this.$subtitleList.find(".table .header").remove(); // remove heading
@@ -108,14 +112,14 @@ river.ui.Player = river.ui.BasePlayer.extend({
       $(this).remove();
     });
 
+    $(".time_indicator").hide();
+
     // remove subtitle lines that are blank
     $(".subtitle").each(function(){
       if ($(this).find(".text").text().length === 0) {
         $(this).remove();
       }
     });
-
-    this.$media.css("height","450px");
   },
 
 });

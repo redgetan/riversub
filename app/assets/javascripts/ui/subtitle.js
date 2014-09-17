@@ -68,23 +68,19 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$text.append("<span></span>");
   },
 
-  createInput: function(keyupCallback) {
-    var $textArea = $("<input class='sub_text_area' placeholder='Enter Text'>");
-    $textArea.on("keyup", keyupCallback);
-
-    $textArea.on("keydown", function(event) {
-      if (event.which == 13 ) { // ENTER
-        event.preventDefault();
-        $(event.target).blur();
-      }
-    });
-
-    return $textArea;
+  createInput: function() {
+    return $("<input class='sub_text_area' placeholder='Enter Text'>");
   },
 
   editableStartEndTime: function() {
-    this.$startTime.append(this.createInput(this.subtitleStartEndTimeKeyUp.bind(this)));
-    this.$endTime.append(this.createInput(this.subtitleStartEndTimeKeyUp.bind(this)));
+    this.$startTime.append(this.createInput());
+    this.$endTime.append(this.createInput());
+
+    this.$startTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
+    this.$endTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
+
+    this.$startTime.find("input").on("keyup", this.subtitleStartEndTimeKeyUp.bind(this));
+    this.$endTime.find("input").on("keyup", this.subtitleStartEndTimeKeyUp.bind(this));
 
     this.$startTime.find("input").on("focus", this.subtitleLineEdit.bind(this));
     this.$endTime.find("input").on("focus", this.subtitleLineEdit.bind(this));
@@ -94,7 +90,7 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   editableText: function() {
-    this.$text.append(this.createInput(this.subtitleTextKeyUp.bind(this)));
+    this.$text.append(this.createInput());
 
     this.$text.find("input").attr("maxlength", 90);
 
@@ -103,19 +99,25 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$text.find("input").on("blur", this.editTextFinished.bind(this));
 
     this.$text.find("input").on("keydown", river.utility.resizeInput);
+    this.$text.find("input").on("keyup", this.onSubtitleTextKeyUp.bind(this));
+  },
 
+  onSubTextAreaKeydown: function(event) {
+    if (event.which == 13 ) { // ENTER
+      event.preventDefault();
+      $(event.target).blur();
+    } 
+  },
+
+  onSubtitleTextKeyUp: function(event) {
+    var text = this.$text.find("input").val();
+    this.model.set({ "text": text});
   },
 
   subtitleStartEndTimeKeyUp: function(event) {
     if (!$.isNumeric(String.fromCharCode(event.which))) {
       event.preventDefault();
     } 
-  },
-
-  subtitleTextKeyUp: function(event) {
-    var $input = $(event.target);
-
-    Backbone.trigger("subtitletextkeyup",$input.val());
   },
 
   subtitleLineEdit: function() {
@@ -180,19 +182,21 @@ river.ui.Subtitle = Backbone.View.extend({
 
         if (!this.model.track.isGhost) {
           endTimeHolder.val(this.model.endTime());
+
+          // if track is ghost, its start/end time changes constantly
+          // during this time, we want to be able to input text into 
+          // subtitle without having the render call,due to start/end time changes, 
+          // outracing the time your text get set into subtitle model
+          textHolder.val(this.model.get("text"));
         }
-
-        textHolder.val(this.model.get("text"));
-
         river.utility.resizeInput.bind(textHolder).call();
       } else {
         startTimeHolder.text(this.model.startTime());
 
         if (!this.model.track.isGhost) {
           endTimeHolder.text(this.model.endTime());
+          textHolder.text(this.model.get("text"));
         }
-        
-        textHolder.text(this.model.get("text"));
       }
     }
 
@@ -211,8 +215,15 @@ river.ui.Subtitle = Backbone.View.extend({
     this.model.track.remove();
   },
 
-  openEditor: function() {
-    this.$text.find("input").focus();  
+  openEditor: function(options) {
+    options = options || {};
+
+    if (["start_time","end_time","text"].indexOf(options.field) === -1) {
+      options.field = "text";
+    }
+
+    var $input = this.$el.find("." + options.field).find("input");
+    $input.focus();  
   }
 
 });

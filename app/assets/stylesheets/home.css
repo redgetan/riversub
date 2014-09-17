@@ -261,8 +261,8 @@ div#media_container {
 
 #river_player.show div#media {
   margin-top: 0px;
-  width: 780px;
-  height: 600px;
+  width: 650px;
+  height: 380px;
 }
 
 #demo-container #river_player div#media {
@@ -370,10 +370,6 @@ div#subtitle_bar {
 
 div#avatar img {
   margin-bottom: 20px;
-}
-
-#river_player #subtitle_display {
-  width: 540px;
 }
 
 #demo #river_player #subtitle_display {
@@ -715,6 +711,8 @@ ul.social_login_buttons a {
 }
 
 .share_link_input {
+  width: 190px;
+  font-size: 12px;
   background: none !important;
   border: 2px solid #cccccc !important;
   -webkit-border-radius: 0px !important; 
@@ -837,12 +835,11 @@ footer a:hover{
 #river_player .left_side {
   /*border: solid 1px black;*/
   margin-top: 20px;
-  width: 400px;
+  width: 350px;
   float: left;
 }
 
 #river_player .right_side {
-  float: left;
 }
 
 .login_header {
@@ -1014,6 +1011,7 @@ footer a:hover{
 }
 
 #river_player #subtitle_container .section_header {
+  margin-bottom: 10px;
   background: none;
   color: #333;
 }
