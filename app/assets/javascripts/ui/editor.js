@@ -122,7 +122,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTimelineSeekHandler: function(time, $target) {
     if ($target.hasClass("track")) {
-      console.log("replay track");
       var track = $target.data("model");
       this.replayTrackAndEdit(track);
     } else {
