@@ -331,6 +331,7 @@ div#editor-bottom {
 .subtitle .text,
 .subtitle .parent_text {
 	width: 350px;
+	min-height: 20px;
 }
 
 .subtitle input.inplace_field {
