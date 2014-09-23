@@ -183,10 +183,6 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
     return this.$textDisplay.is(":focus");
   },
 
-  closeEditor: function() {
-    this.$textDisplay.blur();
-  },
-
   fadingHighlight: function() {
     this.$el.effect("highlight", {color: "moccasin"}, 1000);
   }

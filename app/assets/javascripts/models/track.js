@@ -96,13 +96,6 @@ river.model.Track = Backbone.Model.extend({
     this.highlight();
   },
 
-  closeEditor: function() {
-    if (this.expandedView.isEditorOpen()) {
-      this.expandedView.closeEditor();
-      this.unhighlight();
-    }
-  },
-
   toJSON: function() {
     var json = Backbone.Model.prototype.toJSON.call(this);
     json["subtitle_attributes"] = this.subtitle.toJSON();

@@ -563,12 +563,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     } else if (event.which == 13) { 
       // enter key
 
-      if (this.currentTrack) {
-        this.currentTrack.closeEditor();
-      } else {
-
-      }
-
       var nextTrack = this.currentTrack.next();
 
       if (typeof nextTrack !== "undefined") {
@@ -790,7 +784,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTrackStart: function(track) {
     // console.log("ontrackstart" + track.toString());
-    this.closeEditorOnNewTrack(track);
     this.currentTrack = track;
 
     var subtitle = track.subtitle;
@@ -831,12 +824,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         this.requestSubtitleFromUser(track);
       }
     } 
-  },
-
-  closeEditorOnNewTrack: function(track) {
-    if (this.currentTrack && track !== this.currentTrack) {
-      this.currentTrack.closeEditor();
-    }
   },
 
   onTrackRemove: function(track) {
