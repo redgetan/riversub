@@ -514,7 +514,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onDocumentClick: function(event) {
-    if (!$(event.target).hasClass("sub_text_area") && !$(event.target).hasClass("track_text")) {
+    if (!$(event.target).hasClass("sub_text_area") && 
+      !$(event.target).hasClass("track_text") && 
+      !$(event.target).hasClass("ui-spinner")) {
       this.preventSubtileInputFromLosingFocus(event);
     }
   },
@@ -568,7 +570,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       if (typeof nextTrack !== "undefined") {
         this.replayTrackAndEdit(nextTrack);
       } else {
-        var track = this.addFullTrack(this.currentTrack.endTime(), { isGhost: false });
+        var time = this.currentTrack.endTime() + this.TRACK_MARGIN;
+        time = Math.round(time * 1000) / 1000;
+        var track = this.addFullTrack(time, { isGhost: false });
         this.replayTrackAndEdit(track);
       }
     } else if (event.which == 38) {

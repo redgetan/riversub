@@ -47,7 +47,7 @@ river.ui.SubtitleList = Backbone.View.extend({
 
     if (subtitle === null) { return; }
 
-    var field = $target.parent().attr("class");
+    var field = $target.data("field");
 
     subtitle.openEditor({field: field});
 

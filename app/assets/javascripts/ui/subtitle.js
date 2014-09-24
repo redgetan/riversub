@@ -87,10 +87,71 @@ river.ui.Subtitle = Backbone.View.extend({
 
     this.$startTime.find("input").on("blur", this.editStartTimeFinished.bind(this));
     this.$endTime.find("input").on("blur", this.editEndTimeFinished.bind(this));
+
+    this.$startTime.find("input").spinner({
+      min: 0, 
+      spin: this.startTimeSpin.bind(this)
+    });
+
+    this.$endTime.find("input").spinner({
+      min: 0, 
+      spin: this.endTimeSpin.bind(this)
+    });
+
+    $.each(["mousewheel", "keydown", "keyup"], function(index, eventName){
+      this.$startTime.find("input").off(eventName);
+      this.$endTime.find("input").off(eventName);
+    }.bind(this));
+
+    this.$startTime.find("input").data("field","start_time");
+    this.$startTime.find(".ui-spinner-button").data("field","start_time");
+    this.$startTime.find(".ui-spinner-button span").data("field","start_time");
+
+    this.$endTime.find("input").data("field","end_time");
+    this.$endTime.find(".ui-spinner-button").data("field","end_time");
+    this.$endTime.find(".ui-spinner-button span").data("field","end_time");
+
+  },
+
+  startTimeSpin: function(event, ui) {
+    var time = ui.value;
+
+    if (this.overlapsPrev(time)) {
+      time = this.model.prev().endTime() + editor.TRACK_MARGIN;
+      event.preventDefault();
+    }
+
+    this.model.track.setStartTime(time);
+  },
+
+  endTimeSpin: function(event, ui) {
+    var time = ui.value;
+
+    if (this.overlapsNext(time)) {
+      time = this.model.next().startTime() - editor.TRACK_MARGIN;
+      event.preventDefault();
+    }
+
+    this.model.track.setEndTime(time);
+  },
+
+  overlapsPrev: function(time) {
+    if (typeof this.model.prev() === "undefined") return false;
+
+    return time <= this.model.prev().endTime();
+  },
+
+  overlapsNext: function(time) {
+    if (typeof this.model.next() === "undefined") return false;
+    
+    console.log("time: " + time + "next: " + this.model.next().startTime());
+    return time >= this.model.next().startTime();
   },
 
   editableText: function() {
     this.$text.append(this.createInput());
+
+    this.$text.find("input").data("field","text");
 
     this.$text.find("input").attr("maxlength", 90);
 
@@ -145,7 +206,6 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   editFinished: function() {
-    this.unhighlight();
     Backbone.trigger("subtitlelineblur",this.model);
   },
 

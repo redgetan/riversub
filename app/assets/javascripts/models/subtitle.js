@@ -48,6 +48,16 @@ river.model.Subtitle = Backbone.Model.extend({
     this.view.openEditor(options);
   },
 
+  prev: function() {
+    var index = this.collection.indexOf(this);
+    return this.collection.at(index - 1);
+  },
+
+  next: function() {
+    var index = this.collection.indexOf(this);
+    return this.collection.at(index + 1);
+  },
+
   toString: function() {
     return "Subtitle(" + this.get("text") + ")";
   }
