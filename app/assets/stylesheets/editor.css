@@ -572,7 +572,7 @@ a#preview_btn {
 .subtitle.selected .start_time .sub_text_area,
 .subtitle.selected .end_time   .sub_text_area {
 	border: solid 1px #ccc;
-	background-color: white;
+	/*background-color: white;*/
 }
 
 .selected div .sub_text_area {

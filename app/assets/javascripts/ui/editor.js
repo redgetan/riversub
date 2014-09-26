@@ -684,7 +684,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
      }
   },
 
-  onTrackRequestSuccess: function() {
+  onTrackRequestSuccess: function(track) {
+    Backbone.trigger("tracksuccess");
     setTimeout(function(){ this.$status_bar.text(""); }.bind(this),500);
   },
 

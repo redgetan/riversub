@@ -36,6 +36,7 @@ river.model.Track = Backbone.Model.extend({
     this.listenTo(this, "add", this.onAdd);
     this.listenTo(this, "request", this.onRequest);
     Backbone.on("editorseek", this.unsetPauseOnTrackEnd.bind(this));
+    Backbone.on("tracksuccess", this.onTrackSuccess.bind(this));
   },
 
   prev: function() {
@@ -61,7 +62,12 @@ river.model.Track = Backbone.Model.extend({
   },
 
   onChanged: function() {
+    this.isDirty = true;
     Backbone.trigger("trackchange", this);
+  },
+
+  onTrackSuccess: function() {
+    this.isDirty = false;
   },
 
   onAdd: function() {
@@ -85,6 +91,10 @@ river.model.Track = Backbone.Model.extend({
     if (this.hasChanged()) {
       Backbone.trigger("editor.sync","save",this);
     }
+  },
+
+  hasChanged: function() {
+    return Backbone.Model.prototype.hasChanged.call(this) || this.isDirty;
   },
 
   destroy: function() {
