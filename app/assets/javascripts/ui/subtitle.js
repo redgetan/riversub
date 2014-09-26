@@ -144,7 +144,6 @@ river.ui.Subtitle = Backbone.View.extend({
   overlapsNext: function(time) {
     if (typeof this.model.next() === "undefined") return false;
     
-    console.log("time: " + time + "next: " + this.model.next().startTime());
     return time >= this.model.next().startTime();
   },
 
