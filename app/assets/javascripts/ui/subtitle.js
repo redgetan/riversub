@@ -271,6 +271,10 @@ river.ui.Subtitle = Backbone.View.extend({
 
   onCloseClick: function(event) {
     event.stopPropagation();
+
+    // if only 1 is remaining, do not allow deletion. we always want at least one to be active
+    if (this.model.collection.length === 1) return;
+    
     this.model.track.remove();
   },
 
