@@ -27,13 +27,11 @@ river.ui.Timeline = Backbone.View.extend({
     this.$summary_container = $("#media_container");
 
     var summary = "<div id='summary' class='timeline' >" +
-                     "<div class='scrubber'></div>" +
                      "<div class='window_slider'></div>" +
                    "</div>";
 
     this.$summary_container.find("#viewing_screen").after(summary);
     this.$summary = $("#summary");
-    this.$scrubber_summary = $("#summary .scrubber");
 
     this.$time_float = $("#time_float");
     this.$time_float.hide();
@@ -509,8 +507,6 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   renderScrubber: function(time) {
-    this.renderInContainer(this.$summary, this.$scrubber_summary, { left: this.media.currentTime.toFixed(3) });
-
     if (!this.disable_expanded) {
       this.renderInContainer(this.$expanded,this.$scrubber_expanded,{ left: this.media.currentTime.toFixed(3) });
     }

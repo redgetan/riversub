@@ -228,6 +228,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "</div> " +
                       "<div id='time_float'></div>" +
                       "<div id='seek_head'>" +
+                        "<div class='scrubber'></div>" +
                         "<div id='seek_head_corner'></div>" +
                         "<div id='seek_head_body'></div>" +
                       "</div>" +

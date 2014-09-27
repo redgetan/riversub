@@ -111,11 +111,13 @@ div#editor-bottom {
 }
 
 .scrubber {
-	height: inherit;
+	height: 21px;
 	width: 1px;
 	background-color: red;
 	position: absolute;
 	z-index: 1;
+	top: -15px;
+	left: 4px;
 }
 
 .track.ghost {
