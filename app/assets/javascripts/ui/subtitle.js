@@ -237,16 +237,23 @@ river.ui.Subtitle = Backbone.View.extend({
 
     if (this.model.track !== null ) {
       if ($("#editor").size() === 1) {
-        startTimeHolder.val(this.model.startTime());
+        if (!startTimeHolder.is(":focus")) {
+          startTimeHolder.val(this.model.startTime());
+        }
 
         if (!this.model.track.isGhost) {
-          endTimeHolder.val(this.model.endTime());
+          if (!endTimeHolder.is(":focus")) {
+            endTimeHolder.val(this.model.endTime());
+          }
 
           // if track is ghost, its start/end time changes constantly
           // during this time, we want to be able to input text into 
           // subtitle without having the render call,due to start/end time changes, 
           // outracing the time your text get set into subtitle model
-          textHolder.val(this.model.get("text"));
+
+          if (!textHolder.is(":focus")) {
+            textHolder.val(this.model.get("text"));
+          }
         }
         river.utility.resizeInput.bind(textHolder).call();
       } else {
@@ -274,7 +281,7 @@ river.ui.Subtitle = Backbone.View.extend({
 
     // if only 1 is remaining, do not allow deletion. we always want at least one to be active
     if (this.model.collection.length === 1) return;
-    
+
     this.model.track.remove();
   },
 

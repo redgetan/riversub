@@ -67,7 +67,9 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
 
   render: function() {
     if (this.model.text()) {
-      this.$textDisplay.val(this.model.text());
+      if (!this.$textDisplay.is(":focus")) {
+        this.$textDisplay.val(this.model.text());
+      }
       river.utility.resizeInput.bind(this.$textDisplay).call();
     }
   },
@@ -172,7 +174,7 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
 
   onCloseMouseDown: function(event) {
     event.stopPropagation();
-    
+
     // if only 1 is remaining, do not allow deletion. we always want at least one to be active
     if (this.model.collection.length === 1) return;
 
