@@ -211,7 +211,6 @@ river.ui.Timeline = Backbone.View.extend({
 
     this.$summary.on("mousedown",this.onMouseDownHandler.bind(this));
     this.$summary.on("mousemove",this.onMouseMoveHandler.bind(this));
-    this.$summary.on("mouseup",this.onMouseUpHandler.bind(this));
 
     this.$move_left_btn.on("click",this.onMoveLeftBtnClick.bind(this));
     this.$move_right_btn.on("click",this.onMoveRightBtnClick.bind(this));
@@ -221,7 +220,7 @@ river.ui.Timeline = Backbone.View.extend({
     this.$summary.on("mouseleave",this.onSummaryMouseLeaveHandler.bind(this));
 
     this.$seek_head.on("mousedown",this.onSeekHeadMouseDownHandler.bind(this));
-    this.$seek_head.on("mouseup",this.onSeekHeadMouseUpHandler.bind(this));
+    $(document).on("mouseup",this.onDocumentMouseUpHandler.bind(this));
 
     if (!this.disable_expanded) {
       this.onExpandedTimelineScrollCallback = this.onExpandedTimelineScroll.bind(this);
@@ -229,7 +228,6 @@ river.ui.Timeline = Backbone.View.extend({
       this.$expanded.on("dblclick",this.onExpandedTimelineDblClick.bind(this));
       this.$expanded.on("mousedown",this.onMouseDownHandler.bind(this));
       this.$expanded.on("mousemove",this.onMouseMoveHandler.bind(this));
-      this.$expanded.on("mouseup",this.onMouseUpHandler.bind(this));
 
       Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
       Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
@@ -337,10 +335,6 @@ river.ui.Timeline = Backbone.View.extend({
     return seconds;
   },
 
-  onMouseUpHandler: function(event) {
-    this.seekmode = false;
-  },
-
   onSummaryMouseEnterHandler: function(event) {
     this.$time_float.show();
   },
@@ -356,9 +350,11 @@ river.ui.Timeline = Backbone.View.extend({
     this.$time_float.show();
   },
 
-  onSeekHeadMouseUpHandler: function(event) {
+  onDocumentMouseUpHandler: function(event) {
     this.seekmode = false;
-    this.$time_float.hide();
+    if ($(event.target).attr("id") !== "summary") {
+      this.$time_float.hide();
+    }
   },
 
   renderTimeFloat: function(posX) {
