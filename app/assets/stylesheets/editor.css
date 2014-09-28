@@ -243,6 +243,11 @@ div#editor-bottom {
 	color: white;	
 }
 
+.sub_text_area:focus,
+.sub_text_area:hover {
+	color: black !important;
+}
+
 #subtitle_list .ui-spinner-button {
 	display: none;
 }

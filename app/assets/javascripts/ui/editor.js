@@ -709,13 +709,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackRequestError: function(track, status) {
-    var msg = "";
-    var errors = JSON.parse(status.responseText)["error"];
-    for (key in errors) {
-      msg += errors[key];
-      msg + ". ";
-    }
-    this.showErrorOnStatusBar(msg);
+    // dont show error to detailed user. currently confusing
+    // hopefully, the red highlight is good enough warning
+    setTimeout(function(){ this.$status_bar.text(""); }.bind(this),500);
+    // var msg = "";
+    // var errors = JSON.parse(status.responseText)["error"];
+    // for (key in errors) {
+    //   msg += errors[key];
+    //   msg + ". ";
+    // }
+    // this.showErrorOnStatusBar(msg);
   },
 
   showErrorOnStatusBar: function(msg) {
