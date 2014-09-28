@@ -1286,7 +1286,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
    // either the start of media or the endTime of prev nearest track
   prevNearestEdgeTime: function(startTime) {
-    return this.prevNearestTrack(startTime).endTime();
+    var track = this.prevNearestTrack(startTime)
+    if (track) {
+      return track.endTime();
+    } else {
+      return 0;
+    }
   },
 
   prevNearestTrack: function(startTime) {
