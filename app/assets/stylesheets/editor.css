@@ -111,11 +111,15 @@ div#editor-bottom {
 }
 
 .scrubber {
-	height: 21px;
+	height: inherit;
 	width: 1px;
 	background-color: red;
 	position: absolute;
 	z-index: 1;
+}
+
+#seek_head .scrubber {
+	height: 21px;
 	top: -15px;
 	left: 4px;
 }
