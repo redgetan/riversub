@@ -16,6 +16,7 @@ river.model.Subtitle = Backbone.Model.extend({
 
   onChanged: function() {
     this.track.updateSubtitleAttributes();
+
     Backbone.trigger("subtitlechange", this);
   },
 
@@ -36,6 +37,14 @@ river.model.Subtitle = Backbone.Model.extend({
     if (this.options.view_enabled) {
       this.view.highlight();
     }
+  },
+
+  overlapsPrev: function(time) {
+    return this.track.overlapsPrev(time);
+  },
+
+  overlapsNext: function(time) {
+    return this.track.overlapsNext(time);
   },
 
   unhighlight: function() {

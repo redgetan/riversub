@@ -299,7 +299,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     "</div>" +     // tab content
 
                   "</div> " + // .span12
-                  "<div id='status-bar' class='span2 pull-left'> " +
+                  "<div id='status-bar' class='span8 pull-left'> " +
                   "</div> " +
                   "<div class='span12'> " +
                           "<div class='row'> " +
@@ -690,8 +690,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     setTimeout(function(){ this.$status_bar.text(""); }.bind(this),500);
   },
 
-  onTrackRequestError: function() {
-    this.showErrorOnStatusBar("Save Failed");
+  onTrackRequestError: function(track, status) {
+    var msg = "";
+    var errors = JSON.parse(status.responseText)["error"];
+    for (key in errors) {
+      msg += errors[key];
+      msg + ". ";
+    }
+    this.showErrorOnStatusBar(msg);
   },
 
   showErrorOnStatusBar: function(msg) {
@@ -701,7 +707,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     setTimeout(function(){ 
       this.$status_bar.text(""); 
       this.$status_bar.removeClass("failed");
-    }.bind(this),2000);
+    }.bind(this),5000);
   },
 
   onSubtitleLineDblClick: function(subtitle) {

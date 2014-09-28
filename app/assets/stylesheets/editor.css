@@ -147,11 +147,13 @@ div#editor-bottom {
 
 
 .track.selected {
-	background-color: lightcoral ;
+	/*background-color: lightcoral ;*/
+	background-color: rgb(128, 164, 240) ;
 }
 
 .track.selected:hover {
-	background-color: lightcoral ;
+	/*background-color: lightcoral ;*/
+	background-color: rgb(128, 164, 240) ;
 }
 
 .track.focused,
@@ -223,6 +225,18 @@ div#editor-bottom {
 	border-radius: 0;
 	/*background-color: white;*/
 	border: solid 1px #aaa;
+}
+
+#editor #subtitle_list .subtitle.invalid {
+	background-color: red !important;	
+}
+
+#editor .track.invalid {
+	background-color: red !important;	
+}
+
+#editor #subtitle_list .subtitle.invalid .sub_text_area {
+	color: white;	
 }
 
 #subtitle_list .ui-spinner-button {

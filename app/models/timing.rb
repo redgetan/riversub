@@ -26,7 +26,7 @@ class Timing < ActiveRecord::Base
     return if self.end_time.nil? || self.start_time.nil?
 
     if self.end_time <= self.start_time
-      errors.add(:end_time, "end_time must be greater than start time")
+      errors.add(:end_time, "start_time #{self.start_time} is greater than or equal to end_time #{self.end_time}")
     end
   end
 

@@ -63,7 +63,48 @@ river.model.Track = Backbone.Model.extend({
 
   onChanged: function() {
     this.isDirty = true;
+
+    if (this.isValid()) {
+      this.showValid();
+    } else {
+      this.showInvalid();
+    }
+
     Backbone.trigger("trackchange", this);
+  },
+
+  showInvalid: function() {
+    _.each(this.views,function(view){
+      view.showInvalid();
+    });
+
+    this.subtitle.view.showInvalid();
+  },
+
+  showValid: function() {
+    _.each(this.views,function(view){
+      view.showValid();
+    });
+
+    this.subtitle.view.showValid();
+  },
+
+  isValid: function() {
+    return !this.overlapsPrev(this.startTime()) &&
+           !this.overlapsNext(this.startTime()) &&
+           !this.overlapsPrev(this.endTime())   &&
+           !this.overlapsNext(this.endTime())   &&
+           (this.endTime() - this.startTime() > 0);
+  },
+
+  overlapsPrev: function(time) {
+    if (typeof this.prev() === "undefined") return false;
+    return time <= this.prev().endTime();
+  },
+
+  overlapsNext: function(time) {
+    if (typeof this.next() === "undefined") return false;
+    return time >= this.next().startTime();
   },
 
   onTrackSuccess: function() {

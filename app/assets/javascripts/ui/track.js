@@ -21,6 +21,15 @@ river.ui.Track = Backbone.View.extend({
     this.$el.addClass("selected");
   },
 
+  showInvalid: function() {
+    console.log("ui Invalid mtf");
+    this.$el.addClass("invalid");
+  },
+
+  showValid: function() {
+    this.$el.removeClass("invalid");
+  },
+
   unhighlight: function() {
     this.$el.removeClass("selected");
   },

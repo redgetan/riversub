@@ -76,18 +76,6 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$startTime.append(this.createInput());
     this.$endTime.append(this.createInput());
 
-    this.$startTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
-    this.$endTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
-
-    this.$startTime.find("input").on("keyup", this.subtitleStartEndTimeKeyUp.bind(this));
-    this.$endTime.find("input").on("keyup", this.subtitleStartEndTimeKeyUp.bind(this));
-
-    this.$startTime.find("input").on("focus", this.subtitleLineEdit.bind(this));
-    this.$endTime.find("input").on("focus", this.subtitleLineEdit.bind(this));
-
-    this.$startTime.find("input").on("blur", this.editStartTimeFinished.bind(this));
-    this.$endTime.find("input").on("blur", this.editEndTimeFinished.bind(this));
-
     this.$startTime.find("input").spinner({
       min: 0, 
       spin: this.startTimeSpin.bind(this)
@@ -98,10 +86,23 @@ river.ui.Subtitle = Backbone.View.extend({
       spin: this.endTimeSpin.bind(this)
     });
 
+    // reset events set by jquery ui spinner
     $.each(["mousewheel", "keydown", "keyup"], function(index, eventName){
       this.$startTime.find("input").off(eventName);
       this.$endTime.find("input").off(eventName);
     }.bind(this));
+
+    this.$startTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
+    this.$endTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
+
+    this.$startTime.find("input").on("keyup", this.subtitleStartTimeKeyUp.bind(this));
+    this.$endTime.find("input").on("keyup", this.subtitleEndTimeKeyUp.bind(this));
+
+    this.$startTime.find("input").on("focus", this.subtitleLineEdit.bind(this));
+    this.$endTime.find("input").on("focus", this.subtitleLineEdit.bind(this));
+
+    this.$startTime.find("input").on("blur", this.editStartTimeFinished.bind(this));
+    this.$endTime.find("input").on("blur", this.editEndTimeFinished.bind(this));
 
     this.$startTime.find("input").data("field","start_time");
     this.$startTime.find(".ui-spinner-button").data("field","start_time");
@@ -121,11 +122,21 @@ river.ui.Subtitle = Backbone.View.extend({
       event.preventDefault();
     }
 
+    if (this.overlapsNext(time)) {
+      time = this.model.next().startTime() - editor.TRACK_MARGIN;
+      event.preventDefault();
+    }
+
     this.model.track.setStartTime(time);
   },
 
   endTimeSpin: function(event, ui) {
     var time = ui.value;
+
+    if (this.overlapsPrev(time)) {
+      time = this.model.prev().endTime() + editor.TRACK_MARGIN;
+      event.preventDefault();
+    }
 
     if (this.overlapsNext(time)) {
       time = this.model.next().startTime() - editor.TRACK_MARGIN;
@@ -136,15 +147,11 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   overlapsPrev: function(time) {
-    if (typeof this.model.prev() === "undefined") return false;
-
-    return time <= this.model.prev().endTime();
+    return this.model.overlapsPrev(time);
   },
 
   overlapsNext: function(time) {
-    if (typeof this.model.next() === "undefined") return false;
-    
-    return time >= this.model.next().startTime();
+    return this.model.overlapsNext(time);
   },
 
   editableText: function() {
@@ -174,10 +181,30 @@ river.ui.Subtitle = Backbone.View.extend({
     this.model.set({ "text": text});
   },
 
-  subtitleStartEndTimeKeyUp: function(event) {
+  subtitleStartTimeKeyUp: function(event) {
     if (!$.isNumeric(String.fromCharCode(event.which))) {
       event.preventDefault();
     } 
+
+    var time = parseFloat(this.$startTime.find("input").val());
+    this.model.track.setStartTime(time);
+  },
+
+  subtitleEndTimeKeyUp: function(event) {
+    if (!$.isNumeric(String.fromCharCode(event.which))) {
+      event.preventDefault();
+    } 
+
+    var time = parseFloat(this.$endTime.find("input").val());
+    this.model.track.setEndTime(time);
+  },
+
+  showInvalid: function() {
+    this.$el.addClass("invalid");
+  },
+
+  showValid: function() {
+    this.$el.removeClass("invalid");
   },
 
   subtitleLineEdit: function() {
