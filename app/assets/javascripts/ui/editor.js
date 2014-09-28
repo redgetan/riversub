@@ -61,6 +61,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     Backbone.on("subtitlechange",this.onSubtitleChange.bind(this));
     Backbone.on("ghosttrackstart",this.onGhostTrackStart.bind(this));
     Backbone.on("ghosttrackend",this.onGhostTrackEnd.bind(this));
+    Backbone.on("trackstartchange",this.onTrackStartChange.bind(this));
+    Backbone.on("trackendchange",this.onTrackEndChange.bind(this));
     Backbone.on("trackremove",this.onTrackRemove.bind(this));
     Backbone.on("trackinputfocus",this.onTrackInputFocus.bind(this));
     Backbone.on("trackinputblur",this.onTrackInputBlur.bind(this));
@@ -127,6 +129,22 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.replayTrackAndEdit(track);
     } else {
       this.seek(time);  
+    }
+  },
+
+  onTrackStartChange: function(track) {
+    if (track.isValid()) {
+      this.seek(track.startTime(), function() {
+        this.playTillEndOfTrack(track);
+      }.bind(this));
+    }
+  },
+
+  onTrackEndChange: function(track) {
+    if (track.isValid()) {
+      this.seek(track.startTime(), function() {
+        this.playTillEndOfTrack(track);
+      }.bind(this));
     }
   },
 

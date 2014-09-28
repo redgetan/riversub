@@ -165,6 +165,7 @@ river.model.Track = Backbone.Model.extend({
     time = Math.round(time * 1000) / 1000;
     this.trackEvent.start = time;
     this.set("start_time",time);
+    Backbone.trigger("trackstartchange", this); 
   },
 
   endTime: function() {
@@ -179,6 +180,7 @@ river.model.Track = Backbone.Model.extend({
     time = Math.round(time * 1000) / 1000;
     this.trackEvent.end = time;
     this.set("end_time",time);
+    Backbone.trigger("trackendchange", this); 
   },
 
   text: function() {
