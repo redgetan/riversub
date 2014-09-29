@@ -200,12 +200,12 @@ river.ui.Subtitle = Backbone.View.extend({
 
     // if duration is invalid but no track overlap, set the end time as well
     // to something reasonable
-    var isDurationValid = this.model.track.validDuration(time, this.model.endTime());
+    var isDurationDefault = Math.floor(this.model.endTime() - this.model.startTime()) === editor.DEFAULT_TRACK_DURATION;
     var newEndTime = time + editor.DEFAULT_TRACK_DURATION; 
     newEndTime = Math.floor(newEndTime * 1000) / 1000;
     var isTrackOverlap = this.model.track.overlapsTrack(time, newEndTime);
 
-    if (!isDurationValid && !isTrackOverlap) {
+    if (isDurationDefault && !isTrackOverlap) {
       this.model.track.setEndTime(newEndTime);
     }
 
