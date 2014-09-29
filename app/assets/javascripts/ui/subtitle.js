@@ -185,9 +185,15 @@ river.ui.Subtitle = Backbone.View.extend({
     this.model.set({ "text": text});
   },
 
+  isKeyAllowedInStartEnd: function(charcode) {
+    // number or period or backspace
+    return $.isNumeric(String.fromCharCode(charcode)) || event.which === 8 || event.which === 190;
+  },
+
   subtitleStartTimeKeyUp: function(event) {
-    if (!$.isNumeric(String.fromCharCode(event.which))) {
+    if (!this.isKeyAllowedInStartEnd(event.which)) {
       event.preventDefault();
+      return;
     } 
 
     var time = parseFloat(this.$startTime.find("input").val());
@@ -207,8 +213,9 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   subtitleEndTimeKeyUp: function(event) {
-    if (!$.isNumeric(String.fromCharCode(event.which))) {
+    if (!this.isKeyAllowedInStartEnd(event.which)) {
       event.preventDefault();
+      return;
     } 
 
     var time = parseFloat(this.$endTime.find("input").val());

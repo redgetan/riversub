@@ -148,12 +148,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
-  onSubtitleLineClick: function(subtitle) {
-    var track = subtitle.track;
+  onSubtitleLineClick: function(subtitle, $target) {
+    if ($target.data("field") !== "start_time" && $target.data("field") !== "end_time") {
+      var track = subtitle.track;
 
-    this.seek(track.startTime(), function() {
-      this.playTillEndOfTrack(track);
-    }.bind(this));
+      this.seek(track.startTime(), function() {
+        this.playTillEndOfTrack(track);
+      }.bind(this));
+    }
   },
 
   onAddSubtitleInputFocus: function(event) {

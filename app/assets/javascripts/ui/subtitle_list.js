@@ -52,7 +52,7 @@ river.ui.SubtitleList = Backbone.View.extend({
     } else {
       var field = $target.data("field");
       subtitle.openEditor({field: field});
-      Backbone.trigger("subtitlelineclick",subtitle);
+      Backbone.trigger("subtitlelineclick",subtitle, $target);
     }
   },
 
