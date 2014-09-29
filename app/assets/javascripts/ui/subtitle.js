@@ -7,7 +7,7 @@ river.ui.Subtitle = Backbone.View.extend({
     "mouseenter": "onMouseEnter",
     "mouseleave": "onMouseLeave",
     "click": "onMouseClick",
-    "click .delete_sub_line": "onCloseClick",
+    "click .delete_sub_line": "onCloseClick"
   },
 
   initialize: function() {
@@ -25,7 +25,9 @@ river.ui.Subtitle = Backbone.View.extend({
 
     var content = "<div class='start_time'></div>" +
                   "<div class='end_time'></div>" +
-                  "<div class='text'></div>" +
+                  "<div class='text input-append'>"+ 
+                    "<a class='btn btn-inverse sub_enter'>Enter</a>" +
+                  "</div>" +
                   "<div class='delete'>" +
                     "<a href='#' class='delete_sub_line'>x</a>" +
                   "</div>";
@@ -37,6 +39,8 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$endTime   = this.$el.find(".end_time");
 
     this.$text = this.$el.find(".text");
+
+    this.$subEnter   = this.$el.find(".sub_enter");
 
     this.$close = this.$el.find(".delete_sub_line");
     this.$close.hide();
@@ -155,7 +159,7 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   editableText: function() {
-    this.$text.append(this.createInput());
+    this.$text.prepend(this.createInput());
 
     this.$text.find("input").data("field","text");
 
@@ -247,14 +251,6 @@ river.ui.Subtitle = Backbone.View.extend({
     Backbone.trigger("subtitlelineblur",this.model);
   },
 
-  onMouseClick: function(event) {
-    if ($("#editor").size() === 1) {
-      if (!this.$el.hasClass("selected")) {
-        this.highlight();
-      }
-    }
-  },
-
   highlight: function() {
     this.$el.addClass("selected");
   },
@@ -333,6 +329,10 @@ river.ui.Subtitle = Backbone.View.extend({
 
     var $input = this.$el.find("." + options.field).find("input");
     $input.focus();  
+
+    if (!this.$el.hasClass("selected")) {
+      this.highlight();
+    }
   }
 
 });

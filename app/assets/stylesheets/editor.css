@@ -243,6 +243,16 @@ div#editor-bottom {
 	color: white;	
 }
 
+.sub_enter {
+	display: none;	
+	height: 10px;
+	line-height: 10px;
+}
+
+.subtitle.selected .sub_enter {
+	display: inline-block;	
+}
+
 .sub_text_area:focus,
 .sub_text_area:hover {
 	color: black !important;
@@ -379,6 +389,7 @@ div#editor-bottom {
 .subtitle .parent_text {
 	width: 350px;
 	min-height: 20px;
+	margin-bottom: 0px;
 }
 
 .subtitle input.inplace_field {

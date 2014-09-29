@@ -55,6 +55,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     Backbone.on("editor.ready",this.onEditorReady.bind(this));
     Backbone.on("expandedtimelinedblclick",this.onExpandedTimelineDblClick.bind(this));
     Backbone.on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
+    Backbone.on("subtitleenter",this.onSubtitleEnter.bind(this));
     Backbone.on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
     Backbone.on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
     Backbone.on("subtitlelineblur",this.onSubtitleLineBlur.bind(this));
@@ -583,16 +584,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     } else if (event.which == 13) { 
       // enter key
 
-      var nextTrack = this.currentTrack.next();
-
-      if (typeof nextTrack !== "undefined") {
-        this.replayTrackAndEdit(nextTrack);
-      } else {
-        var time = this.currentTrack.endTime() + this.TRACK_MARGIN;
-        time = Math.round(time * 1000) / 1000;
-        var track = this.addFullTrack(time, { isGhost: false });
-        this.replayTrackAndEdit(track);
-      }
+      this.goToNextTrack();
     } else if (event.which == 38) {
       // up arrow
 
@@ -605,6 +597,20 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       // escape key
 
       this.cancelGhostTrack();
+    }
+  },
+
+
+  goToNextTrack: function() {
+    var nextTrack = this.currentTrack.next();
+
+    if (typeof nextTrack !== "undefined") {
+      this.replayTrackAndEdit(nextTrack);
+    } else {
+      var time = this.currentTrack.endTime() + this.TRACK_MARGIN;
+      time = Math.round(time * 1000) / 1000;
+      var track = this.addFullTrack(time, { isGhost: false });
+      this.replayTrackAndEdit(track);
     }
   },
 
@@ -751,6 +757,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.seek(track.startTime());
       this.showSubtitleEdit(track);
     }
+  },
+
+  onSubtitleEnter: function() {
+    this.goToNextTrack();
   },
 
   showSubtitleEdit: function(track) {

@@ -47,11 +47,13 @@ river.ui.SubtitleList = Backbone.View.extend({
 
     if (subtitle === null) { return; }
 
-    var field = $target.data("field");
-
-    subtitle.openEditor({field: field});
-
-    Backbone.trigger("subtitlelineclick",subtitle);
+    if ($target.hasClass("sub_enter")) {
+      Backbone.trigger("subtitleenter");
+    } else {
+      var field = $target.data("field");
+      subtitle.openEditor({field: field});
+      Backbone.trigger("subtitlelineclick",subtitle);
+    }
   },
 
   onDblClickHandler: function(event) {
