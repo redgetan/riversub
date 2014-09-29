@@ -234,7 +234,7 @@ river.ui.Subtitle = Backbone.View.extend({
     if (!this.$el.hasClass("focused")) {
       this.$el.addClass("focused");
     }
-    Backbone.trigger("subtitlelineedit");
+    Backbone.trigger("subtitlelineedit", this.model.track);
   },
 
   editStartTimeFinished: function(event) { 

@@ -604,7 +604,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
 
   goToNextTrack: function() {
-    var nextTrack = this.currentTrack.next();
+    var nextTrack = this.focusedTrack.next();
 
     if (typeof nextTrack !== "undefined") {
       this.replayTrackAndEdit(nextTrack);
@@ -878,6 +878,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackInputFocus: function(track) {
+    this.focusedTrack = track;
   },
 
   onTrackInputBlur: function(track) {
@@ -904,7 +905,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
   
-  onSubtitleLineEdit: function() {
+  onSubtitleLineEdit: function(track) {
+    this.focusedTrack = track;
   },
 
   onSubtitleLineBlur: function(subtitle) {
