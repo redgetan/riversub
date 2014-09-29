@@ -90,11 +90,24 @@ river.model.Track = Backbone.Model.extend({
   },
 
   isValid: function() {
-    return !this.overlapsPrev(this.startTime()) &&
-           !this.overlapsNext(this.startTime()) &&
-           !this.overlapsPrev(this.endTime())   &&
-           !this.overlapsNext(this.endTime())   &&
-           (this.endTime() - this.startTime() > 0);
+    return !this.overlapsTrack() && this.validDuration();
+  },
+
+  overlapsTrack: function(startTime, endTime) {
+    startTime = startTime || this.startTime();
+    endTime   = endTime   || this.endTime();
+
+    return this.overlapsPrev(startTime) ||
+           this.overlapsNext(startTime) ||
+           this.overlapsPrev(endTime)   ||
+           this.overlapsNext(endTime);   
+  },
+
+  validDuration: function(startTime, endTime) {
+    startTime = startTime || this.startTime();
+    endTime   = endTime   || this.endTime();
+
+    return endTime - startTime > 0;
   },
 
   overlapsPrev: function(time) {

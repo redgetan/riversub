@@ -22,7 +22,6 @@ river.ui.Track = Backbone.View.extend({
   },
 
   showInvalid: function() {
-    console.log("ui Invalid mtf");
     this.$el.addClass("invalid");
   },
 
