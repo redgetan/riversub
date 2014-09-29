@@ -224,6 +224,9 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   subtitleLineEdit: function() {
+    if (!this.$el.hasClass("focused")) {
+      this.$el.addClass("focused");
+    }
     Backbone.trigger("subtitlelineedit");
   },
 
@@ -248,6 +251,7 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   editFinished: function() {
+    this.$el.removeClass("focused");
     Backbone.trigger("subtitlelineblur",this.model);
   },
 

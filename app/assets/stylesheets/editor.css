@@ -224,7 +224,8 @@ div#editor-bottom {
 	border: none;
 }
 
-#subtitle_list .subtitle.selected .ui-spinner {
+#subtitle_list .subtitle.selected .ui-spinner,
+#subtitle_list .subtitle.focused  .ui-spinner {
 	height: 18px;
 	border-radius: 0;
 	/*background-color: white;*/
@@ -249,7 +250,8 @@ div#editor-bottom {
 	line-height: 10px;
 }
 
-.subtitle.selected .sub_enter {
+.subtitle.selected .sub_enter,
+.subtitle.focused .sub_enter {
 	display: inline-block;	
 }
 
@@ -262,7 +264,8 @@ div#editor-bottom {
 	display: none;
 }
 
-#subtitle_list .subtitle.selected .ui-spinner-button {
+#subtitle_list .subtitle.selected .ui-spinner-button,
+#subtitle_list .subtitle.focused .ui-spinner-button {
 	display: block;
 }
 
@@ -335,7 +338,8 @@ div#editor-bottom {
 	padding: 5px;
 }
 
-#editor .subtitle.selected {
+#editor .subtitle.selected, 
+#editor .subtitle.focused   {
 	background-color: #C4E0E9 !important;
 	color: black;
 }
@@ -606,7 +610,9 @@ a#preview_btn {
 }
 
 .subtitle.selected .start_time .sub_text_area,
-.subtitle.selected .end_time   .sub_text_area {
+.subtitle.selected .end_time   .sub_text_area,
+.subtitle.focused  .start_time .sub_text_area,
+.subtitle.focused  .end_time   .sub_text_area {
 	border: solid 1px #ccc;
 	/*background-color: white;*/
 }
