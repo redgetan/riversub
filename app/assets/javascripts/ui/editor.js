@@ -91,7 +91,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$iframeOverlay.on("mousedown",this.onIframeOverlayClick.bind(this));
     this.$iframeOverlay.on("mouseenter",this.onIframeOverlayMouseEnter.bind(this));
     this.$iframeOverlay.on("mouseleave",this.onIframeOverlayMouseLeave.bind(this));
-    this.$subtitleBar.on("mousedown",this.onSubtitleBarClick.bind(this));
     this.$subtitleDisplay.on("dblclick",this.onSubtitleDisplayDblClick.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
@@ -892,15 +891,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.$overlay_btn.hide();
     }
   },
-
-  togglePlayPause: function() {
-    if (this.media.paused) {
-      this.play();
-    } else {
-      this.pause();
-    }
-  },
-
+  
   onSubtitleLineEdit: function() {
   },
 

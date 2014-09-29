@@ -70,14 +70,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$overlay_btn.find("i").addClass("icon-play");
   },
 
-  togglePlayPause: function() {
-    if (this.media.paused) {
-      this.play();
-    } else {
-      this.pause();
-    }
-  },
-
   bindEvents: function() {
     river.ui.BasePlayer.prototype.bindEvents.call(this);
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));

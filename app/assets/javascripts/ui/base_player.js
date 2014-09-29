@@ -97,6 +97,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     Backbone.on("timelineseek",this.onTimelineSeekHandler.bind(this));
     Backbone.on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
     Backbone.on("trackstart",this.onTrackStart.bind(this));
+    this.$subtitleBar.on("mousedown",this.onSubtitleBarClick.bind(this));
     Backbone.on("trackend",this.onTrackEnd.bind(this));
   },
 
@@ -122,6 +123,19 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.hideSubtitleInSubtitleBar(track.subtitle);
     track.subtitle.unhighlight();
   },
+
+  onSubtitleBarClick: function(event) {
+    this.togglePlayPause();
+  },
+
+  togglePlayPause: function() {
+    if (this.media.paused) {
+      this.play();
+    } else {
+      this.pause();
+    }
+  },
+
 
   showSubtitleInSubtitleBar: function(subtitle) {
     this.$subtitleDisplay.text(subtitle.get("text"));
