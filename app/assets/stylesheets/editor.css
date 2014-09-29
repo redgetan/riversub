@@ -250,8 +250,8 @@ div#editor-bottom {
 	line-height: 10px;
 }
 
-.subtitle.selected .sub_enter,
-.subtitle.focused .sub_enter {
+#editor .subtitle.selected .sub_enter,
+#editor .subtitle.focused .sub_enter {
 	display: inline-block;	
 }
 
