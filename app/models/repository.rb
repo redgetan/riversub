@@ -99,7 +99,7 @@ class Repository < ActiveRecord::Base
   end
 
   def guided_walkthrough?
-    self.video.url == GUIDED_WALKTHROUGH_YOUTUBE_URL
+    false
   end
 
   def self.guided_walkthrough

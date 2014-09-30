@@ -20,6 +20,7 @@ River::Application.routes.draw do
   end
 
   get "faq", :to => "home#faq"
+  get "how_to_use", :to => "home#how_to_use"
 
   get "videos",                                :to => "videos#index"
   get "videos/unpublished",                    :to => "videos#unpublished"

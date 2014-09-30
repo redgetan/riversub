@@ -1,0 +1,60 @@
+<div class='header-section span12'></div>
+<div class="background"></div>
+<div class='container' id='how_to_use'>
+    <div class='row'>
+        <div class='span10 offset1'>
+
+            <h2>
+                Video Tutorial 
+            </h2>
+            <span>A short 30 second tutorial on how to use the subtitle tool</span>
+            <div id='video_tutorial'>
+                <iframe class="youtube-player" type="text/html" width="780" height="420" src="http://www.youtube.com/embed/wfuvdultG-c" allowfullscreen frameborder="0">
+                </iframe>
+            </div>
+            <h2>
+                User Guide
+            </h2>
+            <span>Below is an explanation on how to use the subtitle tool. If you encounter any problems while using it, feel free to ask us any question via our email <a href="mailto:info@yasub.com">info@yasub.com</a>. There are two ways to use the editor: Subtitle View or the Timeline View. Let's walkthrough how to use both</span>
+            </br>
+            </br>
+            </br>
+            <h4>Subtitle View</h4>
+            <a href="<%= asset_path('user_guide_subtitle.png') %>">
+                <%= image_tag "user_guide_subtitle.png" %>
+            </a>
+            <ol>
+                <li>Add a Subtitle</li>
+                <span>Type some text and then click "Enter" button or press the "Enter" key on the keyboard</span>
+                <li>Edit Start/End Time</li>
+                <span>Click on input fields found under the 'start' or 'end' columns to edit when a sub starts and finishes</span>
+                <li>Edit Timing (second method)</li>
+                <span>You can also click on the increment/decrement buttons to increase/decrease the timing</span>
+                <li>Check</li>
+                <span>To verify that your subtitle is correct, click anywhere on the line to replay the subtitle</span>
+                <li>Delete</li>
+                <span>Click the x button at the very end to delete the subtitle</span>
+            </ol>
+            </br>
+            </br>
+            </br>
+            <h4>Timeline View</h4>
+            <a href="<%= asset_path('user_guide_timeline.png') %>">
+                <%= image_tag "user_guide_timeline.png" %>
+            </a>
+            <ol>
+                <li>Add a Subtitle</li>
+                <span>Double click anywhere on blank area to add a subtitle. Pressing enter while focused on the last subtitle will also add a new subtitle.</span>
+                <li>Edit Start/End Time</li>
+                <span>You can adjust the start/end time by dragging along the left or right edges or you can move the entire track by dragging along the middle.</span>
+                <li>Delete</li>
+                <span>Click the x button at the bottom left corner to delete the subtitle</span>
+                <li>Check</li>
+                <span>To verify that your subtitle is correct, click anywhere on the track to replay the subtitle</span>
+            </ol>
+            </br>
+            </br>
+            </br>
+        </div>
+    </div>
+</div>

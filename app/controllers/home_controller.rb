@@ -10,6 +10,10 @@ class HomeController < ApplicationController
     # @guided_walkthrough_repo = Repository.guided_walkthrough
   end
 
+  def how_to_use
+    
+  end
+
   def about
     
   end

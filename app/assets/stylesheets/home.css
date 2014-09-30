@@ -1086,3 +1086,17 @@ footer a:hover{
   background-color: rgb(127, 202, 154) !important;
   font-size: 20px;
 }
+
+#how_to_use img {
+  border: solid 1px #ccc;
+  margin: 20px 0px;
+}
+
+#how_to_use li {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+#video_tutorial {
+  margin: 20px 0px;
+}
