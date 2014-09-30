@@ -67,7 +67,9 @@ river.ui.SubtitleList = Backbone.View.extend({
   },
 
   onTrackStart: function(track) {
-    if (this.selectedSubtitle) this.selectedSubtitle.unhighlight();
+    if (this.selectedSubtitle) { 
+      this.selectedSubtitle.unhighlight();
+    }
 
     var subtitle = track.subtitle;
     this.selectedSubtitle = subtitle;

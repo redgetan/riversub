@@ -253,16 +253,10 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   editStartTimeFinished: function(event) { 
-    var enteredText = this.$startTime.find("input").val();
-    var time = parseFloat(enteredText);
-    this.model.track.setStartTime(time);
     this.editFinished();
   },
 
   editEndTimeFinished: function(event) { 
-    var enteredText = this.$endTime.find("input").val();
-    var time = parseFloat(enteredText);
-    this.model.track.setEndTime(time);
     this.editFinished();
   },
 
