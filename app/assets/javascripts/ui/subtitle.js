@@ -102,6 +102,9 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$startTime.find("input").on("keyup", this.subtitleStartTimeKeyUp.bind(this));
     this.$endTime.find("input").on("keyup", this.subtitleEndTimeKeyUp.bind(this));
 
+    this.$startTime.find("input").on("keypress", this.disallowNonNumeric.bind(this));
+    this.$endTime.find("input").on("keypress", this.disallowNonNumeric.bind(this));
+
     this.$startTime.find("input").on("focus", this.subtitleLineEdit.bind(this));
     this.$endTime.find("input").on("focus", this.subtitleLineEdit.bind(this));
 
@@ -190,10 +193,16 @@ river.ui.Subtitle = Backbone.View.extend({
     return $.isNumeric(String.fromCharCode(charcode)) || event.which === 8 || event.which === 190;
   },
 
+  disallowNonNumeric: function(event) {
+    if (!this.isKeyAllowedInStartEnd(event.which)) {
+      event.preventDefault();
+    }
+  },
+
   subtitleStartTimeKeyUp: function(event) {
     if (!this.isKeyAllowedInStartEnd(event.which)) {
       event.preventDefault();
-      return;
+      return false;
     } 
 
     var time = parseFloat(this.$startTime.find("input").val());
@@ -205,21 +214,25 @@ river.ui.Subtitle = Backbone.View.extend({
     newEndTime = Math.floor(newEndTime * 1000) / 1000;
     var isTrackOverlap = this.model.track.overlapsTrack(time, newEndTime);
 
-    if (isDurationDefault && !isTrackOverlap) {
+    if (isDurationDefault && !isTrackOverlap && $.isNumeric(newEndTime)) {
       this.model.track.setEndTime(newEndTime);
     }
 
-    this.model.track.setStartTime(time);
+    if ($.isNumeric(time)) {
+      this.model.track.setStartTime(time);
+    }
   },
 
   subtitleEndTimeKeyUp: function(event) {
     if (!this.isKeyAllowedInStartEnd(event.which)) {
       event.preventDefault();
-      return;
+      return false;
     } 
 
     var time = parseFloat(this.$endTime.find("input").val());
-    this.model.track.setEndTime(time);
+    if ($.isNumeric(time)) {
+      this.model.track.setEndTime(time);
+    }
   },
 
   showInvalid: function() {
