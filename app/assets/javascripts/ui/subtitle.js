@@ -190,7 +190,9 @@ river.ui.Subtitle = Backbone.View.extend({
 
   isKeyAllowedInStartEnd: function(charcode) {
     // number or period or backspace
-    return $.isNumeric(String.fromCharCode(charcode)) || event.which === 8 || event.which === 190;
+    return $.isNumeric(String.fromCharCode(charcode)) || 
+      String.fromCharCode(charcode) === "." ||
+      event.which === 8;
   },
 
   disallowNonNumeric: function(event) {
