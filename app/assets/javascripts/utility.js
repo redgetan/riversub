@@ -1,19 +1,26 @@
 $.extend(river.utility,{
+  textWidth: function(text) {
+    // http://stackoverflow.com/a/5047712
+      var f = '14px arial',
+          o = $('<div>' + text + '</div>')
+                .css({'position': 'absolute', 'float': 'left', 'white-space': 'nowrap', 'visibility': 'hidden', 'font': f})
+                .appendTo($('body')),
+          w = o.width();
+
+      o.remove();
+
+      return w;
+  },
+
   resizeInput: function() {
     // I'm assuming that 1 letter will expand the input by 10 pixels
-    var oneLetterWidth = 6.3;
+    var text = $(this).val();
+    var textWidth = river.utility.textWidth(text);
+    var minWidth  = 100;
 
-    // I'm also assuming that input will resize when at least five characters
-    // are typed
-    var minCharacters = 10;
-    var len = $(this).val().length;
-    if (len > minCharacters) {
-        // increase width
-        $(this).width(100 + (len - minCharacters) * oneLetterWidth);
-    } else {
-        // restore minimal width;
-        $(this).width(100);
-    }
+    var width = Math.max(minWidth, textWidth);
+
+    $(this).width(width);
   },
 
   printStack: function() {

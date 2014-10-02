@@ -605,7 +605,7 @@ a#preview_btn {
 	height: 16px;
 	line-height: 16px;
 	font-size: 14px !important;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+	font-family: Arial, sans-serif !important;
 }
 
 .subtitle.selected .start_time .sub_text_area,
