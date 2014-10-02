@@ -37,6 +37,7 @@ river.model.Track = Backbone.Model.extend({
     this.listenTo(this, "request", this.onRequest);
     Backbone.on("editorseek", this.unsetPauseOnTrackEnd.bind(this));
     Backbone.on("tracksuccess", this.onTrackSuccess.bind(this));
+    Backbone.on("trackchange", this.onTrackChange.bind(this));
   },
 
   prev: function() {
@@ -63,14 +64,17 @@ river.model.Track = Backbone.Model.extend({
 
   onChanged: function() {
     this.isDirty = true;
+    Backbone.trigger("trackchange", this);
+  },
 
+
+  onTrackChange: function(track) {
+    // if changes in other track makes this track valid/invalid, show it as well
     if (this.isValid()) {
       this.showValid();
     } else {
       this.showInvalid();
     }
-
-    Backbone.trigger("trackchange", this);
   },
 
   showInvalid: function() {

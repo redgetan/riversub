@@ -124,12 +124,13 @@ river.ui.Subtitle = Backbone.View.extend({
   startTimeSpin: function(event, ui) {
     var time = ui.value;
 
-    if (this.overlapsPrev(time)) {
+    // if overlaps already exist before, allow user to correct, don't prevent default
+    if (!this.overlapsPrev(this.model.startTime()) && this.overlapsPrev(time)) {
       time = this.model.prev().endTime() + editor.TRACK_MARGIN;
       event.preventDefault();
     }
 
-    if (this.overlapsNext(time)) {
+    if (!this.overlapsNext(this.model.startTime()) && this.overlapsNext(time)) {
       time = this.model.next().startTime() - editor.TRACK_MARGIN;
       event.preventDefault();
     }
@@ -140,12 +141,12 @@ river.ui.Subtitle = Backbone.View.extend({
   endTimeSpin: function(event, ui) {
     var time = ui.value;
 
-    if (this.overlapsPrev(time)) {
+    if (!this.overlapsPrev(this.model.endTime()) && this.overlapsPrev(time)) {
       time = this.model.prev().endTime() + editor.TRACK_MARGIN;
       event.preventDefault();
     }
 
-    if (this.overlapsNext(time)) {
+    if (!this.overlapsPrev(this.model.endTime()) && this.overlapsNext(time)) {
       time = this.model.next().startTime() - editor.TRACK_MARGIN;
       event.preventDefault();
     }
