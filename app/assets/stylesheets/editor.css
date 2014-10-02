@@ -232,16 +232,23 @@ div#editor-bottom {
 	border: solid 1px #aaa;
 }
 
+#subtitle_list .subtitle.selected.invalid .ui-spinner,
+#subtitle_list .subtitle.focused.invalid .ui-spinner {
+	border: solid 1px rgb(100,100,100);
+}
+
+
 #editor #subtitle_list .subtitle.invalid {
-	background-color: red !important;	
+	background-color: lightcoral !important;	
 }
 
 #editor .track.invalid {
-	background-color: red !important;	
+	background-color: lightcoral !important;	
 }
 
-#editor #subtitle_list .subtitle.invalid .sub_text_area {
-	color: white;	
+#editor #subtitle_list .subtitle.selected.invalid .sub_text_area,
+#editor #subtitle_list .subtitle.focused.invalid .sub_text_area {
+	border: solid 1px rgb(100,100,100);
 }
 
 .sub_enter {
@@ -411,7 +418,7 @@ div#editor-bottom {
 .subtitle .delete a,
 .subtitle .delete a:hover {
   text-decoration: none;  
-  font-size: 16px;
+  font-size: 15px;
   color: black;
 }
 
