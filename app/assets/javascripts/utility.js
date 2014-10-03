@@ -1,11 +1,12 @@
 $.extend(river.utility,{
   textWidth: function(text) {
     // http://stackoverflow.com/a/5047712
+      var padding = 25;
       var f = '14px arial',
           o = $('<div>' + text + '</div>')
                 .css({'position': 'absolute', 'float': 'left', 'white-space': 'nowrap', 'visibility': 'hidden', 'font': f})
                 .appendTo($('body')),
-          w = o.width();
+          w = o.width() + padding;
 
       o.remove();
 
