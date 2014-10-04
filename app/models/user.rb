@@ -20,6 +20,11 @@ class User < ActiveRecord::Base
   has_many :videos, :through => :repositories
   has_many :identities
 
+  has_many :memberships
+  has_many :groups, through: :memberships
+
+  has_many :group_creations, class_name: "Group", foreign_key: "creator_id"
+
   attr_accessor :login
 
   mount_uploader :avatar, AvatarUploader
@@ -92,6 +97,10 @@ class User < ActiveRecord::Base
       :email => self.email,
       :avatar => self.avatar
     }  
+  end
+
+  def registered?
+    self.username.present?    
   end
 
   def admin?

@@ -60,18 +60,18 @@
   /*color: green;*/
 }
 
-a.new_project_user_btn {
-  height: 163px;  
+a.user_big_action_btn {
+  height: 163px;
   display: block;
   position: relative;
   text-decoration: none;
 }
 
-a.new_project_user_btn:hover {
+a.user_big_action_btn:hover {
   background-color: lightgoldenrodyellow;
 }
 
-.new_project_user_btn .icon-plus {
+.user_big_action_btn .icon-plus {
   -webkit-border-radius: 15px;
   line-height: 30px;
   top: 30%;
@@ -84,7 +84,7 @@ a.new_project_user_btn:hover {
   color: white;
 }
 
-.new_project_user_btn h6 {
+.user_big_action_btn h6 {
   position: absolute;
   width: 100%;
   top: 50%;
@@ -93,7 +93,7 @@ a.new_project_user_btn:hover {
 
 .popover {
   width: 150px;
-  background-color: lightgoldenrodyellow; 
+  background-color: lightgoldenrodyellow;
 }
 
 .nav-container {
@@ -116,7 +116,7 @@ a.new_project_user_btn:hover {
     }
 
 .navbar .nav {
-  font-size: 14px;  
+  font-size: 14px;
 }
 
 .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
@@ -138,14 +138,14 @@ a.new_project_user_btn:hover {
     .white .navbar .brand {
         color: #777777;
     }
-    
+
 .navbar .nav > li  a {
     color: #fff;
     text-shadow: none;
 }
 
     .navbar .nav .dropdown-menu > li > a {
-        color: #777777;   
+        color: #777777;
     }
 
     .white .navbar .nav > li  a {
@@ -306,9 +306,9 @@ div#iframe_container #iframe_overlay {
   height: 20px;
 }
 
-#river_player.show #overlay_btn .icon-play, 
+#river_player.show #overlay_btn .icon-play,
 #river_player.show #overlay_btn .icon-pause {
-  font-size: 40px;  
+  font-size: 40px;
   border: solid 5px white;
 }
 
@@ -396,7 +396,7 @@ div#upload_btn_label {
 }
 
 input#user_avatar {
-  opacity: 0;  
+  opacity: 0;
   z-index: 2;
   width: 100%;
 }
@@ -413,7 +413,7 @@ div#edit_user_sidebar .icon-chevron-right{
 }
 
 #edit_user_sidebar ul li.active a {
-  background-color: slategray;  
+  background-color: slategray;
   color: white;
 }
 
@@ -496,7 +496,7 @@ form.sub {
 }
 
 .modal-header, .modal-footer {
-  background-color: #A3D4A3;  
+  background-color: #A3D4A3;
 }
 
 .modal-body {
@@ -544,7 +544,7 @@ form.sub {
 }
 
 .navigation-links .nav-pills {
-  display: inline-block;  
+  display: inline-block;
 }
 
 .pagination {
@@ -564,11 +564,11 @@ form.sub {
 }
 
 #guided-walkthrough {
-  margin-top: 20px;  
+  margin-top: 20px;
 }
 
 .walkthrough_btn {
-  margin-top: 10px;  
+  margin-top: 10px;
 }
 
 #header .icon-facetime-video {
@@ -576,7 +576,7 @@ form.sub {
 }
 
 .random_videos_btn {
-  margin: 30px 0px;  
+  margin: 30px 0px;
 }
 
 
@@ -609,12 +609,12 @@ form.sub {
 }
 
 a.owner_label:hover {
-  background-color: lightcoral;  
+  background-color: lightcoral;
   color: white;
 }
 
 a.owner_label {
-  background-color: lightgoldenrodyellow;  
+  background-color: lightgoldenrodyellow;
   color: lightslategrey;
   padding: 0px 5px;
 }
@@ -625,7 +625,7 @@ a.owner_label {
 }
 
 .river_btn {
-  background-color: rgb(127, 202, 154);  
+  background-color: rgb(127, 202, 154);
   color: #333;
   border: solid 1px gray;
   padding: 5px 10px;
@@ -639,11 +639,11 @@ a.owner_label {
 }
 
 .nav-tabs {
-  border-bottom: none; 
+  border-bottom: none;
 }
 
 .nav-tabs>.active>a, .nav-tabs>.active>a:hover, .nav-tabs>.active>a:focus {
-  border-bottom-color: #ddd;  
+  border-bottom-color: #ddd;
 }
 
 #share_modal .input-prepend  {
@@ -666,12 +666,12 @@ a.owner_label {
 }
 
 .white .river_gray {
-  color: #777;  
+  color: #777;
 }
 
 #flash_container {
   width: 50%;
-  margin: auto;  
+  margin: auto;
 }
 
 ul.social_login_buttons {
@@ -680,7 +680,7 @@ ul.social_login_buttons {
 }
 
 ul.social_login_buttons li {
-  margin: 10px 0px;    
+  margin: 10px 0px;
 }
 
 ul.social_login_buttons i {
@@ -692,7 +692,7 @@ ul.social_login_buttons a {
   text-align: left;
 }
 
-.sign_in_container .forgot_password, 
+.sign_in_container .forgot_password,
 .sign_in_container .sign_up {
   font-size: 12px;
 }
@@ -707,7 +707,7 @@ ul.social_login_buttons a {
 }
 
 #editor .nav-tabs>li>a {
-  line-height: 12px;  
+  line-height: 12px;
 }
 
 .share_link_input {
@@ -715,8 +715,8 @@ ul.social_login_buttons a {
   font-size: 12px;
   background: none !important;
   border: 2px solid #cccccc !important;
-  -webkit-border-radius: 0px !important; 
-  border-radius: 0px !important; 
+  -webkit-border-radius: 0px !important;
+  border-radius: 0px !important;
 }
 
 .social_share_container {
@@ -775,16 +775,16 @@ ul.social_login_buttons a {
   padding: 5px;
   color: white;
   font-weight: bold;
-  opacity: 0.8;  
+  opacity: 0.8;
   z-index: 1;
 }
 
 footer {
   width: 100%;
-  background-color: black;  
+  background-color: black;
   clear: both;
   border-top: solid 1px #ccc;
-  height: 40px; 
+  height: 40px;
   color: #fff;
   box-shadow: 0px 500px 0px 500px black;
 }
@@ -886,7 +886,7 @@ footer a:hover{
     position: absolute;
     margin-top: -53px;
 }
-    
+
 .btn-primary {
   background-image: none;
   opacity: 0.65;
@@ -937,7 +937,7 @@ footer a:hover{
 }
 
 #available_subtitles a {
-  color: #474747;  
+  color: #474747;
   text-decoration: underline;
 }
 
@@ -974,7 +974,7 @@ footer a:hover{
 }
 
 .repository_option {
-  clear: both;  
+  clear: both;
   height: 25px;
 }
 
@@ -1027,7 +1027,7 @@ footer a:hover{
 }
 
 #repo_setup_form_list {
-  border: solid 1px gray;  
+  border: solid 1px gray;
   padding: 10px;
   margin-bottom: 40px;
 }

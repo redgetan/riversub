@@ -10,6 +10,9 @@ class Repository < ActiveRecord::Base
   has_many :subtitles
   has_many :timings
 
+  has_many :group_repositories
+  has_many :groups, through: :group_repositories
+
   attr_accessible :video_id, :user_id, :token, :is_published, :language, :parent_repository_id
 
   validates :video_id, :presence => true
