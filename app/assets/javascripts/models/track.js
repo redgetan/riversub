@@ -38,6 +38,30 @@ river.model.Track = Backbone.Model.extend({
     Backbone.on("editorseek", this.unsetPauseOnTrackEnd.bind(this));
     Backbone.on("tracksuccess", this.onTrackSuccess.bind(this));
     Backbone.on("trackchange", this.onTrackChange.bind(this));
+
+  },
+
+  autoSetStartEndTime: function() {
+    this.timeUpdateCallback = this.onTimeUpdate.bind(this);
+    this.popcorn.on("timeupdate", this.timeUpdateCallback);
+  },
+
+  removeAutoSetStartEndTime: function() {
+    if (typeof this.timeUpdateCallback !== "undefined") {
+      this.popcorn.off("timeupdate", this.timeUpdateCallback);
+    }
+  },
+
+  normalizeTime: function(time) {
+    return river.utility.normalizeTime(time);
+  },
+
+  onTimeUpdate: function() {
+    var time = Math.floor(this.popcorn.media.currentTime * 1000) / 1000;
+    var endTime = this.normalizeTime(time + editor.DEFAULT_TRACK_DURATION);
+    
+    this.setStartTime(time);
+    this.setEndTime(endTime);
   },
 
   prev: function() {
@@ -129,11 +153,20 @@ river.model.Track = Backbone.Model.extend({
   },
 
   onAdd: function() {
+    if (this.collection.indexOf(this) === 0 && this.isGhost) {
+      this.autoSetStartEndTime();
+    }
+
     Backbone.trigger("trackadd", this);
   },
 
   removeGhost: function() {
+    this.removeAutoSetStartEndTime();
     this.isGhost = false;
+
+    _.each(this.views,function(view){
+      view.removeGhost();
+    });
   },
 
   updateSubtitleAttributes: function() {
@@ -232,10 +265,6 @@ river.model.Track = Backbone.Model.extend({
     Backbone.trigger("ghosttrackend",this);
 
 
-    _.each(this.views,function(view){
-      view.removeGhost();
-    });
-
     this.save();
   },
 
@@ -320,7 +349,6 @@ river.model.TrackSet = Backbone.Collection.extend({
   localStorage: new Backbone.LocalStorage("river-local"),
 
   initialize: function(attributes, options) {
-    // setInterval(this.autoSaveTracks.bind(this),5000);
   },
 
   comparator: function(track) {

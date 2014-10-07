@@ -31,6 +31,10 @@ $.extend(river.utility,{
         .replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@')
         .split('\n');
     console.log(stack);
+  },
+
+  normalizeTime: function(time) {
+    return Math.floor(time * 1000) / 1000;
   }
 });
 

@@ -128,12 +128,22 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       var track = $target.data("model");
       this.replayTrackAndEdit(track);
     } else {
+      if (this.currentTrack.isGhost) {
+        var endTime = this.normalizeTime(time + this.DEFAULT_TRACK_DURATION)
+
+        this.currentTrack.setStartTime(time);  
+        this.currentTrack.setEndTime(endTime);  
+      }
       this.seek(time);  
     }
   },
 
+  normalizeTime: function(time) {
+    return river.utility.normalizeTime(time);
+  },
+
   onTrackStartChange: function(track) {
-    if (track.isValid()) {
+    if (track.isValid() && !track.isGhost) {
       this.seek(track.startTime(), function() {
         this.playTillEndOfTrack(track);
       }.bind(this));
@@ -141,7 +151,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackEndChange: function(track) {
-    if (track.isValid()) {
+    if (track.isValid() && !track.isGhost) {
       this.seek(track.startTime(), function() {
         this.playTillEndOfTrack(track);
       }.bind(this));
@@ -676,7 +686,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var track;
 
     if (editor.tracks.length === 0) {
-      this.addFullTrack(0, {isGhost: false, skip_track_slot: true});
+      this.addFullTrack(0, {isGhost: true, skip_track_slot: true});
     }
 
     track = this.tracks.at(0);
@@ -1196,8 +1206,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       }
       track.subtitle.view.render(); //temp hack to fix bug
     } catch(e) {
-      track.remove();
-      throw e;
+      // will get here if duration becomes negative. This can get triggered when track is ghost
+      // and user seek to before track start time. In this case assume user wants to move ghost 
+      // track to that point
+
+      track.setStartTime(time);
+
+      // track.remove();
+      // throw e;
     }
   },
 

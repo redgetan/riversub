@@ -268,12 +268,12 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   onGhostTrackStart: function(track) {
-    this.trackFillProgressCallback = this.renderFillProgress.bind(this,track);
-    this.media.addEventListener("timeupdate",this.trackFillProgressCallback);
+    // this.trackFillProgressCallback = this.renderFillProgress.bind(this,track);
+    // this.media.addEventListener("timeupdate",this.trackFillProgressCallback);
   },
 
   onGhostTrackEnd: function(track) {
-    this.media.removeEventListener("timeupdate",this.trackFillProgressCallback);
+    // this.media.removeEventListener("timeupdate",this.trackFillProgressCallback);
   },
 
   onMouseDownHandler: function(event) {
@@ -478,7 +478,7 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   renderTrack: function(track) {
-    if (track.isGhost) return;
+    // if (track.isGhost) return;
 
     var duration = track.endTime() - track.startTime();
 
