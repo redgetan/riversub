@@ -93,6 +93,8 @@ river.model.Track = Backbone.Model.extend({
 
 
   onTrackChange: function(track) {
+    if (this.isRemoved()) return;
+
     // if changes in other track makes this track valid/invalid, show it as well
     if (this.isValid()) {
       this.showValid();
