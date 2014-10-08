@@ -39,8 +39,8 @@ div#river_player #video_url {
 }
 
 div#editor #controls {
-	width: 600px;
-	margin: auto;
+	margin-bottom: 20px;
+	/*margin: auto;*/
 }
 
 div#editor #controls,
@@ -511,8 +511,12 @@ a#preview_btn {
 	border: solid 1px gray;
 }
 
-#main_controls button {
+#controls button {
 	background-color: white;
+}
+
+#play_btn {
+	/*min-width: 77px;  to match width of pause btn */
 }
 
 #add_sub_input {
@@ -578,7 +582,7 @@ a#preview_btn {
 	color: black;
 	font-size: 14px;
 	/*margin-top: 10px;*/
-	/*text-align: right;*/
+	text-align: right;
 	/*float: right;*/
 	height: 30px;
 	/*border: solid;*/

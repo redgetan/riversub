@@ -187,8 +187,8 @@ river.ui.Subtitle = Backbone.View.extend({
   onSubtitleTextKeyUp: function(event) {
     var text = this.$text.find("input").val();
     this.model.set({ "text": text});
-    if (this.model.track.isGhost) {
-      this.model.track.removeGhost();  
+    if (this.model.track.isAutoSet) {
+      this.model.track.removeAutoSetStartEndTime();  
       this.model.track.setPauseOnTrackEnd();  
     }
   },
