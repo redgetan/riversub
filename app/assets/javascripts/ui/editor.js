@@ -377,8 +377,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $("#seek_head_body").hide();
 
-    // this.$backwardBtn.hide();
-    // this.$forwardBtn.hide();
+    this.$backwardBtn.hide();
+    this.$forwardBtn.hide();
 
     this.$startTimingBtn = $("#start_timing_btn");
     this.$startTimingBtn.attr("disabled","disabled");
