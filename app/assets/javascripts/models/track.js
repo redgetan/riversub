@@ -153,6 +153,8 @@ river.model.Track = Backbone.Model.extend({
   },
 
   onAdd: function() {
+    this.save(true);
+
     if (this.collection.indexOf(this) === 0 && this.isGhost) {
       this.autoSetStartEndTime();
     }
@@ -177,10 +179,14 @@ river.model.Track = Backbone.Model.extend({
     Backbone.trigger("trackrequest");
   },
 
-  save: function() {
-    if (this.isGhost) return;
-    if (this.hasChanged()) {
+  save: function(force) {
+    if (force) {
       Backbone.trigger("editor.sync","save",this);
+    } else {
+      if (this.isGhost) return;
+      if (this.hasChanged()) {
+        Backbone.trigger("editor.sync","save",this);
+      }
     }
   },
 

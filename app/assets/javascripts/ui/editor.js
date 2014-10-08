@@ -615,14 +615,25 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   goToNextTrack: function() {
     var nextTrack = this.focusedTrack.next();
+    var track;
+    var time;
+    var timeGap = this.getTimeGap(this.currentTrack, nextTrack);
 
-    if (typeof nextTrack !== "undefined") {
-      this.replayTrackAndEdit(nextTrack);
+    if (typeof nextTrack !== "undefined" && timeGap <= this.TRACK_MARGIN) {
+      track = nextTrack;
     } else {
-      var time = this.currentTrack.endTime() + this.TRACK_MARGIN;
-      time = Math.round(time * 1000) / 1000;
-      var track = this.addFullTrack(time, { isGhost: false });
-      this.replayTrackAndEdit(track);
+      time = this.normalizeTime(this.currentTrack.endTime() + this.TRACK_MARGIN);
+      track = this.addFullTrack(time, { isGhost: false });
+    }
+
+    this.replayTrackAndEdit(track);
+  },
+
+  getTimeGap: function(currentTrack, nextTrack) {
+    if (typeof nextTrack === "undefined") {
+      return this.normalizeTime(this.mediaDuration() - currentTrack.endTime());
+    } else {
+      return this.normalizeTime(nextTrack.startTime() - currentTrack.endTime());
     }
   },
 
