@@ -516,7 +516,8 @@ a#preview_btn {
 }
 
 #play_btn {
-	/*min-width: 77px;  to match width of pause btn */
+	/*to match width of pause btn */
+	min-width: 77px;  
 }
 
 #add_sub_input {
