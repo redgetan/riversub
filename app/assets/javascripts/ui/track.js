@@ -149,6 +149,11 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
 
     this.model.subtitle.set({ "text": text});
 
+    if (this.model.isAutoSet) {
+      this.model.removeAutoSetStartEndTime();  
+      this.model.setPauseOnTrackEnd();  
+    }
+
     Backbone.trigger("trackinputkeyup",event, text, this.model);
   },
 

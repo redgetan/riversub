@@ -426,7 +426,7 @@ div#editor-bottom {
 }
 
 #controls #stop_timing_btn {
-	background-color: lightcoral;
+	background-color: rgb(128, 164, 240);
 	color: white;
 }
 
