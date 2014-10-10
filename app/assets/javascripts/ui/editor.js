@@ -140,23 +140,23 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackStartChange: function(track) {
-    if (track.isValid() && !track.isAutoSet) {
-      this.seek(track.startTime(), function() {
-        this.playTillEndOfTrack(track);
-      }.bind(this));
-    }
+    // if (track.isValid() && !track.isAutoSet) {
+    //   this.seek(track.startTime(), function() {
+    //     this.playTillEndOfTrack(track);
+    //   }.bind(this));
+    // }
   },
 
   onTrackEndChange: function(track) {
-    if (track.isValid() && !track.shouldAutoSetStartEnd()) {
-      this.seek(track.startTime(), function() {
-        this.playTillEndOfTrack(track);
-      }.bind(this));
-    }
+    // if (track.isValid() && !track.shouldAutoSetStartEnd()) {
+    //   this.seek(track.startTime(), function() {
+    //     this.playTillEndOfTrack(track);
+    //   }.bind(this));
+    // }
   },
 
   onSubtitleLineClick: function(subtitle, $target) {
-    if (!$target.hasClass("sub_enter")) {
+    if (!$target.hasClass("sub_enter") && !$target.hasClass("sub_text_area")) {
       var track = subtitle.track;
 
       this.seek(track.startTime(), function() {

@@ -170,7 +170,10 @@ river.model.Track = Backbone.Model.extend({
   },
 
   shouldAutoSetStartEnd: function() {
-    return this.collection.indexOf(this) === 0 && this.startTime() === 0 && this.text().length === 0;
+    return repo.timings.length <= 1 &&
+           this.collection.indexOf(this) === 0 && 
+           this.startTime() === 0 
+           && this.text().length === 0;
   },
 
   removeGhost: function() {
