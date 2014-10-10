@@ -619,7 +619,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var time;
     var timeGap = this.getTimeGap(this.currentTrack, nextTrack);
 
-    if (typeof nextTrack !== "undefined" && timeGap <= this.TRACK_MARGIN) {
+    if (typeof nextTrack !== "undefined" && timeGap <= this.DEFAULT_TRACK_DURATION) {
       track = nextTrack;
     } else {
       time = this.normalizeTime(this.currentTrack.endTime() + this.TRACK_MARGIN);
