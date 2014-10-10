@@ -272,11 +272,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                 "<div id='editor-bottom' class='row'> " +
                   "<div id='controls' class='span12'> " +
                     "<div id='main_controls' class='pull-left'> " +
-                      "<button type='button' id='play_btn' class='river_btn'><i class='icon-play'></i>   Play</button> " +
-                      "<button type='button' id='pause_btn' class='river_btn'><i class='icon-pause'></i> Pause</button> " +
+                      "<button type='button' id='backward_btn' class='river_btn'><i class='icon-backward'></i> </button> " +
+                      "<button type='button' id='play_btn' class='river_btn'><i class='icon-play'></i>   </button> " +
+                      "<button type='button' id='pause_btn' class='river_btn'><i class='icon-pause'></i> </button> " +
+                      "<button type='button' id='forward_btn' class='river_btn'><i class='icon-forward'></i> </button> " +
                       "<button type='button' id='replay_btn' class='river_btn'><i class='icon-refresh'></i> Replay</button> " +
-                      "<button type='button' id='backward_btn' class='river_btn'><i class='icon-backward'></i> Rewind</button> " +
-                      "<button type='button' id='forward_btn' class='river_btn'><i class='icon-forward'></i> Forward</button> " +
                       "<button id='start_timing_btn' class='river_btn'><i class='icon-plus'></i> Insert</button> " +
                       "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i> End Insert</button> " +
                     "</div> " +
@@ -377,8 +377,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $("#seek_head_body").hide();
 
-    this.$backwardBtn.hide();
-    this.$forwardBtn.hide();
+    // this.$backwardBtn.hide();
+    // this.$forwardBtn.hide();
 
     this.$startTimingBtn = $("#start_timing_btn");
     this.$startTimingBtn.attr("disabled","disabled");
