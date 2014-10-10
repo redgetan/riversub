@@ -131,12 +131,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       var track = $target.data("model");
       this.replayTrackAndEdit(track);
     } else {
-      if (this.currentTrack.isGhost) {
-        var endTime = this.normalizeTime(time + this.DEFAULT_TRACK_DURATION)
-
-        this.currentTrack.setStartTime(time);  
-        this.currentTrack.setEndTime(endTime);  
-      }
       this.seek(time);  
     }
   },
@@ -224,6 +218,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         $(".introjs-nextbutton").removeClass("introjs-disabled");
         $(".introjs-nextbutton").trigger("click");
       }
+    }
+
+    if (this.currentTrack) {
+      this.seekTrackAndEdit(this.currentTrack);
     }
 
   },
