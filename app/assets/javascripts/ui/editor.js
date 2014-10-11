@@ -148,7 +148,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onSubtitleLineClick: function(subtitle, $target) {
-    if (!$target.hasClass("sub_enter") && !$target.hasClass("ui-spinner-input")) {
+    if (!$target.hasClass("sub_enter")) {
       var track = subtitle.track;
 
       this.seek(track.startTime(), function() {
@@ -623,13 +623,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var nextTrack = this.focusedTrack.next();
     var track;
     var time;
-    var timeGap = this.getTimeGap(this.currentTrack, nextTrack);
+    var timeGap = this.getTimeGap(this.focusedTrack, nextTrack);
 
     if (typeof nextTrack !== "undefined" && timeGap <= this.DEFAULT_TRACK_DURATION) {
       track = nextTrack;
     } else {
-      time = this.normalizeTime(this.currentTrack.endTime() + this.TRACK_MARGIN);
-      track = this.addFullTrack(time, { isGhost: false });
+      time = this.normalizeTime(this.focusedTrack.endTime() + this.TRACK_MARGIN);
+      track = this.addFullTrack(time, { isGhost: false, isAddSubBackward: false });
     }
 
     this.replayTrackAndEdit(track);
@@ -701,6 +701,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onEditorReady: function(event) {
     this.$addSubInput.focus();
+
+    this.currentTrack = this.tracks.at(0);;
+
     $(document).on("keydown",this.onDocumentKeydown.bind(this));
     $(document).on("keyup",this.onDocumentKeyup.bind(this));
   },
@@ -912,8 +915,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onSubtitleLineKeydown: function(subtitle) {
     if (event.which == 13 ) { // ENTER
-      subtitle.closeEditor();
-      this.play();
+      this.goToNextTrack();
     } 
   },
 
@@ -1092,7 +1094,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (options.skip_track_slot) {
       var endTime = startTime + this.DEFAULT_TRACK_DURATION;
     } else {
-      var trackSlot = this.getTrackSlot(startTime);
+      var trackSlot = this.getTrackSlot(startTime, options.isAddSubBackward);
       startTime = trackSlot.startTime;
       var endTime   = trackSlot.endTime;
     }
@@ -1110,11 +1112,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     return track;
   },
 
-  getTrackSlot: function(currentTime) {
+  getTrackSlot: function(currentTime, isAddSubBackward) {
     var prevNearestEdgeTime = this.prevNearestEdgeTime(currentTime);
     var nextNearestEdgeTime = this.nextNearestEdgeTime(currentTime);
 
-    if (this.addSubBackward) {
+    if (typeof isAddSubBackward === "undefined") {
+      isAddSubBackward = this.addSubBackward;
+    }
+
+    if (isAddSubBackward) {
       endTime   = currentTime;   
       startTime = endTime - this.DEFAULT_TRACK_DURATION;   
     } else {

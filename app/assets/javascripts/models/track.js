@@ -38,6 +38,7 @@ river.model.Track = Backbone.Model.extend({
     Backbone.on("editorseek", this.unsetPauseOnTrackEnd.bind(this));
     Backbone.on("tracksuccess", this.onTrackSuccess.bind(this));
     Backbone.on("trackchange", this.onTrackChange.bind(this));
+    Backbone.on("trackremove", this.onTrackRemove.bind(this));
 
   },
 
@@ -82,6 +83,17 @@ river.model.Track = Backbone.Model.extend({
 
 
   onTrackChange: function(track) {
+    if (this.isRemoved()) return;
+
+    // if changes in other track makes this track valid/invalid, show it as well
+    if (this.isValid()) {
+      this.showValid();
+    } else {
+      this.showInvalid();
+    }
+  },
+
+  onTrackRemove: function(track) {
     if (this.isRemoved()) return;
 
     // if changes in other track makes this track valid/invalid, show it as well
