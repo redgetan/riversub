@@ -1058,11 +1058,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       return;  
     }
 
-    this.addTrack(this.media.currentTime,{
-      postEndGhostCallback: function(track){
+    var track = this.addFullTrack(this.media.currentTime, { isAddSubBackward: false });
+    // this.addTrack(this.media.currentTime,{
+      // postEndGhostCallback: function(track){
         this.requestSubtitleFromUser(track);
-      }.bind(this)
-    });
+      // }.bind(this)
+    // });
   },
 
   addTrack: function(time, callbacks) {

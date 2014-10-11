@@ -183,9 +183,6 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
   onCloseMouseDown: function(event) {
     event.stopPropagation();
 
-    // if only 1 is remaining, do not allow deletion. we always want at least one to be active
-    if (this.model.collection.length === 1) return;
-
     this.model.remove();
   },
 
