@@ -173,17 +173,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // enter key
     if (event.which == 13 ) {
       this.addSubtitledTrack(text);
+      this.$addSubInput.val("");
+      this.play();
     }
   },
 
   addSubtitledTrack: function(text) {
     try {
-      this.addTrack(this.media.currentTime,{
-        preEndGhostCallback: function(track){
-          track.subtitle.set({ "text": text});
-          this.play();
-        }.bind(this)
-      });
+      var track = this.addFullTrack(this.media.currentTime, { isGhost: false });
+      track.subtitle.set({ "text": text});
     } catch (e) {
       if (e.name === "track_overlap") {
         this.showErrorOnStatusBar("Overlap Detected");  
@@ -1043,6 +1041,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.preventSubtileInputFromLosingFocus(event);
     var text = this.$addSubInput.val();
     this.addSubtitledTrack(text);
+    this.$addSubInput.val("");
+    this.play();
   },
 
   onAddSubBackwardCheckboxClick: function(event) {
