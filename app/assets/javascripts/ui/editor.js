@@ -268,20 +268,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                   // "</div> " +
                 "</div> " +
                 "<div id='editor-bottom' class='row'> " +
-                  "<div id='controls' class='span12'> " +
-                    "<div id='main_controls' class='pull-left'> " +
-                      "<button type='button' id='backward_btn' class='river_btn'><i class='icon-backward'></i> </button> " +
-                      "<button type='button' id='play_btn' class='river_btn'><i class='icon-play'></i>   </button> " +
-                      "<button type='button' id='pause_btn' class='river_btn'><i class='icon-pause'></i> </button> " +
-                      "<button type='button' id='forward_btn' class='river_btn'><i class='icon-forward'></i> </button> " +
-                      "<button type='button' id='replay_btn' class='river_btn'><i class='icon-refresh'></i> Replay</button> " +
-                      "<button id='start_timing_btn' class='river_btn'><i class='icon-plus'></i> Insert</button> " +
-                      "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i> End Insert</button> " +
-                    "</div> " +
-                    "<div id='tab_controls' class='pull-right'> " +
-                        "<button type='button' id='timeline_btn' class='river_btn'> Timeline</button> " +
-                        "<button type='button' id='subtitle_btn' class='river_btn'> Subtitle</button> " +
-                    "</div> " +
+                  "<div id='tab_controls' class='pull-right'> " +
+                      "<button type='button' id='timeline_btn' class='river_btn'> Timeline</button> " +
+                      "<button type='button' id='subtitle_btn' class='river_btn'> Subtitle</button> " +
                   "</div> " +
                   "<div class='span12'> " +
                     "<ul class='nav nav-tabs span12'>" +
@@ -298,6 +287,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
                         "<div id='timeline_container'>" +
                         "</div> " +
+                        "<div id='controls' class='span12'> " +
+                          "<div id='main_controls' class='pull-left'> " +
+                            "<button id='start_timing_btn' class='river_btn'><i class='icon-plus'></i> Insert</button> " +
+                            "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i> End Insert</button> " +
+                          "</div> " +
+                        "</div> " +
                       "</div>" +
                       "<div class='tab-pane' id='subtitle_tab'>" +
 
@@ -313,7 +308,20 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                             //   "</select>" +
                             // "</span> " +
                         "</div> " +   // #subtitle_container
-
+                        "<div id='add_sub_container' class='clear subtitle'> " +
+                          "<div id='controls' class='span12'> " +
+                            "<div id='main_controls' class='pull-left'> " +
+                              "<button type='button' id='backward_btn' class='river_btn'><i class='icon-backward'></i> </button> " +
+                              "<button type='button' id='play_btn' class='river_btn'><i class='icon-play'></i>   </button> " +
+                              "<button type='button' id='pause_btn' class='river_btn'><i class='icon-pause'></i> </button> " +
+                              "<button type='button' id='forward_btn' class='river_btn'><i class='icon-forward'></i> </button> " +
+                              "<button type='button' id='replay_btn' class='river_btn'><i class='icon-refresh'></i> Replay</button> " +
+                            "</div> " +
+                            "<div class='text'> " +
+                              "<input class='sub_text_area'> " +
+                            "</div> " +   
+                          "</div> " +   
+                        "</div> " +   
                       "</div>" +   // tab pane
                       "<div class='tab-pane' id='download_tab'>" +
                         "<div id='download_container'> " +
@@ -609,7 +617,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (event.which === 13) { 
       // enter key
 
-      this.goToNextTrack();
+      // this.goToNextTrack();
     }
   },
 
@@ -804,7 +812,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   openEditor: function(track) {
     if ($(".tab-pane.active").attr("id") === "subtitle_tab" ) {
-      track.subtitle.openEditor();
+      // track.subtitle.openEditor();
     } else {
      track.openEditor();
     }

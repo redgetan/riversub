@@ -687,3 +687,7 @@ textarea {
 	width: 95px;
 }
 
+
+#add_sub_container .sub_text_area {
+	border: solid 1px #333;
+}
