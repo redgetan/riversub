@@ -156,7 +156,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onSubtitleLineClick: function(subtitle, $target) {
-    if (!$target.hasClass("sub_enter") && !$target.hasClass("sub_text_area")) {
+    if (!$target.hasClass("sub_enter") && !$target.hasClass("ui-spinner-input")) {
       var track = subtitle.track;
 
       this.seek(track.startTime(), function() {
