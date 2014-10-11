@@ -282,10 +282,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "</div> " +
                         "<div id='controls' class='span12'> " +
                           "<div id='main_controls' class=''> " +
-                            "<button type='button' id='backward_btn' class='river_btn'><i class='icon-backward'></i> </button> " +
+                            "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
                             "<button type='button' class='play_btn river_btn'><i class='icon-play'></i>   </button> " +
                             "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
-                            "<button type='button' id='forward_btn' class='river_btn'><i class='icon-forward'></i> </button> " +
+                            "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
                             "<button id='start_timing_btn' class='river_btn'><i class='icon-plus'></i> Insert</button> " +
                             "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i> End </button> " +
                           "</div> " +
@@ -308,10 +308,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<div id='add_sub_container' class=''> " +
                           "<div id='controls' class='span12 input-append'> " +
                             "<div id='main_controls' class='pull-left'> " +
-                              "<button type='button' id='backward_btn' class='river_btn'><i class='icon-backward'></i> </button> " +
+                              "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
                               "<button type='button' class='play_btn river_btn'><i class='icon-play'></i>   </button> " +
                               "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
-                              "<button type='button' id='forward_btn' class='river_btn'><i class='icon-forward'></i> </button> " +
+                              "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
                               // "<button type='button' id='replay_btn' class='river_btn'><i class='icon-refresh'></i> Replay</button> " +
                             "</div> " +
                             "<input id='add_sub_input' class='sub_text_area' placeholder='Enter Subtitle Here'> " +
@@ -374,8 +374,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$timelineBtn = $("#timeline_btn");
     this.$subtitleBtn = $("#subtitle_btn");
 
-    this.$backwardBtn = $("#backward_btn");
-    this.$forwardBtn = $("#forward_btn");
+    this.$backwardBtn = $(".backward_btn");
+    this.$forwardBtn = $(".forward_btn");
 
     // $("#seek_head_body").hide();
 
