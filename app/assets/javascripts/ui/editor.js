@@ -181,7 +181,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.addTrack(this.media.currentTime,{
         preEndGhostCallback: function(track){
           track.subtitle.set({ "text": text});
-          this.$subtitleDisplay.text(text);
           this.play();
         }.bind(this)
       });
@@ -1059,11 +1058,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
 
     var track = this.addFullTrack(this.media.currentTime, { isAddSubBackward: false });
-    // this.addTrack(this.media.currentTime,{
-      // postEndGhostCallback: function(track){
-        this.requestSubtitleFromUser(track);
-      // }.bind(this)
-    // });
+    this.requestSubtitleFromUser(track);
   },
 
   addTrack: function(time, callbacks) {
@@ -1108,6 +1103,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     };
 
     var track = new river.model.Track(attributes, { popcorn: this.popcorn, isGhost: options.isGhost});
+    track.fadingHighlight();
+
     this.tracks.add(track);
 
     return track;
