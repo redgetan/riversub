@@ -632,6 +632,10 @@ a.owner_label {
   cursor: pointer;
 }
 
+#editor #controls .river_btn {
+  padding: 4px 10px;
+}
+
 .white_btn {
   background-color: white;
   border: solid 1px black;

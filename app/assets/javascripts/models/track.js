@@ -32,8 +32,6 @@ river.model.Track = Backbone.Model.extend({
       });
     }
 
-    this.isAutoSet = false;
-
     this.listenTo(this, "change", this.onChanged);
     this.listenTo(this, "add", this.onAdd);
     this.listenTo(this, "request", this.onRequest);
@@ -41,20 +39,6 @@ river.model.Track = Backbone.Model.extend({
     Backbone.on("tracksuccess", this.onTrackSuccess.bind(this));
     Backbone.on("trackchange", this.onTrackChange.bind(this));
 
-  },
-
-  autoSetStartEndTime: function() {
-    this.isAutoSet = true;
-    this.timeUpdateCallback = this.onTimeUpdate.bind(this);
-    this.popcorn.on("timeupdate", this.timeUpdateCallback);
-  },
-
-  removeAutoSetStartEndTime: function() {
-    this.isAutoSet = false;
-
-    if (typeof this.timeUpdateCallback !== "undefined") {
-      this.popcorn.off("timeupdate", this.timeUpdateCallback);
-    }
   },
 
   normalizeTime: function(time) {
@@ -160,20 +144,7 @@ river.model.Track = Backbone.Model.extend({
   },
 
   onAdd: function() {
-    this.save(true);
-
-    if (this.shouldAutoSetStartEnd()) {
-      this.autoSetStartEndTime();
-    }
-
     Backbone.trigger("trackadd", this);
-  },
-
-  shouldAutoSetStartEnd: function() {
-    return repo.timings.length <= 1 &&
-           this.collection.indexOf(this) === 0 && 
-           this.startTime() === 0 
-           && this.text().length === 0;
   },
 
   removeGhost: function() {
@@ -214,6 +185,11 @@ river.model.Track = Backbone.Model.extend({
   openEditor: function() {
     this.expandedView.openEditor();
     this.highlight();
+  },
+
+  closeEditor: function() {
+    track.expandedView.closeEditor();
+    track.unhighlight();  
   },
 
   toJSON: function() {

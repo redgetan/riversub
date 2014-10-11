@@ -48,7 +48,7 @@ river.ui.SubtitleList = Backbone.View.extend({
     if (subtitle === null) { return; }
 
     if ($target.hasClass("sub_enter")) {
-      Backbone.trigger("subtitleenter");
+      Backbone.trigger("subtitleenter", subtitle);
     } else {
       var field = $target.data("field");
       subtitle.openEditor({field: field});

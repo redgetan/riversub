@@ -40,7 +40,17 @@ div#river_player #video_url {
 
 div#editor #controls {
 	margin-bottom: 20px;
+	margin-left: 0px;
 	/*margin: auto;*/
+}
+
+#timeline_tab #controls {
+	margin-top: 20px;
+}
+
+#timeline_tab #main_controls {
+	margin: auto;
+	width: 250px;
 }
 
 div#editor #controls,
@@ -257,10 +267,15 @@ div#editor-bottom {
 	line-height: 10px;
 }
 
+.subtitle:hover .sub_enter {
+	display: inline-block;	
+}
+
 #editor .subtitle.focused .sub_enter {
 	display: inline-block;	
 }
 
+.subtitle:hover .sub_text_area,
 .sub_text_area:focus,
 .sub_text_area:hover {
 	color: black !important;
@@ -423,6 +438,7 @@ div#editor-bottom {
 }
 
 #controls #start_timing_btn {
+	/*min-width: 101px;*/
 }
 
 #controls #stop_timing_btn {
@@ -507,8 +523,8 @@ a#preview_btn {
 
 #add_sub_container {
 	margin-bottom: 0px;
-	margin-left: 5px;
-	border: solid 1px gray;
+	border: solid 1px lightgray;
+	height: 30px;
 }
 
 #controls button {
@@ -521,15 +537,20 @@ a#preview_btn {
 }
 
 #add_sub_input {
+	border: solid 1px #eee !important;
   font-size: 16px;
-  width: 300px;
+  width: 700px;
   border-radius: 0px;
+  height: 20px;
+  padding: 4px;
 }
 
 #add_sub_btn {
-	width: 60px;
+	width: 125px;
 	font-weight: bolder;
   border-radius: 0px;
+  cursor: pointer;
+  background-color: lightblue !important;
 }
 
 #add_sub_options {
@@ -583,7 +604,7 @@ a#preview_btn {
 	color: black;
 	font-size: 14px;
 	/*margin-top: 10px;*/
-	text-align: right;
+	/*text-right: align;*/
 	/*float: right;*/
 	height: 30px;
 	/*border: solid;*/
@@ -620,6 +641,7 @@ a#preview_btn {
 	font-family: Arial, sans-serif !important;
 }
 
+.subtitle:hover .sub_text_area,
 .subtitle.selected .start_time .sub_text_area,
 .subtitle.selected .end_time   .sub_text_area,
 .subtitle.focused  .start_time .sub_text_area,

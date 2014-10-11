@@ -55,6 +55,13 @@ river.model.Subtitle = Backbone.Model.extend({
 
   openEditor: function(options) {
     this.view.openEditor(options);
+    this.highlight();
+  },
+
+  closeEditor: function(options) {
+    this.view.closeEditor(options);
+    this.unhighlight();
+    this.track.unsetPauseOnTrackEnd();
   },
 
   prev: function() {

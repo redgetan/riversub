@@ -26,7 +26,8 @@ river.ui.Subtitle = Backbone.View.extend({
     var content = "<div class='start_time'></div>" +
                   "<div class='end_time'></div>" +
                   "<div class='text input-append'>"+ 
-                 "</div>" +
+                    // "<a class='btn btn-inverse sub_enter'>Edit</a>" +
+                  "</div>" +
                   "<div class='delete'>" +
                     "<a href='#' class='delete_sub_line'>x</a>" +
                   "</div>";
@@ -173,23 +174,17 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$text.find("input").on("blur", this.editTextFinished.bind(this));
 
     this.$text.find("input").on("keydown", river.utility.resizeInput);
+    this.$text.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
     this.$text.find("input").on("keyup", this.onSubtitleTextKeyUp.bind(this));
   },
 
   onSubTextAreaKeydown: function(event) {
-    if (event.which == 13 ) { // ENTER
-      event.preventDefault();
-      $(event.target).blur();
-    } 
+    Backbone.trigger("subtitlelinekeydown", this.model);
   },
 
   onSubtitleTextKeyUp: function(event) {
     var text = this.$text.find("input").val();
     this.model.set({ "text": text});
-    if (this.model.track.isAutoSet) {
-      this.model.track.removeAutoSetStartEndTime();  
-      this.model.track.setPauseOnTrackEnd();  
-    }
   },
 
   isKeyAllowedInStartEnd: function(charcode) {
@@ -338,9 +333,6 @@ river.ui.Subtitle = Backbone.View.extend({
   onCloseClick: function(event) {
     event.stopPropagation();
 
-    // if only 1 is remaining, do not allow deletion. we always want at least one to be active
-    if (this.model.collection.length === 1) return;
-
     this.model.track.remove();
   },
 
@@ -353,10 +345,17 @@ river.ui.Subtitle = Backbone.View.extend({
 
     var $input = this.$el.find("." + options.field).find("input");
     $input.focus();  
+  },
 
-    if (!this.$el.hasClass("selected")) {
-      this.highlight();
+  closeEditor: function(options) {
+    options = options || {};
+
+    if (["start_time","end_time","text"].indexOf(options.field) === -1) {
+      options.field = "text";
     }
+
+    var $input = this.$el.find("." + options.field).find("input");
+    $input.blur();
   }
 
 });
