@@ -713,6 +713,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $(document).on("keydown",this.onDocumentKeydown.bind(this));
     $(document).on("keyup",this.onDocumentKeyup.bind(this));
+
+    this.play();
   },
 
   onPauseAdjust: function(correctPauseTime) {

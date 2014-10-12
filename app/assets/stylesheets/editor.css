@@ -67,6 +67,7 @@ div#editor-bottom {
 
 #timeline_container {
 	height: 128px;
+	margin-bottom: 25px;
   	/*padding: 10px;*/
 	/*border: solid 1px black ;*/
 }
@@ -202,6 +203,8 @@ div#editor-bottom {
 
 
 #subtitle_container {
+	margin-bottom: 25px;
+
 	/*margin-left: 20px;*/
   	/*padding: 10px;*/
 }
