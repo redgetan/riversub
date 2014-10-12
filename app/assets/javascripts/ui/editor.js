@@ -202,9 +202,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTabShown: function (e) {
     if ($(e.target).attr("href") === "#timeline_tab") {
       this.timeline.ensureCorrectWindowPosition();
+      $(".window_slider").show();
     }
 
     if ($(e.target).attr("href") === "#subtitle_tab") {
+      $(".window_slider").hide();
       if (this.intro._currentStep === 11) { 
         $(".introjs-nextbutton").removeClass("introjs-disabled");
         $(".introjs-nextbutton").trigger("click");
