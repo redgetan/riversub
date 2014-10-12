@@ -293,7 +293,7 @@ div#editor-bottom {
 }
 
 #editor #subtitle_list {
-	border: solid 1px lightgray;
+	/*border: solid 1px lightgray;*/
 }
 
 #editor #subtitle_list .header {

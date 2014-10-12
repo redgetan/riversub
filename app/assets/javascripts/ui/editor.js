@@ -213,6 +213,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTabShown: function (e) {
     if ($(e.target).attr("href") === "#timeline_tab") {
       this.timeline.ensureCorrectWindowPosition();
+
       $(".window_slider").show();
     }
 
@@ -225,9 +226,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
 
     if (this.currentTrack) {
+      if (this.currentTrack.isGhost) {
+        this.safeEndGhostTrack(this.currentTrack);
+      }
       this.seekTrackAndEdit(this.currentTrack);
     }
-
   },
 
   getEditorElement: function() {
@@ -300,8 +303,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                             // "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
                             "<button type='button' class='timeline_btn river_btn'> <i class='icon-film'></i></button> " +
                             "<button type='button' class='subtitle_btn river_btn'> <i class='icon-list'></i></button> " +
-                            "<button id='start_timing_btn' class='river_btn'><i class='icon-plus'></i> Insert</button> " +
-                            "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i> End </button> " +
+                            "<button id='start_timing_btn' class='river_btn'><i class='icon-plus'></i> Start Time</button> " +
+                            "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i> End Time</button> " +
                           "</div> " +
                         "</div> " +
                       "</div>" +
@@ -720,7 +723,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onEditorReady: function(event) {
     this.$addSubInput.focus();
 
-    this.currentTrack = this.tracks.at(0);;
+    this.currentTrack = this.tracks.at(0);
 
     $(document).on("keydown",this.onDocumentKeydown.bind(this));
     $(document).on("keyup",this.onDocumentKeyup.bind(this));
@@ -831,6 +834,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
      track.openEditor();
     }
   },
+
+  closeEditor: function(track) {
+    if ($(".tab-pane.active").attr("id") === "subtitle_tab" ) {
+      track.subtitle.closeEditor();
+    } else {
+     track.closeEditor();
+    }
+  },
+
 
   onGhostTrackStart: function(track) {
     this.isGhostTrackStarted = true;
@@ -1016,6 +1028,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onStartTimingBtn: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
+
+    if (typeof this.focusedTrack !== "undefined") {
+      this.focusedTrack.closeEditor();
+    }
 
     if (this.$startTimingBtn.attr("disabled") == "disabled") return;
     this.startTiming = true;
