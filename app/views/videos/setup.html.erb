@@ -30,6 +30,13 @@
                 </label>
               </li>
             <% end %>
+
+            <% if current_user && current_user.groups.present? %>
+              <li>
+                <h4>Choose group to release under</h4>
+                <%= select_tag("group_id", options_for_select(Group.selection_options_for(current_user))) %>
+              </li>
+            <% end %>
           </ol>
         </div>
         <div class="center">

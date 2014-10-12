@@ -21,5 +21,12 @@ class Group < ActiveRecord::Base
     self.memberships.create!(user_id: self.creator.id)  
   end
 
+  def self.selection_options_for(user)
+    no_group    = ["None", nil]
+    user_groups = user.groups.map { |group|  [group.name,group.id] }
+
+    user_groups.unshift(no_group)
+  end
+
 
 end

@@ -53,6 +53,10 @@ class VideosController < ApplicationController
     if params[:copy_timing_from].present?
       @repo.copy_timing_from!(params[:copy_timing_from]) 
     end
+
+    if params[:group_id].present?
+      @repo.group_repositories.create!(group_id: params[:group_id])
+    end
     
     redirect_to @repo.editor_url
   end
