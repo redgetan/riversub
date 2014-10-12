@@ -283,10 +283,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "</div> " +
                         "<div id='controls' class='span12 input-append'> " +
                           "<div id='main_controls' class='pull-left'> " +
-                            "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
-                            "<button type='button' class='play_btn river_btn'><i class='icon-play'></i>   </button> " +
-                            "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
-                            "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
+                            // "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
+                            // "<button type='button' class='play_btn river_btn'><i class='icon-play'></i>   </button> " +
+                            // "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
+                            // "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
                             "<button type='button' class='timeline_btn river_btn'> <i class='icon-film'></i></button> " +
                             "<button type='button' class='subtitle_btn river_btn'> <i class='icon-list'></i></button> " +
                             "<button id='start_timing_btn' class='river_btn'><i class='icon-plus'></i> Insert</button> " +
@@ -311,10 +311,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<div id='add_sub_container' class=''> " +
                           "<div id='controls' class='span12 input-append'> " +
                             "<div id='main_controls' class='pull-left'> " +
-                              "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
-                              "<button type='button' class='play_btn river_btn'><i class='icon-play'></i>   </button> " +
-                              "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
-                              "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
+                              // "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
+                              // "<button type='button' class='play_btn river_btn'><i class='icon-play'></i>   </button> " +
+                              // "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
+                              // "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
                               "<button type='button' class='timeline_btn river_btn'> <i class='icon-film'></i></button> " +
                               "<button type='button' class='subtitle_btn river_btn'> <i class='icon-list'></i></button> " +
                               // "<button type='button' id='replay_btn' class='river_btn'><i class='icon-refresh'></i> Replay</button> " +

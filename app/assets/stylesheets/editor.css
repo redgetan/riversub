@@ -154,7 +154,7 @@ div#editor-bottom {
 	opacity: 0.9;
 	position: relative;
 	/*vertical-align: bottom;*/
-	top: 70px;
+	top: 100px;
 	float: left;
 	padding: 2px;
 }
@@ -542,7 +542,7 @@ a#preview_btn {
 #add_sub_input {
 	border: solid 1px #eee !important;
   font-size: 16px;
-  width: 627px;
+  width: 730px;
   border-radius: 0px;
   height: 20px;
   padding: 4px;
