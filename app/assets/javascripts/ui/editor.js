@@ -244,7 +244,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<div id='iframe_container'>" +
                           "<div id='iframe_overlay'>" +
                           "</div>" +
-                          // "<div id='overlay_btn'><i class='icon-play'></i></div>" +
+                          "<div id='overlay_btn'><i class='icon-play'></i></div>" +
                         "</div> " +
                         "<div id='subtitle_bar' class='span12 center'> " +
                           "<span id='subtitle_display' class='span5 center'></span> " +
@@ -713,8 +713,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $(document).on("keydown",this.onDocumentKeydown.bind(this));
     $(document).on("keyup",this.onDocumentKeyup.bind(this));
-
-    this.play();
   },
 
   onPauseAdjust: function(correctPauseTime) {
