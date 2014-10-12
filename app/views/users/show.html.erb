@@ -23,13 +23,13 @@
                       </div>
                     </li>
                   <% end %>
-                  <li class='span2 center'>
-                    <div class='thumbnail'>
-                      <% @user.groups.each do |group| %>
-                        <%= link_to group.name, group %>
-                      <% end %>
-                    </div>
-                  </li>
+                  <% @user.groups.each do |group| %>
+                    <li class='span2 center'>
+                      <div class='thumbnail'>
+                          <%= link_to group.name, group %>
+                      </div>
+                    </li>
+                  <% end %>
                 </ul>
               </div>
             </div>
