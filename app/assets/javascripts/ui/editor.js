@@ -202,9 +202,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTabShown: function (e) {
     if ($(e.target).attr("href") === "#timeline_tab") {
       this.timeline.ensureCorrectWindowPosition();
+      $(".window_slider").show();
     }
 
     if ($(e.target).attr("href") === "#subtitle_tab") {
+      $(".window_slider").hide();
       if (this.intro._currentStep === 11) { 
         $(".introjs-nextbutton").removeClass("introjs-disabled");
         $(".introjs-nextbutton").trigger("click");
@@ -279,12 +281,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
                         "<div id='timeline_container'>" +
                         "</div> " +
-                        "<div id='controls' class='span12'> " +
-                          "<div id='main_controls' class=''> " +
+                        "<div id='controls' class='span12 input-append'> " +
+                          "<div id='main_controls' class='pull-left'> " +
                             "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
                             "<button type='button' class='play_btn river_btn'><i class='icon-play'></i>   </button> " +
                             "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
                             "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
+                            "<button type='button' class='timeline_btn river_btn'> <i class='icon-film'></i></button> " +
+                            "<button type='button' class='subtitle_btn river_btn'> <i class='icon-list'></i></button> " +
                             "<button id='start_timing_btn' class='river_btn'><i class='icon-plus'></i> Insert</button> " +
                             "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i> End </button> " +
                           "</div> " +
@@ -311,6 +315,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                               "<button type='button' class='play_btn river_btn'><i class='icon-play'></i>   </button> " +
                               "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
                               "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
+                              "<button type='button' class='timeline_btn river_btn'> <i class='icon-film'></i></button> " +
+                              "<button type='button' class='subtitle_btn river_btn'> <i class='icon-list'></i></button> " +
                               // "<button type='button' id='replay_btn' class='river_btn'><i class='icon-refresh'></i> Replay</button> " +
                             "</div> " +
                             "<input id='add_sub_input' class='sub_text_area' placeholder='Enter Subtitle Here'> " +
@@ -370,13 +376,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$pauseBtn.hide();
 
     this.$replayBtn = $("#replay_btn");
-    this.$timelineBtn = $("#timeline_btn");
-    this.$subtitleBtn = $("#subtitle_btn");
+    this.$timelineBtn = $(".timeline_btn");
+    this.$subtitleBtn = $(".subtitle_btn");
 
     this.$backwardBtn = $(".backward_btn");
     this.$forwardBtn = $(".forward_btn");
 
-    // $("#seek_head_body").hide();
+    $("#seek_head_body").hide();
 
     // this.$backwardBtn.hide();
     // this.$forwardBtn.hide();
@@ -431,12 +437,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // tooltips
     this.$publishBtn.tooltip({title: "Make video public"});
     this.$previewBtn.tooltip({title: "See how it'll look in public"});
+    this.$timelineBtn.tooltip({title: "Timeline Mode"});
+    this.$subtitleBtn.tooltip({title: "Subtitle Mode"});
 
     $("footer").hide();
     // $("#controls").hide();
-    // $("#timeline_tab_anchor").hide();
-    // $("#subtitle_tab_anchor").hide();
-    // $("#download_tab_anchor").hide();
+    $("#timeline_tab_anchor").hide();
+    $("#subtitle_tab_anchor").hide();
+    $("#download_tab_anchor").hide();
   },
 
   setupIntroJS: function() {

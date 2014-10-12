@@ -49,8 +49,7 @@ div#editor #controls {
 }
 
 #timeline_tab #main_controls {
-	margin: auto;
-	width: 250px;
+	margin-top: 15px; 
 }
 
 div#editor #controls,
@@ -80,7 +79,7 @@ div#editor-bottom {
 
 #expanded.timeline {
 	cursor: cell;
-	height: 110px;
+	height: 145px;
 	border: solid 1px lightgray ;
 	overflow: hidden;
 }
@@ -100,7 +99,7 @@ div#editor-bottom {
 }
 
 #expanded #track_viewport {
-	height: 95px;
+	height: 129px;
 	width: inherit;
 	border-bottom: solid 1px gray;
 	position: relative;
@@ -438,11 +437,13 @@ div#editor-bottom {
 
 #controls #start_timing_btn {
 	/*min-width: 101px;*/
+	width: 200px;
 }
 
 #controls #stop_timing_btn {
 	background-color: rgb(128, 164, 240);
 	color: white;
+	width: 200px;
 }
 
 div#player-bottom {
@@ -538,7 +539,7 @@ a#preview_btn {
 #add_sub_input {
 	border: solid 1px #eee !important;
   font-size: 16px;
-  width: 700px;
+  width: 627px;
   border-radius: 0px;
   height: 20px;
   padding: 4px;
