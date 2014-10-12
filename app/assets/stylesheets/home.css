@@ -1122,3 +1122,7 @@ footer a:hover{
 #group_repositories_container .unimported_repository_controls a {
   margin: 0px 10px;
 }
+
+#user_groups .thumbnail {
+  min-height: 162px;
+}
