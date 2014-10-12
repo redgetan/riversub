@@ -448,7 +448,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // tooltips
     this.$publishBtn.tooltip({title: "Make video public"});
     this.$previewBtn.tooltip({title: "See how it'll look in public"});
-    this.$timelineBtn.tooltip({title: "Timeline Mode"});
+    this.$timelineBtn.tooltip({title: "Timer Mode"});
     this.$subtitleBtn.tooltip({title: "Subtitle Mode"});
 
     $("footer").hide();
