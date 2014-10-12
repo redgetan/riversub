@@ -14,6 +14,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.DEFAULT_TRACK_DURATION = 3;
     this.TRACK_MARGIN = 0.20;
     this.SEEK_DURATION = 5;
+    this.KEYCODE_THAT_PAUSES_VIDEO = this.getKeycodeThatPausesVideo();
 
     this.startTiming = false;
 
@@ -37,6 +38,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
       return Backbone.ajaxSync;
     };
+  },
+
+  getKeycodeThatPausesVideo: function() {
+    var list = [];
+
+    for (var i = 48; i <= 90; i++) {
+      list.push(i);
+    };
+
+    return list;
   },
 
   preRepositoryInitHook: function() {
@@ -162,7 +173,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onAddSubtitleInputKeyup: function(event) {
     // if video is playing pause it
-    if (!this.media.paused) {
+    if (!this.media.paused && this.KEYCODE_THAT_PAUSES_VIDEO.indexOf(event.which) !== -1) {
       this.pause();
     }
 
