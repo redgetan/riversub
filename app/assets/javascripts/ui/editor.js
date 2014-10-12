@@ -1076,7 +1076,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
           callbacks.preEndGhostCallback(track);
         }
 
-        this.safeEndGhostTrack(track);
+        this.safeEndGhostTrack(track, endTime);
 
         if (typeof callbacks.postEndGhostCallback !== "undefined") {
           callbacks.postEndGhostCallback(track);
