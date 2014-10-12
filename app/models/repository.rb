@@ -30,6 +30,8 @@ class Repository < ActiveRecord::Base
   scope :user_subtitled,        where("user_id IS NOT NULL")
   scope :published,             where("is_published is true")
   scope :unpublished,           where("is_published is NULL")
+  scope :imported,              where("is_youtube_imported is true")
+  scope :unimported,            where("is_youtube_imported is false")
   scope :recent,                order("updated_at DESC")
 
   GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"
@@ -135,6 +137,10 @@ class Repository < ActiveRecord::Base
     else
       "#{self.video.name} - [#{self.language_pretty}] by #{self.user.username}"
     end
+  end
+
+  def youtube_imported?
+    !!is_youtube_imported  
   end
 
   def published_repositories

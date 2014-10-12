@@ -15,8 +15,48 @@
   </div>
   <div class='row'>
 
-    <div class="span8 offset2">
-
+    <div id="group_repositories_container" class="span8 offset2">
+      <h4>Ready for Youtube Integration</h2>
+      <ul class="unimported_repositories_container">
+        <% @group.unimported_repositories_grouped_by_video.each do |video, repositories| %>
+          <li>
+            <%= video.name %>
+            <ul class='repo_language_container'>
+              <% repositories.each do |repo| %>
+                <li class='repo_language'>
+                  <%= repo.language_display %>
+                  <% if repo.youtube_imported? %>
+                    <a href="#">youtube_subtitle_link</a>
+                  <% else %>
+                    <div class="unimported_repository_controls pull-right">
+                      |
+                      <a href="<%= repo.url %>" class='repo_url'>Preview</a>
+                      |
+                      <a href="#" class='youtube_import_btn'>Youtube Import</a>
+                    </div>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+      <h4>Archives</h2>
+      <ul class="imported_repositories_container">
+        <% @group.imported_repositories_grouped_by_video.each do |video, repositories| %>
+          <li>
+            <%= video.name %>
+            <ul class='repo_language_container'>
+              <% repositories.each do |repo| %>
+                <li class='repo_language'>
+                  <%= repo.language_display %>
+                  <a href="#">youtube_subtitle_link</a>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
     </div>
   </div>
 </div>

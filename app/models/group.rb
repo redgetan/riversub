@@ -28,5 +28,21 @@ class Group < ActiveRecord::Base
     user_groups.unshift(no_group)
   end
 
+  def unimported_repositories_grouped_by_video
+    unimported_repositories.group_by { |repo| repo.video }
+  end
+
+  def unimported_repositories
+    self.repositories.published.unimported
+  end
+
+  def imported_repositories_grouped_by_video
+    imported_repositories.group_by { |repo| repo.video }
+  end
+
+  def imported_repositories
+    self.repositories.published.imported
+  end
+
 
 end

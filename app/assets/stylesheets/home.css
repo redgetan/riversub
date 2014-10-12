@@ -196,6 +196,7 @@ margin-left:-1px;
 
 div#main_container {
   margin-top: 30px;
+  min-height: 600px;
 }
 
 #description {
@@ -1103,4 +1104,21 @@ footer a:hover{
 
 #video_tutorial {
   margin: 20px 0px;
+}
+
+#group_repositories_container .repo_language {
+  border: solid 1px lightgray;  
+}
+
+#group_repositories_container .repo_language_container{
+  margin: 20px;
+}
+
+#group_repositories_container .unimported_repository_controls {
+  color: lightgray;
+  padding-right: 10px;
+}
+
+#group_repositories_container .unimported_repository_controls a {
+  margin: 0px 10px;
 }
