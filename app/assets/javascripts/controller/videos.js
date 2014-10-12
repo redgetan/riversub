@@ -13,7 +13,7 @@ $.extend(river.controller,{
          is_guided_walkthrough: false
        };
 
-       var media = "<video id='media' controls width='250px' poster='/poster.png'>" +
+       var media = "<video id='media' width='250px' poster='/poster.png'>" +
                "<source id='mp4' src='/trailer.mp4' type=\"video/mp4; codecs='avc1, mp4a'\">" +
                "<p>Your user agent does not support the HTML5 Video element.</p>" +
              "</video>";
