@@ -144,7 +144,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       var track = $target.data("model");
       this.replayTrackAndEdit(track);
     } else {
-      this.seek(time);  
+      this.seek(time);
     }
   },
 
@@ -197,8 +197,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       });
     } catch (e) {
       if (e.name === "track_overlap") {
-        this.showErrorOnStatusBar("Overlap Detected");  
-      } 
+        this.showErrorOnStatusBar("Overlap Detected");
+      }
       console.log(e.message);
     }
   },
@@ -218,16 +218,18 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if ($(e.target).attr("href") === "#subtitle_tab") {
       $(".window_slider").hide();
-      if (this.intro._currentStep === 11) { 
+      if (this.intro._currentStep === 11) {
         $(".introjs-nextbutton").removeClass("introjs-disabled");
         $(".introjs-nextbutton").trigger("click");
       }
     }
 
     if (this.currentTrack) {
+      if (this.currentTrack.isGhost) {
+        this.safeEndGhostTrack(this.currentTrack);
+      }
       this.seekTrackAndEdit(this.currentTrack);
     }
-
   },
 
   getEditorElement: function() {
@@ -255,7 +257,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<div id='iframe_container'>" +
                           "<div id='iframe_overlay'>" +
                           "</div>" +
-                          // "<div id='overlay_btn'><i class='icon-play'></i></div>" +
+                          "<div id='overlay_btn'><i class='icon-play'></i></div>" +
                         "</div> " +
                         "<div id='subtitle_bar' class='span12 center'> " +
                           "<span id='subtitle_display' class='span5 center'></span> " +
@@ -292,14 +294,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
                         "<div id='timeline_container'>" +
                         "</div> " +
-                        "<div id='controls' class='span12'> " +
-                          "<div id='main_controls' class=''> " +
-                            "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
-                            "<button type='button' class='play_btn river_btn'><i class='icon-play'></i>   </button> " +
-                            "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
-                            "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
-                            "<button id='start_timing_btn' class='river_btn'><i class='icon-plus'></i> Insert</button> " +
-                            "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i> End </button> " +
+                        "<div id='controls' class='span12 input-append'> " +
+                          "<div id='main_controls' class='pull-left'> " +
+                            // "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
+                            // "<button type='button' class='play_btn river_btn'><i class='icon-play'></i>   </button> " +
+                            // "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
+                            // "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
+                            "<button type='button' class='timeline_btn river_btn'> <i class='icon-film'></i></button> " +
+                            "<button type='button' class='subtitle_btn river_btn'> <i class='icon-list'></i></button> " +
+                            "<button id='start_timing_btn' class='river_btn'><i class='icon-plus'></i> Start Time</button> " +
+                            "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i> End Time</button> " +
                           "</div> " +
                         "</div> " +
                       "</div>" +
@@ -320,16 +324,18 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<div id='add_sub_container' class=''> " +
                           "<div id='controls' class='span12 input-append'> " +
                             "<div id='main_controls' class='pull-left'> " +
-                              "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
-                              "<button type='button' class='play_btn river_btn'><i class='icon-play'></i>   </button> " +
-                              "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
-                              "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
+                              // "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
+                              // "<button type='button' class='play_btn river_btn'><i class='icon-play'></i>   </button> " +
+                              // "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
+                              // "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
+                              "<button type='button' class='timeline_btn river_btn'> <i class='icon-film'></i></button> " +
+                              "<button type='button' class='subtitle_btn river_btn'> <i class='icon-list'></i></button> " +
                               // "<button type='button' id='replay_btn' class='river_btn'><i class='icon-refresh'></i> Replay</button> " +
                             "</div> " +
                             "<input id='add_sub_input' class='sub_text_area' placeholder='Enter Subtitle Here'> " +
                             "<button type='button' id='add_sub_btn' class='river_btn'>Add</a>" +
-                          "</div> " +   
-                        "</div> " +   
+                          "</div> " +
+                        "</div> " +
                       "</div>" +   // tab pane
                       "<div class='tab-pane' id='download_tab'>" +
                         "<div id='download_container'> " +
@@ -383,13 +389,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$pauseBtn.hide();
 
     this.$replayBtn = $("#replay_btn");
-    this.$timelineBtn = $("#timeline_btn");
-    this.$subtitleBtn = $("#subtitle_btn");
+    this.$timelineBtn = $(".timeline_btn");
+    this.$subtitleBtn = $(".subtitle_btn");
 
     this.$backwardBtn = $(".backward_btn");
     this.$forwardBtn = $(".forward_btn");
 
-    // $("#seek_head_body").hide();
+    $("#seek_head_body").hide();
 
     // this.$backwardBtn.hide();
     // this.$forwardBtn.hide();
@@ -444,12 +450,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // tooltips
     this.$publishBtn.tooltip({title: "Make video public"});
     this.$previewBtn.tooltip({title: "See how it'll look in public"});
+    this.$timelineBtn.tooltip({title: "Timer Mode"});
+    this.$subtitleBtn.tooltip({title: "Subtitle Mode"});
 
     $("footer").hide();
     // $("#controls").hide();
-    // $("#timeline_tab_anchor").hide();
-    // $("#subtitle_tab_anchor").hide();
-    // $("#download_tab_anchor").hide();
+    $("#timeline_tab_anchor").hide();
+    $("#subtitle_tab_anchor").hide();
+    $("#download_tab_anchor").hide();
   },
 
   setupIntroJS: function() {
@@ -533,7 +541,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.intro.onafterchange(function(targetElement){
       var stepsToDisabledNextButton = [1,2,3,11];
-      if (stepsToDisabledNextButton.indexOf(this.intro._currentStep) !== -1) { 
+      if (stepsToDisabledNextButton.indexOf(this.intro._currentStep) !== -1) {
         $(".introjs-nextbutton").addClass("introjs-disabled");
         $(".introjs-prevbutton").addClass("introjs-disabled");
       }
@@ -559,8 +567,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onDocumentClick: function(event) {
-    if (!$(event.target).hasClass("sub_text_area") && 
-      !$(event.target).hasClass("track_text") && 
+    if (!$(event.target).hasClass("sub_text_area") &&
+      !$(event.target).hasClass("track_text") &&
       !$(event.target).hasClass("ui-spinner")) {
       this.preventSubtileInputFromLosingFocus(event);
     }
@@ -596,14 +604,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onDocumentKeydown: function(event) {
-    
-    if (event.which === 16) { 
+
+    if (event.which === 16) {
       // shift key
-    } else if (event.which === 8) {  
+    } else if (event.which === 8) {
       // backspace
 
       this.preventAccidentalPreviousPageNavigation($(event.target));
-    } else if (event.which === -99) { 
+    } else if (event.which === -99) {
       // ctrl + p
 
       this.togglePlayPause();
@@ -623,7 +631,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onDocumentKeyup: function(event) {
-    if (event.which === 13) { 
+    if (event.which === 13) {
 
       // enter key
 
@@ -714,7 +722,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onEditorReady: function(event) {
     this.$addSubInput.focus();
 
-    this.currentTrack = this.tracks.at(0);;
+    this.currentTrack = this.tracks.at(0);
 
     $(document).on("keydown",this.onDocumentKeydown.bind(this));
     $(document).on("keyup",this.onDocumentKeyup.bind(this));
@@ -731,13 +739,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (syncMethod === "save" ) {
       Backbone.Model.prototype[syncMethod].call(model,{},{
         timeout: 10000,
-        success: this.onTrackRequestSuccess.bind(this), 
+        success: this.onTrackRequestSuccess.bind(this),
         error:   this.onTrackRequestError.bind(this)
       });
     } else {
       Backbone.Model.prototype[syncMethod].call(model,{
         timeout: 10000,
-        success: this.onTrackRequestSuccess.bind(this), 
+        success: this.onTrackRequestSuccess.bind(this),
         error:   this.onTrackRequestError.bind(this)
       });
      }
@@ -765,8 +773,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$status_bar.text(msg);
     this.$status_bar.addClass("failed");
 
-    setTimeout(function(){ 
-      this.$status_bar.text(""); 
+    setTimeout(function(){
+      this.$status_bar.text("");
       this.$status_bar.removeClass("failed");
     }.bind(this),5000);
   },
@@ -826,6 +834,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
+  closeEditor: function(track) {
+    if ($(".tab-pane.active").attr("id") === "subtitle_tab" ) {
+      track.subtitle.closeEditor();
+    } else {
+     track.closeEditor();
+    }
+  },
+
+
   onGhostTrackStart: function(track) {
     this.isGhostTrackStarted = true;
     this.currentGhostTrack = track;
@@ -833,7 +850,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$stopTimingBtn.show({
       duration: 0,
       complete: function() {
-        if (this.intro._currentStep === 1) { 
+        if (this.intro._currentStep === 1) {
           $(".introjs-nextbutton").removeClass("introjs-disabled");
           $(".introjs-nextbutton").trigger("click");
         }
@@ -849,7 +866,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$stopTimingBtn.hide({
       duration: 0,
       complete: function() {
-        if (this.intro._currentStep === 2) { 
+        if (this.intro._currentStep === 2) {
           $(".introjs-nextbutton").removeClass("introjs-disabled");
           $(".introjs-nextbutton").trigger("click");
         }
@@ -878,7 +895,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (track.shouldPauseOnTrackEnd()) {
       track.unsetPauseOnTrackEnd();
       this.ensurePauseAtTrack(track, {pauseAtStart: true});
-    } 
+    }
 
     if (track.isGhost && !track.isRemoved()) {
       // will reach this state if user presses space_key until startTime of next track,
@@ -897,10 +914,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
       this.safeEndGhostTrack(track,endTime);
       if (this.startTiming) {
-        this.startTiming = false; 
+        this.startTiming = false;
         this.requestSubtitleFromUser(track);
       }
-    } 
+    }
   },
 
   onTrackRemove: function(track) {
@@ -928,7 +945,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onSubtitleLineKeydown: function(subtitle) {
     if (event.which == 13 ) { // ENTER
       this.goToNextTrack();
-    } 
+    }
   },
 
   onIframeOverlayClick: function(event) {
@@ -950,7 +967,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.$overlay_btn.hide();
     }
   },
-  
+
   onSubtitleLineEdit: function(track) {
     this.focusedTrack = track;
   },
@@ -1011,6 +1028,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onStartTimingBtn: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
 
+    if (typeof this.focusedTrack !== "undefined") {
+      this.focusedTrack.closeEditor();
+    }
+
     if (this.$startTimingBtn.attr("disabled") == "disabled") return;
     this.startTiming = true;
     this.safeCreateGhostTrack(this.media.currentTime);
@@ -1023,7 +1044,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var track = this.currentGhostTrack;
     this.safeEndGhostTrack(track);
     if (this.startTiming) {
-      this.startTiming = false; 
+      this.startTiming = false;
       this.requestSubtitleFromUser(track);
     }
   },
@@ -1067,7 +1088,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var $target = $(event.target);
 
     if ($target.hasClass("track") || $target.hasClass("track_text")) {
-      return;  
+      return;
     }
 
     var track = this.addFullTrack(this.media.currentTime, { isAddSubBackward: false });
@@ -1132,11 +1153,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
 
     if (isAddSubBackward) {
-      endTime   = currentTime;   
-      startTime = endTime - this.DEFAULT_TRACK_DURATION;   
+      endTime   = currentTime;
+      startTime = endTime - this.DEFAULT_TRACK_DURATION;
     } else {
-      startTime = currentTime;   
-      endTime   = startTime + this.DEFAULT_TRACK_DURATION;   
+      startTime = currentTime;
+      endTime   = startTime + this.DEFAULT_TRACK_DURATION;
     }
 
     // possible to overlap prev track
@@ -1150,7 +1171,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
 
     var overlapTracks = this.getOverlapTracks(startTime,endTime) ;
-    
+
     if (overlapTracks.length !== 0) {
       var trackSlot = this.getNextAvailableTrackSlot(startTime);
       startTime = trackSlot.startTime;
@@ -1242,7 +1263,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       track.subtitle.view.render(); //temp hack to fix bug
     } catch(e) {
       // will get here if duration becomes negative. This can get triggered when track is ghost
-      // and user seek to before track start time. In this case assume user wants to move ghost 
+      // and user seek to before track start time. In this case assume user wants to move ghost
       // track to that point
 
       track.setStartTime(time);
@@ -1330,7 +1351,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   showSubtitleInSubtitleBar: function(subtitle) {
     // console.log("show sub display");
     // its possible that this gets triggered when we are still on subtitleEditMode
-    // i.e ghostrack hit start time of next track (ontrackend, subtitleEditMode, 
+    // i.e ghostrack hit start time of next track (ontrackend, subtitleEditMode,
     //     then next track ontrackstart gets triggered which calls this function )
     this.$subtitleDisplay.show();
     this.$subtitleDisplay.text(subtitle.get("text"));
