@@ -435,7 +435,9 @@ div#editor-bottom {
 .subtitle .delete a:hover {
   text-decoration: none;  
   font-size: 15px;
-  color: black;
+  color: white;
+  background-color: gray;
+  padding: 5px;
 }
 
 #controls #start_timing_btn {
