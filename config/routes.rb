@@ -26,6 +26,7 @@ River::Application.routes.draw do
   get "how_to_use", :to => "home#how_to_use"
 
   get "videos",                                :to => "videos#index"
+  get "videos/new",                            :to => "videos#new"
   get "videos/unpublished",                    :to => "videos#unpublished"
   post "videos/sub",                           :to => "videos#sub",    :as => "sub_videos"
 

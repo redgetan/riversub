@@ -211,6 +211,10 @@ div#media_input {
 }
 
 input.media_url {
+  width: 500px;
+}
+
+.sub_btn {
 }
 
 div.videos {

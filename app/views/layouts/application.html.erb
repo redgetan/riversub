@@ -50,15 +50,16 @@
             <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li>
 <!--             <li class="divider-vertical"></li>
             <li class="<%= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li>
- -->            <li class="divider-vertical"></li>
-            <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">About</a></li>
+ -->            
+            <li class="divider-vertical"></li>
+            <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= videos_new_url %>"><i class="icon-plus"></i> Create</a></li>
             <!-- <li class="divider-vertical"></li> -->
 <!--             <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'how_to_use' %>"><a href="/how_to_use">How to Use</a></li>
  -->            <li class="divider-vertical"></li>
           </ul>
 
           <ul class="nav pull-right">
-            <li><button id='layout_new_project_btn' class='btn btn-small' data-toggle='modal' data-target='#new_project_modal'><i class='icon-facetime-video'></i> Subtitle a Video</button></li>
+            <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">About</a></li>
             <li class="divider-vertical"></li>
             <% if user_signed_in?  %>
               <li class="dropdown">
