@@ -11,38 +11,35 @@ River::Application.routes.draw do
       :registrations => "registrations", 
       :omniauth_callbacks => "users/omniauth_callbacks" 
     }
-  end
 
-
-  scope :protocol => protocol, :constraints => { :protocol => protocol } do
     devise_scope :user do
       put "/users/change_avatar",  :to => "registrations#change_avatar", :as => "user_change_avatar"
       get "/users/:username",      :to => "users#show",                  :as => "user"
     end
 
+    get "faq", :to => "home#faq"
+    get "how_to_use", :to => "home#how_to_use"
+
+    get "videos",                                :to => "videos#index"
+    get "videos/new",                            :to => "videos#new"
+    get "videos/unpublished",                    :to => "videos#unpublished"
+    post "videos/sub",                           :to => "videos#sub",    :as => "sub_videos"
+
+    resources "repositories", :only => [] do
+      resources "timings", :only => [:index, :create, :update, :destroy]
+    end
+
+    get "/:token",                        to: "videos#show",   as: "video"
+    get "/:token/setup",                  to: "videos#setup",  as: "editor_video_setup"
+    post "/:token/finish_setup",          to: "videos#finish_setup",  as: "editor_video_finish_setup"
+    post "/:token/publish",               to: "videos#publish", as: "publish_videos"
+    get "/:token/editor",                 to: "videos#editor", as: "editor_video"
+    get '/:username/:token',              to: 'videos#show',   as: 'user_video'
+    get '/:username/:token/editor',       to: 'videos#editor', as: 'editor_user_video'
+
+    root :to => "home#index"
+
   end
-
-  get "faq", :to => "home#faq"
-  get "how_to_use", :to => "home#how_to_use"
-
-  get "videos",                                :to => "videos#index"
-  get "videos/new",                            :to => "videos#new"
-  get "videos/unpublished",                    :to => "videos#unpublished"
-  post "videos/sub",                           :to => "videos#sub",    :as => "sub_videos"
-
-  resources "repositories", :only => [] do
-    resources "timings", :only => [:index, :create, :update, :destroy]
-  end
-
-  get "/:token",                        to: "videos#show",   as: "video"
-  get "/:token/setup",                  to: "videos#setup",  as: "editor_video_setup"
-  post "/:token/finish_setup",          to: "videos#finish_setup",  as: "editor_video_finish_setup"
-  post "/:token/publish",               to: "videos#publish", as: "publish_videos"
-  get "/:token/editor",                 to: "videos#editor", as: "editor_video"
-  get '/:username/:token',              to: 'videos#show',   as: 'user_video'
-  get '/:username/:token/editor',       to: 'videos#editor', as: 'editor_user_video'
-
-  root :to => "home#index"
 
 
   # The priority is based upon order of creation:
