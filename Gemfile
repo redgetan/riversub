@@ -42,6 +42,7 @@ group :development, :test do
   gem 'factory_girl', "~> 4.0"
   gem "factory_girl_rails", "~> 4.0"
   gem 'qunit-rails'
+  gem 'view_inspect'
   #gem "rbtrace", :path => "/Users/reg/ruby/rbtrace"
 end
 
