@@ -2,7 +2,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   initialize: function(options) {
     this.IFRAME_OVERLAY_NON_AD_OVERLAPPING_FACTOR = 2.3;
-    this.SUBTITLE_CENTER_FACTOR = 1.4;
 
     river.ui.BasePlayer.prototype.initialize.call(this,options);
     this.hideEditing();
@@ -85,12 +84,11 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     this.$subtitleBar.css("background-color","rgba(255,0,0,0)");
     this.$subtitleBar.css("z-index","6");
-    this.$subtitleBar.css("line-height","25px");
+    this.$subtitleBar.css("line-height","20px");
 
     this.$subtitleDisplay.css("background-color","black");
     this.$subtitleDisplay.css("opacity",0.8);
     this.$subtitleDisplay.css("font-size","17px");
-    this.$subtitleDisplay.css("width",this.$mediaContainer.width() / this.SUBTITLE_CENTER_FACTOR);
 
     this.$subtitleList.css("height","300px");
     this.$subtitleList.find(".table .header").remove(); // remove heading

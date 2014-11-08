@@ -1,0 +1,61 @@
+<div id="player_details">
+  <ul class='nav nav-tabs'>
+    <li id='info_tab_anchor' class="pull-right"><a href='#info_tab' data-toggle='tab'>Share</a></li>
+    <li id='transcript_tab_anchor' class="pull-right"><a href='#transcript_tab' data-toggle='tab'>Transcript</a></li>
+    <li id='comments_tab_anchor' class='active pull-right'><a href='#comments_tab' data-toggle='tab'>Comments</a></li>
+  </ul>
+
+  <div class='tab-content comments_tab_content'>
+    <div class='tab-pane active' id='comments_tab'>
+      <div id='comments_container'>
+      </div>
+    </div>
+    <div class='tab-pane' id='transcript_tab'>
+      <div id='transcript_container'>
+        <div id='subtitle_list'></div>
+      </div>
+    </div>
+    <div class='tab-pane' id='info_tab'>
+      <div id='info_container'>
+        <table>
+          <tr>
+            <td class="left">link:</td>
+            <td class="right">
+              <input class="share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
+            </td>
+          </tr>
+          <tr>
+            <td class="left">save:</td>
+            <td class="right">
+              <a id='download_btn' href='<%= @repo.subtitle_download_url %>'>Download</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <!--
+      <div id="share_edit" class="pull-left">
+        <table>
+          <tr>
+            <td class="left">link:</td>
+            <td class="right">
+              <input class="share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
+            </td>
+          </tr>
+          <tr>
+            <td class="left">save:</td>
+            <td class="right">
+              <a id='download_btn' href='<%= @repo.subtitle_download_url %>'>Download</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+      -->
+
+
+      <!--
+      -->
+

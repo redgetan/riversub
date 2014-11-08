@@ -50,7 +50,7 @@
             <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li>
 <!--             <li class="divider-vertical"></li>
             <li class="<%= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li>
- -->            
+ -->
             <li class="divider-vertical"></li>
             <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= videos_new_url %>"><i class="icon-plus"></i> Create</a></li>
             <!-- <li class="divider-vertical"></li> -->
@@ -82,7 +82,7 @@
         </div>
       </div>
     </nav>
-    
+
     <div id="main_container">
             <div id="flash_container">
                 <% if flash[:error] %>
@@ -95,7 +95,7 @@
                 <div id="flash_error" class="flash alert alert-block"><%= flash[:alert] %></div>
                 <% end %>
                 </div>
-            <%= yield %> 
+            <%= yield %>
     </div>
     <footer>
       <div class="container">
