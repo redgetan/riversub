@@ -47,7 +47,7 @@
           <a class="brand" href="<%= root_url %>"> Yasub</a>
           <ul class="nav menu-nav">
             <li class="divider-vertical"></li>
-            <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li>
+            <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><%= link_to "Videos", videos_url %></li>
 <!--             <li class="divider-vertical"></li>
             <li class="<%= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li>
  -->            
