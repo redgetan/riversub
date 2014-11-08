@@ -458,8 +458,8 @@ div#time_float {
 	height: 20px;
 	z-index: 5;
 	position: absolute;
-	padding: 1px;
-	border: solid 1px violet;
+	padding: 1px 5px;
+	border: solid 1px black;
 	margin-top: -50px;
 	background-color: white;
 }

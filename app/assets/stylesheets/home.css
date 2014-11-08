@@ -1202,3 +1202,52 @@ footer a:hover{
 #subtitler span .user_avatar strong{
   color: gray;
 }
+
+.player_controls_container {
+  background-color: black;
+  height: 25px;
+}
+
+.player_controls {
+  text-align: left;
+  padding-left: 10px;
+  background-color: black;
+}
+
+.player_controls button {
+  padding: 0px 5px;
+  float: left;
+  background-color: black;
+  color: white;
+  border: none;
+  width: 20px;
+}
+
+.player_controls button:hover {
+  color: white;
+}
+
+.player_controls .player_timeline_container {
+  float: left;
+  width: 630px;
+  margin: 5px;
+}
+
+.player_controls #summary {
+  height: 10px;
+}
+
+.time_loaded, .time_current {
+  height: 10px;
+  display: block;
+  position: absolute;
+  top: 0px;
+}
+
+.time_loaded {
+  background-color: rgb(150,150,150);
+}
+
+.time_current {
+  background-color: royalblue;
+}
