@@ -2,7 +2,7 @@
   text-align: center;
 }
 
-#overlay_btn .icon-play,#overlay_btn .icon-pause {
+#overlay_btn i {
   line-height: 100px;
   font-size: 25px;
   color: white;
@@ -12,8 +12,23 @@
   border-radius: 50%;
   padding-top: 15px;
   padding-bottom: 15px;
+  background-color: rgba(0,0,0,0.3);
+}
+
+#river_player.show #overlay_btn .icon-play,
+#river_player.show #overlay_btn .icon-pause {
+  font-size: 40px;
+  border: solid 5px white;
+}
+
+#overlay_btn .icon-play {
   padding-right: 15px;
   padding-left: 20px;
+}
+
+#overlay_btn .icon-pause {
+  padding-right: 17px;
+  padding-left: 18px;
 }
 
 .axis path, .axis line {
@@ -217,6 +232,10 @@ div#media_input {
 }
 
 input.media_url {
+  width: 500px;
+}
+
+.sub_btn {
 }
 
 div.videos {
@@ -249,8 +268,11 @@ div#media_container {
 }
 
 #river_player.show {
-  min-width: 1300px;
+  /*min-width: 1300px;*/
+  padding-top: 10px;
   margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #river_player.private .river_btn {
@@ -262,7 +284,7 @@ div#media_container {
 }
 
 #river_player.show div#media_container {
-  margin-top: 30px;
+  margin-top: 10px;
   overflow: hidden;
 }
 
@@ -313,13 +335,6 @@ div#iframe_container #iframe_overlay {
   height: 20px;
 }
 
-#river_player.show #overlay_btn .icon-play,
-#river_player.show #overlay_btn .icon-pause {
-  font-size: 40px;
-  border: solid 5px white;
-}
-
-
 div#iframe_container #media {
   height: inherit;
   width: 50%;
@@ -336,10 +351,6 @@ div#iframe_container #media {
   /*background: url(bigplay.svg) no-repeat;*/
 }
 
-#editor #overlay_btn {
-  left: 20%;
-}
-
 div#subtitle_bar {
   background-color: #000;
   color: white;
@@ -349,7 +360,7 @@ div#subtitle_bar {
 }
 
 #river_player #subtitle_bar {
-  height: 60px;
+  height: 40px;
 }
 
 #editor #subtitle_bar {
@@ -606,13 +617,13 @@ form.sub {
 }
 
 #river_player #repo_label {
-  margin-right: 10px;
-  text-align: right;
+  text-align: left;
+  width: 500px;
+  float: left;
 }
 
 #repo_label a {
   color: #fff;
-  padding: 5px;
 }
 
 a.owner_label:hover {
@@ -637,6 +648,7 @@ a.owner_label {
   border: solid 1px gray;
   padding: 5px 10px;
   cursor: pointer;
+  display: inline-block;
 }
 
 #editor #controls .river_btn {
@@ -956,17 +968,19 @@ footer a:hover{
   color: white;
 }
 
+#video_information {
+  margin-top: 20px;
+}
+
 #contribute a {
-  display: inline-block;
-  margin: 15px;
 }
 
 #subtitler {
-  margin-top: 5px;
 }
 
 #subtitler .user_avatar img {
   border: solid 1px gray;
+  height: 30px;
 }
 
 #editor #language {
@@ -1113,7 +1127,7 @@ footer a:hover{
 }
 
 #group_repositories_container .repo_language {
-  border: solid 1px lightgray;  
+  border: solid 1px lightgray;
 }
 
 #group_repositories_container .repo_language_container{
@@ -1132,6 +1146,7 @@ footer a:hover{
 #user_groups .thumbnail {
   min-height: 162px;
 }
+
 
 .sidebar-home {
   position: absolute;
@@ -1156,4 +1171,116 @@ footer a:hover{
 
 .template-buttons .btn {
   margin-right:5px;
+}
+
+
+#river_player .action_item {
+  margin-right: 5px;
+}
+
+#river_player .action_item a {
+}
+
+#secondary_action_items {
+  margin-top: 10px;
+}
+
+#secondary_action_items a {
+  padding: 5px;
+  display: inline-block;
+  color: gray;
+}
+
+#player_details {
+  /*margin-top: 15px;*/
+}
+
+#player_details .nav-tabs > .active > a,
+#player_details .nav-tabs > .active > a:hover,
+#player_details .nav-tabs > .active > a:focus {
+  background: none;
+  border: none;
+  text-decoration: underline;
+  /*border: solid 1px #ccc !important;*/
+}
+
+#player_details .nav-tabs > li > a:hover,
+#player_details .nav-tabs > li > a:focus {
+  /*border: solid 1px #ccc !important;*/
+  border: none;
+  background: none;
+  text-decoration: underline;
+}
+
+.nav-tabs a {
+  color: gray;
+}
+
+
+.subtitle_editor_btn, .new_repo_btn, .upvote_btn, .downvote_btn {
+  background: none;
+}
+
+.new_repo_btn i,
+.upvote_btn i, 
+.downvote_btn i {
+  color: gray;
+}
+
+.vote_points {
+  padding: 5px 10px;
+  color: gray;
+}
+
+#subtitler span .user_avatar strong{
+  color: gray;
+}
+
+.player_controls_container {
+  background-color: black;
+  height: 25px;
+}
+
+.player_controls {
+  text-align: left;
+  padding-left: 10px;
+  background-color: black;
+}
+
+.player_controls button {
+  padding: 0px 5px;
+  float: left;
+  background-color: black;
+  color: white;
+  border: none;
+  width: 20px;
+}
+
+.player_controls button:hover {
+  color: white;
+}
+
+.player_controls .player_timeline_container {
+  float: left;
+  width: 630px;
+  margin: 5px;
+}
+
+.player_controls #summary {
+  height: 10px;
+}
+
+.time_loaded, .time_current {
+  height: 10px;
+  display: block;
+  position: absolute;
+  top: 0px;
+}
+
+.time_loaded {
+  background-color: rgb(150,150,150);
+}
+
+.time_current {
+  background-color: royalblue;
 }

@@ -64,7 +64,7 @@
             <!-- <li class="divider-vertical"></li> -->
 <!--             <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'how_to_use' %>"><a href="/how_to_use">How to Use</a></li>
  -->      
-        <li><button id='layout_new_project_btn' class='btn btn-sm' data-toggle='modal' data-target='#new_project_modal'><i class='glyphicon glyphicon-facetime-video'></i> Subtitle a Video</button></li>
+        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= videos_new_url %>"><i class="icon-plus"></i> Create</a></li>
         <li class="divider-vertical"></li>
          <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">About</a></li>
          <li class="divider-vertical"></li>
@@ -92,6 +92,12 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+=======
+          </ul>
+        </div>
+      </div>
+    </nav>
+>>>>>>> master
 
     <div id="main_container">
             <div id="flash_container">
@@ -105,7 +111,7 @@
                 <div id="flash_error" class="flash alert alert-block"><%= flash[:alert] %></div>
                 <% end %>
                 </div>
-            <%= yield %> 
+            <%= yield %>
     </div>
     <footer>
       <div class="container">

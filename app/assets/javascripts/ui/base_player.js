@@ -180,6 +180,14 @@ river.ui.BasePlayer = Backbone.View.extend({
       this.popcorn.on("pause",executeCallback);
     }
     this.popcorn.pause();
+  },
+
+  // how many pixels per second
+  resolution: function($container) {
+    var widthPixel = $container.width();
+    var widthSeconds = this.mediaDuration();
+
+    return widthPixel / widthSeconds ;
   }
 
 

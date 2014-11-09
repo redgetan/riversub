@@ -8,6 +8,7 @@ river.ui.Timeline = Backbone.View.extend({
   initialize: function(options) {
     this.WINDOW_WIDTH_IN_SECONDS = 30;
 
+    this.hideTracks = options.hideTracks;
     this.mediaDuration = options.mediaDuration; 
     this.setupElement();
 
@@ -94,6 +95,8 @@ river.ui.Timeline = Backbone.View.extend({
 
       this.$expanded_container.append(move_left_btn);
       this.$expanded_container.append(move_right_btn);
+
+      this.setTimelineWidth();
 
       this.$move_left_btn = $(".move_left_btn");
       this.$move_right_btn = $(".move_right_btn");
@@ -239,11 +242,17 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   onTrackChange: function(track) {
-    this.renderTrack(track);
+    if (!this.hideTracks) {
+      this.renderTrack(track);
+    }
   },
 
   onTrackAdd: function(track) {
-    this.renderTrack(track);
+    if (!this.hideTracks) {
+      this.$summary.append(track.summaryView.$el);
+      this.$expanded_track_viewport.append(track.expandedView.$el);
+      this.renderTrack(track);
+    }
   },
 
   onExpandedTimelineDblClick: function(event) {
@@ -528,6 +537,11 @@ river.ui.Timeline = Backbone.View.extend({
 
   },
 
+  setTimelineWidth: function() {
+    this.summaryWidth  = this.$summary.width();
+    this.expandedWidth = this.$expanded.width();
+  },
+
   // how many pixels per second
   resolution: function($container) {
     var widthPixel = this.getContainerWidthInPixels($container);
@@ -538,10 +552,8 @@ river.ui.Timeline = Backbone.View.extend({
 
   getContainerWidthInPixels: function($container) {
     if ($container.attr("id") === "summary") {
-      this.summaryWidth  = this.summaryWidth  || this.$summary.width();
       return this.summaryWidth;
     } else {
-      this.expandedWidth = this.expandedWidth || this.$expanded.width();
       return this.expandedWidth;
     }
   },

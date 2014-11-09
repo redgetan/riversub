@@ -5,8 +5,6 @@ river.ui.Track = Backbone.View.extend({
 
   initialize: function() {
     this.$el.data("model",this.model);
-
-    this.attachViewToContainer();
   },
 
   addGhost: function() {
@@ -33,24 +31,12 @@ river.ui.Track = Backbone.View.extend({
     this.$el.removeClass("selected");
   },
 
-  attachViewToContainer: function() {
-    this.getContainer().append(this.$el);
-  },
-
-  getContainer: function() {
-    throw new Error("TrackView#getContainer not implemented");
-  }
-
 });
 
 river.ui.SummaryTrack = river.ui.Track.extend({
   initialize: function() {
     river.ui.Track.prototype.initialize.call(this);
   },
-
-  getContainer: function() {
-    return $("#summary.timeline");
-  }
 });
 
 river.ui.ExpandedTrack = river.ui.Track.extend({

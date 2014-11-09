@@ -1,84 +1,70 @@
 <% set_meta_tags :site => 'Yasub', :title => "#{@repo.video.name}", :description => "Watch a Youtube Video with user generated captions/subtitles" %>
 
-
 <div class="background"></div>
 <div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
-  <div class="left_side">
-    <h5 id='repo_label'>
-      <div>
-        <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
-      </div>
-    </h5>
-    <div id="repo_current_subtitle">
-      <div id="language" class="pull-right">
-        <span><%= @repo.language_pretty %></span>
-      </div>
-      <div id="subtitler" class="pull-right">
-        <% if @repo.user %>
-          <h5>
-            by:
-            <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= @repo.user.username %></a>
-            <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
-          </h5>
-        <% end %>
-      </div>
-    </div>
-    <% unless @repo.is_published? %>
-      <div id="finalize" class="section_block" style="height: 140px;">
-        <h5 class="section_header">Status</h5>
-        <p style="padding: 10px;">This video is currently private. To make it visible to the public, click publish.</p>
-        <%= form_tag @repo.publish_url, method: "post" do %>
-          <%= submit_tag 'Publish', class: "river_btn", id: "publish_btn" %>
-        <% end %>
-      </div>
-    <% end %>
-    <div id="contribute" class="section_block">
-      <h5 class="section_header">Contribute</h5>
-      <% if @repo.owned_by? current_user  %>
-        <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
-      <% end %>
-      <a class='new_repo_btn river_btn' data-forked-repo-token="<%= @repo.token %>" href="#">New Subtitle</a>
-    </div>
-    <% if false %>
-      <div id="available_subtitles" class="section_block">
-        <h5 class="section_header">Other Subtitles</h5>
-        <ul>
-          <% @repo.other_published_repositories.each do |repo| %>
-            <li>
-              <a href="<%= repo.url %>"><%= repo.language_display %></a>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-    <div id="share_edit" class="section_block">
-      <h5 class="section_header">Share</h5>
-      <table>
-        <tr>
-          <td class="left">link:</td>
-          <td class="right">
-            <input class="share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
-          </td>
-        </tr>
-        <tr>
-          <td class="left">save:</td>
-          <td class="right">
-            <a id='download_btn' href='<%= @repo.subtitle_download_url %>'>Download</a>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
+  <div class="row">
+    <div class='center span9'>
+      <h5 id='repo_label'>
+        <div>
+          <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
+        </div>
+      </h5>
 
-  <div class='right_side span9'>
-    <%= render 'player' %>
-    <div id='subtitle_container' class="section_block">
-      <h5 class="section_header">Transcript</h5>
-      <div id='subtitle_list'></div>
-      <div id='controls_extra' class='row'>
-        <div class='btn-group pull-right'>
+      <h5 id="subtitler" class="pull-right">
+        <% if @repo.user %>
+          <span>
+            <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><strong><%= @repo.user.username %></strong></a>
+            <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
+          </span>
+        <% end %>
+      </h5>
+
+      <%= render 'player' %>
+
+      <div id="video_information" class="row">
+        <div id="" class="span9">
+          <% unless @repo.is_published? %>
+            <div id="finalize" class="" style="height: 140px;">
+              <p style="padding: 10px;">This video is currently private. To make it visible to the public, click publish.</p>
+              <%= form_tag @repo.publish_url, method: "post" do %>
+                <%= submit_tag 'Publish', class: "river_btn", id: "publish_btn" %>
+              <% end %>
+            </div>
+          <% end %>
+
+          <div class="primary_action_items">
+            <div class="contribute action_item pull-left">
+              <% if @repo.display_edit?(current_user) %>
+                <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
+              <% end %>
+              <a class='new_repo_btn river_btn' data-forked-repo-token="<%= @repo.token %>" href="#"><i class="icon-plus"></i> Subtitle</a>
+            </div>
+            <div class="upvote action_item pull-left">
+              <a class='upvote_btn river_btn' href="#">
+                <i class="icon-arrow-up"></i>
+              </a>
+            </div>
+            <div class="downvote action_item pull-left">
+              <a class='downvote_btn river_btn' href="#">
+                <i class="icon-arrow-down"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class='vote_points pull-left'>
+            <span>
+              45
+              points
+            </span>
+          </div>
+
+          <!--
+          -->
+
+          <%= render 'player_details' %>
         </div>
       </div>
+
     </div>
   </div>
 </div>

@@ -592,14 +592,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     return seconds;
   },
 
-  // how many pixels per second
-  resolution: function($container) {
-    var widthPixel = $container.width();
-    var widthSeconds = this.mediaDuration();
-
-    return widthPixel / widthSeconds ;
-  },
-
   onTimeUpdate: function(event) {
     this.lastTimeUpdateTime = this.media.currentTime;
   },

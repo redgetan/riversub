@@ -1,5 +1,9 @@
 class VideosController < ApplicationController
 
+  def new
+    puts "asfd"
+  end
+
   def sub
     metadata = params[:video_metadata]
 
