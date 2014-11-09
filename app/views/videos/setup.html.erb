@@ -7,8 +7,8 @@
         <h2><%= @repo.video.name %></h2>
         <%= image_tag @repo.thumbnail_url %>
       </div>
-      </br>
-      </br>
+      <br>
+      <br>
 
       <%= form_tag editor_video_finish_setup_url(@repo), id: "repo_setup_form" do %>
         <div id="repo_setup_form_list">
@@ -18,17 +18,7 @@
               <%= select_tag("language_code", options_for_select(Language::CODES.map{|k,v| [v,k]})) %>
             </li>
             <% if @repo_fork %>
-              <li>
-                <h4>Use Timing from <%= link_to @repo_fork.full_display, @repo_fork.url %></h4>
-                <label class="radio">
-                  <input type="radio" name="copy_timing_from" value="<%= @repo_fork.token %>" checked>
-                  Yes
-                </label>
-                <label class="radio">
-                  <input type="radio" name="copy_timing_from" value="">
-                  No
-                </label>
-              </li>
+              <input type="hidden" name="copy_timing_from" value="<%= @repo_fork.token %>" >
             <% end %>
 
             <% if current_user && current_user.groups.present? %>
