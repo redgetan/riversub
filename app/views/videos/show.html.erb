@@ -34,7 +34,7 @@
 
           <div class="primary_action_items">
             <div class="contribute action_item pull-left">
-              <% if current_user && @repo.owned_by?(current_user) %>
+              <% if @repo.display_edit?(current_user) %>
                 <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
               <% end %>
               <a class='new_repo_btn river_btn' data-forked-repo-token="<%= @repo.token %>" href="#"><i class="icon-plus"></i> Subtitle</a>

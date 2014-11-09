@@ -90,7 +90,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
   bindEvents: function() {
     river.ui.BasePlayer.prototype.bindEvents.call(this);
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
-    // this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
+    this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
   },

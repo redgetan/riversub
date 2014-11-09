@@ -189,6 +189,10 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def display_edit?(target_user)
+    target_user && self.user == target_user 
+  end
+
   def visible_to_user?(target_user)
    is_published? || owned_by?(target_user)
   end
