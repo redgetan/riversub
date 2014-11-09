@@ -111,7 +111,7 @@ a.user_big_action_btn:hover {
   background-color: black;
 }
 
-    .white .navbar-inner {
+    .white .navbar-default {
         background-color: #fff;
     }
 
@@ -161,14 +161,20 @@ a.user_big_action_btn:hover {
     }
 
 .navbar .divider-vertical {
-    border-left: 1px solid #AF687F;
-    border-right: none;
+height: 50px;
+margin: 0 9px;
+border-left: 1px solid #AF687F;
+border-right: none;
 }
 
     .white .navbar .divider-vertical {
         border-left: 1px solid #f2f2f2;
         border-right: none;
     }
+
+.navbar .btn {
+  margin-top:5px
+}
 
 /* temporary fix to https://github.com/twitter/bootstrap/issues/5704  */
 .btn-group > .tooltip + .btn,
@@ -1125,4 +1131,29 @@ footer a:hover{
 
 #user_groups .thumbnail {
   min-height: 162px;
+}
+
+.sidebar-home {
+  position: absolute;
+}
+
+.templates {
+  padding: 0px 25px 25px 25px;
+}
+
+
+.media-body {
+  width: 400px;
+  height: 300px;
+  position: relative;
+}
+
+.template-buttons {
+  position: absolute;
+  left:0;
+  bottom:0;
+}
+
+.template-buttons .btn {
+  margin-right:5px;
 }

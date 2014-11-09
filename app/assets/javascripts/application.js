@@ -16,7 +16,7 @@
 //= require jquery.ui.draggable
 //= require jquery.ui.spinner
 //= require jquery.ui.effect-highlight
-//= require twitter/bootstrap
+//= require bootstrap-sprockets
 
 //= require lib/underscore.js
 //= require lib/backbone.js

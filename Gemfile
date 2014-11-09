@@ -13,6 +13,7 @@ gem 'mysql2'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
+  gem 'bootstrap-sass', '~> 3.3.0'
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -22,7 +23,6 @@ group :assets do
   gem 'turbo-sprockets-rails3'
   gem 'uglifier', '>= 1.0.3'
   gem "less-rails"
-  gem "twitter-bootstrap-rails", "~> 2.2.6"
   gem 'jquery-ui-rails'
 end
 

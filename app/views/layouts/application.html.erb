@@ -41,24 +41,35 @@
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
 
-    <nav class="navbar navbar-fixed-top" id="header">
-      <div class="navbar-inner">
-        <div class="container nav-container">
-          <a class="brand" href="<%= root_url %>"> Yasub</a>
-          <ul class="nav menu-nav">
-            <li class="divider-vertical"></li>
-            <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li>
+    <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="<%= root_path %>">Yasub</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li>
 <!--             <li class="divider-vertical"></li>
             <li class="<%= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li>
  -->            <li class="divider-vertical"></li>
-            <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">About</a></li>
             <!-- <li class="divider-vertical"></li> -->
 <!--             <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'how_to_use' %>"><a href="/how_to_use">How to Use</a></li>
- -->            <li class="divider-vertical"></li>
-          </ul>
-
-          <ul class="nav pull-right">
-            <li><button id='layout_new_project_btn' class='btn btn-small' data-toggle='modal' data-target='#new_project_modal'><i class='icon-facetime-video'></i> Subtitle a Video</button></li>
+ -->      
+        <li><button id='layout_new_project_btn' class='btn btn-sm' data-toggle='modal' data-target='#new_project_modal'><i class='glyphicon glyphicon-facetime-video'></i> Subtitle a Video</button></li>
+        <li class="divider-vertical"></li>
+         <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">About</a></li>
+         <li class="divider-vertical"></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
             <li class="divider-vertical"></li>
             <% if user_signed_in?  %>
               <li class="dropdown">
@@ -77,11 +88,11 @@
               <li class="divider-vertical"></li>
               <li><%= link_to "Login", new_user_session_url %></li>
             <% end %>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
     <div id="main_container">
             <div id="flash_container">
                 <% if flash[:error] %>
@@ -170,14 +181,16 @@
       </div>
     </div>
 
+  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="new_project_modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
 
-    <div id="new_project_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Subtitle a Video</h3>
-      </div>
-      <div class="modal-body">
-          <div class='row span7'>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="mySmallModalLabel">Subtitle a Video</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row span7">
             <form class="sub center">
               <div class="control-group">
                 <div class="input-append">
@@ -187,8 +200,10 @@
               </div>
             </form>
           </div>
+        </div>
       </div>
-    </div>
+  </div>
+</div>
 
 
     <% if @repo %>
