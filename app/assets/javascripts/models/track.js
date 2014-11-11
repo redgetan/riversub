@@ -318,16 +318,12 @@ river.model.Track = Backbone.Model.extend({
     _.each(this.views,function(view){
       view.highlight();
     });
-
-    this.subtitle.highlight();
   },
 
   unhighlight: function() {
     _.each(this.views,function(view){
       view.unhighlight();
     });
-
-    this.subtitle.unhighlight();
   },
 
   fadingHighlight: function() {

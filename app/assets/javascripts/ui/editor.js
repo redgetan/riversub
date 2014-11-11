@@ -24,6 +24,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // temp hack. ugly
     if (!this.repo.parent_repository_id) {
       $(".header #original").hide();
+    } else {
+      $(".header #end").hide();
+      $("#add_sub_container").hide();
     }
     // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
@@ -376,6 +379,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     river.ui.BasePlayer.prototype.setupElement.call(this);
 
     this.$el = $("#editor");
+
+    if (this.repo.parent_repository_id) {
+      this.$el.addClass("template");
+    }
 
     if (this.repo.user) {
       var repo_owner = "<span id='repo_owner'>" +
@@ -888,6 +895,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (track.shouldPauseOnTrackEnd()) {
       track.unsetPauseOnTrackEnd();
       this.ensurePauseAtTrack(track, {pauseAtStart: true});
+    } else if (typeof this.focusedTrack !== "undefined") {
+      track.closeEditor();
+      track.subtitle.closeEditor();
     }
 
     if (track.isGhost && !track.isRemoved()) {

@@ -36,6 +36,7 @@ river.model.Subtitle = Backbone.Model.extend({
   highlight: function() {
     if (this.options.view_enabled) {
       this.view.highlight();
+      this.track.highlight();
     }
   },
 
