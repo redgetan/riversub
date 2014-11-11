@@ -801,19 +801,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   openEditor: function(track) {
-    if ($(".tab-pane.active").attr("id") === "subtitle_tab" ) {
-      track.subtitle.openEditor();
-    } else {
-     track.openEditor();
+    if (typeof this.currentTrack !== "undefined" && this.currentTrack !== track) {
+      this.closeEditor(this.currentTrack);
     }
+
+    track.subtitle.openEditor();
+    track.openEditor();
   },
 
   closeEditor: function(track) {
-    if ($(".tab-pane.active").attr("id") === "subtitle_tab" ) {
-      track.subtitle.closeEditor();
-    } else {
-     track.closeEditor();
-    }
+    track.subtitle.closeEditor();
+    track.closeEditor();
   },
 
 
