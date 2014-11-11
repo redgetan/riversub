@@ -68,7 +68,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     Backbone.on("editor.ready",this.onEditorReady.bind(this));
     Backbone.on("expandedtimelinedblclick",this.onExpandedTimelineDblClick.bind(this));
-    Backbone.on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
     Backbone.on("subtitleenter",this.onSubtitleEnter.bind(this));
     Backbone.on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
     Backbone.on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
@@ -783,31 +782,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.pause();
   },
 
-  onSubtitleEditMode: function(track, options) {
-    if (track.isRemoved()) return;
-
-    options = options || {};
-
-    if (typeof options.pause === "undefined") {
-      options.pause = true;
-    }
-
-    if (options.pause) {
-      this.ensurePauseAtTrack(track, options, function() {
-        this.showSubtitleEdit(track);
-      }.bind(this));
-    } else {
-      this.seek(track.startTime());
-      this.showSubtitleEdit(track);
-    }
-  },
-
   onSubtitleEnter: function(subtitle) {
     this.replayTrackAndEdit(subtitle.track);
-  },
-
-  showSubtitleEdit: function(track) {
-    this.openEditor(track);
   },
 
   seekTrackAndEdit: function(track) {
@@ -894,7 +870,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if (track.shouldPauseOnTrackEnd()) {
       track.unsetPauseOnTrackEnd();
-      this.ensurePauseAtTrack(track, {pauseAtStart: true});
+      this.ensurePauseAtTrack(track, {});
     } else if (typeof this.focusedTrack !== "undefined") {
       track.closeEditor();
       track.subtitle.closeEditor();
@@ -918,7 +894,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.safeEndGhostTrack(track,endTime);
       if (this.startTiming) {
         this.startTiming = false;
-        this.requestSubtitleFromUser(track);
+        this.openEditor(track);
       }
     }
   },
@@ -990,7 +966,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onSubtitleDisplayDblClick: function(event) {
     var $target = $(event.target);
 
-    this.requestSubtitleFromUser(this.currentTrack);
+    this.openEditor(this.currentTrack);
   },
 
   onPlayBtnClick: function(event) {
@@ -1045,10 +1021,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.preventSubtileInputFromLosingFocus(event);
 
     var track = this.currentGhostTrack;
+    this.pause();
     this.safeEndGhostTrack(track);
     if (this.startTiming) {
       this.startTiming = false;
-      this.requestSubtitleFromUser(track);
+      this.openEditor(track);
     }
   },
 
@@ -1095,7 +1072,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
 
     var track = this.addFullTrack(this.media.currentTime, { isAddSubBackward: false });
-    this.requestSubtitleFromUser(track);
+    this.openEditor(track);
   },
 
   addTrack: function(time, callbacks) {
@@ -1274,10 +1251,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       // track.remove();
       // throw e;
     }
-  },
-
-  requestSubtitleFromUser: function(track, options) {
-    Backbone.trigger("subtitleeditmode", track, options);
   },
 
    /* When you're timing a track while media is playing, and you're very near the start of next track,
