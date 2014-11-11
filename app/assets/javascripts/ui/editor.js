@@ -144,7 +144,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTimelineSeekHandler: function(time, $target) {
     if ($target.hasClass("track")) {
       var track = $target.data("model");
-      this.replayTrackAndEdit(track);
+      this.pause();
+      this.seekTrackAndEdit(track);
     } else {
       this.seek(time);
     }
@@ -163,10 +164,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onSubtitleLineClick: function(subtitle, $target) {
     if (!$target.hasClass("sub_enter")) {
       var track = subtitle.track;
-
-      this.seek(track.startTime(), function() {
-        this.playTillEndOfTrack(track);
-      }.bind(this));
+      this.pause();
+      this.seekTrackAndEdit(track);
     }
   },
 
@@ -702,7 +701,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPause: function(event) {
-    this.seek(this.lastTimeUpdateTime);
     this.$overlay_btn.find("i").removeClass("icon-pause");
     this.$overlay_btn.find("i").addClass("icon-play");
     this.$overlay_btn.show();
@@ -871,7 +869,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (track.shouldPauseOnTrackEnd()) {
       track.unsetPauseOnTrackEnd();
       this.ensurePauseAtTrack(track, {});
-    } else if (typeof this.focusedTrack !== "undefined") {
+    } else {
       track.closeEditor();
       track.subtitle.closeEditor();
     }
