@@ -469,7 +469,7 @@ div#player-bottom {
 
 div#time_float {
 	height: 20px;
-	z-index: 5;
+	z-index: 6;
 	position: absolute;
 	padding: 1px 5px;
 	border: solid 1px black;

@@ -525,7 +525,6 @@ form.sub {
 
 #river_player #summary.timeline {
   /*background-color: cadetblue;*/
-  background-color: #777272;
 }
 
 #blackbar {
@@ -1205,11 +1204,12 @@ footer a:hover{
 
 .player_controls_container {
   background-color: black;
-  height: 25px;
+  height: 23px;
 }
 
 .player_controls {
   text-align: left;
+  height: inherit;
   padding-left: 10px;
   background-color: black;
 }
@@ -1229,25 +1229,60 @@ footer a:hover{
 
 .player_controls .player_timeline_container {
   float: left;
-  width: 630px;
-  margin: 5px;
+  width: 580px;
+  height: inherit;
+  margin-right: 10px;
+  margin-left: 5px;
 }
 
 .player_controls #summary {
-  height: 10px;
+  height: inherit;
+  cursor: pointer;
 }
 
-.time_loaded, .time_current {
-  height: 10px;
+.time_total, .time_loaded, .time_current {
+  margin-top: 7px;
+  height: 5px;
   display: block;
   position: absolute;
   top: 0px;
 }
 
+.time_total {
+  width: 100%;
+  background: #333;
+  background: rgba(50,50,50,.8);
+  background: -webkit-gradient(linear,0 0,0 100%,from(rgba(30,30,30,.8)),to(rgba(60,60,60,.8)));
+  background: -webkit-linear-gradient(top,rgba(30,30,30,.8),rgba(60,60,60,.8));
+  background: -moz-linear-gradient(top,rgba(30,30,30,.8),rgba(60,60,60,.8));
+  background: -o-linear-gradient(top,rgba(30,30,30,.8),rgba(60,60,60,.8));
+  background: -ms-linear-gradient(top,rgba(30,30,30,.8),rgba(60,60,60,.8));
+  background: linear-gradient(rgba(30,30,30,.8),rgba(60,60,60,.8));
+}
+
 .time_loaded {
-  background-color: rgb(150,150,150);
+  background: #3caac8;
+  background: rgba(60,170,200,.8);
+  background: -webkit-gradient(linear,0 0,0 100%,from(rgba(30,30,30,0.9)),to(rgba(65,65,65,0.9)));
+  background: -webkit-linear-gradient(top,rgba(30,30,30,0.9),rgba(65,65,65,0.9));
+  background: -moz-linear-gradient(top,rgba(30,30,30,0.9),rgba(65,65,65,0.9));
+  background: -o-linear-gradient(top,rgba(30,30,30,0.9),rgba(65,65,65,0.9));
+  background: -ms-linear-gradient(top,rgba(30,30,30,0.9),rgba(65,65,65,0.9));
+  background: linear-gradient(rgba(30,30,30,0.9),rgba(65,65,65,0.9));
+  width: 0;
 }
 
 .time_current {
-  background-color: royalblue;
+  round: #fff;
+  background: rgba(255,255,255,.8);
+  background: -webkit-gradient(linear,0 0,0 100%,from(rgba(255,255,255,.9)),to(rgba(200,200,200,.8)));
+  background: -webkit-linear-gradient(top,rgba(255,255,255,.9),rgba(200,200,200,.8));
+  background: -moz-linear-gradient(top,rgba(255,255,255,.9),rgba(200,200,200,.8));
+  background: -o-linear-gradient(top,rgba(255,255,255,.9),rgba(200,200,200,.8));
+  background: -ms-linear-gradient(top,rgba(255,255,255,.9),rgba(200,200,200,.8));
+  background: linear-gradient(rgba(255,255,255,.9),rgba(200,200,200,.8));
+}
+
+#river_player .player_column {
+  width: 650px;
 }
