@@ -225,7 +225,7 @@ div#main_container {
 div#media_input {
 }
 
-input.media_url {
+.create_subtitle input.media_url {
   width: 500px;
 }
 

@@ -52,12 +52,6 @@ river.ui.Timeline = Backbone.View.extend({
     $("#subtitle_bar").append(this.$time_indicator);
 
     if (!this.disable_expanded) {
-      // window slider
-      this.$window_slider = $("#summary .window_slider");
-      this.$window_slider.css("left",0);
-      this.$window_slider.css("width",this.resolution(this.$summary) * this.WINDOW_WIDTH_IN_SECONDS);
-      if (this.mediaDuration < this.WINDOW_WIDTH_IN_SECONDS) this.$window_slider.hide();
-
       var expanded = "<div id='expanded' class='timeline'>" +
                        "<div class='filler'>" +
                          "<div id='time_label'>" +
@@ -78,9 +72,18 @@ river.ui.Timeline = Backbone.View.extend({
       this.$expanded = $("#expanded");
       this.$expanded_track_viewport = $("#track_viewport");
 
+      this.setTimelineWidth();
+
       // expanded timeline filler
       this.$filler = $("#expanded .filler");
       this.$filler.css("width",this.resolution(this.$expanded) * this.mediaDuration);
+
+      // window slider
+      this.$window_slider = $("#summary .window_slider");
+      this.$window_slider.css("left",0);
+      this.$window_slider.css("width",this.resolution(this.$summary) * this.WINDOW_WIDTH_IN_SECONDS);
+      if (this.mediaDuration < this.WINDOW_WIDTH_IN_SECONDS) this.$window_slider.hide();
+
 
       // scrubber
       this.$scrubber_expanded = $("#expanded .scrubber");
@@ -95,8 +98,6 @@ river.ui.Timeline = Backbone.View.extend({
 
       this.$expanded_container.append(move_left_btn);
       this.$expanded_container.append(move_right_btn);
-
-      this.setTimelineWidth();
 
       this.$move_left_btn = $(".move_left_btn");
       this.$move_right_btn = $(".move_right_btn");
