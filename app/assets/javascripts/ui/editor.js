@@ -801,10 +801,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   openEditor: function(track) {
-    if (typeof this.currentTrack !== "undefined" && this.currentTrack !== track) {
-      this.closeEditor(this.currentTrack);
-    }
-
     track.subtitle.openEditor();
     track.openEditor();
   },
@@ -850,6 +846,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTrackStart: function(track) {
     // console.log("ontrackstart" + track.toString());
+
+    if (typeof this.currentTrack !== "undefined" && this.currentTrack !== track) {
+      this.closeEditor(this.currentTrack);
+    }
+
+    if (typeof this.focusedTrack !== "undefined" && this.focusedTrack !== track) {
+      this.closeEditor(this.focusedTrack);
+    }
+
     this.currentTrack = track;
 
     var subtitle = track.subtitle;
@@ -867,10 +872,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (track.shouldPauseOnTrackEnd()) {
       track.unsetPauseOnTrackEnd();
       this.ensurePauseAtTrack(track, {});
-    } else {
-      track.closeEditor();
-      track.subtitle.closeEditor();
-    }
+    } 
 
     if (track.isGhost && !track.isRemoved()) {
       // will reach this state if user presses space_key until startTime of next track,
