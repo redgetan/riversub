@@ -262,7 +262,7 @@ GEM
       rack
       raindrops (~> 0.7)
     uuidtools (2.1.4)
-    view_inspect (0.3.6)
+    view_inspect (0.3.7)
       nokogiri
     warden (1.2.1)
       rack (>= 1.0)
