@@ -331,7 +331,7 @@ div#iframe_container #iframe_overlay {
 
 div#iframe_container #media {
   height: inherit;
-  width: 50%;
+  width: inherit;
   margin: auto;
 }
 
@@ -359,7 +359,8 @@ div#subtitle_bar {
 
 #editor #subtitle_bar {
   height: 40px;
-  margin-top: 10px;
+  line-height: 18px;
+  width: inherit;
 }
 
 .time_indicator {
@@ -369,10 +370,11 @@ div#subtitle_bar {
   font: normal 15px Helvetica;
   position: absolute;
   color: white;
-  left: 0px;
+  left: 20px;
+  top: -190px;
   display: inline;
   z-index: 3;
-  background-color: rgba(128,128,128,0.5);
+  background-color: black;
 }
 
 #river_player .time_indicator {

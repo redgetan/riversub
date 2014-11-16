@@ -312,7 +312,7 @@ div#editor-bottom {
 
 #editor.template #subtitle_list #original,
 #editor.template #subtitle_list #header_text {
-	width: 400px;
+	width: 450px;
 }
 
 
@@ -426,9 +426,14 @@ div#editor-bottom {
 	margin-bottom: 0px;
 }
 
+#editor.template .subtitle .parent_text {
+	/*text-align: right;*/
+}
+
+
 #editor.template .subtitle .text,
 #editor.template .subtitle .parent_text {
-	width: 400px;
+	width: 450px;
 }
 
 .subtitle input.inplace_field {

@@ -25,6 +25,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (!this.repo.parent_repository_id) {
       $(".header #original").hide();
     } else {
+      $(".header #start").hide();
       $(".header #end").hide();
       $("#add_sub_container").hide();
     }
@@ -237,22 +238,18 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     return  "<div class='container'>" +
               "<div id='editor'> " +
                 "<div id='editor-top' class='row'> " +
-                  "<div class='span12'> " +
+                  "<div class='span6 offset3'> " +
                     "<h5 id='repo_label'>" +
                       "<a href=" + this.repo.url + ">" + this.repo.video.name.substring(0,70) + "</a>" +
                     "</h5>" +
-                    "<div id='language' class='pull-left'>" +
-                      "<span>" + this.repo.language_pretty + "</span>" +
-                    "</div>" +
-                    "<h5 class='pull-right'>" +
-                      "<a id='publish_btn' class='btn btn-success'>Publish</a>" +
-                      "<a id='preview_btn' target='_blank' href=" + this.repo.url + " class='label'>View</a>" +
-                    "</h5>" +
+                    // "<div id='language' class='pull-left'>" +
+                    //   "<span>" + this.repo.language_pretty + "</span>" +
+                    // "</div>" +
                     // "<h6 id='video_url'>" +
                     //   "<a href=" + this.repo.video.url + ">" + this.repo.video.url + "</a>" +
                     // "</h6> " +
                   "</div> " +
-                  "<div class='span12'> " +
+                  "<div class='span6 offset3'> " +
                     "<div id='media_container'> " +
                       "<div id='viewing_screen' >" +
                         "<div id='iframe_container'>" +
@@ -348,8 +345,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                   "</div> " + // .span12
                   "<div id='status-bar' class='span4 pull-left'> " +
                   "</div> " +
-                  "<div class='span12'> " +
+                  "<div class='span4 pull-left'> " +
                           "<div class='row'> " +
+                            "<h5 class='center'>" +
+                              "<a id='publish_btn' class='btn btn-success'>Publish</a>" +
+                              "<a id='preview_btn' class='river_btn' target='_blank' href=" + this.repo.url + ">Preview</a>" +
+                            "</h5>" +
                             // "<div id='keyboard-shortcuts' class='span6 pull-right'> " +
                             //   "<span>" +
                             //     "<b>Keyboard Shortcuts: </b>  " +
@@ -454,8 +455,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
 
     // tooltips
-    this.$publishBtn.tooltip({title: "Make video public"});
-    this.$previewBtn.tooltip({title: "See how it'll look in public"});
     this.$timelineBtn.tooltip({title: "Timer Mode"});
     this.$subtitleBtn.tooltip({title: "Subtitle Mode"});
 

@@ -19,7 +19,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$subtitleList = $("#subtitle_list");
     this.$media = $("#media");
     this.$timer;
-    this.$fadeInBuffer = false;
   },
 
   preRepositoryInitHook: function() {
@@ -28,25 +27,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   onIframeOverlayClick: function(event) {
     this.togglePlayPause();
-  },
-
-  onMediaMouseMove: function(event) {
-
-        if (!this.$fadeInBuffer) {
-            if (this.$timer) {
-                clearTimeout(this.$timer);
-                this.$timer = 0;
-            }
-           $(".player_controls").fadeIn();
-        } else {
-            this.$fadeInBuffer = false;
-        }
-
-    this.$timer = setTimeout(function () {
-            $(".player_controls").fadeOut();
-            this.$fadeInBuffer = true;
-        }, 2000)
-
   },
 
   onPlay: function(event) {
@@ -90,7 +70,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
   bindEvents: function() {
     river.ui.BasePlayer.prototype.bindEvents.call(this);
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
-    this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
   },
