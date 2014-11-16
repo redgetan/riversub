@@ -20,13 +20,13 @@
               <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name)) do |f| %>
                 <%= devise_error_messages! %>
 
-                </br><%= f.text_field :username, :placeholder => "username", class: "span3" %>
+                <br/><%= f.text_field :username, :placeholder => "username", class: "span3" %>
 
-                </br><%= f.email_field :email, :placeholder => "email", class: "span3" %>
+                <br/><%= f.email_field :email, :placeholder => "email", class: "span3" %>
 
-                </br><%= f.password_field :password, :placeholder => "password", class: "span3" %>
+                <br/><%= f.password_field :password, :placeholder => "password", class: "span3" %>
 
-                </br><%= f.submit "Sign up", :class => 'btn btn-inverse pull-right' %>
+                <br/><%= f.submit "Sign up", :class => 'btn btn-inverse pull-right' %>
               <% end %>
             </div>
         </div>

@@ -142,6 +142,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     $(".player_controls").append("<button type='button' class='pause_btn river_btn'><i class='glyphicon glyphicon-pause'></i></button>");
     $(".player_controls").append("<div class='player_timeline_container'></div>");
     $("#summary").appendTo(".player_timeline_container")
+    $("#summary").append("<span class='time_total'></span>");
     $("#summary").append("<span class='time_loaded'></span>");
     $("#summary").append("<span class='time_current'></span>");
     $(".player_controls").append("<button type='button' class='expand_btn river_btn'><i class='glyphicon glyphicon-fullscreen'></i></button>");

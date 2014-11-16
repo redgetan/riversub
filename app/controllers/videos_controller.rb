@@ -47,7 +47,7 @@ class VideosController < ApplicationController
       redirect_to @repo.editor_url and return
     end
 
-    @repo_fork = Repository.find_by_token(params[:forked_repo_token]) || @repo.other_published_repositories.first
+    @repo_fork = Repository.find_by_token(params[:forked_repo_token]) 
   end
 
   def finish_setup

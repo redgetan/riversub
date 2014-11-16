@@ -33,12 +33,12 @@
 
           <div class="primary_action_items">
             <div class="contribute action_item pull-left">
-              <% if @repo.display_edit?(current_user) %>
+              <% if @repo.owned_by?(current_user) %>
                 <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
               <% end %>
               <a class='new_repo_btn river_btn' data-forked-repo-token="<%= @repo.token %>" href="#"><i class="glyphicon glyphicon-plus"></i> Subtitle</a>
             </div>
-            <div class="upvote action_item pull-left">
+<!--             <div class="upvote action_item pull-left">
               <a class='upvote_btn river_btn' href="#">
                 <i class="glyphicon glyphicon-arrow-up"></i>
               </a>
@@ -48,15 +48,15 @@
                 <i class="glyphicon glyphicon-arrow-down"></i>
               </a>
             </div>
-          </div>
+ -->          </div>
 
-          <div class='vote_points pull-left'>
+<!--           <div class='vote_points pull-left'>
             <span>
               45
               points
             </span>
           </div>
-
+ -->
           <!--
           -->
 

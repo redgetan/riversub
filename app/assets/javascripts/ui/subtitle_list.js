@@ -22,8 +22,8 @@ river.ui.SubtitleList = Backbone.View.extend({
     this.$container.append(this.$el);
 
     var header =     "<div class='header clear'>" +
-                       "<div>Start</div>" +
-                       "<div>End</div>" +
+                       "<div id='start'>Start</div>" +
+                       "<div id='end'>End</div>" +
                        "<div id='original'>Original</div>" +
                        "<div id='header_text'>Text</div>" +
                      "</div>";

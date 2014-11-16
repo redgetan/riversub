@@ -24,6 +24,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // temp hack. ugly
     if (!this.repo.parent_repository_id) {
       $(".header #original").hide();
+    } else {
+      $(".header #end").hide();
+      $("#add_sub_container").hide();
     }
     // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
@@ -65,7 +68,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     Backbone.on("editor.ready",this.onEditorReady.bind(this));
     Backbone.on("expandedtimelinedblclick",this.onExpandedTimelineDblClick.bind(this));
-    Backbone.on("subtitleeditmode",this.onSubtitleEditMode.bind(this));
     Backbone.on("subtitleenter",this.onSubtitleEnter.bind(this));
     Backbone.on("subtitlelinedblclick",this.onSubtitleLineDblClick.bind(this));
     Backbone.on("subtitlelineedit",this.onSubtitleLineEdit.bind(this));
@@ -142,7 +144,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTimelineSeekHandler: function(time, $target) {
     if ($target.hasClass("track")) {
       var track = $target.data("model");
-      this.replayTrackAndEdit(track);
+      this.pause();
+      this.seekTrackAndEdit(track);
     } else {
       this.seek(time);
     }
@@ -161,10 +164,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onSubtitleLineClick: function(subtitle, $target) {
     if (!$target.hasClass("sub_enter")) {
       var track = subtitle.track;
-
-      this.seek(track.startTime(), function() {
-        this.playTillEndOfTrack(track);
-      }.bind(this));
+      this.pause();
+      this.seekTrackAndEdit(track);
     }
   },
 
@@ -376,6 +377,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     river.ui.BasePlayer.prototype.setupElement.call(this);
 
     this.$el = $("#editor");
+
+    if (this.repo.parent_repository_id) {
+      this.$el.addClass("template");
+    }
 
     if (this.repo.user) {
       var repo_owner = "<span id='repo_owner'>" +
@@ -696,7 +701,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPause: function(event) {
-    this.seek(this.lastTimeUpdateTime);
     this.$overlay_btn.find("i").removeClass("icon-pause");
     this.$overlay_btn.find("i").addClass("icon-play");
     this.$overlay_btn.show();
@@ -776,31 +780,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.pause();
   },
 
-  onSubtitleEditMode: function(track, options) {
-    if (track.isRemoved()) return;
-
-    options = options || {};
-
-    if (typeof options.pause === "undefined") {
-      options.pause = true;
-    }
-
-    if (options.pause) {
-      this.ensurePauseAtTrack(track, options, function() {
-        this.showSubtitleEdit(track);
-      }.bind(this));
-    } else {
-      this.seek(track.startTime());
-      this.showSubtitleEdit(track);
-    }
-  },
-
   onSubtitleEnter: function(subtitle) {
     this.replayTrackAndEdit(subtitle.track);
-  },
-
-  showSubtitleEdit: function(track) {
-    this.openEditor(track);
   },
 
   seekTrackAndEdit: function(track) {
@@ -820,19 +801,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   openEditor: function(track) {
-    if ($(".tab-pane.active").attr("id") === "subtitle_tab" ) {
-      track.subtitle.openEditor();
-    } else {
-     track.openEditor();
-    }
+    track.subtitle.openEditor();
+    track.openEditor();
   },
 
   closeEditor: function(track) {
-    if ($(".tab-pane.active").attr("id") === "subtitle_tab" ) {
-      track.subtitle.closeEditor();
-    } else {
-     track.closeEditor();
-    }
+    track.subtitle.closeEditor();
+    track.closeEditor();
   },
 
 
@@ -871,6 +846,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTrackStart: function(track) {
     // console.log("ontrackstart" + track.toString());
+
+    if (typeof this.currentTrack !== "undefined" && this.currentTrack !== track) {
+      this.closeEditor(this.currentTrack);
+    }
+
+    if (typeof this.focusedTrack !== "undefined" && this.focusedTrack !== track) {
+      this.closeEditor(this.focusedTrack);
+    }
+
     this.currentTrack = track;
 
     var subtitle = track.subtitle;
@@ -887,8 +871,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if (track.shouldPauseOnTrackEnd()) {
       track.unsetPauseOnTrackEnd();
-      this.ensurePauseAtTrack(track, {pauseAtStart: true});
-    }
+      this.ensurePauseAtTrack(track, {});
+    } 
 
     if (track.isGhost && !track.isRemoved()) {
       // will reach this state if user presses space_key until startTime of next track,
@@ -908,7 +892,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.safeEndGhostTrack(track,endTime);
       if (this.startTiming) {
         this.startTiming = false;
-        this.requestSubtitleFromUser(track);
+        this.openEditor(track);
       }
     }
   },
@@ -980,7 +964,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onSubtitleDisplayDblClick: function(event) {
     var $target = $(event.target);
 
-    this.requestSubtitleFromUser(this.currentTrack);
+    this.openEditor(this.currentTrack);
   },
 
   onPlayBtnClick: function(event) {
@@ -1035,10 +1019,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.preventSubtileInputFromLosingFocus(event);
 
     var track = this.currentGhostTrack;
+    this.pause();
     this.safeEndGhostTrack(track);
     if (this.startTiming) {
       this.startTiming = false;
-      this.requestSubtitleFromUser(track);
+      this.openEditor(track);
     }
   },
 
@@ -1085,7 +1070,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
 
     var track = this.addFullTrack(this.media.currentTime, { isAddSubBackward: false });
-    this.requestSubtitleFromUser(track);
+    this.openEditor(track);
   },
 
   addTrack: function(time, callbacks) {
@@ -1264,10 +1249,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       // track.remove();
       // throw e;
     }
-  },
-
-  requestSubtitleFromUser: function(track, options) {
-    Backbone.trigger("subtitleeditmode", track, options);
   },
 
    /* When you're timing a track while media is playing, and you're very near the start of next track,
