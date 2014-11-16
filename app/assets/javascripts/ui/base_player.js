@@ -4,7 +4,6 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.repo = this.options.repo || {};
     this.video = this.repo.video || {};
     this.user = this.repo.user || {};
-    this.$fadeInBuffer = false;
 
     var targetSelector = this.options["targetSelector"] || "div#media";
 
@@ -99,29 +98,8 @@ river.ui.BasePlayer = Backbone.View.extend({
     Backbone.on("subtitlelineclick",this.onSubtitleLineClick.bind(this));
     Backbone.on("trackstart",this.onTrackStart.bind(this));
     this.$subtitleBar.on("mousedown",this.onSubtitleBarClick.bind(this));
-    this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
     Backbone.on("trackend",this.onTrackEnd.bind(this));
   },
-
-  onMediaMouseMove: function(event) {
-
-        if (!this.$fadeInBuffer) {
-            if (this.$timer) {
-                clearTimeout(this.$timer);
-                this.$timer = 0;
-            }
-           $("#overlay_btn").fadeIn();
-        } else {
-            this.$fadeInBuffer = false;
-        }
-
-    this.$timer = setTimeout(function () {
-            $("#overlay_btn").fadeOut();
-            this.$fadeInBuffer = true;
-        }, 2000)
-
-  },
-
 
   onTimelineSeekHandler: function(time) {
     this.seek(time);

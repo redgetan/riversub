@@ -6,6 +6,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $("#subtitle_tab_anchor a").tab("show");
 
+    this.$fadeInBuffer = false;
     this.currentGhostTrack = null;
     this.isGhostTrackStarted = false;
     this.safeEndGhostLock = false;
@@ -116,11 +117,33 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+    this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
   },
 
   preventSubtileInputFromLosingFocus: function(event) {
     event.preventDefault();
   },
+  
+  onMediaMouseMove: function(event) {
+
+        if (!this.$fadeInBuffer) {
+            if (this.$timer) {
+                clearTimeout(this.$timer);
+                this.$timer = 0;
+            }
+           $("#overlay_btn").fadeIn();
+        } else {
+            this.$fadeInBuffer = false;
+        }
+
+    this.$timer = setTimeout(function () {
+            $("#overlay_btn").fadeOut();
+            this.$fadeInBuffer = true;
+        }, 2000)
+
+  },
+
+
 
   onPublishBtnClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
