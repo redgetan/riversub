@@ -315,7 +315,6 @@ div#editor-bottom {
 	width: 450px;
 }
 
-
 #subtitle_list .clear {
 	clear: both;
 }
@@ -375,6 +374,16 @@ div#editor-bottom {
 	color: black;
 }
 
+#editor.template .subtitle.selected {
+	background: none !important;
+	color: black;
+}
+
+#editor.template .subtitle.selected .text .sub_text_area {
+	/*background-color: lightblue !important;*/
+	border: solid 1px black;
+}
+
 .subtitle .start_time,
 .subtitle .end_time,
 .subtitle .text, 
@@ -426,8 +435,10 @@ div#editor-bottom {
 	margin-bottom: 0px;
 }
 
+#editor.template #subtitle_list #original,
 #editor.template .subtitle .parent_text {
-	/*text-align: right;*/
+	text-align: right;
+	padding-right: 20px;
 }
 
 
