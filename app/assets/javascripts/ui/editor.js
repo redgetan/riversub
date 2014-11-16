@@ -367,7 +367,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   setupElement: function() {
-    this.$container = this.options["container"] || $("#main_container");
+    this.$container = this.options["container"] || $("#editor_container");
 
     var el = this.getEditorElement();
     this.$container.append(el);
