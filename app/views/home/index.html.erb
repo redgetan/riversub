@@ -1,14 +1,9 @@
 <% set_meta_tags :site => 'Yasub', :title => 'Subtitle Tool for Youtube Videos', :description => "Yasub lets you subtitle & caption Youtube Videos." %>
 
-<div class="container">
-  <div class="col-lg-12">
         <div class="jumbotron">
           <div class="col-lg-6 center">
           <h2>Create Your Own Funny Subtitles</h2>
-          <div id="river_player" data-repo='<%= @autoplay_repo ? @autoplay_repo.serialize.to_json : "" %>'>
-              <div id='autoplay_video_label'>Sample</div>
-              <%= render 'videos/player' %>
-          </div>
+          
           </div>
        </div>
     <div class="row">
@@ -41,7 +36,6 @@
         </div>
       <% end %>
   </div>
-</div>
 
 
 

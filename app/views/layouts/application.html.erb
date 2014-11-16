@@ -57,14 +57,17 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
+        <li class="divider-vertical"></li>
         <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li>
+        <li class="divider-vertical"></li>
 <!--             <li class="divider-vertical"></li>
-            <li class="<%= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li>
- -->            <li class="divider-vertical"></li>
+            <li class="<%#= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li>
+            <!--             <li class="divider-vertical"></li>
+ -->            
             <!-- <li class="divider-vertical"></li> -->
-<!--             <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'how_to_use' %>"><a href="/how_to_use">How to Use</a></li>
+<!--             <li class="<%#= 'active' if params[:controller] == 'home' && params[:action] == 'how_to_use' %>"><a href="/how_to_use">How to Use</a></li>
  -->      
-        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= videos_new_url %>"><i class="icon-plus"></i> Create</a></li>
+        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= videos_new_url %>"><i class="glyphicon glyphicon-plus"></i> Create</a></li>
         <li class="divider-vertical"></li>
          <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">About</a></li>
          <li class="divider-vertical"></li>
@@ -92,14 +95,8 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-=======
-          </ul>
-        </div>
-      </div>
-    </nav>
->>>>>>> master
 
-    <div id="main_container">
+    <div class="container">
             <div id="flash_container">
                 <% if flash[:error] %>
                 <div id="flash_error" class="flash alert alert-block"><%= flash[:error] %></div>
@@ -186,31 +183,6 @@
 
       </div>
     </div>
-
-  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="new_project_modal">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-          <h4 class="modal-title" id="mySmallModalLabel">Subtitle a Video</h4>
-        </div>
-        <div class="modal-body">
-          <div class="row span7">
-            <form class="sub center">
-              <div class="control-group">
-                <div class="input-append">
-                  <input name="media_url" class="media_url span4" type="text" placeholder="Paste youtube url">
-                  <button type="button" class="btn btn-danger sub_btn" data-loading-text="Loading...">Subtitle It</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-  </div>
-</div>
-
 
     <% if @repo %>
       <div id="share_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

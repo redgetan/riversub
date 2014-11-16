@@ -15,18 +15,18 @@
   background-color: rgba(0,0,0,0.3);
 }
 
-#river_player.show #overlay_btn .icon-play,
-#river_player.show #overlay_btn .icon-pause {
+#river_player.show #overlay_btn .glyphicon .glyphicon-play,
+#river_player.show #overlay_btn .glyphicon .glyphicon-play {
   font-size: 40px;
   border: solid 5px white;
 }
 
-#overlay_btn .icon-play {
+#overlay_btn .glyphicon .glyphicon-play {
   padding-right: 15px;
   padding-left: 20px;
 }
 
-#overlay_btn .icon-pause {
+#overlay_btn .glyphicon .glyphicon-pause {
   padding-right: 17px;
   padding-left: 18px;
 }
@@ -119,6 +119,9 @@ a.user_big_action_btn:hover {
     float: none;
 }
 
+.navbar {
+  margin-bottom: 0px;
+}
 
 .navbar-inner {
   background-image: none;
@@ -216,7 +219,6 @@ margin-left:-1px;
 }
 
 div#main_container {
-  margin-top: 30px;
   min-height: 600px;
 }
 
@@ -876,7 +878,6 @@ footer a:hover{
   position: absolute;
   z-index: -1;
   width: 100%;
-  margin-top: 10px;
 }
 
     .white .background {

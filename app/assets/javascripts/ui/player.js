@@ -138,13 +138,13 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   addPlayerControls: function() {
     $("#viewing_screen").after("<div class='player_controls_container'><div class='player_controls'></div></div>");    
-    $(".player_controls").append("<button type='button' class='play_btn river_btn'><i class='icon-play'></i></button>");
-    $(".player_controls").append("<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i></button>");
+    $(".player_controls").append("<button type='button' class='play_btn river_btn'><i class='glyphicon glyphicon-play'></i></button>");
+    $(".player_controls").append("<button type='button' class='pause_btn river_btn'><i class='glyphicon glyphicon-pause'></i></button>");
     $(".player_controls").append("<div class='player_timeline_container'></div>");
     $("#summary").appendTo(".player_timeline_container")
     $("#summary").append("<span class='time_loaded'></span>");
     $("#summary").append("<span class='time_current'></span>");
-    $(".player_controls").append("<button type='button' class='expand_btn river_btn'><i class='icon-fullscreen'></i></button>");
+    $(".player_controls").append("<button type='button' class='expand_btn river_btn'><i class='glyphicon glyphicon-fullscreen'></i></button>");
 
     this.$playBtn = $(".play_btn");
     this.$pauseBtn = $(".pause_btn");
