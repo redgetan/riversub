@@ -69,10 +69,10 @@
  -->      
         <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= videos_new_url %>"><i class="glyphicon glyphicon-plus"></i> Create</a></li>
         <li class="divider-vertical"></li>
-         <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">About</a></li>
-         <li class="divider-vertical"></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li class="divider-vertical"></li>
+        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">About</a></li>
             <li class="divider-vertical"></li>
             <% if user_signed_in?  %>
               <li class="dropdown">

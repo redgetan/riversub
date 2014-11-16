@@ -2,7 +2,7 @@
 
 <div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
   <div class="row">
-    <div class='col-lg-9'>
+    <div class='col-lg-9 player_column'>
       <h5 id='repo_label'>
         <div>
           <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
@@ -19,9 +19,10 @@
       </h5>
 
       <%= render 'player' %>
-
+    </div>
+    </div>
       <div id="video_information" class="row">
-        <div id="" class="col-lg-9">
+        <div class="player_column">
           <% unless @repo.is_published? %>
             <div id="finalize" class="" style="height: 140px;">
               <p style="padding: 10px;">This video is currently private. To make it visible to the public, click publish.</p>
@@ -62,8 +63,6 @@
 
           <%= render 'player_details' %>
         </div>
-      </div>
+        </div>
 
     </div>
-  </div>
-</div>
