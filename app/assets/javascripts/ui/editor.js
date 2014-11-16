@@ -788,12 +788,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   seekTrackAndEdit: function(track) {
     if (typeof track === "undefined") return;
+
+    this.closeAllEditorsExcept(track);
+
     this.seek(track.startTime());
     this.openEditor(track);
   },
 
   replayTrackAndEdit: function(track) {
     if (typeof track === "undefined") return;
+
+    this.closeAllEditorsExcept(track);
 
     this.seek(track.startTime(), function() {
       this.playTillEndOfTrack(track);
@@ -849,14 +854,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTrackStart: function(track) {
     // console.log("ontrackstart" + track.toString());
 
-    if (typeof this.currentTrack !== "undefined" && this.currentTrack !== track) {
-      this.closeEditor(this.currentTrack);
-    }
-
-    if (typeof this.focusedTrack !== "undefined" && this.focusedTrack !== track) {
-      this.closeEditor(this.focusedTrack);
-    }
-
+    this.closeAllEditorsExcept(track);
     this.currentTrack = track;
 
     var subtitle = track.subtitle;
@@ -1191,6 +1189,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     return {
       startTime: curr.endTime() + this.TRACK_MARGIN,
       endTime: curr.endTime() + Math.min(timeGap, this.DEFAULT_TRACK_DURATION)
+    }
+  },
+
+  closeAllEditorsExcept: function(track) {
+    if (typeof this.currentTrack !== "undefined" && this.currentTrack !== track) {
+      this.closeEditor(this.currentTrack);
+    }
+
+    if (typeof this.focusedTrack !== "undefined" && this.focusedTrack !== track) {
+      this.closeEditor(this.focusedTrack);
     }
   },
 
