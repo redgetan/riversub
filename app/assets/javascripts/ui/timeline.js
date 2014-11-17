@@ -38,7 +38,7 @@ river.ui.Timeline = Backbone.View.extend({
     this.$time_float.hide();
 
     this.$seek_head = $("#seek_head");
-    this.$seek_head.css("left",this.$summary.offset().left);
+    this.$seek_head.css("left",this.$summary.position().left);
 
     this.$seek_head.draggable({
       cursor: "pointer",
@@ -509,7 +509,7 @@ river.ui.Timeline = Backbone.View.extend({
     // this.renderInContainer(this.$summary, this.$seek_head, { left: this.media.currentTime.toFixed(3) });
     var time = Math.round(this.media.currentTime * 1000) / 1000;
     var relativePixelPos = time * this.resolution(this.$summary);
-    this.$seek_head.css('left',this.$summary.offset().left + relativePixelPos)
+    this.$seek_head.css('left',this.$summary.position().left + relativePixelPos)
   },
 
   renderScrubber: function(time) {
