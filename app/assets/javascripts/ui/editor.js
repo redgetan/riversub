@@ -391,7 +391,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   setupElement: function() {
-    this.$container = this.options["container"] || $("#main_container");
+    this.$container = this.options["container"] || $("#editor_container");
 
     var el = this.getEditorElement();
     this.$container.append(el);
@@ -607,16 +607,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (event.originalEvent.wheelDeltaX !== 0) {
       event.preventDefault();
     }
-  },
-
-  getSecondsFromCurrentPosition: function($target,eventPageX) {
-    var $container = this.$progress_bar;
-
-    var containerX = $container.position().left;
-    var posX = eventPageX - containerX;
-    var seconds = posX / this.resolution($container);
-    seconds = Math.round(seconds * 1000) / 1000;
-    return seconds;
   },
 
   onTimeUpdate: function(event) {

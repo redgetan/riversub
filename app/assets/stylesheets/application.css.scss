@@ -8,9 +8,13 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_self
- *= require jquery.ui.resizable
- *= require jquery.ui.spinner
- *= require font-awesome
- *= require_tree .
  */
+@import "jquery.ui.resizable"; 
+@import "jquery.ui.spinner";
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "editor";
+@import "home";
+@import "introjs";
+@import "kbdfun";
+@import "social-buttons";

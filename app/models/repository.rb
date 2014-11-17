@@ -88,6 +88,10 @@ class Repository < ActiveRecord::Base
     self.video.metadata["data"]["thumbnail"]["sqDefault"]
   end
 
+  def thumbnail_url_hq
+    self.video.metadata["data"]["thumbnail"]["hqDefault"]
+  end
+
   def publish_url
     publish_videos_url(self)
   end

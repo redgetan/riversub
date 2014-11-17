@@ -20,8 +20,7 @@ $.extend(river.controller,{
 
       editor = new river.ui.Editor({repo: repo, media: media, local: true, targetSelector: "video#media"});
     } else {
-      repo = $("#editor_data").data("repo") ;
-      $("#editor_data").remove();
+      repo = $("#editor_container").data("repo") ;
       editor = new river.ui.Editor({repo: repo});
     }
   }
