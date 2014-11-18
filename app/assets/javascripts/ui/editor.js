@@ -162,10 +162,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onSubtitleLineClick: function(subtitle, $target) {
-    if (!$target.hasClass("sub_enter")) {
-      var track = subtitle.track;
-      this.pause();
-      this.seekTrackAndEdit(track);
+    this.pause();
+    var track = subtitle.track;
+    this.seek(track.startTime());
+    if (!$target.hasClass("sub_enter") && 
+        $target.closest(".start_time").length === 0 && 
+        $target.closest(".end_time").length === 0) {
+      this.openEditor(track);
     }
   },
 
