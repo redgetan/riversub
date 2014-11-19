@@ -188,11 +188,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onSubtitleLineClick: function(subtitle, $target) {
     this.pause();
     var track = subtitle.track;
-    this.seek(track.startTime());
-    if (!$target.hasClass("sub_enter") && 
-        $target.closest(".start_time").length === 0 && 
-        $target.closest(".end_time").length === 0) {
-      this.openEditor(track);
+
+    if ($target.hasClass("sub_enter")) {
+      this.replayTrackAndEdit(track);  
+    } else {
+      this.seek(track.startTime());
+      
+      if ($target.closest(".start_time").length === 0 &&  
+          $target.closest(".end_time").length === 0) {
+        this.openEditor(track);
+      }
     }
   },
 
@@ -716,14 +721,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPlay: function(event) {
-    if (typeof this.currentTrack !== "undefined") {
-      this.closeEditor(this.currentTrack);
-    }
-
-    if (typeof this.focusedTrack !== "undefined") {
-      this.closeEditor(this.focusedTrack);
-    }
-
     this.$overlay_btn.find("i").removeClass("glyphicon-play");
     this.$overlay_btn.find("i").addClass("glyphicon-pause");
     this.$playBtn.hide();
@@ -817,7 +814,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   seekTrackAndEdit: function(track) {
     if (typeof track === "undefined") return;
 
-    this.closeAllEditorsExcept(track);
+    this.closeUnhighlightAllEditorsExcept(track);
 
     this.seek(track.startTime());
     this.openEditorAndHighlight(track);
@@ -826,7 +823,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   replayTrackAndEdit: function(track) {
     if (typeof track === "undefined") return;
 
-    this.closeAllEditorsExcept(track);
+    this.closeUnhighlightAllEditorsExcept(track);
 
     this.seek(track.startTime(), function() {
       this.playTillEndOfTrack(track);
@@ -902,7 +899,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTrackStart: function(track) {
     // console.log("ontrackstart" + track.toString());
 
-    this.closeAllEditorsExcept(track);
+    this.closeUnhighlightAllEditorsExcept(track);
     this.currentTrack = track;
 
     var subtitle = track.subtitle;
@@ -979,6 +976,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onIframeOverlayClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
+    this.closeAllEditors();
     this.togglePlayPause();
   },
 
@@ -1021,6 +1019,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onPlayBtnClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
+    this.closeAllEditors();
     this.play();
   },
 
@@ -1244,7 +1243,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
-  closeAllEditorsExcept: function(track) {
+  closeAllEditors: function() {
+    if (typeof this.currentTrack !== "undefined") {
+      this.closeEditor(this.currentTrack);
+    }
+
+    if (typeof this.focusedTrack !== "undefined") {
+      this.closeEditor(this.focusedTrack);
+    }
+  },
+
+  closeUnhighlightAllEditorsExcept: function(track) {
     if (typeof this.currentTrack !== "undefined" && this.currentTrack !== track) {
       this.closeEditorAndUnhighlight(this.currentTrack);
     }

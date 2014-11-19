@@ -269,12 +269,10 @@ div#editor-bottom {
 
 .sub_enter {
 	display: none;	
-	height: 10px;
-	line-height: 10px;
-}
-
-.subtitle:hover .sub_enter {
-	display: inline-block;	
+	height: 18px;
+	vertical-align: inherit;
+	border: solid 1px #333;
+	padding-top: 0px;
 }
 
 #editor .subtitle.focused .sub_enter {
@@ -668,8 +666,8 @@ a#preview_btn {
 	margin-bottom: 0px !important;
 	background: transparent;
 	vertical-align: top;
-	height: 16px;
-	line-height: 16px;
+	height: 18px;
+	line-height: 18px;
 	font-size: 14px !important;
 	font-family: Arial, sans-serif !important;
 }
