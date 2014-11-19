@@ -713,6 +713,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPlay: function(event) {
+    if (typeof this.currentTrack !== "undefined") {
+      this.closeEditor(this.currentTrack);
+    }
+
+    if (typeof this.focusedTrack !== "undefined") {
+      this.closeEditor(this.focusedTrack);
+    }
+
     this.$overlay_btn.find("i").removeClass("glyphicon-play");
     this.$overlay_btn.find("i").addClass("glyphicon-pause");
     this.$playBtn.hide();
@@ -809,7 +817,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.closeAllEditorsExcept(track);
 
     this.seek(track.startTime());
-    this.openEditor(track);
+    this.openEditorAndHighlight(track);
   },
 
   replayTrackAndEdit: function(track) {
@@ -821,7 +829,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.playTillEndOfTrack(track);
     }.bind(this));
 
-    this.openEditor(track);
+    this.openEditorAndHighlight(track);
   },
 
   openEditor: function(track) {
@@ -829,9 +837,29 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     track.openEditor();
   },
 
+  highlight: function(track) {
+    track.subtitle.highlight();  
+    track.highlight();  
+  },
+
+  openEditorAndHighlight: function(track) {
+    this.openEditor(track);
+    this.highlight(track);
+  },
+
   closeEditor: function(track) {
     track.subtitle.closeEditor();
     track.closeEditor();
+  },
+
+  unhighlight: function(track) {
+    track.subtitle.unhighlight();  
+    track.unhighlight();  
+  },
+
+  closeEditorAndUnhighlight: function(track) {
+    this.closeEditor(track);
+    this.unhighlight(track);
   },
 
 
@@ -909,7 +937,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.safeEndGhostTrack(track,endTime);
       if (this.startTiming) {
         this.startTiming = false;
-        this.openEditor(track);
+        this.openEditorAndHighlight(track);
       }
     }
   },
@@ -918,6 +946,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (this.currentTrack === track) {
       var prevTrack = this.prevNearestTrack(track.startTime());
       this.currentTrack = prevTrack;
+    }
+
+    if (this.focusedTrack === track) {
+      this.focusedTrack = null;
     }
   },
 
@@ -981,7 +1013,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onSubtitleDisplayDblClick: function(event) {
     var $target = $(event.target);
 
-    this.openEditor(this.currentTrack);
+    this.openEditorAndHighlight(this.currentTrack);
   },
 
   onPlayBtnClick: function(event) {
@@ -1023,7 +1055,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.preventSubtileInputFromLosingFocus(event);
 
     if (typeof this.focusedTrack !== "undefined") {
-      this.focusedTrack.closeEditor();
+      this.closeEditor(this.focusedTrack);
     }
 
     if (this.$startTimingBtn.attr("disabled") == "disabled") return;
@@ -1040,7 +1072,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.safeEndGhostTrack(track);
     if (this.startTiming) {
       this.startTiming = false;
-      this.openEditor(track);
+      this.openEditorAndHighlight(track);
     }
   },
 
@@ -1087,7 +1119,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
 
     var track = this.addFullTrack(this.media.currentTime, { isAddSubBackward: false });
-    this.openEditor(track);
+    this.openEditorAndHighlight(track);
   },
 
   addTrack: function(time, callbacks) {
@@ -1211,11 +1243,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   closeAllEditorsExcept: function(track) {
     if (typeof this.currentTrack !== "undefined" && this.currentTrack !== track) {
-      this.closeEditor(this.currentTrack);
+      this.closeEditorAndUnhighlight(this.currentTrack);
     }
 
     if (typeof this.focusedTrack !== "undefined" && this.focusedTrack !== track) {
-      this.closeEditor(this.focusedTrack);
+      this.closeEditorAndUnhighlight(this.focusedTrack);
     }
   },
 

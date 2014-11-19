@@ -193,12 +193,10 @@ river.model.Track = Backbone.Model.extend({
 
   openEditor: function() {
     this.expandedView.openEditor();
-    this.highlight();
   },
 
   closeEditor: function() {
     this.expandedView.closeEditor();
-    this.unhighlight();  
   },
 
   toJSON: function() {
