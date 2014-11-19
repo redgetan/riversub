@@ -89,11 +89,11 @@ river.ui.Timeline = Backbone.View.extend({
       this.$scrubber_expanded = $("#expanded .scrubber");
 
       var move_left_btn = "<a href='#' class='move_left_btn'>" +
-                           "<i class='icon-chevron-left'></i>" +
+                           "<i class='glyphicon glyphicon-chevron-left'></i>" +
                           "</a>";
 
       var move_right_btn = "<a href='#' class='move_right_btn'>" +
-                             "<i class='icon-chevron-right'></i>" +
+                             "<i class='glyphicon glyphicon-chevron-right'></i>" +
                            "</a>";
 
       this.$expanded_container.append(move_left_btn);

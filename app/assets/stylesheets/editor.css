@@ -73,7 +73,7 @@ div#editor-bottom {
 }
 
 #summary.timeline {
-	height: 11px;
+	height: 10px;
 	position: relative;
 	/*overflow: hidden;*/
 }
@@ -151,7 +151,7 @@ div#editor-bottom {
 }
 
 #summary .track {
-	height: 10px;
+	height: 11px;
 }
 
 .track .close {

@@ -1056,7 +1056,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onStartTimingBtn: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
 
-    if (typeof this.focusedTrack !== "undefined") {
+    if (typeof this.focusedTrack !== "undefined" && this.focusedTrack) {
       this.closeEditor(this.focusedTrack);
     }
 
@@ -1244,21 +1244,21 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   closeAllEditors: function() {
-    if (typeof this.currentTrack !== "undefined") {
+    if (typeof this.currentTrack !== "undefined" && this.currentTrack) {
       this.closeEditor(this.currentTrack);
     }
 
-    if (typeof this.focusedTrack !== "undefined") {
+    if (typeof this.focusedTrack !== "undefined" && this.focusedTrack) {
       this.closeEditor(this.focusedTrack);
     }
   },
 
   closeUnhighlightAllEditorsExcept: function(track) {
-    if (typeof this.currentTrack !== "undefined" && this.currentTrack !== track) {
+    if (typeof this.currentTrack !== "undefined" && this.currentTrack !== track && this.currentTrack) {
       this.closeEditorAndUnhighlight(this.currentTrack);
     }
 
-    if (typeof this.focusedTrack !== "undefined" && this.focusedTrack !== track) {
+    if (typeof this.focusedTrack !== "undefined" && this.focusedTrack !== track && this.focusedTrack) {
       this.closeEditorAndUnhighlight(this.focusedTrack);
     }
   },
