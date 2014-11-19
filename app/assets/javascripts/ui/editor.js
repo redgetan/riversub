@@ -261,7 +261,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     return  "<div class='container'>" +
               "<div id='editor'> " +
                 "<div id='editor-top' class='row'> " +
-                  "<div class='col-sm-8 col-sm-offset-3'> " +
+                  "<div class='repo_label_container col-sm-8 col-sm-offset-3'> " +
                     "<h5 id='repo_label'>" +
                       "<a href=" + this.repo.url + ">" + this.repo.video.name.substring(0,70) + "</a>" +
                     "</h5>" +
@@ -272,7 +272,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     //   "<a href=" + this.repo.video.url + ">" + this.repo.video.url + "</a>" +
                     // "</h6> " +
                   "</div> " +
-                  "<div class='col-sm-8 col-sm-offset-3'> " +
+                  "<div class='editor_video_container col-sm-12'> " +
                     "<div id='media_container'> " +
                       "<div id='viewing_screen' >" +
                         "<div id='iframe_container'>" +
@@ -315,14 +315,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
                         "<div id='timeline_container'>" +
                         "</div> " +
-                        "<div id='controls' class='col-sm-12 input-append'> " +
-                          "<div id='main_controls' class='pull-left'> " +
+                        "<div id='controls' class='col-sm-12 input-group'> " +
+                          "<div id='main_controls' class='pull-left input-group'> " +
                             // "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
                             // "<button type='button' class='play_btn river_btn'><i class='glyphicon glyphicon-play'></i>   </button> " +
                             // "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
                             // "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
-                            "<button type='button' class='timeline_btn river_btn'> <i class='icon-film'></i></button> " +
-                            "<button type='button' class='subtitle_btn river_btn'> <i class='icon-list'></i></button> " +
+                            "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-time'></i></button> " +
+                            "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
                             "<button id='start_timing_btn' class='river_btn'><i class='icon-plus'></i> Start Time</button> " +
                             "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i> End Time</button> " +
                           "</div> " +
@@ -343,17 +343,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                             // "</span> " +
                         "</div> " +   // #subtitle_container
                         "<div id='add_sub_container' class=''> " +
-                          "<div id='controls' class='col-sm-12 input-append'> " +
-                            "<div id='main_controls' class='pull-left'> " +
+                          "<div id='controls' class='col-sm-12 input-group'> " +
+                            "<div id='main_controls' class='pull-left input-group'> " +
                               // "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
                               // "<button type='button' class='play_btn river_btn'><i class='glyphicon glyphicon-play'></i>   </button> " +
                               // "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
                               // "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
-                              "<button type='button' class='timeline_btn river_btn'> <i class='icon-film'></i></button> " +
-                              "<button type='button' class='subtitle_btn river_btn'> <i class='icon-list'></i></button> " +
+                              "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-time'></i></button> " +
+                              "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
                               // "<button type='button' id='replay_btn' class='river_btn'><i class='icon-refresh'></i> Replay</button> " +
                             "</div> " +
-                            "<input id='add_sub_input' class='sub_text_area' placeholder='Enter Subtitle Here'> " +
+                            "<input id='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
                             "<button type='button' id='add_sub_btn' class='river_btn'>Add</a>" +
                           "</div> " +
                         "</div> " +
@@ -404,6 +404,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if (this.repo.parent_repository_id) {
       this.$el.addClass("template");
+      $(".repo_label_container").removeClass("col-sm-12");
+      $(".repo_label_container").addClass("col-sm-8 col-sm-offset-3");
+
+      $(".editor_video_container").removeClass("col-sm-12");
+      $(".editor_video_container").addClass("col-sm-8 col-sm-offset-3");
     }
 
     if (this.repo.user) {
