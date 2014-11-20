@@ -189,15 +189,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.pause();
     var track = subtitle.track;
 
-    if ($target.hasClass("sub_enter")) {
-      this.replayTrackAndEdit(track);  
-    } else {
-      this.seek(track.startTime());
-      
-      if ($target.closest(".start_time").length === 0 &&  
-          $target.closest(".end_time").length === 0) {
-        this.openEditor(track);
-      }
+    this.seek(track.startTime());
+    
+    if ($target.closest(".start_time").length === 0 &&  
+        $target.closest(".end_time").length === 0) {
+      this.openEditor(track);
     }
   },
 
@@ -269,9 +265,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     return  "<div class='container'>" +
               "<div id='editor'> " +
                 "<div id='editor-top' class='row'> " +
-                  "<div class='repo_label_container col-sm-8 col-sm-offset-3'> " +
+                  "<div class='repo_label_container col-sm-12'> " +
                     "<h5 id='repo_label'>" +
                       "<a href=" + this.repo.url + ">" + this.repo.video.name.substring(0,70) + "</a>" +
+                    "</h5>" +
+                    "<h5 class='pull-right'>" +
+                      "<a id='publish_btn' class='btn btn-success'>Publish</a>" +
+                      "<a id='preview_btn' class='river_btn' target='_blank' href=" + this.repo.url + ">Preview</a>" +
                     "</h5>" +
                     // "<div id='language' class='pull-left'>" +
                     //   "<span>" + this.repo.language_pretty + "</span>" +
@@ -325,14 +325,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "</div> " +
                         "<div id='controls' class='col-sm-12 input-group'> " +
                           "<div id='main_controls' class='pull-left input-group'> " +
-                            // "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
-                            // "<button type='button' class='play_btn river_btn'><i class='glyphicon glyphicon-play'></i>   </button> " +
-                            // "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
-                            // "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
-                            "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-time'></i></button> " +
-                            "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
-                            "<button id='start_timing_btn' class='river_btn'><i class='icon-plus'></i> Start Time</button> " +
-                            "<button id='stop_timing_btn' class='river_btn'><i class='icon-circle'></i> End Time</button> " +
+                            "<button type='button' class='backward_btn river_btn'><i class='glyphicon glyphicon-backward'></i> </button> " +
+                            "<button type='button' class='play_btn river_btn'><i class='glyphicon glyphicon-play'></i>   </button> " +
+                            "<button type='button' class='pause_btn river_btn'><i class='glyphicon glyphicon-pause'></i> </button> " +
+                            "<button type='button' class='forward_btn river_btn'><i class='glyphicon glyphicon-forward'></i> </button> " +
+                            "<button id='start_timing_btn' class='river_btn'><i class='glyphicon glyphicon-plus'></i> Start Time</button> " +
+                            "<button id='stop_timing_btn' class='river_btn'><i class='glyphicon glyphicon-circle'></i> End Time</button> " +
                           "</div> " +
                         "</div> " +
                       "</div>" +
@@ -351,18 +349,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                             // "</span> " +
                         "</div> " +   // #subtitle_container
                         "<div id='add_sub_container' class=''> " +
-                          "<div id='controls' class='col-sm-12 input-group'> " +
+                          "<div id='controls' class='col-xs-12 input-group'> " +
                             "<div id='main_controls' class='pull-left input-group'> " +
-                              // "<button type='button' class='backward_btn river_btn'><i class='icon-backward'></i> </button> " +
-                              // "<button type='button' class='play_btn river_btn'><i class='glyphicon glyphicon-play'></i>   </button> " +
-                              // "<button type='button' class='pause_btn river_btn'><i class='icon-pause'></i> </button> " +
-                              // "<button type='button' class='forward_btn river_btn'><i class='icon-forward'></i> </button> " +
-                              "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-time'></i></button> " +
-                              "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
+                              "<button type='button' class='backward_btn river_btn'><i class='glyphicon glyphicon-backward'></i> </button> " +
+                              "<button type='button' class='play_btn river_btn'><i class='glyphicon glyphicon-play'></i>   </button> " +
+                              "<button type='button' class='pause_btn river_btn'><i class='glyphicon glyphicon-pause'></i> </button> " +
+                              "<button type='button' class='forward_btn river_btn'><i class='glyphicon glyphicon-forward'></i> </button> " +
                               // "<button type='button' id='replay_btn' class='river_btn'><i class='icon-refresh'></i> Replay</button> " +
                             "</div> " +
-                            "<input id='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
-                            "<button type='button' id='add_sub_btn' class='river_btn'>Add</a>" +
+                            "<input id='add_sub_input' class='col-xs-8' placeholder='Enter Subtitle Here'> " +
+                            "<button type='button' id='add_sub_btn' class='col-xs-3 river_btn'>Add</a>" +
                           "</div> " +
                         "</div> " +
                       "</div>" +   // tab pane
@@ -378,10 +374,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                   "</div> " +
                   "<div class='col-sm-4 pull-left'> " +
                           "<div class='row'> " +
-                            "<h5 class='center'>" +
-                              "<a id='publish_btn' class='btn btn-success'>Publish</a>" +
-                              "<a id='preview_btn' class='river_btn' target='_blank' href=" + this.repo.url + ">Preview</a>" +
-                            "</h5>" +
                             // "<div id='keyboard-shortcuts' class='col-sm-5 pull-right'> " +
                             //   "<span>" +
                             //     "<b>Keyboard Shortcuts: </b>  " +
@@ -610,7 +602,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onDocumentClick: function(event) {
     if (!$(event.target).hasClass("sub_text_area") &&
       !$(event.target).hasClass("track_text") &&
-      !$(event.target).hasClass("ui-spinner")) {
+      !$(event.target).hasClass("ui-spinner") &&
+      !$(event.target).attr("id") === "add_sub_input") {
       this.preventSubtileInputFromLosingFocus(event);
     }
   },

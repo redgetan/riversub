@@ -25,8 +25,7 @@ river.ui.Subtitle = Backbone.View.extend({
 
     var content = "<div class='start_time'></div>" +
                   "<div class='end_time'></div>" +
-                  "<div class='text input-group'>"+ 
-                    "<button class='btn btn-xs sub_enter'>Replay</button>" +
+                  "<div class='text'>"+ 
                   "</div>" +
                   "<div class='delete'>" +
                     "<a href='#' class='delete_sub_line'>x</a>" +
@@ -39,8 +38,6 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$endTime   = this.$el.find(".end_time");
 
     this.$text = this.$el.find(".text");
-
-    this.$subEnter   = this.$el.find(".sub_enter");
 
     this.$close = this.$el.find(".delete_sub_line");
     this.$close.hide();
@@ -83,33 +80,6 @@ river.ui.Subtitle = Backbone.View.extend({
   editableStartEndTime: function() {
     this.$startTime.append(this.createInput());
     this.$endTime.append(this.createInput());
-
-    if (!repo.parent_repository_id) {
-      this.$startTime.find("input").spinner({
-        min: 0, 
-        spin: this.startTimeSpin.bind(this)
-      });
-
-      this.$endTime.find("input").spinner({
-        min: 0, 
-        spin: this.endTimeSpin.bind(this)
-      });
-
-      // reset events set by jquery ui spinner
-      $.each(["mousewheel", "keydown", "keyup"], function(index, eventName){
-        this.$startTime.find("input").off(eventName);
-        this.$endTime.find("input").off(eventName);
-      }.bind(this));
-
-
-      this.$startTime.find("input").data("field","start_time");
-      this.$startTime.find(".ui-spinner-button").data("field","start_time");
-      this.$startTime.find(".ui-spinner-button span").data("field","start_time");
-
-      this.$endTime.find("input").data("field","end_time");
-      this.$endTime.find(".ui-spinner-button").data("field","end_time");
-      this.$endTime.find(".ui-spinner-button span").data("field","end_time");
-    }
 
     this.$startTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
     this.$endTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
@@ -344,25 +314,11 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   openEditor: function(options) {
-    options = options || {};
-
-    if (["start_time","end_time","text"].indexOf(options.field) === -1) {
-      options.field = "text";
-    }
-
-    var $input = this.$el.find("." + options.field).find("input");
-    $input.focus();  
+    this.$el.find(".text input").focus();
   },
 
   closeEditor: function(options) {
-    options = options || {};
-
-    if (["start_time","end_time","text"].indexOf(options.field) === -1) {
-      options.field = "text";
-    }
-
-    var $input = this.$el.find("." + options.field).find("input");
-    $input.blur();
+    this.$el.find(".text input").blur();
   }
 
 });

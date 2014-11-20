@@ -549,6 +549,10 @@ div#keyboard-shortcuts {
 
 a#preview_btn {
 	/*background-color: lightcoral;*/
+	background: none;
+	border: none;
+	color: blue;
+	text-decoration: underline;
 	font-size: 14px;
 	padding: 5px 10px;
 }
@@ -571,7 +575,6 @@ a#preview_btn {
 #add_sub_input {
 	border: solid 1px #eee !important;
   font-size: 16px;
-  width: 730px;
   border-radius: 0px;
   padding: 4px;
 }
