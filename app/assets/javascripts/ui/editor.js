@@ -60,7 +60,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   preRepositoryInitHook: function() {
     this.timeline = new river.ui.Timeline({media: this.popcorn.media, mediaDuration: this.mediaDuration() });
-    $(".time_indicator").appendTo(".time_indicator_container");
   },
 
   showGuidedWalkthroughWelcome: function() {
@@ -268,7 +267,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<div id='iframe_container'>" +
                           "<div id='iframe_overlay'>" +
                           "</div>" +
-                          "<div id='overlay_btn'><i class='glyphicon glyphicon-play'></i></div>" +
                         "</div> " +
                         "<div id='subtitle_bar' class='center'> " +
                           "<span id='subtitle_display' class='center'></span> " +
@@ -314,7 +312,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<div class='tab-pane' id='subtitle_tab'>" +
                         "<div id='add_sub_container' class=''> " +
                           "<div id='controls' class='col-xs-12 input-group'> " +
-                            "<div class='col-xs-2 time_indicator_container'></div>" + 
+                            "<div class='col-xs-2 time_indicator_container'>Enter Text: </div>" + 
                             "<input id='add_sub_input' class='col-xs-8' placeholder='Enter Subtitle Here'> " +
                             "<button type='button' id='add_sub_btn' class='col-xs-1 river_btn'>Add</a>" +
                           "</div> " +

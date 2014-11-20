@@ -375,7 +375,7 @@ div#subtitle_bar {
   width: inherit;
 }
 
-#river_player .time_indicator {
+.time_indicator {
   border: solid 1px black;
   height: 20px;
   width: 90px;
@@ -383,15 +383,13 @@ div#subtitle_bar {
   position: absolute;
   color: white;
   left: 20px;
-  top: 15px;
   display: inline;
   z-index: 3;
   background-color: black;
 }
 
-#editor .time_indicator {
-  padding: 3px 0px;
-  font-size: 16px;
+#river_player .time_indicator {
+  top: 15px;
 }
 
 
