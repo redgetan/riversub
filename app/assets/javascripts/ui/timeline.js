@@ -28,7 +28,8 @@ river.ui.Timeline = Backbone.View.extend({
     this.$summary_container = $("#media_container");
 
     var summary = "<div id='summary' class='timeline' >" +
-                     "<div class='window_slider'></div>" +
+                     // "<div class='window_slider'></div>" +
+                     "<div id='time_float'></div>" +
                    "</div>";
 
     this.$summary_container.find("#viewing_screen").after(summary);
@@ -48,7 +49,7 @@ river.ui.Timeline = Backbone.View.extend({
     });
 
     // current time display indicator
-    this.$time_indicator = $("<div class='time_indicator'>0</div>");
+    this.$time_indicator = $("<div class='time_indicator'>00:00:00.000</div>");
     $("#subtitle_bar").append(this.$time_indicator);
 
     if (!this.disable_expanded) {
@@ -250,7 +251,7 @@ river.ui.Timeline = Backbone.View.extend({
 
   onTrackAdd: function(track) {
     if (!this.hideTracks) {
-      this.$summary.append(track.summaryView.$el);
+      // this.$summary.append(track.summaryView.$el);
       this.$expanded_track_viewport.append(track.expandedView.$el);
       this.renderTrack(track);
     }
@@ -375,7 +376,7 @@ river.ui.Timeline = Backbone.View.extend({
     if (seconds > this.mediaDuration) seconds = this.mediaDuration;
 
     this.$time_float.text(this.stringifyTimeShort(seconds));
-    this.$time_float.css("left",posX - this.$summary.offset().left + this.$time_float.width() / 2);
+    this.$time_float.css("left",posX - this.$summary.offset().left - this.$time_float.width() / 2);
   },
 
   onSeekHeadDragHandler: function(event) {
@@ -492,7 +493,7 @@ river.ui.Timeline = Backbone.View.extend({
 
     var duration = track.endTime() - track.startTime();
 
-    this.renderInContainer(this.$summary,track.summaryView.$el,   { width: duration, left: track.startTime() });
+    // this.renderInContainer(this.$summary,track.summaryView.$el,   { width: duration, left: track.startTime() });
     this.renderInContainer(this.$expanded,track.expandedView.$el, { width: duration, left: track.startTime() });
 
   },
@@ -501,7 +502,7 @@ river.ui.Timeline = Backbone.View.extend({
   renderFillProgress: function(track) {
     var progress = track.progressTime() - track.startTime();
 
-    this.renderInContainer(this.$summary,track.summaryView.$el,  { width: progress, left: track.startTime() });
+    // this.renderInContainer(this.$summary,track.summaryView.$el,  { width: progress, left: track.startTime() });
     this.renderInContainer(this.$expanded,track.expandedView.$el,{ width: progress, left: track.startTime() });
   },
 

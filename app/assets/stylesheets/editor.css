@@ -485,9 +485,9 @@ div#time_float {
 	height: 20px;
 	z-index: 6;
 	position: absolute;
-	padding: 1px 5px;
+	padding: 0px 5px;
 	border: solid 1px black;
-	margin-top: -50px;
+	margin-top: -20px;
 	background-color: white;
 }
 
@@ -550,16 +550,14 @@ div#keyboard-shortcuts {
 a#preview_btn {
 	/*background-color: lightcoral;*/
 	background: none;
-	border: none;
-	color: blue;
-	text-decoration: underline;
+	border: solid 1px gray;
 	font-size: 14px;
-	padding: 5px 10px;
+	padding: 3px 10px;
 }
 
 #add_sub_container {
-	margin-bottom: 0px;
-	border: solid 1px lightgray;
+	margin-bottom: 20px;
+	/*border: solid 1px lightgray;*/
 	height: 30px;
 }
 
@@ -573,18 +571,36 @@ a#preview_btn {
 }
 
 #add_sub_input {
-	border: solid 1px #eee !important;
+	border: solid 1px black !important;
   font-size: 16px;
   border-radius: 0px;
-  padding: 4px;
+  background-color: rgb(189, 197, 213);
+	padding: 0px !important;
+	margin-top: 2px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+#add_sub_input:focus {
+	-moz-box-shadow: none!important;
+  box-shadow: none!important;
+  outline: 0 none;
+}
+
+#time_indicator_container {
+	border: solid 1px gray;
 }
 
 #add_sub_btn {
-	width: 125px;
 	font-weight: bolder;
   border-radius: 0px;
   cursor: pointer;
-  background-color: lightblue !important;
+  background: none !important;
+  padding: 0px !important;
+	margin-top: 3px;
+	margin-left: 5px;
+	margin-right: 10px;
+
 }
 
 #add_sub_options {

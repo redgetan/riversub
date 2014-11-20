@@ -29,9 +29,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       $(".header #start").hide();
       $(".header #end").hide();
       $("#add_sub_container").hide();
+      this.$forwardBtn.hide();
+      this.$backwardBtn.hide();
     }
     // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
+    this.$expandBtn.hide();
   },
 
   useLocalStorageIfNeeded: function() {
@@ -57,6 +60,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   preRepositoryInitHook: function() {
     this.timeline = new river.ui.Timeline({media: this.popcorn.media, mediaDuration: this.mediaDuration() });
+    $(".time_indicator").appendTo(".time_indicator_container");
   },
 
   showGuidedWalkthroughWelcome: function() {
@@ -117,33 +121,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
-    this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
   },
 
   preventSubtileInputFromLosingFocus: function(event) {
     event.preventDefault();
   },
-  
-  onMediaMouseMove: function(event) {
-
-        if (!this.$fadeInBuffer) {
-            if (this.$timer) {
-                clearTimeout(this.$timer);
-                this.$timer = 0;
-            }
-           $("#overlay_btn").fadeIn();
-        } else {
-            this.$fadeInBuffer = false;
-        }
-
-    this.$timer = setTimeout(function () {
-            $("#overlay_btn").fadeOut();
-            this.$fadeInBuffer = true;
-        }, 2000)
-
-  },
-
-
 
   onPublishBtnClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
@@ -292,12 +274,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                           "<span id='subtitle_display' class='center'></span> " +
                         "</div> " +
                       "</div> " +
-                      "<div id='time_float'></div>" +
-                      "<div id='seek_head'>" +
-                        "<div class='scrubber'></div>" +
-                        "<div id='seek_head_corner'></div>" +
-                        "<div id='seek_head_body'></div>" +
-                      "</div>" +
+                      // "<div id='seek_head'>" +
+                      //   "<div class='scrubber'></div>" +
+                      //   "<div id='seek_head_corner'></div>" +
+                      //   "<div id='seek_head_body'></div>" +
+                      // "</div>" +
                     "</div> " +
                   "</div> " +
                   // "<div id='editor-top-right' class='span6'> " +
@@ -325,16 +306,19 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "</div> " +
                         "<div id='controls' class='col-sm-12 input-group'> " +
                           "<div id='main_controls' class='pull-left input-group'> " +
-                            "<button type='button' class='backward_btn river_btn'><i class='glyphicon glyphicon-backward'></i> </button> " +
-                            "<button type='button' class='play_btn river_btn'><i class='glyphicon glyphicon-play'></i>   </button> " +
-                            "<button type='button' class='pause_btn river_btn'><i class='glyphicon glyphicon-pause'></i> </button> " +
-                            "<button type='button' class='forward_btn river_btn'><i class='glyphicon glyphicon-forward'></i> </button> " +
                             "<button id='start_timing_btn' class='river_btn'><i class='glyphicon glyphicon-plus'></i> Start Time</button> " +
                             "<button id='stop_timing_btn' class='river_btn'><i class='glyphicon glyphicon-circle'></i> End Time</button> " +
                           "</div> " +
                         "</div> " +
                       "</div>" +
                       "<div class='tab-pane' id='subtitle_tab'>" +
+                        "<div id='add_sub_container' class=''> " +
+                          "<div id='controls' class='col-xs-12 input-group'> " +
+                            "<div class='col-xs-2 time_indicator_container'></div>" + 
+                            "<input id='add_sub_input' class='col-xs-8' placeholder='Enter Subtitle Here'> " +
+                            "<button type='button' id='add_sub_btn' class='col-xs-1 river_btn'>Add</a>" +
+                          "</div> " +
+                        "</div> " +
 
                         "<div id='subtitle_container'> " +
                           "<div id='subtitle_list'></div> " +
@@ -348,19 +332,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                             //   "</select>" +
                             // "</span> " +
                         "</div> " +   // #subtitle_container
-                        "<div id='add_sub_container' class=''> " +
-                          "<div id='controls' class='col-xs-12 input-group'> " +
-                            "<div id='main_controls' class='pull-left input-group'> " +
-                              "<button type='button' class='backward_btn river_btn'><i class='glyphicon glyphicon-backward'></i> </button> " +
-                              "<button type='button' class='play_btn river_btn'><i class='glyphicon glyphicon-play'></i>   </button> " +
-                              "<button type='button' class='pause_btn river_btn'><i class='glyphicon glyphicon-pause'></i> </button> " +
-                              "<button type='button' class='forward_btn river_btn'><i class='glyphicon glyphicon-forward'></i> </button> " +
-                              // "<button type='button' id='replay_btn' class='river_btn'><i class='icon-refresh'></i> Replay</button> " +
-                            "</div> " +
-                            "<input id='add_sub_input' class='col-xs-8' placeholder='Enter Subtitle Here'> " +
-                            "<button type='button' id='add_sub_btn' class='col-xs-3 river_btn'>Add</a>" +
-                          "</div> " +
-                        "</div> " +
                       "</div>" +   // tab pane
                       "<div class='tab-pane' id='download_tab'>" +
                         "<div id='download_container'> " +
@@ -426,13 +397,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$timelineBtn = $(".timeline_btn");
     this.$subtitleBtn = $(".subtitle_btn");
 
-    this.$backwardBtn = $(".backward_btn");
-    this.$forwardBtn = $(".forward_btn");
-
     $("#seek_head_body").hide();
-
-    // this.$backwardBtn.hide();
-    // this.$forwardBtn.hide();
 
     this.$startTimingBtn = $("#start_timing_btn");
     this.$startTimingBtn.attr("disabled","disabled");
@@ -616,6 +581,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTimeUpdate: function(event) {
+    river.ui.BasePlayer.prototype.onTimeUpdate.call(this);
     this.lastTimeUpdateTime = this.media.currentTime;
   },
 
@@ -714,15 +680,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPlay: function(event) {
-    this.$overlay_btn.find("i").removeClass("glyphicon-play");
-    this.$overlay_btn.find("i").addClass("glyphicon-pause");
+    this.$overlay_btn.hide();
     this.$playBtn.hide();
     this.$pauseBtn.show();
   },
 
   onPause: function(event) {
-    this.$overlay_btn.find("i").removeClass("glyphicon-pause");
-    this.$overlay_btn.find("i").addClass("glyphicon-play");
     this.$overlay_btn.show();
     this.$pauseBtn.hide();
     this.$playBtn.show();

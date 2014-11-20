@@ -369,12 +369,13 @@ div#subtitle_bar {
 }
 
 #editor #subtitle_bar {
+  padding: 5px;
   height: 40px;
   line-height: 18px;
   width: inherit;
 }
 
-.time_indicator {
+#river_player .time_indicator {
   border: solid 1px black;
   height: 20px;
   width: 90px;
@@ -382,14 +383,15 @@ div#subtitle_bar {
   position: absolute;
   color: white;
   left: 20px;
-  top: -190px;
+  top: 15px;
   display: inline;
   z-index: 3;
   background-color: black;
 }
 
-#river_player .time_indicator {
-  top: 15px;
+#editor .time_indicator {
+  padding: 3px 0px;
+  font-size: 16px;
 }
 
 
@@ -1262,15 +1264,23 @@ footer a:hover{
   width: 20px;
 }
 
+#editor .player_controls button {
+  margin: 0px 5px;
+}
+
+.player_controls .backward_btn,
+.player_controls .forward_btn {
+  font-size: 12px;
+  padding-top: 2px;
+}
+
 .player_controls button:hover {
   color: white;
 }
 
 .player_controls .player_timeline_container {
   float: left;
-  width: 580px;
   height: inherit;
-  margin-right: 10px;
   margin-left: 5px;
 }
 
