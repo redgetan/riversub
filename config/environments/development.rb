@@ -49,6 +49,9 @@ config.action_mailer.delivery_method = :smtp
   # Expands the lines which load the assets
   config.assets.debug = true
 
+  # prevent assets from being cached
+  config.assets.cache_store = :null_store
+
   config.action_mailer.default_url_options = { :host => 'dev.yasub.com:3000' }
   Rails.application.routes.default_url_options[:host] = 'dev.yasub.com:3000'
 

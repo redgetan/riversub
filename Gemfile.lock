@@ -8,10 +8,8 @@ GIT
       multi_json (~> 1.0)
       uuidtools
 
-GIT
-  remote: https://github.com/seyhunak/twitter-bootstrap-rails
-  revision: 67f160dd2ff5cc7cd843a17866c3b6bc8e7f2794
-  ref: 67f160dd2ff5cc7cd843a17866c3b6bc8e7f2794
+PATH
+  remote: /Users/reg/ruby/twitter-bootstrap-rails
   specs:
     twitter-bootstrap-rails (3.2.0)
       actionpack (>= 3.1)
@@ -115,7 +113,7 @@ GEM
     json (1.8.1)
     jwt (0.1.11)
       multi_json (>= 1.5)
-    kaminari (0.14.1)
+    kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kgio (2.8.0)
@@ -278,7 +276,7 @@ DEPENDENCIES
   font-awesome-rails
   jquery-rails
   jquery-ui-rails
-  kaminari
+  kaminari (~> 0.16.1)
   libv8 (~> 3.11.8)
   meta-tags
   mysql2

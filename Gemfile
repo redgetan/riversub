@@ -17,7 +17,7 @@ group :assets do
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'libv8', '~> 3.11.8'
   gem 'therubyracer'
-  gem "twitter-bootstrap-rails", :git => "https://github.com/seyhunak/twitter-bootstrap-rails", :ref => "67f160dd2ff5cc7cd843a17866c3b6bc8e7f2794"
+  gem "twitter-bootstrap-rails", :git => "https://github.com/redgetan/twitter-bootstrap-rails", :ref => "34f2ab7d17dc438276816e8acd9e698b5ed9e03b"
 
   gem 'turbo-sprockets-rails3'
   gem 'uglifier', '>= 1.0.3'
@@ -55,7 +55,7 @@ gem 'devise'
 gem "rmagick"
 gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 gem 'meta-tags', :require => 'meta_tags'
-gem 'kaminari'
+gem 'kaminari', '~> 0.16.1'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem "omniauth-google-oauth2"
