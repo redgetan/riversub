@@ -17,6 +17,7 @@ group :assets do
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'libv8', '~> 3.11.8'
   gem 'therubyracer'
+  gem "twitter-bootstrap-rails"
 
   gem 'turbo-sprockets-rails3'
   gem 'uglifier', '>= 1.0.3'
