@@ -17,11 +17,10 @@ group :assets do
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'libv8', '~> 3.11.8'
   gem 'therubyracer'
-  gem "twitter-bootstrap-rails"
+  gem "twitter-bootstrap-rails", :git => "https://github.com/seyhunak/twitter-bootstrap-rails", :ref => "67f160dd2ff5cc7cd843a17866c3b6bc8e7f2794"
 
   gem 'turbo-sprockets-rails3'
   gem 'uglifier', '>= 1.0.3'
-  gem "less-rails"
   gem 'jquery-ui-rails'
 end
 

@@ -17,6 +17,7 @@
 //= require jquery.ui.spinner
 //= require jquery.ui.effect-highlight
 
+//= require twitter/bootstrap
 //= require lib/underscore.js
 //= require lib/backbone.js
 //= require lib/backbone.localStorage.js
