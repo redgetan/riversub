@@ -20,6 +20,8 @@ text.time {
 
 div#editor {
 	margin-top: 10px;
+	width: 940px;
+	margin: auto;
 }
 
 div#editor #repo_label {
@@ -601,6 +603,17 @@ a#preview_btn {
 	border: solid 1px gray;
 }
 
+.repo_label_container {
+	width: 940px;
+	height: 30px;
+	margin-bottom: 20px;
+
+}
+
+.editor_video_container {
+	width: 940px;
+}
+
 #add_sub_btn {
 	width: 125px;
 	font-weight: bolder;
@@ -650,6 +663,11 @@ a#preview_btn {
 
 #editor-bottom .tab-content {
 	margin-bottom: 30px;
+}
+
+#editor-top,
+#editor-bottom {
+	width: 940px;
 }
 
 .timeline_tab_content {

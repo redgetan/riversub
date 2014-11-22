@@ -243,7 +243,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   getEditorElement: function() {
-    return  "<div class='width: 900px !important;'>" +
+    return  "<div class=''>" +
               "<div id='editor'> " +
                 "<div id='editor-top' class='row'> " +
                   "<div class='repo_label_container'> " +
