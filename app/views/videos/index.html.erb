@@ -1,14 +1,14 @@
-<div class='header-section span12'></div>
+<div class='header-section col-xs-12'></div>
 <div class="background"></div>
 <div class='container'>
 
   <div class='row center'>
-    <div class="span12">
+    <div class="col-xs-12">
       <span class="title river_gray">Recently Added</span>
     </div>
   </div>
 
-<div class='header-section span12'></div>
+<div class='header-section col-xs-12'></div>
   
 <div class="video_index">
   <div class="left_nav">
@@ -25,10 +25,10 @@
     </div>
   </div>
 
-  <div class="videos span10">
+  <div class="videos col-xs-10">
       <% @repos.each do |repo| %>
           <div class="row">
-            <div class="span10 offset1">
+            <div class="col-xs-10 col-xs-offset-1">
               <div class="video_thumb">
                 <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
                   <img src="<%= repo.thumbnail_url %>" alt="">
@@ -54,11 +54,11 @@
       <% end %>
   </div>
 
-  <div class="span12">
+  <div class="col-xs-12">
     <%= paginate @repos,  :theme => 'bootstrap' %>
   </div>
 
-  <div class='header-section span12'></div>
+  <div class='header-section col-xs-12'></div>
 
   </div>
 </div>
