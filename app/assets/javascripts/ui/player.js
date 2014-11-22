@@ -68,10 +68,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$expandBtn.on("mousedown",this.onExpandBtnClick.bind(this));
   },
 
-  player_timeline_container_width_class: function() {
-    return "col-xs-11";
-  },
-
   onMediaMouseMove: function(event) {
     if (!this.$fadeInBuffer) {
       if (this.$timer) {

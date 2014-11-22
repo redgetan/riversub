@@ -375,11 +375,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if (this.repo.parent_repository_id) {
       this.$el.addClass("template");
-      // $(".repo_label_container").removeClass("col-xs-12");
-      // $(".repo_label_container").addClass("col-xs-8 col-xs-offset-3");
-
-      // $(".editor_video_container").removeClass("col-xs-12");
-      // $(".editor_video_container").addClass("col-xs-8 col-xs-offset-3");
     }
 
     if (this.repo.user) {

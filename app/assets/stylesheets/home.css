@@ -1282,6 +1282,15 @@ footer a:hover{
   margin-left: 5px;
 }
 
+#river_player .player_timeline_container {
+  width: 580px;
+  margin-right: 5px;
+}
+
+#editor .player_timeline_container {
+  width: 810px;
+}
+
 .player_controls #summary {
   height: inherit;
   cursor: pointer;

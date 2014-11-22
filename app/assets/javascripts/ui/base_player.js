@@ -111,7 +111,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     $(".player_controls").append("<button type='button' class='play_btn river_btn'><i class='glyphicon glyphicon-play'></i></button>");
     $(".player_controls").append("<button type='button' class='pause_btn river_btn'><i class='glyphicon glyphicon-pause'></i></button>");
     $(".player_controls").append("<button type='button' class='forward_btn river_btn'><i class='glyphicon glyphicon-forward'></i> </button> ");
-    $(".player_controls").append("<div class='player_timeline_container " + this.player_timeline_container_width_class() + "'></div>");
+    $(".player_controls").append("<div class='player_timeline_container'></div>");
     $("#summary").appendTo(".player_timeline_container")
     $("#summary").append("<span class='time_total'></span>");
     $("#summary").append("<span class='time_loaded'></span>");
@@ -127,10 +127,6 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$timeLoaded = $(".time_loaded");
     this.$timeCurrent = $(".time_current");
     this.timeline.setTimelineWidth();
-  },
-
-  player_timeline_container_width_class: function() {
-    return "col-xs-10";
   },
 
   onProgress: function() {
