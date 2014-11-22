@@ -14,7 +14,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.MINIMUM_TRACK_DURATION = 0.50;
     this.DEFAULT_TRACK_DURATION = 3;
     this.TRACK_MARGIN = 0.20;
-    this.SEEK_DURATION = 5;
+    this.SEEK_DURATION = 1;
     this.KEYCODE_THAT_PAUSES_VIDEO = this.getKeycodeThatPausesVideo();
 
     this.startTiming = false;
@@ -304,6 +304,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "</div> " +
                         "<div id='controls' class='col-sm-12 input-group'> " +
                           "<div id='main_controls' class='pull-left input-group'> " +
+                            "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-film'></i></button> " +
+                            "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
                             "<button id='start_timing_btn' class='river_btn'><i class='glyphicon glyphicon-plus'></i> Start Time</button> " +
                             "<button id='stop_timing_btn' class='river_btn'><i class='glyphicon glyphicon-circle'></i> End Time</button> " +
                           "</div> " +
@@ -324,9 +326,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "</div> " +   // #subtitle_container
                         "<div id='add_sub_container' class=''> " +
                           "<div id='controls' class='col-xs-12 input-group'> " +
-                            "<div class='col-xs-2 time_indicator_container'>Enter Text: </div>" + 
-                            "<input id='add_sub_input' class='col-xs-8' placeholder='Enter Subtitle Here'> " +
-                            "<button type='button' id='add_sub_btn' class='col-xs-1 river_btn'>Add</a>" +
+                            "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-film'></i></button> " +
+                            "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
+                            "<input id='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
+                            "<button type='button' id='add_sub_btn' class='river_btn'>Add</a>" +
                           "</div> " +
                         "</div> " +
                       "</div>" +   // tab pane

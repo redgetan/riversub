@@ -66,7 +66,7 @@ div#editor-bottom {
 }
 
 #timeline_container {
-	height: 128px;
+	height: 145px;
 	margin-bottom: 25px;
   	/*padding: 10px;*/
 	/*border: solid 1px black ;*/
@@ -470,12 +470,14 @@ div#editor-bottom {
 #controls #start_timing_btn {
 	/*min-width: 101px;*/
 	width: 200px;
+	margin-left: 280px;
 }
 
 #controls #stop_timing_btn {
 	background-color: rgb(128, 164, 240);
 	color: white;
 	width: 200px;
+	margin-left: 280px;
 }
 
 div#player-bottom {
@@ -552,7 +554,6 @@ a#preview_btn {
 	background: none;
 	border: solid 1px gray;
 	font-size: 14px;
-	padding: 3px 10px;
 }
 
 #add_sub_container {
@@ -571,7 +572,8 @@ a#preview_btn {
 }
 
 #add_sub_input {
-	border: solid 1px black !important;
+	/*width: 700px;*/
+/*	border: solid 1px black !important;
   font-size: 16px;
   border-radius: 0px;
   background-color: rgb(189, 197, 213);
@@ -579,28 +581,32 @@ a#preview_btn {
 	margin-top: 2px;
 	margin-left: 10px;
 	margin-right: 10px;
+*/	
+	font-size: 16px;
+	width: 720px;
+	height: 30px;
+	border-radius: 0px;
+	padding: 4px;
+	margin-left: 15px;
+	margin-top: 1px;
 }
 
-#add_sub_input:focus {
+/*#add_sub_input:focus {
 	-moz-box-shadow: none!important;
   box-shadow: none!important;
   outline: 0 none;
 }
-
+*/
 #time_indicator_container {
 	border: solid 1px gray;
 }
 
 #add_sub_btn {
+	width: 125px;
 	font-weight: bolder;
-  border-radius: 0px;
-  cursor: pointer;
-  background: none !important;
-  padding: 0px !important;
-	margin-top: 3px;
-	margin-left: 5px;
-	margin-right: 10px;
-
+	border-radius: 0px;
+	cursor: pointer;
+	background-color: lightblue !important;
 }
 
 #add_sub_options {

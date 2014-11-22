@@ -385,7 +385,7 @@ div#subtitle_bar {
   left: 20px;
   display: inline;
   z-index: 3;
-  background-color: black;
+  background-color: rgba(128,128,128,0.5);
 }
 
 #river_player .time_indicator {
@@ -1288,8 +1288,8 @@ footer a:hover{
 }
 
 .time_total, .time_loaded, .time_current {
-  margin-top: 7px;
-  height: 5px;
+  margin-top: 9px;
+  height: 2px;
   display: block;
   position: absolute;
   top: 0px;
