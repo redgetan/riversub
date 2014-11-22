@@ -59,6 +59,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
+    this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
   },
 
   postBindEvents: function() {
@@ -69,6 +70,23 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   player_timeline_container_width_class: function() {
     return "col-xs-11";
+  },
+
+  onMediaMouseMove: function(event) {
+    if (!this.$fadeInBuffer) {
+      if (this.$timer) {
+          clearTimeout(this.$timer);
+          this.$timer = 0;
+      }
+     $(".player_controls").fadeIn();
+    } else {
+      this.$fadeInBuffer = false;
+    }
+
+    this.$timer = setTimeout(function () {
+      $(".player_controls").fadeOut();
+      this.$fadeInBuffer = true;
+    }, 2000)
   },
 
   hideEditing: function() {
