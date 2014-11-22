@@ -375,13 +375,13 @@ div#editor-bottom {
 }
 
 #editor.template .subtitle.selected {
-	background: none !important;
-	color: black;
+	/*background: none !important;*/
+	/*color: black;*/
 }
 
 #editor.template .subtitle.selected .text .sub_text_area {
 	/*background-color: lightblue !important;*/
-	border: solid 1px black;
+	/*border: solid 1px black;*/
 }
 
 .subtitle .start_time,
