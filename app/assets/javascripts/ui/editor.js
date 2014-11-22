@@ -310,14 +310,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "</div> " +
                       "</div>" +
                       "<div class='tab-pane' id='subtitle_tab'>" +
-                        "<div id='add_sub_container' class=''> " +
-                          "<div id='controls' class='col-xs-12 input-group'> " +
-                            "<div class='col-xs-2 time_indicator_container'>Enter Text: </div>" + 
-                            "<input id='add_sub_input' class='col-xs-8' placeholder='Enter Subtitle Here'> " +
-                            "<button type='button' id='add_sub_btn' class='col-xs-1 river_btn'>Add</a>" +
-                          "</div> " +
-                        "</div> " +
-
                         "<div id='subtitle_container'> " +
                           "<div id='subtitle_list'></div> " +
                             // "<div class='pull-left'> " +
@@ -330,6 +322,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                             //   "</select>" +
                             // "</span> " +
                         "</div> " +   // #subtitle_container
+                        "<div id='add_sub_container' class=''> " +
+                          "<div id='controls' class='col-xs-12 input-group'> " +
+                            "<div class='col-xs-2 time_indicator_container'>Enter Text: </div>" + 
+                            "<input id='add_sub_input' class='col-xs-8' placeholder='Enter Subtitle Here'> " +
+                            "<button type='button' id='add_sub_btn' class='col-xs-1 river_btn'>Add</a>" +
+                          "</div> " +
+                        "</div> " +
                       "</div>" +   // tab pane
                       "<div class='tab-pane' id='download_tab'>" +
                         "<div id='download_container'> " +
