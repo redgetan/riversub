@@ -81,6 +81,33 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$startTime.append(this.createInput());
     this.$endTime.append(this.createInput());
 
+    if (!repo.parent_repository_id) {
+      this.$startTime.find("input").spinner({
+        min: 0, 
+        spin: this.startTimeSpin.bind(this)
+      });
+
+      this.$endTime.find("input").spinner({
+        min: 0, 
+        spin: this.endTimeSpin.bind(this)
+      });
+
+      // reset events set by jquery ui spinner
+      $.each(["mousewheel", "keydown", "keyup"], function(index, eventName){
+        this.$startTime.find("input").off(eventName);
+        this.$endTime.find("input").off(eventName);
+      }.bind(this));
+
+
+      this.$startTime.find("input").data("field","start_time");
+      this.$startTime.find(".ui-spinner-button").data("field","start_time");
+      this.$startTime.find(".ui-spinner-button span").data("field","start_time");
+
+      this.$endTime.find("input").data("field","end_time");
+      this.$endTime.find(".ui-spinner-button").data("field","end_time");
+      this.$endTime.find(".ui-spinner-button span").data("field","end_time");
+    }
+
     this.$startTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
     this.$endTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
 

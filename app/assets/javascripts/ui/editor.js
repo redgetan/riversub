@@ -149,8 +149,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTimelineSeekHandler: function(time, $target) {
     if ($target.hasClass("track")) {
       var track = $target.data("model");
-      this.pause();
-      this.seekTrackAndEdit(track);
+      this.replayTrackAndEdit(track);
     } else {
       this.seek(time);
     }
@@ -170,7 +169,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.pause();
     var track = subtitle.track;
 
-    this.seek(track.startTime());
+    this.seek(track.startTime(), function() {
+      this.playTillEndOfTrack(track);
+    }.bind(this));
     
     if ($target.closest(".start_time").length === 0 &&  
         $target.closest(".end_time").length === 0) {
@@ -302,8 +303,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
                         "<div id='timeline_container'>" +
                         "</div> " +
-                        "<div id='controls' class='input-group'> " +
-                          "<div id='main_controls' class='pull-left input-group'> " +
+                        "<div class='controls' class=''> " +
+                          "<div id='main_controls' class='pull-left'> " +
                             "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-film'></i></button> " +
                             "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
                             "<button id='start_timing_btn' class='river_btn'><i class='glyphicon glyphicon-plus'></i> Start Time</button> " +
@@ -325,7 +326,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                             // "</span> " +
                         "</div> " +   // #subtitle_container
                         "<div id='add_sub_container' class=''> " +
-                          "<div id='controls' class='input-group'> " +
+                          "<div class='controls' class=''> " +
                             "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-film'></i></button> " +
                             "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
                             "<input id='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
@@ -447,7 +448,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$subtitleBtn.tooltip({title: "Subtitle Mode"});
 
     $("footer").hide();
-    // $("#controls").hide();
     $("#timeline_tab_anchor").hide();
     $("#subtitle_tab_anchor").hide();
     $("#download_tab_anchor").hide();

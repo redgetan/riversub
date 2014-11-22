@@ -40,13 +40,18 @@ div#river_player #video_url {
 	float: right;
 }
 
-div#editor #controls {
+div#editor .controls {
 	margin-bottom: 20px;
 	margin-left: 0px;
 	/*margin: auto;*/
 }
 
-#timeline_tab #controls {
+div#editor .controls button,
+div#editor .controls input {
+	float: left;
+}
+
+#timeline_tab .controls {
 	margin-top: 20px;
 }
 
@@ -54,8 +59,8 @@ div#editor #controls {
 	margin-top: 15px; 
 }
 
-div#editor #controls,
-div#river_player #controls {
+div#editor .controls,
+div#river_player .controls {
 }
 
 textarea#transcript {
@@ -433,6 +438,7 @@ div#editor-bottom {
 	width: 350px;
 	min-height: 20px;
 	margin-bottom: 0px;
+	overflow: hidden;
 }
 
 #editor.template #subtitle_list #original,
@@ -469,13 +475,13 @@ div#editor-bottom {
   padding: 0px 5px 2px 5px;
 }
 
-#controls #start_timing_btn {
+.controls #start_timing_btn {
 	/*min-width: 101px;*/
 	width: 200px;
 	margin-left: 280px;
 }
 
-#controls #stop_timing_btn {
+.controls #stop_timing_btn {
 	background-color: rgb(128, 164, 240);
 	color: white;
 	width: 200px;
@@ -564,7 +570,7 @@ a#preview_btn {
 	height: 30px;
 }
 
-#controls button {
+.controls button {
 	background-color: white;
 }
 
