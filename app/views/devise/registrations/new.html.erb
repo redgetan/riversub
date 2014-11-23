@@ -1,30 +1,30 @@
 <% set_meta_tags :noindex => true %>
 
-<div class='header-section span12'></div>
+<div class='header-section col-xs-12'></div>
 <div class='background'>
 </div>
 
 <div class='container'>
     <div class='row'>
-        <div class="span4 offset5">
+        <div class="col-xs-4 col-xs-offset-5">
             <h1>Join Us</h1>
         </div>
-        <div class='span4 offset4 sign_up_container'>
+        <div class='col-xs-4 col-xs-offset-4 sign_up_container'>
             <%= render "devise/shared/links" %>
 
             <div class="or_login_separator center">
               or
             </div>
 
-            <div class="signup_container center span3">
+            <div class="signup_container center col-xs-3">
               <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name)) do |f| %>
                 <%= devise_error_messages! %>
 
-                <br/><%= f.text_field :username, :placeholder => "username", class: "span3" %>
+                <br/><%= f.text_field :username, :placeholder => "username", class: "col-xs-3" %>
 
-                <br/><%= f.email_field :email, :placeholder => "email", class: "span3" %>
+                <br/><%= f.email_field :email, :placeholder => "email", class: "col-xs-3" %>
 
-                <br/><%= f.password_field :password, :placeholder => "password", class: "span3" %>
+                <br/><%= f.password_field :password, :placeholder => "password", class: "col-xs-3" %>
 
                 <br/><%= f.submit "Sign up", :class => 'btn btn-inverse pull-right' %>
               <% end %>
@@ -32,5 +32,5 @@
         </div>
     </div>
 </div>
-<div class='header-section span12'></div>
+<div class='header-section col-xs-12'></div>
 

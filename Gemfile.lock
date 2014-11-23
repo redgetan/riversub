@@ -8,8 +8,10 @@ GIT
       multi_json (~> 1.0)
       uuidtools
 
-PATH
-  remote: /Users/reg/ruby/twitter-bootstrap-rails
+GIT
+  remote: https://github.com/redgetan/twitter-bootstrap-rails
+  revision: 34f2ab7d17dc438276816e8acd9e698b5ed9e03b
+  ref: 34f2ab7d17dc438276816e8acd9e698b5ed9e03b
   specs:
     twitter-bootstrap-rails (3.2.0)
       actionpack (>= 3.1)
