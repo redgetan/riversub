@@ -706,6 +706,7 @@ a.owner_label {
 ul.social_login_buttons {
   list-style: none;
   margin: 0px;
+  padding-left: 0px;
 }
 
 ul.social_login_buttons li {
@@ -717,8 +718,8 @@ ul.social_login_buttons i {
 }
 
 ul.social_login_buttons a {
-  width: 200px;
-  text-align: left;
+  width: 225px;
+  text-align: center;
 }
 
 .sign_in_container .forgot_password,
@@ -733,6 +734,7 @@ ul.social_login_buttons a {
 
 .or_login_separator {
   margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 #editor .nav-tabs>li>a {
@@ -1340,4 +1342,26 @@ footer a:hover{
 #river_player .player_column {
   width: 650px;
   padding: 0;
+}
+
+.signup_container {
+  display: inline-block;
+}
+
+
+.signup_container form#new_user input[type=submit] {
+  margin-top: 15px;
+}
+
+.sign_in_bottom_container {
+  width: 215px;
+  margin-top: 10px;  
+}
+
+.sign_in_action_container {
+  margin-top: 20px;  
+}
+
+.sign_in_container {
+  display: inline-block;
 }
