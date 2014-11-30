@@ -19,7 +19,7 @@ class Repository < ActiveRecord::Base
   validates :token, :uniqueness => true, on: :create
 
   before_validation :generate_token
-  before_save :auto_publish_anonymous_repo
+  # before_save :auto_publish_anonymous_repo
 
 
   # scope :with_timings_count, select("repositories.*, COUNT(timings.id) timings_count")
