@@ -556,8 +556,6 @@ div#keyboard-shortcuts {
 }
 
 a#preview_btn {
-	/*background-color: lightcoral;*/
-	background: none;
 	border: solid 1px gray;
 	font-size: 14px;
 }
@@ -670,10 +668,6 @@ a#preview_btn {
 #editor-top,
 #editor-bottom {
 	width: 940px;
-}
-
-.timeline_tab_content {
-	overflow: visible;
 }
 
 #editor #status-bar {
@@ -795,4 +789,9 @@ textarea {
 
 #add_sub_container .sub_text_area {
 	border: solid 1px #333;
+}
+
+.template_publish_preview_container #publish_btn, 
+.template_publish_preview_container #preview_btn {
+	font-size: 20px;
 }

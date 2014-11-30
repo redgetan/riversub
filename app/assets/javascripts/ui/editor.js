@@ -30,6 +30,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       $("#add_sub_container").hide();
       this.$forwardBtn.hide();
       this.$backwardBtn.hide();
+      $(".publish_preview_btn_group").appendTo(".template_publish_preview_container");
     }
     // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
@@ -250,7 +251,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     "<h5 id='repo_label'>" +
                       "<a href=" + this.repo.url + ">" + this.repo.video.name.substring(0,70) + "</a>" +
                     "</h5>" +
-                    "<h5 class='pull-right'>" +
+                    "<h5 class='publish_preview_btn_group pull-right'>" +
                       "<a id='publish_btn' class='btn btn-success'>Publish</a>" +
                       "<a id='preview_btn' class='river_btn' target='_blank' href=" + this.repo.url + ">Preview</a>" +
                     "</h5>" +
@@ -297,7 +298,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                   "</div> " + // .span12
 
                   "<div class=''> " +
-                    "<div class='tab-content timeline_tab_content'>" +
+                    "<div class='tab-content'>" +
                       "<div class='tab-pane active' id='timeline_tab'>" +
 
                         "<div id='timeline_container'>" +
@@ -343,8 +344,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                   "</div> " + // .span12
                   "<div id='status-bar' class='pull-left'> " +
                   "</div> " +
-                  "<div class='pull-left'> " +
-                          "<div class='row'> " +
+                  "<div class='template_publish_preview_container pull-right'> " +
                             // "<div id='keyboard-shortcuts' class='pull-right'> " +
                             //   "<span>" +
                             //     "<b>Keyboard Shortcuts: </b>  " +
@@ -353,7 +353,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                             //     "<kbd class='light'>Esc</kbd>   Cancel " +
                             //   "</span>" +
                             // "</div> " +
-                          "</div> " +
                   "</div> " + // .span12
 
                 "</div> " +   // #editor-bottom.row
