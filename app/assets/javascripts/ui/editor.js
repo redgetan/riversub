@@ -765,16 +765,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   seekTrackAndEdit: function(track) {
     if (typeof track === "undefined") return;
 
-    this.closeUnhighlightAllEditorsExcept(track);
-
     this.seek(track.startTime());
     this.openEditorAndHighlight(track);
   },
 
   replayTrackAndEdit: function(track) {
     if (typeof track === "undefined") return;
-
-    this.closeUnhighlightAllEditorsExcept(track);
 
     this.seek(track.startTime(), function() {
       this.playTillEndOfTrack(track);
@@ -850,7 +846,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTrackStart: function(track) {
     // console.log("ontrackstart" + track.toString());
 
-    this.closeUnhighlightAllEditorsExcept(track);
     this.currentTrack = track;
 
     var subtitle = track.subtitle;
@@ -1201,16 +1196,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if (typeof this.focusedTrack !== "undefined" && this.focusedTrack) {
       this.closeEditor(this.focusedTrack);
-    }
-  },
-
-  closeUnhighlightAllEditorsExcept: function(track) {
-    if (typeof this.currentTrack !== "undefined" && this.currentTrack !== track && this.currentTrack) {
-      this.closeEditorAndUnhighlight(this.currentTrack);
-    }
-
-    if (typeof this.focusedTrack !== "undefined" && this.focusedTrack !== track && this.focusedTrack) {
-      this.closeEditorAndUnhighlight(this.focusedTrack);
     }
   },
 
