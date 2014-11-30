@@ -699,6 +699,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $(document).on("keydown",this.onDocumentKeydown.bind(this));
     $(document).on("keyup",this.onDocumentKeyup.bind(this));
+
+    if (this.repo.parent_repository_id && this.currentTrack) {
+      this.replayTrackAndEdit(this.currentTrack);
+    }
   },
 
   onPauseAdjust: function(correctPauseTime) {
@@ -856,7 +860,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // console.log("ontrackend" + track.toString());
     this.hideSubtitleInSubtitleBar();
 
-    track.unhighlight();
+    this.unhighlight(track);
 
     if (track.shouldPauseOnTrackEnd()) {
       track.unsetPauseOnTrackEnd();
