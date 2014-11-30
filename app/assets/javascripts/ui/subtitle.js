@@ -50,7 +50,6 @@ river.ui.Subtitle = Backbone.View.extend({
         this.$parentText = this.$el.find(".parent_text span");
         this.$parentText.text(this.model.get("parent_text"));
 
-        this.$startTime.remove();
         this.$endTime.remove();
         this.$close.remove();
       }

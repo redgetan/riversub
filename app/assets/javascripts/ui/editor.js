@@ -26,7 +26,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (!this.repo.parent_repository_id) {
       $(".header #original").hide();
     } else {
-      $(".header #start").hide();
       $(".header #end").hide();
       $("#add_sub_container").hide();
       this.$forwardBtn.hide();
