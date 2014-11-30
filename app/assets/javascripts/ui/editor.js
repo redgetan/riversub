@@ -251,10 +251,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     "<h5 id='repo_label'>" +
                       "<a href=" + this.repo.url + ">" + this.repo.video.name.substring(0,70) + "</a>" +
                     "</h5>" +
-                    "<h5 class='publish_preview_btn_group pull-right'>" +
-                      "<a id='publish_btn' class='btn btn-success'>Publish</a>" +
+                    "<div class='publish_preview_btn_group pull-right'>" +
                       "<a id='preview_btn' class='river_btn' target='_blank' href=" + this.repo.url + ">Preview</a>" +
-                    "</h5>" +
+                      "<a id='publish_btn' class='river_btn'>Publish</a>" +
+                    "</div>" +
                     // "<div id='language' class='pull-left'>" +
                     //   "<span>" + this.repo.language_pretty + "</span>" +
                     // "</div>" +
@@ -416,7 +416,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (this.repo.is_published) {
       this.$publishBtn.hide();
     } else {
-      this.$previewBtn.hide();
+      this.$previewBtn.css("background-color", "transparent");
     }
 
     // this.$helpBtn = $("#help_btn");

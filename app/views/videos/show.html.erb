@@ -26,7 +26,9 @@
       <% unless @repo.is_published? %>
         <div id="finalize" class="" style="height: 140px;">
           <p style="padding: 10px;">This video is currently private. To make it visible to the public, click publish.</p>
-          <%= form_tag @repo.publish_url, method: "post" do %>
+
+          <a class='subtitle_editor_btn river_btn ' href="<%= @repo.editor_url %>">Back to Editor</a>
+          <%= form_tag @repo.publish_url, method: "post", class: "publish_btn_form" do %>
             <%= submit_tag 'Publish', class: "river_btn", id: "publish_btn" %>
           <% end %>
         </div>

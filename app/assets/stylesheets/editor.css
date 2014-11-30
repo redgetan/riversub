@@ -795,3 +795,8 @@ textarea {
 .template_publish_preview_container #preview_btn {
 	font-size: 20px;
 }
+
+.publish_preview_btn_group #publish_btn, 
+.publish_preview_btn_group #preview_btn {
+	margin-right: 5px;
+}

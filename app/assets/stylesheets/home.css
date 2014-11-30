@@ -1373,3 +1373,11 @@ footer a:hover{
 #player_details .tab-content {
   margin-top: 20px;
 }
+
+#finalize .subtitle_editor_btn {
+  font-size: 20px;
+}
+
+#finalize .publish_btn_form {
+  display: inline-block;
+}
