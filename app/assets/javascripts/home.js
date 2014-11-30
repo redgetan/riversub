@@ -99,13 +99,6 @@ $(document).ready(function(){
 
   });
 
-  $(".new_repo_btn").on("click",function(event) {
-    event.preventDefault();
-    var url = player.repo.video.url;
-    var forkedRepoToken = $(event.target).data("forked-repo-token");
-    openSubtitleEditor(url, forkedRepoToken);
-  });
-
 });
 
 
@@ -149,11 +142,7 @@ function openSubtitleEditor(url, forkedRepoToken) {
       },
       dataType: "json",
       success: function(data,status) {
-        if (typeof forkedRepoToken !== "undefined") {
-          var redirectUrl = data.redirect_url + "?forked_repo_token=" + forkedRepoToken;
-        } else {
-          var redirectUrl = data.redirect_url;
-        }
+        var redirectUrl = data.redirect_url;
         window.location.href = redirectUrl;
       },
       error: function(data) {

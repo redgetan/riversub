@@ -1,7 +1,6 @@
 class VideosController < ApplicationController
 
   def new
-    puts "asfd"
   end
 
   def sub
@@ -14,15 +13,9 @@ class VideosController < ApplicationController
                     :metadata => metadata,
                   })
 
-    @repo = if current_user
-              Repository.where(:user_id => current_user.id,
-                               :video_id => @video.id)
-                        .create!
-            else
-              Repository.create!(:video_id => @video.id)
-            end
+    @repo = Repository.create!(video: @video, user: current_user)
 
-    render :json => { :redirect_url => @repo.editor_setup_url } 
+    render :json => { :redirect_url => @repo.editor_url } 
   rescue ActiveRecord::RecordInvalid => e
     render :json => { :error => e.message }, :status => 403
   end
@@ -40,29 +33,13 @@ class VideosController < ApplicationController
     end
   end
 
-  def setup
-    @repo = Repository.find_by_token! params[:token]
+  def fork
+    @source_repo = Repository.find_by_token! params[:token]  
+    @target_repo = Repository.create!(video: @source_repo.video, user: current_user)
+
+    @target_repo.copy_timing_from!(@source_repo) 
     
-    if @repo.language.present?
-      redirect_to @repo.editor_url and return
-    end
-
-    @repo_fork = Repository.find_by_token(params[:forked_repo_token]) 
-  end
-
-  def finish_setup
-    @repo = Repository.find_by_token! params[:token]  
-    @repo.update_attributes!(language: params[:language_code])
-
-    if params[:copy_timing_from].present?
-      @repo.copy_timing_from!(params[:copy_timing_from]) 
-    end
-
-    if params[:group_id].present?
-      @repo.group_repositories.create!(group_id: params[:group_id])
-    end
-    
-    redirect_to @repo.editor_url
+    redirect_to @target_repo.editor_url
   end
 
   def editor

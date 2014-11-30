@@ -1365,3 +1365,11 @@ footer a:hover{
 .sign_in_container {
   display: inline-block;
 }
+
+.fork_repo_form {
+  display: inline-block;
+}
+
+#player_details .tab-content {
+  margin-top: 20px;
+}

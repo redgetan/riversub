@@ -13,7 +13,7 @@ class Repository < ActiveRecord::Base
   has_many :group_repositories
   has_many :groups, through: :group_repositories
 
-  attr_accessible :video_id, :user_id, :token, :is_published, :language, :parent_repository_id
+  attr_accessible :video_id, :user_id, :video, :user, :token, :is_published, :language, :parent_repository_id
 
   validates :video_id, :presence => true
   validates :token, :uniqueness => true, on: :create
@@ -78,6 +78,10 @@ class Repository < ActiveRecord::Base
 
   def editor_url
     editor_video_url(self.token)
+  end
+
+  def fork_url
+    fork_repo_url(self.token)  
   end
 
   def editor_setup_url
@@ -155,9 +159,7 @@ class Repository < ActiveRecord::Base
     self.published_repositories.reject{ |repo| repo == self }  
   end
 
-  def copy_timing_from!(other_token)
-    other_repo = self.class.find_by_token!(other_token)
-
+  def copy_timing_from!(other_repo)
     Timing.transaction do
       self.update_attributes!(parent_repository_id: other_repo.id)
 
