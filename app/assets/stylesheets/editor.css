@@ -800,3 +800,7 @@ textarea {
 .publish_preview_btn_group #preview_btn {
 	margin-right: 5px;
 }
+
+.repo_label_container .publish_preview_btn_group {
+	margin-top: 10px;
+}
