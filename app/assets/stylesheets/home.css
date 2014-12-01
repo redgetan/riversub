@@ -176,21 +176,9 @@ a.user_big_action_btn:hover {
     color: #8CA0FF;
 }
 
-    .white .navbar .nav > li:hover > a {
-        color: #000;
-    }
-
-.navbar .divider-vertical {
-height: 50px;
-margin: 0 9px;
-border-left: 1px solid #AF687F;
-border-right: none;
+.white .navbar .nav > li:hover > a {
+    color: #000;
 }
-
-    .white .navbar .divider-vertical {
-        border-left: 1px solid #f2f2f2;
-        border-right: none;
-    }
 
 .navbar .btn {
   margin-top:5px
@@ -740,8 +728,8 @@ ul.social_login_buttons a {
 }
 
 .share_link_input {
-  width: 190px;
-  font-size: 12px;
+  width: 300px;
+  font-size: 14px;
   background: none !important;
   border: 2px solid #cccccc !important;
   -webkit-border-radius: 0px !important;
@@ -1088,7 +1076,6 @@ footer a:hover{
 
 .video_index .section_block {
   text-align: left;
-  width: 200px;
 }
 
 .video_index .section_block ul {
@@ -1378,4 +1365,17 @@ footer a:hover{
 
 #finalize .publish_btn_form {
   display: inline-block;
+}
+
+
+.navbar-nav > li {
+  border-left: solid 1px #eee;
+}
+
+#player_details .tab-content {
+  min-height: 300px;
+}
+
+#info_container table tr td {
+  padding: 10px;
 }
