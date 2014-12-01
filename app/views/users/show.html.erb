@@ -1,81 +1,9 @@
 <% set_meta_tags :noindex => true %>
 
-<div class='header-section span12'></div>
-<div class="background"></div>
+<div class='header-section col-xs-12'></div>
 <div class='container '>
     <div class='row'>
-      <div id='left_container_user' class='span6 offset1'>
-        <div id='user_groups'>
-          <div class='container span6 '>
-            <div class='row'>
-              <h3 class='pull-left'>Groups</h3>
-            </div>
-            <div class='row'>
-              <div id='videos'>
-                <ul class='thumbnails'>
-                  <% if user_signed_in? && current_user == @user  %>
-                    <li class='span2 center'>
-                      <div class='thumbnail'>
-                        <a href="<%= new_group_path %>" class="user_big_action_btn">
-                          <i class='icon-plus'></i>
-                          <h6>New Group</h6>
-                        </a>
-                      </div>
-                    </li>
-                  <% end %>
-                  <% @user.groups.each do |group| %>
-                    <li class='span2 center'>
-                      <div class='thumbnail'>
-                          <%= link_to group.name, group %>
-                      </div>
-                    </li>
-                  <% end %>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id='user_repositories'>
-          <div class='container span6 '>
-            <div class='row'>
-              <h3 class='pull-left'>Videos Subtitled</h3>
-            </div>
-            <div class='row'>
-              <div id='videos'>
-                <ul class='thumbnails'>
-                  <% if user_signed_in? && current_user == @user  %>
-                    <li class='span2 center'>
-                      <div class='thumbnail'>
-                        <a href="#" class="new_project_user_btn user_big_action_btn" data-toggle='modal' data-target='#new_project_modal'>
-                          <i class='icon-plus'></i>
-                          <h6>New Project</h6>
-                        </a>
-                      </div>
-                    </li>
-                  <% end %>
-                  <% @repositories.each do |repo| %>
-                  <li class='span2 center'>
-                    <div class='thumbnail'>
-                      <a href="<%= user_signed_in? && current_user == @user ? repo.editor_url : repo.url %>" id="<%= repo.id %>" class="video" >
-                        <img src="<%= repo.thumbnail_url %>" alt="" >
-                      </a>
-                      <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                        <h6 class='video_name'><%= repo.video.name %></h6>
-                      </a>
-                      <ul id='stats' class="unstyled">
-                        <li><h6>timings: <%= repo.timings.count %></h6></li>
-                      </ul>
-                    </div>
-                  </li>
-                  <% end %>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id='user_profile' class='span3 offset1'>
+      <div id='user_profile' class='col-xs-12 col-md-3'>
         <div id='avatar' >
           <% if @user.avatar.url.present? %>
             <div class="thumbnail">
@@ -91,6 +19,38 @@
         <div id='stats'>
             <div id='num_of_subtitles'><span>videos subtitled count: </span><h4><%= @user.repositories.count  %></h4>
             </div>
+        </div>
+      </div>
+
+      <div id='user_repositories' class='col-xs-8'>
+        <div class='row'>
+          <h3 class='pull-left'>Videos Subtitled</h3>
+        </div>
+        <div class='row'>
+          <div id='videos'>
+            <% if user_signed_in? && current_user == @user  %>
+              <div class='col-xs-6 col-md-3'>
+                <div class='thumbnail'>
+                  <a href="<%= videos_new_url %>" class="new_project_user_btn user_big_action_btn" >
+                    <i class='glyphicon glyphicon-plus'></i>
+                    <h6>New Project</h6>
+                  </a>
+                </div>
+              </div>
+            <% end %>
+            <% @repositories.each do |repo| %>
+              <div class='col-xs-6 col-md-3'>
+                <div class='thumbnail'>
+                  <a href="<%= user_signed_in? && current_user == @user ? repo.editor_url : repo.url %>" id="<%= repo.id %>" class="video" >
+                    <img src="<%= repo.thumbnail_url %>" alt="" >
+                  </a>
+                  <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                    <h6 class='video_name'><%= repo.video.name %></h6>
+                  </a>
+                </div>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
 

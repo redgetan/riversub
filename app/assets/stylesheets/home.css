@@ -80,9 +80,10 @@
 }
 
 a.user_big_action_btn {
-  height: 163px;
+  height: 123px;
   display: block;
   position: relative;
+  text-align: center;
   text-decoration: none;
 }
 
@@ -90,15 +91,12 @@ a.user_big_action_btn:hover {
   background-color: lightgoldenrodyellow;
 }
 
-.user_big_action_btn .icon-plus {
+.user_big_action_btn .glyphicon-plus {
   -webkit-border-radius: 15px;
-  line-height: 30px;
   top: 30%;
-  position: absolute;
-  height: 30px;
-  width: 30px;
-  font-size: 20px;
-  margin-left: -15px;
+  height: 22px;
+  font-size: 16px;
+  padding: 3px 2px 0px 4px;
   background-color: lightgray;
   color: white;
 }
