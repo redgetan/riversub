@@ -224,7 +224,7 @@ div#media_input {
 }
 
 .create_subtitle input.media_url {
-  width: 500px;
+  font-size: 20px;
 }
 
 .sub_btn {
@@ -726,8 +726,7 @@ ul.social_login_buttons a {
 }
 
 .share_link_input {
-  width: 300px;
-  font-size: 14px;
+  width: 80%;
   background: none !important;
   border: 2px solid #cccccc !important;
   -webkit-border-radius: 0px !important;
@@ -1374,8 +1373,14 @@ footer a:hover{
   min-height: 300px;
 }
 
+#info_container table {
+  font-size: 18px;
+  width: 100%;
+}
+
 #info_container table tr td {
   padding: 10px;
+  text-align: left;
 }
 
 form#edit_account .form-control,
@@ -1424,4 +1429,18 @@ form#edit_password .form-control{
 .call-to-action ul li {
   margin-top: 10px;
   list-style: none;
+}
+
+form#request_beta_invite input[name='email'] {
+  font-size: 20px;
+  text-align: center;
+}
+
+.forks_list_item {
+  border: solid 1px #ccc; 
+}
+
+.forks_list_item:hover {
+  background-color: #AECBC8;
+
 }

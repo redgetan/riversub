@@ -57,9 +57,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="divider-vertical"></li>
-        <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li>
-        <li class="divider-vertical"></li>
+        <!-- <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li> -->
 <!--             <li class="divider-vertical"></li>
             <li class="<%#= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li>
             <!--             <li class="divider-vertical"></li>
@@ -71,10 +69,9 @@
         <li class="divider-vertical"></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="divider-vertical"></li>
         <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">About</a></li>
             <li class="divider-vertical"></li>
-            <% if user_signed_in?  %>
+             <% if user_signed_in?  %>
               <li class="dropdown">
                 <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
                   <%= current_user.username %><b class="caret"></b>
@@ -91,7 +88,7 @@
               <li class="divider-vertical"></li>
               <li><%= link_to "Login", new_user_session_url %></li>
             <% end %>
-      </ul>
+       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

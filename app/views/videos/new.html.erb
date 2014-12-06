@@ -1,24 +1,35 @@
-<div class='header-section span12'></div>
+<div class='header-section col-md-12'></div>
 <div class='container'>
   <div class='row'>
-    <div class="span12">
-      <div class="create_subtitle">
-        <h3>Create Subtitle</h3>
-        <form class="sub">
-          <div class="control-group">
-            <div class="input-append">
-              <input name="media_url" class="media_url span4" type="text" placeholder="Paste youtube url">
-              <button type="button" class="btn btn-danger sub_btn" data-loading-text="Loading...">Start</button>
+    <div class="col-md-4 col-md-offset-4">
+      <div class="create_subtitle center">
+        <% if user_signed_in?  %>
+          <h3>Create New Subtitle</h3>
+          <br/>
+          <form class="sub">
+            <div class="control-group">
+              <div class="input-append">
+                <input name="media_url" class="media_url" type="text" placeholder="Paste youtube url">
+                <button type="button" class="btn btn-danger sub_btn" data-loading-text="Loading...">Start</button>
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
-
-      <div class="use_existing_template">
-        <h3>Use Existing Template</h3>
-        <br/>
+          </form>
+        <% else  %>
+          <h3>Request Beta Invite</h3>
+          <br/>
+          <p>In order to use other youtube videos for adding funny subtitles, sign up as a beta-user by submitting your email below.</p>
+          <br/>
+          <form id='request_beta_invite'>
+            <input name="email" class="" type="text" placeholder="email">
+            <br/>
+            <br/>
+            <input type="submit" class="btn btn-danger" data-loading-text="Loading..." value="submit">
+          </form>
+        <% end  %>
       </div>
     </div>
   </div>
 </div>
 
+<div class='header-section col-md-12'></div>
+<div class='header-section col-md-12'></div>
