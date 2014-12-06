@@ -1139,6 +1139,10 @@ footer a:hover{
   position: absolute;
 }
 
+.template {
+  margin-right: 90px;
+}
+
 .templates {
   padding: 0px 25px 25px 25px;
 }
@@ -1209,7 +1213,7 @@ footer a:hover{
 }
 
 .new_repo_btn i,
-.upvote_btn i, 
+.upvote_btn i,
 .downvote_btn i {
   color: gray;
 }
@@ -1337,11 +1341,11 @@ footer a:hover{
 
 .sign_in_bottom_container {
   width: 215px;
-  margin-top: 10px;  
+  margin-top: 10px;
 }
 
 .sign_in_action_container {
-  margin-top: 20px;  
+  margin-top: 20px;
 }
 
 .sign_in_container {
@@ -1431,16 +1435,50 @@ form#edit_password .form-control{
   list-style: none;
 }
 
+
 form#request_beta_invite input[name='email'] {
   font-size: 20px;
   text-align: center;
 }
 
 .forks_list_item {
-  border: solid 1px #ccc; 
+  border: solid 1px #ccc;
 }
 
 .forks_list_item:hover {
   background-color: #AECBC8;
 
+}
+
+
+#curvedarrow {
+  position: relative;
+  width: 0;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-right: 9px solid red;
+  -webkit-transform: rotate(10deg);
+  -moz-transform: rotate(10deg);
+  -ms-transform: rotate(10deg);
+  -o-transform: rotate(10deg);
+}
+#curvedarrow:after {
+  content: "";
+  position: absolute;
+  border: 0 solid transparent;
+  border-top: 3px solid red;
+  border-radius: 20px 0 0 0;
+  top: -12px;
+  left: -9px;
+  width: 12px;
+  height: 12px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+}
+
+.template-btn {
+  border:0;
+  padding:0;
 }

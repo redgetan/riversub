@@ -1,14 +1,8 @@
 <% set_meta_tags :site => 'Yasub', :title => 'Subtitle Tool for Youtube Videos', :description => "Yasub lets you subtitle & caption Youtube Videos." %>
       
-        <div class="jumbotron row">
-          <div class="col-lg-12">
-            <div class="col-lg-6">
-        <div id="river_player" data-repo='<%= @autoplay_repo ?     @autoplay_repo.serialize.to_json : "" %>'>
-          <div id='autoplay_video_label'>Sample</div>
-          <%= render 'videos/player' %>
-        </div>
-    </div>
-      <div class="col-lg-6 call-to-action">
+        <div class="jumbotron">
+          <div class="container">
+      <div class="col-lg-6 call-to-action col-lg-push-3">
         <h2>Create Your Own Funny Subtitles</h2>
         <ul>
         <li>
@@ -16,7 +10,8 @@
           <i class="fa fa-circle fa-stack-2x"></i>
           <i class="fa fa-stack-1x num">1</i>
         </span>
-        <span>Choose a template</span>
+        <span>Choose a template below</span>
+
       </li>
        <li>
         <span class="fa-stack fa-lg">
@@ -36,29 +31,26 @@
       </div>
     </div>
           </div>
-    <div class="row">
+    <div class="container">
+      <div class="row center">
       <% Repository.published.recent.limit(6).each do |repo| %>
-          <div class="col-sm-5 col-sm-offset-1">
-            <div class="pull-left video" href="<%= repo.url %>" id="<%= repo.id %>" >
+          <div class="col-sm-4">
+            <div class="pull-left video" id="<%= repo.id %>">
               <div class="video-caption" title="<%= repo.video.name %>">
-                <img src="<%= repo.thumbnail_url_hq %>" alt="" width="400" height="300">
-                <div class="template-buttons row">
-              <form method="post" action="<%= repo.fork_url %>" class="button_to fork_repo_form">
+
+                <form method="post" action="<%= repo.fork_url %>" class="button_to fork_repo_form">
               <div>
-                <button type="submit" class="fork_repo_btn btn btn-success">
-                  Use Template
+                <button type="submit" class="template-btn">
+                 <img src="<%= repo.thumbnail_url_hq %>" alt="" width="300" height="225">
                 </button>
               </div>
             </form>
-              <a class="btn btn-danger" href="<%= repo.url %>">Preview Now</a>
-            </div>
               </div>
           </div>
           </div>
       <% end %>
     </div>
-  </div>
-</div>
+    </div>
 
 
 
