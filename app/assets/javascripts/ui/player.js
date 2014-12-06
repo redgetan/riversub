@@ -145,11 +145,11 @@ river.ui.MiniPlayer = river.ui.Player.extend({
     this.$mediaContainer.css("width","400px");
 
     this.$iframeOverlay.hide();
+   $(".player_controls").hide();
 
     this.$subtitleBar.css("margin-top","-35px");
-    this.$subtitleBar.css("margin-left","10px");
+    this.$subtitleBar.css("background-color","black");
     this.$subtitleBar.css("z-index","6");
-    this.$subtitleBar.css("position","absolute");
     this.$subtitleBar.css("line-height","16px");
     this.$subtitleBar.addClass("span5");
 

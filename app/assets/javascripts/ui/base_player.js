@@ -126,7 +126,10 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$pauseBtn.hide();
     this.$timeLoaded = $(".time_loaded");
     this.$timeCurrent = $(".time_current");
-    this.timeline.setTimelineWidth();
+    
+    if (this.timeline) {
+      this.timeline.setTimelineWidth();
+    }
   },
 
   onProgress: function() {
