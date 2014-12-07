@@ -3,6 +3,7 @@ $.extend(river.controller,{
     repo = $("#river_player").data("repo") ;
     $("#river_player").removeAttr("data-repo");
     player = new river.ui.Player({repo: repo});
+    player.play();
   },
   "videos#editor": function() {
     // add ?local=true to url to test locally w/o internet connection
