@@ -1482,3 +1482,7 @@ form#request_beta_invite input[name='email'] {
   border:0;
   padding:0;
 }
+
+#transcript_tab_anchor {
+  display: none;
+}

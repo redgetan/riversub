@@ -136,7 +136,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       type: "POST",
       dataType: "json",
       success: function(data) {
-        window.location.href = window.location.href;
+        window.location.href = data.redirect_url;
       },
       error: function(data) {
         alert("Publish failed. We would look into this shortly.");
@@ -252,7 +252,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<a href=" + this.repo.url + ">" + this.repo.video.name.substring(0,70) + "</a>" +
                     "</h5>" +
                     "<div class='publish_preview_btn_group pull-right'>" +
-                      "<a id='preview_btn' class='river_btn' target='_blank' href=" + this.repo.url + ">Preview</a>" +
+                      "<a id='preview_btn' class='river_btn' href=" + this.repo.url + ">Preview</a>" +
                       "<a id='publish_btn' class='river_btn'>Publish</a>" +
                     "</div>" +
                     // "<div id='language' class='pull-left'>" +

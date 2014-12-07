@@ -26,7 +26,7 @@ class VideosController < ApplicationController
     if @repo.update_attributes!(is_published: true)
       respond_to do |format|
         format.html  { redirect_to @repo.url  }
-        format.json  { render :json => {}, :status => 200 }
+        format.json  { render :json => { :redirect_url => @repo.url }, :status => 200 }
       end
     else
       render :json => { :error => @repo.errors.full_messages }, :status => 403
