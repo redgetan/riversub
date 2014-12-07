@@ -22,7 +22,12 @@ $.extend(river.controller,{
       editor = new river.ui.Editor({repo: repo, media: media, local: true, targetSelector: "video#media"});
     } else {
       repo = $("#editor_container").data("repo") ;
-      editor = new river.ui.Editor({repo: repo});
+
+      if (repo.parent_repository_id) {
+        editor = new river.ui.TemplateEditor({repo: repo});
+      } else {
+        editor = new river.ui.Editor({repo: repo});
+      }
     }
   }
 });

@@ -43,21 +43,15 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$close.hide();
 
     if ($("#editor").size() === 1) {
-      if (repo.parent_repository_id) {
-        var parentText = "<div class='parent_text'><span></span></div>";
-        this.$text.before(parentText);
-
-        this.$parentText = this.$el.find(".parent_text span");
-        this.$parentText.text(this.model.get("parent_text"));
-
-        this.$endTime.remove();
-        this.$close.remove();
-      }
       this.editableStartEndTime();
       this.editableText();
     } else {
       this.readOnlyStartEndTime();
       this.readOnlyText();
+    }
+
+    if (this.isTemplateEditor()) {
+      this.showParentTextAndHideEndTime();
     }
 
     this.render();
@@ -72,6 +66,17 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$text.append("<span></span>");
   },
 
+  showParentTextAndHideEndTime: function() {
+    var parentText = "<div class='parent_text'><span></span></div>";
+    this.$text.before(parentText);
+
+    this.$parentText = this.$el.find(".parent_text span");
+    this.$parentText.text(this.model.get("parent_text"));
+
+    this.$endTime.remove();
+    this.$close.remove();
+  },
+
   createInput: function() {
     return $("<input class='sub_text_area' placeholder='Enter Text'>");
   },
@@ -80,31 +85,8 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$startTime.append(this.createInput());
     this.$endTime.append(this.createInput());
 
-    if (!repo.parent_repository_id) {
-      this.$startTime.find("input").spinner({
-        min: 0, 
-        spin: this.startTimeSpin.bind(this)
-      });
-
-      this.$endTime.find("input").spinner({
-        min: 0, 
-        spin: this.endTimeSpin.bind(this)
-      });
-
-      // reset events set by jquery ui spinner
-      $.each(["mousewheel", "keydown", "keyup"], function(index, eventName){
-        this.$startTime.find("input").off(eventName);
-        this.$endTime.find("input").off(eventName);
-      }.bind(this));
-
-
-      this.$startTime.find("input").data("field","start_time");
-      this.$startTime.find(".ui-spinner-button").data("field","start_time");
-      this.$startTime.find(".ui-spinner-button span").data("field","start_time");
-
-      this.$endTime.find("input").data("field","end_time");
-      this.$endTime.find(".ui-spinner-button").data("field","end_time");
-      this.$endTime.find(".ui-spinner-button span").data("field","end_time");
+    if (!this.isTemplateEditor()) {
+      this.addSpinnerToStartEndTime();
     }
 
     this.$startTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
@@ -121,7 +103,37 @@ river.ui.Subtitle = Backbone.View.extend({
 
     this.$startTime.find("input").on("blur", this.editStartTimeFinished.bind(this));
     this.$endTime.find("input").on("blur", this.editEndTimeFinished.bind(this));
+  },
 
+  isTemplateEditor: function() {
+    return repo.parent_repository_id;
+  },
+
+  addSpinnerToStartEndTime: function() {
+    this.$startTime.find("input").spinner({
+      min: 0, 
+      spin: this.startTimeSpin.bind(this)
+    });
+
+    this.$endTime.find("input").spinner({
+      min: 0, 
+      spin: this.endTimeSpin.bind(this)
+    });
+
+    // reset events set by jquery ui spinner
+    $.each(["mousewheel", "keydown", "keyup"], function(index, eventName){
+      this.$startTime.find("input").off(eventName);
+      this.$endTime.find("input").off(eventName);
+    }.bind(this));
+
+
+    this.$startTime.find("input").data("field","start_time");
+    this.$startTime.find(".ui-spinner-button").data("field","start_time");
+    this.$startTime.find(".ui-spinner-button span").data("field","start_time");
+
+    this.$endTime.find("input").data("field","end_time");
+    this.$endTime.find(".ui-spinner-button").data("field","end_time");
+    this.$endTime.find(".ui-spinner-button span").data("field","end_time");
   },
 
   startTimeSpin: function(event, ui) {

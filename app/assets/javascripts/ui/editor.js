@@ -22,16 +22,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // options
     this.addSubBackward = true;
 
-    // temp hack. ugly
-    if (!this.repo.parent_repository_id) {
-      $(".header #original").hide();
-    } else {
-      $(".header #end").hide();
-      $("#add_sub_container").hide();
-      this.$forwardBtn.hide();
-      this.$backwardBtn.hide();
-      $(".publish_preview_btn_group").appendTo(".template_publish_preview_container");
-    }
+    $(".header #original").hide();
     // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
     this.$expandBtn.hide();
@@ -372,10 +363,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$el = $("#editor");
 
-    if (this.repo.parent_repository_id) {
-      this.$el.addClass("template");
-    }
-
     if (this.repo.user) {
       var repo_owner = "<span id='repo_owner'>" +
                          "<a href='" + this.repo.owner_profile_url + "'>" + this.repo.owner + "</a>" +
@@ -620,9 +607,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var time;
     var timeGap = this.getTimeGap(this.focusedTrack, nextTrack);
 
-    if (this.repo.parent_repository_id) {
-      track = nextTrack;
-    } else if (typeof nextTrack !== "undefined" && timeGap <= this.DEFAULT_TRACK_DURATION) {
+    if (typeof nextTrack !== "undefined" && timeGap <= this.DEFAULT_TRACK_DURATION) {
       track = nextTrack;
     } else {
       time = this.normalizeTime(this.focusedTrack.endTime() + this.TRACK_MARGIN);
@@ -699,10 +684,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $(document).on("keydown",this.onDocumentKeydown.bind(this));
     $(document).on("keyup",this.onDocumentKeyup.bind(this));
-
-    if (this.repo.parent_repository_id && this.currentTrack) {
-      this.replayTrackAndEdit(this.currentTrack);
-    }
   },
 
   onPauseAdjust: function(correctPauseTime) {
