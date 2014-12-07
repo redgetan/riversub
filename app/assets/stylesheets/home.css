@@ -1396,7 +1396,8 @@ form#edit_password .form-control{
   background-color: #ecf0f1;
   border-radius: 0px;
   border-bottom-radius: 6px;
-
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .video-caption {

@@ -33,7 +33,7 @@
           </div>
     <div class="container">
       <div class="row center">
-      <% Repository.published.recent.limit(6).each do |repo| %>
+      <% Repository.templates.recent.limit(6).each do |repo| %>
           <div class="col-sm-4">
             <div class="pull-left video" id="<%= repo.id %>">
               <div class="video-caption" title="<%= repo.video.name %>">

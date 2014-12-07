@@ -33,6 +33,7 @@ class Repository < ActiveRecord::Base
   scope :imported,              where("is_youtube_imported is true")
   scope :unimported,            where("is_youtube_imported is false")
   scope :recent,                order("updated_at DESC")
+  scope :templates,             where("is_template is true")
 
   GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"
   ANONYMOUS_USERNAME = "default"
