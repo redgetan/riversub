@@ -690,6 +690,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTrackRequest: function() {
+    this.saveNotify();
+  },
+
+  saveNotify: function() {
     this.$status_bar.text("Saving...");
   },
 
@@ -711,20 +715,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTrackRequestSuccess: function(track) {
     Backbone.trigger("tracksuccess");
-    setTimeout(function(){ this.$status_bar.text(""); }.bind(this),500);
+    this.clearStatusBar();
   },
 
   onTrackRequestError: function(track, status) {
-    // dont show error to detailed user. currently confusing
-    // hopefully, the red highlight is good enough warning
+    this.clearStatusBar();
+  },
+
+  clearStatusBar: function() {
     setTimeout(function(){ this.$status_bar.text(""); }.bind(this),500);
-    // var msg = "";
-    // var errors = JSON.parse(status.responseText)["error"];
-    // for (key in errors) {
-    //   msg += errors[key];
-    //   msg + ". ";
-    // }
-    // this.showErrorOnStatusBar(msg);
   },
 
   showErrorOnStatusBar: function(msg) {

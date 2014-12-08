@@ -1,11 +1,11 @@
-<% set_meta_tags :site => 'Yasub', :title => "#{@repo.video.name}", :description => "Watch a Youtube Video with user generated captions/subtitles" %>
+<% set_meta_tags :site => 'Yasub', :title => @repo.title, :description => "Watch a Youtube Video with user generated captions/subtitles", :keywords => @repo.video.name[0..255].split(" ") %>
 
 <div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
   <div class="row">
     <div class='col-lg-9 center player_column'>
       <h5 id='repo_label'>
         <div>
-          <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
+          <a href="<%= @repo.url %>"><%= @repo.title %></a>
         </div>
       </h5>
 
@@ -42,7 +42,7 @@
             <form method="post" action="<%= @repo.fork_url %>" class="button_to fork_repo_form">
               <div>
                 <button type="submit" class="fork_repo_btn river_btn">
-                  Add Subtitle
+                  <i class='glyphicon glyphicon-plus'></i> Subtitle
                 </button>
               </div>
             </form>

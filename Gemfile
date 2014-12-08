@@ -61,5 +61,6 @@ gem 'omniauth-twitter'
 gem "omniauth-google-oauth2"
 gem "font-awesome-rails"
 gem "cancan"
+gem "htmlentities"
 
 

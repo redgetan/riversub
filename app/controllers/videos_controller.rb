@@ -33,6 +33,18 @@ class VideosController < ApplicationController
     end
   end
 
+  def update_title
+    @repo = Repository.find_by_token! params[:token]
+
+    if @repo.update_attributes!(title: params[:repo_title])
+      respond_to do |format|
+        format.json  { render :json => {}, :status => 200 }
+      end
+    else
+      render :json => { :error => @repo.errors.full_messages }, :status => 403
+    end
+  end
+
   def fork
     @source_repo = Repository.find_by_token! params[:token]  
     @target_repo = Repository.create!(video: @source_repo.video, user: current_user)

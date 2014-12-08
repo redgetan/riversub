@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141207215658) do
+ActiveRecord::Schema.define(:version => 20141208032853) do
 
   create_table "group_repositories", :force => true do |t|
     t.integer  "group_id"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20141207215658) do
     t.string   "token"
     t.boolean  "is_published"
     t.string   "language"
+    t.string   "title"
     t.integer  "parent_repository_id"
     t.boolean  "is_youtube_imported",  :default => false
     t.boolean  "is_template",          :default => false

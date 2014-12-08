@@ -13,7 +13,8 @@ class Repository < ActiveRecord::Base
   has_many :group_repositories
   has_many :groups, through: :group_repositories
 
-  attr_accessible :video_id, :user_id, :video, :user, :token, :is_published, :language, :parent_repository_id
+  attr_accessible :video_id, :user_id, :video, :user, :token, 
+                  :is_published, :language, :parent_repository_id, :title
 
   validates :video_id, :presence => true
   validates :token, :uniqueness => true, on: :create
@@ -99,6 +100,10 @@ class Repository < ActiveRecord::Base
 
   def publish_url
     publish_videos_url(self)
+  end
+
+  def update_title_url
+    update_repo_title_url(self)  
   end
 
   def subtitle_download_url
@@ -212,12 +217,14 @@ class Repository < ActiveRecord::Base
       :user => self.user.try(:serialize),
       :timings => self.timings.map(&:serialize),
       :url => self.url,
+      :title => self.title,
       :token => self.token,
       :language_pretty => self.language_pretty,
       :owner => self.owner,
       :owner_profile_url => self.owner_profile_url,
       :editor_url => self.editor_url,
       :publish_url => self.publish_url,
+      :update_title_url => self.update_title_url,
       :subtitle_download_url => self.subtitle_download_url,
       :parent_repository_id => self.parent_repository_id,
       :is_published => self.is_published,

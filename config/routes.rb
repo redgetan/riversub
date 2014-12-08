@@ -33,6 +33,7 @@ River::Application.routes.draw do
     get "/:token/setup",                  to: "videos#setup",  as: "editor_video_setup"
     post "/:token/finish_setup",          to: "videos#finish_setup",  as: "editor_video_finish_setup"
     post "/:token/publish",               to: "videos#publish", as: "publish_videos"
+    post "/:token/update_title",          to: "videos#update_title", as: "update_repo_title"
     post "/:token/fork",                  to: "videos#fork",   as: "fork_repo"
     get "/:token/editor",                 to: "videos#editor", as: "editor_video"
     get '/:username/:token',              to: 'videos#show',   as: 'user_video'

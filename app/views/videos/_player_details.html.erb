@@ -16,14 +16,14 @@
       <div id='forks_container'>
         <ul style='list-style:none; text-align: left; margin-left: -40px;'>
           <% @repo.other_published_repositories.each do |repo| %>
-            <li class='forks_list_item'>
-              <a href="<%= repo.url %>" >
-                <span class=''><%= repo.url %></span>
+            <a href="<%= repo.url %>" >
+              <li class='forks_list_item'>
+                <span class=''><%= repo.title %></span>
                 <div class='pull-right'>
                   <span class=''>30 points</span>
                 </div>
-              </a>
-            </li>
+              </li>
+            </a>
           <% end %>
         </ul>
       </div>
