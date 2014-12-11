@@ -20,7 +20,7 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
 
     var title_input = "<div class='repo_title_input_container' title='click to edit'>" +
                         "<input type='text' class='repo_title_input' placeholder='Enter Title'>" +
-                        "<span class='title_input_handle'><i class='glyphicon glyphicon-pencil'></i></span>" +
+                        "<a class='title_input_handle'>[edit]</a>" +
                       "</div>";
 
     $(".repo_label_container").append(title_input);
@@ -28,7 +28,6 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
     this.$titleInputContainer = $(".repo_label_container").find(".repo_title_input_container");
     this.$titleInput = $(".repo_label_container").find(".repo_title_input");
     this.$titleInputHandle = $(".repo_label_container").find(".title_input_handle");
-    this.$titleInputHandle.hide();
 
     if (repo.title) {
       this.$titleInput.val(repo.title);
@@ -94,11 +93,9 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
   },
 
   onTitleInputMouseEnter: function() {
-    this.$titleInputHandle.show();
   },
 
   onTitleInputMouseLeave: function() {
-    this.$titleInputHandle.hide();
   },
 
   setupElement: function() {

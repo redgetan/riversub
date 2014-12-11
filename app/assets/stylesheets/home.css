@@ -1509,12 +1509,11 @@ form#request_beta_invite input[name='email'] {
 
 .repo_title_input_container:hover .repo_title_input {
   border: solid 1px gray; 
-  background-color: white;
+  /*background-color: white;*/
 }
 
 .title_input_handle {
-  padding: 3px 10px;
-  border: solid 1px gray;
+  margin-left: 30px;
   font-size: 20px;
   cursor: pointer;
 }
