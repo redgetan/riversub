@@ -726,11 +726,16 @@ ul.social_login_buttons a {
 }
 
 .share_link_input {
-  width: 80%;
-  background: none !important;
   border: 2px solid #cccccc !important;
   -webkit-border-radius: 0px !important;
   border-radius: 0px !important;
+}
+
+.share_container {
+  margin: 20px 0px;
+  height: 80px;
+  padding: 20px;
+  border: solid 1px #ccc;
 }
 
 .social_share_container {
@@ -1183,7 +1188,8 @@ footer a:hover{
 }
 
 #player_details {
-  /*margin-top: 15px;*/
+  padding-top: 15px;
+  clear: both;
 }
 
 #player_details .nav-tabs > .active > a,
@@ -1210,13 +1216,6 @@ footer a:hover{
 
 .subtitle_editor_btn, .new_repo_btn, .upvote_btn, .downvote_btn {
   background: none;
-}
-
-.fork_repo_btn i,
-.new_repo_btn i,
-.upvote_btn i,
-.downvote_btn i {
-  color: gray;
 }
 
 .vote_points {
@@ -1520,4 +1519,16 @@ form#request_beta_invite input[name='email'] {
 
 .fork_repo_btn {
   background: none;
+}
+
+.share_repo_btn {
+  background: none;
+}
+
+#video_information i {
+  color: gray;
+}
+
+.share_repo_btn i {
+  top: 3px;
 }

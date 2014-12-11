@@ -70,8 +70,19 @@ $(document).ready(function(){
     $(this).find("h6").css("color","gray");
   });
 
-  $(".share_btn").on("click",function(event) {
+  $(".share_repo_btn").on("click",function(event) {
     event.preventDefault();
+
+    $(".share_container").toggle();
+    var $icon = $(this).find("i");
+
+    if ($icon.hasClass("glyphicon-chevron-down")) {
+      $icon.removeClass("glyphicon-chevron-down");
+      $icon.addClass("glyphicon-chevron-up");
+    } else {
+      $icon.removeClass("glyphicon-chevron-up");
+      $icon.addClass("glyphicon-chevron-down");
+    }
   });
 
   $('#share_modal').on('shown', function () {

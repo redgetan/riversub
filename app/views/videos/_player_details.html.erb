@@ -1,10 +1,28 @@
 <div id="player_details">
-  <ul class='nav nav-tabs'>
-    <li id='info_tab_anchor' class="pull-right"><a href='#info_tab' data-toggle='tab'>Share</a></li>
-    <li id='transcript_tab_anchor' class="pull-right"><a href='#transcript_tab' data-toggle='tab'>Transcript</a></li>
-    <li id='forks_tab_anchor' class="active pull-right"><a href='#forks_tab' data-toggle='tab'>Related</a></li>
+  <!-- <ul class='nav nav-tabs'> -->
+    <!-- <li id='info_tab_anchor' class="pull-right"><a href='#info_tab' data-toggle='tab'>Share</a></li> -->
+    <!-- <li id='transcript_tab_anchor' class="pull-right"><a href='#transcript_tab' data-toggle='tab'>Transcript</a></li> -->
+    <!-- <li id='forks_tab_anchor' class="active pull-right"><a href='#forks_tab' data-toggle='tab'>Related</a></li> -->
     <!-- <li id='comments_tab_anchor' class='active pull-right'><a href='#comments_tab' data-toggle='tab'>Comments</a></li> -->
-  </ul>
+  <!-- </ul> -->
+
+  <div class='share_container' style='display: none;'>
+    <div class="link_container">
+      <span class="col-md-1">Link</span>
+      <input class="col-md-5 share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
+    </div>
+    <div class="social_share_container pull-left">
+      <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.url %>" target="_blank">
+         <%= image_tag "fb-32.png" %>
+      </a>
+      <a href="https://twitter.com/share?url=<%= @repo.url %>" target="_blank">
+         <%= image_tag "twitter-32.png"  %>
+      </a>
+      <a href="https://plus.google.com/share?url=<%= @repo.url %>" target="_blank">
+         <%= image_tag "gplus-32.png"  %>
+      </a>
+    </div>
+  </div>
 
   <div class='tab-content'>
 <!--     <div class='tab-pane active' id='comments_tab'>
@@ -14,6 +32,7 @@
  -->   
     <div class='tab-pane active' id='forks_tab'>
       <div id='forks_container'>
+        <h5>Choose another Subtitle</h5>
         <ul style='list-style:none; text-align: left; margin-left: -40px;'>
           <% @repo.other_published_repositories.each do |repo| %>
             <a href="<%= repo.url %>" >

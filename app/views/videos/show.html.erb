@@ -42,13 +42,23 @@
             <form method="post" action="<%= @repo.fork_url %>" class="button_to fork_repo_form">
               <div>
                 <button type="submit" class="fork_repo_btn river_btn">
-                  <i class='glyphicon glyphicon-plus'></i> Subtitle
+                  <i class='glyphicon glyphicon-plus'></i> Translate
                 </button>
               </div>
             </form>
           <% end %>
         </div>
-         <div class="upvote action_item pull-left">
+        <a class='river_btn share_repo_btn pull-left' href='#'><i class='glyphicon glyphicon-chevron-down'></i> Share</a>
+      </div>
+
+      <div class='voting_container pull-right'>
+        <div class='vote_points pull-left'>
+          <span>
+            45
+            points
+          </span>
+        </div>
+        <div class="upvote action_item pull-left">
           <a class='upvote_btn river_btn' href="#">
             <i class="glyphicon glyphicon-arrow-up"></i>
           </a>
@@ -58,13 +68,6 @@
             <i class="glyphicon glyphicon-arrow-down"></i>
           </a>
         </div>
-      </div>
-
-      <div class='vote_points pull-left'>
-        <span>
-          45
-          points
-        </span>
       </div>
 
       <%= render 'player_details' %>
