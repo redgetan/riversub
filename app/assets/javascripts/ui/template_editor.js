@@ -44,17 +44,19 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
   },
 
   onPreviewBtnClick: function(event) {
-    if (repo.title.length === 0) {
+    if (repo.title && repo.title.length > 0) {
+    } else {
       event.preventDefault();
       alert("Please Enter a Title");
-    } 
+    }
   },
 
   onPublishBtnClick: function(event) {
-    if (repo.title.length === 0) {
-      alert("Please Enter a Title");
-    } else {
+    if (repo.title && repo.title.length > 0) {
       river.ui.Editor.prototype.onPublishBtnClick.call(this,event);
+    } else {
+      event.preventDefault();
+      alert("Please Enter a Title");
     }
   },
 
