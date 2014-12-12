@@ -64,6 +64,35 @@ class VideosController < ApplicationController
     respond_to :html
   end
 
+  def upvote
+    @repo = Repository.find_by_token! params[:token]
+
+    unless current_user
+      render :json => {}, :status => 401 and return
+    end
+
+    if current_user.voted_for?(@repo)
+      render :json => {}, :status => 403 and return
+    end
+
+    @repo.liked_by current_user
+    render :json => { :points => @repo.points }, :status => 200 
+  end
+
+  def downvote
+    @repo = Repository.find_by_token! params[:token]
+
+    unless current_user
+      render :json => {}, :status => 401 and return
+    end
+
+    if current_user.voted_for?(@repo)
+      render :json => {}, :status => 403 and return
+    end
+
+    @repo.disliked_by current_user
+    render :json => { :points => @repo.points }, :status => 200 
+  end
 
   def show
     @repo = Repository.find_by_token! params[:token]

@@ -4,6 +4,45 @@ $.extend(river.controller,{
     $("#river_player").removeAttr("data-repo");
     player = new river.ui.Player({repo: repo});
     player.play();
+
+    $(".upvote_btn").on("click", function(event) {
+      event.preventDefault();
+
+      $.ajax({ 
+        url: repo.upvote_url, 
+        type: "POST", 
+        dataType: "json", 
+        success: function(data) {
+          $(".vote_points_number").text(data.points);
+          $(".upvote_btn").addClass("user_voted");
+        },
+        error: function(data) {
+          if (data.status === 401) {
+            alert("You must be logged in to upvote");
+          }
+        }
+      });
+    });
+
+    $(".downvote_btn").on("click", function(event) {
+      event.preventDefault();
+
+      $.ajax({ 
+        url: repo.downvote_url, 
+        type: "POST", 
+        dataType: "json", 
+        success: function(data) {
+          $(".vote_points_number").text(data.points);
+          $(".downvote_btn").addClass("user_voted");
+        },
+        error: function(data) {
+          if (data.status === 401) {
+            alert("You must be logged in to downvote");
+          }
+        }
+      });
+    });
+
   },
   "videos#editor": function() {
     // add ?local=true to url to test locally w/o internet connection

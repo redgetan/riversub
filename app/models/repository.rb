@@ -3,6 +3,7 @@ class Repository < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   paginates_per 20
+  acts_as_votable
 
   belongs_to :video
   belongs_to :user
@@ -102,6 +103,14 @@ class Repository < ActiveRecord::Base
     publish_videos_url(self)
   end
 
+  def upvote_url
+    upvote_repo_url(self)
+  end
+
+  def downvote_url
+    downvote_repo_url(self)
+  end
+
   def update_title_url
     update_repo_title_url(self)  
   end
@@ -193,6 +202,34 @@ class Repository < ActiveRecord::Base
     end.join(". ")
   end
 
+  def points
+    get_likes.size - get_dislikes.size
+  end
+
+  def upvote_btn_class_for(user)
+    if user && user.liked?(self)
+      "user_voted"
+    else
+      ""
+    end
+  end
+
+  def downvote_btn_class_for(user)
+    if user && user.disliked?(self)
+      "user_voted"
+    else
+      ""
+    end
+  end
+
+  def vote_points_display_class_for(user)
+    if user && (user.liked?(self) || user.disliked?(self))
+      "user_voted"
+    else 
+      ""
+    end
+  end
+
   def owned_by?(target_user)
     if user
       self.user == target_user 
@@ -224,6 +261,8 @@ class Repository < ActiveRecord::Base
       :owner_profile_url => self.owner_profile_url,
       :editor_url => self.editor_url,
       :publish_url => self.publish_url,
+      :upvote_url => self.upvote_url,
+      :downvote_url => self.downvote_url,
       :update_title_url => self.update_title_url,
       :subtitle_download_url => self.subtitle_download_url,
       :parent_repository_id => self.parent_repository_id,

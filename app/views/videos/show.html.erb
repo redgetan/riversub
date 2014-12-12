@@ -2,12 +2,12 @@
 
 <div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
   <div class="row">
-    <div class='col-lg-9 player_column'>
-      <h5 id='repo_label'>
+    <div class='col-lg-9 center player_column'>
+      <h4 id='repo_label'>
         <div>
           <a href="<%= @repo.url %>"><%= @repo.title %></a>
         </div>
-      </h5>
+      </h4>
 
       <h5 id="subtitler" class="pull-right">
         <% if @repo.user %>
@@ -22,7 +22,7 @@
     </div>
   </div>
   <div id="video_information" class="row">
-    <div class="player_column">
+    <div class="player_column center">
       <% unless @repo.is_published? %>
         <div id="finalize" class="" style="height: 140px;">
           <p style="padding: 10px;">This video is currently private. To make it visible to the public, click publish.</p>
@@ -51,18 +51,17 @@
         <a class='river_btn share_repo_btn pull-right' href='#'><i class='glyphicon glyphicon-chevron-down'></i> Share</a>
         <div class='voting_container pull-right'>
           <div class='vote_points pull-left'>
-            <span>
-              45
-              points
-            </span>
+            <span class='vote_points_display <%= @repo.vote_points_display_class_for(current_user) %>'>
+              <span class='vote_points_number'><%= @repo.points %></span> points
+            </span> 
           </div>
           <div class="upvote action_item pull-left">
-            <a class='upvote_btn river_btn' href="#">
+            <a class='upvote_btn river_btn <%= @repo.upvote_btn_class_for(current_user) %>' href="#">
               <i class="glyphicon glyphicon-arrow-up"></i>
             </a>
           </div>
           <div class="downvote action_item pull-left">
-            <a class='downvote_btn river_btn' href="#">
+            <a class='downvote_btn river_btn <%= @repo.downvote_btn_class_for(current_user) %>' href="#">
               <i class="glyphicon glyphicon-arrow-down"></i>
             </a>
           </div>
@@ -96,7 +95,7 @@
               <li class='forks_list_item'>
                 <span class=''><%= repo.title %></span>
                 <div class='pull-right'>
-                  <span class=''>30 points</span>
+                  <span class=''><%= repo.points %> points</span>
                 </div>
               </li>
             </a>

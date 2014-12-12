@@ -1545,3 +1545,9 @@ form#request_beta_invite input[name='email'] {
   height: 40px;
   margin-bottom: 20px;
 }
+
+.vote_points_display.user_voted,
+.upvote_btn.user_voted i,
+.downvote_btn.user_voted i {
+  color: darkgreen !important;
+}
