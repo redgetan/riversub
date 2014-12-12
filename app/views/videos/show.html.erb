@@ -2,7 +2,7 @@
 
 <div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
   <div class="row">
-    <div class='col-lg-9 center player_column'>
+    <div class='col-lg-9 player_column'>
       <h5 id='repo_label'>
         <div>
           <a href="<%= @repo.url %>"><%= @repo.title %></a>
@@ -22,7 +22,7 @@
     </div>
   </div>
   <div id="video_information" class="row">
-    <div class="center player_column">
+    <div class="player_column">
       <% unless @repo.is_published? %>
         <div id="finalize" class="" style="height: 140px;">
           <p style="padding: 10px;">This video is currently private. To make it visible to the public, click publish.</p>
@@ -42,34 +42,67 @@
             <form method="post" action="<%= @repo.fork_url %>" class="button_to fork_repo_form">
               <div>
                 <button type="submit" class="fork_repo_btn river_btn">
-                  <i class='glyphicon glyphicon-plus'></i> Translate
+                  <i class='glyphicon glyphicon-plus'></i> Subtitle
                 </button>
               </div>
             </form>
           <% end %>
         </div>
-        <a class='river_btn share_repo_btn pull-left' href='#'><i class='glyphicon glyphicon-chevron-down'></i> Share</a>
+        <a class='river_btn share_repo_btn pull-right' href='#'><i class='glyphicon glyphicon-chevron-down'></i> Share</a>
+        <div class='voting_container pull-right'>
+          <div class='vote_points pull-left'>
+            <span>
+              45
+              points
+            </span>
+          </div>
+          <div class="upvote action_item pull-left">
+            <a class='upvote_btn river_btn' href="#">
+              <i class="glyphicon glyphicon-arrow-up"></i>
+            </a>
+          </div>
+          <div class="downvote action_item pull-left">
+            <a class='downvote_btn river_btn' href="#">
+              <i class="glyphicon glyphicon-arrow-down"></i>
+            </a>
+          </div>
+        </div>
       </div>
 
-      <div class='voting_container pull-right'>
-        <div class='vote_points pull-left'>
-          <span>
-            45
-            points
-          </span>
+      <div class='share_container' style='display: none;'>
+        <div class="link_container">
+          <span class="col-md-1">Link</span>
+          <input class="col-md-5 share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
         </div>
-        <div class="upvote action_item pull-left">
-          <a class='upvote_btn river_btn' href="#">
-            <i class="glyphicon glyphicon-arrow-up"></i>
+        <div class="social_share_container pull-left">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.url %>" target="_blank">
+             <%= image_tag "fb-32.png" %>
           </a>
-        </div>
-        <div class="downvote action_item pull-left">
-          <a class='downvote_btn river_btn' href="#">
-            <i class="glyphicon glyphicon-arrow-down"></i>
+          <a href="https://twitter.com/share?url=<%= @repo.url %>" target="_blank">
+             <%= image_tag "twitter-32.png"  %>
+          </a>
+          <a href="https://plus.google.com/share?url=<%= @repo.url %>" target="_blank">
+             <%= image_tag "gplus-32.png"  %>
           </a>
         </div>
       </div>
 
+
+      <div id='forks_container' class=''>
+        <h5 class='forks_list_header'>Available Translations</h5>
+        <ul style='list-style:none; text-align: left; margin-left: -40px;'>
+          <% @repo.other_published_repositories.each do |repo| %>
+            <a href="<%= repo.url %>" >
+              <li class='forks_list_item'>
+                <span class=''><%= repo.title %></span>
+                <div class='pull-right'>
+                  <span class=''>30 points</span>
+                </div>
+              </li>
+            </a>
+          <% end %>
+        </ul>
+      </div>
       <%= render 'player_details' %>
     </div>
   </div>

@@ -6,24 +6,6 @@
     <!-- <li id='comments_tab_anchor' class='active pull-right'><a href='#comments_tab' data-toggle='tab'>Comments</a></li> -->
   <!-- </ul> -->
 
-  <div class='share_container' style='display: none;'>
-    <div class="link_container">
-      <span class="col-md-1">Link</span>
-      <input class="col-md-5 share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
-    </div>
-    <div class="social_share_container pull-left">
-      <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.url %>" target="_blank">
-         <%= image_tag "fb-32.png" %>
-      </a>
-      <a href="https://twitter.com/share?url=<%= @repo.url %>" target="_blank">
-         <%= image_tag "twitter-32.png"  %>
-      </a>
-      <a href="https://plus.google.com/share?url=<%= @repo.url %>" target="_blank">
-         <%= image_tag "gplus-32.png"  %>
-      </a>
-    </div>
-  </div>
-
   <div class='tab-content'>
 <!--     <div class='tab-pane active' id='comments_tab'>
       <div id='comments_container'>
@@ -31,64 +13,12 @@
     </div>
  -->   
     <div class='tab-pane active' id='forks_tab'>
-      <div id='forks_container'>
-        <h5>Choose another Subtitle</h5>
-        <ul style='list-style:none; text-align: left; margin-left: -40px;'>
-          <% @repo.other_published_repositories.each do |repo| %>
-            <a href="<%= repo.url %>" >
-              <li class='forks_list_item'>
-                <span class=''><%= repo.title %></span>
-                <div class='pull-right'>
-                  <span class=''>30 points</span>
-                </div>
-              </li>
-            </a>
-          <% end %>
-        </ul>
-      </div>
     </div>
     <div class='tab-pane' id='transcript_tab'>
       <div id='transcript_container'>
         <div id='subtitle_list'></div>
       </div>
     </div>
-    
-    <div class='tab-pane' id='info_tab'>
-      <div id='info_container'>
-        <table>
-          <tr>
-            <td class="left">link:</td>
-            <td class="right input-append">
-              <input class="share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
-              <button class='btn'>Copy Link</button>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
   </div>
 </div>
-
-      <!--
-      <div id="share_edit" class="pull-left">
-        <table>
-          <tr>
-            <td class="left">link:</td>
-            <td class="right">
-              <input class="share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
-            </td>
-          </tr>
-          <tr>
-            <td class="left">save:</td>
-            <td class="right">
-              <a id='download_btn' href='<%= @repo.subtitle_download_url %>'>Download</a>
-            </td>
-          </tr>
-        </table>
-      </div>
-      -->
-
-
-      <!--
-      -->
 
