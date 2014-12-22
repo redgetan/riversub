@@ -1500,6 +1500,7 @@ form#request_beta_invite input[name='email'] {
   font-size: 20px;
   width: 500px;
   text-align: center;
+  margin-left: 20px;
 }
 
 .repo_title_input:focus {
@@ -1507,7 +1508,7 @@ form#request_beta_invite input[name='email'] {
 }
 
 .repo_title_input_container:hover .repo_title_input {
-  border: solid 1px gray; 
+  border: solid 1px #ccc;
   /*background-color: white;*/
 }
 

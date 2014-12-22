@@ -1,7 +1,7 @@
 <% set_meta_tags :site => 'Yasub', :title => 'Subtitle Tool for Youtube Videos', :description => "Yasub lets you subtitle & caption Youtube Videos." %>
-      
-        <div class="jumbotron">
-          <div class="container">
+
+  <div class="jumbotron">
+    <div class="container">
       <div class="col-lg-6 call-to-action col-lg-push-3">
         <h2>Create Your Own Funny Subtitles</h2>
         <ul>
@@ -30,27 +30,23 @@
       </ul>
       </div>
     </div>
-          </div>
-    <div class="container">
-      <div class="row center">
+  </div>
+  <div class="container">
+    <div class="row center">
       <% Repository.templates.recent.limit(6).each do |repo| %>
           <div class="col-sm-4">
             <div class="pull-left video" id="<%= repo.id %>">
               <div class="video-caption" title="<%= repo.video.name %>">
 
-                <form method="post" action="<%= repo.fork_url %>" class="button_to fork_repo_form">
-              <div>
-                <button type="submit" class="template-btn">
-                 <img src="<%= repo.thumbnail_url_hq %>" alt="" width="300" height="225">
-                </button>
-              </div>
-            </form>
+                <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                   <img src="<%= repo.thumbnail_url_hq %>" alt="" width="300" height="225">
+                </a>
               </div>
           </div>
           </div>
       <% end %>
     </div>
-    </div>
+  </div>
 
 
 

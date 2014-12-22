@@ -18,9 +18,8 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
   enableTitleChange: function() {
     $(".repo_label_container").find("#repo_label").hide();
 
-    var title_input = "<div class='repo_title_input_container' title='click to edit'>" +
-                        "<input type='text' class='repo_title_input' placeholder='Enter Title'>" +
-                        "<a class='title_input_handle'>[edit]</a>" +
+    var title_input = "<div class='' title='click to edit'>" +
+                        "<input type='text' class='repo_title_input' style='width: 200px; text-align: center;' placeholder='Enter Title'>" +
                       "</div>";
 
     $(".repo_label_container").append(title_input);
@@ -40,7 +39,7 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
     this.$titleInputContainer.on("mouseenter", this.onTitleInputMouseEnter.bind(this));
     this.$titleInputContainer.on("mouseleave", this.onTitleInputMouseLeave.bind(this));
     this.$titleInputHandle.on("click", this.onTitleInputHandleClick.bind(this));
-    this.$previewBtn.on("click", this.onPreviewBtnClick.bind(this)); 
+    this.$previewBtn.on("click", this.onPreviewBtnClick.bind(this));
   },
 
   onPreviewBtnClick: function(event) {
@@ -72,7 +71,7 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
   },
 
   onTitleInputBlur: function() {
-    var repoTitle = this.$titleInput.val();  
+    var repoTitle = this.$titleInput.val();
 
     this.saveNotify();
 
@@ -112,7 +111,7 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
 
   onEditorReady: function(event) {
     river.ui.Editor.prototype.onEditorReady.call(this, event);
-    
+
     if (this.currentTrack) {
       this.replayTrackAndEdit(this.currentTrack);
     }
