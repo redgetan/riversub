@@ -29,7 +29,21 @@ River::Application.routes.draw do
       resources "timings", :only => [:index, :create, :update, :destroy]
     end
 
+    resources :comments do
+      member do
+        get "reply"
+        post "upvote"
+        post "downvote"
+        post "unvote"
+
+        post "delete"
+        post "undelete"
+      end
+    end
+
+
     get "/:token",                        to: "videos#show",   as: "video"
+    get "/:token/comments/:comment_short_id", to: "videos#show", as: "video_comment"
     get "/:token/setup",                  to: "videos#setup",  as: "editor_video_setup"
     post "/:token/finish_setup",          to: "videos#finish_setup",  as: "editor_video_finish_setup"
     post "/:token/publish",               to: "videos#publish", as: "publish_videos"
@@ -40,6 +54,7 @@ River::Application.routes.draw do
     get "/:token/editor",                 to: "videos#editor", as: "editor_video"
     get '/:username/:token',              to: 'videos#show',   as: 'user_video'
     get '/:username/:token/editor',       to: 'videos#editor', as: 'editor_user_video'
+
 
     root :to => "home#index"
 

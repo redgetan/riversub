@@ -4,12 +4,14 @@ class Repository < ActiveRecord::Base
 
   paginates_per 20
   acts_as_votable
+  acts_as_commentable
 
   belongs_to :video
   belongs_to :user
 
   has_many :subtitles
   has_many :timings
+  has_many :comments, :foreign_key => "commentable_id"
 
   has_many :group_repositories
   has_many :groups, through: :group_repositories
@@ -117,6 +119,22 @@ class Repository < ActiveRecord::Base
 
   def subtitle_download_url
     repository_timings_url(self)
+  end
+
+  def title
+    if forked?
+      super
+    else
+      self.video.name
+    end
+  end
+
+  def original? 
+    parent_repository_id.nil?
+  end
+
+  def forked?
+    !original?
   end
 
   def to_srt
@@ -278,6 +296,10 @@ class Repository < ActiveRecord::Base
         break random_token unless self.class.where(token: random_token).exists?
       end
     end
+  end
+
+  def short_id
+    token  
   end
 
   def auto_publish_anonymous_repo

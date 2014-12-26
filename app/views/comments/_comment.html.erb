@@ -1,0 +1,66 @@
+<div id="comment_<%= comment.short_id %>"
+data-shortid="<%= comment.short_id %>"
+class="comment <%= comment.comment_item_class_for(current_user) %>">
+  <% if !comment.is_gone? %>
+    <div class="voters">
+      <% if user_signed_in? %>
+        <a class="upvoter"></a>
+      <% else %>
+        <%= link_to "", login_url, :class => "upvoter" %>
+      <% end %>
+      <div class="score"><%= comment.score %></div>
+      <% if user_signed_in? && current_user.can_downvote?(comment) %>
+        <a class="downvoter"></a>
+      <% else %>
+        <span class="downvoter downvoter_stub"></span>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="details">
+    <div class="byline">
+      <a name="c_<%= comment.short_id %>"></a>
+
+      <a href="<%= comment.user.url %>"><%= comment.user.username %></a>
+
+      <% if comment.has_been_edited? %>
+        edited
+      <% end %>
+
+      <%= raw(time_ago_in_words_label(comment.has_been_edited? ?
+        comment.updated_at : comment.created_at).gsub(/^about /, "")) %> ago
+
+      |
+      <a href="<%= comment.url %>">link</a>
+
+      <% if comment.is_editable_by_user?(current_user) %>
+        |
+        <a class="comment_editor">edit</a>
+      <% end %>
+
+      <% if comment.is_gone? && comment.is_undeletable_by_user?(current_user) %>
+        |
+          <a class="comment_undeletor">undelete</a>
+      <% elsif !comment.is_gone? && comment.is_deletable_by_user?(current_user) %>
+        |
+        <a class="comment_deletor">delete</a>
+      <% end %>
+
+      <% if user_signed_in? && !comment.is_gone? %>
+          |
+          <a class="comment_replier">reply</a>
+      <% end %>
+    </div>
+
+    <div class="comment_text">
+      <% if comment.is_gone? %>
+        <p>
+        <span class="na">
+        [<%= comment.gone_text %>]
+        </span>
+        </p>
+      <% else %>
+        <%= raw comment.body %>
+      <% end %>
+    </div>
+  </div>
+</div>

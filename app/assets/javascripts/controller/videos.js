@@ -5,6 +5,80 @@ $.extend(river.controller,{
     player = new river.ui.Player({repo: repo});
     player.play();
 
+    $(".comment a.downvoter").click(function() {
+      river.model.Vote.downvoteComment(this);
+      return false;
+    });
+
+    $(".comment a.upvoter").click(function() {
+      river.model.Vote.upvoteComment(this);
+      return false;
+    });
+
+
+    $(document).on("click", "button.comment-post", function() {
+      river.model.Comment.postComment($(this).parents("form").first());
+    });
+
+    $(document).on("click", "a.comment_replier", function() {
+      var comment = $(this).closest(".comment");
+      if ($("#reply_form_" + comment.attr("id")).length > 0)
+        return false;
+
+      var replies = comment.nextAll(".comments").first();
+      $.get("/comments/" + comment.attr("data-shortid") + "/reply",
+      function(data) {
+        var reply = $($.parseHTML(data));
+        reply.attr("id", "reply_form_" + comment.attr("id"));
+        replies.prepend(reply);
+        reply.find("textarea").focus();
+      });
+
+      return false;
+    });
+
+    $(document).on("click", "button.comment-cancel", function() {
+      var comment = $(this).closest(".comment");
+      var comment_id = comment.attr("data-shortid");
+      if (comment_id != null && comment_id !== '') {
+        $.get("/comments/" + comment_id, function(data) {
+          comment.replaceWith($.parseHTML(data));
+        });
+      } else {
+        comment.remove();
+      }
+    });
+
+
+    $(document).on("click", "a.comment_editor", function() {
+      var comment = $(this).closest(".comment");
+      $.get("/comments/" + comment.attr("data-shortid") + "/edit",
+      function(data) {
+        comment.replaceWith($.parseHTML(data));
+      });
+    });
+
+    $(document).on("click", "a.comment_deletor", function() {
+      if (confirm("Are you sure you want to delete this comment?")) {
+        var li = $(this).closest(".comment");
+        $.post("/comments/" + $(li).attr("data-shortid") + "/delete",
+        function(d) {
+          $(li).replaceWith(d);
+        });
+      }
+    });
+
+    $(document).on("click", "a.comment_undeletor", function() {
+      if (confirm("Are you sure you want to undelete this comment?")) {
+        var li = $(this).closest(".comment");
+        $.post("/comments/" + $(li).attr("data-shortid") + "/undelete",
+        function(d) {
+          $(li).replaceWith(d);
+        });
+      }
+    });
+
+
     $(".upvote_btn").on("click", function(event) {
       event.preventDefault();
 

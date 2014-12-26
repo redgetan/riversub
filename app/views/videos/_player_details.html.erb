@@ -1,17 +1,21 @@
 <div id="player_details">
-  <!-- <ul class='nav nav-tabs'> -->
+   <ul class='nav nav-tabs'> 
     <!-- <li id='info_tab_anchor' class="pull-right"><a href='#info_tab' data-toggle='tab'>Share</a></li> -->
-    <!-- <li id='transcript_tab_anchor' class="pull-right"><a href='#transcript_tab' data-toggle='tab'>Transcript</a></li> -->
+     <li id='transcript_tab_anchor' class="pull-right"><a href='#transcript_tab' data-toggle='tab'>Transcript</a></li> 
     <!-- <li id='forks_tab_anchor' class="active pull-right"><a href='#forks_tab' data-toggle='tab'>Related</a></li> -->
-    <!-- <li id='comments_tab_anchor' class='active pull-right'><a href='#comments_tab' data-toggle='tab'>Comments</a></li> -->
-  <!-- </ul> -->
+     <!-- <li id='comments_tab_anchor' class='active pull-right'><a href='#comments_tab' data-toggle='tab'>Comments</a></li>  -->
+   </ul> 
 
   <div class='tab-content'>
-<!--     <div class='tab-pane active' id='comments_tab'>
+    <div class='tab-pane active' id='comments_tab'>
       <div id='comments_container'>
+        <ol class="comments comments1">
+          <li><%= render "comments/commentbox", :comment => @comment %></li>
+          <%= render "comments/commentlist" %>
+        </ol>
       </div>
     </div>
- -->   
+
     <div class='tab-pane active' id='forks_tab'>
     </div>
     <div class='tab-pane' id='transcript_tab'>

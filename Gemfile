@@ -63,5 +63,6 @@ gem "font-awesome-rails"
 gem "cancan"
 gem "htmlentities"
 gem 'acts_as_votable', '~> 0.10.0'
+gem 'acts_as_commentable_with_threading', '= 1.2.0'
 
 

@@ -11,7 +11,27 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141212024320) do
+ActiveRecord::Schema.define(:version => 20141226211001) do
+
+  create_table "comments", :force => true do |t|
+    t.integer  "commentable_id",                                    :default => 0
+    t.string   "commentable_type"
+    t.string   "title"
+    t.text     "body"
+    t.string   "subject"
+    t.integer  "user_id",                                           :default => 0,     :null => false
+    t.integer  "parent_comment_id"
+    t.integer  "lft"
+    t.integer  "rgt"
+    t.datetime "created_at",                                                           :null => false
+    t.datetime "updated_at",                                                           :null => false
+    t.boolean  "is_deleted",                                        :default => false
+    t.decimal  "confidence",        :precision => 20, :scale => 19, :default => 0.0,   :null => false
+    t.string   "short_id"
+  end
+
+  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "group_repositories", :force => true do |t|
     t.integer  "group_id"
@@ -52,10 +72,10 @@ ActiveRecord::Schema.define(:version => 20141212024320) do
     t.string   "token"
     t.boolean  "is_published"
     t.string   "language"
-    t.string   "title"
     t.integer  "parent_repository_id"
     t.boolean  "is_youtube_imported",  :default => false
     t.boolean  "is_template",          :default => false
+    t.string   "title"
   end
 
   create_table "settings", :force => true do |t|

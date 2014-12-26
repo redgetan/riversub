@@ -109,6 +109,14 @@ class User < ActiveRecord::Base
     !!self.is_admin  
   end
 
+  def is_moderator?
+    is_admin?  
+  end
+
+  def can_downvote?(obj)
+    true
+  end
+
   def to_param
     self.username  
   end

@@ -96,6 +96,10 @@ class VideosController < ApplicationController
 
   def show
     @repo = Repository.find_by_token! params[:token]
+    @comment = @repo.comment_threads.build
+    @comments = @repo.comment_threads.arrange_for_user(current_user)
+
+    Comment.highlight_comment(@comments,params[:comment_short_id])
 
     if @repo.visible_to_user?(current_user)
       respond_to :html
