@@ -122,6 +122,10 @@ class CommentsController < ApplicationController
       return render :text => "can't find comment", :status => 400
     end
 
+    unless current_user
+      render :text => "You must be logged in to take the action" :status => 401 and return
+    end
+
     comment.liked_by current_user
 
     render :text => "ok"
@@ -130,6 +134,10 @@ class CommentsController < ApplicationController
   def downvote
     if !(comment = find_comment)
       return render :text => "can't find comment", :status => 400
+    end
+    
+    unless current_user
+      render :text => "You must be logged in to take the action" :status => 401 and return
     end
 
     if !current_user.can_downvote?(comment)

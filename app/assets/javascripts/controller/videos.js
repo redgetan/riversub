@@ -7,12 +7,10 @@ $.extend(river.controller,{
 
     $(".comment a.downvoter").click(function() {
       river.model.Vote.downvoteComment(this);
-      return false;
     });
 
     $(".comment a.upvoter").click(function() {
       river.model.Vote.upvoteComment(this);
-      return false;
     });
 
 
@@ -80,8 +78,6 @@ $.extend(river.controller,{
 
 
     $(".upvote_btn").on("click", function(event) {
-      event.preventDefault();
-
       $.ajax({ 
         url: repo.upvote_url, 
         type: "POST", 
@@ -91,16 +87,11 @@ $.extend(river.controller,{
           $(".upvote_btn").addClass("user_voted");
         },
         error: function(data) {
-          if (data.status === 401) {
-            alert("You must be logged in to upvote");
-          }
         }
       });
     });
 
     $(".downvote_btn").on("click", function(event) {
-      event.preventDefault();
-
       $.ajax({ 
         url: repo.downvote_url, 
         type: "POST", 
@@ -110,9 +101,6 @@ $.extend(river.controller,{
           $(".downvote_btn").addClass("user_voted");
         },
         error: function(data) {
-          if (data.status === 401) {
-            alert("You must be logged in to downvote");
-          }
         }
       });
     });

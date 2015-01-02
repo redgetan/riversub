@@ -48,20 +48,27 @@ river.model.Vote = {
       action = "downvote";
     }
 
-    scoreDiv.innerHTML = score;
-
     if (action == "upvote" || action == "unvote") {
       li.find(".reason").html("");
 
-      if (action == "unvote" && thingType == "story" && point < 0)
+      if (action == "unvote" && thingType == "repository" && point < 0)
         li.find(".flagger").text("flag");
     }
-    else if (action == "downvote" && thingType == "story")
-      li.find(".flagger").text("unflag");
 
-    $.post("/" + (thingType == "story" ? "stories" : thingType + "s") + "/" +
-      li.attr("data-shortid") + "/" +
-      action, { reason: reason });
+    var url = "/" + thingType + "s/" + li.attr("data-shortid") + "/" + action;
+    
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: { reason: reason },
+      success: function() {
+        scoreDiv.innerHTML = score;
+      },
+      error: function() {
+      },
+      dataType: "text"
+    });
+
   },
 
 }
