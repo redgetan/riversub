@@ -257,7 +257,9 @@ class Repository < ActiveRecord::Base
   end
 
   def display_edit?(target_user)
-    target_user && self.user == target_user 
+    return true if anonymous?
+
+    self.user == target_user 
   end
 
   def visible_to_user?(target_user)
