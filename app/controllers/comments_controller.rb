@@ -13,8 +13,8 @@ class CommentsController < ApplicationController
 
     comment = Comment.build_from(@repo, current_user.id, params[:comment].to_s)
 
-    if params[:parent_comment_short_id].present? 
-      if parent_comment = Comment.where(commentable_id: @repo.id, 
+    if params[:parent_comment_short_id].present?
+      if parent_comment = Comment.where(commentable_id: @repo.id,
                                         short_id: params[:parent_comment_short_id]).first
         comment.parent = parent_comment
       else
@@ -123,7 +123,7 @@ class CommentsController < ApplicationController
     end
 
     unless current_user
-      render :text => "You must be logged in to take the action" :status => 401 and return
+      render :text => "You must be logged in to take the action", :status => 401 and return
     end
 
     comment.liked_by current_user
@@ -135,9 +135,9 @@ class CommentsController < ApplicationController
     if !(comment = find_comment)
       return render :text => "can't find comment", :status => 400
     end
-    
+
     unless current_user
-      render :text => "You must be logged in to take the action" :status => 401 and return
+      render :text => "You must be logged in to take the action", :status => 401 and return
     end
 
     if !current_user.can_downvote?(comment)
