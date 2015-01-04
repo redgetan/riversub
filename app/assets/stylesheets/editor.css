@@ -46,7 +46,8 @@ div#editor .controls {
 }
 
 div#editor .controls button,
-div#editor .controls input {
+div#editor .controls input,
+div#editor .controls a {
 	float: left;
 }
 
@@ -72,7 +73,7 @@ div#editor-bottom {
 }
 
 #timeline_container {
-	height: 145px;
+	height: 160px;
 	margin-bottom: 25px;
   	/*padding: 10px;*/
 	/*border: solid 1px black ;*/
@@ -555,7 +556,7 @@ div#keyboard-shortcuts {
 	border: solid 1px gray;
 }
 
-a#preview_btn {
+a.preview_btn {
 	border: solid 1px gray;
 	font-size: 14px;
 }
@@ -565,7 +566,8 @@ a#preview_btn {
 	height: 30px;
 }
 
-.controls button {
+.controls button,
+.controls a {
 	background-color: white;
 }
 
@@ -586,12 +588,16 @@ a#preview_btn {
 	margin-right: 10px;
 */	
 	font-size: 16px;
-	width: 720px;
+	width: 645px;
 	height: 30px;
 	border-radius: 0px;
 	padding: 4px;
 	margin-left: 15px;
 	margin-top: 1px;
+}
+
+.add_sub_input.published {
+	width: 715px;
 }
 
 /*.add_sub_input:focus {
@@ -607,8 +613,9 @@ a#preview_btn {
 .repo_label_container {
 	width: 940px;
 	height: 30px;
-	margin-bottom: 20px;
-
+	margin-bottom: 10px;
+	margin-top: 10px;
+	text-align: center;
 }
 
 .editor_video_container {
@@ -616,11 +623,10 @@ a#preview_btn {
 }
 
 .add_sub_btn {
-	width: 125px;
-	font-weight: bolder;
+	margin-left: 5px;
+	width: 55px;
 	border-radius: 0px;
 	cursor: pointer;
-	background-color: lightblue !important;
 }
 
 #add_sub_options {
@@ -791,14 +797,19 @@ textarea {
 	border: solid 1px #333;
 }
 
-.template_publish_preview_container #publish_btn, 
-.template_publish_preview_container #preview_btn {
+.template_publish_preview_container .publish_btn, 
+.template_publish_preview_container .preview_btn {
 	font-size: 16px;
 }
 
-.publish_preview_btn_group #publish_btn, 
-.publish_preview_btn_group #preview_btn {
+.publish_preview_btn_group .publish_btn, 
+.publish_preview_btn_group .preview_btn {
 	margin-right: 5px;
+}
+
+.preview_btn,
+.publish_btn {
+	margin-left: 2px;
 }
 
 .repo_label_container .publish_preview_btn_group {

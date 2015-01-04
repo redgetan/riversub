@@ -113,14 +113,6 @@ class Repository < ActiveRecord::Base
     repository_timings_url(self)
   end
 
-  def title
-    if forked?
-      super
-    else
-      self.video.name
-    end
-  end
-
   def original?
     parent_repository_id.nil?
   end

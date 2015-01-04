@@ -26,6 +26,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
     this.$expandBtn.hide();
+
+    this.enableTitleChange();
   },
 
   useLocalStorageIfNeeded: function() {
@@ -37,6 +39,80 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
       return Backbone.ajaxSync;
     };
+  },
+
+  enableTitleChange: function() {
+    $(".repo_label_container").find("#repo_label").hide();
+
+    var title_input = "<div class='' title='click to edit'>" +
+                        "<input type='text' class='repo_title_input' style='width: 200px; text-align: center;' placeholder='Enter Title'>" +
+                      "</div>";
+
+    $(".repo_label_container").append(title_input);
+
+    this.$titleInputContainer = $(".repo_label_container").find(".repo_title_input_container");
+    this.$titleInput = $(".repo_label_container").find(".repo_title_input");
+    this.$titleInputHandle = $(".repo_label_container").find(".title_input_handle");
+
+    if (repo.title) {
+      this.$titleInput.val(repo.title);
+    }
+
+    this.$titleInput.on("keyup", this.onTitleInputKeyup.bind(this));
+    this.$titleInput.on("blur", this.onTitleInputBlur.bind(this));
+    this.$titleInputContainer.on("mouseenter", this.onTitleInputMouseEnter.bind(this));
+    this.$titleInputContainer.on("mouseleave", this.onTitleInputMouseLeave.bind(this));
+    this.$titleInputHandle.on("click", this.onTitleInputHandleClick.bind(this));
+    this.$previewBtn.on("click", this.onPreviewBtnClick.bind(this));
+  },
+
+  onTitleInputMouseEnter: function() {
+  },
+
+  onTitleInputMouseLeave: function() {
+  },
+
+  onTitleInputKeyup: function(event) {
+    // enter key
+    if (event.which == 13 ) {
+      this.$titleInput.blur();
+    }
+  },
+
+  onTitleInputHandleClick: function(event) {
+    this.$titleInput.focus();
+  },
+
+  onTitleInputBlur: function() {
+    var repoTitle = this.$titleInput.val();
+
+    this.saveNotify();
+
+    $.ajax({
+      url: this.repo.update_title_url,
+      type: "POST",
+      dataType: "json",
+      data: { repo_title: repoTitle },
+      success: function(data) {
+        repo.title = repoTitle;
+        this.clearStatusBar();
+      }.bind(this),
+      error: function(data) {
+        this.clearStatusBar();
+        alert("Unable to save Title. We would look into this shortly.");
+        throw data.responseText;
+      }.bind(this)
+    });
+
+  },
+
+
+  onPreviewBtnClick: function(event) {
+    if (repo.title && repo.title.length > 0) {
+    } else {
+      event.preventDefault();
+      alert("Please Enter a Title");
+    }
   },
 
   getKeycodeThatPausesVideo: function() {
@@ -118,23 +194,27 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPublishBtnClick: function(event) {
-    this.preventSubtileInputFromLosingFocus(event);
+    if (repo.title && repo.title.length > 0) {
+      this.preventSubtileInputFromLosingFocus(event);
 
-    if (this.$publishBtn.attr("disabled") == "disabled") return;
+      if (this.$publishBtn.attr("disabled") == "disabled") return;
 
-    $.ajax({
-      url: this.repo.publish_url,
-      type: "POST",
-      dataType: "json",
-      success: function(data) {
-        window.location.href = data.redirect_url;
-      },
-      error: function(data) {
-        alert("Publish failed. We would look into this shortly.");
-        throw data.responseText;
-      }
-    });
-
+      $.ajax({
+        url: this.repo.publish_url,
+        type: "POST",
+        dataType: "json",
+        success: function(data) {
+          window.location.href = data.redirect_url;
+        },
+        error: function(data) {
+          alert("Publish failed. We would look into this shortly.");
+          throw data.responseText;
+        }
+      });
+    } else {
+      event.preventDefault();
+      alert("Please Enter a Title");
+    }
   },
 
   onTimelineSeekHandler: function(time, $target) {
@@ -242,10 +322,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     "<h5 id='repo_label'>" +
                       "<a href=" + this.repo.url + ">" + this.repo.video.name.substring(0,70) + "</a>" +
                     "</h5>" +
-                    "<div class='publish_preview_btn_group pull-right'>" +
-                      "<a id='preview_btn' class='river_btn' href=" + this.repo.url + ">Preview</a>" +
-                      "<a id='publish_btn' class='river_btn'>Publish</a>" +
-                    "</div>" +
                     // "<div id='language' class='pull-left'>" +
                     //   "<span>" + this.repo.language_pretty + "</span>" +
                     // "</div>" +
@@ -294,14 +370,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
                         "<div id='timeline_container'>" +
                         "</div> " +
-                        "<div class='controls' class=''> " +
-                          "<div id='main_controls' class='pull-left'> " +
-                            "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-film'></i></button> " +
-                            "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
-                            "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
-                            "<button type='button' class='add_sub_btn river_btn'>Add</a>" +
-                          "</div> " +
-                        "</div> " +
                       "</div>" +
                       "<div class='tab-pane' id='subtitle_tab'>" +
                         "<div id='subtitle_container'> " +
@@ -316,14 +384,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                             //   "</select>" +
                             // "</span> " +
                         "</div> " +   // #subtitle_container
-                        "<div id='add_sub_container' class=''> " +
-                          "<div class='controls' class=''> " +
-                            "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-film'></i></button> " +
-                            "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
-                            "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
-                            "<button type='button' class='add_sub_btn river_btn'>Add</a>" +
-                          "</div> " +
-                        "</div> " +
                       "</div>" +   // tab pane
                       "<div class='tab-pane' id='download_tab'>" +
                         "<div id='download_container'> " +
@@ -332,6 +392,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "</div>" +   // tab pane
                     "</div>" +     // tab content
 
+                    "<div class='controls' class=''> " +
+                      "<div id='main_controls' class='pull-left'> " +
+                        "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-film'></i></button> " +
+                        "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
+                        "<a class='publish_btn river_btn pull-right'>Publish</a>" +
+                        "<a class='preview_btn river_btn pull-right' href=" + this.repo.url + ">Preview</a>" +
+                        "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
+                        "<button type='button' class='add_sub_btn river_btn'>Add</a>" +
+                      "</div> " +
+                    "</div> " +
                   "</div> " + // .span12
                   "<div id='status-bar' class='pull-left'> " +
                   "</div> " +
@@ -397,13 +467,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.intro = introJs();
 
-    this.$publishBtn = $("#publish_btn");
-    this.$previewBtn = $("#preview_btn");
+    this.$publishBtn = $(".publish_btn");
+    this.$previewBtn = $(".preview_btn");
 
     if (this.repo.is_published) {
       this.$publishBtn.hide();
-    } else {
-      this.$previewBtn.css("background-color", "transparent");
+      $("#editor").addClass("published");
     }
 
     // this.$helpBtn = $("#help_btn");
@@ -431,6 +500,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // tooltips
     this.$timelineBtn.tooltip({title: "Timer Mode"});
     this.$subtitleBtn.tooltip({title: "Subtitle Mode"});
+
 
     $("footer").hide();
     $("#timeline_tab_anchor").hide();
@@ -505,12 +575,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
           position: "top"
         },
         {
-          element: "#preview_btn",
+          element: ".preview_btn",
           intro: "Finally, to see how your subtitles look in public, you can click the preview button. ",
           position: "left"
         },
         {
-          element: "#preview_btn",
+          element: ".preview_btn",
           intro: "That's the end of the walkthrough. If you enjoyed it, don't forget to sign up!",
           position: "left"
         }
@@ -548,6 +618,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (!$(event.target).hasClass("sub_text_area") &&
       !$(event.target).hasClass("track_text") &&
       !$(event.target).hasClass("ui-spinner") &&
+      !$(event.target).hasClass("repo_title_input") &&
       !$(event.target).hasClass("add_sub_input")) {
       this.preventSubtileInputFromLosingFocus(event);
     }
