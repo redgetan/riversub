@@ -7,7 +7,10 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
   hideEditorControls: function() {
     $(".header #original").show();
     $(".header #end").hide();
-    $("#add_sub_container").hide();
+    this.$timelineBtn.hide();
+    this.$subtitleBtn.hide();
+    this.$addSubInput.hide();
+    this.$addSubBtn.hide();
     this.$forwardBtn.hide();
     this.$backwardBtn.hide();
     $(".publish_preview_btn_group").appendTo(".template_publish_preview_container");
