@@ -298,8 +298,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                           "<div id='main_controls' class='pull-left'> " +
                             "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-film'></i></button> " +
                             "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
-                            "<button id='start_timing_btn' class='river_btn'><i class='glyphicon glyphicon-plus'></i> Start Time</button> " +
-                            "<button id='stop_timing_btn' class='river_btn'><i class='glyphicon glyphicon-circle'></i> End Time</button> " +
+                            "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
+                            "<button type='button' class='add_sub_btn river_btn'>Add</a>" +
                           "</div> " +
                         "</div> " +
                       "</div>" +
@@ -320,8 +320,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                           "<div class='controls' class=''> " +
                             "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-film'></i></button> " +
                             "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
-                            "<input id='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
-                            "<button type='button' id='add_sub_btn' class='river_btn'>Add</a>" +
+                            "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
+                            "<button type='button' class='add_sub_btn river_btn'>Add</a>" +
                           "</div> " +
                         "</div> " +
                       "</div>" +   // tab pane
@@ -387,10 +387,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$stopTimingBtn = $("#stop_timing_btn");
     this.$stopTimingBtn.hide();
 
-    this.$addSubInput = $("#add_sub_input");
+    this.$addSubInput = $(".add_sub_input");
     this.$addSubInput.attr("maxlength", 90);
 
-    this.$addSubBtn = $("#add_sub_btn");
+    this.$addSubBtn = $(".add_sub_btn");
     this.$addSubBtn.attr("disabled","disabled");
 
     this.$addSubBackwardCheckbox = $("#add_sub_backward_checkbox");
@@ -548,7 +548,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (!$(event.target).hasClass("sub_text_area") &&
       !$(event.target).hasClass("track_text") &&
       !$(event.target).hasClass("ui-spinner") &&
-      !$(event.target).attr("id") === "add_sub_input") {
+      !$(event.target).hasClass("add_sub_input")) {
       this.preventSubtileInputFromLosingFocus(event);
     }
   },

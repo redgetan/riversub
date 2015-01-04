@@ -574,7 +574,7 @@ a#preview_btn {
 	/*min-width: 77px;  */
 }
 
-#add_sub_input {
+.add_sub_input {
 	/*width: 700px;*/
 /*	border: solid 1px black !important;
   font-size: 16px;
@@ -594,7 +594,7 @@ a#preview_btn {
 	margin-top: 1px;
 }
 
-/*#add_sub_input:focus {
+/*.add_sub_input:focus {
 	-moz-box-shadow: none!important;
   box-shadow: none!important;
   outline: 0 none;
@@ -615,7 +615,7 @@ a#preview_btn {
 	width: 940px;
 }
 
-#add_sub_btn {
+.add_sub_btn {
 	width: 125px;
 	font-weight: bolder;
 	border-radius: 0px;
