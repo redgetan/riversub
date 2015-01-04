@@ -27,6 +27,11 @@ River::Application.routes.draw do
 
     resources "repositories", :only => [] do
       resources "timings", :only => [:index, :create, :update, :destroy]
+      member do
+        post "upvote"
+        post "downvote"
+        post "unvote"
+      end
     end
 
     resources :comments do
@@ -49,8 +54,6 @@ River::Application.routes.draw do
     post "/:token/publish",               to: "videos#publish", as: "publish_videos"
     post "/:token/update_title",          to: "videos#update_title", as: "update_repo_title"
     post "/:token/fork",                  to: "videos#fork",   as: "fork_repo"
-    post "/:token/upvote",                to: "videos#upvote", as: "upvote_repo"
-    post "/:token/downvote",              to: "videos#downvote",   as: "downvote_repo"
     get "/:token/editor",                 to: "videos#editor", as: "editor_video"
     get '/:username/:token',              to: 'videos#show',   as: 'user_video'
     get '/:username/:token/editor',       to: 'videos#editor', as: 'editor_user_video'

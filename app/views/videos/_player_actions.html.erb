@@ -15,22 +15,14 @@
   <div class='share_repo action_item pull-left'>
     <a class='river_btn share_repo_btn' href='#'><i class='glyphicon glyphicon-chevron-down'></i> Share</a>
   </div>
-  <div class='voting_container pull-left'>
-    <div class="upvote action_item pull-left">
-      <a class='upvote_btn river_btn <%= @repo.upvote_btn_class_for(current_user) %>' href="<%= user_signed_in? ? "#" : login_url %>">
-        <i class="glyphicon glyphicon-arrow-up"></i>
-      </a>
-    </div>
-    <div class="downvote action_item pull-left">
-      <a class='downvote_btn river_btn <%= @repo.downvote_btn_class_for(current_user) %>' href="<%= user_signed_in? ? "#" : login_url %>">
-        <i class="glyphicon glyphicon-arrow-down"></i>
-      </a>
-    </div>
-    <div class='vote_points pull-left'>
-      <span class='vote_points_display <%= @repo.vote_points_display_class_for(current_user) %>'>
-        <span class='vote_points_number'><%= @repo.points %></span> points
-      </span> 
-    </div>
+  
+  <div id="subtitler" class="pull-right">
+    <% if @repo.user %>
+      <span>
+        <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><strong><%= @repo.user.username %></strong></a>
+        <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
+      </span>
+    <% end %>
   </div>
 </div>
 

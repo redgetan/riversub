@@ -13,6 +13,13 @@ $.extend(river.controller,{
       river.model.Vote.upvoteComment(this);
     });
 
+    $(".repository a.downvoter").click(function() {
+      river.model.Vote.downvoteRepository(this);
+    });
+
+    $(".repository a.upvoter").click(function() {
+      river.model.Vote.upvoteRepository(this);
+    });
 
     $(document).on("click", "button.comment-post", function() {
       river.model.Comment.postComment($(this).parents("form").first());
@@ -74,35 +81,6 @@ $.extend(river.controller,{
           $(li).replaceWith(d);
         });
       }
-    });
-
-
-    $(".upvote_btn").on("click", function(event) {
-      $.ajax({ 
-        url: repo.upvote_url, 
-        type: "POST", 
-        dataType: "json", 
-        success: function(data) {
-          $(".vote_points_number").text(data.points);
-          $(".upvote_btn").addClass("user_voted");
-        },
-        error: function(data) {
-        }
-      });
-    });
-
-    $(".downvote_btn").on("click", function(event) {
-      $.ajax({ 
-        url: repo.downvote_url, 
-        type: "POST", 
-        dataType: "json", 
-        success: function(data) {
-          $(".vote_points_number").text(data.points);
-          $(".downvote_btn").addClass("user_voted");
-        },
-        error: function(data) {
-        }
-      });
     });
 
   },

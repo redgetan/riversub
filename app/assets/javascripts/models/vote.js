@@ -1,18 +1,26 @@
 river.model.Vote = {
 
   upvoteComment: function(voterEl) {
-    river.model.Vote.vote("comment", voterEl, 1);
+    river.model.Vote.vote("comments", voterEl, 1);
   },
 
   downvoteComment: function(voterEl) {
-    river.model.Vote.vote("comment", voterEl, -1);
+    river.model.Vote.vote("comments", voterEl, -1);
+  },
+
+  upvoteRepository: function(voterEl) {
+    river.model.Vote.vote("repositories", voterEl, 1);
+  },
+
+  downvoteRepository: function(voterEl) {
+    river.model.Vote.vote("repositories", voterEl, -1);
   },
 
   vote: function(thingType, voterEl, point, reason) {
     // if (!Lobsters.curUser)
     //   return Lobsters.bounceToLogin();
 
-    var li = $(voterEl).closest(".comment");
+    var li = $(voterEl).closest(".repository, .comment");
     var scoreDiv = li.find("div.score").get(0);
     var score = parseInt(scoreDiv.innerHTML);
     var action = "";
@@ -55,7 +63,7 @@ river.model.Vote = {
         li.find(".flagger").text("flag");
     }
 
-    var url = "/" + thingType + "s/" + li.attr("data-shortid") + "/" + action;
+    var url = "/" + thingType + "/" + li.attr("data-shortid") + "/" + action;
     
     $.ajax({
       type: "POST",

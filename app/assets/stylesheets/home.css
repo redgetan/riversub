@@ -608,7 +608,6 @@ form.sub {
 
 #river_player #repo_label {
   text-align: left;
-  width: 500px;
   float: left;
 }
 
@@ -733,7 +732,7 @@ ul.social_login_buttons a {
 }
 
 .share_container {
-  margin: 50px 0px 0px 0px;
+  margin: 5px 0px 0px 40px;
   height: 80px;
   padding: 20px;
   border: solid 1px #ccc;
@@ -966,6 +965,11 @@ footer a:hover{
 
 #video_information {
   margin-top: 20px;
+}
+
+#video_information .comment_form_container,
+#video_information .primary_action_items {
+  margin-left: 40px;
 }
 
 #contribute a {
@@ -1357,7 +1361,7 @@ footer a:hover{
 }
 
 #player_details .tab-content {
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 #finalize .subtitle_editor_btn {
@@ -1556,12 +1560,7 @@ form#request_beta_invite input[name='email'] {
 
 .primary_action_items {
   height: 40px;
-}
-
-.vote_points_display.user_voted,
-.upvote_btn.user_voted i,
-.downvote_btn.user_voted i {
-  color: darkgreen !important;
+  clear: both;
 }
 
 #comments_container {
@@ -1576,6 +1575,10 @@ form#request_beta_invite input[name='email'] {
 
 .comments a {
   color: #2562dc;
+  cursor: pointer;
+}
+
+.voters a {
   cursor: pointer;
 }
 
@@ -1987,7 +1990,7 @@ div.comment_form_container form {
 .forks_list_body {
   padding-top: 10px;
   clear: both;
-  text-align: left; 
+  text-align: left;
   margin-left: -20px;
 }
 

@@ -45,20 +45,28 @@
     <div class='col-lg-5'>
       <div id="video_information" class="">
         <div class="">
+          <div class="repository <%= @repo.repo_item_class_for(current_user) %>" data-shortid="<%= @repo.token %>">
+            <div class="voters">
+              <% if user_signed_in? %>
+                <a class="upvoter"></a>
+              <% else %>
+                <%= link_to "", login_url, :class => "upvoter" %>
+              <% end %>
+              <div class="score"><%= @repo.score %></div>
+              <% if user_signed_in? && current_user.can_downvote?(@repo) %>
+                <a class="downvoter"></a>
+              <% else %>
+                <span class="downvoter downvoter_stub"></span>
+              <% end %>
+            </div>
+          </div>
+
           <h4 id='repo_label'>
             <div>
               <a href="<%= @repo.url %>"><%= @repo.title %></a>
             </div>
           </h4>
 
-          <div id="subtitler" class="pull-right">
-            <% if @repo.user %>
-              <span>
-                <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><strong><%= @repo.user.username %></strong></a>
-                <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
-              </span>
-            <% end %>
-          </div>
           <% if @repo.is_published? %>
             <%= render 'player_actions' %>
             <%= render 'player_details' %>

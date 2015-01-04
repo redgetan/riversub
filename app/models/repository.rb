@@ -16,7 +16,7 @@ class Repository < ActiveRecord::Base
   has_many :group_repositories
   has_many :groups, through: :group_repositories
 
-  attr_accessible :video_id, :user_id, :video, :user, :token, 
+  attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :language, :parent_repository_id, :title
 
   validates :video_id, :presence => true
@@ -29,7 +29,7 @@ class Repository < ActiveRecord::Base
   # scope :with_timings_count, select("repositories.*, COUNT(timings.id) timings_count")
   #                              .joins("LEFT JOIN timings on repositories.id = timings.repository_id")
   #                              .group("repositories.id")
-  
+
   scope :anonymously_subtitled, where("user_id IS NULL")
   scope :user_subtitled,        where("user_id IS NOT NULL")
   scope :published,             where("is_published is true")
@@ -49,7 +49,7 @@ class Repository < ActiveRecord::Base
               .recent
               .group("user_id")
               .limit(num_of_entries)
-              .map(&:repo_id)  
+              .map(&:repo_id)
   end
 
   def self.homepage_autoplay_repo
@@ -86,7 +86,7 @@ class Repository < ActiveRecord::Base
   end
 
   def fork_url
-    fork_repo_url(self.token)  
+    fork_repo_url(self.token)
   end
 
   def editor_setup_url
@@ -105,16 +105,8 @@ class Repository < ActiveRecord::Base
     publish_videos_url(self)
   end
 
-  def upvote_url
-    upvote_repo_url(self)
-  end
-
-  def downvote_url
-    downvote_repo_url(self)
-  end
-
   def update_title_url
-    update_repo_title_url(self)  
+    update_repo_title_url(self)
   end
 
   def subtitle_download_url
@@ -129,7 +121,7 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def original? 
+  def original?
     parent_repository_id.nil?
   end
 
@@ -161,14 +153,14 @@ class Repository < ActiveRecord::Base
   end
 
   def language_pretty
-    ::Language::CODES[current_language] 
+    ::Language::CODES[current_language]
   end
 
   def language_display
     if anonymous?
       self.language_pretty
     else
-      "#{self.language_pretty} - #{self.user.username}"  
+      "#{self.language_pretty} - #{self.user.username}"
     end
   end
 
@@ -181,15 +173,15 @@ class Repository < ActiveRecord::Base
   end
 
   def youtube_imported?
-    !!is_youtube_imported  
+    !!is_youtube_imported
   end
 
   def published_repositories
-    self.video.published_repositories  
+    self.video.published_repositories
   end
 
   def other_published_repositories
-    self.published_repositories.reject{ |repo| repo == self }  
+    self.published_repositories.reject{ |repo| repo == self }
   end
 
   def copy_timing_from!(other_repo)
@@ -224,33 +216,13 @@ class Repository < ActiveRecord::Base
     get_likes.size - get_dislikes.size
   end
 
-  def upvote_btn_class_for(user)
-    if user && user.liked?(self)
-      "user_voted"
-    else
-      ""
-    end
-  end
-
-  def downvote_btn_class_for(user)
-    if user && user.disliked?(self)
-      "user_voted"
-    else
-      ""
-    end
-  end
-
-  def vote_points_display_class_for(user)
-    if user && (user.liked?(self) || user.disliked?(self))
-      "user_voted"
-    else 
-      ""
-    end
+  def score
+    points
   end
 
   def owned_by?(target_user)
     if user
-      self.user == target_user 
+      self.user == target_user
     else
       true # anonymous repo belong to everyone
     end
@@ -259,7 +231,7 @@ class Repository < ActiveRecord::Base
   def display_edit?(target_user)
     return true if anonymous?
 
-    self.user == target_user 
+    self.user == target_user
   end
 
   def visible_to_user?(target_user)
@@ -281,8 +253,6 @@ class Repository < ActiveRecord::Base
       :owner_profile_url => self.owner_profile_url,
       :editor_url => self.editor_url,
       :publish_url => self.publish_url,
-      :upvote_url => self.upvote_url,
-      :downvote_url => self.downvote_url,
       :update_title_url => self.update_title_url,
       :subtitle_download_url => self.subtitle_download_url,
       :parent_repository_id => self.parent_repository_id,
@@ -301,7 +271,7 @@ class Repository < ActiveRecord::Base
   end
 
   def short_id
-    token  
+    token
   end
 
   def auto_publish_anonymous_repo
@@ -310,8 +280,28 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def repo_item_class_for(user)
+    return "" unless user
+
+    css_class = if user.liked?(self) 
+                  "upvoted"
+                elsif user.disliked?(self)
+                  "downvoted"
+                else 
+                  ""
+                end
+
+    css_class += " negative"    if score <= 0
+    css_class += " negative_1"  if score <= -1
+    css_class += " negative_3"  if score <= -3
+    css_class += " negative_5"  if score <= -5
+ 
+    css_class
+  end
+
+
   def to_param
-    self.token  
+    self.token
   end
 
 end
