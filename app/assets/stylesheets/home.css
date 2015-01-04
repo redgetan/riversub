@@ -1511,15 +1511,26 @@ form#request_beta_invite input[name='email'] {
 
 .repo_title_input {
   background: none;
-  border: none;
-  font-size: 20px;
-  width: 500px;
   text-align: center;
-  margin-left: 20px;
+  height: 30px;
+  width: 500px;
+  border: solid 1px rgb(180,180,180);
+}
+
+.repo_title_input:hover {
+  border: solid 1px gray;
+  background-color: lightgray;
 }
 
 .repo_title_input:focus {
+  border: solid 1px gray;
   background-color: white;
+  outline:0px !important;
+  -webkit-appearance:none;
+}
+
+.repo_title_input.error {
+  border: solid 3px lightcoral;
 }
 
 .repo_title_input_container:hover .repo_title_input {

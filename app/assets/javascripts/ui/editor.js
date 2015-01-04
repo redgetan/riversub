@@ -45,7 +45,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     $(".repo_label_container").find("#repo_label").hide();
 
     var title_input = "<div class='' title='click to edit'>" +
-                        "<input type='text' class='repo_title_input' style='width: 200px; text-align: center;' placeholder='Enter Title'>" +
+                        "<input type='text' class='repo_title_input' placeholder='Enter Title'>" +
                       "</div>";
 
     $(".repo_label_container").append(title_input);
@@ -471,7 +471,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$previewBtn = $(".preview_btn");
 
     if (this.repo.is_published) {
-      this.$publishBtn.hide();
+      this.$publishBtn.attr("disabled","disabled");
+      this.$publishBtn.text("Published");
       $("#editor").addClass("published");
     }
 
