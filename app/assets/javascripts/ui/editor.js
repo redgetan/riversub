@@ -84,6 +84,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTitleInputBlur: function() {
+    this.saveRepoTitle();
+  },
+
+  saveRepoTitle: function(callback) {
     var repoTitle = this.$titleInput.val();
 
     this.saveNotify();
@@ -96,6 +100,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       success: function(data) {
         repo.title = repoTitle;
         this.clearStatusBar();
+        if (typeof callback !== "undefined") {
+          callback();
+        }
       }.bind(this),
       error: function(data) {
         this.clearStatusBar();
@@ -103,12 +110,21 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         throw data.responseText;
       }.bind(this)
     });
-
   },
 
-
   onPreviewBtnClick: function(event) {
-    if (repo.title && repo.title.length > 0) {
+    if (this.$titleInput.val().length > 0) {
+      this.saveRepoTitle(function(){
+        this.previewRepo(event);
+      }.bind(this));
+    } else {
+      this.previewRepo(event);
+    }
+  },
+
+  previewRepo: function(event) {
+    if ((this.$titleInput.val().length > 0) || (repo.title && repo.title.length > 0)) {
+      window.location.href = this.repo.url;
     } else {
       event.preventDefault();
       alert("Please Enter a Title");
@@ -194,7 +210,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPublishBtnClick: function(event) {
-    if (repo.title && repo.title.length > 0) {
+    if (this.$titleInput.val().length > 0) {
+      this.saveRepoTitle(function(){
+        this.publishRepo(event);
+      }.bind(this));  
+    } else {
+      this.publishRepo(event);
+    }
+  },
+
+  publishRepo: function(event) {
+    if ((this.$titleInput.val().length > 0) || (repo.title && repo.title.length > 0)) {
       this.preventSubtileInputFromLosingFocus(event);
 
       if (this.$publishBtn.attr("disabled") == "disabled") return;
@@ -397,7 +423,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-film'></i></button> " +
                         "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
                         "<a class='publish_btn river_btn pull-right'>Publish</a>" +
-                        "<a class='preview_btn river_btn pull-right' href=" + this.repo.url + ">Preview</a>" +
+                        "<a class='preview_btn river_btn pull-right'>Preview</a>" +
                         "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
                         "<button type='button' class='add_sub_btn river_btn'>Add</a>" +
                       "</div> " +

@@ -63,11 +63,11 @@
             </div>
           </div>
 
-          <h4 id='repo_label'>
+          <h3 id='repo_label'>
             <div>
               <a href="<%= @repo.url %>"><%= @repo.title %></a>
             </div>
-          </h4>
+          </h3>
 
           <% if @repo.is_published? %>
             <%= render 'player_actions' %>

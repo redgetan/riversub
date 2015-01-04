@@ -609,6 +609,7 @@ form.sub {
 #river_player #repo_label {
   text-align: left;
   float: left;
+  margin-top: 25px;
 }
 
 #repo_label a {
@@ -2015,3 +2016,20 @@ div.comment_form_container form {
   padding-bottom: 20px;
   border: solid 1px lightgray;
 }
+
+.repository .voters {
+  padding-right: 10px;
+}
+
+.repository .voters .upvoter,
+.repository .voters .downvoter {
+  border-width: 10px;
+  left: -5px;
+  position: relative;
+}
+
+.repository .voters div.score {
+  font-size: 18pt;
+  padding-left: 10px;
+}
+
