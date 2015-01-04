@@ -26,10 +26,12 @@
                       <span class=''><%= repo.comments.count %> comments</span>
                     </div>
                   <% end %>
-                  <% if repo.points > 0 %>
+                  <% if repo.comments.present? && repo.points > 0 %>
                     <div class='divider_line_river pull-right'>
                       | 
                     </div>
+                  <% end %>
+                  <% if repo.points > 0 %>
                     <div class='pull-right'>
                       <span class=''><%= repo.points %> points</span>
                     </div>
