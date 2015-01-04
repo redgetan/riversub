@@ -729,10 +729,11 @@ ul.social_login_buttons a {
   border: 2px solid #cccccc !important;
   -webkit-border-radius: 0px !important;
   border-radius: 0px !important;
+  width: 200px;
 }
 
 .share_container {
-  margin: 20px 0px;
+  margin: 50px 0px 0px 0px;
   height: 80px;
   padding: 20px;
   border: solid 1px #ccc;
@@ -1442,8 +1443,14 @@ form#request_beta_invite input[name='email'] {
 }
 
 .forks_list_item {
-  border: solid 1px #ccc;
   min-height: 20px;
+  padding: 5px;
+}
+
+.forks_list_item.selected {
+  border: solid 1px #ccc;
+  background-color: lightgray;
+  color: black;
 }
 
 .forks_list_item:hover {
@@ -1518,17 +1525,15 @@ form#request_beta_invite input[name='email'] {
 }
 
 .fork_repo_btn {
-  /*background: none;*/
-  margin-top: 30px;
-  width: 450px;
-  font-size: 18px;
+  background: none;
+  /*font-size: 18px;*/
 }
 
 .share_repo_btn {
   background: none;
 }
 
-#video_information i {
+#river_player i {
   color: gray;
 }
 
@@ -1538,10 +1543,15 @@ form#request_beta_invite input[name='email'] {
 
 #forks_container {
   clear: both;
+  margin-top: 10px;
 }
 
 #forks_container .forks_list_header {
   text-align: left;
+}
+
+#forks_container .fork_repo_form {
+  margin-top: 5px;
 }
 
 .primary_action_items {
@@ -1973,3 +1983,11 @@ div.comment_form_container form {
   margin-left: 5px;
   margin-right: 5px;
 }
+
+.forks_list_body {
+  padding-top: 10px;
+  clear: both;
+  text-align: left; 
+  margin-left: -20px;
+}
+

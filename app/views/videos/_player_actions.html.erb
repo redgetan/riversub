@@ -4,15 +4,18 @@
       <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
     <% end %>
   </div>
+  <form method="post" action="<%= @repo.fork_url %>" class="button_to fork_repo_form action_item pull-left">
+    <div>
+      <button type="submit" class="fork_repo_btn river_btn">
+        <i class='glyphicon glyphicon-plus'></i> Subtitle 
+      </button>
+    </div>
+  </form>
+
   <div class='share_repo action_item pull-left'>
     <a class='river_btn share_repo_btn' href='#'><i class='glyphicon glyphicon-chevron-down'></i> Share</a>
   </div>
-  <div class='voting_container pull-right'>
-    <div class='vote_points pull-left'>
-      <span class='vote_points_display <%= @repo.vote_points_display_class_for(current_user) %>'>
-        <span class='vote_points_number'><%= @repo.points %></span> points
-      </span> 
-    </div>
+  <div class='voting_container pull-left'>
     <div class="upvote action_item pull-left">
       <a class='upvote_btn river_btn <%= @repo.upvote_btn_class_for(current_user) %>' href="<%= user_signed_in? ? "#" : login_url %>">
         <i class="glyphicon glyphicon-arrow-up"></i>
@@ -23,23 +26,28 @@
         <i class="glyphicon glyphicon-arrow-down"></i>
       </a>
     </div>
+    <div class='vote_points pull-left'>
+      <span class='vote_points_display <%= @repo.vote_points_display_class_for(current_user) %>'>
+        <span class='vote_points_number'><%= @repo.points %></span> points
+      </span> 
+    </div>
   </div>
 </div>
 
 <div class='share_container' style='display: none;'>
   <div class="link_container">
-    <span class="col-md-1">Link</span>
-    <input class="col-md-5 share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
-  </div>
-  <div class="social_share_container pull-left">
-    <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.url %>" target="_blank">
-       <%= image_tag "fb-32.png" %>
-    </a>
-    <a href="https://twitter.com/share?url=<%= @repo.url %>" target="_blank">
-       <%= image_tag "twitter-32.png"  %>
-    </a>
-    <a href="https://plus.google.com/share?url=<%= @repo.url %>" target="_blank">
-       <%= image_tag "gplus-32.png"  %>
-    </a>
+    <span class="">Link</span>
+    <input class="share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
+    <span class="social_share_container">
+      <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.url %>" target="_blank">
+         <%= image_tag "fb-32.png" %>
+      </a>
+      <a href="https://twitter.com/share?url=<%= @repo.url %>" target="_blank">
+         <%= image_tag "twitter-32.png"  %>
+      </a>
+      <a href="https://plus.google.com/share?url=<%= @repo.url %>" target="_blank">
+         <%= image_tag "gplus-32.png"  %>
+      </a>
+    </span>
   </div>
 </div>
