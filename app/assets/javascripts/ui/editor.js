@@ -473,6 +473,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (this.repo.is_published) {
       this.$publishBtn.attr("disabled","disabled");
       this.$publishBtn.text("Published");
+      this.$previewBtn.text("View");
       $("#editor").addClass("published");
     }
 

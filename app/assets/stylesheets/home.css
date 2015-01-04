@@ -2010,3 +2010,8 @@ div.comment_form_container form {
   margin-left: -20px;
 }
 
+.site_message_container {
+  margin-top: 20px;
+  padding-bottom: 20px;
+  border: solid 1px lightgray;
+}

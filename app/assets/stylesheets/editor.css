@@ -610,7 +610,7 @@ a.preview_btn {
 }
 
 #editor.published .add_sub_input {
-	width: 630px;
+	/*width: 630px;*/
 }
 
 .add_sub_input:focus {
