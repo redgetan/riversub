@@ -1364,6 +1364,11 @@ footer a:hover{
   margin-top: 5px;
 }
 
+#finalize {
+  clear: both;
+  height: 140px;
+}
+
 #finalize .subtitle_editor_btn {
   font-size: 20px;
 }
