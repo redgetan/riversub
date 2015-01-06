@@ -223,6 +223,27 @@ class Repository < ActiveRecord::Base
     end
   end
 
+    def is_editable_by_user?(user)
+    if user && user.id == self.user_id
+      if self.is_moderated?
+        false
+      else
+        (Time.now.to_i - (self.updated_at ? self.updated_at.to_i :
+          self.created_at.to_i) < (60 * MAX_EDIT_MINS))
+      end
+    else
+      false
+    end
+  end
+
+  def comments_tab_class
+    is_published? ? "active" : ""
+  end
+
+  def transcript_tab_class
+    is_published? ? "" : "active"
+  end
+
   def display_edit?(target_user)
     return true if anonymous?
 

@@ -352,6 +352,7 @@ div#subtitle_bar {
 
 #river_player #subtitle_bar {
   height: 40px;
+  padding-top: 5px;
 }
 
 #editor #subtitle_bar {
@@ -385,6 +386,10 @@ div#avatar img {
 
 #demo #river_player #subtitle_display {
   width: 250px;
+}
+
+#river_player #subtitle_display {
+  padding: 0px 10px;  
 }
 
 div#avatar .thumbnail {
@@ -1216,17 +1221,21 @@ footer a:hover{
   clear: both;
 }
 
-#player_details .nav-tabs > .active > a,
-#player_details .nav-tabs > .active > a:hover,
-#player_details .nav-tabs > .active > a:focus {
+#video_information .nav-tabs > .active > a,
+#video_information .nav-tabs > .active > a:hover,
+#video_information .nav-tabs > .active > a:focus {
   background: none;
   border: none;
   text-decoration: underline;
   /*border: solid 1px #ccc !important;*/
 }
 
-#player_details .nav-tabs > li > a:hover,
-#player_details .nav-tabs > li > a:focus {
+#video_information .nav-tabs > li > a {
+  padding: 5px;
+}
+
+#video_information .nav-tabs > li > a:hover,
+#video_information .nav-tabs > li > a:focus {
   /*border: solid 1px #ccc !important;*/
   border: none;
   background: none;
@@ -1516,7 +1525,6 @@ form#request_beta_invite input[name='email'] {
 }
 
 #transcript_tab_anchor {
-  display: none;
 }
 
 .template .repo_label_container {
@@ -1596,6 +1604,11 @@ form#request_beta_invite input[name='email'] {
 
 #comments_container {
   text-align: left;
+}
+
+#transcript_container {
+  margin-left: 30px;
+  margin-top: 30px;
 }
 
 /*

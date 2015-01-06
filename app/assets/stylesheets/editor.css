@@ -364,13 +364,12 @@ div#editor-bottom {
 
 
 #river_player.show .subtitle:hover {
-	background-color: #AECBC8 !important;
+	background-color: lightgray !important;
 	/*border: solid 1px gray;*/
 }
 
-.subtitle.selected .text span {
-	background-color: gray !important;
-	color: white;
+#river_player .subtitle.selected .text span {
+	background-color: #AECBC8 !important;
 	padding: 5px;
 }
 
