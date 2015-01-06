@@ -605,16 +605,13 @@ a.preview_btn {
 	padding: 4px;
 	margin-left: 15px;
 	margin-top: 1px;
+	border: solid 1px gray;
 	outline: 0px !important;
   -webkit-appearance: none;
 }
 
 #editor.published .add_sub_input {
 	/*width: 630px;*/
-}
-
-.add_sub_input:focus {
-	border: solid 1px gray;
 }
 
 #time_indicator_container {
