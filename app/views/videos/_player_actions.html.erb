@@ -4,26 +4,23 @@
       <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
     <% end %>
   </div>
-  <form method="post" action="<%= @repo.fork_url %>" class="button_to fork_repo_form action_item pull-left">
-    <div>
-      <button type="submit" class="fork_repo_btn river_btn">
-        <i class='glyphicon glyphicon-plus'></i> Subtitle 
-      </button>
-    </div>
-  </form>
+  <% if @repo.is_published? %>
+    <form method="post" action="<%= @repo.fork_url %>" class="button_to fork_repo_form action_item pull-left">
+      <div>
+        <button type="submit" class="fork_repo_btn river_btn">
+          <i class='glyphicon glyphicon-plus'></i> Subtitle 
+        </button>
+      </div>
+    </form>
 
-  <div class='share_repo action_item pull-left'>
-    <a class='river_btn share_repo_btn' href='#'><i class='glyphicon glyphicon-chevron-down'></i> Share</a>
-  </div>
-  
-  <div id="subtitler" class="pull-right">
-    <% if @repo.user %>
-      <span>
-        <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><strong><%= @repo.user.username %></strong></a>
-        <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
-      </span>
+    <div class='share_repo action_item pull-left'>
+      <a class='river_btn share_repo_btn' href='#'><i class='glyphicon glyphicon-chevron-down'></i> Share</a>
+    </div>
+  <% else %>
+    <%= form_tag @repo.publish_url, method: "post", class: "publish_btn_form" do %>
+      <%= submit_tag 'Publish', class: "river_btn", id: "publish_btn" %>
     <% end %>
-  </div>
+  <% end %>
 </div>
 
 <div class='share_container' style='display: none;'>

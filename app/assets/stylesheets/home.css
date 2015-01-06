@@ -608,12 +608,18 @@ form.sub {
 
 #river_player #repo_label {
   text-align: left;
-  float: left;
+  /*float: left;*/
   margin-top: 25px;
+  padding-top: 10px;
+  margin-bottom: 5px;
 }
 
 #repo_label a {
   color: #fff;
+}
+
+#repo_time_label {
+  text-align: left;
 }
 
 a.owner_label:hover {
@@ -973,6 +979,10 @@ footer a:hover{
   margin-left: 40px;
 }
 
+#video_information .primary_action_items {
+  margin-top: 20px;
+}
+
 #contribute a {
 }
 
@@ -982,6 +992,11 @@ footer a:hover{
 #subtitler .user_avatar img {
   border: solid 1px gray;
   height: 30px;
+}
+
+#repo_time_label .user_avatar img {
+  border: solid 1px gray;
+  height: 20px;
 }
 
 #editor #language {
@@ -1105,9 +1120,13 @@ footer a:hover{
   width: 25px;
 }
 
+#river_player .publish_btn_form {
+  float: left;
+}
+
 #river_player #publish_btn {
   background-color: rgb(127, 202, 154) !important;
-  font-size: 20px;
+  font-size: 14px;
 }
 
 #how_to_use img {
@@ -1373,11 +1392,6 @@ footer a:hover{
 #finalize .subtitle_editor_btn {
   font-size: 20px;
 }
-
-#finalize .publish_btn_form {
-  display: inline-block;
-}
-
 
 .navbar-nav > li {
   border-left: solid 1px #eee;
@@ -2032,4 +2046,5 @@ div.comment_form_container form {
   font-size: 18pt;
   padding-left: 10px;
 }
+
 
