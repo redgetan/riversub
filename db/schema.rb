@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141226211001) do
+ActiveRecord::Schema.define(:version => 20150106211959) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",                                    :default => 0
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20141226211001) do
     t.boolean  "is_deleted",                                        :default => false
     t.decimal  "confidence",        :precision => 20, :scale => 19, :default => 0.0,   :null => false
     t.string   "short_id"
+    t.boolean  "is_moderated",                                      :default => false
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"

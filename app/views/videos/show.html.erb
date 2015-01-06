@@ -41,6 +41,17 @@
             <% end %>
           </ol>
         </div>
+      <% else %>
+        <% if !@repo.is_published? %>
+          <div id="finalize" class="" >
+            <p style="padding: 10px;">This video is currently private. To make it visible to the public, click publish.</p>
+
+            <a class='subtitle_editor_btn river_btn ' href="<%= @repo.editor_url %>">Back to Editor</a>
+            <%= form_tag @repo.publish_url, method: "post", class: "publish_btn_form" do %>
+              <%= submit_tag 'Publish', class: "river_btn", id: "publish_btn" %>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
 
     </div>
@@ -69,19 +80,8 @@
             </div>
           </h3>
 
-          <% if @repo.is_published? %>
-            <%= render 'player_actions' %>
-            <%= render 'player_details' %>
-          <% else %>
-            <div id="finalize" class="" >
-              <p style="padding: 10px;">This video is currently private. To make it visible to the public, click publish.</p>
-
-              <a class='subtitle_editor_btn river_btn ' href="<%= @repo.editor_url %>">Back to Editor</a>
-              <%= form_tag @repo.publish_url, method: "post", class: "publish_btn_form" do %>
-                <%= submit_tag 'Publish', class: "river_btn", id: "publish_btn" %>
-              <% end %>
-            </div>
-          <% end %>
+          <%= render 'player_actions' %>
+          <%= render 'player_details' %>
         </div>
       </div>
     </div>
