@@ -21,6 +21,16 @@ $.extend(river.controller,{
       river.model.Vote.upvoteRepository(this);
     });
 
+    $(".transcript_tab_btn").click(function() {
+      $(".transcript_tab_btn").addClass("active");
+      $(".comments_tab_btn").removeClass("active");
+    });
+
+    $(".comments_tab_btn").click(function() {
+      $(".transcript_tab_btn").removeClass("active");
+      $(".comments_tab_btn").addClass("active");
+    });
+
     $(document).on("click", "button.comment-post", function() {
       river.model.Comment.postComment($(this).parents("form").first());
     });

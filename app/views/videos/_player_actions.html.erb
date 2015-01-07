@@ -21,12 +21,12 @@
       <%= submit_tag 'Publish', class: "river_btn", id: "publish_btn" %>
     <% end %>
   <% end %>
-   <ul class='nav nav-tabs'> 
-    <!-- <li id='info_tab_anchor' class="pull-right"><a href='#info_tab' data-toggle='tab'>Share</a></li> -->
-     <li id='transcript_tab_anchor' class="<%= @repo.transcript_tab_class %> pull-right"><a href='#transcript_tab' data-toggle='tab'>Transcript</a></li> 
-    <!-- <li id='forks_tab_anchor' class="active pull-right"><a href='#forks_tab' data-toggle='tab'>Related</a></li> -->
-     <li id='comments_tab_anchor' class="<%= @repo.comments_tab_class %> pull-right"><a href='#comments_tab' data-toggle='tab'>Comments</a></li> 
-   </ul> 
+  <div class='transcript_tab_nav action_item pull-right'>
+    <a class='river_btn transcript_tab_btn <%= @repo.transcript_tab_class %>' href='#transcript_tab' data-toggle='tab'>Show Transcript</a>
+  </div>
+  <div class='comments_tab_nav action_item pull-right'>
+    <a class='river_btn comments_tab_btn <%= @repo.comments_tab_class %>' href='#comments_tab' data-toggle='tab'>Show Comments</a>
+  </div>
 </div>
 
 <div class='share_container' style='display: none;'>

@@ -1247,8 +1247,20 @@ footer a:hover{
 }
 
 
-.subtitle_editor_btn, .new_repo_btn, .upvote_btn, .downvote_btn {
+.subtitle_editor_btn, 
+.new_repo_btn, 
+.upvote_btn, 
+.downvote_btn,
+.share_repo_btn,
+.comments_tab_btn,
+.transcript_tab_btn {
   background: none;
+}
+
+.comments_tab_btn.active,
+.transcript_tab_btn.active {
+  /*background-color: lightgray;*/
+  display: none;
 }
 
 .vote_points {
@@ -1570,10 +1582,6 @@ form#request_beta_invite input[name='email'] {
 .fork_repo_btn {
   background: none;
   /*font-size: 18px;*/
-}
-
-.share_repo_btn {
-  background: none;
 }
 
 #river_player i {
