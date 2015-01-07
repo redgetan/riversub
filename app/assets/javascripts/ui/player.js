@@ -118,6 +118,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
         $(this).remove();
       }
     });
+
+    // remove parent text
+    $(".subtitle .parent_text").remove();
   },
 
 });
