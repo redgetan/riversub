@@ -64,6 +64,10 @@ river.model.Track = Backbone.Model.extend({
     return this.collection.at(index + 1);
   },
 
+  isLast: function() {
+    return this.collection.indexOf(this) === this.collection.length - 1;  
+  },
+
   setPauseOnTrackEnd: function() {
     this.pauseOnTrackEnd = true;
   },

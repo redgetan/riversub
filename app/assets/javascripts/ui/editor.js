@@ -716,18 +716,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   goToNextTrack: function() {
     var nextTrack = this.focusedTrack.next();
-    var track;
-    var time;
-    var timeGap = this.getTimeGap(this.focusedTrack, nextTrack);
-
-    if (typeof nextTrack !== "undefined" && timeGap <= this.DEFAULT_TRACK_DURATION) {
-      track = nextTrack;
-    } else {
-      time = this.normalizeTime(this.focusedTrack.endTime() + this.TRACK_MARGIN);
-      track = this.addFullTrack(time, { isGhost: false, isAddSubBackward: false });
-    }
-
-    this.replayTrackAndEdit(track);
+    this.replayTrackAndEdit(nextTrack);
   },
 
   getTimeGap: function(currentTrack, nextTrack) {
@@ -1011,7 +1000,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onSubtitleLineKeydown: function(subtitle) {
     if (event.which == 13 ) { // ENTER
-      this.goToNextTrack();
+      if (this.focusedTrack.isLast()) {
+        time = this.normalizeTime(this.focusedTrack.endTime() + this.TRACK_MARGIN);
+        track = this.addFullTrack(time, { isGhost: false, isAddSubBackward: false });
+        this.replayTrackAndEdit(track);
+      } else {
+        this.goToNextTrack();
+      }
     }
   },
 
