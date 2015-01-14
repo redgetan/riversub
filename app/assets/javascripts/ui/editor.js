@@ -281,8 +281,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onAddSubtitleInputKeyup: function(event) {
     // if video is playing pause it
-    if (!this.media.paused && this.KEYCODE_THAT_PAUSES_VIDEO.indexOf(event.which) !== -1) {
-      this.pause();
+    if (this.KEYCODE_THAT_PAUSES_VIDEO.indexOf(event.which) !== -1) {
+      this.pauseAndPlayAfterTime(1000);
     }
 
     var text = this.$addSubInput.val();
@@ -293,6 +293,20 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (event.which == 13 ) {
       this.addSubtitledTrack(text);
     }
+  },
+
+  pauseAndPlayAfterTime: function(milliseconds) {
+    if (!this.media.paused) {
+      this.pause();
+    } 
+
+    if (this.playVideoTimeout) {
+      clearTimeout(this.playVideoTimeout);
+    } 
+
+    this.playVideoTimeout = setTimeout(function(){
+      this.play();
+    }.bind(this), milliseconds);
   },
 
   addSubtitledTrack: function(text) {

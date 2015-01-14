@@ -81,7 +81,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     var media = this.options.media || "<div id='media'></div>";
 
     this.$mediaContainer.find("#iframe_container").append(media);
-
+    this.$media = this.$mediaContainer.find("#media");
   },
 
   loadMedia: function(targetSelector,url) {
