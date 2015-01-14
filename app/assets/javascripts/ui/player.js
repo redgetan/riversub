@@ -60,6 +60,8 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
+    this.popcorn.on("timeupdate",this.onTimeUpdate.bind(this));
+    this.popcorn.on("progress", this.onProgress.bind(this) );
   },
 
   postBindEvents: function() {
@@ -83,6 +85,28 @@ river.ui.Player = river.ui.BasePlayer.extend({
       $(".player_controls").fadeOut();
       this.$fadeInBuffer = true;
     }, 2000)
+  },
+
+  onProgress: function() {
+    var secondsLoaded = this.popcorn.video.buffered.end(0);
+    var width = secondsLoaded * this.resolution(this.timeline.$summary);
+    this.$timeLoaded.css("width", width);
+  },
+
+  onTimeUpdate: function(event) {
+    var seconds = this.media.currentTime;  
+    var width = seconds * this.resolution(this.timeline.$summary);
+    this.$timeCurrent.css("width", width);
+  },
+
+  addPlayerControls: function() {
+    river.ui.BasePlayer.prototype.addPlayerControls.call(this);
+    $("#summary").append("<span class='time_total'></span>");
+    $("#summary").append("<span class='time_loaded'></span>");
+    $("#summary").append("<span class='time_current'></span>");
+    
+    this.$timeLoaded = $(".time_loaded");
+    this.$timeCurrent = $(".time_current");
   },
 
   hideEditing: function() {

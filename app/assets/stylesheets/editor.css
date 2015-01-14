@@ -85,6 +85,19 @@ div#editor-bottom {
 	/*overflow: hidden;*/
 }
 
+#editor #summary.timeline {
+	border: solid 1px #333;
+	height: 10px;
+	overflow: hidden;
+	margin-top: 3px;
+}
+
+#editor #summary.timeline .track {
+	background-color: lightslategrey;	
+	cursor: pointer;
+	opacity: 0.4;
+}
+
 #expanded.timeline {
 	cursor: cell;
 	height: 145px;
@@ -136,9 +149,9 @@ div#editor-bottom {
 }
 
 #seek_head .scrubber {
-	height: 17px;
-	top: -11px;
-	left: 4px;
+	height: 14px;
+	top: 4px;
+	left: 5px;
 }
 
 .track.ghost {
@@ -174,6 +187,11 @@ div#editor-bottom {
 .track.selected {
 	/*background-color: lightcoral ;*/
 	background-color: rgb(128, 164, 240) ;
+}
+
+#summary.timeline .track.selected,
+#summary.timeline .track:hover {
+	opacity: 1 !important;
 }
 
 .track.selected:hover {
@@ -377,8 +395,9 @@ div#editor-bottom {
 	background-color: lightgray;
 }
 
-#editor .subtitle.selected {
-	background-color:  #AECBC8 !important; 
+#editor .subtitle.selected { 
+	/*background-color:  #AECBC8 !important; */
+	background-color:  rgb(193, 206, 219) !important;
 	color: black;
 }
 
@@ -510,34 +529,34 @@ div#time_float {
 	background-color: white;
 }
 
-div#seek_head {
+#editor div#seek_head {
 	cursor: hand; 
 	cursor: pointer;
 	width: 10px;
 	height: 20px;
 	position: absolute;
-	margin-top: 0px;
+	margin-top: -28px;
 	margin-left: -4px;
 	z-index: 5;
 }
 
-div#seek_head_body {
+#editor div#seek_head_body {
 	width: 8px;
 	height: 10px;
 	background-color: #eee;
 	border: solid 1px black;
 }
 
-div#seek_head_corner {
+#editor div#seek_head_corner {
 	width: 0;
 	height: 0;
 	line-height: 0;
-	border: solid 5px #eee;
-	border-color: transparent transparent gray transparent;
+	border: solid 6px #eee;
+	border-color: lightslategray transparent transparent transparent ;
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	border-radius: 0;
-	top: 15px;
+	top: 12px;
 	left: 13px;
 }
 

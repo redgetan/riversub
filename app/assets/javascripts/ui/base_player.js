@@ -101,8 +101,6 @@ river.ui.BasePlayer = Backbone.View.extend({
     Backbone.on("trackstart",this.onTrackStart.bind(this));
     this.$subtitleBar.on("mousedown",this.onSubtitleBarClick.bind(this));
     Backbone.on("trackend",this.onTrackEnd.bind(this));
-    this.popcorn.on("timeupdate",this.onTimeUpdate.bind(this));
-    this.popcorn.on("progress", this.onProgress.bind(this) );
   },
 
   addPlayerControls: function() {
@@ -113,9 +111,6 @@ river.ui.BasePlayer = Backbone.View.extend({
     $(".player_controls").append("<button type='button' class='forward_btn river_btn'><i class='glyphicon glyphicon-forward'></i> </button> ");
     $(".player_controls").append("<div class='player_timeline_container'></div>");
     $("#summary").appendTo(".player_timeline_container")
-    $("#summary").append("<span class='time_total'></span>");
-    $("#summary").append("<span class='time_loaded'></span>");
-    $("#summary").append("<span class='time_current'></span>");
     $(".player_controls").append("<button type='button' class='expand_btn river_btn'><i class='glyphicon glyphicon-fullscreen'></i></button>");
 
     this.$playBtn = $(".play_btn");
@@ -124,26 +119,11 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$forwardBtn = $(".forward_btn");
     this.$expandBtn = $(".expand_btn");
     this.$pauseBtn.hide();
-    this.$timeLoaded = $(".time_loaded");
-    this.$timeCurrent = $(".time_current");
     
     if (this.timeline) {
       this.timeline.setTimelineWidth();
     }
   },
-
-  onProgress: function() {
-    var secondsLoaded = this.popcorn.video.buffered.end(0);
-    var width = secondsLoaded * this.resolution(this.timeline.$summary);
-    this.$timeLoaded.css("width", width);
-  },
-
-  onTimeUpdate: function(event) {
-    var seconds = this.media.currentTime;  
-    var width = seconds * this.resolution(this.timeline.$summary);
-    this.$timeCurrent.css("width", width);
-  },
-
 
   onTimelineSeekHandler: function(time) {
     this.seek(time);

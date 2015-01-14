@@ -39,7 +39,7 @@ river.ui.Timeline = Backbone.View.extend({
     this.$time_float.hide();
 
     this.$seek_head = $("#seek_head");
-    this.$seek_head.css("left",this.$summary.position().left);
+    this.$seek_head.hide();
 
     this.$seek_head.draggable({
       cursor: "pointer",
@@ -213,6 +213,7 @@ river.ui.Timeline = Backbone.View.extend({
 
   bindEvents: function() {
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+    this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
 
     this.$summary.on("mousedown",this.onMouseDownHandler.bind(this));
     this.$summary.on("mousemove",this.onMouseMoveHandler.bind(this));
@@ -243,6 +244,11 @@ river.ui.Timeline = Backbone.View.extend({
     }
   },
 
+  onLoadedMetadata: function() {
+    this.renderSeekHead();
+    this.$seek_head.show(); 
+  },
+
   onTrackChange: function(track) {
     if (!this.hideTracks) {
       this.renderTrack(track);
@@ -251,7 +257,7 @@ river.ui.Timeline = Backbone.View.extend({
 
   onTrackAdd: function(track) {
     if (!this.hideTracks) {
-      // this.$summary.append(track.summaryView.$el);
+      this.$summary.append(track.summaryView.$el);
       this.$expanded_track_viewport.append(track.expandedView.$el);
       this.renderTrack(track);
     }
@@ -493,7 +499,7 @@ river.ui.Timeline = Backbone.View.extend({
 
     var duration = track.endTime() - track.startTime();
 
-    // this.renderInContainer(this.$summary,track.summaryView.$el,   { width: duration, left: track.startTime() });
+    this.renderInContainer(this.$summary,track.summaryView.$el,   { width: duration, left: track.startTime() });
     this.renderInContainer(this.$expanded,track.expandedView.$el, { width: duration, left: track.startTime() });
 
   },
@@ -502,12 +508,12 @@ river.ui.Timeline = Backbone.View.extend({
   renderFillProgress: function(track) {
     var progress = track.progressTime() - track.startTime();
 
-    // this.renderInContainer(this.$summary,track.summaryView.$el,  { width: progress, left: track.startTime() });
+    this.renderInContainer(this.$summary,track.summaryView.$el,  { width: progress, left: track.startTime() });
     this.renderInContainer(this.$expanded,track.expandedView.$el,{ width: progress, left: track.startTime() });
   },
 
   renderSeekHead: function() {
-    // this.renderInContainer(this.$summary, this.$seek_head, { left: this.media.currentTime.toFixed(3) });
+    this.renderInContainer(this.$summary, this.$seek_head, { left: this.media.currentTime.toFixed(3) });
     var time = Math.round(this.media.currentTime * 1000) / 1000;
     var relativePixelPos = time * this.resolution(this.$summary);
     this.$seek_head.css('left',this.$summary.position().left + relativePixelPos)

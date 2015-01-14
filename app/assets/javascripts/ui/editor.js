@@ -380,11 +380,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                           "<span id='subtitle_display' class='center'></span> " +
                         "</div> " +
                       "</div> " +
-                      // "<div id='seek_head'>" +
-                      //   "<div class='scrubber'></div>" +
-                      //   "<div id='seek_head_corner'></div>" +
-                      //   "<div id='seek_head_body'></div>" +
-                      // "</div>" +
+                      "<div id='seek_head'>" +
+                        "<div class='scrubber'></div>" +
+                        "<div id='seek_head_corner'></div>" +
+                        "<div id='seek_head_body'></div>" +
+                      "</div>" +
                     "</div> " +
                   "</div> " +
                   // "<div id='editor-top-right' class='span6'> " +

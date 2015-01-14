@@ -30,6 +30,12 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
     this.$el.addClass("template");
   },
 
+  onSubtitleLineKeydown: function(subtitle) {
+    if (event.which == 13 ) { // ENTER
+      this.goToNextTrack();
+    }
+  },
+
   goToNextTrack: function() {
     var nextTrack = this.focusedTrack.next();
     this.replayTrackAndEdit(nextTrack);
