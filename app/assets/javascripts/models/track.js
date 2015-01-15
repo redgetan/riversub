@@ -317,11 +317,13 @@ river.model.Track = Backbone.Model.extend({
   },
 
   highlight: function() {
-    if (this.collection.currentTrackHighlight) {
-      this.collection.currentTrackHighlight.unhighlight();
-    }
+    if (typeof this.collection !== "undefined") {
+      if (this.collection.currentTrackHighlight) {
+        this.collection.currentTrackHighlight.unhighlight();
+      }
 
-    this.collection.currentTrackHighlight = this;
+      this.collection.currentTrackHighlight = this;
+    }
 
     _.each(this.views,function(view){
       view.highlight();
