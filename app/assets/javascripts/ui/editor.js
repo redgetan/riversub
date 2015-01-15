@@ -674,7 +674,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTimeUpdate: function(event) {
-    river.ui.BasePlayer.prototype.onTimeUpdate.call(this);
     this.lastTimeUpdateTime = this.media.currentTime;
   },
 
@@ -883,17 +882,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     track.closeEditor();
   },
 
-  unhighlight: function(track) {
-    track.subtitle.unhighlight();  
-    track.unhighlight();  
-  },
-
-  closeEditorAndUnhighlight: function(track) {
-    this.closeEditor(track);
-    this.unhighlight(track);
-  },
-
-
   onGhostTrackStart: function(track) {
     this.isGhostTrackStarted = true;
     this.currentGhostTrack = track;
@@ -941,8 +929,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTrackEnd: function(track) {
     // console.log("ontrackend" + track.toString());
     this.hideSubtitleInSubtitleBar();
-
-    this.unhighlight(track);
 
     if (track.shouldPauseOnTrackEnd()) {
       track.unsetPauseOnTrackEnd();

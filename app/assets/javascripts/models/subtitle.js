@@ -38,10 +38,16 @@ river.model.Subtitle = Backbone.Model.extend({
   },
 
   highlight: function() {
-    if (this.options.view_enabled) {
-      this.view.highlight();
-      this.track.highlight();
+    if (!this.options.view_enabled) return;  
+
+    if (this.collection.currentTrackHighlight) {
+      this.collection.currentTrackHighlight.unhighlight();
     }
+
+    this.collection.currentTrackHighlight = this;
+
+    this.view.highlight();
+    this.track.highlight();
   },
 
   overlapsPrev: function(time) {
