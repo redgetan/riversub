@@ -144,11 +144,13 @@ river.ui.Subtitle = Backbone.View.extend({
     if (!this.overlapsPrev(this.model.startTime()) && this.overlapsPrev(time)) {
       time = this.model.prev().endTime() + editor.TRACK_MARGIN;
       event.preventDefault();
+      this.showInvalidFading(this.model.prev(), ".end_time");
     }
 
     if (!this.overlapsNext(this.model.startTime()) && this.overlapsNext(time)) {
       time = this.model.next().startTime() - editor.TRACK_MARGIN;
       event.preventDefault();
+      this.showInvalidFading(this.model.next(), ".start_time");
     }
 
     this.model.track.setStartTime(time);
@@ -160,14 +162,23 @@ river.ui.Subtitle = Backbone.View.extend({
     if (!this.overlapsPrev(this.model.endTime()) && this.overlapsPrev(time)) {
       time = this.model.prev().endTime() + editor.TRACK_MARGIN;
       event.preventDefault();
+      this.showInvalidFading(this.model.prev(), ".end_time");
     }
 
-    if (!this.overlapsPrev(this.model.endTime()) && this.overlapsNext(time)) {
+    if (!this.overlapsNext(this.model.endTime()) && this.overlapsNext(time)) {
       time = this.model.next().startTime() - editor.TRACK_MARGIN;
       event.preventDefault();
+      this.showInvalidFading(this.model.next(), ".start_time");
     }
 
     this.model.track.setEndTime(time);
+  },
+
+  showInvalidFading: function(subtitle, selector) {
+    subtitle.view.showInvalid(selector);
+    setTimeout(function() {
+      subtitle.view.showValid(selector);
+    }.bind(this), 300);
   },
 
   overlapsPrev: function(time) {
@@ -252,12 +263,20 @@ river.ui.Subtitle = Backbone.View.extend({
     }
   },
 
-  showInvalid: function() {
-    this.$el.addClass("invalid");
+  showInvalid: function(selector) {
+    if (typeof selector !== "undefined") {
+      this.$el.find(selector).addClass("invalid");
+    } else {
+      this.$el.addClass("invalid");
+    }
   },
 
-  showValid: function() {
-    this.$el.removeClass("invalid");
+  showValid: function(selector) {
+    if (typeof selector !== "undefined") {
+      this.$el.find(selector).removeClass("invalid");
+    } else {
+      this.$el.removeClass("invalid");
+    }
   },
 
   subtitleLineEdit: function() {

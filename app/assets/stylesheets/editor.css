@@ -750,6 +750,12 @@ a.preview_btn {
 	border: none;
 }
 
+.subtitle .start_time.invalid .sub_text_area,
+.subtitle .end_time.invalid .sub_text_area {
+	background-color: lightpink;
+	border: solid 1px red;
+}
+
 .subtitle:hover .sub_text_area,
 .subtitle.selected .start_time .sub_text_area,
 .subtitle.selected .end_time   .sub_text_area,
