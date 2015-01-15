@@ -88,7 +88,6 @@ div#editor-bottom {
 #editor #summary.timeline {
 	border: solid 1px #333;
 	height: 10px;
-	overflow: hidden;
 	margin-top: 3px;
 }
 
@@ -171,7 +170,7 @@ div#editor-bottom {
 }
 
 #summary .track {
-	height: 11px;
+	height: 8px;
 }
 
 .track .close {
@@ -527,6 +526,12 @@ div#time_float {
 	border: solid 1px black;
 	margin-top: -20px;
 	background-color: white;
+}
+
+#editor div#time_float {
+	margin-top: 25px;
+	background-color: #333;
+	color: white;
 }
 
 #editor div#seek_head {
