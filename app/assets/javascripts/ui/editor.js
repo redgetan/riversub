@@ -972,6 +972,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (this.focusedTrack === track) {
       this.focusedTrack = null;
     }
+
+    if (track.subtitle === this.$subtitleDisplay.data("subtitle")) {
+      this.$subtitleDisplay.data("subtitle", null);
+      this.$subtitleDisplay.text("");
+    }
   },
 
   onTrackInputFocus: function(track) {
@@ -1417,6 +1422,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     //     then next track ontrackstart gets triggered which calls this function )
     this.$subtitleDisplay.show();
     this.$subtitleDisplay.text(subtitle.get("text"));
+    this.$subtitleDisplay.data("subtitle", subtitle);
   },
 
   hideSubtitleInSubtitleBar: function(subtitle) {
