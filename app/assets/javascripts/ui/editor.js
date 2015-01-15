@@ -280,8 +280,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onAddSubtitleInputKeyup: function(event) {
-    // if video is playing pause it
-    if (this.KEYCODE_THAT_PAUSES_VIDEO.indexOf(event.which) !== -1) {
+    if (this.shouldPauseAndPlayAfterTime()) {
       this.pauseAndPlayAfterTime(1000);
     }
 
@@ -295,6 +294,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
+  shouldPauseAndPlayAfterTime: function() {
+    return (!this.media.paused || (this.media.paused && this.playVideoTimeout)) && 
+           (this.KEYCODE_THAT_PAUSES_VIDEO.indexOf(event.which) !== -1)
+  },
+
   pauseAndPlayAfterTime: function(milliseconds) {
     if (!this.media.paused) {
       this.pause();
@@ -306,6 +310,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.playVideoTimeout = setTimeout(function(){
       this.play();
+      this.playVideoTimeout = null;
     }.bind(this), milliseconds);
   },
 
