@@ -51,8 +51,8 @@ river.ui.Subtitle = Backbone.View.extend({
       this.readOnlyText();
     }
 
-    if (this.isTemplateEditor()) {
-      this.showParentTextAndHideEndTime();
+    if (repo.parent_repository_id) {
+      this.showParentText();
     }
 
     this.render();
@@ -67,15 +67,12 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$text.append("<span></span>");
   },
 
-  showParentTextAndHideEndTime: function() {
+  showParentText: function() {
     var parentText = "<div class='parent_text'><span></span></div>";
     this.$text.before(parentText);
 
     this.$parentText = this.$el.find(".parent_text span");
     this.$parentText.text(this.model.get("parent_text"));
-
-    this.$endTime.remove();
-    this.$close.remove();
   },
 
   createInput: function() {
@@ -86,9 +83,7 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$startTime.append(this.createInput());
     this.$endTime.append(this.createInput());
 
-    if (!this.isTemplateEditor()) {
-      this.addSpinnerToStartEndTime();
-    }
+    this.addSpinnerToStartEndTime();
 
     this.$startTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
     this.$endTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
@@ -104,10 +99,6 @@ river.ui.Subtitle = Backbone.View.extend({
 
     this.$startTime.find("input").on("blur", this.editStartTimeFinished.bind(this));
     this.$endTime.find("input").on("blur", this.editEndTimeFinished.bind(this));
-  },
-
-  isTemplateEditor: function() {
-    return repo.parent_repository_id;
   },
 
   addSpinnerToStartEndTime: function() {

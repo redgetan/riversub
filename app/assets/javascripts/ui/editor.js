@@ -22,7 +22,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // options
     this.addSubBackward = true;
 
-    $(".header #original").hide();
+    if (!repo.parent_repository_id) {
+      $(".header #original").hide();
+    }
     // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
     this.$expandBtn.hide();
@@ -371,7 +373,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     //   "<span>" + this.repo.language_pretty + "</span>" +
                     // "</div>" +
                     // "<h6 id='video_url'>" +
-                    //   "<a href=" + this.repo.video.url + ">" + this.repo.video.url + "</a>" +
+                    //   "<a href=" + this.repo.video.source_url + ">" + this.repo.video.source_url + "</a>" +
                     // "</h6> " +
                   "</div> " +
                   "<div class='editor_video_container'> " +
@@ -478,7 +480,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$el = $("#editor");
 
-    if (this.repo.user) {
+    if (this.user) {
       var repo_owner = "<span id='repo_owner'>" +
                          "<a href='" + this.repo.owner_profile_url + "'>" + this.repo.owner + "</a>" +
                        "</span> / ";

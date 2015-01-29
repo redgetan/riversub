@@ -4,7 +4,7 @@ river.model.Comment = {
       if ($(form).find('#parent_comment_short_id').length) {
         $(form).closest('.comment').replaceWith($.parseHTML(data));
       } else {
-        if ($(form).attr("id").match(/^edit_comment_.+$/)) {
+        if ($(form).attr("id").match(/^edit_comment_.+$/) || data.match(/.*flash-error.*/)) {
           $(form).parent(".comment").replaceWith($.parseHTML(data));
         } else {
           $(form).closest('.comment').after($.parseHTML(data));

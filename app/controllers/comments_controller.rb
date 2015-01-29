@@ -28,7 +28,7 @@ class CommentsController < ApplicationController
                                       :parent_comment_id => comment.parent_comment_id).first
 
       if (Time.now - parent_comment.created_at) < 5.minutes
-        comment.errors.add(:comment, "^You have already posted a comment here recently.")
+        comment.errors.add(:comment, "You have already posted a comment here recently.")
 
         render :partial => "commentbox", :layout => false,
           :content_type => "text/html", :locals => { :comment => comment } and return

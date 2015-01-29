@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150106211959) do
+ActiveRecord::Schema.define(:version => 20150201215818) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",                                    :default => 0
@@ -130,8 +130,9 @@ ActiveRecord::Schema.define(:version => 20150106211959) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.text     "metadata"
-    t.string   "url"
     t.string   "token"
+    t.string   "language"
+    t.string   "source_url"
   end
 
   create_table "votes", :force => true do |t|

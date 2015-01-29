@@ -1,0 +1,42 @@
+<div class='header-section col-md-12'></div>
+<div class="background"></div>
+<div class='container'>
+  <div class='row'>
+    <div class="">
+      <div class="center">
+        <h2><%= @video.name %></h2>
+        <%= image_tag @video.thumbnail_url %>
+      </div>
+      <br>
+      <br>
+
+      <%= form_tag video_repository_create_url(@video), id: "repo_setup_form" do %>
+        <div id="repo_setup_form_list" class="col-md-6 col-md-offset-3">
+          <ol >
+            <% unless @video.language.present? %>
+              <li>
+                <h4>The Video is in</h4>
+                <%= select_tag("video_language_code", options_for_select(Language::CODES.map{|k,v| [v,k]}.unshift(["Unknown",""]))) %>
+              </li>
+            <% end %>
+            <li>
+              <h4>Choose Subtitle language</h4>
+              <%= select_tag("repo_language_code", options_for_select(Language::CODES.map{|k,v| [v,k]})) %>
+            </li>
+
+            <% if false && current_user.groups.present? %>
+              <li>
+                <h4>Choose group to release under</h4>
+                <%= select_tag("group_id", options_for_select(Group.selection_options_for(current_user))) %>
+              </li>
+            <% end %>
+          </ol>
+        </div>
+        <div class="center">
+          <input id="continue_btn" class="river_btn " type="submit" value="Continue">
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

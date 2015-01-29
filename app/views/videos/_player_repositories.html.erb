@@ -1,0 +1,39 @@
+<div id='forks_container' class=''>
+  <a href="<%= user_signed_in? ? video_repository_new_url(@video) : login_url %>" class="fork_repo_btn river_btn">
+    <i class='glyphicon glyphicon-plus'></i> Add Language
+  </a>
+  <div class='forks_list_body' style=''>
+    <ul class="subtitle_selections">
+      <% @video.repositories.each do |repo| %>
+        <% if repo.visible_to_user?(current_user) %>
+          <li class="forks_list_item <%= @repo == repo ? "selected" : "" %>" data-url="<%= repo.url %>">
+            <span class='language_label pull-left' ><%= repo.language_label %></span>
+
+            <div class='repo_publish_column pull-right'>
+              <% if !repo.is_published? %>
+                <%= form_tag repo.publish_url, method: "post", class: "publish_btn_form " do %>
+                  <%= submit_tag 'Publish', class: "btn btn-success btn-xs", id: "publish_btn" %>
+                <% end %>
+              <% end %>
+            </div>
+
+            <div class='repo_edit_column pull-right'>
+              <% if repo.display_edit?(current_user) %>
+                <a class='subtitle_editor_btn btn btn-xs' href="<%= repo.editor_url %>">Edit</a>
+              <% end %>
+            </div>
+
+            <div class='repo_owner_column pull-right'>
+              <% if repo.user %>
+                <a class="subtitle_selection_owner_avatar" href="<%= repo.owner_profile_url %>" data-toggle="tooltip" data-placement="left" title="<%= repo.owner %>">
+                  <%= image_tag repo.user_avatar_thumb_url %>
+                </a>
+              <% end %>
+            </div>
+
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+</div>

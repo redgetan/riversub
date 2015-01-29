@@ -380,11 +380,6 @@ div#editor-bottom {
 */}
 
 
-#river_player.show .subtitle:hover {
-	background-color: lightgray !important;
-	/*border: solid 1px gray;*/
-}
-
 #river_player .subtitle.selected .text span {
 	background-color: #AECBC8 !important;
 	padding: 5px;
@@ -852,6 +847,9 @@ textarea {
 	margin-left: 2px;
 }
 
+#editor .publish_btn {
+	background-color: rgb(127, 202, 154) !important;
+}
 #editor.published .publish_btn {
 	background-color: lightgray;
 }

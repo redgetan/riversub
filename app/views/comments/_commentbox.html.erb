@@ -3,7 +3,7 @@ data-shortid="<%= comment.short_id %>">
 
 <%= form_for comment, :html => { :id => "edit_comment_#{comment.short_id}" } do |f| %>
   <% if comment.errors.any? %>
-    <%= errors_for comment %>
+    <%= lobster_errors_for comment %>
   <% end %>
 
   <%= hidden_field_tag "commentable_short_id", comment.commentable.short_id %>
@@ -14,7 +14,7 @@ data-shortid="<%= comment.short_id %>">
 
   <div style="width: 100%;">
     <%= text_area_tag "comment", comment.body, :rows => 5,
-      :style => "width: 100%;", :autocomplete => "off", :disabled => !user_signed_in?,
+      :style => "", :autocomplete => "off", :disabled => !user_signed_in?,
       :placeholder => (user_signed_in? ? "" : "You must be logged in to leave a comment.")
       %>
 
@@ -24,9 +24,7 @@ data-shortid="<%= comment.short_id %>">
       <%= button_tag "#{comment.new_record?? "Post" : "Update"}",
         :class => "comment-post", :type => "button",
         :disabled => !user_signed_in? %>
-      &nbsp;
       <% if comment.persisted? || comment.parent_comment_id %>
-        &nbsp;
         <%= button_tag "Cancel", :class => "comment-cancel", :type => "button" %>
       <% end %>
         

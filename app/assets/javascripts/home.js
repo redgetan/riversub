@@ -51,7 +51,7 @@ $(document).ready(function(){
 
   var action = river.controller[river.route];
   if (typeof action !== "undefined") {
-    action.call();  
+    action.call();
   }
 
   $("#layout_new_project_btn").hover(
@@ -97,7 +97,7 @@ $(document).ready(function(){
   $("form.sub").on("submit",function(event) {
     event.preventDefault();
 
-    var url = $(this).find(".media_url").val();
+    var url = $(this).find(".source_url").val();
 
     $(this).find(".sub_btn").button('loading');
 
@@ -148,7 +148,7 @@ function openSubtitleEditor(url, forkedRepoToken) {
       url: "/videos/sub",
       type: "POST",
       data: {
-        media_url : url,
+        source_url : url,
         video_metadata: metadata
       },
       dataType: "json",

@@ -1,34 +1,52 @@
 river.ui.BasePlayer = Backbone.View.extend({
   initialize: function(options) {
     this.options = options || {};
+    this.initializeCommon();
+
+    if (this.options.video) {
+      this.initializeVideo();
+    } else {
+      this.initializeRepository();
+    }
+  },
+
+  initializeCommon: function() {
     this.repo = this.options.repo || {};
-    this.video = this.repo.video || {};
-    this.user = this.repo.user || {};
-
-    var targetSelector = this.options["targetSelector"] || "div#media";
-
-    var timings = this.repo.timings || [];
-    var mediaSource = typeof this.video.url === "undefined" ? "" : this.video.url;
+    this.video = this.options.video || this.repo.video || {};
 
     this.setupElement();
+
+    // initialize popcorn
+    var targetSelector = this.options["targetSelector"] || "div#media";
+    var mediaSource = typeof this.video.source_url === "undefined" ? "" : this.video.source_url;
     this.popcorn = this.loadMedia(targetSelector,mediaSource);
+
+    // player settings
     this.popcorn.volume(0.2);
 
+    // misc
     this.defineAttributeAccessors();
+    this.displayNoInternetConnectionIfNeeded();
+  },
+
+  initializeVideo: function() {
+    this.addPlayerControls();
+  },
+
+  initializeRepository: function() {
+    this.user = this.repo.user;
 
     this.preRepositoryInitHook();
-
     this.addPlayerControls();
 
     this.repository = new river.model.Repository(this.repo);
     this.subtitles  = new river.model.SubtitleSet("",this.options);
-
     this.tracks = this.repository.tracks;
+
+    var timings = this.repo.timings || [];
     this.loadTracks(timings);
 
     this.bindEvents();
-
-    this.displayNoInternetConnectionIfNeeded();
   },
 
   displayNoInternetConnectionIfNeeded: function() {
@@ -45,7 +63,7 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   mediaDuration: function() {
-    return Math.floor(parseFloat(this.repo.video.duration) * 1000) / 1000;
+    return Math.floor(parseFloat(this.video.duration) * 1000) / 1000;
   },
 
   preRepositoryInitHook: function() {

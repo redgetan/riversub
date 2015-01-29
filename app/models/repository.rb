@@ -51,13 +51,44 @@ class Repository < ActiveRecord::Base
               .map(&:repo_id)
   end
 
+  def self.top_grouped_by_source_language(num_of_entries = 6)
+    languages = Video.all_language_codes
+    repo_with_video = self.published.joins(:video)
+
+    languages.inject({}) do |result, language|
+      repos = repo_with_video.where("videos.language = ?", language)
+                             .order("repositories.updated_at DESC")
+                             .limit(num_of_entries)
+
+      result.merge({ language => repos })
+    end
+  end
+
+  def self.repository_counts_by_language
+    self.select("videos.language, COUNT(*) as repo_count")
+        .joins(:video)
+        .published
+        .group("videos.language")
+        .to_a
+        .inject({}) do |result, record|
+      result.merge({ record.language => record.repo_count })
+    end
+  end
+
+  def self.repository_counts_by_country
+    repository_counts_by_language.inject({}) do |result, (language_code, repo_count)|
+      country_code = Language.language_code_to_country_code_map[language_code]
+      result.merge({ country_code => repo_count })
+    end
+  end
+
   def self.homepage_autoplay_repo
     repo_id = Setting.get(:homepage_autoplay_repository_id).to_s.to_i
     self.find_by_id(repo_id)
   end
 
   def self.templates
-    where("is_template is true")  
+    where("is_template is true")
   end
 
   def filename
@@ -73,7 +104,7 @@ class Repository < ActiveRecord::Base
   end
 
   def url
-    video_url(self.token)
+    repo_url(self.token)
   end
 
   def owner_profile_url
@@ -85,7 +116,7 @@ class Repository < ActiveRecord::Base
   end
 
   def editor_url
-    editor_video_url(self.token)
+    editor_repo_url(self.token)
   end
 
   def fork_url
@@ -93,7 +124,7 @@ class Repository < ActiveRecord::Base
   end
 
   def editor_setup_url
-    editor_video_setup_url(self.token)
+    editor_repo_setup_url(self.token)
   end
 
   def thumbnail_url
@@ -105,7 +136,7 @@ class Repository < ActiveRecord::Base
   end
 
   def publish_url
-    publish_videos_url(self)
+    publish_repo_url(self)
   end
 
   def update_title_url
@@ -136,7 +167,7 @@ class Repository < ActiveRecord::Base
   end
 
   def self.guided_walkthrough
-    self.joins(:video).where(["url = ?",'http://www.youtube.com/watch?v=6tNTcZOpZ7c']).first
+    self.joins(:video).where(["source_url = ?",'http://www.youtube.com/watch?v=6tNTcZOpZ7c']).first
   end
 
   def version_for(target_user)
@@ -201,6 +232,23 @@ class Repository < ActiveRecord::Base
     user.avatar.thumb.url
   end
 
+  def title
+    if is_template?
+      super
+    else
+      ["[#{language_pretty} Sub]", self.video.name].join(" ")
+    end
+  end
+
+  def keywords
+    [language_pretty, "sub"] + self.video.name[0..255].split(" ")
+  end
+
+  def language_label
+    is_template? ? self.title : language_pretty
+  end
+
+
   def transcript
     self.timings.map do |timing|
       timing.subtitle.text
@@ -236,12 +284,12 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def comments_tab_class
-    is_published? ? "active" : ""
+  def languages_tab_class
+    "active" 
   end
 
   def transcript_tab_class
-    is_published? ? "" : "active"
+    "" 
   end
 
   def display_edit?(target_user)
@@ -251,7 +299,7 @@ class Repository < ActiveRecord::Base
   end
 
   def visible_to_user?(target_user)
-   is_published? || owned_by?(target_user)
+    is_published || owned_by?(target_user)
   end
 
   def serialize
@@ -299,11 +347,11 @@ class Repository < ActiveRecord::Base
   def repo_item_class_for(user)
     return "" unless user
 
-    css_class = if user.liked?(self) 
+    css_class = if user.liked?(self)
                   "upvoted"
                 elsif user.disliked?(self)
                   "downvoted"
-                else 
+                else
                   ""
                 end
 
@@ -311,7 +359,7 @@ class Repository < ActiveRecord::Base
     css_class += " negative_1"  if score <= -1
     css_class += " negative_3"  if score <= -3
     css_class += " negative_5"  if score <= -5
- 
+
     css_class
   end
 

@@ -1,5 +1,8 @@
 class Video < ActiveRecord::Base
-  attr_accessible :artist, :genre, :name, :metadata, :url
+
+  include Rails.application.routes.url_helpers
+
+  attr_accessible :artist, :genre, :name, :metadata, :url, :language
 
   has_many :repositories
   has_many :users, :through => :repositories
@@ -16,11 +19,16 @@ class Video < ActiveRecord::Base
       :name => self.name,
       :genre => self.genre,
       :url => self.url,
+      :source_url => self.source_url,
       :aspect_ratio => self.aspect_ratio,
       :uploader_url => self.uploader_url,
       :uploader_username => self.uploader_username,
       :duration => self.duration
     }
+  end
+
+  def self.all_language_codes
+    self.select("DISTINCT language").map(&:language).compact
   end
 
   def aspect_ratio
@@ -35,6 +43,14 @@ class Video < ActiveRecord::Base
     self.metadata["data"]["uploader"]
   end
 
+  def thumbnail_url
+    self.metadata["data"]["thumbnail"]["sqDefault"]
+  end
+
+  def thumbnail_url_hq
+    self.metadata["data"]["thumbnail"]["hqDefault"]
+  end
+
   def uploader_url
     "http://www.youtube.com/user/#{self.metadata["data"]["uploader"]}"
   end
@@ -44,6 +60,14 @@ class Video < ActiveRecord::Base
       random_token = SecureRandom.urlsafe_base64(8)
       break random_token unless self.class.where(token: random_token).exists?
     end
+  end
+
+  def title
+    name  
+  end
+
+  def url
+    video_url(self)  
   end
 
   def published_repositories

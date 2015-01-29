@@ -1,89 +1,17 @@
-<% set_meta_tags :site => 'Yasub', :title => @repo.title, :description => "Watch a Youtube Video with user generated captions/subtitles", :keywords => @repo.video.name[0..255].split(" ") %>
+<% set_meta_tags :site => 'Yasub', :title => @video.name, :description => "Watch a Youtube Video with user generated captions/subtitles", :keywords => @video.name[0..255].split(" ") %>
 
-<div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
+<div id='river_player' class='show container public' data-repo='<%= @video.serialize.to_json %>'>
   <div class="row">
     <div class="col-lg-9 player_column">
-      <%= render 'player' %>
-
-      <% if @repo.is_published %>
-        <div id='forks_container' class='player_column'>
-          <h4 class='pull-left' >Subtitles</h4>
-          <form method="post" action="<%= @repo.fork_url %>" class="button_to fork_repo_form pull-right">
-            <div>
-              <button type="submit" class="fork_repo_btn river_btn">
-                <i class='glyphicon glyphicon-plus'></i> Add 
-              </button>
-            </div>
-          </form>
-          <ol class='forks_list_body' style=''>
-            <% @repo.published_repositories.each do |repo| %>
-              <a href="<%= repo.url %>" >
-                <li class="forks_list_item <%= @repo == repo ? "selected" : "" %>">
-                  <span class=''><%= repo.title %></span>
-                  <% if repo.comments.present? %>
-                    <div class='pull-right'>
-
-                      <span class=''><%= repo.comments.count %> comments</span>
-                    </div>
-                  <% end %>
-                  <% if repo.comments.present? && repo.points > 0 %>
-                    <div class='divider_line_river pull-right'>
-                      | 
-                    </div>
-                  <% end %>
-                  <% if repo.points > 0 %>
-                    <div class='pull-right'>
-                      <span class=''><%= repo.points %> points</span>
-                    </div>
-                  <% end %>
-                </li>
-              </a>
-            <% end %>
-          </ol>
-        </div>
-      <% end %>
-
+      <%= render 'videos/player' %>
+      <%= render 'videos/player_info' %>
     </div>
     <div class='col-lg-5'>
-      <div id="video_information" class="">
-        <div class="">
-          <div class="repository <%= @repo.repo_item_class_for(current_user) %>" data-shortid="<%= @repo.token %>">
-            <div class="voters">
-              <% if user_signed_in? %>
-                <a class="upvoter"></a>
-              <% else %>
-                <%= link_to "", login_url, :class => "upvoter" %>
-              <% end %>
-              <div class="score"><%= @repo.score %></div>
-              <% if user_signed_in? && current_user.can_downvote?(@repo) %>
-                <a class="downvoter"></a>
-              <% else %>
-                <span class="downvoter downvoter_stub"></span>
-              <% end %>
-            </div>
-          </div>
-
-          <h3 id='repo_label'>
-            <div>
-              <a href="<%= @repo.url %>"><%= @repo.title %></a>
-            </div>
-          </h3>
-
-          <div id='repo_time_label'>
-            <span class='updated_at'><%= time_ago_in_words(@repo.updated_at) %> ago</span>
-            <% if @repo.user %>
-              <span class='repo_owner'>
-                by 
-                <a href="<%= @repo.owner_profile_url %>" style="color:slategray"><%= @repo.owner %></a>
-                <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
-              </span>
-            <% end %>
-          </div>
-
-          <%= render 'player_actions' %>
-          <%= render 'player_details' %>
-        </div>
-      </div>
+      <%= render 'videos/player_details' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-9 player_column">
     </div>
   </div>
 </div>

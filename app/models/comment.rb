@@ -317,7 +317,7 @@ class Comment < ActiveRecord::Base
 
 
   def url
-    video_comment_url(self.commentable, self)
+    repo_comment_url(self.commentable, self)
   end
 
   def to_param

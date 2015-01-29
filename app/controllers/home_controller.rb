@@ -3,6 +3,7 @@ class HomeController < ApplicationController
   def index
     @guided_walkthrough_repo = Repository.guided_walkthrough
     @autoplay_repo =  Repository.homepage_autoplay_repo
+    @repository_counts_by_country = Repository.repository_counts_by_country
     respond_to :html
   end
 

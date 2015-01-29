@@ -49,7 +49,7 @@ module ApplicationHelper
     @resource ||= User.new
   end
 
-  def errors_for(object, message=nil)
+  def lobster_errors_for(object, message=nil)
     html = ""
     unless object.errors.blank?
       html << "<div class=\"flash-error\">\n"
