@@ -124,7 +124,6 @@ GEM
       actionpack
     method_source (0.8.1)
     mime-types (1.23)
-    mini_portile (0.6.1)
     multi_json (1.9.2)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
@@ -136,8 +135,6 @@ GEM
     net-ssh (2.6.7)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
-    nokogiri (1.6.4.1)
-      mini_portile (~> 0.6.0)
     oauth (0.4.7)
     oauth2 (0.9.3)
       faraday (>= 0.8, < 0.10)
@@ -262,8 +259,6 @@ GEM
       rack
       raindrops (~> 0.7)
     uuidtools (2.1.4)
-    view_inspect (0.3.7)
-      nokogiri
     warden (1.2.1)
       rack (>= 1.0)
 
@@ -308,4 +303,3 @@ DEPENDENCIES
   twitter-bootstrap-rails (~> 2.2.6)
   uglifier (>= 1.0.3)
   unicorn
-  view_inspect
