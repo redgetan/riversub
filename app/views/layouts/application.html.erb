@@ -66,7 +66,7 @@
             <!-- <li class="divider-vertical"></li> -->
 <!--             <li class="<%#= 'active' if params[:controller] == 'home' && params[:action] == 'how_to_use' %>"><a href="/how_to_use">How to Use</a></li>
  -->      
-        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= user_signed_in? ? videos_new_url : login_url %>"><i class="glyphicon glyphicon-plus"></i> Create</a></li>
+        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= user_signed_in? ? videos_new_url : "#{login_url}?user_action=subtitle_a_video" %>"><i class="glyphicon glyphicon-plus"></i> Create</a></li>
         <li class="divider-vertical"></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">

@@ -1,5 +1,5 @@
 <div id='forks_container' class=''>
-  <a href="<%= user_signed_in? ? video_repository_new_url(@video) : login_url %>" class="fork_repo_btn river_btn">
+  <a href="<%= user_signed_in? ? video_repository_new_url(@video) : "#{login_url}?user_action=add_a_language" %>" class="fork_repo_btn river_btn">
     <i class='glyphicon glyphicon-plus'></i> Add Language
   </a>
   <div class='forks_list_body' style=''>

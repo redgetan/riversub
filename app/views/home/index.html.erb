@@ -13,7 +13,7 @@
 
       <div class='home_action_container'>
         <!-- <a href="" class='btn btn  btn-large request_subtitle_btn'>Request</a> -->
-        <a href="<%= user_signed_in? ? videos_new_url : login_url %>" class='btn btn-danger btn-large'>Subtitle a Video</a>
+        <a href="<%= user_signed_in? ? videos_new_url : "#{login_url}?user_action=subtitle_a_video" %>" class='btn btn-danger btn-large'>Subtitle a Video</a>
       </div>
     </div>
   </div>

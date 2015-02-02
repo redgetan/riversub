@@ -698,6 +698,7 @@ a.owner_label {
 #flash_container {
   width: 50%;
   margin: auto;
+  margin-top: 20px;
 }
 
 ul.social_login_buttons {
@@ -2276,4 +2277,10 @@ div.flash-error {
 .social_share_container [itemprop='description'],
 .social_share_container [itemprop='image'] {
   display: none;
+}
+
+#flash_error {
+  background-color: lightyellow;
+  font-size: 16px;
+  border: solid 1px green;
 }

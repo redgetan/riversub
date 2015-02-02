@@ -9,6 +9,7 @@ River::Application.routes.draw do
   scope :protocol => protocol, :constraints => { :protocol => protocol } do
     devise_for :users, :controllers => { 
       :registrations => "registrations", 
+      :sessions => "sessions", 
       :omniauth_callbacks => "users/omniauth_callbacks" 
     }
 

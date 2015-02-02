@@ -6,7 +6,7 @@ class="comment <%= comment.comment_item_class_for(current_user) %>">
       <% if user_signed_in? %>
         <a class="upvoter"></a>
       <% else %>
-        <%= link_to "", login_url, :class => "upvoter" %>
+        <%= link_to "", "#{login_url}?user_action=upvote_a_comment", :class => "upvoter" %>
       <% end %>
       <div class="score"><%= comment.score %></div>
       <% if user_signed_in? && current_user.can_downvote?(comment) %>
