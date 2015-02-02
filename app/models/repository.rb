@@ -108,7 +108,7 @@ class Repository < ActiveRecord::Base
   end
 
   def self.guided_walkthrough
-    self.joins(:video).where(["url = ?",'http://www.youtube.com/watch?v=6tNTcZOpZ7c']).first
+    self.joins(:video).where(["source_url = ?",'http://www.youtube.com/watch?v=6tNTcZOpZ7c']).first
   end
 
   def version_for(target_user)

@@ -23,6 +23,10 @@ class Video < ActiveRecord::Base
     }
   end
 
+  def url
+    source_url  
+  end
+
   def aspect_ratio
     self.metadata["data"]["aspectRatio"] 
   end
