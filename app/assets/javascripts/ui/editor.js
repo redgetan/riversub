@@ -29,7 +29,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.useLocalStorageIfNeeded();
     this.$expandBtn.hide();
 
-    this.enableTitleChange();
   },
 
   useLocalStorageIfNeeded: function() {
@@ -101,6 +100,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $('[data-toggle="tab"]').on('shown.bs.tab', this.onTabShown.bind(this));
 
+    this.$previewBtn.on("click", this.onPreviewBtnClick.bind(this));
     this.$publishBtn.on("mousedown",this.onPublishBtnClick.bind(this));
     this.$addSubInput.on("focus",this.onAddSubtitleInputFocus.bind(this));
     this.$addSubInput.on("keyup",this.onAddSubtitleInputKeyup.bind(this));
@@ -130,38 +130,31 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     event.preventDefault();
   },
 
+  onPreviewBtnClick: function(event) {
+    window.location.href = this.repo.url;
+  },
+
   onPublishBtnClick: function(event) {
-    if (this.$titleInput.val().length > 0) {
-      this.saveRepoTitle(function(){
-        this.publishRepo(event);
-      }.bind(this));  
-    } else {
-      this.publishRepo(event);
-    }
+    this.publishRepo(event);
   },
 
   publishRepo: function(event) {
-    if ((this.$titleInput.val().length > 0) || (repo.title && repo.title.length > 0)) {
-      this.preventSubtileInputFromLosingFocus(event);
+    this.preventSubtileInputFromLosingFocus(event);
 
-      if (this.$publishBtn.attr("disabled") == "disabled") return;
+    if (this.$publishBtn.attr("disabled") == "disabled") return;
 
-      $.ajax({
-        url: this.repo.publish_url,
-        type: "POST",
-        dataType: "json",
-        success: function(data) {
-          window.location.href = data.redirect_url;
-        },
-        error: function(data) {
-          alert("Publish failed. We would look into this shortly.");
-          throw data.responseText;
-        }
-      });
-    } else {
-      event.preventDefault();
-      alert("Please Enter a Title");
-    }
+    $.ajax({
+      url: this.repo.publish_url,
+      type: "POST",
+      dataType: "json",
+      success: function(data) {
+        window.location.href = data.redirect_url;
+      },
+      error: function(data) {
+        alert("Publish failed. We would look into this shortly.");
+        throw data.responseText;
+      }
+    });
   },
 
   onTimelineSeekHandler: function(time, $target) {
@@ -260,12 +253,22 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTabShown: function (e) {
     if ($(e.target).attr("href") === "#timeline_tab") {
+      this.$addSubInput.hide();
+      this.$addSubBtn.hide();
+
       this.timeline.ensureCorrectWindowPosition();
       $(".window_slider").show();
+      this.$startTimingBtn.show();
     }
 
     if ($(e.target).attr("href") === "#subtitle_tab") {
+      this.$startTimingBtn.hide();
+      this.$stopTimingBtn.hide();
       $(".window_slider").hide();
+
+      this.$addSubInput.show();
+      this.$addSubBtn.show();
+
       if (this.intro._currentStep === 11) {
         $(".introjs-nextbutton").removeClass("introjs-disabled");
         $(".introjs-nextbutton").trigger("click");
@@ -362,11 +365,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<div id='main_controls' class='pull-left'> " +
                         "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-film'></i></button> " +
                         "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
-                        "<a class='publish_btn river_btn pull-right'>Publish</a>" +
-                        "<a class='preview_btn river_btn pull-right'>Preview</a>" +
+                        "<button type='button' class='start_timing_btn river_btn'> <i class=''></i>Start</button> " +
+                        "<button type='button' class='stop_timing_btn river_btn'> <i class='glyphicon glyphicon-stop'></i> Stop</button> " +
                         "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
                         "<button type='button' class='add_sub_btn river_btn'>Add</a>" +
                       "</div> " +
+                      "<a class='publish_btn river_btn pull-right'>Publish</a>" +
+                      "<a class='preview_btn river_btn pull-right'>Preview</a>" +
                     "</div> " +
                   "</div> " + // .span12
                   "<div id='status-bar' class='pull-left'> " +
@@ -416,11 +421,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $("#seek_head_body").hide();
 
-    this.$startTimingBtn = $("#start_timing_btn");
+    this.$startTimingBtn = $(".start_timing_btn");
     this.$startTimingBtn.attr("disabled","disabled");
-    // this.$startTimingBtn.hide();
+    this.$startTimingBtn.hide();
 
-    this.$stopTimingBtn = $("#stop_timing_btn");
+    this.$stopTimingBtn = $(".stop_timing_btn");
     this.$stopTimingBtn.hide();
 
     this.$addSubInput = $(".add_sub_input");

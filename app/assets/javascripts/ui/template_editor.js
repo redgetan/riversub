@@ -2,6 +2,7 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
   initialize: function (options) {
     river.ui.Editor.prototype.initialize.call(this,options);
     this.hideEditorControls();
+    this.enableTitleChange();
   },
 
   hideEditorControls: function() {
@@ -17,8 +18,18 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
   },
 
   onPublishBtnClick: function(event) {
-    if (repo.title && repo.title.length > 0) {
-      river.ui.Editor.prototype.onPublishBtnClick.call(this,event);
+    if (this.$titleInput.val().length > 0) {
+      this.saveRepoTitle(function(){
+        this.publishRepo(event);
+      }.bind(this));  
+    } else {
+      this.publishRepo(event);
+    }
+  },
+
+  publishRepo: function(event) {
+    if ((this.$titleInput.val().length > 0) || (repo.title && repo.title.length > 0)) {
+      river.ui.Editor.prototype.publishRepo.call(event);
     } else {
       event.preventDefault();
       alert("Please Enter a Title");
@@ -71,7 +82,6 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
     this.$titleInputContainer.on("mouseenter", this.onTitleInputMouseEnter.bind(this));
     this.$titleInputContainer.on("mouseleave", this.onTitleInputMouseLeave.bind(this));
     this.$titleInputHandle.on("click", this.onTitleInputHandleClick.bind(this));
-    this.$previewBtn.on("click", this.onPreviewBtnClick.bind(this));
   },
 
   onTitleInputMouseEnter: function() {
@@ -130,6 +140,14 @@ river.ui.TemplateEditor = river.ui.Editor.extend({
     }
   },
 
+  previewRepo: function(event) {
+    if ((this.$titleInput.val().length > 0) || (repo.title && repo.title.length > 0)) {
+      window.location.href = this.repo.url;
+    } else {
+      event.preventDefault();
+      alert("Please Enter a Title");
+    }
+  },
 
 
 })

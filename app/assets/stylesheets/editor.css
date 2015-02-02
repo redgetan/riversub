@@ -497,17 +497,15 @@ div#editor-bottom {
   padding: 0px 5px 2px 5px;
 }
 
-.controls #start_timing_btn {
+.controls .start_timing_btn {
 	/*min-width: 101px;*/
-	width: 200px;
-	margin-left: 280px;
+	width: 100px;
 }
 
-.controls #stop_timing_btn {
+.controls .stop_timing_btn {
 	background-color: rgb(128, 164, 240);
-	color: white;
-	width: 200px;
-	margin-left: 280px;
+	color: white !important;
+	width: 100px;
 }
 
 div#player-bottom {
@@ -851,7 +849,7 @@ textarea {
 	background-color: rgb(127, 202, 154) !important;
 }
 #editor.published .publish_btn {
-	background-color: lightgray;
+	background-color: lightgray !important;
 }
 
 .repo_label_container .publish_preview_btn_group {
