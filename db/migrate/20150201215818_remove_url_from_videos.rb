@@ -1,7 +1,7 @@
 class RemoveUrlFromVideos < ActiveRecord::Migration
   def up
     Video.all.each do |video|
-      video.update_column(:source_url, video.url)
+      video.update_column(:source_url, video.read_attribute(:url))
     end
 
     remove_column :videos, :url
