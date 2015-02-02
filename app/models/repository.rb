@@ -338,6 +338,10 @@ class Repository < ActiveRecord::Base
     token
   end
 
+  def share_text
+    title[0..100]      
+  end
+
   def auto_publish_anonymous_repo
     unless user
       self.is_published = true

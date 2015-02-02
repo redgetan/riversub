@@ -742,19 +742,22 @@ ul.social_login_buttons a {
   border: 2px solid #cccccc !important;
   -webkit-border-radius: 0px !important;
   border-radius: 0px !important;
-  width: 200px;
+  width: 300px;
+  height: 30px;
+  margin-left: 20px;
 }
 
 .share_container {
-  margin: 5px 0px 0px 40px;
+  margin-top: 30px;
   height: 80px;
   padding: 20px;
-  border: solid 1px #ccc;
+  text-align: left;
 }
 
 .social_share_container {
   margin-bottom: 20px;
-  margin-left: 20px;
+  margin-left: 36px;
+  margin-top: 20px;
 }
 
 .demo-video,
@@ -2269,7 +2272,8 @@ div.flash-error {
   min-width: 25px;
 }
 
-
-
-
-
+.social_share_container [itemprop='name'],
+.social_share_container [itemprop='description'],
+.social_share_container [itemprop='image'] {
+  display: none;
+}
