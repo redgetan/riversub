@@ -1,0 +1,59 @@
+/*
+  =require twitter-bootstrap-static/bootstrap
+
+  Use Font Awesome icons (default)
+  To use Glyphicons sprites instead of Font Awesome, replace with "require twitter-bootstrap-static/sprites"
+  =require twitter-bootstrap-static/fontawesome
+  */
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    color: #fff;
+    overflow-x: hidden;
+    margin-bottom: 50px;
+}
+
+body.white {
+    color: #333;
+}
+
+.navbar .nav li.dropdown > .dropdown-toggle .caret {
+  border-top-color: #fff;
+  border-bottom-color: #fff;
+}
+
+.navbar .nav li.dropdown.open.active > .dropdown-toggle .caret {
+  border-top-color: #8CA0FF;                
+  border-bottom-color: #8CA0FF;
+}
+
+.white .navbar .nav li.dropdown > .dropdown-toggle .caret  {
+  border-top-color: #777777;
+  border-bottom-color: #777777;
+}
+.white .navbar .nav li.dropdown.open.active > .dropdown-toggle .caret {
+  border-top-color: #555555;                
+  border-bottom-color: #555555;
+}
+
+/*
+.btn-info:hover, .btn-info:focus {
+    background-color: #8CA0FF ;
+    background-image: none;
+}
+*/
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  background-color: #f5f5f5;
+  border-color: #ccc;
+  color: gray;
+}

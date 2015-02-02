@@ -33,11 +33,23 @@ river.model.Subtitle = Backbone.Model.extend({
     return this.track.endTime();
   },
 
+  text: function() {
+    return this.get("text");
+  },
+
   highlight: function() {
-    if (this.options.view_enabled) {
-      this.view.highlight();
-      this.track.highlight();
+    if (!this.options.view_enabled) return;  
+
+    if (typeof this.collection !== "undefined") {
+      if (this.collection.currentTrackHighlight) {
+        this.collection.currentTrackHighlight.unhighlight();
+      }
+
+      this.collection.currentTrackHighlight = this;
     }
+
+    this.view.highlight();
+    this.track.highlight();
   },
 
   overlapsPrev: function(time) {
@@ -56,12 +68,10 @@ river.model.Subtitle = Backbone.Model.extend({
 
   openEditor: function(options) {
     this.view.openEditor(options);
-    this.highlight();
   },
 
   closeEditor: function(options) {
     this.view.closeEditor(options);
-    this.unhighlight();
     this.track.unsetPauseOnTrackEnd();
   },
 

@@ -1,5 +1,8 @@
 class Video < ActiveRecord::Base
-  attr_accessible :artist, :genre, :name, :metadata, :url
+
+  include Rails.application.routes.url_helpers
+
+  attr_accessible :artist, :genre, :name, :metadata, :url, :language
 
   has_many :repositories
   has_many :users, :through => :repositories
@@ -16,6 +19,7 @@ class Video < ActiveRecord::Base
       :name => self.name,
       :genre => self.genre,
       :url => self.url,
+      :source_url => self.source_url,
       :aspect_ratio => self.aspect_ratio,
       :uploader_url => self.uploader_url,
       :uploader_username => self.uploader_username,
@@ -23,20 +27,28 @@ class Video < ActiveRecord::Base
     }
   end
 
-  def url
-    source_url  
+  def self.all_language_codes
+    self.select("DISTINCT language").map(&:language).compact
   end
 
   def aspect_ratio
-    self.metadata["data"]["aspectRatio"] 
+    self.metadata["data"]["aspectRatio"]
   end
 
   def duration
-    self.metadata["data"]["duration"] # youtube video duration  
+    self.metadata["data"]["duration"] # youtube video duration
   end
 
   def uploader_username
     self.metadata["data"]["uploader"]
+  end
+
+  def thumbnail_url
+    self.metadata["data"]["thumbnail"]["sqDefault"]
+  end
+
+  def thumbnail_url_hq
+    self.metadata["data"]["thumbnail"]["hqDefault"]
   end
 
   def uploader_url
@@ -50,12 +62,20 @@ class Video < ActiveRecord::Base
     end
   end
 
+  def title
+    name
+  end
+
+  def url
+    video_url(self)
+  end
+
   def published_repositories
-    self.repositories.published  
+    self.repositories.published
   end
 
   def to_param
-    self.token  
+    self.token
   end
 
 end

@@ -1,32 +1,52 @@
 river.ui.BasePlayer = Backbone.View.extend({
   initialize: function(options) {
     this.options = options || {};
+    this.initializeCommon();
+
+    if (this.options.video) {
+      this.initializeVideo();
+    } else {
+      this.initializeRepository();
+    }
+  },
+
+  initializeCommon: function() {
     this.repo = this.options.repo || {};
-    this.video = this.repo.video || {};
-    this.user = this.repo.user || {};
-
-    var targetSelector = this.options["targetSelector"] || "div#media";
-
-    var timings = this.repo.timings || [];
-    var mediaSource = typeof this.video.url === "undefined" ? "" : this.video.url;
+    this.video = this.options.video || this.repo.video || {};
 
     this.setupElement();
+
+    // initialize popcorn
+    var targetSelector = this.options["targetSelector"] || "div#media";
+    var mediaSource = typeof this.video.source_url === "undefined" ? "" : this.video.source_url;
     this.popcorn = this.loadMedia(targetSelector,mediaSource);
+
+    // player settings
     this.popcorn.volume(0.2);
 
+    // misc
     this.defineAttributeAccessors();
+    this.displayNoInternetConnectionIfNeeded();
+  },
+
+  initializeVideo: function() {
+    this.addPlayerControls();
+  },
+
+  initializeRepository: function() {
+    this.user = this.repo.user;
 
     this.preRepositoryInitHook();
+    this.addPlayerControls();
 
     this.repository = new river.model.Repository(this.repo);
     this.subtitles  = new river.model.SubtitleSet("",this.options);
-
     this.tracks = this.repository.tracks;
+
+    var timings = this.repo.timings || [];
     this.loadTracks(timings);
 
     this.bindEvents();
-
-    this.displayNoInternetConnectionIfNeeded();
   },
 
   displayNoInternetConnectionIfNeeded: function() {
@@ -43,7 +63,7 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   mediaDuration: function() {
-    return Math.floor(parseFloat(this.repo.video.duration) * 1000) / 1000;
+    return Math.floor(parseFloat(this.video.duration) * 1000) / 1000;
   },
 
   preRepositoryInitHook: function() {
@@ -79,7 +99,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     var media = this.options.media || "<div id='media'></div>";
 
     this.$mediaContainer.find("#iframe_container").append(media);
-
+    this.$media = this.$mediaContainer.find("#media");
   },
 
   loadMedia: function(targetSelector,url) {
@@ -99,6 +119,28 @@ river.ui.BasePlayer = Backbone.View.extend({
     Backbone.on("trackstart",this.onTrackStart.bind(this));
     this.$subtitleBar.on("mousedown",this.onSubtitleBarClick.bind(this));
     Backbone.on("trackend",this.onTrackEnd.bind(this));
+  },
+
+  addPlayerControls: function() {
+    $("#viewing_screen").after("<div class='player_controls_container'><div class='player_controls'></div></div>");    
+    $(".player_controls").append("<button type='button' class='backward_btn river_btn'><i class='glyphicon glyphicon-backward'></i> </button> ");
+    $(".player_controls").append("<button type='button' class='play_btn river_btn'><i class='glyphicon glyphicon-play'></i></button>");
+    $(".player_controls").append("<button type='button' class='pause_btn river_btn'><i class='glyphicon glyphicon-pause'></i></button>");
+    $(".player_controls").append("<button type='button' class='forward_btn river_btn'><i class='glyphicon glyphicon-forward'></i> </button> ");
+    $(".player_controls").append("<div class='player_timeline_container'></div>");
+    $("#summary").appendTo(".player_timeline_container")
+    $(".player_controls").append("<button type='button' class='expand_btn river_btn'><i class='glyphicon glyphicon-fullscreen'></i></button>");
+
+    this.$playBtn = $(".play_btn");
+    this.$pauseBtn = $(".pause_btn");
+    this.$backwardBtn = $(".backward_btn");
+    this.$forwardBtn = $(".forward_btn");
+    this.$expandBtn = $(".expand_btn");
+    this.$pauseBtn.hide();
+    
+    if (this.timeline) {
+      this.timeline.setTimelineWidth();
+    }
   },
 
   onTimelineSeekHandler: function(time) {

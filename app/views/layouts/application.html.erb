@@ -41,27 +41,38 @@
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
 
-    <nav class="navbar navbar-fixed-top" id="header">
-      <div class="navbar-inner">
-        <div class="container nav-container">
-          <a class="brand" href="<%= root_url %>"> Yasub</a>
-          <ul class="nav menu-nav">
-            <li class="divider-vertical"></li>
-            <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= videos_url %>">Videos</a></li>
-<!--             <li class="divider-vertical"></li>
-            <li class="<%= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li>
- -->
-            <li class="divider-vertical"></li>
-            <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= videos_new_url %>"><i class="icon-plus"></i> Create</a></li>
-            <!-- <li class="divider-vertical"></li> -->
-<!--             <li class="<%= 'active' if params[:controller] == 'home' && params[:action] == 'how_to_use' %>"><a href="/how_to_use">How to Use</a></li>
- -->            <li class="divider-vertical"></li>
-          </ul>
 
-          <ul class="nav pull-right">
-            <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">About</a></li>
+    <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="<%= root_path %>">Yasub</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= repositories_url %>">Browse</a></li>
+<!--             <li class="divider-vertical"></li>
+            <li class="<%#= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li>
+            <!--             <li class="divider-vertical"></li>
+ -->            
+            <!-- <li class="divider-vertical"></li> -->
+<!--             <li class="<%#= 'active' if params[:controller] == 'home' && params[:action] == 'how_to_use' %>"><a href="/how_to_use">How to Use</a></li>
+ -->      
+        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= user_signed_in? ? videos_new_url : "#{login_url}?user_action=subtitle_a_video" %>"><i class="glyphicon glyphicon-plus"></i> Create</a></li>
+        <li class="divider-vertical"></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">About</a></li>
             <li class="divider-vertical"></li>
-            <% if user_signed_in?  %>
+             <% if user_signed_in?  %>
               <li class="dropdown">
                 <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
                   <%= current_user.username %><b class="caret"></b>
@@ -78,12 +89,12 @@
               <li class="divider-vertical"></li>
               <li><%= link_to "Login", new_user_session_url %></li>
             <% end %>
-          </ul>
-        </div>
-      </div>
-    </nav>
+       </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
-    <div id="main_container">
+    <div class="container">
             <div id="flash_container">
                 <% if flash[:error] %>
                 <div id="flash_error" class="flash alert alert-block"><%= flash[:error] %></div>
@@ -171,49 +182,32 @@
       </div>
     </div>
 
-
-    <div id="new_project_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Subtitle a Video</h3>
-      </div>
-      <div class="modal-body">
-          <div class='row span7'>
-            <form class="sub center">
-              <div class="control-group">
-                <div class="input-append">
-                  <input name="media_url" class="media_url span4" type="text" placeholder="Paste youtube url">
-                  <button type="button" class="btn btn-danger sub_btn" data-loading-text="Loading...">Subtitle It</button>
+    <% if @repo %>
+      <div id="share_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h3 id="myModalLabel">Share</h3>
+            </div>
+            <div class="modal-body">
+              <div class="social_share_container row">
+                <div class="col-md-1 col-md-offset-1">
+                  <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.url %>" target="_blank">
+                     <%= image_tag "fb-32.png" %>
+                  </a>
+                </div>
+                <div class="col-md-1">
+                  <a href="https://plus.google.com/share?url=<%= @repo.url %>" target="_blank">
+                     <%= image_tag "gplus-32.png"  %>
+                  </a>
                 </div>
               </div>
-            </form>
-          </div>
-      </div>
-    </div>
-
-
-    <% if @repo %>
-      <div id="share_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h3 id="myModalLabel">Share</h3>
-        </div>
-        <div class="modal-body">
-          <div class="social_share_container row">
-            <div class="span offset1">
-              <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.url %>" target="_blank">
-                 <%= image_tag "fb-32.png" %>
-              </a>
+              <div class="row">
+                <h5 class="col-md-1 col-md-offset-1" style="position: relative; top: -5px; margin-right: -20px;">Link</h5>
+                <input class="col-md-4 share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
+              </div>
             </div>
-            <div class="span">
-              <a href="https://plus.google.com/share?url=<%= @repo.url %>" target="_blank">
-                 <%= image_tag "gplus-32.png"  %>
-              </a>
-            </div>
-          </div>
-          <div class="row">
-            <h5 class="span1 offset1" style="position: relative; top: -5px; margin-right: -20px;">Link</h5>
-            <input class="span4 share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
           </div>
         </div>
       </div>

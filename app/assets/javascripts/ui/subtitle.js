@@ -25,8 +25,8 @@ river.ui.Subtitle = Backbone.View.extend({
 
     var content = "<div class='start_time'></div>" +
                   "<div class='end_time'></div>" +
-                  "<div class='text input-append'>"+ 
-                    // "<a class='btn btn-inverse sub_enter'>Enter</a>" +
+                  "<div class='text input-group'>"+ 
+                    "<button class='btn btn-xs sub_enter'><i class='glyphicon glyphicon-refresh'></i></button>" +
                   "</div>" +
                   "<div class='delete'>" +
                     "<a href='#' class='delete_sub_line'>x</a>" +
@@ -40,27 +40,19 @@ river.ui.Subtitle = Backbone.View.extend({
 
     this.$text = this.$el.find(".text");
 
-    this.$subEnter   = this.$el.find(".sub_enter");
-
     this.$close = this.$el.find(".delete_sub_line");
     this.$close.hide();
 
     if ($("#editor").size() === 1) {
-      if (repo.parent_repository_id) {
-        var parentText = "<div class='parent_text'><span></span></div>";
-        this.$text.before(parentText);
-
-        this.$parentText = this.$el.find(".parent_text span");
-        this.$parentText.text(this.model.get("parent_text"));
-
-        this.$endTime.remove();
-        this.$close.remove();
-      }
       this.editableStartEndTime();
       this.editableText();
     } else {
       this.readOnlyStartEndTime();
       this.readOnlyText();
+    }
+
+    if (repo.parent_repository_id) {
+      this.showParentText();
     }
 
     this.render();
@@ -75,6 +67,14 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$text.append("<span></span>");
   },
 
+  showParentText: function() {
+    var parentText = "<div class='parent_text'><span></span></div>";
+    this.$text.before(parentText);
+
+    this.$parentText = this.$el.find(".parent_text span");
+    this.$parentText.text(this.model.get("parent_text"));
+  },
+
   createInput: function() {
     return $("<input class='sub_text_area' placeholder='Enter Text'>");
   },
@@ -83,32 +83,7 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$startTime.append(this.createInput());
     this.$endTime.append(this.createInput());
 
-    if (!repo.parent_repository_id) {
-      this.$startTime.find("input").spinner({
-        min: 0, 
-        spin: this.startTimeSpin.bind(this)
-      });
-
-      this.$endTime.find("input").spinner({
-        min: 0, 
-        spin: this.endTimeSpin.bind(this)
-      });
-
-      // reset events set by jquery ui spinner
-      $.each(["mousewheel", "keydown", "keyup"], function(index, eventName){
-        this.$startTime.find("input").off(eventName);
-        this.$endTime.find("input").off(eventName);
-      }.bind(this));
-
-
-      this.$startTime.find("input").data("field","start_time");
-      this.$startTime.find(".ui-spinner-button").data("field","start_time");
-      this.$startTime.find(".ui-spinner-button span").data("field","start_time");
-
-      this.$endTime.find("input").data("field","end_time");
-      this.$endTime.find(".ui-spinner-button").data("field","end_time");
-      this.$endTime.find(".ui-spinner-button span").data("field","end_time");
-    }
+    this.addSpinnerToStartEndTime();
 
     this.$startTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
     this.$endTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
@@ -124,7 +99,33 @@ river.ui.Subtitle = Backbone.View.extend({
 
     this.$startTime.find("input").on("blur", this.editStartTimeFinished.bind(this));
     this.$endTime.find("input").on("blur", this.editEndTimeFinished.bind(this));
+  },
 
+  addSpinnerToStartEndTime: function() {
+    this.$startTime.find("input").spinner({
+      min: 0, 
+      spin: this.startTimeSpin.bind(this)
+    });
+
+    this.$endTime.find("input").spinner({
+      min: 0, 
+      spin: this.endTimeSpin.bind(this)
+    });
+
+    // reset events set by jquery ui spinner
+    $.each(["mousewheel", "keydown", "keyup"], function(index, eventName){
+      this.$startTime.find("input").off(eventName);
+      this.$endTime.find("input").off(eventName);
+    }.bind(this));
+
+
+    this.$startTime.find("input").data("field","start_time");
+    this.$startTime.find(".ui-spinner-button").data("field","start_time");
+    this.$startTime.find(".ui-spinner-button span").data("field","start_time");
+
+    this.$endTime.find("input").data("field","end_time");
+    this.$endTime.find(".ui-spinner-button").data("field","end_time");
+    this.$endTime.find(".ui-spinner-button span").data("field","end_time");
   },
 
   startTimeSpin: function(event, ui) {
@@ -134,11 +135,13 @@ river.ui.Subtitle = Backbone.View.extend({
     if (!this.overlapsPrev(this.model.startTime()) && this.overlapsPrev(time)) {
       time = this.model.prev().endTime() + editor.TRACK_MARGIN;
       event.preventDefault();
+      this.showInvalidFading(this.model.prev(), ".end_time");
     }
 
     if (!this.overlapsNext(this.model.startTime()) && this.overlapsNext(time)) {
       time = this.model.next().startTime() - editor.TRACK_MARGIN;
       event.preventDefault();
+      this.showInvalidFading(this.model.next(), ".start_time");
     }
 
     this.model.track.setStartTime(time);
@@ -150,14 +153,23 @@ river.ui.Subtitle = Backbone.View.extend({
     if (!this.overlapsPrev(this.model.endTime()) && this.overlapsPrev(time)) {
       time = this.model.prev().endTime() + editor.TRACK_MARGIN;
       event.preventDefault();
+      this.showInvalidFading(this.model.prev(), ".end_time");
     }
 
-    if (!this.overlapsPrev(this.model.endTime()) && this.overlapsNext(time)) {
+    if (!this.overlapsNext(this.model.endTime()) && this.overlapsNext(time)) {
       time = this.model.next().startTime() - editor.TRACK_MARGIN;
       event.preventDefault();
+      this.showInvalidFading(this.model.next(), ".start_time");
     }
 
     this.model.track.setEndTime(time);
+  },
+
+  showInvalidFading: function(subtitle, selector) {
+    subtitle.view.showInvalid(selector);
+    setTimeout(function() {
+      subtitle.view.showValid(selector);
+    }.bind(this), 300);
   },
 
   overlapsPrev: function(time) {
@@ -242,12 +254,20 @@ river.ui.Subtitle = Backbone.View.extend({
     }
   },
 
-  showInvalid: function() {
-    this.$el.addClass("invalid");
+  showInvalid: function(selector) {
+    if (typeof selector !== "undefined") {
+      this.$el.find(selector).addClass("invalid");
+    } else {
+      this.$el.addClass("invalid");
+    }
   },
 
-  showValid: function() {
-    this.$el.removeClass("invalid");
+  showValid: function(selector) {
+    if (typeof selector !== "undefined") {
+      this.$el.find(selector).removeClass("invalid");
+    } else {
+      this.$el.removeClass("invalid");
+    }
   },
 
   subtitleLineEdit: function() {
@@ -343,25 +363,11 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   openEditor: function(options) {
-    options = options || {};
-
-    if (["start_time","end_time","text"].indexOf(options.field) === -1) {
-      options.field = "text";
-    }
-
-    var $input = this.$el.find("." + options.field).find("input");
-    $input.focus();  
+    this.$el.find(".text input").focus();
   },
 
   closeEditor: function(options) {
-    options = options || {};
-
-    if (["start_time","end_time","text"].indexOf(options.field) === -1) {
-      options.field = "text";
-    }
-
-    var $input = this.$el.find("." + options.field).find("input");
-    $input.blur();
+    this.$el.find(".text input").blur();
   }
 
 });

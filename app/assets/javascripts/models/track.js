@@ -64,6 +64,10 @@ river.model.Track = Backbone.Model.extend({
     return this.collection.at(index + 1);
   },
 
+  isLast: function() {
+    return this.collection.indexOf(this) === this.collection.length - 1;  
+  },
+
   setPauseOnTrackEnd: function() {
     this.pauseOnTrackEnd = true;
   },
@@ -193,12 +197,10 @@ river.model.Track = Backbone.Model.extend({
 
   openEditor: function() {
     this.expandedView.openEditor();
-    this.highlight();
   },
 
   closeEditor: function() {
     this.expandedView.closeEditor();
-    this.unhighlight();  
   },
 
   toJSON: function() {
@@ -315,6 +317,14 @@ river.model.Track = Backbone.Model.extend({
   },
 
   highlight: function() {
+    if (typeof this.collection !== "undefined") {
+      if (this.collection.currentTrackHighlight) {
+        this.collection.currentTrackHighlight.unhighlight();
+      }
+
+      this.collection.currentTrackHighlight = this;
+    }
+
     _.each(this.views,function(view){
       view.highlight();
     });

@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
          :omniauthable, 
          :omniauth_providers => [:google_oauth2]
 
+  acts_as_voter   
+
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :bio, :email, :password, :password_confirmation, :remember_me,
                   :avatar, :avatar_cache, :remove_avatar
@@ -105,6 +107,14 @@ class User < ActiveRecord::Base
 
   def admin?
     !!self.is_admin  
+  end
+
+  def is_moderator?
+    is_admin?  
+  end
+
+  def can_downvote?(obj)
+    true
   end
 
   def to_param

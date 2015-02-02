@@ -1,64 +1,85 @@
 <% set_meta_tags :site => 'Yasub', :title => 'Subtitle Tool for Youtube Videos', :description => "Yasub lets you subtitle & caption Youtube Videos." %>
 
-<div id='demo'>
-  <div id='demo-background'>
-  </div>
-  <div id='demo-container' class='container'>
-    <div class='row center main-heading'>
+<div class='container intro'>
+  <div class="section_block col-md-10 col-md-offset-1">
+    <div class="section_header">
+      About
     </div>
-    <div class='row'>
-      <div class='span6'>
-        <div id="river_player" data-repo='<%= @autoplay_repo ? @autoplay_repo.serialize.to_json : "" %>'>
-          <div id='autoplay_video_label'>Sample</div>
-          <%= render 'videos/player' %>
-        </div>
-      </div>
-      <div class='span6 call-to-action'>
-        <p id='description'>Video Subtitle Tool</p>
-        <p></p>
-        <br/>
-        <ul>
-          <li>Subtitle existing online videos for FREE</li>
-          <li>Supports Any Language</li>
-          <li>Works even for videos you do not own</li>
-          <li>Currently supports Youtube only</li>
-        </ul>
-        <br/>
-        <a class="btn btn-danger btn-large start_subtitling_btn" data-toggle='modal' data-target='#new_project_modal'>Start Subtitling</a>
-        or <a href="/how_to_use">see our tutorial</a>
-      <br/>
+    <div class="section_body">
+      <p>
+        Yasub is a community of people who subtitle internet videos into their own languages.
+        Through subtitles, one can discover and understand interesting videos from around the world such as ones from Brazil, China, Japan, or Russia. Go ahead and browse translated videos below according to country, or subtitle a video yourself.
+      </p>
+
+      <div class='home_action_container'>
+        <!-- <a href="" class='btn btn  btn-large request_subtitle_btn'>Request</a> -->
+        <a href="<%= user_signed_in? ? videos_new_url : "#{login_url}?user_action=subtitle_a_video" %>" class='btn btn-danger btn-large'>Subtitle a Video</a>
       </div>
     </div>
   </div>
 </div>
 
-<div id='summary-container'>
-  <div class='container'>
-    <div class='row'>
-      <div class="videos span12">
-        <h4 class="center">Recently created</h4>
-        <ul class="thumbnails user">
-          <% Repository.published.recent.limit(6).each do |repo| %>
-              <li class="span2">
-                <div class="thumbnail center">
-                  <span class='repo_owner'>
-                    by <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
-                  </span>
-                  <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                    <img src="<%= repo.thumbnail_url %>" alt="">
-                  </a>
-                  <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                    <h6 class='video_name'><%= repo.video.name %></h6>
-                  </a>
-                  <div class='stats'>
-                  </div>
-                  <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span>
-
-                </div>
+<div class='container home_country_index'>
+  <div class="section_block col-md-10 col-md-offset-1">
+    <div class="section_header">
+      Countries
+    </div>
+    <div class="section_body">
+      <% Language.language_code_to_country_code_map.values.each_slice(5).to_a.each do |country_codes| %>
+        <div class='section_column'>
+          <ul>
+            <% country_codes.each do |country_code| %>
+              <li>
+                <a href="<%= repositories_url(country_code: country_code) %>">
+                  <%= Language.country_code_to_country_name[country_code] %>
+                </a>
+                <span class='country_video_count'>
+                  <% repo_count = @repository_counts_by_country[country_code].to_i %>
+                  <%= repo_count > 0 ? "(#{repo_count})" : "" %>
+                </span>
               </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<div class='container home_video_index'>
+  <div class="section_block col-md-10 col-md-offset-1">
+    <div class="section_header">
+      Videos
+    </div>
+    <div class="section_body">
+      <% Repository.top_grouped_by_source_language.each do |language, repos| %>
+        <div class='country_video_index_header'>
+          <span class='country_label'><%= Language.language_code_to_country_name(language) %></span>
+        </div>
+        <div class='row videos '>
+          <% repos.each do |repo| %>
+            <div class='col-xs-6 col-md-2'>
+              <div class="thumbnail center">
+                <span class='repo_owner'>
+                  by <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
+                </span>
+                <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                  <img src="<%= repo.thumbnail_url %>" alt="">
+                </a>
+                <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                  <h6 class='video_name'><%= repo.video.name %></h6>
+                </a>
+                <div class='stats'>
+                </div>
+                <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span>
+              </div>
+            </div>
           <% end %>
-        </ul>
-      </div>
+
+          <!-- <a href="#" class="see_more_btn btn btn-primary">See More..</a> -->
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

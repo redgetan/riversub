@@ -28,7 +28,8 @@ river.ui.Timeline = Backbone.View.extend({
     this.$summary_container = $("#media_container");
 
     var summary = "<div id='summary' class='timeline' >" +
-                     "<div class='window_slider'></div>" +
+                     // "<div class='window_slider'></div>" +
+                     "<div id='time_float'></div>" +
                    "</div>";
 
     this.$summary_container.find("#viewing_screen").after(summary);
@@ -38,7 +39,7 @@ river.ui.Timeline = Backbone.View.extend({
     this.$time_float.hide();
 
     this.$seek_head = $("#seek_head");
-    this.$seek_head.css("left",this.$summary.position().left);
+    this.$seek_head.hide();
 
     this.$seek_head.draggable({
       cursor: "pointer",
@@ -48,7 +49,7 @@ river.ui.Timeline = Backbone.View.extend({
     });
 
     // current time display indicator
-    this.$time_indicator = $("<div class='time_indicator'>0</div>");
+    this.$time_indicator = $("<div class='time_indicator'>00:00:00.000</div>");
     $("#subtitle_bar").append(this.$time_indicator);
 
     if (!this.disable_expanded) {
@@ -89,11 +90,11 @@ river.ui.Timeline = Backbone.View.extend({
       this.$scrubber_expanded = $("#expanded .scrubber");
 
       var move_left_btn = "<a href='#' class='move_left_btn'>" +
-                           "<i class='icon-chevron-left'></i>" +
+                           "<i class='glyphicon glyphicon-chevron-left'></i>" +
                           "</a>";
 
       var move_right_btn = "<a href='#' class='move_right_btn'>" +
-                             "<i class='icon-chevron-right'></i>" +
+                             "<i class='glyphicon glyphicon-chevron-right'></i>" +
                            "</a>";
 
       this.$expanded_container.append(move_left_btn);
@@ -212,6 +213,7 @@ river.ui.Timeline = Backbone.View.extend({
 
   bindEvents: function() {
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+    this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
 
     this.$summary.on("mousedown",this.onMouseDownHandler.bind(this));
     this.$summary.on("mousemove",this.onMouseMoveHandler.bind(this));
@@ -240,6 +242,11 @@ river.ui.Timeline = Backbone.View.extend({
       Backbone.on("trackresize",this.onTrackResize.bind(this));
       Backbone.on("trackdrag",this.onTrackDrag.bind(this));
     }
+  },
+
+  onLoadedMetadata: function() {
+    this.renderSeekHead();
+    this.$seek_head.show(); 
   },
 
   onTrackChange: function(track) {
@@ -338,7 +345,7 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   getSecondsFromCurrentPosition: function($container,eventPageX) {
-    var timelineX = $container.position().left;
+    var timelineX = $container.offset().left;
     var posX = eventPageX - timelineX;
     var seconds = posX / this.resolution($container) + $container.scrollLeft() / this.resolution($container);
     seconds = Math.round(seconds * 1000) / 1000;
@@ -362,7 +369,7 @@ river.ui.Timeline = Backbone.View.extend({
 
   onDocumentMouseUpHandler: function(event) {
     this.seekmode = false;
-    if ($(event.target).attr("id") !== "summary") {
+    if ($(event.target).attr("id") !== "summary" && $(event.target).closest("#summary").length === 0) {
       this.$time_float.hide();
     }
   },
@@ -375,7 +382,7 @@ river.ui.Timeline = Backbone.View.extend({
     if (seconds > this.mediaDuration) seconds = this.mediaDuration;
 
     this.$time_float.text(this.stringifyTimeShort(seconds));
-    this.$time_float.css("left",posX - this.$time_float.width() / 2);
+    this.$time_float.css("left",posX - this.$summary.offset().left - this.$time_float.width() / 2);
   },
 
   onSeekHeadDragHandler: function(event) {
@@ -506,7 +513,7 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   renderSeekHead: function() {
-    // this.renderInContainer(this.$summary, this.$seek_head, { left: this.media.currentTime.toFixed(3) });
+    this.renderInContainer(this.$summary, this.$seek_head, { left: this.media.currentTime.toFixed(3) });
     var time = Math.round(this.media.currentTime * 1000) / 1000;
     var relativePixelPos = time * this.resolution(this.$summary);
     this.$seek_head.css('left',this.$summary.position().left + relativePixelPos)

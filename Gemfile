@@ -12,17 +12,15 @@ gem 'mysql2'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'libv8', '~> 3.11.8'
   gem 'therubyracer'
+  gem "twitter-bootstrap-rails", :git => "https://github.com/redgetan/twitter-bootstrap-rails", :ref => "34f2ab7d17dc438276816e8acd9e698b5ed9e03b"
 
   gem 'turbo-sprockets-rails3'
   gem 'uglifier', '>= 1.0.3'
-  gem "less-rails"
-  gem "twitter-bootstrap-rails", "~> 2.2.6"
   gem 'jquery-ui-rails'
 end
 
@@ -42,6 +40,7 @@ group :development, :test do
   gem 'factory_girl', "~> 4.0"
   gem "factory_girl_rails", "~> 4.0"
   gem 'qunit-rails'
+  gem 'view_inspect', "~> 0.3.8"
   #gem "rbtrace", :path => "/Users/reg/ruby/rbtrace"
 end
 
@@ -56,11 +55,14 @@ gem 'devise'
 gem "rmagick"
 gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 gem 'meta-tags', :require => 'meta_tags'
-gem 'kaminari'
+gem 'kaminari', '~> 0.16.1'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem "omniauth-google-oauth2"
 gem "font-awesome-rails"
 gem "cancan"
+gem "htmlentities"
+gem 'acts_as_votable', '~> 0.10.0'
+gem 'acts_as_commentable_with_threading', '= 1.2.0'
 
 

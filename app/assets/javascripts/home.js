@@ -51,7 +51,7 @@ $(document).ready(function(){
 
   var action = river.controller[river.route];
   if (typeof action !== "undefined") {
-    action.call();  
+    action.call();
   }
 
   $("#layout_new_project_btn").hover(
@@ -70,8 +70,19 @@ $(document).ready(function(){
     $(this).find("h6").css("color","gray");
   });
 
-  $(".share_btn").on("click",function(event) {
+  $(".share_repo_btn").on("click",function(event) {
     event.preventDefault();
+
+    $(".share_container").toggle();
+    var $icon = $(this).find("i");
+
+    if ($icon.hasClass("glyphicon-chevron-down")) {
+      $icon.removeClass("glyphicon-chevron-down");
+      $icon.addClass("glyphicon-chevron-up");
+    } else {
+      $icon.removeClass("glyphicon-chevron-up");
+      $icon.addClass("glyphicon-chevron-down");
+    }
   });
 
   $('#share_modal').on('shown', function () {
@@ -86,7 +97,7 @@ $(document).ready(function(){
   $("form.sub").on("submit",function(event) {
     event.preventDefault();
 
-    var url = $(this).find(".media_url").val();
+    var url = $(this).find(".source_url").val();
 
     $(this).find(".sub_btn").button('loading');
 
@@ -97,13 +108,6 @@ $(document).ready(function(){
       throw e;
     }
 
-  });
-
-  $(".new_repo_btn").on("click",function(event) {
-    event.preventDefault();
-    var url = player.repo.video.url;
-    var forkedRepoToken = $(event.target).data("forked-repo-token");
-    openSubtitleEditor(url, forkedRepoToken);
   });
 
 });
@@ -144,16 +148,12 @@ function openSubtitleEditor(url, forkedRepoToken) {
       url: "/videos/sub",
       type: "POST",
       data: {
-        media_url : url,
+        source_url : url,
         video_metadata: metadata
       },
       dataType: "json",
       success: function(data,status) {
-        if (typeof forkedRepoToken !== "undefined") {
-          var redirectUrl = data.redirect_url + "?forked_repo_token=" + forkedRepoToken;
-        } else {
-          var redirectUrl = data.redirect_url;
-        }
+        var redirectUrl = data.redirect_url;
         window.location.href = redirectUrl;
       },
       error: function(data) {

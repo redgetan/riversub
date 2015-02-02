@@ -1,70 +1,17 @@
-<% set_meta_tags :site => 'Yasub', :title => "#{@repo.video.name}", :description => "Watch a Youtube Video with user generated captions/subtitles" %>
+<% set_meta_tags :site => 'Yasub', :title => @video.name, :description => "Watch a Youtube Video with user generated captions/subtitles", :keywords => @video.name[0..255].split(" ") %>
 
-<div class="background"></div>
-<div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
+<div id='river_player' class='show container public' data-repo='<%= @video.serialize.to_json %>'>
   <div class="row">
-    <div class='center span9 player_column'>
-      <h5 id='repo_label'>
-        <div>
-          <a href="<%= @repo.url %>"><%= @repo.video.name %></a>
-        </div>
-      </h5>
-
-      <h5 id="subtitler" class="pull-right">
-        <% if @repo.user %>
-          <span>
-            <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><strong><%= @repo.user.username %></strong></a>
-            <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
-          </span>
-        <% end %>
-      </h5>
-
-      <%= render 'player' %>
-
-      <div id="video_information" class="row">
-        <div id="" class="span9 player_column">
-          <% unless @repo.is_published? %>
-            <div id="finalize" class="" style="height: 140px;">
-              <p style="padding: 10px;">This video is currently private. To make it visible to the public, click publish.</p>
-              <%= form_tag @repo.publish_url, method: "post" do %>
-                <%= submit_tag 'Publish', class: "river_btn", id: "publish_btn" %>
-              <% end %>
-            </div>
-          <% end %>
-
-          <div class="primary_action_items">
-            <div class="contribute action_item pull-left">
-              <% if @repo.owned_by?(current_user) %>
-                <a class='subtitle_editor_btn river_btn' href="<%= @repo.editor_url %>">Edit</a>
-              <% end %>
-              <a class='new_repo_btn river_btn' data-forked-repo-token="<%= @repo.token %>" href="#"><i class="icon-plus"></i> Subtitle</a>
-            </div>
-<!--             <div class="upvote action_item pull-left">
-              <a class='upvote_btn river_btn' href="#">
-                <i class="icon-arrow-up"></i>
-              </a>
-            </div>
-            <div class="downvote action_item pull-left">
-              <a class='downvote_btn river_btn' href="#">
-                <i class="icon-arrow-down"></i>
-              </a>
-            </div>
- -->          </div>
-
-<!--           <div class='vote_points pull-left'>
-            <span>
-              45
-              points
-            </span>
-          </div>
- -->
-          <!--
-          -->
-
-          <%= render 'player_details' %>
-        </div>
-      </div>
-
+    <div class="col-lg-9 player_column">
+      <%= render 'videos/player' %>
+      <%= render 'videos/player_info' %>
+    </div>
+    <div class='col-lg-5'>
+      <%= render 'videos/player_details' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-9 player_column">
     </div>
   </div>
 </div>

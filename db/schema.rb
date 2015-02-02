@@ -11,13 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141012011911) do
+ActiveRecord::Schema.define(:version => 20150201215818) do
 
-  create_table "conversations", :force => true do |t|
-    t.string   "subject",    :default => ""
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+  create_table "comments", :force => true do |t|
+    t.integer  "commentable_id",                                    :default => 0
+    t.string   "commentable_type"
+    t.string   "title"
+    t.text     "body"
+    t.string   "subject"
+    t.integer  "user_id",                                           :default => 0,     :null => false
+    t.integer  "parent_comment_id"
+    t.integer  "lft"
+    t.integer  "rgt"
+    t.datetime "created_at",                                                           :null => false
+    t.datetime "updated_at",                                                           :null => false
+    t.boolean  "is_deleted",                                        :default => false
+    t.decimal  "confidence",        :precision => 20, :scale => 19, :default => 0.0,   :null => false
+    t.string   "short_id"
+    t.boolean  "is_moderated",                                      :default => false
   end
+
+  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "group_repositories", :force => true do |t|
     t.integer  "group_id"
@@ -50,40 +65,6 @@ ActiveRecord::Schema.define(:version => 20141012011911) do
     t.datetime "updated_at",                    :null => false
   end
 
-  create_table "notifications", :force => true do |t|
-    t.string   "type"
-    t.text     "body"
-    t.string   "subject",              :default => ""
-    t.integer  "sender_id"
-    t.string   "sender_type"
-    t.integer  "conversation_id"
-    t.boolean  "draft",                :default => false
-    t.datetime "updated_at",                              :null => false
-    t.datetime "created_at",                              :null => false
-    t.integer  "notified_object_id"
-    t.string   "notified_object_type"
-    t.string   "notification_code"
-    t.string   "attachment"
-    t.boolean  "global",               :default => false
-    t.datetime "expires"
-  end
-
-  add_index "notifications", ["conversation_id"], :name => "index_notifications_on_conversation_id"
-
-  create_table "receipts", :force => true do |t|
-    t.integer  "receiver_id"
-    t.string   "receiver_type"
-    t.integer  "notification_id",                                  :null => false
-    t.boolean  "is_read",                       :default => false
-    t.boolean  "trashed",                       :default => false
-    t.boolean  "deleted",                       :default => false
-    t.string   "mailbox_type",    :limit => 25
-    t.datetime "created_at",                                       :null => false
-    t.datetime "updated_at",                                       :null => false
-  end
-
-  add_index "receipts", ["notification_id"], :name => "index_receipts_on_notification_id"
-
   create_table "repositories", :force => true do |t|
     t.integer  "video_id",                                :null => false
     t.integer  "user_id"
@@ -94,22 +75,13 @@ ActiveRecord::Schema.define(:version => 20141012011911) do
     t.string   "language"
     t.integer  "parent_repository_id"
     t.boolean  "is_youtube_imported",  :default => false
+    t.boolean  "is_template",          :default => false
+    t.string   "title"
   end
 
   create_table "settings", :force => true do |t|
     t.string "key"
     t.string "value"
-  end
-
-  create_table "subtitle_requests", :force => true do |t|
-    t.integer  "video_id",                                    :null => false
-    t.integer  "user_id",                                     :null => false
-    t.string   "from_language"
-    t.string   "to_language"
-    t.decimal  "price",         :precision => 8, :scale => 2
-    t.string   "status"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
   end
 
   create_table "subtitles", :force => true do |t|
@@ -126,14 +98,6 @@ ActiveRecord::Schema.define(:version => 20141012011911) do
     t.float    "start_time"
     t.float    "end_time"
     t.integer  "subtitle_id"
-  end
-
-  create_table "translations", :force => true do |t|
-    t.integer  "subtitle_id", :null => false
-    t.string   "language"
-    t.text     "text"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -166,8 +130,26 @@ ActiveRecord::Schema.define(:version => 20141012011911) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.text     "metadata"
-    t.string   "url"
     t.string   "token"
+    t.string   "language"
+    t.string   "source_url"
   end
+
+  create_table "votes", :force => true do |t|
+    t.integer  "votable_id"
+    t.string   "votable_type"
+    t.integer  "voter_id"
+    t.string   "voter_type"
+    t.boolean  "vote_flag"
+    t.string   "vote_scope"
+    t.integer  "vote_weight"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "votes", ["votable_id", "votable_type", "vote_scope"], :name => "index_votes_on_votable_id_and_votable_type_and_vote_scope"
+  add_index "votes", ["votable_id", "votable_type"], :name => "index_votes_on_votable_id_and_votable_type"
+  add_index "votes", ["voter_id", "voter_type", "vote_scope"], :name => "index_votes_on_voter_id_and_voter_type_and_vote_scope"
+  add_index "votes", ["voter_id", "voter_type"], :name => "index_votes_on_voter_id_and_voter_type"
 
 end

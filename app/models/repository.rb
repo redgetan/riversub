@@ -3,29 +3,33 @@ class Repository < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   paginates_per 20
+  acts_as_votable
+  acts_as_commentable
 
   belongs_to :video
   belongs_to :user
 
   has_many :subtitles
   has_many :timings
+  has_many :comments, :foreign_key => "commentable_id"
 
   has_many :group_repositories
   has_many :groups, through: :group_repositories
 
-  attr_accessible :video_id, :user_id, :token, :is_published, :language, :parent_repository_id
+  attr_accessible :video_id, :user_id, :video, :user, :token,
+                  :is_published, :language, :parent_repository_id, :title
 
   validates :video_id, :presence => true
   validates :token, :uniqueness => true, on: :create
 
   before_validation :generate_token
-  before_save :auto_publish_anonymous_repo
+  # before_save :auto_publish_anonymous_repo
 
 
   # scope :with_timings_count, select("repositories.*, COUNT(timings.id) timings_count")
   #                              .joins("LEFT JOIN timings on repositories.id = timings.repository_id")
   #                              .group("repositories.id")
-  
+
   scope :anonymously_subtitled, where("user_id IS NULL")
   scope :user_subtitled,        where("user_id IS NOT NULL")
   scope :published,             where("is_published is true")
@@ -44,12 +48,47 @@ class Repository < ActiveRecord::Base
               .recent
               .group("user_id")
               .limit(num_of_entries)
-              .map(&:repo_id)  
+              .map(&:repo_id)
+  end
+
+  def self.top_grouped_by_source_language(num_of_entries = 6)
+    languages = Video.all_language_codes
+    repo_with_video = self.published.joins(:video)
+
+    languages.inject({}) do |result, language|
+      repos = repo_with_video.where("videos.language = ?", language)
+                             .order("repositories.updated_at DESC")
+                             .limit(num_of_entries)
+
+      result.merge({ language => repos })
+    end
+  end
+
+  def self.repository_counts_by_language
+    self.select("videos.language, COUNT(*) as repo_count")
+        .joins(:video)
+        .published
+        .group("videos.language")
+        .to_a
+        .inject({}) do |result, record|
+      result.merge({ record.language => record.repo_count })
+    end
+  end
+
+  def self.repository_counts_by_country
+    repository_counts_by_language.inject({}) do |result, (language_code, repo_count)|
+      country_code = Language.language_code_to_country_code_map[language_code]
+      result.merge({ country_code => repo_count })
+    end
   end
 
   def self.homepage_autoplay_repo
     repo_id = Setting.get(:homepage_autoplay_repository_id).to_s.to_i
     self.find_by_id(repo_id)
+  end
+
+  def self.templates
+    where("is_template is true")
   end
 
   def filename
@@ -65,7 +104,7 @@ class Repository < ActiveRecord::Base
   end
 
   def url
-    video_url(self.token)
+    repo_url(self.token)
   end
 
   def owner_profile_url
@@ -77,23 +116,43 @@ class Repository < ActiveRecord::Base
   end
 
   def editor_url
-    editor_video_url(self.token)
+    editor_repo_url(self.token)
+  end
+
+  def fork_url
+    fork_repo_url(self.token)
   end
 
   def editor_setup_url
-    editor_video_setup_url(self.token)
+    editor_repo_setup_url(self.token)
   end
 
   def thumbnail_url
     self.video.metadata["data"]["thumbnail"]["sqDefault"]
   end
 
+  def thumbnail_url_hq
+    self.video.metadata["data"]["thumbnail"]["hqDefault"]
+  end
+
   def publish_url
-    publish_videos_url(self)
+    publish_repo_url(self)
+  end
+
+  def update_title_url
+    update_repo_title_url(self)
   end
 
   def subtitle_download_url
     repository_timings_url(self)
+  end
+
+  def original?
+    parent_repository_id.nil?
+  end
+
+  def forked?
+    !original?
   end
 
   def to_srt
@@ -120,14 +179,14 @@ class Repository < ActiveRecord::Base
   end
 
   def language_pretty
-    ::Language::CODES[current_language] 
+    ::Language::CODES[current_language]
   end
 
   def language_display
     if anonymous?
       self.language_pretty
     else
-      "#{self.language_pretty} - #{self.user.username}"  
+      "#{self.language_pretty} - #{self.user.username}"
     end
   end
 
@@ -140,20 +199,18 @@ class Repository < ActiveRecord::Base
   end
 
   def youtube_imported?
-    !!is_youtube_imported  
+    !!is_youtube_imported
   end
 
   def published_repositories
-    self.video.published_repositories  
+    self.video.published_repositories
   end
 
   def other_published_repositories
-    self.published_repositories.reject{ |repo| repo == self }  
+    self.published_repositories.reject{ |repo| repo == self }
   end
 
-  def copy_timing_from!(other_token)
-    other_repo = self.class.find_by_token!(other_token)
-
+  def copy_timing_from!(other_repo)
     Timing.transaction do
       self.update_attributes!(parent_repository_id: other_repo.id)
 
@@ -175,26 +232,74 @@ class Repository < ActiveRecord::Base
     user.avatar.thumb.url
   end
 
+  def title
+    if is_template?
+      super
+    else
+      ["[#{language_pretty} Sub]", self.video.name].join(" ")
+    end
+  end
+
+  def keywords
+    [language_pretty, "sub"] + self.video.name[0..255].split(" ")
+  end
+
+  def language_label
+    is_template? ? self.title : language_pretty
+  end
+
+
   def transcript
     self.timings.map do |timing|
       timing.subtitle.text
     end.join(". ")
   end
 
+  def points
+    get_likes.size - get_dislikes.size
+  end
+
+  def score
+    points
+  end
+
   def owned_by?(target_user)
     if user
-      self.user == target_user 
+      self.user == target_user
     else
       true # anonymous repo belong to everyone
     end
   end
 
+    def is_editable_by_user?(user)
+    if user && user.id == self.user_id
+      if self.is_moderated?
+        false
+      else
+        (Time.now.to_i - (self.updated_at ? self.updated_at.to_i :
+          self.created_at.to_i) < (60 * MAX_EDIT_MINS))
+      end
+    else
+      false
+    end
+  end
+
+  def languages_tab_class
+    "active" 
+  end
+
+  def transcript_tab_class
+    "" 
+  end
+
   def display_edit?(target_user)
-    target_user && self.user == target_user 
+    return true if anonymous?
+
+    self.user == target_user
   end
 
   def visible_to_user?(target_user)
-   is_published? || owned_by?(target_user)
+    is_published || owned_by?(target_user)
   end
 
   def serialize
@@ -205,12 +310,14 @@ class Repository < ActiveRecord::Base
       :user => self.user.try(:serialize),
       :timings => self.timings.map(&:serialize),
       :url => self.url,
+      :title => self.title,
       :token => self.token,
       :language_pretty => self.language_pretty,
       :owner => self.owner,
       :owner_profile_url => self.owner_profile_url,
       :editor_url => self.editor_url,
       :publish_url => self.publish_url,
+      :update_title_url => self.update_title_url,
       :subtitle_download_url => self.subtitle_download_url,
       :parent_repository_id => self.parent_repository_id,
       :is_published => self.is_published,
@@ -227,14 +334,42 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def short_id
+    token
+  end
+
+  def share_text
+    title[0..100]      
+  end
+
   def auto_publish_anonymous_repo
     unless user
       self.is_published = true
     end
   end
 
+  def repo_item_class_for(user)
+    return "" unless user
+
+    css_class = if user.liked?(self)
+                  "upvoted"
+                elsif user.disliked?(self)
+                  "downvoted"
+                else
+                  ""
+                end
+
+    css_class += " negative"    if score <= 0
+    css_class += " negative_1"  if score <= -1
+    css_class += " negative_3"  if score <= -3
+    css_class += " negative_5"  if score <= -5
+
+    css_class
+  end
+
+
   def to_param
-    self.token  
+    self.token
   end
 
 end

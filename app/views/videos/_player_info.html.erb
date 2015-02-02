@@ -1,0 +1,45 @@
+<div id="video_information" class="">
+  <div class="">
+    <% if @repo %>
+      <div class="repository <%= @repo.repo_item_class_for(current_user) %>" data-shortid="<%= @repo.token %>">
+        <div class="voters pull-right">
+          <% if user_signed_in? %>
+            <a class="upvoter"></a>
+          <% else %>
+            <%= link_to "", "#{login_url}?user_action=upvote_a_subtitle", :class => "upvoter" %>
+          <% end %>
+          <div class="score"><%= @repo.score %></div>
+          <% if user_signed_in? && current_user.can_downvote?(@repo) %>
+            <a class="downvoter"></a>
+          <% else %>
+            <span class="downvoter downvoter_stub"></span>
+          <% end %>
+        </div>
+      </div>
+
+      <h3 id='repo_label'>
+        <div>
+          <a href="<%= @repo.url %>"><%= @repo.title %></a>
+        </div>
+      </h3>
+
+      <div id='repo_time_label'>
+        <span class='updated_at'><%= time_ago_in_words(@repo.updated_at) %> ago</span>
+        <% if @repo.user %>
+          <span class='repo_owner'>
+            by
+            <a href="<%= @repo.owner_profile_url %>" style="color:slategray"><%= @repo.owner %></a>
+            <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
+          </span>
+        <% end %>
+      </div>
+    <% else %>
+      <h3 id='repo_label'>
+        <div>
+          <a href="<%= @video.url %>"><%= @video.name %></a>
+        </div>
+      </h3>
+    <% end %>
+
+  </div>
+</div>

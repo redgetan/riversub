@@ -1,0 +1,17 @@
+<div class='share_container' >
+  <div class="link_container row">
+    <span class="">Link</span>
+    <input class="share_link_input" value="<%= @repo.url %>" type="text" onclick="this.select()">
+  </div>
+  <div class="social_share_container row">
+    <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @repo.url %>" target="_blank">
+       <%= image_tag "fb-32.png" %>
+    </a>
+    <a href="https://twitter.com/share?url=<%= @repo.url %>&text=<%= @repo.share_text %>" target="_blank">
+       <%= image_tag "twitter-32.png"  %>
+    </a>
+    <a href="https://plus.google.com/share?url=<%= @repo.url %>" target="_blank">
+       <%= image_tag "gplus-32.png"  %>
+    </a>
+  </div>
+</div>
