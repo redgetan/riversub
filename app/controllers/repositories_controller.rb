@@ -79,7 +79,11 @@ class RepositoriesController < ApplicationController
   end
 
   def index
-    @repos = Repository.includes(timings: :subtitle).published.recent.page params[:page]
+    if params[:country_code]
+      @repos = Repository.includes(timings: :subtitle).published.for_country(params[:country_code]).recent.page params[:page]
+    else
+      @repos = Repository.includes(timings: :subtitle).published.recent.page params[:page]
+    end
   end
 
   def unpublished

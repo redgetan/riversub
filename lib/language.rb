@@ -157,6 +157,10 @@ module Language
     COUNTRIES_BY_CONTINENT.values.inject(:merge)
   end
 
+  def self.country_code_to_language_code(country_code)
+    language_code_to_country_code_map.invert[country_code]
+  end
+
   def self.language_code_to_country_name(language_code)
     country_code = language_code_to_country_code_map[language_code]
     country_code_to_country_name[country_code]

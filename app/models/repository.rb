@@ -38,6 +38,11 @@ class Repository < ActiveRecord::Base
   scope :unimported,            where("is_youtube_imported is false")
   scope :recent,                order("updated_at DESC")
 
+  scope :for_country, lambda { |country_code| 
+    language_code = Language.country_code_to_language_code(country_code)
+    joins(:video).where("videos.language = ?", language_code) 
+  }
+
   GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"
   ANONYMOUS_USERNAME = "default"
 
