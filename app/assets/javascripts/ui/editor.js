@@ -816,16 +816,18 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onGhostTrackStart: function(track) {
     this.isGhostTrackStarted = true;
     this.currentGhostTrack = track;
-    this.$startTimingBtn.hide({duration: 0});
-    this.$stopTimingBtn.show({
-      duration: 0,
-      complete: function() {
-        if (this.intro._currentStep === 1) {
-          $(".introjs-nextbutton").removeClass("introjs-disabled");
-          $(".introjs-nextbutton").trigger("click");
-        }
-      }.bind(this)
-    });
+    if ($("#timeline_tab").hasClass("active")) {
+      this.$startTimingBtn.hide({duration: 0});
+      this.$stopTimingBtn.show({
+        duration: 0,
+        complete: function() {
+          if (this.intro._currentStep === 1) {
+            $(".introjs-nextbutton").removeClass("introjs-disabled");
+            $(".introjs-nextbutton").trigger("click");
+          }
+        }.bind(this)
+      });
+    }
   },
 
   onGhostTrackEnd: function(track) {
@@ -833,16 +835,20 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.isGhostTrackStarted = false;
     this.currentGhostTrack = null;
-    this.$stopTimingBtn.hide({
-      duration: 0,
-      complete: function() {
-        if (this.intro._currentStep === 2) {
-          $(".introjs-nextbutton").removeClass("introjs-disabled");
-          $(".introjs-nextbutton").trigger("click");
-        }
-        this.$startTimingBtn.show({duration: 0});
-      }.bind(this)
-    });
+
+    if ($("#timeline_tab").hasClass("active")) {
+      this.$stopTimingBtn.hide({
+        duration: 0,
+        complete: function() {
+          if (this.intro._currentStep === 2) {
+            $(".introjs-nextbutton").removeClass("introjs-disabled");
+            $(".introjs-nextbutton").trigger("click");
+          }
+          this.$startTimingBtn.show({duration: 0});
+        }.bind(this)
+      });
+    }
+    
     track.fadingHighlight();
   },
 
