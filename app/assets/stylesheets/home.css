@@ -1511,14 +1511,16 @@ form#request_beta_invite input[name='email'] {
   list-style: none;
   min-height: 30px;
   padding: 3px;
-  border: solid 1px lightgray;
+  /*border: solid 1px lightgray;*/
 }
 
 .forks_list_item.selected {
-  background-color: #AECBC8 !important;
-  list-style: circle;
-  border-color: gray;
-  color: black;
+  /*background-color: #AECBC8 !important;*/
+}
+
+.forks_list_item.selected .language_label {
+  border: solid 1px brown;
+  color: brown;
 }
 
 #river_player .forks_list_item:hover,
@@ -1607,7 +1609,8 @@ form#request_beta_invite input[name='email'] {
   color: gray;
 }
 
-.fork_repo_btn {
+.fork_repo_btn,
+.upload_repo_btn {
   background-color: steelblue;
   background: none;
   border: none;
@@ -1617,7 +1620,9 @@ form#request_beta_invite input[name='email'] {
 }
 
 .fork_repo_btn,
-.fork_repo_btn i {
+.fork_repo_btn i,
+.upload_repo_btn,
+.upload_repo_btn i {
   margin-right: 10px;
 }
 
@@ -2204,9 +2209,11 @@ div.comment_form_container form {
 }
 
 .subtitle_selections .language_label {
+  margin-right: 20px;
+  padding-left: 10px;
   color: black;
   display: inline-table;
-  min-width: 150px;
+  min-width: 180px;
 }
 
 #player_details .nav.nav-tabs {

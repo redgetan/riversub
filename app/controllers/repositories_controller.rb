@@ -34,6 +34,10 @@ class RepositoriesController < ApplicationController
     redirect_to @repo.editor_url
   end
 
+  def upload
+    
+  end
+
   def publish
     @repo = Repository.find_by_token! params[:token]
 
