@@ -10,8 +10,8 @@ GIT
 
 GIT
   remote: https://github.com/redgetan/twitter-bootstrap-rails
-  revision: 34f2ab7d17dc438276816e8acd9e698b5ed9e03b
-  ref: 34f2ab7d17dc438276816e8acd9e698b5ed9e03b
+  revision: 2e714678ad969e4241ab29758262d81a5518d823
+  ref: 2e714678ad969e4241ab29758262d81a5518d823
   specs:
     twitter-bootstrap-rails (3.2.0)
       actionpack (>= 3.1)
