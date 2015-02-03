@@ -22,6 +22,7 @@ River::Application.routes.draw do
     get "how_to_use", :to => "home#how_to_use"
 
     get "videos/new",                            :to => "videos#new"
+    get "videos/:token",                        to: "videos#show",            as: "video"
     post "videos/sub",                           :to => "videos#sub",          :as => "sub_videos"
     get  "videos/:video_token/repositories/new", :to => "repositories#new",    :as => "video_repository_new"
     post "videos/:video_token/repositories",     :to => "repositories#create", :as => "video_repository_create"
@@ -55,8 +56,6 @@ River::Application.routes.draw do
     end
 
 
-    get "/v/:token",                        to: "videos#show",   as: "video"
-    
     get "/r/:token",                        to: "repositories#show",   as: "repo"
     get "/r/:token/comments/:comment_short_id", to: "repositories#show", as: "repo_comment"
     post "/r/:token/publish",               to: "repositories#publish", as: "publish_repo"

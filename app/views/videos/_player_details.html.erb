@@ -13,7 +13,9 @@
     </div>
 
     <div class="tab-pane <%= @repo ? @repo.comments_tab_class : "active" %>" id='comments_tab'>
-      <%= render 'videos/player_comments' %>
+      <% if @repo %>
+        <%= render 'videos/player_comments' %>
+      <% end %>
     </div>
 
     <div class="tab-pane" id='share_tab'>
