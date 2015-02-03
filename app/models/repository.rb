@@ -215,6 +215,30 @@ class Repository < ActiveRecord::Base
     self.published_repositories.reject{ |repo| repo == self }
   end
 
+  def self.create_from_subtitle_file!(params)
+    self.transaction do 
+      repo = self.create!(video: params.fetch(:video), user: params.fetch(:user), language: params.fetch(:language))
+      repo.create_timings_from_subtitle_file(params.fetch(:subtitle_file))
+      repo
+    end
+  end
+
+  def create_timings_from_subtitle_file(uploaded_file)
+    text = uploaded_file.read
+    srt = SubtitleParser.parse_srt(text)
+
+    srt.each do |item|
+      Timing.create!({
+        repository_id: self.id,
+        start_time: item.start_time,
+        end_time: item.end_time,
+        subtitle_attributes: {
+          text: item.text
+        }
+      })
+    end
+  end
+
   def copy_timing_from!(other_repo)
     Timing.transaction do
       self.update_attributes!(parent_repository_id: other_repo.id)

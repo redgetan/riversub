@@ -70,6 +70,14 @@ class Video < ActiveRecord::Base
     video_url(self)
   end
 
+  def new_repository_url
+    video_repository_new_url(self) 
+  end
+
+  def new_repository_via_upload_url
+    video_repository_new_url(self) + "?upload=true"
+  end
+
   def published_repositories
     self.repositories.published
   end

@@ -1,8 +1,8 @@
 <div id='forks_container' class=''>
-  <a href="<%= user_signed_in? ? video_repository_new_url(@video) : "#{login_url}?user_action=add_a_language" %>" class="fork_repo_btn river_btn">
+  <a href="<%= user_signed_in? ? @video.new_repository_url : "#{login_url}?user_action=add_a_language" %>" class="fork_repo_btn river_btn">
     <i class='glyphicon glyphicon-plus'></i> Add Language
   </a>
-  <a href="<%= user_signed_in? ? video_repository_upload_url(@video) : "#{login_url}?user_action=upload_a_subtitle_file" %>" class="upload_repo_btn river_btn">
+  <a href="<%= user_signed_in? ? @video.new_repository_via_upload_url : "#{login_url}?user_action=upload_a_subtitle_file" %>" class="upload_repo_btn river_btn">
     <i class='glyphicon glyphicon-eject'></i> Upload Existing Subtitle File
   </a>
   <div class='forks_list_body' style=''>
@@ -13,13 +13,13 @@
             <span class='language_label pull-left' ><%= repo.language_label %></span>
 
             <div class='repo_edit_column pull-left'>
-              <% if repo.display_edit?(current_user) %>
+              <% if @repo && @repo == repo && repo.display_edit?(current_user) %>
                 <a class='subtitle_editor_btn btn btn-xs' href="<%= repo.editor_url %>">Edit</a>
               <% end %>
             </div>
 
             <div class='repo_publish_column pull-left'>
-              <% if !repo.is_published? %>
+              <% if @repo && @repo == repo && !repo.is_published? %>
                 <%= form_tag repo.publish_url, method: "post", class: "publish_btn_form " do %>
                   <%= submit_tag 'Publish', class: "btn btn-success btn-xs", id: "publish_btn" %>
                 <% end %>

@@ -1,0 +1,32 @@
+<div id="repo_setup_form_list" class="col-md-6 col-md-offset-3">
+  <ol >
+    <% unless @video.language.present? %>
+      <li>
+        <h4>The Video is in</h4>
+        <%= select_tag("video_language_code", options_for_select(Language::CODES.map{|k,v| [v,k]}.unshift(["Unknown",""]))) %>
+      </li>
+    <% end %>
+    <li>
+      <h4>Choose Subtitle language</h4>
+      <%= select_tag("repo_language_code", options_for_select(Language::CODES.map{|k,v| [v,k]})) %>
+    </li>
+
+    <% if @is_upload %>
+      <li>
+        <h4>Choose File</h4>
+        <p>We currently only accept subtitles in the SRT format (file ends in .srt)</p>
+        <%= file_field_tag "subtitle_file" %>
+      </li>
+    <% end %>
+
+    <% if false && current_user.groups.present? %>
+      <li>
+        <h4>Choose group to release under</h4>
+        <%= select_tag("group_id", options_for_select(Group.selection_options_for(current_user))) %>
+      </li>
+    <% end %>
+  </ol>
+</div>
+<div class="center">
+  <input id="continue_btn" class="river_btn " type="submit" value="Continue">
+</div>

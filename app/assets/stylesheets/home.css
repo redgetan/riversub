@@ -1142,7 +1142,7 @@ footer a:hover{
 }
 
 #river_player #publish_btn {
-  background-color: rgb(127, 202, 154) !important;
+  background: none;
   border: solid 1px gray;
   color: black;
 }
@@ -2297,4 +2297,8 @@ div.flash-error {
   background-color: lightyellow;
   font-size: 16px;
   border: solid 1px green;
+}
+
+.upload_subtitle_header {
+  margin-top: 50px;
 }

@@ -458,10 +458,16 @@ div#editor-bottom {
 
 .subtitle .text,
 .subtitle .parent_text {
-	width: 350px;
 	min-height: 20px;
 	margin-bottom: 0px;
 	overflow: hidden;
+}
+
+#editor.template .subtitle .text,
+#editor.template .subtitle .parent_text,
+#editor.translate .subtitle .text,
+#editor.translate .subtitle .parent_text {
+	width: 350px;
 }
 
 #editor.template #subtitle_list #original,

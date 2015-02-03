@@ -3,6 +3,7 @@ class RepositoriesController < ApplicationController
 
   def new
     @video = Video.find_by_token(params[:video_token])
+    @is_upload = params[:upload].present?
   end
 
   def show
@@ -21,21 +22,26 @@ class RepositoriesController < ApplicationController
   end
   
   def create
-    video_language_code = params[:video_language_code].present? ? params[:video_language_code] : nil
-    repo_language_code  = params[:repo_language_code].present?  ? params[:repo_language_code]  : nil
-
-    @video = Video.find_by_token(params[:video_token])
-    @video.update_attributes!(language: video_language_code) if video_language_code
-
-    @repo = Repository.create!(video: @video, user: current_user, language: repo_language_code)
-
+    create_common
+    @repo = Repository.create!(video: @video, user: current_user, language: @repo_language_code)
     @repo.group_repositories.create!(group_id: params[:group_id]) if params[:group_id].present?
-    
     redirect_to @repo.editor_url
   end
 
   def upload
-    
+    if params[:subtitle_file].blank?
+      flash[:error] = "Upload File can't be blank"
+      redirect_to :back and return
+    end
+
+    create_common
+    @repo = Repository.create_from_subtitle_file!(video: @video, 
+                                                  user: current_user, 
+                                                  language: @repo_language_code, 
+                                                  subtitle_file: params[:subtitle_file])
+
+    @repo.group_repositories.create!(group_id: params[:group_id]) if params[:group_id].present?
+    redirect_to @repo.editor_url
   end
 
   def publish
@@ -145,6 +151,14 @@ class RepositoriesController < ApplicationController
 
     def find_repo
       Repository.where(:token => params[:id]).first
+    end
+
+    def create_common
+      @video_language_code = params[:video_language_code].present? ? params[:video_language_code] : nil
+      @repo_language_code  = params[:repo_language_code].present?  ? params[:repo_language_code]  : nil
+
+      @video = Video.find_by_token(params[:video_token])
+      @video.update_attributes!(language: @video_language_code) if @video_language_code
     end
 
 end

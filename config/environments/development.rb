@@ -53,4 +53,6 @@ River::Application.configure do
   config.action_mailer.default_url_options = { :host => 'dev.yasub.com:3000' }
   Rails.application.routes.default_url_options[:host] = 'dev.yasub.com:3000'
 
+  load "#{Rails.root}/lib/object_extensions.rb"
+
 end

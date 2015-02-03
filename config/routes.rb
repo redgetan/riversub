@@ -25,8 +25,8 @@ River::Application.routes.draw do
     get "videos/:token",                        to: "videos#show",            as: "video"
     post "videos/sub",                           :to => "videos#sub",          :as => "sub_videos"
     get  "videos/:video_token/repositories/new", :to => "repositories#new",    :as => "video_repository_new"
-    get  "videos/:video_token/repositories/upload", :to => "repositories#upload",    :as => "video_repository_upload"
     post "videos/:video_token/repositories",     :to => "repositories#create", :as => "video_repository_create"
+    post "videos/:video_token/repositories/upload", :to => "repositories#upload", :as => "video_repository_upload"
     get "subs",                                  :to => "repositories#index",  :as => "repositories"
 
 
