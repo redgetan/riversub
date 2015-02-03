@@ -1,6 +1,6 @@
 <% set_meta_tags :site => 'Yasub', :title => @video.name, :description => "Watch a Youtube Video with user generated captions/subtitles", :keywords => @video.name[0..255].split(" ") %>
 
-<div id='river_player' class='show container public' data-repo='<%= @video.serialize.to_json %>'>
+<div id='river_player' class='show container public' data-video='<%= @video.serialize.to_json %>'>
   <div class="row">
     <div class="col-lg-9 player_column">
       <%= render 'videos/player' %>

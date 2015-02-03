@@ -1605,7 +1605,7 @@ form#request_beta_invite input[name='email'] {
   cursor: pointer;
 }
 
-#river_player i {
+#forks_container i {
   color: gray;
 }
 

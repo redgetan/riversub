@@ -31,6 +31,7 @@ river.ui.BasePlayer = Backbone.View.extend({
 
   initializeVideo: function() {
     this.addPlayerControls();
+    this.bindEvents();
   },
 
   initializeRepository: function() {
