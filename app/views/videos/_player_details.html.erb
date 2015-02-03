@@ -1,19 +1,19 @@
 <div id="player_details">
   <ul class="nav nav-tabs" >
-    <li class="active"><a href="#languages_tab" data-toggle="tab">Languages</a></li>
-    <li ><a href="#transcript_tab" data-toggle="tab">Transcript</a></li>
+    <li class="active"><a href="#transcript_tab" data-toggle="tab">Transcript</a></li>
+    <li ><a href="#comments_tab" data-toggle="tab">Comments</a></li>
     <li ><a href="#share_tab" data-toggle="tab">Share</a></li>
   </ul>
 
   <div class='tab-content'>
-    <div class="tab-pane <%= @repo ? @repo.languages_tab_class : "active" %>" id='languages_tab'>
-      <%= render 'videos/player_repositories' %>
-    </div>
-
     <div class="tab-pane <%= @repo ? @repo.transcript_tab_class : "" %>" id='transcript_tab'>
       <div id='transcript_container'>
         <div id='subtitle_list'></div>
       </div>
+    </div>
+
+    <div class="tab-pane <%= @repo ? @repo.comments_tab_class : "active" %>" id='comments_tab'>
+      <%= render 'videos/player_comments' %>
     </div>
 
     <div class="tab-pane" id='share_tab'>

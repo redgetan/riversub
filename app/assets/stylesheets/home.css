@@ -748,8 +748,13 @@ ul.social_login_buttons a {
   margin-left: 20px;
 }
 
+#transcript_container,
+#comments_container,
 .share_container {
   margin-top: 30px;
+}
+
+.share_container {
   height: 80px;
   padding: 20px;
   text-align: left;
@@ -981,6 +986,7 @@ footer a:hover{
 }
 
 #video_information {
+  margin-left: 20px;
 }
 
 #video_information .comment_form_container,
@@ -1259,12 +1265,12 @@ footer a:hover{
 .upvote_btn,
 .downvote_btn,
 .share_repo_btn,
-.languages_tab_btn,
+.comments_tab_btn,
 .transcript_tab_btn {
   background: none;
 }
 
-.languages_tab_btn.active,
+.comments_tab_btn.active,
 .transcript_tab_btn.active {
   /*background-color: lightgray;*/
   display: none;
@@ -1642,10 +1648,6 @@ form#request_beta_invite input[name='email'] {
 #comments_container {
   text-align: left;
   margin-bottom: 50px;
-}
-
-#transcript_container {
-  margin-top: 30px;
 }
 
 /*
@@ -2198,12 +2200,13 @@ div.comment_form_container form {
 
 .subtitle_selections {
   clear: both;
-  margin-left: -20px;
+  margin-left: -40px;
 }
 
 .subtitle_selections .language_label {
   color: black;
   display: inline-table;
+  min-width: 150px;
 }
 
 #player_details .nav.nav-tabs {
@@ -2250,6 +2253,10 @@ div.flash-error {
   color: white;
   margin-bottom: 15px;
   padding: 10px;
+}
+
+.subtitle_selection_owner_name {
+  color: black;
 }
 
 .subtitle_selection_owner_avatar img {

@@ -2,7 +2,7 @@
   <div class="">
     <% if @repo %>
       <div class="repository <%= @repo.repo_item_class_for(current_user) %>" data-shortid="<%= @repo.token %>">
-        <div class="voters pull-right">
+        <div class="voters pull-left">
           <% if user_signed_in? %>
             <a class="upvoter"></a>
           <% else %>

@@ -284,12 +284,12 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def languages_tab_class
-    "active" 
+  def comments_tab_class
+    "" 
   end
 
   def transcript_tab_class
-    "" 
+    "active" 
   end
 
   def display_edit?(target_user)
