@@ -21,8 +21,8 @@ River::Application.configure do
   config.action_mailer.smtp_settings = {
     :address              => "smtp.gmail.com",
     :port                 => 587,
-    # :domain               => "yasub.com",
-    :user_name            => 'simple.yuji@gmail.com',
+    :domain               => "yasub.com",
+    :user_name            => 'redge@yasub.com',
     :password             => 'iwtets90',
     :authentication       => 'plain',
     :enable_starttls_auto => true
