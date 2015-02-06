@@ -124,6 +124,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+
+    // keyboard shortcuts
+    Mousetrap.bind(['space'], function() { this.timeSubtitle(); }.bind(this), 'keydown');
   },
 
   preventSubtileInputFromLosingFocus: function(event) {
@@ -195,7 +198,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onAddSubtitleInputKeyup: function(event) {
     if (this.shouldPauseAndPlayAfterTime()) {
-      this.pauseAndPlayAfterTime(1000);
+      this.pauseAndPlayAfterTime(800);
     }
 
     var text = this.$addSubInput.val();
@@ -368,10 +371,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<button type='button' class='start_timing_btn river_btn'> <i class=''></i>Start</button> " +
                         "<button type='button' class='stop_timing_btn river_btn'> <i class='glyphicon glyphicon-stop'></i> Stop</button> " +
                         "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
-                        "<button type='button' class='add_sub_btn river_btn'>Add</a>" +
+                        "<button type='button' class='add_sub_btn river_btn'>Enter</a>" +
                       "</div> " +
                       "<a class='publish_btn river_btn pull-right'>Publish</a>" +
-                      "<a class='preview_btn river_btn pull-right'>Preview</a>" +
+                      "<a class='preview_btn river_btn pull-right'><i class=''></i>Preview</a>" +
                     "</div> " +
                   "</div> " + // .span12
                   "<div id='status-bar' class='pull-left'> " +
@@ -673,14 +676,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   timeSubtitle: function() {
+    console.log("here");
     if (!this.isGhostTrackStarted) {
-    // first time, you start timing
-      this.safeCreateGhostTrack(this.media.currentTime);
-      this.play();
+      this.openSegment();
     } else {
-      // second time, you stop timing
-      var track = this.currentGhostTrack;
-      this.safeEndGhostTrack(track);
+      this.closeSegment();
     }
   },
 
@@ -1019,7 +1019,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onStartTimingBtn: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
+    this.openSegment();
+  },
 
+  onStopTimingBtn: function(event) {
+    this.preventSubtileInputFromLosingFocus(event);
+    this.closeSegment();
+  },
+
+  openSegment: function() {
     if (typeof this.focusedTrack !== "undefined" && this.focusedTrack) {
       this.closeEditor(this.focusedTrack);
     }
@@ -1030,9 +1038,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.play();
   },
 
-  onStopTimingBtn: function(event) {
-    this.preventSubtileInputFromLosingFocus(event);
-
+  closeSegment: function() {
     var track = this.currentGhostTrack;
     this.pause();
     this.safeEndGhostTrack(track);
