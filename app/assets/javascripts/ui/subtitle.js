@@ -43,6 +43,9 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$close = this.$el.find(".delete_sub_line");
     this.$close.hide();
 
+    this.$subEnter = this.$el.find(".sub_enter");
+    this.$subEnter.tooltip({title: "Replay"});
+
     if ($("#editor").size() === 1) {
       this.editableStartEndTime();
       this.editableText();
