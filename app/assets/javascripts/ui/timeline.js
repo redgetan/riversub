@@ -259,7 +259,11 @@ river.ui.Timeline = Backbone.View.extend({
     if (!this.hideTracks) {
       this.$summary.append(track.summaryView.$el);
       this.$expanded_track_viewport.append(track.expandedView.$el);
-      this.renderTrack(track);
+      if (track.isGhost) {
+        this.renderGhostTrack(track);
+      } else {
+        this.renderTrack(track);
+      }
     }
   },
 
@@ -504,6 +508,10 @@ river.ui.Timeline = Backbone.View.extend({
 
   },
 
+  renderGhostTrack: function(track) {
+    this.renderInContainer(this.$summary,track.summaryView.$el,   { width: 0, left: track.startTime() });
+    this.renderInContainer(this.$expanded,track.expandedView.$el, { width: 0, left: track.startTime() });
+  },
 
   renderFillProgress: function(track) {
     var progress = track.progressTime() - track.startTime();
