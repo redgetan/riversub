@@ -47,7 +47,9 @@ div#editor .controls {
 
 div#editor .controls button,
 div#editor .controls input,
-div#editor .controls a {
+div#editor .controls a,
+div#editor .controls span,
+div#editor .controls label {
 	float: left;
 }
 
@@ -860,4 +862,9 @@ textarea {
 
 .repo_label_container .publish_preview_btn_group {
 	margin-top: 10px;
+}
+
+.ask_input_after_timing_checkbox  {
+	float: left;
+	margin-left: 20px;
 }

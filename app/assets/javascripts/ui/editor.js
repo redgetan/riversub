@@ -120,6 +120,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$iframeOverlay.on("mouseenter",this.onIframeOverlayMouseEnter.bind(this));
     this.$iframeOverlay.on("mouseleave",this.onIframeOverlayMouseLeave.bind(this));
     this.$subtitleDisplay.on("dblclick",this.onSubtitleDisplayDblClick.bind(this));
+    this.$askInputAfterTimingCheckbox.on("click", this.onAskInputAfterTimingCheckbox.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
@@ -262,12 +263,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.timeline.ensureCorrectWindowPosition();
       $(".window_slider").show();
       this.$startTimingBtn.show();
+      this.$askInputAfterTimingCheckbox.show();
     }
 
     if ($(e.target).attr("href") === "#subtitle_tab") {
       this.$startTimingBtn.hide();
       this.$stopTimingBtn.hide();
       $(".window_slider").hide();
+      this.$askInputAfterTimingCheckbox.hide();
 
       this.$addSubInput.show();
       this.$addSubBtn.show();
@@ -370,6 +373,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
                         "<button type='button' class='start_timing_btn river_btn'> <i class=''></i>Start</button> " +
                         "<button type='button' class='stop_timing_btn river_btn'> <i class='glyphicon glyphicon-stop'></i> Stop</button> " +
+                        "<div class='checkbox ask_input_after_timing_checkbox'><label><input type='checkbox' checked>Ask input after timing</label></div>" +
                         "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
                         "<button type='button' class='add_sub_btn river_btn'>Enter</a>" +
                       "</div> " +
@@ -438,6 +442,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$addSubBtn.attr("disabled","disabled");
 
     this.$addSubBackwardCheckbox = $("#add_sub_backward_checkbox");
+    this.$askInputAfterTimingCheckbox = $(".ask_input_after_timing_checkbox");
+    this.$askInputAfterTimingCheckbox.hide();
 
     this.intro = introJs();
 
@@ -981,6 +987,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.openEditorAndHighlight(this.currentTrack);
   },
 
+  onAskInputAfterTimingCheckbox: function(event) {
+    event.preventDefault();
+
+    var $checkbox = this.$askInputAfterTimingCheckbox.find("input");
+    if ($checkbox.is(":checked")) {
+      $checkbox.attr("checked", false);
+    } else {
+      $checkbox.attr("checked", true);
+    }
+  },
+
   onPlayBtnClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
     this.closeAllEditors();
@@ -1040,11 +1057,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   closeSegment: function() {
     var track = this.currentGhostTrack;
-    this.pause();
     this.safeEndGhostTrack(track);
+    
     if (this.startTiming) {
       this.startTiming = false;
-      this.openEditorAndHighlight(track);
+      if (this.shouldAskInputAfterTiming()) {
+        this.pause();
+        this.openEditorAndHighlight(track);
+      }
     }
   },
 
@@ -1070,6 +1090,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
 
     this.safeEndGhostLock = false
+  },
+
+  shouldAskInputAfterTiming: function() {
+    return this.$askInputAfterTimingCheckbox.find("input").is(":checked");
   },
 
   onAddSubtitleBtnClick: function(event) {
