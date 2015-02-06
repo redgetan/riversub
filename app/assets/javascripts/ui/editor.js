@@ -307,6 +307,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<div id='iframe_container'>" +
                           "<div id='iframe_overlay'>" +
                           "</div>" +
+                          "<div id='overlay_btn'><i class='glyphicon glyphicon-play'></i></div>" +
                         "</div> " +
                         "<div id='subtitle_bar' class='center'> " +
                           "<span id='subtitle_display' class='center'></span> " +
@@ -693,12 +694,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPlay: function(event) {
+    this.$overlay_btn.find("i").removeClass("glyphicon-play");
+    this.$overlay_btn.find("i").addClass("glyphicon-pause");
     this.$overlay_btn.hide();
     this.$playBtn.hide();
     this.$pauseBtn.show();
   },
 
   onPause: function(event) {
+    this.$overlay_btn.find("i").removeClass("glyphicon-pause");
+    this.$overlay_btn.find("i").addClass("glyphicon-play");
     this.$overlay_btn.show();
     this.$pauseBtn.hide();
     this.$playBtn.show();
