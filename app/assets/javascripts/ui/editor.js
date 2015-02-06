@@ -114,6 +114,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$subtitleBtn.on("mousedown",this.onSubtitleBtnClick.bind(this));
     this.$backwardBtn.on("mousedown",this.onBackwardBtnClick.bind(this));
     this.$forwardBtn.on("mousedown",this.onForwardBtnClick.bind(this));
+    this.$startTimingBtn.on("mouseenter",this.onStartTimingBtnMouseEnter.bind(this));
+    this.$startTimingBtn.on("mouseleave",this.onStartTimingBtnMouseLeave.bind(this));
+    this.$stopTimingBtn.on("mouseenter",this.onStopTimingBtnMouseEnter.bind(this));
+    this.$stopTimingBtn.on("mouseleave",this.onStopTimingBtnMouseLeave.bind(this));
     this.$startTimingBtn.on("mousedown",this.onStartTimingBtn.bind(this));
     this.$stopTimingBtn.on("mousedown",this.onStopTimingBtn.bind(this));
     this.$iframeOverlay.on("mousedown",this.onIframeOverlayClick.bind(this));
@@ -428,9 +432,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$startTimingBtn = $(".start_timing_btn");
     this.$startTimingBtn.attr("disabled","disabled");
+    // this.$startTimingBtn.tooltip({trigger: "manual", title: "Mark beginning of a subtitle (Shortcut: Spacebar)"});
     this.$startTimingBtn.hide();
 
     this.$stopTimingBtn = $(".stop_timing_btn");
+    // this.$stopTimingBtn.tooltip({trigger: "manual", title: "Mark end of a subtitle (Shortcut: Spacebar or Escape to cancel)"});
     this.$stopTimingBtn.hide();
 
     this.$addSubInput = $(".add_sub_input");
@@ -680,10 +686,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   timeSubtitle: function() {
-    console.log("here");
     if (!this.isGhostTrackStarted) {
+      this.hideStartShowStop();
       this.openSegment();
     } else {
+      this.hideStopShowStart();
       this.closeSegment();
     }
   },
@@ -824,6 +831,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onGhostTrackStart: function(track) {
     this.isGhostTrackStarted = true;
     this.currentGhostTrack = track;
+  },
+
+  hideStartShowStop: function() {
     if ($("#timeline_tab").hasClass("active")) {
       this.$startTimingBtn.hide({duration: 0});
       this.$stopTimingBtn.show({
@@ -838,12 +848,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
-  onGhostTrackEnd: function(track) {
-    this.$addSubInput.val("");
-
-    this.isGhostTrackStarted = false;
-    this.currentGhostTrack = null;
-
+  hideStopShowStart: function() {
     if ($("#timeline_tab").hasClass("active")) {
       this.$stopTimingBtn.hide({
         duration: 0,
@@ -856,7 +861,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         }.bind(this)
       });
     }
-    
+  },
+
+  onGhostTrackEnd: function(track) {
+    this.$addSubInput.val("");
+
+    this.isGhostTrackStarted = false;
+    this.currentGhostTrack = null;
+
     track.fadingHighlight();
   },
 
@@ -1038,12 +1050,30 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.seek(this.media.currentTime + this.SEEK_DURATION);
   },
 
+  onStartTimingBtnMouseEnter: function(event) {
+    // this.$startTimingBtn.tooltip('show');
+  },
+
+  onStartTimingBtnMouseLeave: function(event) {
+    // this.$startTimingBtn.tooltip('hide');
+  },
+
+  onStopTimingBtnMouseEnter: function(event) {
+    // this.$stopTimingBtn.tooltip('show');
+  },
+
+  onStopTimingBtnMouseLeave: function(event) {
+    // this.$stopTimingBtn.tooltip('hide');
+  },
+
   onStartTimingBtn: function(event) {
+    this.hideStartShowStop();
     this.preventSubtileInputFromLosingFocus(event);
     this.openSegment();
   },
 
   onStopTimingBtn: function(event) {
+    this.hideStopShowStart();
     this.preventSubtileInputFromLosingFocus(event);
     this.closeSegment();
   },
