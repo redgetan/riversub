@@ -7,7 +7,13 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repo = Repository.find_by_token! params[:token]
+    @repo = Repository.find_by_token params[:token]
+
+    unless @repo
+      flash[:notice] = "Video does not exist"
+      redirect_to root_url and return
+    end
+
     @video = @repo.video
     @comment = @repo.comment_threads.build
     @comments = @repo.comment_threads.arrange_for_user(current_user)

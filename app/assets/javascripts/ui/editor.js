@@ -281,11 +281,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       }
     }
 
-    if (this.currentTrack) {
-      if (this.currentTrack.isGhost) {
-        this.safeEndGhostTrack(this.currentTrack);
-      }
-      this.seekTrackAndEdit(this.currentTrack);
+    if (this.currentTrack && this.currentTrack.isGhost) {
+      this.safeEndGhostTrack(this.currentTrack);
     }
   },
 
