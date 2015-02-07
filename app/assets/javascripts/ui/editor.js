@@ -132,7 +132,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
 
     // keyboard shortcuts
-    Mousetrap.bind(['space'], function() { this.timeSubtitle(); }.bind(this), 'keydown');
+    Mousetrap.bind(['shift'], function() { this.timeSubtitle(); return false; }.bind(this), 'keydown');
+    Mousetrap.bindGlobal(['command+left','ctrl+left'], function() { this.backwardTime(); return false; }.bind(this), 'keydown');
+    Mousetrap.bind(['space'], function() { this.togglePlayPause(); return false; }.bind(this), 'keydown');
+    Mousetrap.bindGlobal(['command+p','ctrl+p'], function() { this.togglePlayPause(); return false; }.bind(this), 'keydown');
+    Mousetrap.bindGlobal(['command+right','ctrl+right'], function() { this.forwardTime(); return false; }.bind(this), 'keydown');
+
+    this.$backwardBtn.tooltip({ title: "Shortcut: ctrl + ⇐", placement: "bottom"});
+    this.$playBtn.tooltip({ title: "Shortcut: ctrl + p", placement: "bottom"});
+    this.$pauseBtn.tooltip({ title: "Shortcut: ctrl + p", placement: "bottom"});
+    this.$forwardBtn.tooltip({ title: "Shortcut: ctrl + ⇒", placement: "bottom"});
   },
 
   preventSubtileInputFromLosingFocus: function(event) {
@@ -434,11 +443,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$startTimingBtn = $(".start_timing_btn");
     this.$startTimingBtn.attr("disabled","disabled");
-    // this.$startTimingBtn.tooltip({trigger: "manual", title: "Mark beginning of a subtitle (Shortcut: Spacebar)"});
+    this.$startTimingBtn.tooltip({title: "Shortcut: 'Shift' or 'Escape' to cancel"});
     this.$startTimingBtn.hide();
 
     this.$stopTimingBtn = $(".stop_timing_btn");
-    // this.$stopTimingBtn.tooltip({trigger: "manual", title: "Mark end of a subtitle (Shortcut: Spacebar or Escape to cancel)"});
+    this.$stopTimingBtn.tooltip({title: "Shortcut: 'Shift' or 'Escape' to cancel"});
     this.$stopTimingBtn.hide();
 
     this.$addSubInput = $(".add_sub_input");
@@ -1052,11 +1061,19 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onBackwardBtnClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
-    this.seek(this.media.currentTime - this.SEEK_DURATION);
+    this.backwardTime();
   },
 
   onForwardBtnClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
+    this.forwardTime();
+  },
+
+  backwardTime: function() {
+    this.seek(this.media.currentTime - this.SEEK_DURATION);
+  },
+
+  forwardTime: function() {
     this.seek(this.media.currentTime + this.SEEK_DURATION);
   },
 

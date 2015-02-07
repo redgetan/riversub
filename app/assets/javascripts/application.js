@@ -24,6 +24,8 @@
 
 //= require namespace.js
 
+//= require  lib/mousetrap.js
+//= require  lib/mousetrap-global-bind.js
 //= require_tree ./lib/
 
 //= require ui/base_player.js
