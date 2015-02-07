@@ -647,6 +647,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       // escape key
 
       this.cancelGhostTrack();
+    } else if (event.which >= 48 && event.which <= 90) {
+      // alphanumeric
+      
+      if (!this.$addSubInput.is(":focus")) {
+        this.$addSubInput.focus();
+      }
     }
   },
 
