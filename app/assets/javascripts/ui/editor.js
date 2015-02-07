@@ -650,7 +650,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     } else if (event.which >= 48 && event.which <= 90) {
       // alphanumeric
       
-      if (!this.$addSubInput.is(":focus")) {
+      if (!this.$addSubInput.is(":focus") && !$(document.activeElement).hasClass("sub_text_area")) {
         this.$addSubInput.focus();
       }
     }
