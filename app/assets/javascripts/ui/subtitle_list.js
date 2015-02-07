@@ -47,8 +47,10 @@ river.ui.SubtitleList = Backbone.View.extend({
 
     if (subtitle === null) { return; }
 
-    if ($target.hasClass("sub_enter")) {
+    if ($target.closest("button").hasClass("sub_enter")) {
       Backbone.trigger("subtitleenter", subtitle);
+    } else if ($target.hasClass("sub_text_area")) {
+      Backbone.trigger("subtitlelineinputclick",subtitle, $target);
     } else {
       Backbone.trigger("subtitlelineclick",subtitle, $target);
     }
