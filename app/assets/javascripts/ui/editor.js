@@ -931,6 +931,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       }
 
       this.safeEndGhostTrack(track,endTime);
+      this.hideStopShowStart();
+
       if (this.startTiming) {
         this.startTiming = false;
         if (this.shouldAskInputAfterTiming()) {
