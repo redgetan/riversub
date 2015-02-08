@@ -14,7 +14,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.MINIMUM_TRACK_DURATION = 0.50;
     this.DEFAULT_TRACK_DURATION = 3;
     this.TRACK_MARGIN = 0.20;
-    this.SEEK_DURATION = 1;
     this.KEYCODE_THAT_PAUSES_VIDEO = this.getKeycodeThatPausesVideo();
 
     this.startTiming = false;
@@ -29,6 +28,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.useLocalStorageIfNeeded();
     this.$expandBtn.hide();
 
+  },
+
+  seekDuration: function() {
+    return 1;
   },
 
   useLocalStorageIfNeeded: function() {
@@ -61,7 +64,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     return list;
   },
 
-  preRepositoryInitHook: function() {
+  postInitializeCommon: function() {
     this.timeline = new river.ui.Timeline({media: this.popcorn.media, mediaDuration: this.mediaDuration() });
   },
 
@@ -130,18 +133,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
-
-    // keyboard shortcuts
-    Mousetrap.bind(['shift'], function() { this.timeSubtitle(); return false; }.bind(this), 'keydown');
-    Mousetrap.bindGlobal(['command+left','ctrl+left'], function() { this.backwardTime(); return false; }.bind(this), 'keydown');
-    Mousetrap.bind(['space'], function() { this.togglePlayPause(); return false; }.bind(this), 'keydown');
-    Mousetrap.bindGlobal(['command+p','ctrl+p'], function() { this.togglePlayPause(); return false; }.bind(this), 'keydown');
-    Mousetrap.bindGlobal(['command+right','ctrl+right'], function() { this.forwardTime(); return false; }.bind(this), 'keydown');
-
-    this.$backwardBtn.tooltip({ title: "Shortcut: ctrl + ⇐", placement: "bottom"});
-    this.$playBtn.tooltip({ title: "Shortcut: ctrl + p", placement: "bottom"});
-    this.$pauseBtn.tooltip({ title: "Shortcut: ctrl + p", placement: "bottom"});
-    this.$forwardBtn.tooltip({ title: "Shortcut: ctrl + ⇒", placement: "bottom"});
   },
 
   preventSubtileInputFromLosingFocus: function(event) {
@@ -224,6 +215,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // enter key
     if (event.which == 13 ) {
       this.addSubtitledTrack(text);
+      this.$addSubInput.blur();
     }
   },
 
@@ -264,10 +256,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onAddSubtitleInputBlur: function(event) {
-    var track = this.currentGhostTrack;
-    if (track) {
-      this.safeEndGhostTrack(track);
-    }
   },
 
   onTabShown: function (e) {
@@ -641,9 +629,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
       this.preventAccidentalPreviousPageNavigation($(event.target));
     } else if (event.which === -99) {
-      // ctrl + p
-
-      this.togglePlayPause();
     } else if (event.which == 38) {
       // up arrow
 
@@ -742,6 +727,26 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.setupIntroJS();
   },
 
+  initializeKeyboardShortcuts: function() {
+    river.ui.BasePlayer.prototype.initializeKeyboardShortcuts.call(this);
+    Mousetrap.bindGlobal(['shift'], function() { this.timeSubtitle(); return false; }.bind(this), 'keydown');
+
+    var modifier = "";
+    if (navigator.platform.toUpperCase().match("MAC")) {
+      modifier = "command";
+    } else {
+      modifier = "ctrl";
+    }
+
+    Mousetrap.bindGlobal([modifier + '+left'], function() { this.backwardTime(); return false; }.bind(this), 'keydown');
+    Mousetrap.bindGlobal([modifier + '+p'], function() { this.togglePlayPause(); return false; }.bind(this), 'keydown');
+    Mousetrap.bindGlobal([modifier + '+right'], function() { this.forwardTime(); return false; }.bind(this), 'keydown');
+
+    this.$backwardBtn.tooltip({ title: "Shortcut: " + modifier + " + left", placement: "bottom"});
+    this.$playBtn.tooltip({ title: "Shortcut: " + modifier + " + p", placement: "bottom"});
+    this.$pauseBtn.tooltip({ title: "Shortcut: " + modifier + " + p", placement: "bottom"});
+    this.$forwardBtn.tooltip({ title: "Shortcut: " + modifier + " + right", placement: "bottom"});
+  },
 
   onEditorReady: function(event) {
     this.$addSubInput.focus();
@@ -1069,14 +1074,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.forwardTime();
   },
 
-  backwardTime: function() {
-    this.seek(this.media.currentTime - this.SEEK_DURATION);
-  },
-
-  forwardTime: function() {
-    this.seek(this.media.currentTime + this.SEEK_DURATION);
-  },
-
   onStartTimingBtnMouseEnter: function(event) {
     // this.$startTimingBtn.tooltip('show');
   },
@@ -1180,6 +1177,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   addTrack: function(time, callbacks) {
+
     callbacks = callbacks || {};
 
     var trackSlot = this.getTrackSlot(time);
@@ -1204,7 +1202,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   addFullTrack: function(startTime, options) {
-
     if (options.skip_track_slot) {
       var endTime = startTime + this.DEFAULT_TRACK_DURATION;
     } else {
@@ -1326,7 +1323,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   createGhostTrack: function(startTime) {
-
     var startTime = Math.round(startTime * 1000) / 1000;
     var endTime   = this.nextNearestEdgeTime(startTime);
 
@@ -1340,6 +1336,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     };
 
     var track = new river.model.Track(attributes, { popcorn: this.popcorn, isGhost: true});
+
     this.tracks.add(track);
 
     return track;

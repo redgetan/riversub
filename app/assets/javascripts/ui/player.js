@@ -20,7 +20,11 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$timer;
   },
 
-  preRepositoryInitHook: function() {
+  seekDuration: function() {
+    return 5;
+  },
+
+  postInitializeCommon: function() {
     this.timeline = new river.ui.Timeline({media: this.popcorn.media, mediaDuration: this.mediaDuration(), hideTracks: true });
   },
 
@@ -157,7 +161,7 @@ river.ui.MiniPlayer = river.ui.Player.extend({
     this.$el = $("#river_player");
   },
 
-  preRepositoryInitHook: function() {
+  postInitializeCommon: function() {
     // override player's hook - set to empty
   },
 

@@ -8,6 +8,19 @@ river.ui.BasePlayer = Backbone.View.extend({
     } else {
       this.initializeRepository();
     }
+
+    this.initializeKeyboardShortcuts();
+  },
+
+  seekDuration: function() {
+    throw "seekDuration must be implemented by subclass of BasePlayer";
+  },
+
+  initializeKeyboardShortcuts: function() {
+    Mousetrap.bind(['shift'], function() { this.timeSubtitle(); return false; }.bind(this), 'keydown');
+    Mousetrap.bind(['left'], function() { this.backwardTime(); return false; }.bind(this), 'keydown');
+    Mousetrap.bind(['space'], function() { this.togglePlayPause(); return false; }.bind(this), 'keydown');
+    Mousetrap.bind(['right'], function() { this.forwardTime(); return false; }.bind(this), 'keydown');
   },
 
   initializeCommon: function() {
@@ -27,6 +40,8 @@ river.ui.BasePlayer = Backbone.View.extend({
     // misc
     this.defineAttributeAccessors();
     this.displayNoInternetConnectionIfNeeded();
+
+    this.postInitializeCommon();
   },
 
   initializeVideo: function() {
@@ -37,7 +52,6 @@ river.ui.BasePlayer = Backbone.View.extend({
   initializeRepository: function() {
     this.user = this.repo.user;
 
-    this.preRepositoryInitHook();
     this.addPlayerControls();
 
     this.repository = new river.model.Repository(this.repo);
@@ -67,7 +81,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     return Math.floor(parseFloat(this.video.duration) * 1000) / 1000;
   },
 
-  preRepositoryInitHook: function() {
+  postInitializeCommon: function() {
     // subclass implements callback if needed
   },
 
@@ -154,6 +168,14 @@ river.ui.BasePlayer = Backbone.View.extend({
 
   seek: function(time) {
     this.popcorn.currentTime(time);
+  },
+
+  backwardTime: function() {
+    this.seek(this.media.currentTime - this.seekDuration());
+  },
+
+  forwardTime: function() {
+    this.seek(this.media.currentTime + this.seekDuration());
   },
 
   onTrackStart: function(track) {
