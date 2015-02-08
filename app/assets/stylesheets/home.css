@@ -370,6 +370,10 @@ div#subtitle_bar {
   background-color: rgba(128,128,128,0.5);
 }
 
+#editor .time_indicator {
+  top: -180px;  
+}
+
 #river_player .time_indicator {
   top: 15px;
 }
@@ -1521,9 +1525,11 @@ form#request_beta_invite input[name='email'] {
 .forks_list_item.selected .language_label {
   border: solid 1px brown;
   color: brown;
+  
 }
 
-#river_player .forks_list_item:hover,
+
+#river_player .forks_list_item:hover ,
 #river_player .subtitle:hover {
   background-color: lightgray ;
 }
@@ -2214,6 +2220,11 @@ div.comment_form_container form {
   color: black;
   display: inline-table;
   min-width: 180px;
+}
+
+.subtitle_selections #publish_btn:hover,
+.subtitle_selections .subtitle_editor_btn:hover {
+  background-color: darkseagreen !important;
 }
 
 #player_details .nav.nav-tabs {

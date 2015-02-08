@@ -225,7 +225,7 @@ class Repository < ActiveRecord::Base
 
   def create_timings_from_subtitle_file(uploaded_file)
     text = uploaded_file.read
-    srt = SubtitleParser.parse_srt(text)
+    srt = SubtitleParser.parse_srt(text, uploaded_file.original_filename)
 
     srt.each do |item|
       Timing.create!({

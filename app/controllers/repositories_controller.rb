@@ -41,10 +41,16 @@ class RepositoriesController < ApplicationController
     end
 
     create_common
-    @repo = Repository.create_from_subtitle_file!(video: @video, 
-                                                  user: current_user, 
-                                                  language: @repo_language_code, 
-                                                  subtitle_file: params[:subtitle_file])
+
+    begin
+      @repo = Repository.create_from_subtitle_file!(video: @video, 
+                                                    user: current_user, 
+                                                    language: @repo_language_code, 
+                                                    subtitle_file: params[:subtitle_file])
+    rescue SubtitleParser::InvalidFormatError => e
+      flash[:error] = "Uploaded file is not in proper SubRip format. #{e.message}"
+      redirect_to :back and return
+    end
 
     @repo.group_repositories.create!(group_id: params[:group_id]) if params[:group_id].present?
     redirect_to @repo.editor_url
