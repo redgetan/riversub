@@ -41,7 +41,7 @@
               <div class="transcript_preview">
                 <%= repo.transcript[0..200] %>
               </div>
-              <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span>
+              <!-- <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span> -->
               <span class='repo_owner'>
                 by 
                 <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
