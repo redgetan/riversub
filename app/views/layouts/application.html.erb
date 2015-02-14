@@ -58,7 +58,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= repositories_url %>">Browse</a></li>
+        <!-- <li class="<%= 'activer' if params[:controller] == 'videos' && params[:action] == 'index' %>"><a href="<%= repositories_url %>">Explore</a></li> -->
 <!--             <li class="divider-vertical"></li>
             <li class="<%#= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li>
             <!--             <li class="divider-vertical"></li>
@@ -66,11 +66,11 @@
             <!-- <li class="divider-vertical"></li> -->
 <!--             <li class="<%#= 'active' if params[:controller] == 'home' && params[:action] == 'how_to_use' %>"><a href="/how_to_use">How to Use</a></li>
  -->      
-        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= user_signed_in? ? videos_new_url : "#{login_url}?user_action=subtitle_a_video" %>"><i class="glyphicon glyphicon-plus"></i> Create</a></li>
+        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="https://docs.google.com/a/yasub.com/forms/d/1JaAq20lp_OumLTEC80qnZOqii3xrTt7O8H0Rgo39YnA/viewform?usp=send_form">Become a fansubber</a></li> 
         <li class="divider-vertical"></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">About</a></li>
+        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">Contact</a></li>
             <li class="divider-vertical"></li>
              <% if user_signed_in?  %>
               <li class="dropdown">

@@ -2123,6 +2123,7 @@ div.comment_form_container form {
 
 .container.intro .section_header,
 .container.home_country_index .section_header,
+.container.faq .section_header,
 .container.home_video_index .section_header{
   display: inline-block;
 }
@@ -2168,6 +2169,7 @@ div.comment_form_container form {
 }
 
 .home_country_index .section_header,
+.faq .section_header,
 .home_video_index .section_header {
   font-size: 18px;
 }
@@ -2312,4 +2314,29 @@ div.flash-error {
 
 .upload_subtitle_header {
   margin-top: 50px;
+}
+
+.country_digest {
+  background-color: yellow;
+  border: solid 1px black;
+}
+
+#mc_embed_signup {
+  padding-top: 50px;
+}
+
+#mc_embed_signup form {
+  margin: 50px;
+}
+
+iframe.fansubber_signup_form .ss-base-body {
+  background: none !important;
+}
+
+.container.faq .section_body p {
+  font-size: 16px;
+}
+
+.container.faq .section_body ol li {
+  /*margin-top: 20px;  */
 }

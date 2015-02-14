@@ -741,10 +741,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     Mousetrap.bindGlobal([modifier + '+p'], function() { this.togglePlayPause(); return false; }.bind(this), 'keydown');
     Mousetrap.bindGlobal([modifier + '+right'], function() { this.forwardTime(); return false; }.bind(this), 'keydown');
 
-    this.$backwardBtn.tooltip({ title: "Shortcut: " + modifier + " + left", placement: "bottom"});
-    this.$playBtn.tooltip({ title: "Shortcut: " + modifier + " + p", placement: "bottom"});
-    this.$pauseBtn.tooltip({ title: "Shortcut: " + modifier + " + p", placement: "bottom"});
-    this.$forwardBtn.tooltip({ title: "Shortcut: " + modifier + " + right", placement: "bottom"});
+    // this.$backwardBtn.tooltip({ title: "Shortcut: " + modifier + " + left", placement: "bottom"});
+    // this.$playBtn.tooltip({ title: "Shortcut: " + modifier + " + p", placement: "bottom"});
+    // this.$pauseBtn.tooltip({ title: "Shortcut: " + modifier + " + p", placement: "bottom"});
+    // this.$forwardBtn.tooltip({ title: "Shortcut: " + modifier + " + right", placement: "bottom"});
   },
 
   onEditorReady: function(event) {

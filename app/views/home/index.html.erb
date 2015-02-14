@@ -1,25 +1,55 @@
 <% set_meta_tags :site => 'Yasub', :title => 'Subtitle the Web. One video at a time.', :description => "Yasub is a community of people who subtitle internet videos into their own languages." %>
 
+<h2 class='col-md-10 col-md-offset-1 center'>Japan - Trending Videos Subtitled Weekly</h2>
+<p class='col-md-10 center'>毎週日本のビデオ英語字幕付き</p>
+
+
 <div class='container intro'>
   <div class="section_block col-md-10 col-md-offset-1">
     <div class="section_header">
-      About
+      How it Works
     </div>
     <div class="section_body">
-      <p>
-        Yasub is a community of people who subtitle internet videos into their own languages.
-        Through subtitles, one can discover and understand interesting videos from around the world such as ones from Brazil, China, Japan, or Russia. Go ahead and browse translated videos below according to country, or subtitle a video yourself.
-      </p>
-
-      <div class='home_action_container'>
-        <!-- <a href="" class='btn btn  btn-large request_subtitle_btn'>Request</a> -->
-        <a href="<%= user_signed_in? ? videos_new_url : "#{login_url}?user_action=subtitle_a_video" %>" class='btn btn-danger btn-large'>Subtitle a Video</a>
-      </div>
+      <ol class='col-md-10 col-md-offset-2'>
+        <li>Subscribe to our newsletter</li>
+        <li>We choose the top 5 trending videos in Japan and subtitle them in English</li>
+        <li>We deliver the results to your email once a week</li>
+      </ol>
+      <%= render 'home/subscribe' %>
     </div>
   </div>
 </div>
 
-<div class='container home_country_index'>
+<div class='container faq'>
+  <div class="section_block col-md-10 col-md-offset-1">
+    <div class="section_header">
+      FAQ
+    </div>
+    <div class="section_body">
+      <ol class=''>
+        <li>
+          <h4>Who are you</h4>
+          <p>We are a team of fansubbers who aim to promote video content from Japan to global audiences through subtitles</p>
+        </li>
+        <li>
+          <h4>Is this legal?</h4>
+          <p>Yes. We do not subtitle copyrighted TV shows/movies. Also, we do softsubbing instead of hardsubbing. This means we simply overlay our subtitles to existing videos from sites like Youtube, Vimeo, etc..</p>
+        </li>
+        <li>
+          <h4>How do I join you as a fansubber?</h4>
+          <p>Fill out a form in <a href="https://docs.google.com/a/yasub.com/forms/d/1JaAq20lp_OumLTEC80qnZOqii3xrTt7O8H0Rgo39YnA/viewform?usp=send_form">Become a fansubber</a>, and we'll reach out to you.</p>
+        </li>
+        <li>
+          <h4>I have other questions. How can I reach you?</h4>
+          <p>You can reach us at <a href="mailto:info@yasub.com"> info@yasub.com</a></p>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class='container home_country_index'>
   <div class="section_block col-md-10 col-md-offset-1">
     <div class="section_header">
       Countries
@@ -45,41 +75,39 @@
     </div>
   </div>
 </div>
-
+ -->
 
 <div class='container home_video_index'>
-  <div class="section_block col-md-10 col-md-offset-1">
-    <div class="section_header">
-      Videos
+  <div class="col-md-10 col-md-offset-1">
+<!--     <div class="section_header">
+      Releases
     </div>
-    <div class="section_body">
-      <% Repository.top_grouped_by_source_language.each do |language, repos| %>
-        <div class='country_video_index_header'>
-          <span class='country_label'><%= Language.language_code_to_country_name(language) %></span>
-        </div>
-        <div class='row videos '>
-          <% repos.each do |repo| %>
-            <div class='col-xs-6 col-md-2'>
-              <div class="thumbnail center">
-                <span class='repo_owner'>
-                  by <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
-                </span>
-                <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                  <img src="<%= repo.thumbnail_url %>" alt="">
-                </a>
-                <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                  <h6 class='video_name'><%= repo.video.name %></h6>
-                </a>
-                <div class='stats'>
-                </div>
-                <!-- <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span> -->
+ -->    <div class="section_body">
+      <div class=''>
+        <span class=''></span>
+      </div>
+      <div class='row videos '>
+        <% [].each do |repo| %>
+          <div class='col-xs-6 col-md-2'>
+            <div class="thumbnail center">
+              <span class='repo_owner'>
+                by <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
+              </span>
+              <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                <img src="<%= repo.thumbnail_url %>" alt="">
+              </a>
+              <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                <h6 class='video_name'><%= repo.video.name %></h6>
+              </a>
+              <div class='stats'>
               </div>
+              <!-- <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span> -->
             </div>
-          <% end %>
+          </div>
+        <% end %>
 
-          <!-- <a href="#" class="see_more_btn btn btn-primary">See More..</a> -->
-        </div>
-      <% end %>
+        <!-- <a href="#" class="see_more_btn btn btn-primary">See More..</a> -->
+      </div>
     </div>
   </div>
 </div>
