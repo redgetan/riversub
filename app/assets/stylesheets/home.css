@@ -2112,7 +2112,7 @@ div.comment_form_container form {
 
 
 .container.intro {
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .container.intro,
@@ -2339,4 +2339,11 @@ iframe.fansubber_signup_form .ss-base-body {
 
 .container.faq .section_body ol li {
   /*margin-top: 20px;  */
+}
+
+.share_home {
+  margin: auto;
+  display: block;
+  width: 100px;
+  margin-top: 30px;
 }
