@@ -58,6 +58,7 @@ River::Application.routes.draw do
     end
 
 
+    get "/:token",                        to: "repositories#show",   as: "repo"
     get "/r/:token",                        to: "repositories#show",   as: "repo"
     get "/r/:token/comments/:comment_short_id", to: "repositories#show", as: "repo_comment"
     post "/r/:token/publish",               to: "repositories#publish", as: "publish_repo"
