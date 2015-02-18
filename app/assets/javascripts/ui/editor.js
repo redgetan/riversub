@@ -385,12 +385,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                   "</div> " +
                   "<div class='template_publish_preview_container pull-right'> " +
                             // "<div id='keyboard-shortcuts' class='pull-right'> " +
-                            //   "<span>" +
+                            //   "<ul>" +
                             //     "<b>Keyboard Shortcuts: </b>  " +
-                            //     "<kbd class='light'>Shift</kbd> Open/Close " +
-                            //     "<kbd class='light'>Space</kbd> Play/Pause" +
-                            //     "<kbd class='light'>Esc</kbd>   Cancel " +
-                            //   "</span>" +
+                            //     "<li><kbd class='dark'>Shift</kbd> Open/Close </li>" +
+                            //     "<li><kbd class='dark'>Space</kbd> Play/Pause </li>" +
+                            //     "<li><kbd class='dark'>Esc</kbd>   Cancel </li>" +
+                            //   "</ul>" +
                             // "</div> " +
                   "</div> " + // .span12
 
@@ -728,7 +728,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   initializeKeyboardShortcuts: function() {
     river.ui.BasePlayer.prototype.initializeKeyboardShortcuts.call(this);
-    Mousetrap.bindGlobal(['shift'], function() { this.timeSubtitle(); return false; }.bind(this), 'keydown');
 
     var modifier = "";
     if (navigator.platform.toUpperCase().match("MAC")) {
@@ -736,6 +735,20 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     } else {
       modifier = "ctrl";
     }
+
+    Mousetrap.bindGlobal(['shift'], function() { this.timeSubtitle(); return false; }.bind(this), 'keydown');
+
+    Mousetrap.bindGlobal([modifier + '+3'], function() {  
+      this.hideStartShowStop();
+      this.openSegment();
+      return false; 
+    }.bind(this), 'keydown');
+
+    Mousetrap.bindGlobal([modifier + '+4'], function() {  
+      this.hideStopShowStart();
+      this.closeSegment();
+      return false; 
+    }.bind(this), 'keydown');
 
     Mousetrap.bindGlobal([modifier + '+left'], function() { this.backwardTime(); return false; }.bind(this), 'keydown');
     Mousetrap.bindGlobal([modifier + '+p'], function() { this.togglePlayPause(); return false; }.bind(this), 'keydown');
