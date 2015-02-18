@@ -296,6 +296,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     "<h5 id='repo_label'>" +
                       "<a href=" + this.repo.url + ">" + this.repo.video.name.substring(0,70) + "</a>" +
                     "</h5>" +
+                    "<h5 class='keyboard_shortcut_container pull-right'><a class='keyboard_shortcut_btn pull-right'  data-toggle='modal' data-target='#keyboard_shortcuts_modal'> Shortcuts</a></h5>" + 
                     // "<div id='language' class='pull-left'>" +
                     //   "<span>" + this.repo.language_pretty + "</span>" +
                     // "</div>" +
@@ -430,7 +431,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$startTimingBtn = $(".start_timing_btn");
     this.$startTimingBtn.attr("disabled","disabled");
-    this.$startTimingBtn.tooltip({title: "Shortcut: 'Shift' or 'Escape' to cancel"});
     this.$startTimingBtn.hide();
 
     this.$stopTimingBtn = $(".stop_timing_btn");
@@ -729,35 +729,38 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   initializeKeyboardShortcuts: function() {
     river.ui.BasePlayer.prototype.initializeKeyboardShortcuts.call(this);
 
-    var modifier = "";
+    this.modifier = "";
     if (navigator.platform.toUpperCase().match("MAC")) {
-      modifier = "command";
+      this.modifier = "command";
     } else {
-      modifier = "ctrl";
+      this.modifier = "ctrl";
     }
 
-    Mousetrap.bindGlobal(['shift'], function() { this.timeSubtitle(); return false; }.bind(this), 'keydown');
+    Mousetrap.bind([this.modifier + '+e'], function() { this.timeSubtitle(); return false; }.bind(this), 'keydown');
 
-    Mousetrap.bindGlobal([modifier + '+3'], function() {  
+    Mousetrap.bindGlobal([this.modifier + '+3'], function() {  
       this.hideStartShowStop();
       this.openSegment();
       return false; 
     }.bind(this), 'keydown');
 
-    Mousetrap.bindGlobal([modifier + '+4'], function() {  
+    Mousetrap.bindGlobal([this.modifier + '+4'], function() {  
       this.hideStopShowStart();
       this.closeSegment();
       return false; 
     }.bind(this), 'keydown');
 
-    Mousetrap.bindGlobal([modifier + '+left'], function() { this.backwardTime(); return false; }.bind(this), 'keydown');
-    Mousetrap.bindGlobal([modifier + '+p'], function() { this.togglePlayPause(); return false; }.bind(this), 'keydown');
-    Mousetrap.bindGlobal([modifier + '+right'], function() { this.forwardTime(); return false; }.bind(this), 'keydown');
+    Mousetrap.bindGlobal([this.modifier + '+left'], function() { this.backwardTime(); return false; }.bind(this), 'keydown');
+    Mousetrap.bindGlobal([this.modifier + '+p'], function() { this.togglePlayPause(); return false; }.bind(this), 'keydown');
+    Mousetrap.bindGlobal([this.modifier + '+right'], function() { this.forwardTime(); return false; }.bind(this), 'keydown');
 
-    // this.$backwardBtn.tooltip({ title: "Shortcut: " + modifier + " + left", placement: "bottom"});
-    // this.$playBtn.tooltip({ title: "Shortcut: " + modifier + " + p", placement: "bottom"});
-    // this.$pauseBtn.tooltip({ title: "Shortcut: " + modifier + " + p", placement: "bottom"});
-    // this.$forwardBtn.tooltip({ title: "Shortcut: " + modifier + " + right", placement: "bottom"});
+    this.$startTimingBtn.tooltip({title: "Shortcut: '" + this.modifier + " + e' or 'Escape' to cancel"});
+    this.$stopTimingBtn.tooltip({title: "Shortcut: '" + this.modifier + " + e' or 'Escape' to cancel"});
+
+    // this.$backwardBtn.tooltip({ title: "Shortcut: " + this.modifier + " + left", placement: "bottom"});
+    // this.$playBtn.tooltip({ title: "Shortcut: " + this.modifier + " + p", placement: "bottom"});
+    // this.$pauseBtn.tooltip({ title: "Shortcut: " + this.modifier + " + p", placement: "bottom"});
+    // this.$forwardBtn.tooltip({ title: "Shortcut: " + this.modifier + " + right", placement: "bottom"});
   },
 
   onEditorReady: function(event) {

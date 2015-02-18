@@ -17,7 +17,6 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   initializeKeyboardShortcuts: function() {
-    Mousetrap.bind(['shift'], function() { this.timeSubtitle(); return false; }.bind(this), 'keydown');
     Mousetrap.bind(['left'], function() { this.backwardTime(); return false; }.bind(this), 'keydown');
     Mousetrap.bind(['space'], function() { this.togglePlayPause(); return false; }.bind(this), 'keydown');
     Mousetrap.bind(['right'], function() { this.forwardTime(); return false; }.bind(this), 'keydown');

@@ -508,8 +508,18 @@ form.sub {
   margin: 10px 0;
 }
 
-.modal-header, .modal-footer {
-  background-color: #A3D4A3;
+.modal-header {
+  background-color: #337ab7;
+  color: white;
+  opacity: 0.65;
+}
+
+#keyboard_shortcuts_modal .modal-footer {
+  border-top: none;
+}
+
+#keyboard_shortcuts_modal .modal-footer .btn {
+  background-color: #eee;
 }
 
 body {

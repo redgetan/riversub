@@ -868,3 +868,12 @@ textarea {
 	float: left;
 	margin-left: 20px;
 }
+
+.keyboard_shortcut_container {
+	padding: 5px;
+	cursor: pointer;
+}
+
+.keyboard_shortcut_btn {
+	text-decoration: underline;
+}
