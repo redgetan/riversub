@@ -294,7 +294,7 @@ class Repository < ActiveRecord::Base
 
   def owned_by?(target_user)
     if user
-      self.user == target_user
+      (self.user == target_user) || (target_user && target_user.is_super_admin?)
     else
       true # anonymous repo belong to everyone
     end
@@ -328,7 +328,7 @@ class Repository < ActiveRecord::Base
   end
 
   def visible_to_user?(target_user)
-    is_published || owned_by?(target_user)
+    is_published || owned_by?(target_user) 
   end
 
   def serialize

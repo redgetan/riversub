@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150201215818) do
+ActiveRecord::Schema.define(:version => 20150220153811) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",                                    :default => 0
@@ -63,6 +63,22 @@ ActiveRecord::Schema.define(:version => 20150201215818) do
     t.boolean  "is_owner",   :default => false
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
+  end
+
+  create_table "release_items", :force => true do |t|
+    t.integer  "release_id"
+    t.integer  "video_id"
+    t.integer  "repository_id"
+    t.integer  "position"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "releases", :force => true do |t|
+    t.datetime "date"
+    t.boolean  "is_published"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "repositories", :force => true do |t|
@@ -117,6 +133,7 @@ ActiveRecord::Schema.define(:version => 20150201215818) do
     t.string   "avatar"
     t.text     "bio"
     t.boolean  "is_admin",               :default => false
+    t.boolean  "is_super_admin",         :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
