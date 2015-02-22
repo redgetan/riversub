@@ -294,23 +294,18 @@ class Repository < ActiveRecord::Base
 
   def owned_by?(target_user)
     if user
-      (self.user == target_user) || (target_user && target_user.is_super_admin?)
+      same_user?(target_user) || same_group?(target_user) || target_user.try(:is_super_admin?) 
     else
       true # anonymous repo belong to everyone
     end
   end
 
-    def is_editable_by_user?(user)
-    if user && user.id == self.user_id
-      if self.is_moderated?
-        false
-      else
-        (Time.now.to_i - (self.updated_at ? self.updated_at.to_i :
-          self.created_at.to_i) < (60 * MAX_EDIT_MINS))
-      end
-    else
-      false
-    end
+  def same_user?(target_user)
+    self.user == target_user
+  end
+
+  def same_group?(target_user)
+    (self.groups & target_user.groups).present?
   end
 
   def comments_tab_class
@@ -324,7 +319,7 @@ class Repository < ActiveRecord::Base
   def display_edit?(target_user)
     return false if anonymous?
 
-    self.user == target_user
+    same_user?(target_user) || same_group?(target_user) || target_user.try(:is_super_admin?) 
   end
 
   def visible_to_user?(target_user)
