@@ -305,7 +305,8 @@ class Repository < ActiveRecord::Base
   end
 
   def same_group?(target_user)
-    (self.groups & target_user.try(:groups)).present?
+    user_groups = Array(target_user.try(:groups))
+    (self.groups & user_groups).present?
   end
 
   def comments_tab_class
