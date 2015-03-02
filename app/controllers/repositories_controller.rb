@@ -2,6 +2,12 @@ class RepositoriesController < ApplicationController
 
 
   def new
+    unless user_signed_in?
+      flash[:error] = "You must be logged in to #{params[:upload] ? 'upload a subtitle' : 'add a language'}"
+      store_location
+      redirect_to new_user_session_url and return
+    end
+
     @video = Video.find_by_token(params[:video_token])
     @is_upload = params[:upload].present?
   end
@@ -94,7 +100,8 @@ class RepositoriesController < ApplicationController
     @repo = Repository.find_by_token! params[:token]
 
     unless @repo.owned_by? current_user
-      render :text => "you do not have permission to edit the subtitles", :status => 403 and return
+      store_location
+      redirect_to new_user_session_url and return
     end
 
     respond_to :html
@@ -110,7 +117,7 @@ class RepositoriesController < ApplicationController
 
   def unpublished
     unless current_user && current_user.admin?
-      render :text => "you do not have permission to access that page", :status => 403 and return
+     redirect_to new_user_session_url and return
     end
 
     @repos = Repository.unpublished.recent
@@ -133,7 +140,8 @@ class RepositoriesController < ApplicationController
     end
 
     unless current_user
-      render :text => "You must be logged in to take the action", :status => 401 and return
+      store_location(repo.url)
+      render :text => new_user_session_url, :status => 401 and return
     end
 
     repo.liked_by current_user
@@ -147,7 +155,8 @@ class RepositoriesController < ApplicationController
     end
 
     unless current_user
-      render :text => "You must be logged in to take the action", :status => 401 and return
+      store_location(repo.url)
+      render :text => new_user_session_url, :status => 401 and return
     end
 
     if !current_user.can_downvote?(repo)

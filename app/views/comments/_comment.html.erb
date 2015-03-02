@@ -3,11 +3,7 @@ data-shortid="<%= comment.short_id %>"
 class="comment <%= comment.comment_item_class_for(current_user) %>">
   <% if !comment.is_gone? %>
     <div class="voters">
-      <% if user_signed_in? %>
-        <a class="upvoter"></a>
-      <% else %>
-        <%= link_to "", "#{login_url}?user_action=upvote_a_comment", :class => "upvoter" %>
-      <% end %>
+      <a class="upvoter"></a>
       <div class="score"><%= comment.score %></div>
       <% if user_signed_in? && current_user.can_downvote?(comment) %>
         <a class="downvoter"></a>

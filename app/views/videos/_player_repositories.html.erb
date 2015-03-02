@@ -1,8 +1,8 @@
 <div id='forks_container' class=''>
-  <a href="<%= user_signed_in? ? @video.new_repository_url : "#{login_url}?user_action=add_a_language" %>" class="fork_repo_btn river_btn">
+  <a href="<%= @video.new_repository_url %>" class="fork_repo_btn river_btn">
     <i class='glyphicon glyphicon-plus'></i> Add Language
   </a>
-  <a href="<%= user_signed_in? ? @video.new_repository_via_upload_url : "#{login_url}?user_action=upload_a_subtitle_file" %>" class="upload_repo_btn river_btn">
+  <a href="<%= @video.new_repository_via_upload_url %>" class="upload_repo_btn river_btn">
     <i class='glyphicon glyphicon-eject'></i> Upload Existing Subtitle File
   </a>
   <div class='forks_list_body' style=''>

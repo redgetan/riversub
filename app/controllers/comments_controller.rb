@@ -123,7 +123,8 @@ class CommentsController < ApplicationController
     end
 
     unless current_user
-      render :text => "You must be logged in to take the action", :status => 401 and return
+      store_location(comment.commentable.url)
+      render :text => new_user_session_url, :status => 401 and return
     end
 
     comment.liked_by current_user
@@ -137,7 +138,8 @@ class CommentsController < ApplicationController
     end
 
     unless current_user
-      render :text => "You must be logged in to take the action", :status => 401 and return
+      store_location(comment.commentable.url)
+      render :text => new_user_session_url, :status => 401 and return
     end
 
     if !current_user.can_downvote?(comment)

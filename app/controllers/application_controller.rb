@@ -8,8 +8,19 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, :alert => exception.message
   end
 
-  def store_previous_url
-    session[:previous_url] = request.referer
+  # Redirects to stored location (or to the default).
+  def redirect_back_or(default)
+    redirect_to(session[:forwarding_url] || default)
+    session.delete(:forwarding_url)
+  end
+
+  # Stores the URL trying to be accessed.
+  def store_location(target_url = nil)
+    session[:forwarding_url] = if target_url
+                                 target_url
+                               elsif request.get?
+                                 request.url 
+                               end
   end
 
   def render_404
@@ -20,20 +31,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(user)
-    user_action = if query = URI.parse(request.referer).query 
-                    CGI.parse(query)["user_action"][0]
-                  else
-                    nil
-                  end
-
-    case user_action
-    when "upvote_a_comment","upvote_a_subtitle","add_a_language","upload_a_subtitle_file"
-      session[:previous_url]
-    when "subtitle_a_video"
-      videos_new_url
-    else
-      user_url(user)
-    end
+    session[:forwarding_url] || user_url(user)
   end
 
 end

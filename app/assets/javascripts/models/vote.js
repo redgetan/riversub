@@ -72,7 +72,10 @@ river.model.Vote = {
       success: function() {
         scoreDiv.innerHTML = score;
       },
-      error: function() {
+      error: function(data) {
+        if (data.status == 401) {
+          window.location.href = data.responseText;
+        }
       },
       dataType: "text"
     });
