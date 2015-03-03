@@ -765,19 +765,23 @@ ul.social_login_buttons a {
 #transcript_container,
 #comments_container,
 .share_container {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .share_container {
-  height: 80px;
-  padding: 20px;
   text-align: left;
 }
 
-.social_share_container {
-  margin-bottom: 20px;
-  margin-left: 36px;
-  margin-top: 20px;
+.share_container .share_label {
+  line-height: 30px;
+  margin-right: 20px;
+}
+
+.social_share_container a {
+  /*border: solid 3px lightgray; */
+  padding: 5px;
+  margin-right: 5px;
+  line-height: 30px;
 }
 
 .demo-video,
@@ -1000,7 +1004,7 @@ footer a:hover{
 }
 
 #video_information {
-  margin-left: 20px;
+  /*margin-left: 20px;*/
 }
 
 #video_information .comment_form_container,
@@ -1533,9 +1537,9 @@ form#request_beta_invite input[name='email'] {
 }
 
 .forks_list_item.selected .language_label {
-  border: solid 1px brown;
-  color: brown;
-  
+  border: solid 1px gray;
+  color: white;
+  background-color: cadetblue;
 }
 
 
@@ -2266,7 +2270,7 @@ div.comment_form_container form {
 
 #comments_container textarea#comment {
   width: 100%;
-  border: solid 2px cadetblue;
+  border: solid 3px lightgray;
 }
 
 #comments_container button.comment-post {
@@ -2276,6 +2280,7 @@ div.comment_form_container form {
 
 #comments_container textarea#comment {
   height: 50px;
+  background-color: aliceblue;
 }
 
 div.flash-error {

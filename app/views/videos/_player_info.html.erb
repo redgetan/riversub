@@ -1,25 +1,13 @@
 <div id="video_information" class="">
   <div class="">
     <% if @repo %>
-      <div class="repository <%= @repo.repo_item_class_for(current_user) %>" data-shortid="<%= @repo.token %>">
-        <div class="voters pull-left">
-          <a class="upvoter"></a>
-          <div class="score"><%= @repo.score %></div>
-          <% if user_signed_in? && current_user.can_downvote?(@repo) %>
-            <a class="downvoter"></a>
-          <% else %>
-            <span class="downvoter downvoter_stub"></span>
-          <% end %>
-        </div>
-      </div>
-
-      <h3 id='repo_label'>
+      <h3 id='repo_label' class='pull-left'>
         <div>
           <a href="<%= @repo.url %>"><%= @repo.title %></a>
         </div>
       </h3>
 
-      <div id='repo_time_label'>
+      <h3 id='repo_time_label' class='pull-right'>
         <span class='updated_at'><%= time_ago_in_words(@repo.updated_at) %> ago</span>
         <% if @repo.user %>
           <span class='repo_owner'>
@@ -28,7 +16,7 @@
             <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
           </span>
         <% end %>
-      </div>
+      </h3>
     <% else %>
       <h3 id='repo_label'>
         <div>

@@ -1,7 +1,7 @@
 <div id="player_details">
   <ul class="nav nav-tabs" >
     <li class="active"><a href="#transcript_tab" data-toggle="tab">Transcript</a></li>
-    <li ><a href="#comments_tab" data-toggle="tab">Comments</a></li>
+    <li ><a href="#comments_tab" data-toggle="tab">Contribute</a></li>
     <li ><a href="#share_tab" data-toggle="tab">Share</a></li>
   </ul>
 
@@ -13,15 +13,10 @@
     </div>
 
     <div class="tab-pane <%= @repo ? @repo.comments_tab_class : "active" %>" id='comments_tab'>
-      <% if @repo %>
-        <%= render 'videos/player_comments' %>
-      <% end %>
+      <%= render 'videos/player_repositories' %>
     </div>
 
     <div class="tab-pane" id='share_tab'>
-      <% if @repo %>
-        <%= render 'videos/player_share' %>
-      <% end %>
     </div>
 
   </div>

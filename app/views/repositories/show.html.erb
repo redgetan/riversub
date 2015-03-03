@@ -3,11 +3,16 @@
 <div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
   <div class="row">
     <div class="col-lg-9 player_column">
+      <%= render 'videos/player_info' %>
       <%= render 'videos/player' %>
-      <%= render 'videos/player_repositories' %>
+      <% if @repo %>
+        <%= render 'videos/player_share' %>
+      <% end %>
+      <% if @repo %>
+        <%= render 'videos/player_comments' %>
+      <% end %>
     </div>
     <div class='col-lg-5'>
-      <%= render 'videos/player_info' %>
       <%= render 'videos/player_details' %>
     </div>
   </div>
