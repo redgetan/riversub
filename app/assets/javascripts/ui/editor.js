@@ -374,7 +374,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
                         "<button type='button' class='start_timing_btn river_btn'> <i class=''></i>Start</button> " +
                         "<button type='button' class='stop_timing_btn river_btn'> <i class='glyphicon glyphicon-stop'></i> Stop</button> " +
-                        "<div class='checkbox ask_input_after_timing_checkbox'><label><input type='checkbox' checked>Ask input after timing</label></div>" +
+                        "<div class='checkbox ask_input_after_timing_checkbox'><label><input type='checkbox'>Ask input after timing</label></div>" +
                         "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
                         "<button type='button' class='add_sub_btn river_btn'>Enter</a>" +
                       "</div> " +
