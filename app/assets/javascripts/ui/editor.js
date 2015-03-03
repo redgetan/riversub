@@ -598,11 +598,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onDocumentClick: function(event) {
+    var isInsideTimelineContainer = $(event.target).closest("#timeline_container").length > 0;
+    var isInsideSubtitleContainer = $(event.target).closest("#subtitle_container").length > 0;
+
     if (!$(event.target).hasClass("sub_text_area") &&
       !$(event.target).hasClass("track_text") &&
       !$(event.target).hasClass("ui-spinner") &&
       !$(event.target).hasClass("repo_title_input") &&
-      !$(event.target).hasClass("add_sub_input")) {
+      !$(event.target).hasClass("add_sub_input") && 
+      !isInsideTimelineContainer && 
+      !isInsideSubtitleContainer ) {
       this.preventSubtileInputFromLosingFocus(event);
     }
   },
