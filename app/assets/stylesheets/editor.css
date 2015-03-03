@@ -26,6 +26,8 @@ div#editor {
 
 div#editor #repo_label {
 	float: left;
+	width: 800px;
+	text-align: left;
 }
 
 div#editor #repo_owner, 
