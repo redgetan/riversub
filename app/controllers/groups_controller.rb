@@ -40,7 +40,6 @@ class GroupsController < ApplicationController
   # POST /groups
   # POST /groups.json
   def create
-    binding.pry
     @group = Group.new(params[:group].merge(creator_id: current_user.try(:id)) )
 
     respond_to do |format|
