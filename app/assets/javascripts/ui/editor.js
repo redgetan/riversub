@@ -169,7 +169,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTimelineSeekHandler: function(time, $target) {
     if ($target.hasClass("track")) {
       var track = $target.data("model");
-      this.replayTrackAndEdit(track);
+      this.seek(track.startTime());
     } else {
       this.seek(time);
     }
@@ -1186,6 +1186,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var $target = $(event.target);
 
     if ($target.hasClass("track") || $target.hasClass("track_text")) {
+      this.replayTrackAndEdit($target.closest(".track").data("model"));
       return;
     }
 
