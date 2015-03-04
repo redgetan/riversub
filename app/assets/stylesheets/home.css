@@ -1653,7 +1653,7 @@ form#request_beta_invite input[name='email'] {
 
 #forks_container {
   clear: both;
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 #forks_container .forks_list_header {
@@ -2097,7 +2097,7 @@ div.comment_form_container form {
 }
 
 .forks_list_body {
-  margin-top: 20px;
+  margin-top: 40px;
   padding: 10px;
   border: solid 1px gray;
   clear: both;
@@ -2257,17 +2257,20 @@ div.comment_form_container form {
 #player_details .nav.nav-tabs li a {
   background: none;
   padding: 5px 20px;
-  border: solid 1px gray;
+  border-bottom: solid 1px gray;
   margin: 0px;
   border-radius: 0px;
 }
 
 #player_details .nav.nav-tabs li.active {
-  background-color: gray;
+  /*background-color: gray;*/
 }
 
 #player_details .nav.nav-tabs li.active a {
-  color: white;
+  border-bottom: none;
+  border-top: solid 1px gray;
+  border-left: solid 1px gray;
+  border-right: solid 1px gray;
 }
 
 
