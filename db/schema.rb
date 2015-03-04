@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150220153811) do
+ActiveRecord::Schema.define(:version => 20150304163401) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",                                    :default => 0
@@ -67,7 +67,6 @@ ActiveRecord::Schema.define(:version => 20150220153811) do
 
   create_table "release_items", :force => true do |t|
     t.integer  "release_id"
-    t.integer  "video_id"
     t.integer  "repository_id"
     t.integer  "position"
     t.datetime "created_at",    :null => false

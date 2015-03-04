@@ -31,7 +31,7 @@ River::Application.routes.draw do
     get "subs",                                  :to => "repositories#index",  :as => "repositories"
 
     resources :releases do 
-      resources :release_items, :only => [:create, :update, :destroy]
+      resources :release_items, :only => [:create, :show, :update, :destroy]
     end
 
     resources "repositories", :only => [] do

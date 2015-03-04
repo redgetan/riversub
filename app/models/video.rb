@@ -7,6 +7,9 @@ class Video < ActiveRecord::Base
   has_many :repositories
   has_many :users, :through => :repositories
 
+  has_many :releases
+  has_many :release_items, :through => :releases
+
   serialize :metadata, JSON
 
   validates :name, :presence => true

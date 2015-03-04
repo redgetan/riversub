@@ -22,23 +22,26 @@
 <ul class="release_items_container">
   
   <% @release.release_items.each do |item| %>
-    <% repo = item.repo %>
+    <% repo = item.repository %>
+    <% video = item.video %>
     <li class='release_item'>
       <div class="video_thumb">
-        <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-          <img src="<%= repo.thumbnail_url %>" alt="">
-        </a>
+        <img src="<%= video.thumbnail_url %>" alt="">
       </div>
       <div class="video_title">
-        <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-          <h4 class='video_name'><%= repo.title %></h4>
-        </a>
+        <% if repo %>
+          <a href="<%= repo.url %>" class="video" >
+            <h4 class='video_name'><%= video.title %></h4>
+          </a>
+        <% else %>
+          <h4 class='video_name'><%= video.title %></h4>
+        <% end %>
       </div>
       <div class="video_duration">
         <%= video.duration %>
       </div>
       <div class="assignee">
-        <% if item.repo %>
+        <% if repo %>
           <span class='repo_owner'>
             <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
           </span>

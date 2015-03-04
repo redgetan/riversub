@@ -102,47 +102,40 @@ $(document).ready(function(){
     $(this).find(".sub_btn").button('loading');
 
     try {
-      openSubtitleEditor(url);
+      subtitleVideo(url);
     } catch(e) {
-      handleOpenSubtitleEditorError(e,$(this));
+      handleSubtitleVideoError(e,$(this));
       throw e;
     }
+  });
+  
 
+  $("form.add_release_item").on("submit",function(event) {
+    event.preventDefault();
+
+    var url = $(this).find(".source_url").val();
+    var release_id = $(this).data("release-id");
+
+    $(this).find(".sub_btn").button('loading');
+
+    try {
+      addReleaseItem(url, release_id);
+    } catch(e) {
+      handleSubtitleVideoError(e,$(this));
+      throw e;
+    }
   });
 
 });
 
-
-function handleOpenSubtitleEditorError(e,$form) {
-  $form.find(".control-group").addClass("error");
-  $form.find(".control-group").append("<span class='help-inline'>" + e + "</span>");
-  setTimeout(function(){
-    $form.find("span.help-inline").remove();
-    $form.find(".control-group").removeClass("error");
-  },2000);
-
-  $("#ajax_loader").remove();
-  $form.find(".sub_btn").button('reset');
-}
-
-function openSubtitleEditor(url, forkedRepoToken) {
+function subtitleVideo(url) {
 
   if (!url.match(/youtube/)) {
     throw "Only youtube urls are allowed";
   }
 
-  getMetadata(url,function(data){
-    metadata  = data;
-
-    if (typeof metadata["error"] !== "undefined") {
-      var e = "Invalid youtube Url - " + metadata["error"]["message"];
-      throw e;
-    }
-
-    if (!isEmbeddable(metadata)) {
-      var e = "Video is not embeddable. Try another url.";
-      throw e;
-    }
+  getMetadata(url,function(metadata){
+    validateYoutubeMetadata(metadata);
 
     $.ajax({
       url: "/videos/sub",
@@ -169,6 +162,56 @@ function openSubtitleEditor(url, forkedRepoToken) {
     });
   });
 }
+
+
+function addReleaseItem(url, release_id) {
+
+  if (!url.match(/youtube/)) {
+    throw "Only youtube urls are allowed";
+  }
+
+  getMetadata(url,function(metadata){
+    validateYoutubeMetadata(metadata);
+
+    $.ajax({
+      url: "/releases/" + release_id + "/release_items",
+      type: "POST",
+      data: {
+        source_url : url,
+        video_metadata: metadata
+      },
+      dataType: "json",
+      success: function(data,status) {
+        var redirectUrl = data.redirect_url;
+        window.location.href = redirectUrl;
+      },
+      error: function(data) {
+        var error_type = JSON.parse(data.responseText).error_type;
+        if (data.status === 401) {
+          // if error due to user not logged in, show login modal
+          $("#login_modal").modal();
+          $("form.sub").find(".sub_btn").button('reset');
+        } else {
+          throw data.responseText;
+        }
+      }
+    });
+  });
+}
+
+function validateYoutubeMetadata(metadata)
+{
+  if (typeof metadata["error"] !== "undefined") {
+    var e = "Invalid youtube Url - " + metadata["error"]["message"];
+    throw e;
+  }
+
+  if (!isEmbeddable(metadata)) {
+    var e = "Video is not embeddable. Try another url.";
+    throw e;
+  }
+}
+
 
 function setCookie(c_name,value,exdays)
 {

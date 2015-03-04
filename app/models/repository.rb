@@ -16,6 +16,9 @@ class Repository < ActiveRecord::Base
   has_many :group_repositories
   has_many :groups, through: :group_repositories
 
+  has_many :release_items
+  has_many :releases, :through => :release_items
+
   attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :language, :parent_repository_id, :title
 
