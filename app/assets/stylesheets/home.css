@@ -244,9 +244,13 @@ div.videos li.selected {
   background-color: mediumaquamarine;
 }
 
-div#media_container {
-  /*padding: 10px;*/
+#editor #media_container {
   width: inherit;
+}
+
+#river_player #media_container {
+  /*padding: 10px;*/
+  width: 100%;
   /*margin-right: 15px;*/
 }
 
@@ -277,7 +281,6 @@ div#media_container {
 
 #river_player.show div#media {
   margin-top: 0px;
-  width: 650px;
   height: 380px;
 }
 
@@ -778,7 +781,7 @@ ul.social_login_buttons a {
 }
 
 .social_share_container a {
-  /*border: solid 3px lightgray; */
+  border: solid 1px lightgray; 
   padding: 5px;
   margin-right: 5px;
   line-height: 30px;
@@ -1250,7 +1253,6 @@ footer a:hover{
 
 #player_details {
   clear: both;
-  margin-left: 40px;
 }
 
 #video_information .nav-tabs > .active > a,
@@ -1345,7 +1347,7 @@ footer a:hover{
 }
 
 #river_player .player_timeline_container {
-  width: 580px;
+  width: 90%;
   margin-right: 5px;
 }
 
@@ -1402,8 +1404,7 @@ footer a:hover{
 }
 
 #river_player .player_column {
-  width: 650px;
-  padding: 0;
+  padding-right: 30px;
 }
 
 .signup_container {
@@ -2096,7 +2097,9 @@ div.comment_form_container form {
 }
 
 .forks_list_body {
-  padding-top: 20px;
+  margin-top: 20px;
+  padding: 10px;
+  border: solid 1px gray;
   clear: both;
   text-align: left;
 }
@@ -2231,11 +2234,10 @@ div.comment_form_container form {
 }
 
 .subtitle_selections .language_label {
-  margin-right: 20px;
   padding-left: 10px;
   color: black;
   display: inline-table;
-  min-width: 180px;
+  min-width: 160px;
 }
 
 .subtitle_selections #publish_btn:hover,
@@ -2247,9 +2249,14 @@ div.comment_form_container form {
   margin-top: 20px;
 }
 
+#player_details .nav.nav-tabs li {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 #player_details .nav.nav-tabs li a {
   background: none;
-  padding: 5px 40px;
+  padding: 5px 20px;
   border: solid 1px gray;
   margin: 0px;
   border-radius: 0px;

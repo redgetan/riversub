@@ -2,7 +2,7 @@
 
 <div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
   <div class="row">
-    <div class="col-lg-9 player_column">
+    <div class="col-lg-7 col-md-7 player_column">
       <%= render 'videos/player_info' %>
       <%= render 'videos/player' %>
       <% if @repo %>
@@ -12,12 +12,8 @@
         <%= render 'videos/player_comments' %>
       <% end %>
     </div>
-    <div class='col-lg-5'>
+    <div class='col-lg-5 col-md-5'>
       <%= render 'videos/player_details' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-9 player_column">
     </div>
   </div>
 </div>

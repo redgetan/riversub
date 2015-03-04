@@ -2,17 +2,18 @@
 
 <div id='river_player' class='show container public' data-video='<%= @video.serialize.to_json %>'>
   <div class="row">
-    <div class="col-lg-9 player_column">
-      <%= render 'videos/player' %>
-      <%= render 'videos/player_repositories' %>
-    </div>
-    <div class='col-lg-5'>
+    <div class="col-lg-7 col-md-7 player_column">
       <%= render 'videos/player_info' %>
-      <%= render 'videos/player_details' %>
+      <%= render 'videos/player' %>
+      <% if @repo %>
+        <%= render 'videos/player_share' %>
+      <% end %>
+      <% if @repo %>
+        <%= render 'videos/player_comments' %>
+      <% end %>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-9 player_column">
+    <div class='col-lg-5 col-md-5'>
+      <%= render 'videos/player_details' %>
     </div>
   </div>
 </div>

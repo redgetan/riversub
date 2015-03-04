@@ -62,6 +62,10 @@ class Video < ActiveRecord::Base
     end
   end
 
+  def empty_repository?
+    !published_repositories.present?
+  end
+
   def title
     name
   end
