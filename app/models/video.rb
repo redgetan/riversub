@@ -89,6 +89,14 @@ class Video < ActiveRecord::Base
     self.repositories.published
   end
 
+  def self.language_select_options
+    Language::CODES.map{|k,v| [v,k]}.unshift(["Unknown",""])
+  end
+
+  def self.selected_language_select_for(group)
+    group.settings.get("default_video_language_code")
+  end
+
   def to_param
     self.token
   end

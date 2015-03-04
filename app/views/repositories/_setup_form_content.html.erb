@@ -3,12 +3,12 @@
     <% unless @video.language.present? %>
       <li>
         <h4>The Video is in</h4>
-        <%= select_tag("video_language_code", options_for_select(Language::CODES.map{|k,v| [v,k]}.unshift(["Unknown",""]))) %>
+        <%= select_tag("video_language_code", options_for_select(Video.language_select_options)) %>
       </li>
     <% end %>
     <li>
       <h4>Choose Subtitle language</h4>
-      <%= select_tag("repo_language_code", options_for_select(Language::CODES.map{|k,v| [v,k]})) %>
+      <%= select_tag("repo_language_code", options_for_select(Repository.language_select_options)) %>
     </li>
 
     <% if @is_upload %>

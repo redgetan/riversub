@@ -226,6 +226,10 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def self.language_select_options
+    Language::CODES.map{|k,v| [v,k]}
+  end
+
   def create_timings_from_subtitle_file(uploaded_file)
     text = uploaded_file.read
     srt = SubtitleParser.parse_srt(text, uploaded_file.original_filename)

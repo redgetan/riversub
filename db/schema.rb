@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150304163401) do
+ActiveRecord::Schema.define(:version => 20150304190120) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",                                    :default => 0
@@ -39,6 +39,12 @@ ActiveRecord::Schema.define(:version => 20150304163401) do
     t.integer  "repository_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+  end
+
+  create_table "group_settings", :force => true do |t|
+    t.integer "group_id"
+    t.string  "key"
+    t.text    "value"
   end
 
   create_table "groups", :force => true do |t|
@@ -78,6 +84,7 @@ ActiveRecord::Schema.define(:version => 20150304163401) do
     t.boolean  "is_published"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.integer  "group_id"
   end
 
   create_table "repositories", :force => true do |t|

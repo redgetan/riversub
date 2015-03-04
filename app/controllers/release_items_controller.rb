@@ -1,7 +1,8 @@
 class ReleaseItemsController < ApplicationController
   def create
-    debugger
     metadata = params[:video_metadata]
+
+    @release = Release.find params[:release_id]
 
     # if video already exist not need to create another one
     @video = Video.where(:source_url => params[:source_url].gsub(/https/,"http"))
@@ -10,8 +11,15 @@ class ReleaseItemsController < ApplicationController
                     :metadata => metadata,
                   })
 
-    @release_item = ReleaseItem.new(release_id: params[:release_id],
-                                    repository_id: @video.id)
+    # update video language if needed
+    @video.update_attributes!(language: params[:video_language_code]) unless @video.language.present?
+
+    # create repository
+    @repo = Repository.create!(video: @video, user: current_user, language: params[:repo_language_code])
+    @repo.group_repositories.create!(group_id: @release.group.id) 
+
+    # create release item
+    @release_item = @release.release_items.build(repository_id: @repo.id)
 
     respond_to do |format|
       if @release_item.save

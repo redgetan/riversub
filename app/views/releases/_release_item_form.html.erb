@@ -1,16 +1,15 @@
 <form class="add_release_item form-inline" data-release-id="<%= @release.id %>">
   <div class="form-group">
     <div class="input-group">
-      <div class="input-group-addon">From Language</div>
-      <%= select_tag("video_language_code", options_for_select(Language::CODES.map{|k,v| [v,k]}.unshift(["Unknown",""]))) %>
+      <label>From </label>
+      <%= select_tag("video_language_code", options_for_select(Video.language_select_options, Video.selected_language_select_for(@release.group))) %>
     </div>
     <div class="input-group">
-      <div class="input-group-addon">To Language</div>
-      <%= select_tag("repo_language_code", options_for_select(Language::CODES.map{|k,v| [v,k]})) %>
+      <label>To </label>
+      <%= select_tag("repo_language_code", options_for_select(Repository.language_select_options)) %>
     </div>
-    <div class="input-group">
-      <input name="source_url" class="source_url" type="text" placeholder="Paste youtube url">
-      <button type="button" class="btn btn-danger sub_btn" data-loading-text="Loading...">Add</button>
-    </div>
+    <label>Youtube Url</label>
+    <input name="source_url" class="source_url" type="text" placeholder="i.e. (https://www.youtube.com/watch?v=wCumYYj4A3k)">
+    <button type="button" class="btn btn-danger btn-sm sub_btn" data-loading-text="Loading...">Add</button>
   </div>
 </form>

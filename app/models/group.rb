@@ -7,6 +7,10 @@ class Group < ActiveRecord::Base
   has_many :group_repositories
   has_many :repositories, through: :group_repositories
 
+  has_many :releases
+
+  has_many :settings, class_name: "GroupSetting"
+
   belongs_to :creator, class_name: "User", foreign_key: "creator_id"
 
   validates :creator_id, :presence => true

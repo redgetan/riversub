@@ -222,6 +222,10 @@ div#media_input {
   font-size: 20px;
 }
 
+.add_release_item .source_url {
+  width: 400px;
+}
+
 .sub_btn {
 }
 
@@ -2371,4 +2375,11 @@ iframe.fansubber_signup_form .ss-base-body {
   display: block;
   width: 100px;
   margin-top: 30px;
+}
+
+.add_release_item {
+  margin-top: 30px;  
+}
+.add_release_item label {
+  margin-right: 10px;
 }
