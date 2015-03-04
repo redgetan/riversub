@@ -23,8 +23,9 @@ class ReleaseItemsController < ApplicationController
 
     respond_to do |format|
       if @release_item.save
-        format.html { redirect_to @release_item, notice: 'Release Item was successfully created.' }
-        format.json { render json: @release_item, status: :created, location: @release_item }
+        flash[:notice] = "Video added"
+        format.html { redirect_to release_release_item_url([@release, @release_item]) , notice: 'Release Item was successfully created.' }
+        format.json { render json: { redirect_url: release_url(@release) }, status: :created }
       else
         format.html { render action: "new" }
         format.json { render json: @release_item.errors, status: :unprocessable_entity }
@@ -40,7 +41,7 @@ class ReleaseItemsController < ApplicationController
 
     respond_to do |format|
       if @release_item.update_attributes(params[:release_item])
-        format.html { redirect_to @release_item, notice: 'Release Item was successfully updated.' }
+        format.html { redirect_to release_url(@release_item.release), notice: 'Release Item was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -54,7 +55,7 @@ class ReleaseItemsController < ApplicationController
     @release_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to releases_url }
+      format.html { redirect_to release_url(@release_item.release) }
       format.json { head :no_content }
     end
   end

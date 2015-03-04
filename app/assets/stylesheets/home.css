@@ -223,7 +223,10 @@ div#media_input {
 }
 
 .add_release_item .source_url {
-  width: 400px;
+}
+
+.release_item {
+  clear: both;
 }
 
 .sub_btn {
@@ -2382,4 +2385,7 @@ iframe.fansubber_signup_form .ss-base-body {
 }
 .add_release_item label {
   margin-right: 10px;
+}
+
+.release_items_container .video_title {
 }

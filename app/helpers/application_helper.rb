@@ -70,4 +70,19 @@ module ApplicationHelper
     label_tag(nil, time_ago_in_words(*args), :title => args.first.strftime("%F %T %z"))
   end
 
+  def format_time(secs)
+    [60, 60, 24, 1000].map{ |count|
+      if secs > 0
+        secs, n = secs.divmod(count)
+        n
+      end
+    }.compact.reverse.each_with_index.map { |n, index| 
+      if index != 0 && n.to_s.length != 2  
+        "0#{n}"
+      else
+        n
+      end
+    }.join(':')
+  end
+
 end

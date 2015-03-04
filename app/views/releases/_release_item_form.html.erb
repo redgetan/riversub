@@ -1,15 +1,17 @@
-<form class="add_release_item form-inline" data-release-id="<%= @release.id %>">
-  <div class="form-group">
-    <div class="input-group">
+<form class="row add_release_item form-inline" data-release-id="<%= @release.id %>">
+  <div class="form-group col-md-offset-3">
+    <div class="input-group col-md-3">
       <label>From </label>
       <%= select_tag("video_language_code", options_for_select(Video.language_select_options, Video.selected_language_select_for(@release.group))) %>
     </div>
-    <div class="input-group">
+    <div class="input-group col-md-3">
       <label>To </label>
       <%= select_tag("repo_language_code", options_for_select(Repository.language_select_options)) %>
     </div>
-    <label>Youtube Url</label>
-    <input name="source_url" class="source_url" type="text" placeholder="i.e. (https://www.youtube.com/watch?v=wCumYYj4A3k)">
-    <button type="button" class="btn btn-danger btn-sm sub_btn" data-loading-text="Loading...">Add</button>
+    <div class="input-group col-md-4">
+      <label>Youtube Url</label>
+      <input name="source_url" class="source_url" type="text" placeholder="i.e. (https://www.youtube.com/watch?v=wCumYYj4A3k)">
+      <button type="button" class="btn btn-danger btn-sm sub_btn" data-loading-text="Loading...">Add</button>
+    </div>
   </div>
 </form>
