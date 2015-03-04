@@ -8,10 +8,9 @@
       </h3>
 
       <h3 id='repo_time_label' class='pull-right'>
-        <span class='updated_at'><%= time_ago_in_words(@repo.updated_at) %> ago</span>
+        <!-- <span class='updated_at'><%= time_ago_in_words(@repo.updated_at) %> ago</span> -->
         <% if @repo.user %>
           <span class='repo_owner'>
-            by
             <a href="<%= @repo.owner_profile_url %>" style="color:slategray"><%= @repo.owner %></a>
             <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
           </span>

@@ -62,8 +62,8 @@ class Video < ActiveRecord::Base
     end
   end
 
-  def empty_repository?
-    !published_repositories.present?
+  def empty_repository?(target_user)
+    !repositories.select { |repo| repo.visible_to_user?(target_user) }.present?
   end
 
   def title

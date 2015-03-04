@@ -7,7 +7,7 @@
   </a>
   <div class='forks_list_body' style=''>
     <ul class="subtitle_selections">
-      <% if @video.empty_repository? %>
+      <% if @video.empty_repository?(current_user) %>
         There are currently no subtitles available for this video. Start adding one now by clicking the "Add Language" button above.
       <% end %>
       <% @video.repositories.each do |repo| %>
