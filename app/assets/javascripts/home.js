@@ -6,11 +6,15 @@ var repo;
 var player;
 var metadata;
 
-var getMetadata = function(url,done) {
-
+var getYoutubeId = function(url) {
   // get youtube video id
   // http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
-  var videoId = url.split('v=')[1];
+  if (url.match(/youtu\.be/)) {
+    var tokens = url.split('/');
+    var videoId = tokens[tokens.length - 1];
+  } else {
+    var videoId = url.split('v=')[1];
+  }
 
   if (typeof videoId === "undefined") {
     throw "Invalid youtube Url";
@@ -20,6 +24,12 @@ var getMetadata = function(url,done) {
   if(ampersandPosition != -1) {
     videoId = videoId.substring(0, ampersandPosition);
   }
+
+  return videoId;
+}
+
+var getMetadata = function(url,done) {
+  var videoId = getYoutubeId(url);
 
   $.ajax({
     url: "https://gdata.youtube.com/feeds/api/videos/" + videoId + "?v=2&alt=jsonc",
@@ -163,10 +173,22 @@ function subtitleVideo(url) {
   });
 }
 
+function handleSubtitleVideoError(e,$form) {
+  $form.find(".subtitle_video_container").addClass("error");
+  $form.find(".subtitle_video_container").append("<span class='help-inline'>" + e + "</span>");
+  setTimeout(function(){
+    $form.find("span.help-inline").remove();
+    $form.find(".subtitle_video_container").removeClass("error");
+  },2000);
+
+  $("#ajax_loader").remove();
+  $form.find(".sub_btn").button('reset');
+}
+
 
 function addReleaseItem(url, release_id) {
 
-  if (!url.match(/youtube/)) {
+  if (!url.match(/youtu\.?be/)) {
     throw "Only youtube urls are allowed";
   }
 

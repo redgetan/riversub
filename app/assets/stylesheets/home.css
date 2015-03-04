@@ -227,6 +227,7 @@ div#media_input {
 
 .release_item {
   clear: both;
+  list-style: none;
 }
 
 .sub_btn {
@@ -2388,4 +2389,11 @@ iframe.fansubber_signup_form .ss-base-body {
 }
 
 .release_items_container .video_title {
+}
+
+.help-inline {
+  position: absolute;
+  left: 0px;
+  top: 60px;
+  color: red;
 }

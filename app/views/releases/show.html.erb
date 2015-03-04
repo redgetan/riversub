@@ -39,7 +39,9 @@
           <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
         </span>
       </div>
-      <a href="<%= repo.editor_url %>" class="col-md-1 btn btn-success btn-xs">Editor</a>
+      <% if repo.display_edit?(current_user) %>
+        <a href="<%= repo.editor_url %>" class="col-md-1 btn btn-success btn-xs">Editor</a>
+      <% end %>
     </li>
   <% end %>
 </ul>
