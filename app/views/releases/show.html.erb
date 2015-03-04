@@ -1,0 +1,51 @@
+<p id="notice"><%= notice %></p>
+
+<h1></h1>
+<div class='row center'>
+  <div class="col-xs-12">
+    <span class="title river_gray">Release #<%= @release.id %></span>
+    <br/>
+    <span>
+      <%= @release.date.strftime("%b %d %Y") %>
+    </span>
+    <br/>
+    <span>
+      Is published: <%= @release.is_published %>
+    </span>
+  </div>
+</div>
+
+<h3>Videos</h3>
+
+<%= render 'release_item_form' %>
+
+<ul class="release_items_container">
+  
+  <% @release.release_items.each do |item| %>
+    <% repo = item.repo %>
+    <li class='release_item'>
+      <div class="video_thumb">
+        <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+          <img src="<%= repo.thumbnail_url %>" alt="">
+        </a>
+      </div>
+      <div class="video_title">
+        <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+          <h4 class='video_name'><%= repo.title %></h4>
+        </a>
+      </div>
+      <div class="video_duration">
+        <%= video.duration %>
+      </div>
+      <div class="assignee">
+        <% if item.repo %>
+          <span class='repo_owner'>
+            <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
+          </span>
+        <% else %>
+          <a href="<%= item.video.new_repository_url %>">claim</a>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>

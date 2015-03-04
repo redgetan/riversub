@@ -30,6 +30,9 @@ River::Application.routes.draw do
     post "videos/:video_token/repositories/upload", :to => "repositories#upload", :as => "video_repository_upload"
     get "subs",                                  :to => "repositories#index",  :as => "repositories"
 
+    resources :releases do 
+      resources :release_items, :only => [:create, :update, :destroy]
+    end
 
     resources "repositories", :only => [] do
       resources "timings", :only => [:index, :create, :update, :destroy]
