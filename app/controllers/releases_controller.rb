@@ -32,7 +32,7 @@ class ReleasesController < ApplicationController
 
   def new
     @release = releases.build
-    authorize! :create, @release
+    authorize! :edit, @group
 
     respond_to do |format|
       format.html # new.html.erb
@@ -47,7 +47,7 @@ class ReleasesController < ApplicationController
 
   def create
     @release = releases.build(params[:release])
-    authorize! :create, @release
+    authorize! :edit, @group
 
     respond_to do |format|
       if @release.save
