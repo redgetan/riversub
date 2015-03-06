@@ -1,7 +1,9 @@
 class GroupsController < ApplicationController
+  load_resource :find_by => :short_name
+  authorize_resource
 
   def index
-    @groups = Group.all
+    # @groups = Group.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -10,7 +12,7 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @group = Group.find_by_short_name(params[:id])
+    # @group = Group.find_by_short_name(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -19,7 +21,7 @@ class GroupsController < ApplicationController
   end
 
   def new
-    @group = Group.new
+    # @group = Group.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -28,11 +30,12 @@ class GroupsController < ApplicationController
   end
 
   def edit
-    @group = Group.find_by_short_name(params[:id])
+    # @group = Group.find_by_short_name(params[:id])
+    # authorize! :create, @release.release_items
   end
 
   def create
-    @group = Group.new(params[:group].merge(creator_id: current_user.try(:id)) )
+    # @group = Group.new(params[:group].merge(creator_id: current_user.try(:id)) )
 
     respond_to do |format|
       if @group.save
@@ -46,7 +49,7 @@ class GroupsController < ApplicationController
   end
 
   def update
-    @group = Group.find_by_short_name(params[:id])
+    # @group = Group.find_by_short_name(params[:id])
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
@@ -60,7 +63,7 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    @group = Group.find_by_short_name(params[:id])
+    # @group = Group.find_by_short_name(params[:id])
     @group.destroy
 
     respond_to do |format|

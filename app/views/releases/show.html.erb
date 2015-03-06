@@ -1,27 +1,23 @@
-<h1></h1>
+<div class='header-section span12'></div>
 <div class='row center'>
   <div class="col-xs-12">
-    <a class="title" href="<%= @release.group.url %>">
-      <%= @release.group.name %>
-    </a>
-    ------>
-    <span class="title river_gray">Release #<%= @release.id %></span>
-    <br/>
-    <span>
-      (<%= @release.date.strftime("%b %d %Y") %>)
-    </span>
-    <br/>
+    <span class="title river_gray"><%= @group.name %></span>
+    <p>
+      <%= @group.description %>
+    </p>
   </div>
 </div>
 
-<% if can? :edit, @release %>
-  <%= render 'release_item_form' %>
-<% end %>
+<h3 class="release_videos_header river_gray col-xs-7">
+  <a href="<%= @group.releases_url %>">Issues</a>
+  >
+  <span class="title river_gray"><%= @release.id %></span>
+  <span class="issue_date pull-right">
+    <%= @release.date.strftime("%b %-d, %Y") %>
+  </span>
+</h3>
 
-<h3>Videos</h3>
-
-<ul class="release_items_container">
-  
+<ul class="release_items_container col-xs-8 col-xs-offset-2">
   <% @release.release_items.each do |item| %>
     <% repo = item.repository %>
     <% video = repo.video %>
@@ -31,7 +27,7 @@
       </div>
       <div class="video_title col-md-6">
         <a href="<%= repo.url %>" class="video" >
-          <h4 class='video_name'><%= video.title %></h4>
+          <span class='video_name'><%= video.title %></span>
         </a>
       </div>
       <div class="video_duration col-md-1">
@@ -48,3 +44,8 @@
     </li>
   <% end %>
 </ul>
+
+<% if can? :edit, @release %>
+    <%= render 'release_item_form' %>
+<% end %>
+

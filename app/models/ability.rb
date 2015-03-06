@@ -29,18 +29,18 @@ class Ability
   end
 
   def define_group_abilities(user)
+    can :read, Group
+
     if user.registered?
       can :create, Group
       
       can :edit, Group do |group|
-        group.owners.include?(user)
+        group.members.include?(user)
       end
 
       can :destroy, Group do |group|
         group.created_by?(user)
       end
-    else
-      cannot :manage, Group
     end
   end
 
@@ -53,7 +53,7 @@ class Ability
       end
     end
 
-    can :edit, Release do |release|
+    can [:create, :edit], Release do |release|
       user.registered? && release.group.members.include?(user)
     end
   end

@@ -1,11 +1,11 @@
-<span>[<%= link_to 'Create New Release', new_release_path %>]</span>
+<span>[<%= link_to 'Create New Release', new_group_release_path(@group) %>]</span>
 
 <h3 class=''>Archives</h3>
 
 <ul class="release_list_global">
   <% @releases.each do |release| %>
     <li>
-      <span><%= link_to "Release # #{release.id}", release %></span>
+      <span><%= link_to "Release # #{release.id}", [@group, release] %></span>
       -
       <span><%= release.date.strftime("%m/%d/%Y") %></span>
     </li>

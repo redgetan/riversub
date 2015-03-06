@@ -646,7 +646,7 @@ body {
 }
 
 #river_player #repo_label a {
-  color: #fff;
+  color: black;
   font-size: 16px;
 }
 
@@ -718,6 +718,10 @@ a.owner_label {
 
 .white .river_gray {
   color: #777;
+}
+
+h3.river_gray {
+  font-weight: normal;
 }
 
 #flash_container {
@@ -2384,12 +2388,15 @@ iframe.fansubber_signup_form .ss-base-body {
   margin-top: 30px;
 }
 
-.add_release_item {
-  border: solid 1px gray; 
-  margin-top: 30px;  
-  padding-top: 10px;
-  padding-bottom: 25px;
+.add_release_item_section {
+  margin-bottom: 100px;
 }
+
+.add_release_item {
+  padding-bottom: 25px;
+  padding-left: 40px;
+}
+
 .add_release_item label {
   margin-right: 10px;
 }
@@ -2397,9 +2404,90 @@ iframe.fansubber_signup_form .ss-base-body {
 .release_items_container .video_title {
 }
 
+.release_item {
+  margin-bottom: 20px;
+  display: block;
+  height: 75px;
+}
+
+.release_item .video_thumb img {
+  width: 100px;
+}
+
 .help-inline {
   position: absolute;
   left: 0px;
   top: 60px;
   color: red;
+}
+
+.group_release_list_item {
+  text-align: left;
+}
+
+.group_release_list_item .video_thumb img {
+  width: 50px;
+}
+
+.group_release_list_item_header {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.group_release_container {
+  margin-bottom: 100px;
+}
+
+.group_release_container ul {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.group_release_list_item ul {
+  list-style: square;
+  margin-top: 10px;
+  padding-left: 40px;
+}
+
+.group_releases_header,
+.release_videos_header,
+.add_release_item_header {
+  margin-left: 205px;
+  font-weight: normal;
+  margin-bottom: 40px;
+}
+
+.release_videos_header .issue_date {
+  font-size: 14px;
+}
+
+.group_release_number {
+  font-weight: bold;
+  border: solid 1px gray;
+  padding: 5px 10px;
+}
+
+..group_release_list_item_repo {
+  /*height: 30px;*/
+}
+
+.group_release_list_item_repo .video_name {
+  /*line-height: 30px;*/
+}
+
+.group_release_list_item img {
+  height: 30px;
+  /*margin-right: 20px;*/
+}
+
+.group_list {
+  margin-top: 30px;
+}
+
+.group_list .group_name {
+  padding-right: 20px;
+}
+
+.group_list .group_name a {
+  text-decoration: underline; 
 }

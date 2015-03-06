@@ -43,6 +43,10 @@ class Group < ActiveRecord::Base
     group_url(self)  
   end
 
+  def releases_url
+    group_releases_url(self)
+  end
+
   def unimported_repositories
     self.repositories.published.unimported
   end
