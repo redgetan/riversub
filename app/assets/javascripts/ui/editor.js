@@ -294,7 +294,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                 "<div id='editor-top' class='row'> " +
                   "<div class='repo_label_container'> " +
                     "<h5 id='repo_label'>" +
-                      "<a href=" + this.repo.url + ">" + this.repo.video.name.substring(0,70) + "</a>" +
+                      "<a href=" + this.repo.url + " class='repo_title'>" + this.repo.video.name.substring(0,70) + "</a>" +
                     "</h5>" +
                     "<h5 class='keyboard_shortcut_container pull-right'><a class='keyboard_shortcut_btn pull-right'  data-toggle='modal' data-target='#keyboard_shortcuts_modal'> Shortcuts</a></h5>" + 
                     // "<div id='language' class='pull-left'>" +
@@ -412,7 +412,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$el = $("#editor");
 
-    if (this.user) {
+    if (Object.keys(this.group).length > 0) {
+      var repo_release = "<span id='repo_release'>" +
+                           "<a href=" + this.release.url + ">Release #" + this.release.release_number + "</a>" +
+                         "</span> / ";
+      this.$el.find("#repo_label").prepend(repo_release);
+
+      var repo_group = "<span id='repo_group'>" +
+                         "<a href=" + this.group.url + ">" + this.group.name + "</a>" +
+                       "</span> / ";
+      this.$el.find("#repo_label").prepend(repo_group);
+    } else if (Object.keys(this.user).length > 0) {
       var repo_owner = "<span id='repo_owner'>" +
                          "<a href='" + this.repo.owner_profile_url + "'>" + this.repo.owner + "</a>" +
                        "</span> / ";

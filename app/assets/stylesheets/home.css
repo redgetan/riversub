@@ -634,7 +634,7 @@ body {
   padding: 5px;
 }
 
-#editor #repo_label a{
+#editor #repo_label a.repo_title{
   color: #777;
   font-size: 16px;
 }
@@ -645,7 +645,7 @@ body {
   margin-bottom: 5px;
 }
 
-#repo_label a {
+#river_player #repo_label a {
   color: #fff;
   font-size: 16px;
 }
@@ -938,10 +938,6 @@ footer a:hover{
   height: 50px;
   position: absolute;
   margin-top: -53px;
-}
-
-.white #repo_label a {
-  color: black;
 }
 
 #player-top-left {
@@ -2389,7 +2385,10 @@ iframe.fansubber_signup_form .ss-base-body {
 }
 
 .add_release_item {
+  border: solid 1px gray; 
   margin-top: 30px;  
+  padding-top: 10px;
+  padding-bottom: 25px;
 }
 .add_release_item label {
   margin-right: 10px;

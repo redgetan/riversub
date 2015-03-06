@@ -17,7 +17,8 @@ class Repository < ActiveRecord::Base
   belongs_to :release_item
 
   attr_accessible :video_id, :user_id, :video, :user, :token,
-                  :is_published, :language, :parent_repository_id, :title
+                  :is_published, :language, :parent_repository_id, :title,
+                  :group_id, :release_item_id
 
   validates :video_id, :presence => true
   validates :token, :uniqueness => true, on: :create

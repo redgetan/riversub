@@ -6,6 +6,8 @@ class Ability
     #
     user ||= User.new # guest user (not logged in)
     define_group_abilities(user)
+    define_release_item_abilities(user)
+    define_release_abilities(user)
     #
     # The first argument to `can` is the action you are giving the user 
     # permission to do.
@@ -39,6 +41,30 @@ class Ability
       end
     else
       cannot :manage, Group
+    end
+  end
+
+  def define_release_abilities(user)
+    can :read, Release do |release|
+      if release.is_published? 
+        true
+      else
+        release.group.members.include?(user)
+      end
+    end
+
+    can :edit, Release do |release|
+      user.registered? && release.group.members.include?(user)
+    end
+  end
+
+  def define_release_item_abilities(user)
+    if user.registered?
+      can :edit, ReleaseItem do |release_item|
+        release_item.group.members.include?(user)
+      end
+    else
+      cannot :manage, ReleaseItem
     end
   end
 end

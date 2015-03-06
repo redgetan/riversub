@@ -20,8 +20,8 @@ class Group < ActiveRecord::Base
 
   after_create :create_membership
 
-  def self.owners
-    self.members.where(is_owner: true)
+  def owners
+    self.members.where("memberships.is_owner IS TRUE")
   end
 
   def create_membership
@@ -57,8 +57,8 @@ class Group < ActiveRecord::Base
 
   alias_method :orig_save, :save
 
-  def save
-    orig_save  
+  def save(*)
+    super
   rescue ActiveRecord::RecordNotUnique => e
     self.errors.add(:short_name, "has already been taken")
     false
@@ -69,7 +69,8 @@ class Group < ActiveRecord::Base
       :id => self.id,
       :name => self.name,
       :short_name => self.short_name,
-      :description => self.description
+      :description => self.description,
+      :url => self.url
     }
   end
 

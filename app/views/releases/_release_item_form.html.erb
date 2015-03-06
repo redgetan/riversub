@@ -1,5 +1,6 @@
+<h3>Add Video</h3>
 <form class="row add_release_item form-inline" data-release-id="<%= @release.id %>">
-  <div class="form-group col-md-offset-3">
+  <div class="form-group col-md-offset-1">
     <div class="input-group col-md-3">
       <label>From </label>
       <%= select_tag("video_language_code", options_for_select(Video.language_select_options, Video.selected_language_select_for(@release.group))) %>

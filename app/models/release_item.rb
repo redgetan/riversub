@@ -3,5 +3,9 @@ class ReleaseItem < ActiveRecord::Base
   
   belongs_to :release
   has_one :repository
+
+  def group
+    release.group
+  end
   
 end

@@ -111,8 +111,8 @@ class User < ActiveRecord::Base
 
   alias_method :orig_save, :save
 
-  def save
-    orig_save  
+  def save(*)
+    super
   rescue ActiveRecord::RecordNotUnique => e
     self.errors.add(:username, "has already been taken")
     false

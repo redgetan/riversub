@@ -20,9 +20,18 @@ var getYoutubeId = function(url) {
     throw "Invalid youtube Url";
   }
 
+  // ****** UGLY - use regex instead *****
+  //
+  // remove anything after &
   var ampersandPosition = videoId.indexOf('&');
   if(ampersandPosition != -1) {
     videoId = videoId.substring(0, ampersandPosition);
+  }
+
+  // remove anything after ?
+  var questionMarkPosition = videoId.indexOf('?');
+  if(questionMarkPosition != -1) {
+    videoId = videoId.substring(0, questionMarkPosition);
   }
 
   return videoId;
@@ -145,7 +154,12 @@ function subtitleVideo(url) {
   }
 
   getMetadata(url,function(metadata){
-    validateYoutubeMetadata(metadata);
+    try {
+      validateYoutubeMetadata(metadata);
+    } catch (e) {
+      this.handleSubtitleVideoError(e);
+      throw e;
+    }
 
     $.ajax({
       url: "/videos/sub",
@@ -160,29 +174,29 @@ function subtitleVideo(url) {
         window.location.href = redirectUrl;
       },
       error: function(data) {
-        var error_type = JSON.parse(data.responseText).error_type;
-        if (data.status === 401) {
-          // if error due to user not logged in, show login modal
-          $("#login_modal").modal();
-          $("form.sub").find(".sub_btn").button('reset');
-        } else {
-          throw data.responseText;
+        try {
+          var error = JSON.parse(data.responseText).error;
+          this.handleSubtitleVideoError(error);
+        } catch (e) {
+          this.handleSubtitleVideoError("something went weird wrong");
+          throw e;
         }
-      }
+      }.bind(this)
     });
   });
 }
 
 function handleSubtitleVideoError(e,$form) {
-  $form.find(".subtitle_video_container").addClass("error");
-  $form.find(".subtitle_video_container").append("<span class='help-inline'>" + e + "</span>");
+  $subtitle_video_container = $form ? $form.find(".subtitle_video_container") : $(".subtitle_video_container");
+  $subtitle_video_container.addClass("error");
+  $subtitle_video_container.append("<span class='help-inline'>" + e + "</span>");
   setTimeout(function(){
-    $form.find("span.help-inline").remove();
-    $form.find(".subtitle_video_container").removeClass("error");
+    $subtitle_video_container.find("span.help-inline").remove();
+    $subtitle_video_container.removeClass("error");
   },2000);
 
   $("#ajax_loader").remove();
-  $form.find(".sub_btn").button('reset');
+  $subtitle_video_container.find(".sub_btn").button('reset');
 }
 
 
@@ -193,7 +207,12 @@ function addReleaseItem(url, release_id) {
   }
 
   getMetadata(url,function(metadata){
-    validateYoutubeMetadata(metadata);
+    try {
+      validateYoutubeMetadata(metadata);
+    } catch (e) {
+      this.handleSubtitleVideoError(e);
+      throw e;
+    }
 
     $.ajax({
       url: "/releases/" + release_id + "/release_items",
@@ -207,18 +226,17 @@ function addReleaseItem(url, release_id) {
         var redirectUrl = data.redirect_url;
         window.location.href = redirectUrl;
       },
-      error: function(data) {
-        var error_type = JSON.parse(data.responseText).error_type;
-        if (data.status === 401) {
-          // if error due to user not logged in, show login modal
-          $("#login_modal").modal();
-          $("form.sub").find(".sub_btn").button('reset');
-        } else {
-          throw data.responseText;
+      error: function(data,x,y) {
+        try {
+          var error = JSON.parse(data.responseText).error;
+          this.handleSubtitleVideoError(error);
+        } catch (e) {
+          this.handleSubtitleVideoError("something went wrong");
+          throw e;
         }
-      }
+      }.bind(this)
     });
-  });
+  }.bind(this));
 }
 
 function validateYoutubeMetadata(metadata)

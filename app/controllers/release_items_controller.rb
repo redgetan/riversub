@@ -3,6 +3,8 @@ class ReleaseItemsController < ApplicationController
     metadata = params[:video_metadata]
 
     @release = Release.find params[:release_id]
+    authorize! :create, @release.release_items
+
     @release_item = @release.release_items.create!
 
     # if video already exist not need to create another one
@@ -26,7 +28,7 @@ class ReleaseItemsController < ApplicationController
       if @repo.save
         flash[:notice] = "Video added"
         format.html { redirect_to release_release_item_url([@release, @release_item]) , notice: 'Release Item was successfully created.' }
-        format.json { render json: { redirect_url: release_url(@release) }, status: :created }
+        format.json { render json: { redirect_url: @release.url }, status: :created }
       else
         format.html { render action: "new" }
         format.json { render json: @repo.errors, status: :unprocessable_entity }
@@ -42,7 +44,7 @@ class ReleaseItemsController < ApplicationController
 
     respond_to do |format|
       if @release_item.update_attributes(params[:release_item])
-        format.html { redirect_to release_url(@release_item.release), notice: 'Release Item was successfully updated.' }
+        format.html { redirect_to @release_item.release.url, notice: 'Release Item was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -56,7 +58,7 @@ class ReleaseItemsController < ApplicationController
     @release_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to release_url(@release_item.release) }
+      format.html { redirect_to @release_item.release.url }
       format.json { head :no_content }
     end
   end

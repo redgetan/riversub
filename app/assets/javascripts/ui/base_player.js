@@ -25,6 +25,9 @@ river.ui.BasePlayer = Backbone.View.extend({
   initializeCommon: function() {
     this.repo = this.options.repo || {};
     this.video = this.options.video || this.repo.video || {};
+    this.group = this.options.group || this.repo.group || {};
+    this.release = this.options.release || this.repo.release || {};
+    this.user = this.options.user || this.repo.user || {};
 
     this.setupElement();
 

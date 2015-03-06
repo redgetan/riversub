@@ -1,8 +1,9 @@
 class ReleasesController < ApplicationController
-  # GET /releases
-  # GET /releases.json
+
+  before_filter :load_group
+
   def index
-    @releases = Release.all
+    @releases = releases
 
     respond_to do |format|
       format.html # index.html.erb
@@ -10,10 +11,18 @@ class ReleasesController < ApplicationController
     end
   end
 
-  # GET /releases/1
-  # GET /releases/1.json
   def show
-    @release = Release.find(params[:id])
+    @release = releases.find_by_release_number(params[:id])
+
+    unless can? :read, @release
+      if user_signed_in?
+        flash[:error] = "You don't have permission to see that"
+        redirect_to root_url and return
+      else
+        store_location
+        redirect_to new_user_session_url and return
+      end
+    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -21,10 +30,8 @@ class ReleasesController < ApplicationController
     end
   end
 
-  # GET /releases/new
-  # GET /releases/new.json
   def new
-    @release = Release.new
+    @release = releases.build
 
     respond_to do |format|
       format.html # new.html.erb
@@ -32,15 +39,12 @@ class ReleasesController < ApplicationController
     end
   end
 
-  # GET /releases/1/edit
   def edit
-    @release = Release.find(params[:id])
+    @release = releases.find_by_release_number(params[:id])
   end
 
-  # POST /releases
-  # POST /releases.json
   def create
-    @release = Release.new(params[:release])
+    @release = releases.build(params[:release])
 
     respond_to do |format|
       if @release.save
@@ -53,10 +57,8 @@ class ReleasesController < ApplicationController
     end
   end
 
-  # PUT /releases/1
-  # PUT /releases/1.json
   def update
-    @release = Release.find(params[:id])
+    @release = releases.find_by_release_number(params[:id])
 
     respond_to do |format|
       if @release.update_attributes(params[:release])
@@ -72,7 +74,7 @@ class ReleasesController < ApplicationController
   # DELETE /releases/1
   # DELETE /releases/1.json
   def destroy
-    @release = Release.find(params[:id])
+    @release = releases.find_by_release_number(params[:id])
     @release.destroy
 
     respond_to do |format|
@@ -80,4 +82,15 @@ class ReleasesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+
+    def load_group
+      @group = Group.find_by_short_name(params[:group_id])
+    end
+
+    def releases
+      @group.releases   
+    end
+
 end

@@ -1,19 +1,22 @@
 <h1></h1>
 <div class='row center'>
   <div class="col-xs-12">
+    <a class="title" href="<%= @release.group.url %>">
+      <%= @release.group.name %>
+    </a>
+    ------>
     <span class="title river_gray">Release #<%= @release.id %></span>
     <br/>
     <span>
-      <%= @release.date.strftime("%b %d %Y") %>
+      (<%= @release.date.strftime("%b %d %Y") %>)
     </span>
     <br/>
-    <span>
-      Is published: <%= @release.is_published %>
-    </span>
   </div>
 </div>
 
-<%= render 'release_item_form' %>
+<% if can? :edit, @release %>
+  <%= render 'release_item_form' %>
+<% end %>
 
 <h3>Videos</h3>
 

@@ -5,7 +5,10 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, :with => :render_404
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :alert => exception.message
+    respond_to do |format|
+      format.html { redirect_to root_url, notice: exception.message }
+      format.json { render json: { error: "You are not authorized to perform this action" }, status: 401 }
+    end
   end
 
   # Redirects to stored location (or to the default).
