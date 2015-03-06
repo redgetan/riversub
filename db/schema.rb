@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150304190120) do
+ActiveRecord::Schema.define(:version => 20150306023142) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",                                    :default => 0
@@ -53,7 +53,10 @@ ActiveRecord::Schema.define(:version => 20150304190120) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "creator_id"
+    t.string   "short_name",  :null => false
   end
+
+  add_index "groups", ["short_name"], :name => "index_groups_on_short_name", :unique => true
 
   create_table "identities", :force => true do |t|
     t.string   "uid"
@@ -82,9 +85,10 @@ ActiveRecord::Schema.define(:version => 20150304190120) do
   create_table "releases", :force => true do |t|
     t.datetime "date"
     t.boolean  "is_published"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.integer  "group_id"
+    t.integer  "release_number", :null => false
   end
 
   create_table "repositories", :force => true do |t|
@@ -144,6 +148,7 @@ ActiveRecord::Schema.define(:version => 20150304190120) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 
   create_table "videos", :force => true do |t|
     t.string   "name"

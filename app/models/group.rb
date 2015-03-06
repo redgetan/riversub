@@ -17,6 +17,7 @@ class Group < ActiveRecord::Base
   belongs_to :creator, class_name: "User", foreign_key: "creator_id"
 
   validates :creator_id, :presence => true
+  validates :short_name, :uniqueness => true
 
   after_create :create_membership
 
@@ -53,6 +54,19 @@ class Group < ActiveRecord::Base
 
   def imported_repositories
     self.repositories.published.imported
+  end
+
+  alias_method :orig_save, :save
+
+  def save
+    orig_save  
+  rescue ActiveRecord::RecordNotUnique => e
+    self.errors.add(:short_name, "has already been taken")
+    false
+  end
+
+  def to_param
+    self.short_name  
   end
 
 

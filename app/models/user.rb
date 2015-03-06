@@ -109,6 +109,15 @@ class User < ActiveRecord::Base
     !!self.is_admin  
   end
 
+  alias_method :orig_save, :save
+
+  def save
+    orig_save  
+  rescue ActiveRecord::RecordNotUnique => e
+    self.errors.add(:username, "has already been taken")
+    false
+  end
+
   def is_moderator?
     is_admin?  
   end
