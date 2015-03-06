@@ -68,6 +68,8 @@ var isEmbeddable = function(metadata) {
 
 $(document).ready(function(){
 
+  $('[data-toggle="tooltip"]').tooltip();
+
   var action = river.controller[river.route];
   if (typeof action !== "undefined") {
     action.call();

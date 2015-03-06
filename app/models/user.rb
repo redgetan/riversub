@@ -87,6 +87,10 @@ class User < ActiveRecord::Base
     username
   end
 
+  def avatar_url
+    avatar.thumb.url
+  end
+
   def url
     user_url(self)
   end

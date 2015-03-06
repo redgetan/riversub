@@ -2,7 +2,7 @@ class Group < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
 
-  attr_accessible :description, :name, :creator, :creator_id
+  attr_accessible :description, :name, :creator, :creator_id, :short_name
 
   has_many :memberships
   has_many :members, through: :memberships, class_name: "User", source: "user"
@@ -16,12 +16,21 @@ class Group < ActiveRecord::Base
   belongs_to :creator, class_name: "User", foreign_key: "creator_id"
 
   validates :creator_id, :presence => true
-  validates :short_name, :uniqueness => true
+  validates :name, :presence => true
+  validates :short_name, :presence => true, :uniqueness => true
+  validates :description, :presence => true
+  validate :no_whitespace_short_name
 
   after_create :create_membership
 
   def owners
     self.members.where("memberships.is_owner IS TRUE")
+  end
+
+  def no_whitespace_short_name
+    if self.short_name =~ /\s/
+      self.errors.add(:short_name, "cannot contain any whitespace")
+    end
   end
 
   def create_membership

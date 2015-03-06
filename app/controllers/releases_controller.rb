@@ -51,8 +51,8 @@ class ReleasesController < ApplicationController
 
     respond_to do |format|
       if @release.save
-        format.html { redirect_to @release, notice: 'Release was successfully created.' }
-        format.json { render json: @release, status: :created, location: @release }
+        format.html { redirect_to @release.url, notice: 'Release was successfully created.' }
+        format.json { render json: @release, status: :created }
       else
         format.html { render action: "new" }
         format.json { render json: @release.errors, status: :unprocessable_entity }
@@ -66,7 +66,7 @@ class ReleasesController < ApplicationController
 
     respond_to do |format|
       if @release.update_attributes(params[:release])
-        format.html { redirect_to @release, notice: 'Release was successfully updated.' }
+        format.html { redirect_to @release.url, notice: 'Release was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -82,7 +82,7 @@ class ReleasesController < ApplicationController
     @release.destroy
 
     respond_to do |format|
-      format.html { redirect_to releases_url }
+      format.html { redirect_to @group.url }
       format.json { head :no_content }
     end
   end

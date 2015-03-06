@@ -53,7 +53,7 @@ class Ability
       end
     end
 
-    can [:create, :edit], Release do |release|
+    can [:edit], Release do |release|
       user.registered? && release.group.members.include?(user)
     end
   end

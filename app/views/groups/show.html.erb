@@ -14,30 +14,39 @@
       <% end %>
     </div>
   </div>
-  <h3 class="group_releases_header river_gray">Releases</h3>
+
+
+  <h3 class="group_releases_header river_gray">
+    Releases
+    <% if can?(:edit, @group) %>
+      <span class="new_group_release_btn">[<%= link_to 'Create New Release', new_group_release_path(@group) %>]</span>
+    <% end %>
+  </h3>
   <div class='row center group_release_container'>
     <div class="col-xs-8 col-xs-offset-2">
       <ul>
         <% @group.releases.each do |release| %>
-          <li class="group_release_list_item">
-            <div class="group_release_list_item_header">
-              <a class="group_release_number" href="<%= release.url %>">Issue <%= release.release_number %></a>
-              - 
-              <%= release.date.strftime("%b %-d, %Y") %>
-              <div class='pull-right'>
-                <% release.repositories.each do |repo| %>
-                    <img src="<%= repo.video.thumbnail_url %>" class="" alt="">
-                <% end %>
+          <% if can?(:read, release) %>
+            <li class="group_release_list_item">
+              <div class="group_release_list_item_header">
+                <a class="group_release_number" href="<%= release.url %>">Issue <%= release.release_number %></a>
+                - 
+                <%= release.date.strftime("%b %-d, %Y") %>
+                <div class='pull-right'>
+                  <% release.repositories.each do |repo| %>
+                      <img src="<%= repo.video.thumbnail_url %>" class="" alt="">
+                  <% end %>
+                </div>
               </div>
-            </div>
-            <ul>
-              <% release.repositories.each do |repo| %>
-                <li class="group_release_list_item_repo river_gray">
-                  <span class='video_name river_gray'><%= repo.video.title %></span>
-                </li>
-              <% end %>
-            </ul>
-          </li>
+              <ul>
+                <% release.repositories.each do |repo| %>
+                  <li class="group_release_list_item_repo river_gray">
+                    <span class='video_name river_gray'><%= repo.video.title %></span>
+                  </li>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
         <% end %>
       </ul>
     </div>

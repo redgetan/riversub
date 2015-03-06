@@ -1214,7 +1214,7 @@ footer a:hover{
   min-height: 162px;
 }
 
-.user_groups_container .user_group {
+.user_groups_container  {
   padding: 10px;
 }
 
@@ -2423,6 +2423,7 @@ iframe.fansubber_signup_form .ss-base-body {
 
 .group_release_list_item {
   text-align: left;
+  margin-bottom: 30px;
 }
 
 .group_release_list_item .video_thumb img {
@@ -2467,7 +2468,7 @@ iframe.fansubber_signup_form .ss-base-body {
   padding: 5px 10px;
 }
 
-..group_release_list_item_repo {
+.group_release_list_item_repo {
   /*height: 30px;*/
 }
 
@@ -2490,4 +2491,61 @@ iframe.fansubber_signup_form .ss-base-body {
 
 .group_list .group_name a {
   text-decoration: underline; 
+}
+
+form.new_release .field {
+  margin-bottom: 10px;
+}
+
+form.new_release {
+  margin-bottom: 30px;
+}
+
+.new_group_release_btn {
+  font-size: 14px;
+}
+
+form.new_group label,
+form.edit_group label {
+  display: block;
+}
+
+/* from rails scaffold.css */
+div.field, div.actions {
+  margin-bottom: 10px;
+}
+
+.field_with_errors {
+  padding: 2px;
+  background-color: lightcoral;
+  display: table;
+}
+
+.field_with_errors label {
+  color: white;
+}
+
+#error_explanation {
+  width: 450px;
+  border: 2px solid lightcoral;
+  padding: 7px;
+  padding-bottom: 0;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#error_explanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  margin-bottom: 0px;
+  background-color: lightcoral;
+  color: #fff;
+}
+
+#error_explanation ul li {
+  font-size: 12px;
+  list-style: square;
 }

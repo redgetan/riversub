@@ -35,7 +35,7 @@ class GroupsController < ApplicationController
   end
 
   def create
-    # @group = Group.new(params[:group].merge(creator_id: current_user.try(:id)) )
+    @group.creator_id = current_user.try(:id)
 
     respond_to do |format|
       if @group.save

@@ -1,4 +1,6 @@
-<span>[<%= link_to 'Create New Release', new_group_release_path(@group) %>]</span>
+<% if can?(:edit, @group) %>
+  <span>[<%= link_to 'Create New Release', new_group_release_path(@group) %>]</span>
+<% end %>
 
 <h3 class=''>Archives</h3>
 
