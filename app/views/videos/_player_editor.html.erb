@@ -1,0 +1,3 @@
+<% if @repo.display_edit?(current_user) %>
+  <a href="<%= @repo.editor_url %>" class="repo_open_editor_btn pull-right btn btn-danger btn-sm">Open Editor</a>
+<% end %>

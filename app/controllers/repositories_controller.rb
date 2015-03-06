@@ -15,9 +15,14 @@ class RepositoriesController < ApplicationController
   def show
     @repo = Repository.find_by_token params[:token]
 
-    unless @repo
-      flash[:notice] = "Video does not exist"
-      redirect_to root_url and return
+    unless can? :read, @repo
+      if user_signed_in?
+        flash[:error] = "You don't have permission to see that"
+        redirect_to root_url and return
+      else
+        store_location
+        redirect_to new_user_session_url and return
+      end
     end
 
     @video = @repo.video
@@ -25,12 +30,6 @@ class RepositoriesController < ApplicationController
     @comments = @repo.comment_threads.arrange_for_user(current_user)
 
     Comment.highlight_comment(@comments,params[:comment_short_id])
-
-    if @repo.visible_to_user?(current_user)
-      respond_to :html
-    else
-      render_404
-    end
   end
   
   def create
@@ -99,9 +98,14 @@ class RepositoriesController < ApplicationController
   def editor
     @repo = Repository.find_by_token! params[:token]
 
-    unless @repo.owned_by? current_user
-      store_location
-      redirect_to new_user_session_url and return
+    unless can? :edit, @repo
+      if user_signed_in?
+        flash[:error] = "You don't have permission to see that"
+        redirect_to root_url and return
+      else
+        store_location
+        redirect_to new_user_session_url and return
+      end
     end
 
     respond_to :html

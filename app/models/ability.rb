@@ -5,6 +5,8 @@ class Ability
     # Define abilities for the passed in user here. For example:
     #
     user ||= User.new # guest user (not logged in)
+
+    define_repository_abilities(user)
     define_group_abilities(user)
     define_release_item_abilities(user)
     define_release_abilities(user)
@@ -26,6 +28,16 @@ class Ability
     #
     # See the wiki for details:
     # https://github.com/ryanb/cancan/wiki/Defining-Abilities
+  end
+
+  def define_repository_abilities(user)
+    can :read, Repository do |repo|
+      repo.is_published || repo.owned_by?(user) 
+    end
+
+    can :edit, Repository do |repo|
+      repo.owned_by?(user)
+    end
   end
 
   def define_group_abilities(user)

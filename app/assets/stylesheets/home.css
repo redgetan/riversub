@@ -792,6 +792,10 @@ ul.social_login_buttons a {
   margin-right: 20px;
 }
 
+.social_share_container {
+  width: 500px;
+}
+
 .social_share_container a {
   border: solid 1px lightgray; 
   padding: 5px;
@@ -1687,7 +1691,9 @@ form#request_beta_invite input[name='email'] {
 }
 
 #comments_container {
+  clear: both;
   text-align: left;
+  padding-top: 20px;
   margin-bottom: 50px;
 }
 
@@ -2299,9 +2305,15 @@ div.comment_form_container form {
 }
 
 #comments_container button.comment-post {
-  background-color: cadetblue;
-  color: white;
+  /*background-color: cadetblue;*/
+  background: none;
+  color: gray;
 }
+
+#river_player.private #comments_container button.comment-post {
+/*  background: none;
+  color: gray;
+*/}
 
 #comments_container textarea#comment {
   height: 50px;
@@ -2549,4 +2561,8 @@ div.field, div.actions {
 #error_explanation ul li {
   font-size: 12px;
   list-style: square;
+}
+
+.repo_open_editor_btn {
+  margin-top: 20px;
 }
