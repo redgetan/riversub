@@ -1,6 +1,8 @@
 
 class User < ActiveRecord::Base
 
+  has_paper_trail :on => [:update, :destroy]
+
   include ActiveModel::Validations
   include Rails.application.routes.url_helpers
 

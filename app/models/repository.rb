@@ -1,5 +1,7 @@
 class Repository < ActiveRecord::Base
 
+  has_paper_trail 
+
   include Rails.application.routes.url_helpers
 
   paginates_per 20

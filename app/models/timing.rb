@@ -1,4 +1,7 @@
 class Timing < ActiveRecord::Base
+
+  has_paper_trail 
+
   attr_accessible :video_id, :start_time, :end_time, :subtitle_id, :client_id,
                   :subtitle_attributes, :repository_id
 

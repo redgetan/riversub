@@ -1,4 +1,7 @@
 class Subtitle < ActiveRecord::Base
+
+  has_paper_trail 
+
   attr_accessible :text, :parent_text
 
   has_one    :timing
