@@ -7,8 +7,7 @@ class Group < ActiveRecord::Base
   has_many :memberships
   has_many :members, through: :memberships, class_name: "User", source: "user"
 
-  has_many :group_repositories
-  has_many :repositories, through: :group_repositories
+  has_many :repositories
 
   has_many :releases
 
@@ -63,6 +62,15 @@ class Group < ActiveRecord::Base
   rescue ActiveRecord::RecordNotUnique => e
     self.errors.add(:short_name, "has already been taken")
     false
+  end
+
+  def serialize
+    {
+      :id => self.id,
+      :name => self.name,
+      :short_name => self.short_name,
+      :description => self.description
+    }
   end
 
   def to_param

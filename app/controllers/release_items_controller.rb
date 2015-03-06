@@ -3,6 +3,7 @@ class ReleaseItemsController < ApplicationController
     metadata = params[:video_metadata]
 
     @release = Release.find params[:release_id]
+    @release_item = @release.release_items.create!
 
     # if video already exist not need to create another one
     @video = Video.where(:source_url => params[:source_url].gsub(/https/,"http"))
@@ -15,20 +16,20 @@ class ReleaseItemsController < ApplicationController
     @video.update_attributes!(language: params[:video_language_code]) unless @video.language.present?
 
     # create repository
-    @repo = Repository.create!(video: @video, user: current_user, language: params[:repo_language_code])
-    @repo.group_repositories.create!(group_id: @release.group.id) 
-
-    # create release item
-    @release_item = @release.release_items.build(repository_id: @repo.id)
+    @repo = Repository.new(video: @video, 
+                           user: current_user, 
+                           group_id: @release.group.id,
+                           release_item_id: @release_item.id,
+                           language: params[:repo_language_code])
 
     respond_to do |format|
-      if @release_item.save
+      if @repo.save
         flash[:notice] = "Video added"
         format.html { redirect_to release_release_item_url([@release, @release_item]) , notice: 'Release Item was successfully created.' }
         format.json { render json: { redirect_url: release_url(@release) }, status: :created }
       else
         format.html { render action: "new" }
-        format.json { render json: @release_item.errors, status: :unprocessable_entity }
+        format.json { render json: @repo.errors, status: :unprocessable_entity }
       end
     end
 

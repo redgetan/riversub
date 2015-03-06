@@ -36,7 +36,7 @@ class RepositoriesController < ApplicationController
   def create
     create_common
     @repo = Repository.create!(video: @video, user: current_user, language: @repo_language_code)
-    @repo.group_repositories.create!(group_id: params[:group_id]) if params[:group_id].present?
+    @repo.update_column(:group_id, params[:group_id]) if params[:group_id].present?
     redirect_to @repo.editor_url
   end
 
@@ -58,7 +58,7 @@ class RepositoriesController < ApplicationController
       redirect_to :back and return
     end
 
-    @repo.group_repositories.create!(group_id: params[:group_id]) if params[:group_id].present?
+    @repo.update_column(:group_id, params[:group_id]) if params[:group_id].present?
     redirect_to @repo.editor_url
   end
 

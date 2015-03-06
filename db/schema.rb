@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150306023142) do
+ActiveRecord::Schema.define(:version => 20150306025413) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",                                    :default => 0
@@ -33,13 +33,6 @@ ActiveRecord::Schema.define(:version => 20150306023142) do
 
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
-
-  create_table "group_repositories", :force => true do |t|
-    t.integer  "group_id"
-    t.integer  "repository_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
 
   create_table "group_settings", :force => true do |t|
     t.integer "group_id"
@@ -103,6 +96,8 @@ ActiveRecord::Schema.define(:version => 20150306023142) do
     t.boolean  "is_youtube_imported",  :default => false
     t.boolean  "is_template",          :default => false
     t.string   "title"
+    t.integer  "group_id"
+    t.integer  "release_item_id"
   end
 
   create_table "settings", :force => true do |t|

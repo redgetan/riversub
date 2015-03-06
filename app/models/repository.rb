@@ -13,11 +13,8 @@ class Repository < ActiveRecord::Base
   has_many :timings
   has_many :comments, :foreign_key => "commentable_id"
 
-  has_many :group_repositories
-  has_many :groups, through: :group_repositories
-
-  has_many :release_items
-  has_many :releases, :through => :release_items
+  belongs_to :group
+  belongs_to :release_item
 
   attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :language, :parent_repository_id, :title
@@ -113,6 +110,10 @@ class Repository < ActiveRecord::Base
 
   def url
     repo_url(self.token)
+  end
+
+  def release
+    self.release_item.try(:release)
   end
 
   def owner_profile_url
@@ -313,7 +314,7 @@ class Repository < ActiveRecord::Base
 
   def same_group?(target_user)
     user_groups = Array(target_user.try(:groups))
-    (self.groups & user_groups).present?
+    user_groups.include?(self.group)
   end
 
   def comments_tab_class
@@ -353,7 +354,9 @@ class Repository < ActiveRecord::Base
       :subtitle_download_url => self.subtitle_download_url,
       :parent_repository_id => self.parent_repository_id,
       :is_published => self.is_published,
-      :is_guided_walkthrough => self.guided_walkthrough?
+      :is_guided_walkthrough => self.guided_walkthrough?,
+      :group => self.group.try(:serialize), 
+      :release => self.release.try(:serialize)
     }
   end
 

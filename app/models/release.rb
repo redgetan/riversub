@@ -12,6 +12,10 @@ class Release < ActiveRecord::Base
     self.release_number = self.class.where(group_id: self.group.id).count + 1
   end
 
+  def method_name
+    
+  end
+
   def to_param
     self.release_number  
   end
