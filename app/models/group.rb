@@ -1,8 +1,11 @@
 class Group < ActiveRecord::Base
+
+  include Rails.application.routes.url_helpers
+
   attr_accessible :description, :name, :creator, :creator_id
 
   has_many :memberships
-  has_many :members, through: :memberships, class_name: "User"
+  has_many :members, through: :memberships, class_name: "User", source: "user"
 
   has_many :group_repositories
   has_many :repositories, through: :group_repositories
@@ -34,6 +37,10 @@ class Group < ActiveRecord::Base
 
   def unimported_repositories_grouped_by_video
     unimported_repositories.group_by { |repo| repo.video }
+  end
+
+  def url
+    group_url(self)  
   end
 
   def unimported_repositories

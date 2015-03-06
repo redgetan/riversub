@@ -22,9 +22,27 @@
         </div>
       </div>
 
+      <div id='user_groups' class='col-xs-8'>
+        <div class='row'>
+          <h3 class='pull-left'>Groups</h3>
+        </div>
+        <div class='row user_groups_container'>
+          <div class='user_groups_container'>
+            <% @user.groups.each do |group| %>
+              <div class='user_group'>
+                <a href="<%= group.url %>" class='user_group'><%= group.name %></a>
+                - 
+                <span>members: (<%= group.members.count %>)</span>
+                <span>videos: (<%= group.repositories.published.count %>)</span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
       <div id='user_repositories' class='col-xs-8'>
         <div class='row'>
-          <h3 class='pull-left'>Videos Subtitled</h3>
+          <h3 class='pull-left'>Subtitles</h3>
         </div>
         <div class='row'>
           <div id='videos'>
