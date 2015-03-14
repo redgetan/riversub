@@ -3,7 +3,7 @@ class ReleaseItemsController < ApplicationController
     metadata = params[:video_metadata]
 
     @release = Release.find params[:release_id]
-    authorize! :create, @release.release_items
+    authorize! :edit, @release
 
     @release_item = @release.release_items.create!
 
