@@ -188,7 +188,7 @@ river.ui.Subtitle = Backbone.View.extend({
 
     this.$text.find("input").data("field","text");
 
-    this.$text.find("input").attr("maxlength", 90);
+    this.$text.find("input").attr("maxlength", 120);
 
     this.$text.find("input").on("focus", this.subtitleLineEdit.bind(this));
 
