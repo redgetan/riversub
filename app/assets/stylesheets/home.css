@@ -640,6 +640,7 @@ body {
 }
 
 #river_player #repo_label {
+  width: 400px;
   text-align: left;
   /*float: left;*/
   margin-bottom: 5px;
@@ -785,6 +786,7 @@ ul.social_login_buttons a {
 
 .share_container {
   text-align: left;
+  width: 400px;
 }
 
 .share_container .share_label {
