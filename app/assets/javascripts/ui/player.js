@@ -16,6 +16,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$iframeOverlay = $("#iframe_overlay");
     this.$overlay_btn = $("#overlay_btn");
     this.$subtitleList = $("#subtitle_list");
+    this.$subtitleContainer = $("#transcript_container");
     this.$media = $("#media");
     this.$timer;
   },
@@ -127,7 +128,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$subtitleDisplay.css("font-size","17px");
 
     this.$subtitleList.css("height","430px");
-    this.$subtitleList.find(".table .header").remove(); // remove heading
+    this.$subtitleContainer.find(".header").remove(); // remove heading
     this.$subtitleList.find(".start_time").each(function(){
       $(this).remove();
     });

@@ -261,6 +261,15 @@ div#editor-bottom {
 	overflow-x: hidden;
 }
 
+/* needed to remove vertical whitespace between inline-block .subtitle elements */
+#editor #subtitle_list {
+	font-size: 0px;
+}
+
+#editor.translation #subtitle_list {
+	height: 260px;
+}
+
 #subtitle_list .ui-spinner {
 	height: 20px;
 	border-radius: 0;
@@ -270,7 +279,7 @@ div#editor-bottom {
 
 #subtitle_list .subtitle.selected .ui-spinner,
 #subtitle_list .subtitle.focused  .ui-spinner {
-	height: 20px;
+	min-height: 20px;
 	border-radius: 0;
 	/*background-color: white;*/
 	border: solid 1px #aaa;
@@ -280,7 +289,6 @@ div#editor-bottom {
 #subtitle_list .subtitle.focused.invalid .ui-spinner {
 	border: solid 1px rgb(100,100,100);
 }
-
 
 #editor #subtitle_list .subtitle.invalid {
 	background-color: lightcoral !important;	
@@ -324,15 +332,30 @@ div#editor-bottom {
 
 #editor #subtitle_list {
 	/*border: solid 1px lightgray;*/
+	clear: both;
 }
 
-#editor #subtitle_list .header {
+#editor #subtitle_container .header {
 	height: 20px;
+	font-size: 14px; 
+	margin-left: 10px;
 	/*border-bottom: solid 1px lightgray;*/
 }
 
-#editor #subtitle_list #original,
-#editor #subtitle_list #header_text {
+#editor #subtitle_container .hide_original_btn, 
+#editor #subtitle_container .show_original_btn {
+	margin-left: 10px;
+}
+
+#editor #subtitle_container .header #start,
+#editor #subtitle_container .header #end,
+#editor #subtitle_container .header #original,
+#editor #subtitle_container .header #header_text {
+	float: left;	
+}
+
+#editor #subtitle_container #original,
+#editor #subtitle_container #header_text {
 	width: 350px;
 }
 
@@ -368,7 +391,7 @@ div#editor-bottom {
 	padding: 0px;
 }
 
-.subtitle {
+#river_player .subtitle {
 	height: 24px;
 	text-align: left;
 	/*display: inline-table;*/
@@ -453,15 +476,13 @@ div#editor-bottom {
 }
 
 #editor .subtitle {
-	height: 20px;
-}
-
-#editor .subtitle:hover {
-	height: 20px;
+	min-height: 20px;
+	display: inline-block;
 }
 
 .subtitle .text,
 .subtitle .parent_text {
+	font-size: 14px; 
 	min-width: 350px;
 	min-height: 20px;
 	margin-bottom: 0px;
@@ -780,6 +801,7 @@ a.preview_btn {
 
 #editor .selected div .sub_text_area {
 	color: black;
+	border: solid 3px gray;
 }
 
 #add_sub_options {
@@ -881,3 +903,6 @@ textarea {
 .keyboard_shortcut_btn {
 	text-decoration: underline;
 }
+
+
+

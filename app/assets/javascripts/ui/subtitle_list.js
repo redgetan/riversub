@@ -11,16 +11,17 @@ river.ui.SubtitleList = Backbone.View.extend({
   initialize: function() {
     // this.$el.data("model",this.model);
     this.$container = $("#subtitle_list");
+    this.$parentContainer = $("#subtitle_container");
     this.setupElement();
 
     this.listenTo(this.collection,"add",this.onModelAdd);
     this.listenTo(this.collection,"change",this.onModelChange);
     Backbone.on("trackstart",this.onTrackStart.bind(this));
+    this.$showOriginalBtn.on("click", this.onShowOriginalBtnClick.bind(this));
+    this.$hideOriginalBtn.on("click", this.onHideOriginalBtnClick.bind(this));
   },
 
   setupElement: function() {
-    this.$container.append(this.$el);
-
     var header =     "<div class='header clear'>" +
                        "<div id='start'>Start</div>" +
                        "<div id='end'>End</div>" +
@@ -29,7 +30,29 @@ river.ui.SubtitleList = Backbone.View.extend({
                      "</div>";
 
 
-    this.$el.append(header);
+    this.$container.before(header);
+    this.$container.append(this.$el);
+
+    if (repo.parent_repository_id) {
+      this.$parentContainer.find("#header_text").append("<a href='#' class='show_original_btn'>(Show Original)</a>");  
+      this.$parentContainer.find("#original").append("<a href='#' class='hide_original_btn'>(Hide)</a>");  
+    }
+
+    this.$showOriginalBtn = this.$parentContainer.find(".show_original_btn");
+    this.$showOriginalBtn.hide();
+    this.$hideOriginalBtn = this.$parentContainer.find(".hide_original_btn");
+  },
+
+  onShowOriginalBtnClick: function() {
+    this.$showOriginalBtn.hide();
+    this.$parentContainer.find("#original").show();
+    this.$el.find(".parent_text").show();
+  },
+
+  onHideOriginalBtnClick: function() {
+    this.$showOriginalBtn.show();
+    this.$parentContainer.find("#original").hide();
+    this.$el.find(".parent_text").hide();
   },
 
   onModelAdd: function(subtitle) {

@@ -21,7 +21,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // options
     this.addSubBackward = true;
 
-    if (!repo.parent_repository_id) {
+    if (repo.parent_repository_id) {
+      this.$el.addClass("translation");  
+    } else {
       $(".header #original").hide();
     }
     // this.showGuidedWalkthroughWelcome();
@@ -370,7 +372,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
                     "<div class='controls' class=''> " +
                       "<div id='main_controls' class='pull-left'> " +
-                        "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-film'></i></button> " +
+                        "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-time'></i></button> " +
                         "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
                         "<button type='button' class='start_timing_btn river_btn'> <i class=''></i>Start</button> " +
                         "<button type='button' class='stop_timing_btn river_btn'> <i class='glyphicon glyphicon-stop'></i> Stop</button> " +
