@@ -293,6 +293,14 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def release_title
+    if read_attribute(:title)
+      self.read_attribute(:title)
+    else
+      video.title
+    end
+  end
+
   def keywords
     [language_pretty, "sub"] + self.video.name[0..255].split(" ")
   end
@@ -384,7 +392,7 @@ class Repository < ActiveRecord::Base
   end
 
   def share_text
-    title[0..100]      
+    ["[#{language_pretty} Sub]",release_title[0..100]].join(" ")      
   end
 
   def auto_publish_anonymous_repo

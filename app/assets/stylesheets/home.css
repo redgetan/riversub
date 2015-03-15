@@ -2572,3 +2572,7 @@ div.field, div.actions {
   border: solid 1px gray;
   padding: 5px 10px;
 }
+
+.orig_video_name {
+  font-size: 11px;
+}

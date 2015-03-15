@@ -32,8 +32,12 @@
       </div>
       <div class="video_title <%= can?(:edit, repo) ? 'col-md-5' : 'col-md-7' %>">
         <a href="<%= repo.url %>" class="video" >
-          <span class='video_name'><%= video.title %></span>
+          <span class='video_name'><%= repo.release_title %></span>
         </a>
+        <% unless repo.release_title == video.title %>
+          <br/>
+          <span class='orig_video_name river_gray'><%= video.title %></span>
+        <% end %>
       </div>
       <div class="video_duration col-md-1">
         <%= format_time video.duration.to_i %>
