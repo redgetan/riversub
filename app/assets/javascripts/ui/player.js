@@ -102,6 +102,15 @@ river.ui.Player = river.ui.BasePlayer.extend({
     var seconds = this.media.currentTime;  
     var width = seconds * this.resolution(this.timeline.$summary);
     this.$timeCurrent.css("width", width);
+
+    if (seconds >= this.media.duration) {
+      this.goToBeginningOfVideo();
+    }
+  },
+
+  goToBeginningOfVideo: function() {
+    this.pause();
+    this.seek(0);
   },
 
   addPlayerControls: function() {
