@@ -794,6 +794,7 @@ a.preview_btn {
 }
 
 .text .sub_text_area {
+	resize: none;
 	height: 20px;
 	width: 150px;
 	cursor: text;

@@ -64,7 +64,7 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
       if (!this.$textDisplay.is(":focus")) {
         this.$textDisplay.val(this.model.text());
       }
-      river.utility.resizeInput.bind(this.$textDisplay).call();
+      river.utility.resizeInput.bind(this.$textDisplay, this.MAXWIDTH).call();
     }
   },
 

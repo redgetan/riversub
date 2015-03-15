@@ -13,15 +13,23 @@ $.extend(river.utility,{
       return w;
   },
 
-  resizeInput: function() {
-    // I'm assuming that 1 letter will expand the input by 10 pixels
+  resizeInput: function(maxWidth) {
     var text = $(this).val();
     var textWidth = river.utility.textWidth(text);
     var minWidth  = 100;
+    var baseHeight  = 20;
 
     var width = Math.max(minWidth, textWidth);
 
-    $(this).width(width);
+    if ((typeof maxWidth !== "undefined") && (textWidth > maxWidth)) {
+      var heightMultiplier = Math.ceil(textWidth / maxWidth);
+
+      $(this).height(baseHeight * heightMultiplier);
+      $(this).width(maxWidth);
+    } else {
+      $(this).width(width);
+    }
+
   },
 
   printStack: function() {

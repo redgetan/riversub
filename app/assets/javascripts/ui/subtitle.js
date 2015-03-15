@@ -11,6 +11,9 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   initialize: function() {
+    this.MAXLENGTH = 120;
+    this.MAXWIDTH  = repo.parent_repository_id ? 300 : 650 ;
+
     this.$container = $("#subtitle_list table");
     this.$el.data("model",this.model);
 
@@ -82,51 +85,58 @@ river.ui.Subtitle = Backbone.View.extend({
     return $("<input class='sub_text_area' placeholder='Enter Text'>");
   },
 
+  createTextArea: function() {
+    return $("<textarea class='sub_text_area' placeholder='Enter Text'></textarea>");
+  },
+
   editableStartEndTime: function() {
     this.$startTime.append(this.createInput());
     this.$endTime.append(this.createInput());
 
+    this.$startTimeInput = this.$startTime.find("input");
+    this.$endTimeInput = this.$endTime.find("input");
+
     this.addSpinnerToStartEndTime();
 
-    this.$startTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
-    this.$endTime.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
+    this.$startTimeInput.on("keydown", this.onSubTextAreaKeydown.bind(this));
+    this.$endTimeInput.on("keydown", this.onSubTextAreaKeydown.bind(this));
 
-    this.$startTime.find("input").on("keyup", this.subtitleStartTimeKeyUp.bind(this));
-    this.$endTime.find("input").on("keyup", this.subtitleEndTimeKeyUp.bind(this));
+    this.$startTimeInput.on("keyup", this.subtitleStartTimeKeyUp.bind(this));
+    this.$endTimeInput.on("keyup", this.subtitleEndTimeKeyUp.bind(this));
 
-    this.$startTime.find("input").on("keypress", this.disallowNonNumeric.bind(this));
-    this.$endTime.find("input").on("keypress", this.disallowNonNumeric.bind(this));
+    this.$startTimeInput.on("keypress", this.disallowNonNumeric.bind(this));
+    this.$endTimeInput.on("keypress", this.disallowNonNumeric.bind(this));
 
-    this.$startTime.find("input").on("focus", this.subtitleLineEdit.bind(this));
-    this.$endTime.find("input").on("focus", this.subtitleLineEdit.bind(this));
+    this.$startTimeInput.on("focus", this.subtitleLineEdit.bind(this));
+    this.$endTimeInput.on("focus", this.subtitleLineEdit.bind(this));
 
-    this.$startTime.find("input").on("blur", this.editStartTimeFinished.bind(this));
-    this.$endTime.find("input").on("blur", this.editEndTimeFinished.bind(this));
+    this.$startTimeInput.on("blur", this.editStartTimeFinished.bind(this));
+    this.$endTimeInput.on("blur", this.editEndTimeFinished.bind(this));
   },
 
   addSpinnerToStartEndTime: function() {
-    this.$startTime.find("input").spinner({
+    this.$startTimeInput.spinner({
       min: 0, 
       spin: this.startTimeSpin.bind(this)
     });
 
-    this.$endTime.find("input").spinner({
+    this.$endTimeInput.spinner({
       min: 0, 
       spin: this.endTimeSpin.bind(this)
     });
 
     // reset events set by jquery ui spinner
     $.each(["mousewheel", "keydown", "keyup"], function(index, eventName){
-      this.$startTime.find("input").off(eventName);
-      this.$endTime.find("input").off(eventName);
+      this.$startTimeInput.off(eventName);
+      this.$endTimeInput.off(eventName);
     }.bind(this));
 
 
-    this.$startTime.find("input").data("field","start_time");
+    this.$startTimeInput.data("field","start_time");
     this.$startTime.find(".ui-spinner-button").data("field","start_time");
     this.$startTime.find(".ui-spinner-button span").data("field","start_time");
 
-    this.$endTime.find("input").data("field","end_time");
+    this.$endTimeInput.data("field","end_time");
     this.$endTime.find(".ui-spinner-button").data("field","end_time");
     this.$endTime.find(".ui-spinner-button span").data("field","end_time");
   },
@@ -184,27 +194,31 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   editableText: function() {
-    this.$text.prepend(this.createInput());
+    this.$text.prepend(this.createTextArea());
 
-    this.$text.find("input").data("field","text");
+    this.$textInput = this.$text.find(".sub_text_area");
 
-    this.$text.find("input").attr("maxlength", 120);
+    this.$textInput.data("field","text");
 
-    this.$text.find("input").on("focus", this.subtitleLineEdit.bind(this));
+    this.$textInput.attr("maxlength", this.MAXLENGTH);
 
-    this.$text.find("input").on("blur", this.editTextFinished.bind(this));
+    this.$textInput.on("focus", this.subtitleLineEdit.bind(this));
 
-    this.$text.find("input").on("keydown", river.utility.resizeInput);
-    this.$text.find("input").on("keydown", this.onSubTextAreaKeydown.bind(this));
-    this.$text.find("input").on("keyup", this.onSubtitleTextKeyUp.bind(this));
+    this.$textInput.on("blur", this.editTextFinished.bind(this));
+
+    this.$textInput.on("keydown", river.utility.resizeInput.bind(this.$textInput,this.MAXWIDTH));
+    this.$textInput.on("keydown", this.onSubTextAreaKeydown.bind(this));
+    this.$textInput.on("keyup", this.onSubtitleTextKeyUp.bind(this));
   },
 
   onSubTextAreaKeydown: function(event) {
+    // avoids enter key from creating linebreaks in textarea
+    if (event.which === 13) event.preventDefault();
     Backbone.trigger("subtitlelinekeydown", this.model);
   },
 
   onSubtitleTextKeyUp: function(event) {
-    var text = this.$text.find("input").val();
+    var text = this.$textInput.val();
     this.model.set({ "text": text});
   },
 
@@ -227,7 +241,7 @@ river.ui.Subtitle = Backbone.View.extend({
       return false;
     } 
 
-    var time = parseFloat(this.$startTime.find("input").val());
+    var time = parseFloat(this.$startTimeInput.val());
 
     // if duration is invalid but no track overlap, set the end time as well
     // to something reasonable
@@ -251,7 +265,7 @@ river.ui.Subtitle = Backbone.View.extend({
       return false;
     } 
 
-    var time = parseFloat(this.$endTime.find("input").val());
+    var time = parseFloat(this.$endTimeInput.val());
     if ($.isNumeric(time)) {
       this.model.track.setEndTime(time);
     }
@@ -289,7 +303,7 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   editTextFinished: function(event) { 
-    var enteredText = this.$text.find("input").val();
+    var enteredText = this.$textInput.val();
     this.model.set("text",enteredText);
     this.editFinished();
   },
@@ -309,9 +323,9 @@ river.ui.Subtitle = Backbone.View.extend({
 
   render: function() {
     if ($("#editor").size() === 1) {
-      var startTimeHolder = this.$el.find(".start_time input");
-      var endTimeHolder   = this.$el.find(".end_time input");
-      var textHolder      = this.$el.find(".text input");
+      var startTimeHolder = this.$startTimeInput;
+      var endTimeHolder   = this.$endTimeInput
+      var textHolder      = this.$textInput;
     } else {
       var startTimeHolder = this.$el.find(".start_time span");
       var endTimeHolder   = this.$el.find(".end_time span");
@@ -338,7 +352,7 @@ river.ui.Subtitle = Backbone.View.extend({
             textHolder.val(this.model.get("text"));
           }
         }
-        river.utility.resizeInput.bind(textHolder).call();
+        river.utility.resizeInput.bind(textHolder,this.MAXWIDTH).call();
       } else {
         startTimeHolder.text(this.model.startTime());
 
@@ -366,11 +380,11 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   openEditor: function(options) {
-    this.$el.find(".text input").focus();
+    this.$textInput.focus();
   },
 
   closeEditor: function(options) {
-    this.$el.find(".text input").blur();
+    this.$textInput.blur();
   }
 
 });

@@ -779,7 +779,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onEditorReady: function(event) {
-    this.$addSubInput.focus();
+    // this.$addSubInput.focus();
 
     this.currentTrack = this.tracks.at(0);
 

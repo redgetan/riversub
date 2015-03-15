@@ -160,7 +160,6 @@ river.model.Track = Backbone.Model.extend({
   },
 
   onAdd: function() {
-    console.log("track added");
     this.save();
     Backbone.trigger("trackadd", this);
   },
