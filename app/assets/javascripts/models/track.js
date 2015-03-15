@@ -160,6 +160,7 @@ river.model.Track = Backbone.Model.extend({
   },
 
   onAdd: function() {
+    console.log("track added");
     this.save();
     Backbone.trigger("trackadd", this);
   },
@@ -182,9 +183,13 @@ river.model.Track = Backbone.Model.extend({
 
   save: function(force) {
     if (this.isGhost) return;
-    if (this.hasChanged()) {
+    if (this.hasChanged() || !this.existsOnServer()) {
       Backbone.trigger("editor.sync","save",this);
     }
+  },
+
+  existsOnServer: function() {
+    return typeof(this.attributes.repository_id) !== "undefined";
   },
 
   hasChanged: function() {
