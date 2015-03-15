@@ -752,7 +752,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.modifier = "ctrl";
     }
 
-    Mousetrap.bind(['shift'], function() { this.timeSubtitle(); return false; }.bind(this), 'keydown');
+    Mousetrap.bind(['/'], function() { this.timeSubtitle(); return false; }.bind(this), 'keydown');
     Mousetrap.bind([this.modifier + '+e'], function() { this.timeSubtitle(); return false; }.bind(this), 'keydown');
 
     Mousetrap.bindGlobal([this.modifier + '+3'], function() {  
@@ -771,8 +771,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     Mousetrap.bindGlobal([this.modifier + '+p'], function() { this.togglePlayPause(); return false; }.bind(this), 'keydown');
     Mousetrap.bindGlobal([this.modifier + '+right'], function() { this.forwardTime(); return false; }.bind(this), 'keydown');
 
-    this.$startTimingBtn.tooltip({title: "Shortcut: 'Shift' or 'Escape' to cancel"});
-    this.$stopTimingBtn.tooltip({title: "Shortcut: 'Shift' or 'Escape' to cancel"});
+    this.$startTimingBtn.tooltip({title: "Shortcut: '/' or 'Escape' to cancel"});
+    this.$stopTimingBtn.tooltip({title: "Shortcut: '/' or 'Escape' to cancel"});
 
     // this.$backwardBtn.tooltip({ title: "Shortcut: " + this.modifier + " + left", placement: "bottom"});
     // this.$playBtn.tooltip({ title: "Shortcut: " + this.modifier + " + p", placement: "bottom"});
