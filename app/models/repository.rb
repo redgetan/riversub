@@ -301,6 +301,15 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def player_title
+    # if not title column, use language + video title
+    if read_attribute(:title)
+      self.read_attribute(:title)
+    else
+      title
+    end
+  end
+
   def keywords
     [language_pretty, "sub"] + self.video.name[0..255].split(" ")
   end
