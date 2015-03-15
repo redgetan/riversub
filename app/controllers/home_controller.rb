@@ -4,7 +4,13 @@ class HomeController < ApplicationController
     @guided_walkthrough_repo = Repository.guided_walkthrough
     @autoplay_repo =  Repository.homepage_autoplay_repo
     @repository_counts_by_country = Repository.repository_counts_by_country
+    @group = Group.find_by_short_name("jpweekly")
     respond_to :html
+  end
+
+  def archives
+    @group = Group.find_by_short_name("jpweekly")  
+    render "groups/show"
   end
 
   def faq

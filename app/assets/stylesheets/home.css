@@ -2576,3 +2576,21 @@ div.field, div.actions {
 .orig_video_name {
   font-size: 11px;
 }
+
+.latest_release_item_container {
+  clear: both;
+}
+
+.latest_release_header {
+  margin-top: 50px;
+}
+
+.latest_release_container {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding-left: 60px;
+}
+
+.container.faq {
+  margin-bottom: 100px;
+}

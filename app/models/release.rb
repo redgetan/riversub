@@ -11,6 +11,8 @@ class Release < ActiveRecord::Base
 
   before_create :set_release_number
 
+  scope :published,             where("is_published is true")
+
   def set_release_number
     self.release_number = self.class.where(group_id: self.group.id).count + 1
   end

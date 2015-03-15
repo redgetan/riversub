@@ -21,6 +21,7 @@ River::Application.routes.draw do
 
     get "faq", :to => "home#faq"
     get "how_to_use", :to => "home#how_to_use"
+    get "archives",   to: "home#archives",   as: "home_archives"
 
     get "videos/new",                            :to => "videos#new"
     get "videos/:token",                        to: "videos#show",            as: "video"
