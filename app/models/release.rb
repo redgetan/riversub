@@ -15,6 +15,13 @@ class Release < ActiveRecord::Base
     self.release_number = self.class.where(group_id: self.group.id).count + 1
   end
 
+  def publish
+    Release.transaction do 
+      self.repositories.update_all("is_published = 1")
+      self.update_column(:is_published, 1)
+    end
+  end
+
   def serialize
     {
       :id => self.id,
@@ -26,6 +33,10 @@ class Release < ActiveRecord::Base
 
   def url
     group_release_url(self.group,self)
+  end
+
+  def publish_url
+    publish_group_release_url(self.group,self)  
   end
 
   def to_param

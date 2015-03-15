@@ -1,14 +1,19 @@
-<div class='header-section span12'></div>
+<div class='header-section col-xs-12'></div>
 <div class='row center'>
   <div class="col-xs-12">
     <a class="title river_gray" href="<%= @group.url %>"><%= @group.name %></a>
     <p>
       <%= @group.description %>
     </p>
+    <% unless @release.is_published? %>
+      <br/>
+      <%= link_to "Publish", @release.publish_url, class: "publish_release_btn", method: "POST" %>
+    <% end %>
   </div>
 </div>
 
-<h3 class="release_videos_header river_gray col-xs-7">
+
+<h3 class="release_videos_header river_gray col-xs-8 col-xs-offset-2">
   <a href="<%= @group.url %>">Issues</a>
   >
   <span class="title river_gray"><%= @release.id %></span>
@@ -17,7 +22,7 @@
   </span>
 </h3>
 
-<ul class="release_items_container col-xs-8 col-xs-offset-2">
+<ul class="release_items_container col-xs-9 col-xs-offset-2">
   <% @release.release_items.each do |item| %>
     <% repo = item.repository %>
     <% video = repo.video %>
@@ -25,7 +30,7 @@
       <div class="video_thumb">
         <img src="<%= video.thumbnail_url %>" alt="">
       </div>
-      <div class="video_title col-md-6">
+      <div class="video_title <%= can?(:edit, repo) ? 'col-md-5' : 'col-md-7' %>">
         <a href="<%= repo.url %>" class="video" >
           <span class='video_name'><%= video.title %></span>
         </a>
@@ -38,7 +43,7 @@
           <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
         </span>
       </div>
-      <% if repo.display_edit?(current_user) %>
+      <% if can?(:edit, repo) %>
         <a href="<%= repo.editor_url %>" class="col-md-1 btn btn-danger btn-xs">Editor</a>
       <% end %>
     </li>
@@ -47,5 +52,7 @@
 
 <% if can? :edit, @release %>
     <%= render 'release_item_form' %>
+<% else %>
+  <div class='header-section col-xs-12'></div>
 <% end %>
 

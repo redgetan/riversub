@@ -87,6 +87,17 @@ class ReleasesController < ApplicationController
     end
   end
 
+  def publish
+    @release = releases.find_by_release_number(params[:id])
+    authorize! :edit, @release
+
+    if @release.publish
+      redirect_to @release.url, notice: "Release Published"
+    else
+      flash[:error] = @release.errors.full_messages
+    end
+  end
+
   private
 
     def load_group

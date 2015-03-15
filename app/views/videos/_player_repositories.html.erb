@@ -16,7 +16,7 @@
             <span class='language_label pull-left' ><%= repo.language_label %></span>
 
             <div class='repo_edit_column pull-left'>
-              <% if @repo && @repo == repo && repo.display_edit?(current_user) %>
+              <% if @repo && @repo == repo && can?(:edit, repo) %>
                 <a class='subtitle_editor_btn btn btn-xs' href="<%= repo.editor_url %>">Edit</a>
               <% end %>
             </div>

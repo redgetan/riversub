@@ -32,6 +32,9 @@ River::Application.routes.draw do
 
     resources :groups do
       resources :releases do 
+        member do
+          post "publish"
+        end
       end
     end
 

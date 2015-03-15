@@ -328,12 +328,6 @@ class Repository < ActiveRecord::Base
     "active" 
   end
 
-  def display_edit?(target_user)
-    return false if anonymous?
-
-    same_user?(target_user) || same_group?(target_user) || target_user.try(:is_super_admin?) 
-  end
-
   def visible_to_user?(target_user)
     is_published || owned_by?(target_user) 
   end

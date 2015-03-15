@@ -2468,7 +2468,6 @@ iframe.fansubber_signup_form .ss-base-body {
 .group_releases_header,
 .release_videos_header,
 .add_release_item_header {
-  margin-left: 205px;
   font-weight: normal;
   margin-bottom: 40px;
 }
@@ -2567,4 +2566,9 @@ div.field, div.actions {
 
 .repo_open_editor_btn {
   margin-top: 20px;
+}
+
+.publish_release_btn {
+  border: solid 1px gray;
+  padding: 5px 10px;
 }
