@@ -87,6 +87,10 @@ class Video < ActiveRecord::Base
     video_repository_new_url(self) + "?upload=true"
   end
 
+  def translate_repository_url
+    video_repository_new_url(self) + "?translate=true"
+  end
+
   def published_repositories
     self.repositories.published
   end

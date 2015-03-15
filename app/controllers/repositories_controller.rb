@@ -10,6 +10,7 @@ class RepositoriesController < ApplicationController
 
     @video = Video.find_by_token(params[:video_token])
     @is_upload = params[:upload].present?
+    @is_translate = params[:translate]
   end
 
   def show
@@ -36,7 +37,17 @@ class RepositoriesController < ApplicationController
     create_common
     @repo = Repository.create!(video: @video, user: current_user, language: @repo_language_code)
     @repo.update_column(:group_id, params[:group_id]) if params[:group_id].present?
+    @repo.setup_translation! if params[:translate].present?
     redirect_to @repo.editor_url
+  end
+
+  def fork
+    @source_repo = Repository.find_by_token! params[:token]  
+    @target_repo = Repository.create!(video: @source_repo.video, user: current_user)
+
+    @target_repo.copy_timing_from!(@source_repo) 
+    
+    redirect_to @target_repo.editor_url
   end
 
   def upload
@@ -84,15 +95,6 @@ class RepositoriesController < ApplicationController
     else
       render :json => { :error => @repo.errors.full_messages }, :status => 403
     end
-  end
-
-  def fork
-    @source_repo = Repository.find_by_token! params[:token]  
-    @target_repo = Repository.create!(video: @source_repo.video, user: current_user)
-
-    @target_repo.copy_timing_from!(@source_repo) 
-    
-    redirect_to @target_repo.editor_url
   end
 
   def editor

@@ -17,6 +17,8 @@
         <p>We currently only accept subtitles in the SubRip format (file ends in .srt)</p>
         <%= file_field_tag "subtitle_file" %>
       </li>
+    <% elsif @is_translate %>
+      <%= hidden_field_tag "translate", true %> 
     <% end %>
 
     <% if false && current_user.groups.present? %>

@@ -268,6 +268,19 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def setup_translation!
+    if source_repo = find_master_repo 
+      copy_timing_from!(source_repo) 
+    end
+  end
+
+  # for now, related repo that contains the most timing
+  def find_master_repo
+    self.video.published_repositories.sort do |repo, other_repo|
+      repo.timings.length <=> other_repo.timings.length
+    end.first    
+  end
+
   def user_avatar_thumb_url
     user.avatar.thumb.url
   end

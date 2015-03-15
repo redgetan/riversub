@@ -27,7 +27,7 @@ river.ui.Subtitle = Backbone.View.extend({
                   "<div class='end_time'></div>" +
                   "<div class='text input-group'>"+ 
                   "</div>" +
-                  "<button class='btn btn-xs sub_enter'><i class='glyphicon glyphicon-refresh'></i></button>" +
+                  // "<button class='btn btn-xs sub_enter'><i class='glyphicon glyphicon-refresh'></i></button>" +
                   "<div class='delete'>" +
                     "<a href='#' class='delete_sub_line'>x</a>" +
                   "</div>";
