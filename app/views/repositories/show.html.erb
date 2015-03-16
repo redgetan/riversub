@@ -3,6 +3,8 @@
 <% content_for :head do  %>
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="<%= @repo.thumbnail_url_hq %>">
+  <meta name="twitter:title" content="<%= @repo.share_text %>">
+  <meta name="twitter:description" content="<%= @repo.share_description %>">
 <% end %>
 
 <div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>

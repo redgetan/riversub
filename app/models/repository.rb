@@ -404,6 +404,16 @@ class Repository < ActiveRecord::Base
     ["[#{language_pretty} Sub]",release_title[0..100]].join(" ")      
   end
 
+  def share_description
+    if read_attribute(:title) != video.title
+      video.title
+    else
+      self.timings[0..2].map do |timing|
+        timing.subtitle.text
+      end.join(". ")
+    end
+  end
+
   def auto_publish_anonymous_repo
     unless user
       self.is_published = true
