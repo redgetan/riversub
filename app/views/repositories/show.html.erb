@@ -5,6 +5,13 @@
   <meta name="twitter:image" content="<%= @repo.thumbnail_url_hq %>">
   <meta name="twitter:title" content="<%= @repo.share_text %>">
   <meta name="twitter:description" content="<%= @repo.share_description %>">
+
+  <meta property="og:url" content="<%= @repo.url %>" />
+  <meta property="og:title" content="<%= @repo.share_text %>" />
+  <meta property="og:description" content="<%= @repo.share_description %>" />
+  <meta property="og:site_name" content="Yasub" />
+  <meta property="og:image" content="<%= @repo.thumbnail_url_hq %>" />
+  <meta property="fb:app_id" content="1465538213665903" />
 <% end %>
 
 <div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
