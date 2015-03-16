@@ -2,6 +2,7 @@
 <html>
 <head>
   <%= display_meta_tags %>
+  <%= yield :head %>
 
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
