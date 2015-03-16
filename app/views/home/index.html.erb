@@ -8,7 +8,6 @@
   <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
 
-
 <div class='container intro'>
   <div class="section_block col-md-10 col-md-offset-1">
     <div class="section_header">
@@ -25,66 +24,15 @@
   </div>
 </div>
 
-<h3 class='latest_release_header col-md-10 col-md-offset-1 center'>Latest Release - <%= @group.latest_release.date.strftime("%b %-d, %Y") %> </h3>
-                
-
-<div class='latest_release_container row col-xs-offset-1'>
-  <% @group.latest_release.repositories.each do |repo| %>
-    <div class='col-xs-2 col-md-2'>
-      <div class="thumbnail center">
-        <a href="<%= repo.url %>">
-          <img src="<%= repo.video.thumbnail_url_hq %>" class="" alt="">
-        </a>
-      </div>
-    </div>
-  <% end %>
-  <ul class="latest_release_item_container col-xs-10">
-    <% @group.latest_release.repositories.each do |repo| %>
-      <li class="group_release_list_item_repo river_gray">
-        <a href="<%= repo.url %>" class='video_name '><%= repo.release_title %></a>
-        <% unless repo.release_title == repo.video.title %>
-          <span class='orig_video_name river_gray pull-right'><%= repo.video.title %></span>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
+<div class='latest_release_container row'>
+  <% @release = @group.latest_release %>
+  <%= render "releases/release_items" %>
 </div>
 
-<div class='container faq'>
-  <div class="section_block col-md-10 col-md-offset-1">
-    <div class="section_header">
-      FAQ
-    </div>
-    <div class="section_body">
-      <ol class=''>
-        <li>
-          <h4>Who are you?</h4>
-          <p>We are a team of fansubbers who aim to promote video content from Japan to global audiences through subtitles</p>
-        </li>
-        <li>
-          <h4>Do you subtitle anime shows ?</h4>
-          <p>No. We do not subtitle licensed TV shows/movies. We only subtitle publicly available videos from sites like Youtube, Vimeo, etc.. Also, in order to respect the original owner's work, we only do softsubbing instead of hardsubbing. This means we simply overlay our subtitles to the original video instead of reuploading a subtitle version to a new channel.</p>
-        </li>
-        <li>
-          <h4>How do I join you as a fansubber?</h4>
-          <p>Fill out a form in <a href="https://docs.google.com/a/yasub.com/forms/d/1JaAq20lp_OumLTEC80qnZOqii3xrTt7O8H0Rgo39YnA/viewform?usp=send_form">Become a fansubber</a>, and we'll reach out to you.</p>
-        </li>
-        <li>
-          <h4>Time commitment?</h4>
-          <p>Up to you. It could be 1-2 hours/week or more if you want to</p>
-        </li>
-        <li>
-          <h4>How else can I help aside from translations?</h4>
-          <p>Send us an email (see next question), and we would gladly let you know of other things that we need help with.</p>
-        </li>
-        <li>
-          <h4>I have other questions. How can I reach you?</h4>
-          <p>You can reach us at <a href="mailto:info@yasub.com"> info@yasub.com</a></p>
-        </li>
-      </ol>
-    </div>
-  </div>
-</div>
+
+<%= render "questions" %>
+
+
 
 
 <!-- <div class='container home_country_index'>
