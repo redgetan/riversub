@@ -1,4 +1,6 @@
 <% set_meta_tags :site => 'Yasub', :title => @repo.title, :description => "Watch a Youtube Video with user generated captions/subtitles", :keywords => @repo.keywords %>
+<% set_meta_tags :name => 'twitter:card', :content => "summary" %>
+<% set_meta_tags :name => 'twitter:image', :content => @repo.thumbnail_url_hq %>
 
 <div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
   <div class="row">
