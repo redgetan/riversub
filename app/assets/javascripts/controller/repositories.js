@@ -5,7 +5,7 @@ $.extend(river.controller,{
     player = new river.ui.Player({repo: repo});
     player.play();
 
-    // river.model.SocialShare.populateShareCounts(repo.url);
+    river.model.SocialShare.populateShareCounts(repo.url);
 
     $(".forks_list_item").click(function(event){ 
       window.location.href = $(this).data("url");

@@ -16,7 +16,7 @@
 
 <div class='header-section col-xs-12'></div>
 <div class='row center'>
-  <div class="release_show_container col-xs-12">
+  <div class="release_show_container col-xs-12" data-release="<%= @release.serialize.to_json %>">
     <a class="title river_gray" href="<%= @group.url %>"><%= @group.name %></a>
     <p>
       <%= @group.description %>

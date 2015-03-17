@@ -2618,3 +2618,10 @@ div.field, div.actions {
   margin-bottom: 50px;
 }
 
+
+.facebook_count.positive,
+.tweet_count.positive {
+  color: white;
+  background-color: lightcoral;
+  padding: 0px 4px;
+}
