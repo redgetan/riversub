@@ -1,0 +1,17 @@
+<div class='share_container' >
+  <span class='pull-left share_label'>Share: </span>
+  <div class="social_share_container">
+    <a href="https://plus.google.com/share?url=<%= @sharable.url %>" target="_blank">
+      Google+
+      <!-- <%= image_tag "gplus-32.png", style: "height: 20px;" %> -->
+    </a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=<%= @sharable.url %>" target="_blank">
+      Facebook
+      <!-- <%= image_tag "fb-32.png", style: "height: 20px;" %> -->
+    </a>
+    <a href="https://twitter.com/share?url=<%= @sharable.url %>&text=<%= @sharable.share_text %>" target="_blank">
+      Twitter
+      <!-- <%= image_tag "twitter-32.png", style: "height: 20px;" %> -->
+    </a>
+  </div>
+</div>

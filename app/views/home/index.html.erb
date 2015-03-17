@@ -24,13 +24,16 @@
   </div>
 </div>
 
+<%= render "questions" %>
+
+<h3 class="latest_release_header col-xs-10 center">Latest Issue - <%= @group.latest_release.date.strftime("%b %-d, %Y") %></h3>
+
 <div class='latest_release_container row'>
   <% @release = @group.latest_release %>
   <%= render "releases/release_items" %>
 </div>
 
 
-<%= render "questions" %>
 
 
 

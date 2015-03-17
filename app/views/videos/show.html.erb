@@ -6,7 +6,8 @@
       <%= render 'videos/player_info' %>
       <%= render 'videos/player' %>
       <% if @repo %>
-        <%= render 'videos/player_share' %>
+        <% @sharable = @repo %>
+        <%= render 'videos/social_share' %>
       <% end %>
       <% if @repo %>
         <%= render 'videos/player_comments' %>

@@ -241,6 +241,7 @@ div.videos {
   overflow: hidden;
   line-height: 12px;
   height: 24px;
+  font-size: 16px;
 }
 
 .video_index .video_name {
@@ -625,10 +626,6 @@ body {
   padding: 0px;
 }
 
-#share_container {
-  margin-bottom: 0px;
-}
-
 #editor #repo_label {
   margin-left: 0px;
   padding: 5px;
@@ -784,9 +781,24 @@ ul.social_login_buttons a {
   margin-top: 20px;
 }
 
-.share_container {
+#river_player .share_container {
+  float: left;
+}
+
+.release_show_container .share_label {
+  display: none;
+}
+
+#river_player .share_container {
   text-align: left;
   width: 400px;
+}
+
+.release_show_container .share_container {
+  width: 500px;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .share_container .share_label {
@@ -2387,6 +2399,10 @@ iframe.fansubber_signup_form .ss-base-body {
   background: none !important;
 }
 
+.container.faq .section_block {
+  border: none;
+}
+
 .container.faq .section_body p {
   font-size: 16px;
 }
@@ -2422,11 +2438,11 @@ iframe.fansubber_signup_form .ss-base-body {
 .release_item {
   margin-bottom: 20px;
   display: block;
-  height: 75px;
+  height: 125px;
 }
 
 .release_item .video_thumb img {
-  width: 100px;
+  width: 150px;
 }
 
 .help-inline {
@@ -2582,7 +2598,8 @@ div.field, div.actions {
 }
 
 .latest_release_header {
-  margin-top: 50px;
+  border: solid 1px gray;
+  padding: 5px;
 }
 
 .latest_release_container {
@@ -2591,5 +2608,5 @@ div.field, div.actions {
 }
 
 .container.faq {
-  margin-bottom: 100px;
+  margin-bottom: 50px;
 }

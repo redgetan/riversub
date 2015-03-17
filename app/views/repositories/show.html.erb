@@ -20,7 +20,8 @@
       <%= render 'videos/player_info' %>
       <%= render 'videos/player' %>
       <% if @repo %>
-        <%= render 'videos/player_share' %>
+        <% @sharable = @repo %>
+        <%= render 'videos/social_share' %>
         <%= render 'videos/player_editor' %>
       <% end %>
       <% if @repo %>

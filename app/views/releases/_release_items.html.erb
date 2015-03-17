@@ -1,11 +1,3 @@
-<h3 class="release_videos_header river_gray col-xs-8 col-xs-offset-2">
-  <a href="<%= @group.url %>">Issues</a>
-  >
-  <span class="title river_gray"><%= @release.id %></span>
-  <span class="issue_date pull-right">
-    <%= @release.date.strftime("%b %-d, %Y") %>
-  </span>
-</h3>
 
 <ul class="release_items_container col-xs-9 col-xs-offset-2">
   <% @release.release_items.each do |item| %>
@@ -13,9 +5,11 @@
     <% video = repo.video %>
     <li class='release_item'>
       <div class="video_thumb">
+        <a href="<%= repo.url %>" >
         <img src="<%= video.thumbnail_url %>" alt="">
+        </a>
       </div>
-      <div class="video_title <%= can?(:edit, repo) ? 'col-md-5' : 'col-md-7' %>">
+      <div class="video_title <%= can?(:edit, repo) ? 'col-md-5' : 'col-md-6' %>">
         <a href="<%= repo.url %>" class="video" >
           <span class='video_name'><%= repo.release_title %></span>
         </a>

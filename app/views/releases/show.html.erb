@@ -16,7 +16,7 @@
 
 <div class='header-section col-xs-12'></div>
 <div class='row center'>
-  <div class="col-xs-12">
+  <div class="release_show_container col-xs-12">
     <a class="title river_gray" href="<%= @group.url %>"><%= @group.name %></a>
     <p>
       <%= @group.description %>
@@ -25,15 +25,19 @@
       <br/>
       <%= link_to "Publish", @release.publish_url, class: "publish_release_btn", method: "POST" %>
     <% end %>
-
-    <div class="share_release">
-      <a href="https://twitter.com/share" class="twitter-share-button" data-text="<%= @release.title %>">Tweet</a>
-      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-    </div>
-
+    <% @sharable = @release %>
+    <%= render "videos/social_share" %>
   </div>
 </div>
 
+<h3 class="release_videos_header river_gray col-xs-8 col-xs-offset-2">
+  <a href="<%= @group.url %>">Issues</a>
+  >
+  <span class="title river_gray"><%= @release.id %></span>
+  <span class="issue_date pull-right">
+    <%= @release.date.strftime("%b %-d, %Y") %>
+  </span>
+</h3>
 
 
 <%= render "release_items" %>
