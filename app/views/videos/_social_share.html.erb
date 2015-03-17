@@ -9,8 +9,9 @@
       Facebook
       <!-- <%= image_tag "fb-32.png", style: "height: 20px;" %> -->
     </a>
-    <a href="https://twitter.com/share?url=<%= @sharable.url %>&text=<%= CGI.escape(@sharable.share_text) %>" target="_blank">
+    <a href="https://twitter.com/share?count=vertical&url=<%= @sharable.url %>&text=<%= CGI.escape(@sharable.share_text) %>" target="_blank">
       Twitter
+      <span class="tweet_count"></span>
       <!-- <%= image_tag "twitter-32.png", style: "height: 20px;" %> -->
     </a>
   </div>
