@@ -2610,6 +2610,11 @@ div.field, div.actions {
   margin-bottom: 50px;
 }
 
+.latest_release_container .release_item_editor_btn {
+  display: none;
+}
+
 .container.faq {
   margin-bottom: 50px;
 }
+
