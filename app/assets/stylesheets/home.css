@@ -241,6 +241,9 @@ div.videos {
   overflow: hidden;
   line-height: 12px;
   height: 24px;
+}
+
+.release_item .video_name {
   font-size: 16px;
 }
 
