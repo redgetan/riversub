@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150306211755) do
+ActiveRecord::Schema.define(:version => 20150317015035) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",                                    :default => 0
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(:version => 20150306211755) do
     t.datetime "updated_at",  :null => false
     t.integer  "creator_id"
     t.string   "short_name",  :null => false
+    t.string   "title"
   end
 
   add_index "groups", ["short_name"], :name => "index_groups_on_short_name", :unique => true

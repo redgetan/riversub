@@ -41,6 +41,22 @@ class Release < ActiveRecord::Base
     publish_group_release_url(self.group,self)  
   end
 
+  def title
+    "#{self.group.title} | Issue ##{self.release_number}"
+  end
+
+  def thumbnail_url_hq
+    self.repositories.first.thumbnail_url_hq
+  end
+
+  def share_text
+    self.title  
+  end
+
+  def share_description
+    "This week's subtitled videos: #{self.repositories.map(&:release_title).join(". ")}"  
+  end
+
   def to_param
     self.release_number  
   end
