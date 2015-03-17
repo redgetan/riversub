@@ -1,9 +1,9 @@
 river.model.SocialShare = {
   populateShareCounts: function (url) {
-    
+
     // twitter share count
     $.ajax({
-      url: "http://urls.api.twitter.com/1/urls/count.json?url=" + url,
+      url: "https://urls.api.twitter.com/1/urls/count.json?url=" + url,
       type: "GET",
       dataType: "jsonp",
       success: function(data) {
@@ -16,7 +16,7 @@ river.model.SocialShare = {
 
     // Facebook Shares Count
     $.ajax({
-      url: "http://graph.facebook.com/?id=" + url,
+      url: "https://graph.facebook.com/?id=" + url,
       type: "GET",
       dataType: "jsonp",
       success: function(data) {
