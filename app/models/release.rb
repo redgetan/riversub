@@ -46,7 +46,7 @@ class Release < ActiveRecord::Base
   end
 
   def thumbnail_url_hq
-    self.repositories.first.thumbnail_url_hq
+    self.repositories.first.try(:thumbnail_url_hq)
   end
 
   def share_text

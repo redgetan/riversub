@@ -14,7 +14,7 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repo = Repository.find_by_token params[:token]
+    @repo = Repository.find_by_token! params[:token]
 
     unless can? :read, @repo
       if user_signed_in?
