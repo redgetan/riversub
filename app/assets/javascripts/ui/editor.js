@@ -632,7 +632,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTimeUpdate: function(event) {
-    this.lastTimeUpdateTime = this.media.currentTime;
+    var seconds = this.media.currentTime;
+    this.lastTimeUpdateTime = seconds;
+
+    if (seconds >= (this.media.duration) - this.VIDEO_END_PADDING) {
+      this.goToBeginningOfVideo();
+    }
+  },
+
+  goToBeginningOfVideo: function() {
+    this.pause();
+    this.seek(0);
   },
 
   onDocumentKeydown: function(event) {

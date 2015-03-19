@@ -23,6 +23,8 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   initializeCommon: function() {
+    this.VIDEO_END_PADDING = 0.5;
+    
     this.repo = this.options.repo || {};
     this.video = this.options.video || this.repo.video || {};
     this.group = this.options.group || this.repo.group || {};

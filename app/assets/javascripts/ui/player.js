@@ -103,7 +103,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     var width = seconds * this.resolution(this.timeline.$summary);
     this.$timeCurrent.css("width", width);
 
-    if (seconds >= this.media.duration) {
+    if (seconds >= (this.media.duration - this.VIDEO_END_PADDING)) {
       this.goToBeginningOfVideo();
     }
   },
