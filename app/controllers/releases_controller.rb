@@ -8,6 +8,7 @@ class ReleasesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @releases }
+      format.rss  { render :layout => false }
     end
   end
 

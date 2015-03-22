@@ -42,7 +42,11 @@ class Release < ActiveRecord::Base
   end
 
   def title
-    "#{self.group.title} | Issue ##{self.release_number}"
+    "#{self.group.title} | #{self.rss_title}"
+  end
+
+  def rss_title
+    "Issue ##{self.release_number}"
   end
 
   def thumbnail_url_hq

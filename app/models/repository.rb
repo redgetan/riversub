@@ -3,6 +3,7 @@ class Repository < ActiveRecord::Base
   has_paper_trail 
 
   include Rails.application.routes.url_helpers
+  include ApplicationHelper
 
   paginates_per 20
   acts_as_votable
@@ -310,6 +311,10 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def video_title_for_release
+    release_title == video.title ? "" : video.title
+  end
+
   def keywords
     [language_pretty, "sub"] + self.video.name[0..255].split(" ")
   end
@@ -437,6 +442,14 @@ class Repository < ActiveRecord::Base
     css_class += " negative_5"  if score <= -5
 
     css_class
+  end
+
+  def formatted_duration
+    format_time video.duration.to_i 
+  end
+
+  def duration
+    video.duration  
   end
 
 
