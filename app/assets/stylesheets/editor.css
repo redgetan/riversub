@@ -767,6 +767,7 @@ a.preview_btn {
 }
 
 .sub_text_area {
+	overflow: hidden;
 	border: none;
 	margin-left: 0px;
 	margin-top: 0px !important;
