@@ -135,12 +135,16 @@ $(document).ready(function(){
     event.preventDefault();
 
     var url = $(this).find(".source_url").val();
-    var release_id = $(this).data("release-id");
+    var options = { 
+      release_id: $(this).data("release-id"),
+      video_language_code: $(this).find("[name='video_language_code']").val(),
+      repo_language_code: $(this).find("[name='repo_language_code']").val(),
+    };
 
     $(this).find(".sub_btn").button('loading');
 
     try {
-      addReleaseItem(url, release_id);
+      addReleaseItem(url, options);
     } catch(e) {
       handleSubtitleVideoError(e,$(this));
       throw e;
@@ -202,7 +206,7 @@ function handleSubtitleVideoError(e,$form) {
 }
 
 
-function addReleaseItem(url, release_id) {
+function addReleaseItem(url, options) {
 
   if (!url.match(/youtu\.?be/)) {
     throw "Only youtube urls are allowed";
@@ -217,11 +221,13 @@ function addReleaseItem(url, release_id) {
     }
 
     $.ajax({
-      url: "/releases/" + release_id + "/release_items",
+      url: "/releases/" + options.release_id + "/release_items",
       type: "POST",
       data: {
         source_url : url,
-        video_metadata: metadata
+        video_metadata: metadata,
+        video_language_code: options.video_language_code,
+        repo_language_code: options.repo_language_code
       },
       dataType: "json",
       success: function(data,status) {
