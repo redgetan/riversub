@@ -17,7 +17,7 @@ class Subtitle < ActiveRecord::Base
   end
 
   def strip_crlf_text
-    self.text.gsub("\n"," ")
+    self.text.gsub!("\n"," ")
   end
 
 end
