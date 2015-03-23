@@ -5,7 +5,7 @@ xml.rss :version => "2.0", "xmlns:media" => "http://search.yahoo.com/mrss/" do
     xml.description @group.description
     xml.link @group.url
 
-    @group.releases.each do |release|
+    @releases.each do |release|
       xml.item do
         xml.title release.rss_title
         xml.link  release.url
