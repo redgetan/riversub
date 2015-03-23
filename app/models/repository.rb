@@ -455,7 +455,7 @@ class Repository < ActiveRecord::Base
   def mailchimp_html
     html = <<-TEXT
       <div class="release_item" style="margin-bottom: 10px; height: 80px;">
-        <div style="float: left">
+        <div style="float: left; width: 400px;">
           <p>
             <a class="video_name " href="#{self.url}" style="box-sizing: border-box; color: rgb(51, 122, 183); text-decoration: none; margin-bottom: 0px; overflow: hidden; line-height: 12px; height: 24px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px;">
               #{self.release_title}
