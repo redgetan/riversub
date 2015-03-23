@@ -80,4 +80,7 @@ River::Application.configure do
   Rails.application.routes.default_url_options[:host] = 'www.yasub.com'
   Rails.application.routes.default_url_options[:protocol] = 'https'
 
+  load "#{Rails.root}/lib/object_extensions.rb"
+
+
 end
