@@ -64,4 +64,10 @@ class Release < ActiveRecord::Base
   def to_param
     self.release_number  
   end
+
+  def mailchimp_content_encoded
+    repositories.map do |repo|
+      repo.mailchimp_html
+    end.join
+  end
 end

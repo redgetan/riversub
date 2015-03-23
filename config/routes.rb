@@ -33,6 +33,9 @@ River::Application.routes.draw do
 
     resources :groups do
       resources :releases do 
+        collection do 
+          get "mailchimp"
+        end
         member do
           post "publish"
         end

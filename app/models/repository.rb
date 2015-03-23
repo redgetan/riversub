@@ -452,6 +452,28 @@ class Repository < ActiveRecord::Base
     video.duration  
   end
 
+  def mailchimp_html
+    html = <<-TEXT
+      <div class="release_item" style="margin-bottom: 10px; height: 80px;">
+        <div style="float: left">
+          <p>
+            <a class="video_name " href="#{self.url}" style="box-sizing: border-box; color: rgb(51, 122, 183); text-decoration: none; margin-bottom: 0px; overflow: hidden; line-height: 12px; height: 24px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px;">
+              #{self.release_title}
+            </a>
+            <br />
+            <span style="color:rgb(119, 119, 119); font-family:helvetica neue,helvetica,arial,sans-serif; font-size:11px; line-height:17.4603176116943px">
+              #{self.video_title_for_release}
+            </span>
+          </p>
+        </div>
+        <a class="video_thumb" href="#{self.url}" style="float: right;">
+          <img src="#{self.thumbnail_url}" style="width: 100px;" />
+        </a>
+      </div>
+    TEXT
+    html.gsub("\n","")
+  end
+
 
   def to_param
     self.token

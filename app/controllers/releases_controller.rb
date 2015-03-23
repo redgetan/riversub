@@ -3,12 +3,20 @@ class ReleasesController < ApplicationController
   before_filter :load_group
 
   def index
-    @releases = releases
+    @releases = releases.published
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @releases }
       format.rss  { render :layout => false }
+    end
+  end
+
+  def mailchimp
+    @releases = releases.published
+
+    respond_to do |format|
+      format.rss  { render :layout => false, content_type: "application/xml" }
     end
   end
 
