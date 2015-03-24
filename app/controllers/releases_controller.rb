@@ -3,7 +3,7 @@ class ReleasesController < ApplicationController
   before_filter :load_group
 
   def index
-    @releases = releases.published
+    @releases = releases.published.order("date DESC")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +13,7 @@ class ReleasesController < ApplicationController
   end
 
   def mailchimp
-    @releases = releases.published
+    @releases = releases.published.order("date DESC")
 
     respond_to do |format|
       format.rss  { render :layout => false, content_type: "application/xml" }
