@@ -2605,8 +2605,13 @@ div.field, div.actions {
   padding: 5px;
 }
 
-.latest_release_container {
+.latest_release_container,
+.past_release_container {
   margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.past_release_container .group_release_list_item_header {
   margin-bottom: 50px;
 }
 

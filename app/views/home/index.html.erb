@@ -33,6 +33,20 @@
   <%= render "releases/release_items" %>
 </div>
 
+<h3 class="latest_release_header col-xs-10 center">Past Issues</h3>
+
+<% @group.past_releases.each do |release| %>
+  <div class='past_release_container row'>
+    <div class="group_release_list_item_header col-xs-9 col-xs-offset-2">
+                    <a class="" href="<%= release.url %>">Issue # <%= release.release_number %></a>
+                - 
+                <%= release.date.strftime("%b %-d, %Y") %>
+    </div>
+    <% @release = release %>
+    <%= render "releases/release_items" %>
+  </div>
+<% end %>
+
 
 
 

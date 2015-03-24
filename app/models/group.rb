@@ -37,6 +37,10 @@ class Group < ActiveRecord::Base
     releases.published.order("created_at DESC").first
   end
 
+  def past_releases
+    releases.published - [latest_release]
+  end
+
   def create_membership
     self.memberships.create!(user_id: self.creator.id)  
   end
