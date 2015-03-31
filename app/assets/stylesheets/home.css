@@ -2403,7 +2403,7 @@ iframe.fansubber_signup_form .ss-base-body {
 }
 
 .container.faq .section_block {
-  border: none;
+  /*border: none;*/
 }
 
 .container.faq .section_body p {
@@ -2601,14 +2601,15 @@ div.field, div.actions {
 }
 
 .latest_release_header {
-  border: solid 1px gray;
+  margin-top: 50px;
+/*  border: solid 1px gray;
   padding: 5px;
-}
+*/}
 
 .latest_release_container,
 .past_release_container {
   margin-top: 50px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 .past_release_container .group_release_list_item_header {

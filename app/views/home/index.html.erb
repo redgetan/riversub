@@ -4,7 +4,7 @@
 <p class='col-md-10 center'>毎週日本で流行ってる英語字幕付きビデオを送る</p>
 
 <!-- <div class='share_home'>
-  <a href="https://twitter.com/share" class="twitter-share-button" data-text="Trending Videos in Japan - Subtitled Weekly" data-via="yasub_tv">Tweet</a>
+  <a href="https://twitter.com/share" class="twitter-share-button" data-text="Trending Videos in Japan - Subtitled Weekly" data-via="yasub_tv" data-count="none">Tweet</a>
   <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
  -->
@@ -24,14 +24,15 @@
   </div>
 </div>
 
-<%= render "questions" %>
-
-<h3 class="latest_release_header col-xs-10 center">Latest Issue - <%= @group.latest_release.date.strftime("%b %-d, %Y") %></h3>
+<h4 class="latest_release_header col-xs-10 center">Latest Issue - <%= @group.latest_release.date.strftime("%b %-d, %Y") %></h4>
 
 <div class='latest_release_container row'>
   <% @release = @group.latest_release %>
   <%= render "releases/release_items" %>
 </div>
+
+
+<%= render "questions" %>
 
 <!-- <h3 class="latest_release_header col-xs-10 center">Past Issues</h3>
 
