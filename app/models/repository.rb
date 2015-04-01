@@ -239,15 +239,17 @@ class Repository < ActiveRecord::Base
     text = uploaded_file.read
     srt = SubtitleParser.parse_srt(text, uploaded_file.original_filename)
 
-    srt.each do |item|
-      Timing.create!({
-        repository_id: self.id,
-        start_time: item.start_time,
-        end_time: item.end_time,
-        subtitle_attributes: {
-          text: item.text
-        }
-      })
+    Timing.transaction do
+      srt.each do |item|
+        Timing.create!({
+          repository_id: self.id,
+          start_time: item.start_time,
+          end_time: item.end_time,
+          subtitle_attributes: {
+            text: item.text
+          }
+        })
+      end
     end
   end
 
