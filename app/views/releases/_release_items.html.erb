@@ -1,6 +1,6 @@
 
 <ul class="release_items_container col-xs-9 col-xs-offset-2">
-  <% @release.release_items.each do |item| %>
+  <% @release.release_items.order("position").each do |item| %>
     <% repo = item.repository %>
     <% video = repo.video %>
     <li class='release_item'>
