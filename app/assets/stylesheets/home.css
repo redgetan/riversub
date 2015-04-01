@@ -2631,3 +2631,8 @@ div.field, div.actions {
   background-color: lightcoral;
   padding: 0px 4px;
 }
+
+.export_subtitle_container {
+  margin-top: 50px;
+  text-align: left;
+}

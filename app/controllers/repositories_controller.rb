@@ -129,6 +129,10 @@ class RepositoriesController < ApplicationController
     @repos = Repository.unpublished.recent
   end
 
+  def sync_to_youtube
+    
+  end
+
 
   def unvote
     if !(repo = find_repo)
