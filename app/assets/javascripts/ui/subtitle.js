@@ -218,7 +218,7 @@ river.ui.Subtitle = Backbone.View.extend({
   onSubTextAreaKeydown: function(event) {
     // avoids enter key from creating linebreaks in textarea
     if (event.which === 13) event.preventDefault();
-    Backbone.trigger("subtitlelinekeydown", this.model);
+    Backbone.trigger("subtitlelinekeydown", event);
   },
 
   onSubtitleTextKeyUp: function(event) {
