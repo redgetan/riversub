@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :fetch_youtube_owner_caption, :only => [:show]
+  #before_filter :fetch_youtube_owner_caption, :only => [:show]
   def show
     @user = User.find_by_username(params[:username])
 
@@ -10,6 +10,6 @@ class UsersController < ApplicationController
                     end
 
 
-      doc.css("entry")[0].css("content")[0].attributes["lang"].value
+      #doc.css("entry")[0].css("content")[0].attributes["lang"].value
   end
 end
