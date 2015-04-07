@@ -5,10 +5,6 @@ class Timing < ActiveRecord::Base
   attr_accessible :video_id, :start_time, :end_time, :subtitle_id, :client_id,
                   :subtitle_attributes, :repository_id
 
-  # used as an id to for client tracks to identify which server timing it maps to
-  # useful when doing bulk updates where more than 1 track is returned back to client
-  attr_accessor :client_id
-
   belongs_to :subtitle, :dependent => :destroy
   belongs_to :repository
 
@@ -50,7 +46,6 @@ class Timing < ActiveRecord::Base
   def serialize
     {
       :id => self.id,
-      :client_id => self.client_id,
       :start_time => self.start_time,
       :end_time => self.end_time,
       :subtitle => self.subtitle.serialize,

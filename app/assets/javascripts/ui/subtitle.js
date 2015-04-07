@@ -388,7 +388,15 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   closeEditor: function(options) {
-    this.$textInput.blur();
+    if (this.isEditorOpen()) {
+      this.$textInput.blur();
+    }
+  },
+
+  isEditorOpen: function() {
+    return this.$startTimeInput.is(":focus") || 
+      this.$endTimeInput.is(":focus") || 
+      this.$textInput.is(":focus");
   }
 
 });

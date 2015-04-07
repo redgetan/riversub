@@ -157,6 +157,13 @@ river.model.Track = Backbone.Model.extend({
 
   onTrackSuccess: function() {
     this.isDirty = false;
+
+    // newly created subtitle, id is set on track's attributes hash but 
+    // not yet on javascript's subtitle model's attributes hash 
+    // we manually set it
+    if (typeof this.subtitle.attributes.id === "undefined") {
+      this.subtitle.attributes.id = this.attributes.subtitle.id;
+    }
   },
 
   onAdd: function() {

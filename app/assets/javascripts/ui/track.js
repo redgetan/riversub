@@ -177,7 +177,9 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
   },
 
   closeEditor: function() {
-    this.$textDisplay.blur();
+    if (this.isEditorOpen()) {
+      this.$textDisplay.blur();
+    }
   },
 
   isEditorOpen: function() {
