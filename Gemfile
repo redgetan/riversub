@@ -41,7 +41,7 @@ group :development, :test do
   gem "factory_girl_rails", "~> 4.0"
   gem 'qunit-rails'
   gem 'view_inspect', "~> 0.3.8"
-  #gem "rbtrace", :path => "/Users/reg/ruby/rbtrace"
+  #gem "rbtrace">' :path => "/Users/reg/ruby/rbtrace"
 end
 
 # To use ActiveModel has_secure_password
@@ -58,7 +58,7 @@ gem 'meta-tags', :require => 'meta_tags'
 gem 'kaminari', '~> 0.16.1'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
-gem "omniauth-google-oauth2"
+gem "omniauth-google-oauth2", ">= 0.2.6"
 gem "font-awesome-rails"
 gem "cancan"
 gem "htmlentities"
@@ -66,6 +66,10 @@ gem 'acts_as_votable', '~> 0.10.0'
 gem 'acts_as_commentable_with_threading', '= 1.2.0'
 gem 'paper_trail', '= 3.0.7'
 gem 'rest-client'
+gem 'faraday', '~> 0.9'
+gem 'jwt', "~> 1.4.1"
+gem 'google-api-client', '=0.8.5'
+
 
 
 
