@@ -208,10 +208,11 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
-  OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development? 
+  Net::HTTP.class_eval { def verify_mode; OpenSSL::SSL::VERIFY_NONE ;end } if Rails.env.development? 
+  
   config.omniauth :facebook, "1465538213665903", "fe99cd7801bce59b120a6c0ddea48b09"
   config.omniauth :google_oauth2, "451571491990-l5cvsmjcva83v25vc0neptktsc0l3kb2.apps.googleusercontent.com", "m6dJwYtiqJJB-txcu35y5V8g",  
-    scope: "userinfo.profile, userinfo.email, http://gdata.youtube.com"
+    scope: "userinfo.profile, userinfo.email, https://www.googleapis.com/auth/youtube.force-ssl"
 
 
   # ==> Warden configuration

@@ -7,17 +7,19 @@ module SubtitleParser
   # keys are (:start_time, :end_time, :text)
   #
   def self.parse_srt(text, filename = "")
-    lines = text.split("\n")
+    lines = text.split(/\n{2}/).map { |section| 
+      rows = section.strip.split("\n") 
+      3.times.each_with_index.map { |item,index| rows[index].to_s }
+    }.flatten
 
     sequence_nth_entry = 0  # 1
     timing_nth_entry   = 1  # 00:00:07,619 --> 00:00:11,619
     text_nth_entry     = 2  # hello world
-    blank_nth_entry    = 3  #
 
     result = []
 
     lines.each_with_index do |line, index|
-      entry_type = index % 4
+      entry_type = index % 3
 
       case entry_type
       when sequence_nth_entry
@@ -36,8 +38,6 @@ module SubtitleParser
         end
       when text_nth_entry
         result.last[:text] = line
-      when blank_nth_entry
-        catch_blank_error(line, index, filename) 
       end
     end
 
@@ -45,7 +45,7 @@ module SubtitleParser
   end
 
   def self.catch_sequence_number_error(line, index, filename, &block) 
-    entry_no   = (index / 4) + 1
+    entry_no   = (index / 3) + 1
 
     if line.to_i != entry_no
       raise InvalidFormatError.new("Error at line #{index + 1} of #{filename}. Wrong sequence number #{line}.")  

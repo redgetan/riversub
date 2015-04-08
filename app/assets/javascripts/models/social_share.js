@@ -15,17 +15,17 @@ river.model.SocialShare = {
     });
 
     // Facebook Shares Count
-    $.ajax({
-      url: "https://graph.facebook.com/?id=" + url,
-      type: "GET",
-      dataType: "jsonp",
-      success: function(data) {
-        if (data.shares > 0) {
-          $(".facebook_count").text(data.shares); 
-          $(".facebook_count").addClass("positive");
-        }
-      }
-    });
+    // $.ajax({
+    //   url: "https://graph.facebook.com/?id=" + url,
+    //   type: "GET",
+    //   dataType: "jsonp",
+    //   success: function(data) {
+    //     if (data.shares > 0) {
+    //       $(".facebook_count").text(data.shares); 
+    //       $(".facebook_count").addClass("positive");
+    //     }
+    //   }
+    // });
 
   }
 }

@@ -35,12 +35,17 @@ class Timing < ActiveRecord::Base
     self.repository.timings.each do |track|
       if self != track && track.start_time <= self.start_time && self.start_time < track.end_time
         tracks << track
+        tracks << self
       end
     end
 
     if tracks.length != 0
-      errors.add(:end_time, "track overlap detected at #{tracks}")
+      errors.add(:end_time, "track overlap detected between #{tracks.join(" and ")} ")
     end
+  end
+
+  def to_s
+    "Track(#{self.start_time},#{self.end_time})"  
   end
 
   def serialize

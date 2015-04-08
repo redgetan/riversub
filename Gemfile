@@ -65,6 +65,7 @@ gem "htmlentities"
 gem 'acts_as_votable', '~> 0.10.0'
 gem 'acts_as_commentable_with_threading', '= 1.2.0'
 gem 'paper_trail', '= 3.0.7'
+gem 'rest-client'
 
 
 

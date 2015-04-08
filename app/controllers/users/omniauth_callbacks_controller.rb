@@ -4,6 +4,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     auth = request.env['omniauth.auth']
     @identity = Identity.find_or_create_with_omniauth!(auth)
+    session['access_token'] = request.env["omniauth.auth"]["credentials"]["token"]
     sign_in_and_redirect @identity.user, event: :authentication
   end
 
