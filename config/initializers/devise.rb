@@ -212,7 +212,8 @@ Devise.setup do |config|
   
   config.omniauth :facebook, "1465538213665903", "fe99cd7801bce59b120a6c0ddea48b09"
   config.omniauth :google_oauth2, "451571491990-l5cvsmjcva83v25vc0neptktsc0l3kb2.apps.googleusercontent.com", "m6dJwYtiqJJB-txcu35y5V8g",  
-    scope: "https://www.googleapis.com/auth/youtube"
+    scope: "userinfo.email"
+  #https://www.googleapis.com/auth/youtube
 
 
   # ==> Warden configuration

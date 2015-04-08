@@ -2640,3 +2640,7 @@ div.field, div.actions {
 ul.uploaded_items {
   list-style: none;
 }
+
+form.new_user #user_login {
+  margin-bottom: 10px;
+}

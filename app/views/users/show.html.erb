@@ -2,9 +2,10 @@
 
 <div class='header-section col-xs-12'></div>
 <div class='container '>
-    <% if @uploaded_items %>
+    <% if @user_public_uploads %>
+      <%= @access_token %>
       <ul class='uploaded_items'>
-        <% @uploaded_items["items"].each do |playlist_item| %>
+        <% @user_public_uploads.each do |playlist_item| %>
           <li class='row'>
             <div class='col-md-3'><%= image_tag playlist_item["snippet"]["thumbnails"]["default"]["url"] %></div>
             <div class='col-md-3'><%= playlist_item["snippet"]["title"] %></div>
