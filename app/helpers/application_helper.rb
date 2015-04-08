@@ -7,14 +7,14 @@ module ApplicationHelper
   end
 
   def user_facing_provider_name(provider)
-    return :google if provider == :google_oauth2
+    return :Youtube if provider == :google_oauth2
     provider
   end
 
   def font_awesome_provider_name(provider)
     case provider
     when :google_oauth2
-      "google-plus"
+      "youtube"
     when :facebook
       "facebook-square"
     else
