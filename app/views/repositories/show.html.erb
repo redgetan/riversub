@@ -24,6 +24,11 @@
         <%= render 'videos/social_share' %>
         <%= render 'videos/player_editor' %>
       <% end %>
+      <br>
+      <div class="original_video">
+        <span class="original_video_source_label">Source:</span>
+        <%= link_to "via Youtube", @repo.video.source_url %>
+      </div>
       <% if @repo %>
         <%= render 'videos/player_comments' %>
       <% end %>

@@ -46,12 +46,12 @@ River::Application.configure do
   config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
   config.action_mailer.raise_delivery_errors = false
 
-  Mail::SMTP.class_eval do
-    alias_method :orig_initialize, :initialize
-    def initialize(values)
-      orig_initialize(values)
-      self.settings[:port] = 1025
-    end
-  end
+  # Mail::SMTP.class_eval do
+  #   alias_method :orig_initialize, :initialize
+  #   def initialize(values)
+  #     orig_initialize(values)
+  #     self.settings[:port] = 1025
+  #   end
+  # end
 
 end

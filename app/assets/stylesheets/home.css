@@ -1710,7 +1710,6 @@ form#request_beta_invite input[name='email'] {
 #comments_container {
   clear: both;
   text-align: left;
-  padding-top: 20px;
   margin-bottom: 50px;
 }
 
@@ -2644,3 +2643,21 @@ ul.uploaded_items {
 form.new_user #user_login {
   margin-bottom: 10px;
 }
+
+#river_player .original_video {
+  clear: both;  
+  text-align: left;
+  padding-top: 10px;
+}
+
+#river_player .original_video a {
+  border: solid 1px lightgray;
+  padding: 5px;
+  margin-right: 5px;
+  line-height: 30px;
+}
+
+.original_video_source_label {
+  margin-right: 5px;
+}
+
