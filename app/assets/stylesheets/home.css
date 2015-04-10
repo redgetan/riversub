@@ -2661,3 +2661,8 @@ form.new_user #user_login {
   margin-right: 5px;
 }
 
+.export_subtitle_container .youtube_sync_method, 
+.export_subtitle_container .download_upload_method {
+  padding-left: 20px;  
+}
+

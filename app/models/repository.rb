@@ -157,7 +157,7 @@ class Repository < ActiveRecord::Base
   end
 
   def subtitle_download_url
-    repository_timings_url(self)
+    repo_subtitle_download_url(self)
   end
 
   def original?

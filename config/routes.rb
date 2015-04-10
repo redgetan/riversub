@@ -75,6 +75,7 @@ River::Application.routes.draw do
 
     get "/:token",                        to: "repositories#show",   as: "repo"
     get "/r/:token",                        to: "repositories#show",   as: "repo"
+    get "/r/:token/download",               to: "timings#index",   as: "repo_subtitle_download"
     get "/r/:token/comments/:comment_short_id", to: "repositories#show", as: "repo_comment"
     post "/r/:token/publish",               to: "repositories#publish", as: "publish_repo"
     post "/r/:token/update_title",          to: "repositories#update_title", as: "update_repo_title"

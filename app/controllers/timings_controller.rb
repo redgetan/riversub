@@ -31,7 +31,7 @@ class TimingsController < ApplicationController
   end
 
   def get_repository
-    @repo = Repository.find_by_token! params[:repository_id]
+    @repo = Repository.find_by_token!(params[:repository_id] || params[:token])
   end
 
 end
