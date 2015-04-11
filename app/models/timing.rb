@@ -1,6 +1,6 @@
 class Timing < ActiveRecord::Base
 
-  has_paper_trail 
+  has_paper_trail
 
   attr_accessible :video_id, :start_time, :end_time, :subtitle_id, :client_id,
                   :subtitle_attributes, :repository_id
@@ -45,7 +45,7 @@ class Timing < ActiveRecord::Base
   end
 
   def to_s
-    "Track(#{self.start_time},#{self.end_time})"  
+    "Track(#{self.start_time},#{self.end_time})"
   end
 
   def serialize

@@ -63,8 +63,8 @@ class RepositoriesController < ApplicationController
                                                     user: current_user, 
                                                     language: @repo_language_code, 
                                                     subtitle_file: params[:subtitle_file])
-    rescue SubtitleParser::InvalidFormatError => e
-      flash[:error] = "Uploaded file is not in proper SubRip format. #{e.message}"
+    rescue SRT::File::InvalidError => e
+      flash[:error] = e.message
       redirect_to :back and return
     end
 
@@ -92,8 +92,8 @@ class RepositoriesController < ApplicationController
 
     begin
       @repo.create_timings_from_subtitle_file params[:subtitle_file]
-    rescue SubtitleParser::InvalidFormatError => e
-      flash[:error] = "Uploaded file is not in proper SubRip format. #{e.message}"
+    rescue SRT::File::InvalidError => e
+      flash[:error] = e.message
       redirect_to @repo.editor_upload_tab_url and return
     rescue ActiveRecord::RecordInvalid => e
       flash[:error] = e.message

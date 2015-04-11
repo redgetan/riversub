@@ -243,25 +243,39 @@ class Repository < ActiveRecord::Base
     [editor_url,"#upload_tab"].join
   end
 
+  class SRT::File::InvalidError < StandardError; end
+
   def create_timings_from_subtitle_file(uploaded_file)
-    text = uploaded_file.read
-    srt = SubtitleParser.parse_srt(text, uploaded_file.original_filename)
+    text = uploaded_file.read.force_encoding('UTF-8')
+    srt = SRT::File.parse(text)
+
+    raise SRT::File::InvalidError.new(format_srt_error(srt.errors)) if srt.errors.present?
 
     Timing.transaction do
       Timing.where(repository_id: self.id).delete_all
 
-      srt.each do |item|
-        Timing.create!({
+      srt.lines.each do |item|
+        timing = Timing.new({
           repository_id: self.id,
           start_time: item.start_time,
           end_time: item.end_time,
           subtitle_attributes: {
-            text: item.text
+            text: item.text.join
           }
         })
+
+        timing.save!(validate: false)
       end
     end
   end
+
+  def format_srt_error(srt_errors)
+    srt_errors.map do |error| 
+      index, msg, text =  error.split(",") 
+      "#{msg} at line #{index.to_i + 1}"
+    end.join(". ")
+  end
+
 
   def copy_timing_from!(other_repo)
     Timing.transaction do

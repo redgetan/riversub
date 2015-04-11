@@ -505,6 +505,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if (hash === "#upload_tab") {
       $("#main_controls").hide();
+      if ($("#flash_error").hasClass("alert")) {
+        $("#flash_container").appendTo("#download_container");  
+      }
     } else if (hash === "#timeline_tab") {
       this.prepareTimerTab();
     }
