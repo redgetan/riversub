@@ -147,12 +147,12 @@ river.model.Track = Backbone.Model.extend({
 
   overlapsPrev: function(time) {
     if (typeof this.prev() === "undefined") return false;
-    return time <= this.prev().endTime();
+    return time < this.prev().endTime();
   },
 
   overlapsNext: function(time) {
     if (typeof this.next() === "undefined") return false;
-    return time >= this.next().startTime();
+    return time > this.next().startTime();
   },
 
   onTrackSuccess: function() {

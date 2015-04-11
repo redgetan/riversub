@@ -29,6 +29,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$expandBtn.hide();
     this.enableHashTab();
 
+    // this will showinvalid timings
+    Backbone.trigger("trackchange", this.tracks.at(0));
+
   },
 
   enableHashTab: function() {
