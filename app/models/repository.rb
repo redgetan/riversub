@@ -248,7 +248,7 @@ class Repository < ActiveRecord::Base
     srt = SubtitleParser.parse_srt(text, uploaded_file.original_filename)
 
     Timing.transaction do
-      Timing.where(repository_id: self.id).delete_all;
+      Timing.where(repository_id: self.id).delete_all
 
       srt.each do |item|
         Timing.create!({
