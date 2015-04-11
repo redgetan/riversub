@@ -1,6 +1,14 @@
 <% set_meta_tags :site => 'Yasub', :title => "#{@repo.video.name}", :description => "Add/Edit Captions or Subtitles for a Youtube Video" %>
 
 <div id='editor_container' data-repo='<%= @repo.serialize.to_json %>'></div>
+<%= form_tag @repo.upload_subtitle_url, multipart: true, id: "upload_subtitle_form" do %>
+  <h4>Upload Subtitle</h4>
+  <p>Note that this will overwrite any existing work. The only subtitle format we allow is SubRip (file ends in .srt)</p>
+  <%= file_field_tag "subtitle_file" %>
+  <br>
+  <input class="btn btn-primary upload_subtitle_to_existing_repo_btn" type="submit" value="Submit">
+<% end %>
+
 
 <!-- Modal -->
 <div class="modal fade" id="keyboard_shortcuts_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

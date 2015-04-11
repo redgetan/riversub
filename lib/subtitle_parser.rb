@@ -33,6 +33,8 @@ module SubtitleParser
           start_time_seconds = parse_srt_time(start_time)
           end_time_seconds   = parse_srt_time(end_time)
 
+          validate_start_end_time(line, index, filename, start_time, end_time)
+
           result.last[:start_time] = start_time_seconds
           result.last[:end_time] = end_time_seconds
         end
@@ -42,6 +44,13 @@ module SubtitleParser
     end
 
     result
+  end
+
+  def self.validate_start_end_time(line, index, filename, start_time, end_time)
+    if end_time <= start_time
+      raise InvalidFormatError.new("Error at line #{index + 1} of #{filename}. " + 
+        "start_time #{self.start_time} is greater than or equal to end_time #{self.end_time}")
+    end
   end
 
   def self.catch_sequence_number_error(line, index, filename, &block) 

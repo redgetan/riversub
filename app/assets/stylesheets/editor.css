@@ -104,7 +104,7 @@ div#editor-bottom {
 #expanded.timeline {
 	cursor: cell;
 	height: 145px;
-	border: solid 1px lightgray ;
+	border-top: solid 1px gray ;
 	overflow: hidden;
 }
 
@@ -125,7 +125,7 @@ div#editor-bottom {
 #expanded #track_viewport {
 	height: 129px;
 	width: inherit;
-	border-bottom: solid 1px gray;
+	border-bottom: solid 1px lightgray;
 	position: relative;
 	overflow: hidden;
 }
@@ -241,6 +241,11 @@ div#editor-bottom {
   	/*padding: 10px;*/
 }
 
+#editor #subtitle_container {
+	border-top: solid 1px gray;
+	padding-top: 10px;
+}
+
 #subtitle_container #controls_extra {
 	margin-left: 0px;
   	padding: 10px;
@@ -248,10 +253,13 @@ div#editor-bottom {
 }
 
 #download_container {
-	height: 110px;
-	border: solid 1px lightgray;
-	line-height: 110px;
-	text-align: center;
+	height: 215px;
+	border-top: solid 1px gray;
+}
+
+#upload_subtitle_form {
+  margin-left: 250px;
+  margin-top: 50px;
 }
 
 #subtitle_list {
@@ -684,7 +692,7 @@ a.preview_btn {
 
 .add_sub_btn {
 	margin-left: 5px;
-	width: 55px;
+	width: 93px;
 	border-radius: 0px;
 	cursor: pointer;
 }
@@ -756,8 +764,6 @@ a.preview_btn {
 #timeline_scroller {
 	height: 15px;
 	border-bottom: solid 1px lightgray;
-	border-left: solid 1px lightgray;
-	border-right: solid 1px lightgray;
 }
 
 #timeline_scroller #scroller_handle {
@@ -909,5 +915,6 @@ textarea {
 	text-decoration: underline;
 }
 
-
-
+#editor .add_sub_input_label {
+	line-height: 30px;
+}

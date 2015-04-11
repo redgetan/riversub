@@ -72,6 +72,37 @@ class RepositoriesController < ApplicationController
     redirect_to @repo.editor_url
   end
 
+  def upload_to_existing_repo
+
+    @repo = Repository.find_by_token! params[:token]
+
+    unless can? :edit, @repo
+      flash[:error] = "You don't have permission to do that"
+      if user_signed_in?
+        redirect_to @repo.editor_url and return
+      else
+        redirect_to root_url and return
+      end
+    end
+
+    if params[:subtitle_file].blank?
+      flash[:error] = "Upload File can't be blank"
+      redirect_to @repo.editor_upload_tab_url and return
+    end
+
+    begin
+      @repo.create_timings_from_subtitle_file params[:subtitle_file]
+    rescue SubtitleParser::InvalidFormatError => e
+      flash[:error] = "Uploaded file is not in proper SubRip format. #{e.message}"
+      redirect_to @repo.editor_upload_tab_url and return
+    rescue ActiveRecord::RecordInvalid => e
+      flash[:error] = e.message
+      redirect_to @repo.editor_upload_tab_url and return
+    end
+
+    redirect_to @repo.editor_url
+  end
+
   def publish
     @repo = Repository.find_by_token! params[:token]
 

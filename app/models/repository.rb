@@ -235,11 +235,21 @@ class Repository < ActiveRecord::Base
     Language::CODES.map{|k,v| [v,k]}
   end
 
+  def upload_subtitle_url
+    upload_to_existing_repo_url(self)
+  end
+
+  def editor_upload_tab_url
+    [editor_url,"#upload_tab"].join
+  end
+
   def create_timings_from_subtitle_file(uploaded_file)
     text = uploaded_file.read
     srt = SubtitleParser.parse_srt(text, uploaded_file.original_filename)
 
     Timing.transaction do
+      Timing.where(repository_id: self.id).delete_all;
+
       srt.each do |item|
         Timing.create!({
           repository_id: self.id,

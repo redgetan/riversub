@@ -4,8 +4,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.timeline.setTracks(this.tracks);
 
-    $("#subtitle_tab_anchor a").tab("show");
-
     this.$fadeInBuffer = false;
     this.currentGhostTrack = null;
     this.isGhostTrackStarted = false;
@@ -261,28 +259,18 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTabShown: function (e) {
     if ($(e.target).attr("href") === "#timeline_tab") {
-      this.$addSubInput.hide();
-      this.$addSubBtn.hide();
-
+      this.prepareTimerTab();
       this.timeline.ensureCorrectWindowPosition();
-      $(".window_slider").show();
-      this.$startTimingBtn.show();
-      this.$askInputAfterTimingCheckbox.show();
     }
 
     if ($(e.target).attr("href") === "#subtitle_tab") {
-      this.$startTimingBtn.hide();
-      this.$stopTimingBtn.hide();
-      $(".window_slider").hide();
-      this.$askInputAfterTimingCheckbox.hide();
+      this.prepareSubtitleTab();
+    }
 
-      this.$addSubInput.show();
-      this.$addSubBtn.show();
-
-      if (this.intro._currentStep === 11) {
-        $(".introjs-nextbutton").removeClass("introjs-disabled");
-        $(".introjs-nextbutton").trigger("click");
-      }
+    if ($(e.target).attr("href") === "#upload_tab") {
+      $("#main_controls").hide();
+    } else {
+      $("#main_controls").show();
     }
 
     if (this.currentTrack && this.currentTrack.isGhost) {
@@ -335,9 +323,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                   // "</div> " +
                   "<div class=''> " +
                     "<ul class='nav nav-tabs'>" +
-                      "<li id='timeline_tab_anchor' class='active'><a href='#timeline_tab' data-toggle='tab'>Timeline</a></li>" +
+                      "<li id='timeline_tab_anchor' class='active'><a href='#timeline_tab' data-toggle='tab'>Timer</a></li>" +
                       "<li id='subtitle_tab_anchor' ><a href='#subtitle_tab' data-toggle='tab'>Subtitle</a></li>" +
-                      "<li id='download_tab_anchor' class='pull-right'><a href='#download_tab' data-toggle='tab'>Download</a></li>" +
+                      "<li id='download_tab_anchor' class='pull-right'><a href='#upload_tab' data-toggle='tab'>Upload</a></li>" +
                       // "<li><a id='help_btn' class='' href='#'><i class='icon-question-sign'></i></a></li>" +
                     "</ul>" +
                   "</div> " + // .span12
@@ -363,20 +351,20 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                             // "</span> " +
                         "</div> " +   // #subtitle_container
                       "</div>" +   // tab pane
-                      "<div class='tab-pane' id='download_tab'>" +
+                      "<div class='tab-pane' id='upload_tab'>" +
                         "<div id='download_container'> " +
-                          "<a id='download_btn' href='" + this.repo.subtitle_download_url + "'>" + this.repo.filename + "</a> " +
                         "</div> " +   // #subtitle_container
                       "</div>" +   // tab pane
                     "</div>" +     // tab content
 
                     "<div class='controls' class=''> " +
                       "<div id='main_controls' class='pull-left'> " +
-                        "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-time'></i></button> " +
-                        "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
+                        // "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-time'></i></button> " +
+                        // "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
                         "<button type='button' class='start_timing_btn river_btn'> <i class=''></i>Start</button> " +
                         "<button type='button' class='stop_timing_btn river_btn'> <i class='glyphicon glyphicon-stop'></i> Stop</button> " +
                         "<div class='checkbox ask_input_after_timing_checkbox'><label><input type='checkbox'>Ask input after timing</label></div>" +
+                        "<span class='add_sub_input_label'>Input: </span>" +
                         "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
                         "<button type='button' class='add_sub_btn river_btn'>Enter</a>" +
                       "</div> " +
@@ -496,12 +484,64 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$timelineBtn.tooltip({title: "Timer Mode"});
     this.$subtitleBtn.tooltip({title: "Subtitle Mode"});
 
+    // upload form
+    $("#upload_subtitle_form").appendTo("#download_container");
+
+    // http://stackoverflow.com/questions/12131273/twitter-bootstrap-tabs-url-doesnt-change
+    var hash = window.location.hash;
+
+    if (hash) {
+      $('ul.nav a[href="' + hash + '"]').tab('show');
+    } else {
+      $("#subtitle_tab_anchor a").tab("show");
+    }
+
+    $('.nav-tabs a').click(function (e) {
+      $(this).tab('show');
+      var scrollmem = $('body').scrollTop();
+      window.location.hash = this.hash;
+      $('html,body').scrollTop(scrollmem);
+    });
+
+    if (hash === "#upload_tab") {
+      $("#main_controls").hide();
+    } else if (hash === "#timeline_tab") {
+      this.prepareTimerTab();
+    }
 
     $("footer").hide();
-    $("#timeline_tab_anchor").hide();
-    $("#subtitle_tab_anchor").hide();
-    $("#download_tab_anchor").hide();
+    // $("#timeline_tab_anchor").hide();
+    // $("#subtitle_tab_anchor").hide();
+    // $("#download_tab_anchor").hide();
   },
+
+  prepareTimerTab: function() {
+    this.$addSubInput.hide();
+    this.$addSubBtn.hide();
+
+    $(".window_slider").show();
+    this.$startTimingBtn.show();
+    this.$askInputAfterTimingCheckbox.show();
+    $(".add_sub_input_label").hide();
+  },
+
+  prepareSubtitleTab: function() {
+    this.$startTimingBtn.hide();
+    this.$stopTimingBtn.hide();
+    $(".window_slider").hide();
+    this.$askInputAfterTimingCheckbox.hide();
+
+    this.$addSubInput.show();
+    this.$addSubBtn.show();
+
+    $(".add_sub_input_label").show();
+
+    if (this.intro._currentStep === 11) {
+      $(".introjs-nextbutton").removeClass("introjs-disabled");
+      $(".introjs-nextbutton").trigger("click");
+    }
+  },
+
 
   setupIntroJS: function() {
     this.intro.setOptions({
