@@ -27,7 +27,35 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
     this.$expandBtn.hide();
+    this.enableHashTab();
 
+  },
+
+  enableHashTab: function() {
+    // http://stackoverflow.com/questions/12131273/twitter-bootstrap-tabs-url-doesnt-change
+    var hash = window.location.hash;
+
+    if (hash) {
+      $('ul.nav a[href="' + hash + '"]').tab('show');
+    } else {
+      $("#subtitle_tab_anchor a").tab("show");
+    }
+
+    $('.nav-tabs a').click(function (e) {
+      $(this).tab('show');
+      var scrollmem = $('body').scrollTop();
+      window.location.hash = this.hash;
+      $('html,body').scrollTop(scrollmem);
+    });
+
+    if (hash === "#upload_tab") {
+      $("#main_controls").hide();
+      if ($("#flash_error").hasClass("alert")) {
+        $("#flash_container").appendTo("#download_container");  
+      }
+    } else if (hash === "#timeline_tab") {
+      this.prepareTimerTab();
+    }
   },
 
   seekDuration: function() {
@@ -486,31 +514,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     // upload form
     $("#upload_subtitle_form").appendTo("#download_container");
-
-    // http://stackoverflow.com/questions/12131273/twitter-bootstrap-tabs-url-doesnt-change
-    var hash = window.location.hash;
-
-    if (hash) {
-      $('ul.nav a[href="' + hash + '"]').tab('show');
-    } else {
-      $("#subtitle_tab_anchor a").tab("show");
-    }
-
-    $('.nav-tabs a').click(function (e) {
-      $(this).tab('show');
-      var scrollmem = $('body').scrollTop();
-      window.location.hash = this.hash;
-      $('html,body').scrollTop(scrollmem);
-    });
-
-    if (hash === "#upload_tab") {
-      $("#main_controls").hide();
-      if ($("#flash_error").hasClass("alert")) {
-        $("#flash_container").appendTo("#download_container");  
-      }
-    } else if (hash === "#timeline_tab") {
-      this.prepareTimerTab();
-    }
 
     $("footer").hide();
     // $("#timeline_tab_anchor").hide();

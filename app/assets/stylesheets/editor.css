@@ -19,9 +19,11 @@ text.time {
 }
 
 div#editor {
-	margin-top: 10px;
 	width: 940px;
 	margin: auto;
+}
+
+div#editor_container {
 }
 
 div#editor #repo_label {
@@ -682,7 +684,6 @@ a.preview_btn {
 	width: 940px;
 	height: 30px;
 	margin-bottom: 15px;
-	margin-top: 20px;
 	text-align: center;
 }
 
