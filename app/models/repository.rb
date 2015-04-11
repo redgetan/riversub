@@ -1,6 +1,6 @@
 class Repository < ActiveRecord::Base
 
-  has_paper_trail 
+  has_paper_trail
 
   include Rails.application.routes.url_helpers
   include ApplicationHelper
@@ -19,9 +19,11 @@ class Repository < ActiveRecord::Base
   belongs_to :group
   belongs_to :release_item
 
+  attr_accessor :current_user
+
   attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :language, :parent_repository_id, :title,
-                  :group_id, :release_item_id
+                  :group_id, :release_item_id, :current_user
 
   validates :video_id, :presence => true
   validates :token, :uniqueness => true, on: :create
@@ -42,9 +44,9 @@ class Repository < ActiveRecord::Base
   scope :unimported,            where("is_youtube_imported is false")
   scope :recent,                order("updated_at DESC")
 
-  scope :for_country, lambda { |country_code| 
+  scope :for_country, lambda { |country_code|
     language_code = Language.country_code_to_language_code(country_code)
-    joins(:video).where("videos.language = ?", language_code) 
+    joins(:video).where("videos.language = ?", language_code)
   }
 
   GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"
@@ -224,7 +226,7 @@ class Repository < ActiveRecord::Base
   end
 
   def self.create_from_subtitle_file!(params)
-    self.transaction do 
+    self.transaction do
       repo = self.create!(video: params.fetch(:video), user: params.fetch(:user), language: params.fetch(:language))
       repo.create_timings_from_subtitle_file(params.fetch(:subtitle_file))
       repo
@@ -270,8 +272,8 @@ class Repository < ActiveRecord::Base
   end
 
   def format_srt_error(srt_errors)
-    srt_errors.map do |error| 
-      index, msg, text =  error.split(",") 
+    srt_errors.map do |error|
+      index, msg, text =  error.split(",")
       "#{msg} at line #{index.to_i + 1}"
     end.join(". ")
   end
@@ -282,7 +284,7 @@ class Repository < ActiveRecord::Base
       self.update_attributes!(parent_repository_id: other_repo.id)
 
       other_repo.timings.map do |timing|
-        Timing.create!({
+        timing = Timing.new({
           repository_id: self.id,
           start_time: timing.start_time,
           end_time: timing.end_time,
@@ -291,21 +293,22 @@ class Repository < ActiveRecord::Base
             parent_text: timing.subtitle.text
           }
         })
+
+        timing.save!(validate: false)
       end
     end
   end
 
-  def setup_translation!
-    if source_repo = find_master_repo 
-      copy_timing_from!(source_repo) 
-    end
+  def setup_translation!(source_repo = nil)
+    source_repo ||= find_master_repo
+    copy_timing_from!(source_repo)
   end
 
   # for now, related repo that contains the most timing
   def find_master_repo
     self.video.published_repositories.sort do |repo, other_repo|
       repo.timings.length <=> other_repo.timings.length
-    end.first    
+    end.first
   end
 
   def user_avatar_thumb_url
@@ -366,7 +369,7 @@ class Repository < ActiveRecord::Base
 
   def owned_by?(target_user)
     if user
-      same_user?(target_user) || same_group?(target_user) || target_user.try(:is_super_admin?) 
+      same_user?(target_user) || same_group?(target_user) || target_user.try(:is_super_admin?)
     else
       true # anonymous repo belong to everyone
     end
@@ -382,15 +385,15 @@ class Repository < ActiveRecord::Base
   end
 
   def comments_tab_class
-    "" 
+    ""
   end
 
   def transcript_tab_class
-    "active" 
+    "active"
   end
 
   def visible_to_user?(target_user)
-    is_published || owned_by?(target_user) 
+    is_published || owned_by?(target_user)
   end
 
   def serialize
@@ -413,9 +416,30 @@ class Repository < ActiveRecord::Base
       :parent_repository_id => self.parent_repository_id,
       :is_published => self.is_published,
       :is_guided_walkthrough => self.guided_walkthrough?,
-      :group => self.group.try(:serialize), 
-      :release => self.release.try(:serialize)
+      :group => self.group.try(:serialize),
+      :release => self.release.try(:serialize),
+      :repository_languages => self.current_user_owned_repository_languages
     }
+  end
+
+  def current_user_owned_repository_languages
+    result = current_user_owned_repositories.map do |repo|
+      { url: repo.url, language: repo.language_pretty }
+    end
+
+    result << { url: new_translation_url, language: "-- New Translation --" }
+
+    result
+  end
+
+  def new_translation_url
+    "#{self.video.translate_repository_url}&source_repo_token=#{self.token}"
+  end
+
+  def current_user_owned_repositories
+    self.video.repositories.select do |repo|
+      repo.owned_by?(self.current_user)
+    end
   end
 
   def generate_token
@@ -432,7 +456,7 @@ class Repository < ActiveRecord::Base
   end
 
   def share_text
-    ["[#{language_pretty} Sub]",release_title[0..100]].join(" ")      
+    ["[#{language_pretty} Sub]",release_title[0..100]].join(" ")
   end
 
   def share_description
@@ -471,11 +495,11 @@ class Repository < ActiveRecord::Base
   end
 
   def formatted_duration
-    format_time video.duration.to_i 
+    format_time video.duration.to_i
   end
 
   def duration
-    video.duration  
+    video.duration
   end
 
   def mailchimp_html

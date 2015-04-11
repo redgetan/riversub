@@ -1,4 +1,14 @@
 $.extend(river.controller,{
+  "repositories#new": function() {
+    $("body").addClass("ricepaper");
+
+    $(".editor_language_select").select2();
+    $(".editor_language_select").on("change", function(){
+      var url = $(".editor_language_select").find("option:selected").data("url");
+      window.location.href = url;
+    });
+
+  },
   "repositories#show": function() {
     repo = $("#river_player").data("repo") ;
     $("#river_player").removeAttr("data-repo");

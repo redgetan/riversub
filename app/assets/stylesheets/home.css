@@ -386,7 +386,7 @@ div#subtitle_bar {
 }
 
 #editor .time_indicator {
-  top: -180px;  
+  top: -180px;
 }
 
 #river_player .time_indicator {
@@ -814,7 +814,7 @@ ul.social_login_buttons a {
 }
 
 .social_share_container a {
-  border: solid 1px lightgray; 
+  border: solid 1px lightgray;
   padding: 5px;
   margin-right: 5px;
   line-height: 30px;
@@ -2522,7 +2522,7 @@ iframe.fansubber_signup_form .ss-base-body {
 }
 
 .group_list .group_name a {
-  text-decoration: underline; 
+  text-decoration: underline;
 }
 
 form.new_release .field {
@@ -2645,7 +2645,7 @@ form.new_user #user_login {
 }
 
 #river_player .original_video {
-  clear: both;  
+  clear: both;
   text-align: left;
   padding-top: 10px;
 }
@@ -2661,20 +2661,20 @@ form.new_user #user_login {
   margin-right: 5px;
 }
 
-.export_subtitle_container .youtube_sync_method, 
+.export_subtitle_container .youtube_sync_method,
 .export_subtitle_container .download_upload_method {
-  padding-left: 20px;  
+  padding-left: 20px;
 }
 
 
-#editor .nav-tabs>.active>a, 
-#editor .nav-tabs>.active>a:hover, 
+#editor .nav-tabs>.active>a,
+#editor .nav-tabs>.active>a:hover,
 #editor .nav-tabs>.active>a:focus {
   border: solid 1px gray;
-  background: none;  
+  background: none;
 }
 
-#editor .nav > li > a:hover, 
+#editor .nav > li > a:hover,
 #editor .nav > li > a:focus {
   background-color: lightgray;
   border-bottom: lightgray;
@@ -2682,5 +2682,22 @@ form.new_user #user_login {
 
 
 .upload_subtitle_to_existing_repo_btn {
-  line-height: 14px;  
+  line-height: 14px;
 }
+
+body.ricepaper {
+  background-image: url("ricepaper_v3.png");
+}
+
+
+ul.source_repo_timing_list {
+  margin-top: 20px;
+  padding-left: 0px;
+}
+
+ul.source_repo_timing_list li {
+  list-style: none;
+  display: block;
+  height: 20px;
+}
+>>>>>>> fc90aec... editor language select

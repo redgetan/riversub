@@ -30,7 +30,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.enableHashTab();
 
     // this will showinvalid timings
-    Backbone.trigger("trackchange", this.tracks.at(0));
+    if (this.tracks.length > 0) {
+      Backbone.trigger("trackchange", this.tracks.at(0));
+    }
 
   },
 
@@ -160,6 +162,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$iframeOverlay.on("mouseleave",this.onIframeOverlayMouseLeave.bind(this));
     this.$subtitleDisplay.on("dblclick",this.onSubtitleDisplayDblClick.bind(this));
     this.$askInputAfterTimingCheckbox.on("click", this.onAskInputAfterTimingCheckbox.bind(this));
+    this.$editorLanguageSelect.on("select2:selecting", this.onEditorLanguageSelectSelecting.bind(this));
+    this.$editorLanguageSelect.on("change", this.onEditorLanguageSelectChange.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
@@ -371,15 +375,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<div class='tab-pane' id='subtitle_tab'>" +
                         "<div id='subtitle_container'> " +
                           "<div id='subtitle_list'></div> " +
-                            // "<div class='pull-left'> " +
-                            //   "<a id='add_subtitle_btn' class='btn'><i class='icon-plus'></i> Add</a> " +
-                            // "</div> " +
-                            // "<span class='pull-left '> " +
-                            //   "<select id='language_select' data-style='btn-inverse' class='selectpicker span2'>" +
-                            //     "<option>Portuguese</option>" +
-                            //     "<option>Japanese</option>" +
-                            //   "</select>" +
-                            // "</span> " +
                         "</div> " +   // #subtitle_container
                       "</div>" +   // tab pane
                       "<div class='tab-pane' id='upload_tab'>" +
@@ -392,12 +387,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<div id='main_controls' class='pull-left'> " +
                         // "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-time'></i></button> " +
                         // "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
-                        "<button type='button' class='start_timing_btn river_btn'> <i class=''></i>Start</button> " +
-                        "<button type='button' class='stop_timing_btn river_btn'> <i class='glyphicon glyphicon-stop'></i> Stop</button> " +
+                        "<button type='button' class='start_timing_btn river_btn pull-left'> <i class=''></i>Start</button> " +
+                        "<button type='button' class='stop_timing_btn river_btn  pull-left'> <i class='glyphicon glyphicon-stop'></i> Stop</button> " +
                         "<div class='checkbox ask_input_after_timing_checkbox'><label><input type='checkbox'>Ask input after timing</label></div>" +
                         "<span class='add_sub_input_label'>Input: </span>" +
                         "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
-                        "<button type='button' class='add_sub_btn river_btn'>Enter</a>" +
+                        // "<button type='button' class='add_sub_btn river_btn'>Add</a>" +
                       "</div> " +
                       "<a class='publish_btn river_btn pull-right'>Publish</a>" +
                       "<a class='preview_btn river_btn pull-right'><i class=''></i>Preview</a>" +
@@ -504,9 +499,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.$video_url = $("#video_url");
 
-    this.$language_select = $('#language_select');
-    this.$language_select.selectpicker();
-
     this.$keyboard_shortcuts = $("#keyboard-shortcuts");
     this.$status_bar = $("#status-bar");
 
@@ -518,10 +510,40 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // upload form
     $("#upload_subtitle_form").appendTo("#download_container");
 
+    this.setupLanguageSelect();
+
     $("footer").hide();
     // $("#timeline_tab_anchor").hide();
     // $("#subtitle_tab_anchor").hide();
     // $("#download_tab_anchor").hide();
+  },
+
+  setupLanguageSelect: function() {
+    var repo_language;
+    var selectedAttr;
+    var option;
+
+    var html = "<select class='editor_language_select' style='width: 150px;'>";
+
+    for (var i = 0; i < this.repo.repository_languages.length ; i++) {
+      repo_language = this.repo.repository_languages[i];
+      selectedAttr = (repo_language.url === this.repo.url) ? "selected" : "";
+      option = "<option data-url='" + repo_language.url + "' " + selectedAttr + " >" + repo_language.language + "</option>";
+      html += option;
+    }
+
+    html += "</select>";
+
+    $(".controls").append(html);
+
+    this.$editorLanguageSelect = $(".editor_language_select");
+    this.$editorLanguageSelect.select2();
+
+
+    // prevent selection from showing the focus highlight
+    $(".select2-selection--single").on("focus",function(){ 
+      $(".select2-selection--single").blur(); 
+    });
   },
 
   prepareTimerTab: function() {
@@ -718,7 +740,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     } else if (event.which >= 48 && event.which <= 90) {
       // alphanumeric
       
-      if (!this.$addSubInput.is(":focus") && !$(document.activeElement).hasClass("sub_text_area")) {
+      if (!this.$addSubInput.is(":focus") && 
+          !$(document.activeElement).hasClass("sub_text_area") &&
+          !$(document.activeElement).hasClass("select2-search__field")) {
         this.$addSubInput.focus();
       }
     }
@@ -1118,6 +1142,19 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var $target = $(event.target);
 
     this.openEditorAndHighlight(this.currentTrack);
+  },
+
+  onEditorLanguageSelectSelecting: function(event) {
+    if ($("#subtitle_list .subtitle.invalid").length > 0) {
+      alert("Please fix the timing overlap errors (highlighted in red) before proceeding");
+      event.preventDefault();
+      return;
+    }
+  },
+
+  onEditorLanguageSelectChange: function(event) {
+    var url = this.$editorLanguageSelect.find("option:selected").data("url");
+    window.location.href = url;
   },
 
   onAskInputAfterTimingCheckbox: function(event) {

@@ -13,7 +13,7 @@ text.time {
 }
 
 #subtitle_edit {
-	background-color: black;	
+	background-color: black;
 	color: white;
 	font-style: bold;
 }
@@ -32,12 +32,12 @@ div#editor #repo_label {
 	text-align: left;
 }
 
-div#editor #repo_owner, 
+div#editor #repo_owner,
 div#river_player #repo_owner {
 	color: gray;
 }
 
-div#editor #video_url, 
+div#editor #video_url,
 div#river_player #video_url {
 	/*float: left;*/
 	color: gray;
@@ -54,7 +54,6 @@ div#editor .controls input,
 div#editor .controls a,
 div#editor .controls span,
 div#editor .controls label {
-	float: left;
 }
 
 #timeline_tab .controls {
@@ -62,7 +61,7 @@ div#editor .controls label {
 }
 
 #timeline_tab #main_controls {
-	margin-top: 15px; 
+	margin-top: 15px;
 }
 
 div#editor .controls,
@@ -98,7 +97,7 @@ div#editor-bottom {
 }
 
 #editor #summary.timeline .track {
-	background-color: lightslategrey;	
+	background-color: lightslategrey;
 	cursor: pointer;
 	opacity: 0.4;
 }
@@ -161,7 +160,7 @@ div#editor-bottom {
 
 .track.ghost {
 	border: dotted 1px gray;
-	background-color: rgb(128, 164, 240); 
+	background-color: rgb(128, 164, 240);
 }
 
 .track {
@@ -210,7 +209,7 @@ div#editor-bottom {
 }
 
 .track .ui-resizable-handle {
-	z-index: 1 !important; 
+	z-index: 1 !important;
 }
 
 .track .track_text {
@@ -301,11 +300,11 @@ div#editor-bottom {
 }
 
 #editor #subtitle_list .subtitle.invalid {
-	background-color: lightcoral !important;	
+	background-color: lightcoral !important;
 }
 
 #editor .track.invalid {
-	background-color: lightcoral !important;	
+	background-color: lightcoral !important;
 }
 
 #editor #subtitle_list .subtitle.selected.invalid .sub_text_area,
@@ -314,7 +313,7 @@ div#editor-bottom {
 }
 
 .sub_enter {
-	display: none;	
+	display: none;
 	height: 20px;
 	vertical-align: inherit;
 	border: solid 1px #333;
@@ -322,7 +321,7 @@ div#editor-bottom {
 }
 
 #editor .subtitle.focused .sub_enter {
-	display: inline-block;	
+	display: inline-block;
 }
 
 .subtitle:hover .sub_text_area,
@@ -347,12 +346,12 @@ div#editor-bottom {
 
 #editor #subtitle_container .header {
 	height: 20px;
-	font-size: 14px; 
+	font-size: 14px;
 	margin-left: 10px;
 	/*border-bottom: solid 1px lightgray;*/
 }
 
-#editor #subtitle_container .hide_original_btn, 
+#editor #subtitle_container .hide_original_btn,
 #editor #subtitle_container .show_original_btn {
 	margin-left: 10px;
 }
@@ -361,7 +360,7 @@ div#editor-bottom {
 #editor #subtitle_container .header #end,
 #editor #subtitle_container .header #original,
 #editor #subtitle_container .header #header_text {
-	float: left;	
+	float: left;
 }
 
 #editor #subtitle_container #original,
@@ -426,7 +425,7 @@ div#editor-bottom {
 	background-color: lightgray;
 }
 
-#editor .subtitle.selected { 
+#editor .subtitle.selected {
 	/*background-color:  #AECBC8 !important; */
 	background-color:  rgb(193, 206, 219) !important;
 	color: black;
@@ -444,7 +443,7 @@ div#editor-bottom {
 
 .subtitle .start_time,
 .subtitle .end_time,
-.subtitle .text, 
+.subtitle .text,
 .subtitle .parent_text {
 	float: left;
 	display: block;
@@ -488,11 +487,17 @@ div#editor-bottom {
 #editor .subtitle {
 	min-height: 20px;
 	display: inline-block;
+	min-width: 800px;
 }
+
+#editor.translation .subtitle {
+	min-width: 100px;
+}
+
 
 .subtitle .text,
 .subtitle .parent_text {
-	font-size: 14px; 
+	font-size: 14px;
 	min-width: 350px;
 	min-height: 20px;
 	margin-bottom: 0px;
@@ -536,7 +541,7 @@ div#editor-bottom {
 
 .subtitle .delete a,
 .subtitle .delete a:hover {
-  text-decoration: none;  
+  text-decoration: none;
   font-size: 15px;
   color: white;
   background-color: gray;
@@ -574,7 +579,7 @@ div#time_float {
 }
 
 #editor div#seek_head {
-	cursor: hand; 
+	cursor: hand;
 	cursor: pointer;
 	width: 10px;
 	height: 20px;
@@ -618,7 +623,7 @@ div#keyboard-shortcuts {
 }
 
 /*#language_select {
-	width: 150px;	
+	width: 150px;
 }*/
 
 #editor-bottom .nav-tabs {
@@ -659,9 +664,9 @@ a.preview_btn {
 	margin-top: 2px;
 	margin-left: 10px;
 	margin-right: 10px;
-*/	
+*/
 	font-size: 16px;
-	width: 645px;
+	width: 620px;
 	height: 30px;
 	border-radius: 0px;
 	padding: 4px;
@@ -862,7 +867,7 @@ textarea {
 }
 
 #river_player .subtitle {
-	display: inline-table;	
+	display: inline-table;
 	width: inherit;
 	margin-right: 20px;
 }
@@ -876,12 +881,12 @@ textarea {
 	border: solid 1px #333;
 }
 
-.template_publish_preview_container .publish_btn, 
+.template_publish_preview_container .publish_btn,
 .template_publish_preview_container .preview_btn {
 	font-size: 16px;
 }
 
-.publish_preview_btn_group .publish_btn, 
+.publish_preview_btn_group .publish_btn,
 .publish_preview_btn_group .preview_btn {
 	margin-right: 5px;
 }
@@ -919,3 +924,32 @@ textarea {
 #editor .add_sub_input_label {
 	line-height: 30px;
 }
+
+.controls .select2-container {
+	margin-left: 5px;
+	margin-right: 5px;
+	float: right;
+}
+
+.controls .select2-selection {
+	height: 33px !important;
+}
+
+.controls .select2-selection__rendered {
+	line-height: 32px !important;
+}
+
+.select2-results__option {
+	font-size: 12px !important;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+/*  background-color: #ddd !important;
+  color: black !important;
+*/}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+/*  background-color: seagreen !important;
+  color: white !important;
+*/}
+>>>>>>> fc90aec... editor language select

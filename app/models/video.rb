@@ -4,7 +4,8 @@ class Video < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
 
-  attr_accessible :artist, :genre, :name, :metadata, :url, :language
+  attr_accessor :current_user
+  attr_accessible :artist, :genre, :name, :metadata, :url, :language, :current_user
 
   has_many :repositories
   has_many :users, :through => :repositories
@@ -69,6 +70,10 @@ class Video < ActiveRecord::Base
 
   def empty_repository?(target_user)
     !repositories.select { |repo| repo.visible_to_user?(target_user) }.present?
+  end
+
+  def repositories_visible_to_user(target_user)
+    repositories.select { |repo| repo.visible_to_user?(target_user) }
   end
 
   def title

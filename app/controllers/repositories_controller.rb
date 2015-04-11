@@ -9,8 +9,12 @@ class RepositoriesController < ApplicationController
     end
 
     @video = Video.find_by_token(params[:video_token])
+    @video.current_user = current_user
+
     @is_upload = params[:upload].present?
     @is_translate = params[:translate]
+
+    @source_repo = Repository.find_by_token! params[:source_repo_token] if params[:source_repo_token]
   end
 
   def show
@@ -37,7 +41,11 @@ class RepositoriesController < ApplicationController
     create_common
     @repo = Repository.create!(video: @video, user: current_user, language: @repo_language_code)
     @repo.update_column(:group_id, params[:group_id]) if params[:group_id].present?
-    @repo.setup_translation! if params[:translate].present?
+
+    if params[:translate].present?
+      source_repo = Repository.find_by_token params[:source_repo_token]
+      @repo.setup_translation!(source_repo) 
+    end
     redirect_to @repo.editor_url
   end
 
@@ -130,6 +138,7 @@ class RepositoriesController < ApplicationController
 
   def editor
     @repo = Repository.find_by_token! params[:token]
+    @repo.current_user = current_user
 
     unless can? :edit, @repo
       if user_signed_in?
