@@ -17,7 +17,7 @@ class VideosController < ApplicationController
                     :metadata => metadata,
                   })
 
-    render :json => { :redirect_url => @video.url }
+    render :json => { :redirect_url => @video.new_empty_repository_url }
   rescue ActiveRecord::RecordInvalid => e
     render :json => { :error => e.message }, :status => 403
   end

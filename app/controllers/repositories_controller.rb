@@ -12,8 +12,9 @@ class RepositoriesController < ApplicationController
     @video.current_user = current_user
 
     @is_upload = params[:upload].present?
+    @is_empty  = params[:empty].present?
 
-    unless @is_upload
+    unless @is_upload || @is_empty
       @source_repo = if params[:source_repo_token]
                        Repository.find_by_token! params[:source_repo_token] 
                      else
@@ -47,7 +48,7 @@ class RepositoriesController < ApplicationController
     @repo = Repository.create!(video: @video, user: current_user, language: @repo_language_code)
     @repo.update_column(:group_id, params[:group_id]) if params[:group_id].present?
 
-    if params[:source_repo_token]
+    if params[:source_repo_token].present?
       source_repo = Repository.find_by_token params[:source_repo_token]
       @repo.setup_translation!(source_repo) 
     end
