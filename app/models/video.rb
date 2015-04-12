@@ -93,7 +93,7 @@ class Video < ActiveRecord::Base
   end
 
   def translate_repository_url
-    video_repository_new_url(self) + "?translate=true"
+    video_repository_new_url(self) 
   end
 
   def published_repositories

@@ -1,19 +1,21 @@
-<div class="export_subtitle_container">
-  <b>How to make the subtitle available in the original video</b>
-  <br>
-  <p style="">If you are the owner of this video, you can make the subtitle show up in the original youtube video. There are two ways to do this, which is explained below.</p>
-  <br>
-  <b>Method 1: Youtube Sync</b>
-  <ol class="youtube_sync_method">
-    <li>If you own this video, we allow you to instantly link the subtitle to the original video</li>
-    <li>Try it now - <a class="btn btn-xs btn-danger export_subtitle_btn" href="">Sync to Youtube</a></li>
-  </ol>
-  
-  <br>
-  <b>Method 2: Download/Upload the subtitle file</b> 
-  <ol class="download_upload_method">
-    <li>You can also download the subtitle, which is in SubRip format (.srt file extension)</li>
-    <li>The subtitle file is available <a href="<%= @repo.subtitle_download_url %>">here</a></li>
-    <li>Afterwards, simply follow the instructions at <a href="https://support.google.com/youtube/answer/2734796?hl=en">Add subtitles and closed captions guide</a> from Youtube.</li>
-  </ol>
-</div>
+<% if @repo %>
+  <div class="export_subtitle_container">
+    <b>How to make the subtitle available in the original video</b>
+    <br>
+    <p style="">If you are the owner of this video, you can make the subtitle show up in the original youtube video. There are two ways to do this, which is explained below.</p>
+    <br>
+    <b>Method 1: Youtube Sync</b>
+    <ol class="youtube_sync_method">
+      <li>If you own this video, we allow you to instantly link the subtitle to the original video</li>
+      <li>Try it now - <a class="btn btn-xs btn-danger export_subtitle_btn" href="">Sync to Youtube</a></li>
+    </ol>
+    
+    <br>
+    <b>Method 2: Download/Upload the subtitle file</b> 
+    <ol class="download_upload_method">
+      <li>You can also download the subtitle, which is in SubRip format (.srt file extension)</li>
+      <li>The subtitle file is available <a href="<%= @repo.subtitle_download_url %>">here</a></li>
+      <li>Afterwards, simply follow the instructions at <a href="https://support.google.com/youtube/answer/2734796?hl=en">Add subtitles and closed captions guide</a> from Youtube.</li>
+    </ol>
+  </div>
+<% end %>

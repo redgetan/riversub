@@ -1,6 +1,6 @@
 <div id="repo_setup_form_list" class="col-md-6 col-md-offset-3">
   <ol >
-    <% if false && @video.language.blank? %>
+    <% if @video && @video.language.blank? %>
       <li>
         <h4>The Video is in</h4>
         <%= select_tag("video_language_code", options_for_select(Video.language_select_options)) %>
@@ -18,8 +18,7 @@
         <p>We currently only accept subtitles in the SubRip format (file ends in .srt)</p>
         <%= file_field_tag "subtitle_file" %>
       </li>
-    <% elsif @is_translate %>
-      <%= hidden_field_tag "translate", true %>
+    <% elsif @source_repo %>
       <li>
         <h4>Translate from this Subtitle</h4>
           <select name="source_repo_token" class='editor_language_select' style=''>
