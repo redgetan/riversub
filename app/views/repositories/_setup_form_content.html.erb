@@ -21,7 +21,7 @@
     <% elsif @source_repo %>
       <li>
         <h4>Translate from this Subtitle</h4>
-          <select name="source_repo_token" class='editor_language_select' style=''>
+          <select name="source_repo_token" class='editor_language_select' style='width: 150px;'>
             <% @video.repositories_visible_to_user(current_user).each do |repo| %>
               <option value="<%= repo.token %>" data-url="<%= repo.new_translation_url %>" <%= @source_repo == repo ? "selected" : "" %>>
                 <%= repo.language_pretty %>

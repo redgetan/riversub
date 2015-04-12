@@ -433,7 +433,7 @@ class Repository < ActiveRecord::Base
   end
 
   def new_translation_url
-    "#{self.video.translate_repository_url}&source_repo_token=#{self.token}"
+    "#{self.video.translate_repository_url}?source_repo_token=#{self.token}"
   end
 
   def current_user_owned_repositories
