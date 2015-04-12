@@ -14,6 +14,10 @@ river.ui.Subtitle = Backbone.View.extend({
     this.MAXLENGTH = 120;
     this.MAXWIDTH  = repo.parent_repository_id ? 300 : 650 ;
 
+    // http://stackoverflow.com/a/5926782
+    this.typingTimer;
+    this.doneTypingInterval = 1000;
+
     this.$container = $("#subtitle_list table");
     this.$el.data("model",this.model);
 
@@ -224,6 +228,9 @@ river.ui.Subtitle = Backbone.View.extend({
   onSubtitleTextKeyUp: function(event) {
     var text = this.$textInput.val();
     this.model.set({ "text": text});
+
+    clearTimeout(this.typingTimer);
+    this.typingTimer = setTimeout(this.editTextFinished.bind(this), this.doneTypingInterval);
   },
 
   isKeyAllowedInStartEnd: function(charcode) {
@@ -261,6 +268,7 @@ river.ui.Subtitle = Backbone.View.extend({
     if ($.isNumeric(time)) {
       this.model.track.setStartTime(time);
     }
+
   },
 
   subtitleEndTimeKeyUp: function(event) {
