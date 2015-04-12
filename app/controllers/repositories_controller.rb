@@ -156,6 +156,9 @@ class RepositoriesController < ApplicationController
       end
     end
 
+    # http://stackoverflow.com/a/14428894
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
+
     respond_to :html
   end
 
