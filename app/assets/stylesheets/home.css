@@ -1720,7 +1720,7 @@ form#request_beta_invite input[name='email'] {
 */
 
 .comments a {
-  color: #2562dc;
+  /*color: #2562dc;*/
   cursor: pointer;
 }
 
@@ -1840,10 +1840,10 @@ ol.stories li.story div.story_liner {
   padding-bottom: 0.4em;
 }
 
-.comment a {
+/*.comment a {
   color: #666;
 }
-
+*/
 ol.stories li:first-child div.story_liner {
   padding-top: 0.5em;
 }

@@ -55,7 +55,7 @@ class="comment <%= comment.comment_item_class_for(current_user) %>">
         </span>
         </p>
       <% else %>
-        <%= raw comment.body %>
+        <%= raw comment.markeddown_comment %>
       <% end %>
     </div>
   </div>

@@ -11,24 +11,25 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150317015035) do
+ActiveRecord::Schema.define(:version => 20150412190910) do
 
   create_table "comments", :force => true do |t|
-    t.integer  "commentable_id",                                    :default => 0
+    t.integer  "commentable_id",                                     :default => 0
     t.string   "commentable_type"
     t.string   "title"
     t.text     "body"
     t.string   "subject"
-    t.integer  "user_id",                                           :default => 0,     :null => false
+    t.integer  "user_id",                                            :default => 0,     :null => false
     t.integer  "parent_comment_id"
     t.integer  "lft"
     t.integer  "rgt"
-    t.datetime "created_at",                                                           :null => false
-    t.datetime "updated_at",                                                           :null => false
-    t.boolean  "is_deleted",                                        :default => false
-    t.decimal  "confidence",        :precision => 20, :scale => 19, :default => 0.0,   :null => false
+    t.datetime "created_at",                                                            :null => false
+    t.datetime "updated_at",                                                            :null => false
+    t.boolean  "is_deleted",                                         :default => false
+    t.decimal  "confidence",         :precision => 20, :scale => 19, :default => 0.0,   :null => false
     t.string   "short_id"
-    t.boolean  "is_moderated",                                      :default => false
+    t.boolean  "is_moderated",                                       :default => false
+    t.text     "markeddown_comment"
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"

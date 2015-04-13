@@ -14,7 +14,7 @@ class Comment < ActiveRecord::Base
   validates :body, :presence => true
   validates :user, :presence => true
 
-  attr_accessible :commentable, :body, :user_id
+  attr_accessible :commentable, :body, :user_id, :comment
 
   attr_accessor :highlighted, :indent_level
 
@@ -45,7 +45,7 @@ class Comment < ActiveRecord::Base
   def self.build_from(obj, user_id, comment)
     new \
       :commentable => obj,
-      :body        => comment,
+      :comment     => comment,
       :user_id     => user_id
   end
 
@@ -137,8 +137,24 @@ class Comment < ActiveRecord::Base
   end
 
   def token;          self.short_id     ; end
-  def comment;        self.body         ; end
-  def comment=(text); self.body = text  ; end
+
+
+  # def comment;        self.body         ; end
+  # def comment=(text); self.body = text  ; end
+
+  def comment
+    self.markeddown_comment
+  end
+
+  def comment=(com)
+    self.body = com.to_s.rstrip
+    self.markeddown_comment = self.generated_markeddown_comment
+  end
+
+  def generated_markeddown_comment
+    Markdowner.to_html(self.body)
+  end
+
 
   def is_moderated?
     false # hardcode it to false for now since we dont support moderation  

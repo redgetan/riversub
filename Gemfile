@@ -71,6 +71,7 @@ gem 'jwt', "~> 1.4.1"
 gem 'google-api-client', '=0.8.5'
 
 gem 'srt'
+gem "rdiscount"
 
 
 
