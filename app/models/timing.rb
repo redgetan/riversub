@@ -10,8 +10,8 @@ class Timing < ActiveRecord::Base
 
   validates :start_time, :end_time, :subtitle, :presence => true
 
-  validate :end_time_must_be_greater_than_start_time
-  validate :no_track_overlap
+  # validate :end_time_must_be_greater_than_start_time
+  # validate :no_track_overlap
 
   accepts_nested_attributes_for :subtitle
 
