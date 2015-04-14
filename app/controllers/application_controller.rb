@@ -37,4 +37,14 @@ class ApplicationController < ActionController::Base
     session[:forwarding_url] || user_url(user)
   end
 
+  def require_logged_in_user
+    if current_user
+      true
+    else
+      store_location if request.get?
+      redirect_to login_url
+    end
+  end
+
+
 end

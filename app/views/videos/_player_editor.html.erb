@@ -1,3 +1,7 @@
 <% if can?(:edit, @repo) %>
   <a href="<%= @repo.editor_url %>" class="repo_open_editor_btn pull-right btn btn-danger btn-sm">Open Editor</a>
 <% end %>
+
+<% if user_signed_in? %>
+  <a href="<%= @repo.favorite_url %>" class="repo_favorite_btn pull-right"><i class="glyphicon glyphicon-heart-empty"></i></a>
+<% end %>
