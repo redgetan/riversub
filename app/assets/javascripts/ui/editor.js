@@ -212,6 +212,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     } else {
       this.seek(time);
     }
+    this.closeAllEditors();
   },
 
   normalizeTime: function(time) {
@@ -1107,7 +1108,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onIframeOverlayClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
-    this.closeAllEditors();
     this.togglePlayPause();
   },
 
@@ -1180,7 +1180,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onPlayBtnClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
-    this.closeAllEditors();
     this.play();
   },
 
