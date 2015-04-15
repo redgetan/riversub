@@ -2744,6 +2744,7 @@ ul.source_repo_timing_list li {
 
 .subtitle_favorite_btn {
   cursor: pointer;
+  display: none;
 }
 
 .subtitle.negative .subtitle_favorite_btn {
