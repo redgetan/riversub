@@ -443,7 +443,7 @@ class Repository < ActiveRecord::Base
 
   def current_user_owned_repository_languages
     result = current_user_owned_repositories.map do |repo|
-      { url: repo.url, language: repo.language_pretty }
+      { url: repo.editor_url, language: repo.language_pretty }
     end
 
     result << { url: new_translation_url, language: "-- New Translation --" }
