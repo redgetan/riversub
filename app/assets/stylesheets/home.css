@@ -2747,8 +2747,8 @@ ul.source_repo_timing_list li {
   display: none;
 }
 
-.subtitle.negative .subtitle_favorite_btn {
-  display: none;
+.subtitle.positive .subtitle_favorite_btn {
+  display: block;
 }
 
 .subtitle.upvoted .subtitle_favorite_btn {
