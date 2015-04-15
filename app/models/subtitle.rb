@@ -5,14 +5,14 @@ class Subtitle < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
 
-  attr_accessible :text, :parent_text, :highlighted, :score, :short_id, :subtitle_item_class_for
+  attr_accessible :text, :parent_text, :highlighted, :score, :short_id, :subtitle_item_class_for, :repository_id
 
   has_one    :timing
   belongs_to :repository
 
   before_save :strip_crlf_text
 
-  before_validation :on => :create do
+  after_create do
     self.assign_short_id
   end
 
@@ -30,11 +30,13 @@ class Subtitle < ActiveRecord::Base
 
   def generate_token
     unless self.token
-      self.token = loop do
+      token = loop do
         random_token = SecureRandom.urlsafe_base64(15)
         break random_token unless self.class.where(token: random_token).exists?
       end
     end
+
+    self.update_column(:token, token)
   end
 
   def short_id

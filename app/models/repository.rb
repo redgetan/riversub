@@ -267,7 +267,8 @@ class Repository < ActiveRecord::Base
           start_time: item.start_time,
           end_time: item.end_time,
           subtitle_attributes: {
-            text: item.text.join
+            text: item.text.join,
+            repository_id: self.id
           }
         })
 
@@ -295,7 +296,8 @@ class Repository < ActiveRecord::Base
           end_time: timing.end_time,
           subtitle_attributes: {
             text: "",
-            parent_text: timing.subtitle.text
+            parent_text: timing.subtitle.text,
+            repository_id: self.id
           }
         })
 
