@@ -136,6 +136,11 @@ class User < ActiveRecord::Base
     true
   end
 
+  def video_bookmarks
+    self.votes.where(votable_type: "Repository").map(&:votable)
+  end
+
+
   def to_param
     self.username  
   end

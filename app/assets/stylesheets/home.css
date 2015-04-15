@@ -446,7 +446,6 @@ div#edit_user_sidebar li i{
 }
 
 div#user_profile #user_details {
-  border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
   padding: 10px 0;
   margin: 10px 0;
@@ -2718,3 +2717,20 @@ ul.source_repo_timing_list li {
   margin-left: 5px;
 }
 
+#user_repository_bookmarks .videos,
+#user_repositories .videos {
+  margin-top: 10px;
+}
+
+#user_profile {
+  text-align: center;
+}
+
+#user_profile #avatar {
+  width: 100px;
+  margin: auto;
+}
+
+.repository.upvoted .repo_favorite_btn i {
+  color: lightcoral;
+}

@@ -2,7 +2,7 @@
   <a href="<%= @repo.editor_url %>" class="repo_open_editor_btn pull-right btn btn-danger btn-sm">Open Editor</a>
 <% end %>
 
-<div class='repository favorite_container pull-right' data-shortid="<%= @repo.short_id %>">
+<div class='repository favorite_container pull-right <%= @repo.repo_item_class_for(current_user) %>' data-shortid="<%= @repo.short_id %>">
   <a class="repo_favorite_btn pull-right">
     <i class="glyphicon glyphicon-heart"></i> 
     <div class="score pull-right"><%= @repo.score > 0 ? @repo.score : "Favorite" %></div>

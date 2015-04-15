@@ -528,7 +528,6 @@ class Repository < ActiveRecord::Base
     html.gsub("\n","")
   end
 
-
   def to_param
     self.token
   end
