@@ -59,13 +59,13 @@ class Subtitle < ActiveRecord::Base
 
     return css_class unless user
 
-    css_class = if user.liked?(self)
-                  "upvoted"
-                elsif user.disliked?(self)
-                  "downvoted"
-                else
-                  ""
-                end
+    css_class += if user.liked?(self)
+                   " upvoted"
+                 elsif user.disliked?(self)
+                   " downvoted"
+                 else
+                   ""
+                 end
 
 
     css_class
