@@ -61,6 +61,14 @@ River::Application.routes.draw do
       end
     end
 
+    resources :subtitles, :only => [] do
+      member do
+        post "upvote"
+        post "downvote"
+        post "unvote"
+      end
+    end
+
     resources :comments do
       member do
         get "reply"
@@ -78,6 +86,7 @@ River::Application.routes.draw do
     get "/r/:token",                        to: "repositories#show",   as: "repo"
     get "/r/:token/download",               to: "timings#index",   as: "repo_subtitle_download"
     get "/r/:token/comments/:comment_short_id", to: "repositories#show", as: "repo_comment"
+    get "/r/:token/subtitles/:subtitle_short_id", to: "repositories#show", as: "repo_subtitle"
     post "/r/:token/publish",               to: "repositories#publish", as: "publish_repo"
     post "/r/:token/update_title",          to: "repositories#update_title", as: "update_repo_title"
     post "/r/:token/fork",                  to: "repositories#fork",   as: "fork_repo"

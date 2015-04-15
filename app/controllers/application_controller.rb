@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  around_filter :add_current_user_to_models
+
+
   #before_filter :authenticate_user!
   rescue_from ActiveRecord::RecordNotFound, :with => :render_404
 
@@ -43,6 +46,19 @@ class ApplicationController < ActionController::Base
     else
       store_location if request.get?
       redirect_to login_url
+    end
+  end
+
+  def add_current_user_to_models
+    klasses = [ActiveRecord::Base, ActiveRecord::Base.class]
+    klasses.each do |k|
+      user = current_user
+
+      k.send(:define_method, 'current_user', proc { user } )
+    end    
+    yield
+    klasses.each do |k|
+      k.send :remove_method, 'current_user'
     end
   end
 

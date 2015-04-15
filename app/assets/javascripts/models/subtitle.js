@@ -37,6 +37,10 @@ river.model.Subtitle = Backbone.Model.extend({
     return this.get("text");
   },
 
+  score: function() {
+    return this.get("score");
+  },
+
   highlight: function() {
     if (!this.options.view_enabled) return;  
 

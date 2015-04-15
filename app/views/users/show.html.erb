@@ -84,6 +84,24 @@
         </div>
       </div>
 
+      <div id='user_line_favorites' class='col-xs-8  col-xs-offset-2'>
+        <div class='row'>
+          <h3 class='pull-left'>Line Favorites</h3>
+        </div>
+        <div class='row'>
+          <div class='videos'>
+            <ol>
+              <% @user.line_favorites.each do |subtitle| %>
+                <li>
+                  <span><a href="<%= subtitle.url %>"><%= subtitle.text %></a></span>
+                  <span class='pull-right'><%= subtitle.repository.title %></span>
+                </li>
+              <% end %>
+            </ol>
+          </div>
+        </div>
+      </div>
+
       <div id='user_repositories' class='col-xs-8  col-xs-offset-2'>
         <div class='row'>
           <h3 class='pull-left'>Subtitles</h3>

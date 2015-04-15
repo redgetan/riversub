@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150412190910) do
+ActiveRecord::Schema.define(:version => 20150415024150) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",                                     :default => 0
@@ -108,10 +108,14 @@ ActiveRecord::Schema.define(:version => 20150412190910) do
 
   create_table "subtitles", :force => true do |t|
     t.string   "text"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "parent_text"
+    t.string   "token"
+    t.integer  "repository_id"
   end
+
+  add_index "subtitles", ["repository_id"], :name => "index_subtitles_on_repository_id"
 
   create_table "timings", :force => true do |t|
     t.integer  "repository_id", :null => false

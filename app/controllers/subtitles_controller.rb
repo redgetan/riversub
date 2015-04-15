@@ -31,4 +31,55 @@ class SubtitlesController < ApplicationController
     end
     render :json => {}, :status => 200
   end
+
+  def unvote
+    if !(repo = find_subtitle)
+      return render :text => "can't find repo", :status => 400
+    end
+
+    repo.unvote_by current_user
+
+    render :text => "ok"
+  end
+
+  def upvote
+    if !(repo = find_subtitle)
+      return render :text => "can't find repo", :status => 400
+    end
+
+    unless current_user
+      store_location(repo.url)
+      render :text => new_user_session_url, :status => 401 and return
+    end
+
+    repo.liked_by current_user
+
+    render :text => "ok"
+  end
+
+  def downvote
+    if !(repo = find_subtitle)
+      return render :text => "can't find repo", :status => 400
+    end
+
+    unless current_user
+      store_location(repo.url)
+      render :text => new_user_session_url, :status => 401 and return
+    end
+
+    if !current_user.can_downvote?(repo)
+      return render :text => "not permitted to downvote", :status => 400
+    end
+
+    repo.disliked_by current_user
+
+    render :text => "ok"
+  end
+
+  private
+
+    def find_subtitle
+      Subtitle.where(:token => params[:id]).first
+    end
+
 end

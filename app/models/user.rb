@@ -140,6 +140,9 @@ class User < ActiveRecord::Base
     self.votes.where(votable_type: "Repository").map(&:votable)
   end
 
+  def line_favorites
+    self.votes.where(votable_type: "Subtitle").map(&:votable)
+  end
 
   def to_param
     self.username  

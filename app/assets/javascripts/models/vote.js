@@ -12,6 +12,10 @@ river.model.Vote = {
     river.model.Vote.vote("repositories", voterEl, 1);
   },
 
+  upvoteSubtitle: function(voterEl) {
+    river.model.Vote.vote("subtitles", voterEl, 1);
+  },
+
   downvoteRepository: function(voterEl) {
     river.model.Vote.vote("repositories", voterEl, -1);
   },
@@ -20,7 +24,7 @@ river.model.Vote = {
     // if (!Lobsters.curUser)
     //   return Lobsters.bounceToLogin();
 
-    var li = $(voterEl).closest(".repository, .comment");
+    var li = $(voterEl).closest(".repository, .comment, .subtitle");
     var scoreDiv = li.find("div.score").get(0);
     var score = parseInt(scoreDiv.innerHTML);
     if (isNaN(score)) score = 0;
@@ -65,7 +69,7 @@ river.model.Vote = {
         li.find(".flagger").text("flag");
     }
 
-    var url = "/" + thingType + "/" + li.attr("data-shortid") + "/" + action;
+    var url = "/" + thingType + "/" + li.data("shortid") + "/" + action;
     
     $.ajax({
       type: "POST",

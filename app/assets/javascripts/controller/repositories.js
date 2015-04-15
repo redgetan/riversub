@@ -37,6 +37,10 @@ $.extend(river.controller,{
       river.model.Vote.upvoteRepository(this);
     });
 
+    $(".subtitle a.subtitle_favorite_btn").click(function() {
+      river.model.Vote.upvoteSubtitle(this);
+    });
+
     // $(".repository a.downvoter").click(function() {
     //   river.model.Vote.downvoteRepository(this);
     // });

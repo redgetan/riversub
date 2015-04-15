@@ -7,6 +7,14 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.hideEditing();
     this.postBindEvents();
 
+    if (repo.highlight_subtitle_short_id) {
+      var subtitle = this.subtitles.filter(function(subtitle){ 
+        return subtitle.get("short_id") === repo.highlight_subtitle_short_id; 
+      })[0];
+
+      this.seek(subtitle.track.startTime());
+    }
+
     this.$el = $("#river_player");
 
   },

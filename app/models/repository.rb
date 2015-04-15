@@ -19,11 +19,12 @@ class Repository < ActiveRecord::Base
   belongs_to :group
   belongs_to :release_item
 
-  attr_accessor :current_user
+  attr_accessor :current_user, :highlight_subtitle_short_id
 
   attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :language, :parent_repository_id, :title,
-                  :group_id, :release_item_id, :current_user
+                  :group_id, :release_item_id, :current_user,
+                  :highlight_subtitle_short_id
 
   validates :video_id, :presence => true
   validates :token, :uniqueness => true, on: :create
@@ -406,7 +407,7 @@ class Repository < ActiveRecord::Base
       :video => self.video.serialize,
       :filename => self.filename,
       :user => self.user.try(:serialize),
-      :timings => self.timings.map(&:serialize),
+      :timings => self.timings.map(&:serialize) ,
       :url => self.url,
       :title => self.title,
       :token => self.token,
@@ -422,7 +423,8 @@ class Repository < ActiveRecord::Base
       :is_guided_walkthrough => self.guided_walkthrough?,
       :group => self.group.try(:serialize),
       :release => self.release.try(:serialize),
-      :repository_languages => self.current_user_owned_repository_languages
+      :repository_languages => self.current_user_owned_repository_languages,
+      :highlight_subtitle_short_id => self.highlight_subtitle_short_id
     }
   end
 

@@ -1850,16 +1850,23 @@ li div.details {
   padding-top: 0.1em;
 }
 
-.negative {
+.comment.negative,
+.repository.negative {
   color: gray !important;
 }
-.negative_1 {
+
+.comment.negative_1,
+.repository.negative_1 {
   opacity: 0.7;
 }
-.negative_3 {
+
+.comment.negative_3,
+.repository.negative_3 {
   opacity: 0.5;
 }
-.negative_5 {
+
+.comment.negative_5,
+.repository.negative_5 {
   opacity: 0.2;
 }
 
@@ -2734,3 +2741,33 @@ ul.source_repo_timing_list li {
 .repository.upvoted .repo_favorite_btn i {
   color: lightcoral;
 }
+
+.subtitle_favorite_btn {
+  cursor: pointer;
+}
+
+.subtitle.negative .subtitle_favorite_btn {
+  display: none;
+}
+
+.subtitle.upvoted .subtitle_favorite_btn {
+  display: block;
+  color: lightcoral;
+}
+
+.subtitle.negative .subtitle_favorite_btn .score {
+  display: none;
+}
+
+.subtitle.upvoted .subtitle_favorite_btn .score {
+  display: block;
+}
+
+.subtitle_favorite_btn .score {
+  margin-right: 5px;
+}
+
+.subtitle:hover .subtitle_favorite_btn {
+  display: block;
+}
+
