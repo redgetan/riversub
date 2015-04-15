@@ -62,45 +62,49 @@
       <% if @youtube_owner %>
       <% end %>
 
-      <div id='user_repository_bookmarks' class='col-xs-8  col-xs-offset-2'>
-        <div class='row'>
-          <h3 class='pull-left'>Video Bookmarks</h3>
-        </div>
-        <div class='row'>
-          <div class='videos'>
-            <% @user.video_bookmarks.each do |repo| %>
-              <div class='col-xs-6 col-md-3'>
-                <div class='thumbnail'>
-                  <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                    <img src="<%= repo.thumbnail_url %>" alt="" >
-                  </a>
-                  <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                    <h6 class='video_name'><%= repo.video.name %></h6>
-                  </a>
+      <% if @user.video_bookmarks.present? %>
+        <div id='user_repository_bookmarks' class='col-xs-8  col-xs-offset-2'>
+          <div class='row'>
+            <h3 class='pull-left'>Video Bookmarks</h3>
+          </div>
+          <div class='row'>
+            <div class='videos'>
+              <% @user.video_bookmarks.each do |repo| %>
+                <div class='col-xs-6 col-md-3'>
+                  <div class='thumbnail'>
+                    <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                      <img src="<%= repo.thumbnail_url %>" alt="" >
+                    </a>
+                    <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                      <h6 class='video_name'><%= repo.video.name %></h6>
+                    </a>
+                  </div>
                 </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
-      <div id='user_line_favorites' class='col-xs-8  col-xs-offset-2'>
-        <div class='row'>
-          <h3 class='pull-left'>Line Favorites</h3>
-        </div>
-        <div class='row'>
-          <div class='videos'>
-            <ol>
-              <% @user.line_favorites.each do |subtitle| %>
-                <li>
-                  <span><a href="<%= subtitle.url %>"><%= subtitle.text %></a></span>
-                  <span class='pull-right'><%= subtitle.repository.title %></span>
-                </li>
               <% end %>
-            </ol>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
+
+      <% if @user.line_favorites.present? %>
+        <div id='user_line_favorites' class='col-xs-8  col-xs-offset-2'>
+          <div class='row'>
+            <h3 class='pull-left'>Line Favorites</h3>
+          </div>
+          <div class='row'>
+            <div class='videos'>
+              <ol>
+                <% @user.line_favorites.each do |subtitle| %>
+                  <li>
+                    <span><a href="<%= subtitle.url %>"><%= subtitle.text %></a></span>
+                    <span class='pull-right'><%= subtitle.repository.title %></span>
+                  </li>
+                <% end %>
+              </ol>
+            </div>
+          </div>
+        </div>
+      <% end %>
 
       <div id='user_repositories' class='col-xs-8  col-xs-offset-2'>
         <div class='row'>
