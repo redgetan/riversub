@@ -175,13 +175,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPreviewBtnClick: function(event) {
-    if (!this.alertTimingErrors()) {
+    if (!this.alertTimingErrors(event)) {
       window.location.href = this.repo.url;
     }
   },
 
   onPublishBtnClick: function(event) {
-    if (!this.alertTimingErrors()) {
+    if (!this.alertTimingErrors(event)) {
       this.publishRepo(event);
     }
   },
@@ -1149,10 +1149,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onEditorLanguageSelectSelecting: function(event) {
-    this.alertTimingErrors();
+    this.alertTimingErrors(event);
   },
 
-  alertTimingErrors: function() {
+  alertTimingErrors: function(event) {
     if ($("#subtitle_list .subtitle.invalid").length > 0) {
       alert("Please fix the timing overlap errors (highlighted in red) before proceeding");
       event.preventDefault();
