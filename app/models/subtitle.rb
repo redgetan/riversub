@@ -50,7 +50,14 @@ class Subtitle < ActiveRecord::Base
   end
 
   def subtitle_item_class_for(user)
-    return "" unless user
+    css_class = ""
+    css_class += " positive"    if score  > 0
+    css_class += " negative"    if score <= 0
+    css_class += " negative_1"  if score <= -1
+    css_class += " negative_3"  if score <= -3
+    css_class += " negative_5"  if score <= -5
+
+    return css_class unless user
 
     css_class = if user.liked?(self)
                   "upvoted"
@@ -60,10 +67,6 @@ class Subtitle < ActiveRecord::Base
                   ""
                 end
 
-    css_class += " negative"    if score <= 0
-    css_class += " negative_1"  if score <= -1
-    css_class += " negative_3"  if score <= -3
-    css_class += " negative_5"  if score <= -5
 
     css_class
   end
