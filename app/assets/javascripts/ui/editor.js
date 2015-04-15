@@ -532,7 +532,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     for (var i = 0; i < this.repo.repository_languages.length ; i++) {
       repo_language = this.repo.repository_languages[i];
-      selectedAttr = (repo_language.url === this.repo.url) ? "selected" : "";
+      selectedAttr = (repo_language.url === this.repo.editor_url) ? "selected" : "";
       option = "<option data-url='" + repo_language.url + "' " + selectedAttr + " >" + repo_language.language + "</option>";
       html += option;
     }
