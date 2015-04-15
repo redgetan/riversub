@@ -4,7 +4,7 @@ river.model.Track = Backbone.Model.extend({
     if (typeof options['popcorn'] === "undefined") throw new Error("Missing popcorn object in Track options attribute");
     this.popcorn = options['popcorn'];
     this.isGhost = options['isGhost'] || false;
-
+    this.isOriginal = options['original'] || false;
 
     if (typeof options.view_enabled === "undefined" ) {
       options.view_enabled = true;

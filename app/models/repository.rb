@@ -407,7 +407,8 @@ class Repository < ActiveRecord::Base
       :video => self.video.serialize,
       :filename => self.filename,
       :user => self.user.try(:serialize),
-      :timings => self.timings.map(&:serialize) ,
+      :timings => self.timings.map(&:serialize),
+      :original_timings => self.serialized_original_timings,
       :url => self.url,
       :title => self.title,
       :token => self.token,
@@ -426,6 +427,18 @@ class Repository < ActiveRecord::Base
       :repository_languages => self.current_user_owned_repository_languages,
       :highlight_subtitle_short_id => self.highlight_subtitle_short_id
     }
+  end
+
+  def serialized_original_timings
+    other_repo = self.other_published_repositories.select do |repo|
+      repo.language == self.video.language
+    end.first  
+
+    if other_repo && other_repo != self
+      other_repo.timings.map(&:serialize)  
+    else
+      nil
+    end
   end
 
   def current_user_owned_repository_languages

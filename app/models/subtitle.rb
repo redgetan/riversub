@@ -5,7 +5,7 @@ class Subtitle < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
 
-  attr_accessible :text, :parent_text, :highlighted
+  attr_accessible :text, :parent_text, :highlighted, :score, :short_id, :subtitle_item_class_for
 
   has_one    :timing
   belongs_to :repository

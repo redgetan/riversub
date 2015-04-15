@@ -7,7 +7,9 @@ river.model.Subtitle = Backbone.Model.extend({
     this.options = options;
     
     this.track = options["track"];
-    if (this.options.view_enabled) {
+    this.isOriginal = options['original'] || false;
+
+    if (this.options.view_enabled && !this.isOriginal) {
       this.view = new river.ui.Subtitle({model: this});
     }
 
@@ -41,8 +43,19 @@ river.model.Subtitle = Backbone.Model.extend({
     return this.get("score");
   },
 
+  toJSON: function() {
+    var json = Backbone.Model.prototype.toJSON.call(this);
+
+    delete json["short_id"];
+    delete json["score"];
+    delete json["subtitle_item_class_for"];
+    delete json["highlighted"];
+
+    return json;
+  },
+
   highlight: function() {
-    if (!this.options.view_enabled) return;  
+    if (!this.options.view_enabled || this.isOriginal) return;  
 
     if (typeof this.collection !== "undefined") {
       if (this.collection.currentTrackHighlight) {
@@ -65,7 +78,7 @@ river.model.Subtitle = Backbone.Model.extend({
   },
 
   unhighlight: function() {
-    if (this.options.view_enabled) {
+    if (this.options.view_enabled && !this.isOriginal) {
       this.view.unhighlight();
     }
   },

@@ -63,7 +63,8 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.tracks = this.repository.tracks;
 
     var timings = this.repo.timings || [];
-    this.loadTracks(timings);
+    var options = $.extend(this.options,{ popcorn: this.popcorn });
+    this.loadTracks(timings, options);
 
     this.bindEvents();
   },
@@ -214,9 +215,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$subtitleDisplay.text("");
   },
 
-  loadTracks: function(timings) {
-    var options = $.extend(this.options,{ popcorn: this.popcorn });
-
+  loadTracks: function(timings, options) {
     if (typeof timings !== "undefined") {
       for (var i = 0; i < timings.length; i++) {
         try {

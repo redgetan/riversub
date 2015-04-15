@@ -56,11 +56,15 @@ river.ui.SubtitleList = Backbone.View.extend({
   },
 
   onModelAdd: function(subtitle) {
-    this.renderPosition(subtitle);
+    if (!subtitle.isOriginal) {
+      this.renderPosition(subtitle);
+    }
   },
 
   onModelChange: function(subtitle) {
-    this.renderPosition(subtitle);
+    if (!subtitle.isOriginal) {
+      this.renderPosition(subtitle);
+    }
   },
 
   onClickHandler: function(event) {
@@ -102,6 +106,8 @@ river.ui.SubtitleList = Backbone.View.extend({
   },
 
   ensureCorrectWindowPosition: function(subtitle) {
+    if (!subtitle.options.view_enabled || subtitle.isOriginal) return;
+
     var $container = this.$container;
     var $el = subtitle.view.$el;
 

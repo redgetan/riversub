@@ -19,6 +19,19 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   },
 
+  initializeRepository: function() {
+    river.ui.BasePlayer.prototype.initializeRepository.call(this);
+
+    var timings = this.repo.original_timings || [];
+    var options = $.extend(this.options,{ 
+      popcorn: this.popcorn,
+      original: true
+    });
+
+    this.loadTracks(timings, options);
+
+  },
+
   setupElement: function() {
     river.ui.BasePlayer.prototype.setupElement.call(this);
     this.$iframeOverlay = $("#iframe_overlay");
@@ -27,6 +40,8 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$subtitleContainer = $("#transcript_container");
     this.$media = $("#media");
     this.$timer;
+    this.$subtitleOriginalDisplay = $("#subtitle_original_display");
+    this.$subtitleOriginalDisplay.css("opacity",0.8);
   },
 
   seekDuration: function() {
@@ -121,6 +136,32 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.seek(0);
   },
 
+  onTrackStart: function(track) {
+    this.showSubtitleInSubtitleBar(track.subtitle);
+    if (!track.isOriginal) track.subtitle.highlight();
+  },
+
+  onTrackEnd: function(track) {
+    this.hideSubtitleInSubtitleBar(track.subtitle);
+    if (!track.isOriginal) track.subtitle.unhighlight();
+  },
+
+  showSubtitleInSubtitleBar: function(subtitle) {
+    if (subtitle.isOriginal) {
+      this.$subtitleOriginalDisplay.text(subtitle.get("text"));
+    } else {
+      this.$subtitleDisplay.text(subtitle.get("text"));
+    }
+  },
+
+  hideSubtitleInSubtitleBar: function(subtitle) {
+    if (subtitle.isOriginal) {
+      this.$subtitleOriginalDisplay.text("");
+    } else {
+      this.$subtitleDisplay.text("");
+    }
+  },
+
   addPlayerControls: function() {
     river.ui.BasePlayer.prototype.addPlayerControls.call(this);
     $("#summary").append("<span class='time_total'></span>");
@@ -142,7 +183,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     this.$subtitleDisplay.css("background-color","black");
     this.$subtitleDisplay.css("opacity",0.8);
-    this.$subtitleDisplay.css("font-size","17px");
 
     this.$subtitleList.css("height","430px");
     this.$subtitleContainer.find(".header").remove(); // remove heading
