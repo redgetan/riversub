@@ -66,7 +66,7 @@ class Release < ActiveRecord::Base
   end
 
   def mailchimp_content_encoded
-    release_items.order("position").map(&:repositories).map do |repo|
+    release_items.order("position").map(&:repository).map do |repo|
       repo.mailchimp_html
     end.join
   end
