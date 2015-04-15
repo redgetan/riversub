@@ -23,6 +23,8 @@ river.model.Vote = {
     var li = $(voterEl).closest(".repository, .comment");
     var scoreDiv = li.find("div.score").get(0);
     var score = parseInt(scoreDiv.innerHTML);
+    if (isNaN(score)) score = 0;
+
     var action = "";
 
     if (li.hasClass("upvoted") && point > 0) {

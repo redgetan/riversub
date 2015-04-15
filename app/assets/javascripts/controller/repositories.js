@@ -33,13 +33,17 @@ $.extend(river.controller,{
       river.model.Vote.upvoteComment(this);
     });
 
-    $(".repository a.downvoter").click(function() {
-      river.model.Vote.downvoteRepository(this);
-    });
-
-    $(".repository a.upvoter").click(function() {
+    $(".repository a.repo_favorite_btn").click(function() {
       river.model.Vote.upvoteRepository(this);
     });
+
+    // $(".repository a.downvoter").click(function() {
+    //   river.model.Vote.downvoteRepository(this);
+    // });
+
+    // $(".repository a.upvoter").click(function() {
+    //   river.model.Vote.upvoteRepository(this);
+    // });
 
     $(document).on("click", "button.comment-post", function() {
       river.model.Comment.postComment($(this).parents("form").first());

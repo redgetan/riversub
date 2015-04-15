@@ -118,6 +118,10 @@ class Repository < ActiveRecord::Base
     repo_url(self.token)
   end
 
+  def favorite_url
+    upvote_repository_url(self)
+  end 
+
   def release
     self.release_item.try(:release)
   end

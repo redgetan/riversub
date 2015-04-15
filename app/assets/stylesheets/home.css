@@ -2700,4 +2700,21 @@ ul.source_repo_timing_list li {
   display: block;
   height: 20px;
 }
->>>>>>> fc90aec... editor language select
+
+.repository.favorite_container {
+  margin-top: 20px;
+}
+
+.repo_favorite_btn {
+  border: solid 1px steelblue;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.repo_favorite_btn div.score {
+  color: gray;
+  padding: 0px 4px;
+  margin-left: 5px;
+}
+
