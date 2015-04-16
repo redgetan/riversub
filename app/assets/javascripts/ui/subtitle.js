@@ -343,8 +343,6 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   unhighlight: function() {
-    console.log(this.model.text() + " : " + this.model.isOriginal);
-    river.utility.printStack();
     this.$el.removeClass("selected");
   },
 
