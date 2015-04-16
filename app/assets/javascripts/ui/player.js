@@ -51,7 +51,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     var selectedAttr;
     var option;
 
-    var html = "<select class='player_language_select' style='width: 120px; float: left;'>";
+    var html = "<select class='player_language_select' style='width: 140px; float: left;'>";
 
     for (var i = 0; i < this.repo.player_repository_languages.length ; i++) {
       repo_language = this.repo.player_repository_languages[i];

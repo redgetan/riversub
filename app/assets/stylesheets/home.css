@@ -2793,4 +2793,5 @@ ul.source_repo_timing_list li {
   float: right;
   margin-right: 10px;
   margin-top: 3px;
+  display: none;
 }
