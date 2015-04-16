@@ -2777,7 +2777,7 @@ ul.source_repo_timing_list li {
   background-color: black;
   color: lightgray;
   margin-left: 5px;
-  border: solid 1px steelblue;
+  border: solid 1px #333;
 }
 
 #river_player .player_controls .select2-container--default .select2-selection--single {
