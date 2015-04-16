@@ -115,14 +115,20 @@ $.extend(river.controller,{
   "repositories#editor": function() {
     // add ?local=true to url to test locally w/o internet connection
     if (location.search.match("local=true")) {
-      repo = {
-         video: { duration: 128, name: "Local"},
-         user: null,
-         is_guided_walkthrough: false
-       };
+      repo = $("#editor_container").data("repo") ;
+      repo.video.duration = 360;
+      repo.video.source_url = undefined;
+
+      // repo = {
+      //    video: { duration: 128, name: "Local"},
+      //    user: null,
+      //    token: "8k4FUFDjtWM",
+      //    is_guided_walkthrough: false,
+      //    repository_languages: []
+      //  };
 
        var media = "<video id='media' width='250px' poster='/poster.png'>" +
-               "<source id='mp4' src='/trailer.mp4' type=\"video/mp4; codecs='avc1, mp4a'\">" +
+               "<source id='mp4' src='/trailer.mp4' type=\"video/mp4\">" +
                "<p>Your user agent does not support the HTML5 Video element.</p>" +
              "</video>";
 
