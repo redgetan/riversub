@@ -427,6 +427,7 @@ class Repository < ActiveRecord::Base
       :group => self.group.try(:serialize),
       :release => self.release.try(:serialize),
       :repository_languages => self.current_user_owned_repository_languages,
+      :player_repository_languages => self.player_repository_languages,
       :highlight_subtitle_short_id => self.highlight_subtitle_short_id
     }
   end
@@ -453,13 +454,27 @@ class Repository < ActiveRecord::Base
     result
   end
 
+  def player_repository_languages
+    result = current_user_owned_and_published_repositories.map do |repo|
+      { url: repo.url, language: repo.language_pretty }
+    end
+
+    result << { url: new_translation_url, language: "- New Translation -" }
+
+    result
+  end
+
   def new_translation_url
     "#{self.video.translate_repository_url}?source_repo_token=#{self.token}"
   end
 
+  def current_user_owned_and_published_repositories
+    (current_user_owned_repositories + published_repositories).uniq
+  end
+
   def current_user_owned_repositories
     self.video.repositories.select do |repo|
-      repo.owned_by?(self.current_user)
+      repo.owned_by?(self.class.current_user)
     end
   end
 

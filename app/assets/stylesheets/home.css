@@ -1343,7 +1343,7 @@ footer a:hover{
 
 .player_controls_container {
   background-color: black;
-  height: 23px;
+  height: 27px;
 }
 
 .player_controls {
@@ -1383,7 +1383,7 @@ footer a:hover{
 }
 
 #river_player .player_timeline_container {
-  width: 90%;
+  width: 70%;
   margin-right: 5px;
 }
 
@@ -2773,3 +2773,24 @@ ul.source_repo_timing_list li {
   display: block;
 }
 
+#river_player .player_language_select {
+  background-color: black;
+  color: lightgray;
+  margin-left: 5px;
+  border: solid 1px steelblue;
+}
+
+#river_player .player_controls .select2-container--default .select2-selection--single {
+  height: 20px;
+  vertical-align: top;
+}
+
+#river_player .player_controls .select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 20px;
+}
+
+#river_player .expand_btn {
+  float: right;
+  margin-right: 10px;
+  margin-top: 3px;
+}

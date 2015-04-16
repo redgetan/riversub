@@ -4,6 +4,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.IFRAME_OVERLAY_NON_AD_OVERLAPPING_FACTOR = 2.3;
 
     river.ui.BasePlayer.prototype.initialize.call(this,options);
+
+    this.setupLanguageSelect();
+
     this.hideEditing();
     this.postBindEvents();
 
@@ -16,7 +19,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
     }
 
     this.$el = $("#river_player");
-
   },
 
   initializeRepository: function() {
@@ -42,6 +44,34 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$timer;
     this.$subtitleOriginalDisplay = $("#subtitle_original_display");
     this.$subtitleOriginalDisplay.css("opacity",0.8);
+  },
+
+  setupLanguageSelect: function() {
+    var repo_language;
+    var selectedAttr;
+    var option;
+
+    var html = "<select class='player_language_select' style='width: 120px; float: left;'>";
+
+    for (var i = 0; i < this.repo.player_repository_languages.length ; i++) {
+      repo_language = this.repo.player_repository_languages[i];
+      selectedAttr = (repo_language.url === this.repo.url) ? "selected" : "";
+      option = "<option data-url='" + repo_language.url + "' " + selectedAttr + " >" + repo_language.language + "</option>";
+      html += option;
+    }
+
+    html += "</select>";
+
+    $(".player_controls").append(html);
+
+    this.$playerLanguageSelect = $(".player_language_select");
+    // this.$playerLanguageSelect.select2();
+
+
+    // prevent selection from showing the focus highlight
+    $(".select2-selection--single").on("focus",function(){ 
+      $(".select2-selection--single").blur(); 
+    });
   },
 
   seekDuration: function() {
@@ -96,6 +126,12 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$playBtn.on("mousedown",this.onPlayBtnClick.bind(this));
     this.$pauseBtn.on("mousedown",this.onPauseBtnClick.bind(this));
     this.$expandBtn.on("mousedown",this.onExpandBtnClick.bind(this));
+    this.$playerLanguageSelect.on("change", this.onPlayerLanguageSelectChange.bind(this));
+  },
+
+  onPlayerLanguageSelectChange: function(event) {
+    var url = this.$playerLanguageSelect.find("option:selected").data("url");
+    window.location.href = url;
   },
 
   onMediaMouseMove: function(event) {
