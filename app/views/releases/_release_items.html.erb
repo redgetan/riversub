@@ -3,7 +3,7 @@
   <% @release.release_items.order("position").each do |item| %>
     <% repo = item.repository %>
     <% video = repo.video %>
-    <li class='release_item col-xs-7'>
+    <li class='release_item'>
       <div class="video_thumb">
         <a href="<%= repo.url %>" >
         <img src="<%= video.thumbnail_url %>" alt="">
@@ -24,7 +24,7 @@
       <div class="assignee col-md-7">
         <span class='repo_owner'>
           translator: 
-          <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
+          <a href="<%= repo.owner_profile_url %>" class="owner_name"><%= repo.owner %></a>
         </span>
       </div>
       <% if can?(:edit, repo) %>

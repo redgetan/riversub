@@ -24,11 +24,22 @@
   </div>
 </div>
 
-<h4 class="latest_release_header col-xs-10 center">Latest Issue - <%= @group.latest_release.date.strftime("%b %-d, %Y") %></h4>
-
-<div class='latest_release_container row'>
-  <% @release = @group.latest_release %>
-  <%= render "releases/release_items" %>
+<div class='row'>
+  <div class='latest_release_container col-xs-12 col-md-6'>
+    <h4 class="latest_release_header col-xs-10 center">Latest Issue - <%= @group.latest_release.date.strftime("%b %-d, %Y") %></h4>
+    <% @release = @group.latest_release %>
+    <%= render "releases/release_items" %>
+  </div>
+  <div class='latest_activity_container col-xs-12 col-md-5'>
+    <div class="section_block">
+      <div class="section_header">
+        Recent Activity
+      </div>
+      <div class="section_body">
+        <%= render_activities(@activities) %>
+      </div>
+    </div>
+  </div>
 </div>
 
 

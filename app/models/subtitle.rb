@@ -1,3 +1,6 @@
+require_dependency "vote"
+require_dependency "public_activity"
+
 class Subtitle < ActiveRecord::Base
 
   has_paper_trail 
@@ -76,6 +79,11 @@ class Subtitle < ActiveRecord::Base
   def to_param
     self.token  
   end
+
+  # def liked_by(target_user)
+  #   # self.create_activity(:favorited_a_line, :owner => target_user)
+  #   super
+  # end
 
   def serialize
     {

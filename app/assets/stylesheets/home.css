@@ -1063,8 +1063,11 @@ footer a:hover{
   height: 20px;
 }
 
-.release_item .assignee .repo_owner {
-  color: lightcoral;
+.release_item .assignee .repo_owner .owner_name {
+  color: slategray;
+  border: solid 1px gray;
+  padding: 2px 2px;
+  border-radius: 5px;
 }
 
 #editor #language {
@@ -2612,14 +2615,11 @@ div.field, div.actions {
 }
 
 .latest_release_header {
-  margin-top: 50px;
-/*  border: solid 1px gray;
-  padding: 5px;
-*/}
+  margin: 30px 0px;
+}
 
 .latest_release_container,
 .past_release_container {
-  margin-top: 50px;
   margin-bottom: 20px;
 }
 
@@ -2804,3 +2804,63 @@ ul.source_repo_timing_list li {
 .video_duration {
   display: none;
 }
+
+.latest_activity_container {
+  padding-right: 0px;
+  margin-top: 30px;
+}
+
+.latest_activity_container .section_body {
+  margin-bottom: 30px;
+}
+
+.latest_activity_container .activity {
+  padding-left: 40px;
+  position: relative;
+}
+
+.latest_activity_container .activity .activity_icon {
+  font-size: 20px;
+  position: absolute;
+  top: 14px;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  padding: 3px;
+  color: #BBB;
+  background-position: center center;
+  background-size: 32px auto;
+  background-repeat: no-repeat;
+}
+
+
+.latest_activity_container .activity .timeago {
+  color: gray;
+  font-weight: normal;
+  font-size: 12px;
+}
+
+.latest_activity_container .activity .title {
+  margin: 0px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.latest_activity_container .activity .details {
+  display: inline-block;
+  width: 100%;
+  vertical-align: top;
+  margin-top: 10px;
+}
+
+.latest_activity_container .activity .avatar {
+  width: 36px;
+  height: 36px;
+  display: inline-block;
+}
+
+.latest_activity_container .activity .avatar .thumbnail {
+  border: solid 1px gray;
+}
+
+

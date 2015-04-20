@@ -1,3 +1,6 @@
+require_dependency "vote"
+require_dependency "public_activity"
+
 class Repository < ActiveRecord::Base
 
   has_paper_trail
