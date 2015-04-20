@@ -226,6 +226,11 @@ GEM
     pry-stack_explorer (0.4.9)
       binding_of_caller (>= 0.7)
       pry (~> 0.9.11)
+    public_activity (1.4.2)
+      actionpack (>= 3.0.0)
+      activerecord (>= 3.0)
+      i18n (>= 0.5.0)
+      railties (>= 3.0.0)
     qunit-rails (0.0.7)
       railties
     rack (1.4.5)
@@ -357,6 +362,7 @@ DEPENDENCIES
   pry
   pry-debugger
   pry-stack_explorer
+  public_activity (= 1.4.2)
   qunit-rails
   rails (= 3.2.13)
   rdiscount

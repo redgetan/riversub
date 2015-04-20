@@ -72,6 +72,9 @@ gem 'google-api-client', '=0.8.5'
 
 gem 'srt'
 gem "rdiscount"
+gem "public_activity", "=1.4.2"
+# http://www.rubydoc.info/gems/public_activity/PublicActivity/Tracked/ClassMethods:tracked
+
 
 
 

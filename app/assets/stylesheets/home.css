@@ -1057,9 +1057,14 @@ footer a:hover{
   height: 30px;
 }
 
-#repo_time_label .user_avatar img {
+#repo_time_label .user_avatar img,
+.release_item .user_avatar img{
   border: solid 1px gray;
   height: 20px;
+}
+
+.release_item .assignee .repo_owner {
+  color: lightcoral;
 }
 
 #editor #language {
@@ -2793,5 +2798,9 @@ ul.source_repo_timing_list li {
   float: right;
   margin-right: 10px;
   margin-top: 3px;
+  display: none;
+}
+
+.video_duration {
   display: none;
 }
