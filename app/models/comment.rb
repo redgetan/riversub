@@ -1,6 +1,10 @@
+require_dependency "public_activity"
+require_dependency "vote"
+
 class Comment < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
+  include PublicActivity::Model
 
   Vote.after_save do |record|
     if record.votable.is_a? Comment  
@@ -10,6 +14,11 @@ class Comment < ActiveRecord::Base
 
   acts_as_nested_set :parent_column => :parent_comment_id ,
                      :scope => [:commentable_id, :commentable_type]
+
+  tracked :only  => :create,
+          :owner => Proc.new{ |controller, model| 
+            model.class.respond_to?(:current_user) ? model.class.current_user : nil
+          }
 
   validates :body, :presence => true
   validates :user, :presence => true
