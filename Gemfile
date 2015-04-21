@@ -75,6 +75,7 @@ gem "rdiscount"
 gem "public_activity", "=1.4.2"
 # http://www.rubydoc.info/gems/public_activity/PublicActivity/Tracked/ClassMethods:tracked
 
+gem 'hashie', '~> 2.1.2'
 
 
 
