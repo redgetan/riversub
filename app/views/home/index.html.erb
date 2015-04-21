@@ -25,12 +25,15 @@
 </div>
 
 <div class='row'>
-  <div class='latest_release_container col-xs-12 col-md-6'>
-    <h4 class="latest_release_header col-xs-10 center">Latest Issue - <%= @group.latest_release.date.strftime("%b %-d, %Y") %></h4>
+  <div class='latest_release_container col-xs-12'>
+    <h4 class="latest_release_header center">Latest Issue - <%= @group.latest_release.date.strftime("%b %-d, %Y") %></h4>
     <% @release = @group.latest_release %>
     <%= render "releases/release_items" %>
   </div>
-  <div class='latest_activity_container col-xs-12 col-md-5'>
+</div>
+
+<div class='row'>
+  <div class='latest_activity_container col-xs-12 col-md-4 col-md-offset-4'>
     <div class="section_block">
       <div class="section_header">
         Recent Activity
@@ -42,6 +45,8 @@
   </div>
 </div>
 
+
+<h2 class='col-md-10 col-md-offset-1 center'>About - Frequently Asked Questions</h2>
 
 <%= render "questions" %>
 

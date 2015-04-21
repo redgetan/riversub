@@ -2417,7 +2417,7 @@ iframe.fansubber_signup_form .ss-base-body {
 }
 
 .container.faq .section_block {
-  /*border: none;*/
+  border: none;
 }
 
 .container.faq .section_body p {
@@ -2633,6 +2633,7 @@ div.field, div.actions {
 
 .container.faq {
   margin-bottom: 50px;
+  margin-top: 20px;
 }
 
 
@@ -2808,6 +2809,7 @@ ul.source_repo_timing_list li {
 .latest_activity_container {
   padding-right: 0px;
   margin-top: 30px;
+  margin-bottom: 50px;
 }
 
 .latest_activity_container .section_body {
@@ -2817,6 +2819,7 @@ ul.source_repo_timing_list li {
 .latest_activity_container .activity {
   padding-left: 40px;
   position: relative;
+  margin-bottom: 20px;
 }
 
 .latest_activity_container .activity .activity_icon {
@@ -2837,12 +2840,12 @@ ul.source_repo_timing_list li {
 .latest_activity_container .activity .timeago {
   color: gray;
   font-weight: normal;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .latest_activity_container .activity .title {
   margin: 0px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
 }
 
@@ -2853,7 +2856,14 @@ ul.source_repo_timing_list li {
   margin-top: 10px;
 }
 
+.latest_activity_container .activity .activity_text {
+  display: flex;
+  font-size: 12px;
+}
+
 .latest_activity_container .activity .avatar {
+  float: left;
+  margin-right: 10px;
   width: 36px;
   height: 36px;
   display: inline-block;
@@ -2863,4 +2873,14 @@ ul.source_repo_timing_list li {
   border: solid 1px gray;
 }
 
+.latest_release_container .release_item {
+  width: 150px;
+  display: table-cell;
+  vertical-align: top;
+  padding-right: 10px;
+}
+
+.latest_release_container .release_item .video_thumb { 
+  margin-right: 0px;
+}
 

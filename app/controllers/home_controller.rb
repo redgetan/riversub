@@ -5,7 +5,7 @@ class HomeController < ApplicationController
     @autoplay_repo =  Repository.homepage_autoplay_repo
     @repository_counts_by_country = Repository.repository_counts_by_country
     @group = Group.find_by_short_name("jpweekly")
-    @activities = PublicActivity::Activity.all
+    @activities = PublicActivity::Activity.order("created_at DESC").limit(6)
     respond_to :html
   end
 

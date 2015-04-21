@@ -12,7 +12,7 @@
       <span class="video_duration">
         <%= repo.formatted_duration %>
       </span>
-      <div class="video_title <%= can?(:edit, repo) ? 'col-md-7' : 'col-md-7' %>">
+      <div class="video_title">
         <a href="<%= repo.url %>" class="video" >
           <span class='video_name'><%= repo.release_title %></span>
         </a>
@@ -21,7 +21,7 @@
           <span class='orig_video_name river_gray'><%= video.title %></span>
         <% end %>
       </div>
-      <div class="assignee col-md-7">
+      <div class="assignee">
         <span class='repo_owner'>
           translator: 
           <a href="<%= repo.owner_profile_url %>" class="owner_name"><%= repo.owner %></a>
