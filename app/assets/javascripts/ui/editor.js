@@ -437,7 +437,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       var repo_release = "<span id='repo_release'>" +
                            "<a href=" + this.release.url + ">Release #" + this.release.release_number + "</a>" +
                          "</span> / ";
-      this.$el.find("#repo_label").prepend(repo_release);
+      if (typeof this.release.release_number !== "undefined") {
+        this.$el.find("#repo_label").prepend(repo_release);
+      }
 
       var repo_group = "<span id='repo_group'>" +
                          "<a href=" + this.group.url + ">" + this.group.name + "</a>" +
