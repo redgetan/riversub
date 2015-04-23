@@ -2449,6 +2449,10 @@ iframe.fansubber_signup_form .ss-base-body {
   margin-right: 10px;
 }
 
+.release_items_container {
+  padding-left: 0px;
+}
+
 .release_items_container .video_title {
 }
 
