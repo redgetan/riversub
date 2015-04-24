@@ -67,7 +67,7 @@
             <!-- <li class="divider-vertical"></li> -->
         <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'archives' %>"><a href="/archives">Archives</a></li>
       
-        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="https://docs.google.com/a/yasub.com/forms/d/1JaAq20lp_OumLTEC80qnZOqii3xrTt7O8H0Rgo39YnA/viewform?usp=send_form">Become a Translator</a></li> 
+        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= videos_new_url %>"><i class="glyphicon glyphicon-plus"></i> Subtitle a Video</a></li> 
         <li class="divider-vertical"></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">

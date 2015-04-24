@@ -12,6 +12,8 @@ class Subtitle < ActiveRecord::Base
 
   has_one    :timing
   belongs_to :repository
+  has_many :votes, :as => :votable, :class_name => "ActsAsVotable::Vote"
+
 
   before_save :strip_crlf_text
 

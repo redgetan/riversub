@@ -18,6 +18,7 @@ class Repository < ActiveRecord::Base
   has_many :subtitles
   has_many :timings
   has_many :comments, :foreign_key => "commentable_id"
+  has_many :votes, :as => :votable, :class_name => "ActsAsVotable::Vote"
 
   belongs_to :group
   belongs_to :release_item

@@ -3,7 +3,7 @@ class RepositoriesController < ApplicationController
 
   def new
     unless user_signed_in?
-      flash[:error] = "You must be logged in to #{params[:upload] ? 'upload a subtitle' : 'add a language'}"
+      flash[:error] = "You must be logged in to #{params[:upload] ? 'upload a subtitle' : 'add a subtitle'}"
       store_location
       redirect_to new_user_session_url and return
     end

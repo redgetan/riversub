@@ -2,8 +2,8 @@
   <ol >
     <% if @video && @video.language.blank? %>
       <li>
-        <h4>The Video is in</h4>
-        <%= select_tag("video_language_code", options_for_select(Video.language_select_options)) %>
+        <h4>Source Language</h4>
+        <%= select_tag("video_language_code", options_for_select(Video.language_select_options, "ja")) %>
       </li>
     <% end %>
 

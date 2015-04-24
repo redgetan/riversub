@@ -307,7 +307,7 @@ div.videos li.selected {
 
 #editor div#iframe_container {
   position: relative;
-  height: 199px;
+  height: 190px;
   width: inherit;
   background-color: #000;
 }
@@ -367,7 +367,7 @@ div#subtitle_bar {
 
 #editor #subtitle_bar {
   padding: 5px;
-  height: 40px;
+  height: 30px;
   line-height: 18px;
   width: inherit;
 }
@@ -635,7 +635,7 @@ body {
 
 #editor #repo_label a.repo_title{
   color: #777;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 #river_player #repo_label {

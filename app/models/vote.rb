@@ -2,6 +2,7 @@ Vote = ActsAsVotable::Vote
 
 class Vote
   belongs_to :voter, :class_name => "User"
+  belongs_to :votable, :polymorphic => true
 
   VOTABLE_TYPES_TO_TRACK = ["Repository", "Subtitle"]
 
