@@ -225,6 +225,12 @@ div#media_input {
 .add_release_item .source_url {
 }
 
+.home_try .source_url {
+  width: 300px;
+  border: solid 3px darkcyan;
+  font-size: 20px;
+}
+
 .release_item {
   clear: both;
   list-style: none;
@@ -2897,4 +2903,16 @@ ul.source_repo_timing_list li {
   line-height: 12px;
   font-size: 12px;
   height: 24px;
+}
+
+.home_try .section_body {
+  padding: 50px;
+}
+
+.home_try .subtitle_video_container {
+  margin: auto; 
+}
+
+.create_subtitle .section_block {
+  border: none;
 }
