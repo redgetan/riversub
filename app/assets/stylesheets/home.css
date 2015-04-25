@@ -1063,7 +1063,8 @@ footer a:hover{
   height: 20px;
 }
 
-.release_item .assignee .repo_owner .owner_name {
+.release_item .assignee .repo_owner .owner_name ,
+.most_commented_repo_item .repo_owner .owner_name {
   color: slategray;
   border: solid 1px gray;
   padding: 2px 2px;
@@ -2812,7 +2813,7 @@ ul.source_repo_timing_list li {
 
 .latest_activity_container {
   padding-right: 0px;
-  margin-top: 30px;
+  /*margin-top: 30px;*/
   margin-bottom: 50px;
 }
 
@@ -2888,3 +2889,12 @@ ul.source_repo_timing_list li {
   margin-right: 0px;
 }
 
+.most_commented_repo_item {
+  height: 100px;
+}
+
+.most_commented_repo_item .video_name {
+  line-height: 12px;
+  font-size: 12px;
+  height: 24px;
+}

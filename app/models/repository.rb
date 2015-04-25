@@ -80,6 +80,15 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def self.most_commented(num_of_entries = 6)        
+    Repository.select("COUNT(repositories.id) AS comment_count, repositories.*")
+              .joins(:comments)
+              .published
+              .group("repositories.id")
+              .order("comment_count DESC")
+              .limit(num_of_entries)
+  end
+
   def self.repository_counts_by_language
     self.select("videos.language, COUNT(*) as repo_count")
         .joins(:video)

@@ -33,7 +33,39 @@
 </div>
 
 <div class='row'>
-  <div class='latest_activity_container col-xs-12 col-md-4 col-md-offset-4'>
+  <div class='most_comments_container col-xs-12 col-md-7 col-md-offset-1'>
+    <div class="section_block">
+      <div class="section_header">
+        Most Commented Videos
+      </div>
+      <div class="section_body">
+        <% Repository.most_commented.each do |repo| %>
+          <div class="most_commented_repo_item">
+            <div class="video_thumb">
+              <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                <img src="<%= repo.thumbnail_url %>" alt="">
+              </a>
+            </div>
+            <div class="video_title">
+              <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                <h4 class='video_name'><%= repo.title %></h4>
+              </a>
+            </div>
+            <div class="transcript_preview">
+              <%= repo.transcript[0..100] %>
+            </div>
+            <!-- <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span> -->
+            <span class='repo_owner'>
+              by 
+              <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class='latest_activity_container col-xs-12 col-md-3'>
     <div class="section_block">
       <div class="section_header">
         Recent Activity
@@ -44,6 +76,7 @@
     </div>
   </div>
 </div>
+
 
 
 <h2 class='col-md-10 col-md-offset-1 center'>About - Frequently Asked Questions</h2>
