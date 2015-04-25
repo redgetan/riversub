@@ -4,16 +4,34 @@
     <div class="col-md-4 col-md-offset-4">
       <div class="create_subtitle">
         <% if true  %>
-          <h3>Subtitle Video</h3>
-          <br/>
-          <form class="sub">
-            <div class="subtitle_video_container input-group">
-              <div class="input-append">
-                <input name="source_url" class="source_url" type="text" placeholder="Paste youtube url">
-                <button type="button" class="btn btn-danger sub_btn" data-loading-text="Loading...">Start</button>
-              </div>
+          <h3>Youtube Subtitle Editor</h3>
+          <div class="home_about col-md-offset-3 col-md-6 section_block">
+            <div class="section_body">
+              <p>
+                A FREE online subtitle editor that works for any youtube video. Simply paste the youtube url and once you've finished captioning or translating the video, it can be published and viewed by anyone on the web.
+              </p>
             </div>
-          </form>
+          </div>
+
+          <div class="home_try col-md-offset-3 col-md-6 section_block">
+            <div class="section_body">
+              <form class="sub">
+                <div class="subtitle_video_container input-group">
+                  <div class="input-append">
+                    <input name="source_url" class="source_url" type="text" placeholder="Paste youtube url">
+                    <button type="button" class="river_btn sub_btn" data-loading-text="Loading...">Start</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="home_screenshot col-md-offset-3 col-md-6 section_block">
+            <div class="section_body">
+              <img class="col-xs-12" src="<%= %>">
+            </div>
+          </div>
+
         <% else  %>
           <h3>Request Beta Invite</h3>
           <br/>
