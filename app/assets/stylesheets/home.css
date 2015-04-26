@@ -2725,6 +2725,10 @@ ul.source_repo_timing_list li {
   height: 20px;
 }
 
+ul.source_repo_timing_list li span {
+  min-height: 20px;
+}
+
 .repository.favorite_container {
   margin-top: 20px;
 }
