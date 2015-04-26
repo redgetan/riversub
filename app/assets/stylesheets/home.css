@@ -2934,6 +2934,7 @@ ul.source_repo_timing_list li {
 .add_your_subtitle_container {
   margin-top: 30px;
   margin-bottom: 100px;
+  margin-left: 215px;
 }
 
 .add_your_subtitle_explanation {
@@ -2943,7 +2944,7 @@ ul.source_repo_timing_list li {
 
 .add_your_subtitle_explanation img {
   border: solid 1px gray;
-  height: 200px;
+  height: 160px;
 }
 
 .add_your_subtitle_explanation_caption {
@@ -2956,5 +2957,5 @@ ul.source_repo_timing_list li {
 }
 
 .add_your_sub_btn {
-  font-size: 26px;
+  /*font-size: 22px;*/
 }
