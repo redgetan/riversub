@@ -2930,3 +2930,31 @@ ul.source_repo_timing_list li {
 .repository_index_container .owner_name {
   text-decoration: underline;
 }
+
+.add_your_subtitle_container {
+  margin-top: 30px;
+  margin-bottom: 100px;
+}
+
+.add_your_subtitle_explanation {
+  /*border: solid 1px gray;*/
+  padding: 20px;
+}
+
+.add_your_subtitle_explanation img {
+  border: solid 1px gray;
+  height: 200px;
+}
+
+.add_your_subtitle_explanation_caption {
+  font-size: 20px;
+  display: block;
+  height: 40px;
+  background-color: mintcream;
+  padding: 5px;
+  text-align: center;
+}
+
+.add_your_sub_btn {
+  font-size: 26px;
+}

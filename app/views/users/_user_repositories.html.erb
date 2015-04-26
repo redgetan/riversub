@@ -1,7 +1,7 @@
 <div id='user_repositories' class='col-xs-8  col-xs-offset-2'>
   <div class='row'>
     <h3 class='pull-left'>Translations</h3>
-    <% if @repositories.count > 11 %>
+    <% if @repositories.count > 12 %>
       <h3><a href="<%= user_repositories_url %>" class="user_repositories_see_more_link">[See More]</a></h3>
     <% end %>
   </div>
@@ -17,7 +17,7 @@
           </div>
         </div>
       <% end %>
-      <% @repositories.limit(11).each do |repo| %>
+      <% @repositories.limit(12).each do |repo| %>
         <div class='col-xs-6 col-md-3'>
           <div class='thumbnail'>
             <a href="<%= user_signed_in? && current_user == @user ? repo.editor_url : repo.url %>" id="<%= repo.id %>" class="video" >
