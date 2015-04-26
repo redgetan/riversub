@@ -2916,3 +2916,17 @@ ul.source_repo_timing_list li {
 .create_subtitle .section_block {
   border: none;
 }
+
+.user_show_container {
+  margin-bottom: 100px;
+}
+
+.user_repositories_see_more_link {
+  font-size: 14px;
+  margin-left: 20px;
+  color: green;
+}
+
+.repository_index_container .owner_name {
+  text-decoration: underline;
+}

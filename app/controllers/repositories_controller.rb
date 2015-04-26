@@ -174,6 +174,9 @@ class RepositoriesController < ApplicationController
   def index
     if params[:country_code]
       @repos = Repository.includes(timings: :subtitle).published.for_country(params[:country_code]).recent.page params[:page]
+    elsif params[:username]
+      @user = User.find_by_username(params[:username])
+      @repos = Repository.where(user_id: @user.id).includes(timings: :subtitle).published.recent.page params[:page]
     else
       @repos = Repository.includes(timings: :subtitle).published.recent.page params[:page]
     end

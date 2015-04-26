@@ -1,9 +1,13 @@
 <div class='header-section col-xs-12'></div>
-<div class='container'>
+<div class='container repository_index_container'>
 
   <div class='row center'>
     <div class="col-xs-12">
-      <span class="title river_gray">Recently Added</span>
+      <% if @user %>
+        <a class="title river_gray owner_name" href="<%= @user.url %>"><%= @user.username %>'s Translations</a> 
+      <% else %>
+        <span class="title river_gray">Recently Added</span>
+      <% end %>
     </div>
   </div>
 
@@ -12,7 +16,7 @@
 <div class="video_index">
   <div class="left_nav col-xs-12 col-md-3">
     <div id="recent_contributors" class="section_block">
-      <div class="section_header"> Recent Contributors </div>
+      <div class="section_header"> Recent Translators </div>
       <ul>
         <% User.recent_contributors.reverse.each do |user| %>
           <li>

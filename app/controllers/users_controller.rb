@@ -4,9 +4,9 @@ class UsersController < ApplicationController
     @user = User.find_by_username(params[:username])
 
     @repositories = if user_signed_in? && current_user == @user
-                      @user.repositories # all
+                      @user.repositories.recent # all
                     else
-                      @user.repositories.published # if not logged in, show only published ones
+                      @user.repositories.published.recent # if not logged in, show only published ones
                     end
 
 

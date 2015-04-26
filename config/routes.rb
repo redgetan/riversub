@@ -17,6 +17,7 @@ River::Application.routes.draw do
       put "/users/change_avatar",  :to => "registrations#change_avatar", :as => "user_change_avatar"
       get "/users/fansubber",      :to => "registrations#fansubber",     :as => "user_fansubber"
       get "/users/:username",      :to => "users#show",                  :as => "user"
+      get "/users/:username/repositories", :to => "repositories#index",  :as => "user_repositories"
     end
 
     get "faq", :to => "home#faq"
