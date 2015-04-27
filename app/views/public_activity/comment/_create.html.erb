@@ -13,7 +13,7 @@
           <%= image_tag activity.owner.avatar.url  %>
         </div>
       </div>
-      <div class="activity_text"><%= activity.details  %></div>
+      <div class="activity_text"><%= truncate(activity.details, length: 120)  %></div>
     </div>
   </div>
 </div>
