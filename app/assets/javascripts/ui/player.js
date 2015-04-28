@@ -19,6 +19,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
     }
 
     this.$el = $("#river_player");
+
+    // ensure first subtitle appears if it start_time is 0
+    this.onTrackStart(this.tracks.at(0));
   },
 
   initializeRepository: function() {
