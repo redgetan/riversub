@@ -15,7 +15,27 @@
     <ol class="download_upload_method">
       <li>You can download the subtitle, which is in SubRip format (.srt file extension)</li>
       <li>The subtitle file is available <a href="<%= @repo.subtitle_download_url %>">here</a></li>
-      <li>Afterwards, simply follow the instructions at <a href="https://support.google.com/youtube/answer/2734796?hl=en">Add subtitles and closed captions guide</a> from Youtube.</li>
+      <li>Afterwards, simply follow the instructions at <a href="https://support.google.com/youtube/answer/2734796?hl=en">Add subtitles and closed captions guide</a> from Youtube. </li>
+    </ol>
+
+    <br>
+    <p>日本語</p>
+    <b style="text-decoration: underline;">どうやってオリジナルビデオに字幕を挿入するか</b>
+    <br>
+    <p style="">あなたがこのビデオのオーナーならば、オリジナルビデオに字幕を挿入することができます。</p>
+    <br>
+<!--     <b>Method 1: Youtube Sync</b>
+    <ol class="youtube_sync_method">
+      <li>If you own this video, we allow you to instantly link the subtitle to the original video</li>
+      <li>Try it now - <a class="btn btn-xs btn-danger export_subtitle_btn" href="">Sync to Youtube</a></li>
+    </ol>
+    <br>
+ -->    
+    <b style="text-decoration: underline;">字幕ファイルのダウンロード／アップロード</b> 
+    <ol class="download_upload_method">
+      <li>SubRipフォーマットの字幕をダウンロード可能です。（.srtファイル拡張）</li>
+      <li>字幕ファイルは入手可能 - <a href="<%= @repo.subtitle_download_url %>" class='btn btn-xs btn-primary'>Download</a></li>
+      <li>最後に、<a href="https://support.google.com/youtube/answer/2734796?hl=en">Youtubeのインストラクション</a>に従ってください</li>
     </ol>
   </div>
 <% end %>
