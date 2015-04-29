@@ -404,7 +404,7 @@ class Repository < ActiveRecord::Base
     user_groups.include?(self.group)
   end
 
-  def comments_tab_class
+  def contribute_tab_class
     ""
   end
 

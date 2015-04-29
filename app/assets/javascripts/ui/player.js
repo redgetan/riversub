@@ -20,6 +20,8 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     this.$el = $("#river_player");
 
+    this.enableHashTab();
+
     // ensure first subtitle appears if it start_time is 0
     this.onTrackStart(this.tracks.at(0));
   },
@@ -74,6 +76,22 @@ river.ui.Player = river.ui.BasePlayer.extend({
     // prevent selection from showing the focus highlight
     $(".select2-selection--single").on("focus",function(){ 
       $(".select2-selection--single").blur(); 
+    });
+  },
+
+  enableHashTab: function() {
+    // http://stackoverflow.com/questions/12131273/twitter-bootstrap-tabs-url-doesnt-change
+    var hash = window.location.hash;
+
+    if (hash) {
+      $('ul.nav a[href="' + hash + '"]').tab('show');
+    }
+
+    $('.nav-tabs a').click(function (e) {
+      $(this).tab('show');
+      var scrollmem = $('body').scrollTop();
+      window.location.hash = this.hash;
+      $('html,body').scrollTop(scrollmem);
     });
   },
 

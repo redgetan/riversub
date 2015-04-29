@@ -1,22 +1,22 @@
 <div id="player_details">
   <ul class="nav nav-tabs" >
-    <li class="col-xs-4 active"><a href="#transcript_tab" data-toggle="tab">Transcript</a></li>
-    <li class="col-xs-4"><a href="#comments_tab" data-toggle="tab">Contribute</a></li>
-    <li class="col-xs-4"><a href="#share_tab" data-toggle="tab">Export</a></li>
+    <li class="col-xs-4 active"><a href="#transcript" data-toggle="tab">Transcript</a></li>
+    <li class="col-xs-4"><a href="#contribute" data-toggle="tab">Contribute</a></li>
+    <li class="col-xs-4"><a href="#export" data-toggle="tab">Export</a></li>
   </ul>
 
   <div class='tab-content'>
-    <div class="tab-pane <%= @repo ? @repo.transcript_tab_class : "" %>" id='transcript_tab'>
+    <div class="tab-pane <%= @repo ? @repo.transcript_tab_class : "" %>" id='transcript'>
       <div id='transcript_container'>
         <div id='subtitle_list'></div>
       </div>
     </div>
 
-    <div class="tab-pane <%= @repo ? @repo.comments_tab_class : "active" %>" id='comments_tab'>
+    <div class="tab-pane <%= @repo ? @repo.contribute_tab_class : "active" %>" id='contribute'>
       <%= render 'videos/player_repositories' %>
     </div>
 
-    <div class="tab-pane" id='share_tab'>
+    <div class="tab-pane" id='export'>
       <%= render 'videos/player_export' %>
     </div>
 
