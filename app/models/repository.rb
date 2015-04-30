@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require_dependency "vote"
 require_dependency "public_activity"
 
@@ -414,6 +416,33 @@ class Repository < ActiveRecord::Base
 
   def visible_to_user?(target_user)
     is_published || owned_by?(target_user)
+  end
+
+  def email_youtube_sync_request(to_email)
+    RepositoryMailer.youtube_sync_request(self,to_email).deliver
+  end
+
+  def uploader_human_readable_name
+    @uploader_human_readable_name ||= begin 
+      response = RestClient.get "https://www.googleapis.com/youtube/v3/channels?part=snippet&forUsername=#{self.uploader}&key=#{GOOGLE_API_KEY}"
+      JSON.parse(response)["items"][0]["snippet"]["title"]
+    end
+  end
+
+  def video_name
+    video.name  
+  end
+
+  def video_source_url
+    video.source_url  
+  end
+
+  def export_url
+    "#{self.url}#export"
+  end
+
+  def uploader
+    video.metadata["data"]["uploader"]
   end
 
   def serialize

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <p>Dear <%= @repo.uploader_human_readable_name %>,</p>
+
+    <p>
+      We've recently translated your youtube video, <a href="<%= @repo.video_source_url %>"><%= @repo.video_name %></a>, in English, which you can <a href="<%= @repo.url %>">see here</a>. Not only will this help non-Japanese speakers understand your video, it will also help increase your youtube traffic to viewers outside of Japan, such as ones from US, Europe, and other parts of Asia.
+    </p>
+
+    <br>
+    <p>
+      If you would like to make our subtitle directly available in your youtube video, we have included <a href="<%= @repo.export_url %>">instructions on this url </a>. Hope you find our subtitle useful. Thank you and have a good day!
+    </p>
+
+    <br>
+    <br>
+    <span>Reginald Tan</span><br>
+    <span>レジナル</span><br>
+    <span>www.yasub.com</span><br>
+    <span>Website Owner</span><br>
+
+    <br>
+    <br>
+    <br>
+
+    --- 日本語 ---
+
+    <p>こんにちは <%= @repo.uploader_human_readable_name %>さん!</p>
+
+    <br>
+    <p>
+      あなたのユーチューブビデオ [<a href="<%= @repo.video_source_url %>"><%= @repo.video_name %></a>]を英語に翻訳しました。<a href="<%= @repo.url %>">ここで見る</a>ことができます。外国人の方々にあなたのビデオを理解してもらうのみならず、翻訳することで、あなたのユーチューブ足跡レビューをアジア、ヨーロッパ、アメリカなど諸外国から集めることができます。
+    </p>
+
+    <br>
+    <p>
+      もしユーチューブビデオへの字幕挿入をご希望でしたら、<a href="<%= @repo.export_url %>">このURLのインストラクション</a>に沿ってもらえると幸いです。私たちの字幕が役立つことを祈願します。感謝と共に、良い日があなたに訪れますように。
+    </p>
+  </body>
+</html>
