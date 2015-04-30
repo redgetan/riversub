@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150420195916) do
+ActiveRecord::Schema.define(:version => 20150430025150) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -103,19 +103,20 @@ ActiveRecord::Schema.define(:version => 20150420195916) do
   end
 
   create_table "repositories", :force => true do |t|
-    t.integer  "video_id",                                :null => false
+    t.integer  "video_id",                                      :null => false
     t.integer  "user_id"
-    t.datetime "created_at",                              :null => false
-    t.datetime "updated_at",                              :null => false
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
     t.string   "token"
     t.boolean  "is_published"
     t.string   "language"
     t.integer  "parent_repository_id"
-    t.boolean  "is_youtube_imported",  :default => false
-    t.boolean  "is_template",          :default => false
+    t.boolean  "is_youtube_imported",        :default => false
+    t.boolean  "is_template",                :default => false
     t.string   "title"
     t.integer  "group_id"
     t.integer  "release_item_id"
+    t.string   "youtube_sync_email_sent_to"
   end
 
   create_table "settings", :force => true do |t|

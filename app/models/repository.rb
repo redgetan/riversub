@@ -419,7 +419,10 @@ class Repository < ActiveRecord::Base
   end
 
   def email_youtube_sync_request(to_email)
-    RepositoryMailer.youtube_sync_request(self,to_email).deliver
+    if self.youtube_sync_email_sent_to.blank?
+      RepositoryMailer.youtube_sync_request(self,to_email).deliver
+      self.update_column(:youtube_sync_email_sent_to, to_email) if Rails.env.production? 
+    end
   end
 
   def uploader_human_readable_name
