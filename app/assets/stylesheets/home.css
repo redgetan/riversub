@@ -410,6 +410,7 @@ div#avatar img {
 
 #river_player #subtitle_display {
   padding: 0px 10px;
+  font-size: 16px;
 }
 
 div#avatar .thumbnail {
@@ -2966,4 +2967,9 @@ ul.source_repo_timing_list li span {
 
 .add_your_sub_btn {
   /*font-size: 22px;*/
+}
+
+.subtitle_original_display  {
+  font-size: 12px;
+  color: gray;
 }
