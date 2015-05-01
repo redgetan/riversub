@@ -2969,7 +2969,7 @@ ul.source_repo_timing_list li span {
   /*font-size: 22px;*/
 }
 
-.subtitle_original_display  {
+#subtitle_original_display  {
   font-size: 12px;
   color: gray;
 }
