@@ -194,6 +194,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onTrackStart: function(track) {
+    if (typeof track === "undefined") return;
     this.showSubtitleInSubtitleBar(track.subtitle);
     if (!track.isOriginal) track.subtitle.highlight();
   },

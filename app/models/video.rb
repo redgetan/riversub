@@ -41,6 +41,10 @@ class Video < ActiveRecord::Base
     self.metadata["data"]["aspectRatio"]
   end
 
+  def view_count
+    self.metadata["data"]["viewCount"]  
+  end
+
   def duration
     self.metadata["data"]["duration"] # youtube video duration
   end

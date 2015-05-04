@@ -21,6 +21,16 @@
       <%= render 'videos/player' %>
       <% if @repo %>
         <% @sharable = @repo %>
+      <div class="original_video_stats">
+        <span class="original_video_view_label">Views:</span>
+        <span class="original_video_view_count" style=""><%= number_with_delimiter(@repo.video.view_count, delimiter: ",") %></span>
+        <div class='repository favorite_container pull-right <%= @repo.repo_item_class_for(current_user) %>' data-shortid="<%= @repo.short_id %>">
+          <a class="repo_favorite_btn pull-right">
+            <i class="glyphicon glyphicon-heart"></i> 
+            <div class="score pull-right"><%= @repo.score > 0 ? @repo.score : "Favorite" %></div>
+          </a>
+        </div>
+      </div>
         <%= render 'videos/social_share' %>
         <%= render 'videos/player_editor' %>
       <% end %>

@@ -2682,8 +2682,21 @@ form.new_user #user_login {
   line-height: 30px;
 }
 
-.original_video_source_label {
+.original_video_source_label,
+.original_video_view_label {
   margin-right: 5px;
+}
+
+.original_video_stats {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.original_video_view_count {
+ padding: 5px; 
+ margin-left: 10px;
+ border: solid 1px lightgray;
+ color: gray;
 }
 
 .export_subtitle_container .youtube_sync_method,
@@ -2731,7 +2744,7 @@ ul.source_repo_timing_list li span {
 }
 
 .repository.favorite_container {
-  margin-top: 20px;
+  /*margin-top: 20px;*/
 }
 
 .repo_favorite_btn {
