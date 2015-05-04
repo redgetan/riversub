@@ -411,6 +411,7 @@ div#avatar img {
 #river_player #subtitle_display {
   padding: 0px 10px;
   font-size: 18px;
+  margin-bottom: 5px;
 }
 
 div#avatar .thumbnail {
@@ -2610,7 +2611,7 @@ div.field, div.actions {
 }
 
 .repo_open_editor_btn {
-  margin-top: 20px;
+  /*margin-top: 20px;*/
 }
 
 .publish_release_btn {
@@ -2812,6 +2813,7 @@ ul.source_repo_timing_list li span {
   background-color: black;
   color: lightgray;
   margin-left: 5px;
+  margin-right: 5px;
   border: solid 1px #333;
 }
 
@@ -2983,6 +2985,13 @@ ul.source_repo_timing_list li span {
 }
 
 #subtitle_original_display  {
-  font-size: 12px;
-  color: gray;
+  /*font-size: 12px;*/
+  color: lightgray;
+}
+
+.subtitle_zoom_in_btn,
+.subtitle_zoom_out_btn {
+  color: white;
+  margin: 2px;
+  cursor: pointer;
 }

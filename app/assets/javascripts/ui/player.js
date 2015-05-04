@@ -2,10 +2,13 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   initialize: function(options) {
     this.IFRAME_OVERLAY_NON_AD_OVERLAPPING_FACTOR = 2.3;
+    this.MAX_SUBTITLE_DISPLAY_FONT_SIZE = 24;
+    this.MIN_SUBTITLE_DISPLAY_FONT_SIZE = 12;
 
     river.ui.BasePlayer.prototype.initialize.call(this,options);
 
     this.setupLanguageSelect();
+    this.setupSubtitleZoom();
 
     this.hideEditing();
     this.postBindEvents();
@@ -56,7 +59,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     var selectedAttr;
     var option;
 
-    var html = "<select class='player_language_select' style='width: 20%; float: left;'>";
+    var html = "<select class='player_language_select' style='width: 17%; float: left;'>";
 
     for (var i = 0; i < this.repo.player_repository_languages.length ; i++) {
       repo_language = this.repo.player_repository_languages[i];
@@ -77,6 +80,19 @@ river.ui.Player = river.ui.BasePlayer.extend({
     $(".select2-selection--single").on("focus",function(){ 
       $(".select2-selection--single").blur(); 
     });
+  },
+
+  setupSubtitleZoom: function() {
+    // var zoomInBtn = "<i class='subtitle_zoom_in_btn glyphicon glyphicon-zoom-in'></i>";
+    // var zoomOutBtn = "<i class='subtitle_zoom_in_btn glyphicon glyphicon-zoom-out'></i>";
+    var zoomInBtn = "<i class='subtitle_zoom_in_btn fa fa-search-plus'></i>";
+    var zoomOutBtn = "<i class='subtitle_zoom_out_btn fa fa-search-minus'></i>";
+
+    $(".player_controls").append(zoomInBtn);
+    $(".player_controls").append(zoomOutBtn);
+
+    this.$zoomInBtn = $(".subtitle_zoom_in_btn");
+    this.$zoomOutBtn = $(".subtitle_zoom_out_btn");
   },
 
   enableHashTab: function() {
@@ -148,11 +164,33 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$pauseBtn.on("mousedown",this.onPauseBtnClick.bind(this));
     this.$expandBtn.on("mousedown",this.onExpandBtnClick.bind(this));
     this.$playerLanguageSelect.on("change", this.onPlayerLanguageSelectChange.bind(this));
+    this.$zoomInBtn.on("click", this.onZoomInBtnClick.bind(this));
+    this.$zoomOutBtn.on("click", this.onZoomOutBtnClick.bind(this));
   },
 
   onPlayerLanguageSelectChange: function(event) {
     var url = this.$playerLanguageSelect.find("option:selected").data("url");
     window.location.href = url;
+  },
+
+  onZoomInBtnClick: function(event) {
+    var originalFontSize = parseInt(this.$subtitleDisplay.css("font-size"));
+    var secondaryOriginalFontSize = parseInt(this.$subtitleOriginalDisplay.css("font-size"));
+
+    if (originalFontSize < this.MAX_SUBTITLE_DISPLAY_FONT_SIZE) {
+      this.$subtitleDisplay.css("font-size",originalFontSize + 2);
+      this.$subtitleOriginalDisplay.css("font-size",secondaryOriginalFontSize + 2);
+    }
+  },
+
+  onZoomOutBtnClick: function(event) {
+    var originalFontSize = parseInt(this.$subtitleDisplay.css("font-size"));
+    var secondaryOriginalFontSize = parseInt(this.$subtitleOriginalDisplay.css("font-size"));
+
+    if (originalFontSize > this.MIN_SUBTITLE_DISPLAY_FONT_SIZE) {
+      this.$subtitleDisplay.css("font-size",originalFontSize - 2);
+      this.$subtitleOriginalDisplay.css("font-size",secondaryOriginalFontSize - 2);
+    }
   },
 
   onMediaMouseMove: function(event) {

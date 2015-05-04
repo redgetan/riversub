@@ -24,6 +24,7 @@
       <div class="original_video_stats">
         <span class="original_video_view_label">Views:</span>
         <span class="original_video_view_count" style=""><%= number_with_delimiter(@repo.video.view_count, delimiter: ",") %></span>
+        <%= render 'videos/player_editor' %>
         <div class='repository favorite_container pull-right <%= @repo.repo_item_class_for(current_user) %>' data-shortid="<%= @repo.short_id %>">
           <a class="repo_favorite_btn pull-right">
             <i class="glyphicon glyphicon-heart"></i> 
@@ -32,7 +33,6 @@
         </div>
       </div>
         <%= render 'videos/social_share' %>
-        <%= render 'videos/player_editor' %>
       <% end %>
       <br>
       <div class="original_video">
