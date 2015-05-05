@@ -2926,7 +2926,7 @@ ul.source_repo_timing_list li span {
 }
 
 .home_try .section_body {
-  padding: 50px;
+  padding: 30px;
 }
 
 .home_try .subtitle_video_container {
@@ -2994,4 +2994,18 @@ ul.source_repo_timing_list li span {
   color: white;
   margin: 2px;
   cursor: pointer;
+}
+
+.about_faq_container p {
+  font-size: 18px;
+  color: gray;
+}
+
+.online_editor_video_tutorial {
+  clear: both;
+  border: solid 1px black;
+}
+
+.community_translation_videos {
+  margin-top: 50px;
 }

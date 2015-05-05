@@ -102,6 +102,14 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def self.community_translations
+    self.where("group_id IS NULL")  
+        .joins(:video)
+        .published
+        .where("videos.language = 'ja'")
+        .order("repositories.created_at DESC")
+  end
+
   def self.repository_counts_by_country
     repository_counts_by_language.inject({}) do |result, (language_code, repo_count)|
       country_code = Language.language_code_to_country_code_map[language_code]

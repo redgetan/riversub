@@ -14,6 +14,10 @@ class HomeController < ApplicationController
     render "groups/show"
   end
 
+  def community_translations
+    @repos = Repository.community_translations
+  end
+
   def faq
     # @guided_walkthrough_repo = Repository.guided_walkthrough
   end
