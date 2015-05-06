@@ -132,6 +132,14 @@ class User < ActiveRecord::Base
     is_admin?  
   end
 
+  def translations_tab_class
+    self.repositories.published.present? ? "active" : ""
+  end
+  
+  def video_bookmarks_tab_class
+    self.repositories.published.present? ? "" : "active"
+  end
+
   def can_downvote?(obj)
     true
   end

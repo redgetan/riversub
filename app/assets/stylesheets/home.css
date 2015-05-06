@@ -2310,11 +2310,13 @@ div.comment_form_container form {
   margin-top: 20px;
 }
 
+.user_show_container .nav.nav-tabs li,
 #player_details .nav.nav-tabs li {
   padding-left: 0px;
   padding-right: 0px;
 }
 
+.user_show_container .nav.nav-tabs li a,
 #player_details .nav.nav-tabs li a {
   background: none;
   padding: 5px 20px;
@@ -2327,6 +2329,7 @@ div.comment_form_container form {
   /*background-color: gray;*/
 }
 
+.user_show_container .nav.nav-tabs li.active a,
 #player_details .nav.nav-tabs li.active a {
   border-bottom: none;
   border-top: solid 1px gray;
@@ -2760,6 +2763,7 @@ ul.source_repo_timing_list li span {
 
 #user_profile {
   text-align: center;
+  margin-bottom: 50px;
 }
 
 #user_profile #avatar {
@@ -2938,7 +2942,8 @@ ul.source_repo_timing_list li span {
 .user_repositories_see_more_link {
   font-size: 14px;
   margin-left: 20px;
-  color: green;
+  border: solid 1px #337ab7;
+  padding: 10px;
 }
 
 .repository_index_container .owner_name {
@@ -3007,4 +3012,10 @@ ul.source_repo_timing_list li span {
 .community_translation_videos .video_name {
   line-height: 20px;
   height: 40px;
+}
+
+.faq_sign_up {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
 }

@@ -1,19 +1,28 @@
+<div class='header-section col-xs-12'></div>
+
 <% if @user.line_favorites.present? %>
   <div id='user_line_favorites' class='col-xs-8  col-xs-offset-2'>
-    <div class='row'>
-      <h3 class='pull-left'>Line Favorites</h3>
-    </div>
     <div class='row'>
       <div class='videos'>
         <ol>
           <% @user.line_favorites.each do |subtitle| %>
             <li>
-              <span><a href="<%= subtitle.url %>"><%= subtitle.text %></a></span>
+              <a href="<%= subtitle.url %>"><%= subtitle.text %></a>
               <span class='pull-right'><%= subtitle.repository.title %></span>
             </li>
           <% end %>
         </ol>
       </div>
     </div>
+  </div>
+<% else %>
+  <div class='col-xs-5  col-xs-offset-3'>
+    <span>There's currently nothing here.<span>
+    <% if user_signed_in? %> 
+      <span>
+        Browse our subtitled videos and favorite a line to add an item to this list. See a <a href="<%= asset_path("line_favorite_sample.png") %>">sample line favorite</a>. 
+      </span>
+    <% end %>
+    </span>
   </div>
 <% end %>

@@ -7,18 +7,18 @@
     <% end %>
   </div>
   <div id='user_name'><h3><%= @user.username  %></h3></div>
-  <div id='user_details'>
-    <% if @user.bio.present? %>
-      <div id='user_bio'><%= @user.bio  %></div></br>
+  <% if @user.bio.present? %>
+    <div id='user_details'>
+      <div id='user_bio'><%= @user.bio  %></div>
       <!-- <div id='user_email'><a href="mailto:<%= @user.email  %>"><%= @user.email  %></a></div> -->
-    <% end %>
-  </div>
-  <div id='stats'>
-    <% if @user.repositories.count < 0 %>
+    </div>
+  <% end %>
+  <% if @user.repositories.count < 0 %>
+    <div id='stats'>
       <div id='num_of_subtitles'>
         <span>videos subtitled count: </span>
         <h4><%= @user.repositories.count  %></h4>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div>

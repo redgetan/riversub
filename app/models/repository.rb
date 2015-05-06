@@ -122,6 +122,14 @@ class Repository < ActiveRecord::Base
     self.find_by_id(repo_id)
   end
 
+  def self.sample_export_instructions
+    self.where(group_id: Group.first.id)
+        .published
+        .recent
+        .last
+        .try(:export_url)
+  end
+
   def self.templates
     where("is_template is true")
   end
