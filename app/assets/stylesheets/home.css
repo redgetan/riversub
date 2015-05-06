@@ -2485,15 +2485,13 @@ iframe.fansubber_signup_form .ss-base-body {
 .group_release_list_item {
   text-align: left;
   margin-bottom: 30px;
-}
-
-.group_release_list_item .video_thumb img {
-  width: 50px;
+  list-style: none;
 }
 
 .group_release_list_item_header {
   font-size: 20px;
   margin-bottom: 20px;
+  left: -50px;
 }
 
 .group_release_container {
@@ -2508,7 +2506,6 @@ iframe.fansubber_signup_form .ss-base-body {
 .group_release_list_item ul {
   list-style: square;
   margin-top: 10px;
-  padding-left: 40px;
 }
 
 .group_releases_header,
@@ -2534,11 +2531,6 @@ iframe.fansubber_signup_form .ss-base-body {
 
 .group_release_list_item_repo .video_name {
   /*line-height: 30px;*/
-}
-
-.group_release_list_item img {
-  height: 30px;
-  /*margin-right: 20px;*/
 }
 
 .group_list {
@@ -2904,14 +2896,16 @@ ul.source_repo_timing_list li span {
   border: solid 1px gray;
 }
 
-.latest_release_container .release_item {
+.latest_release_container .release_item,
+.group_release_container .release_item {
   width: 150px;
   display: table-cell;
   vertical-align: top;
   padding-right: 10px;
 }
 
-.latest_release_container .release_item .video_thumb { 
+.latest_release_container .release_item .video_thumb,  
+.group_release_container  .release_item .video_thumb { 
   margin-right: 0px;
 }
 
