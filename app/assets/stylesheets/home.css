@@ -3003,3 +3003,8 @@ ul.source_repo_timing_list li span {
 .community_translation_videos {
   margin-top: 50px;
 }
+
+.community_translation_videos .video_name {
+  line-height: 20px;
+  height: 40px;
+}
