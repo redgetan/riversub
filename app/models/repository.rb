@@ -126,7 +126,7 @@ class Repository < ActiveRecord::Base
     self.where(group_id: Group.first.id)
         .published
         .recent
-        .last
+        .first
         .try(:export_url)
   end
 
