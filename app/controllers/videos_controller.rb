@@ -8,14 +8,11 @@ class VideosController < ApplicationController
   end
 
   def sub
-    metadata = params[:video_metadata]
+    metadata = params[:source_url]
 
     # if video already exist not need to create another one
     @video = Video.where(:source_url => params[:source_url].gsub(/https/,"http"))
-                  .first_or_create!({
-                    :name => metadata[:data][:title],
-                    :metadata => metadata,
-                  })
+                  .first_or_create!
 
     render :json => { :redirect_url => @video.new_empty_repository_url }
   rescue ActiveRecord::RecordInvalid => e

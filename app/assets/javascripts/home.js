@@ -6,65 +6,6 @@ var repo;
 var player;
 var metadata;
 
-var getYoutubeId = function(url) {
-  // get youtube video id
-  // http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
-  if (url.match(/youtu\.be/)) {
-    var tokens = url.split('/');
-    var videoId = tokens[tokens.length - 1];
-  } else {
-    var videoId = url.split('v=')[1];
-  }
-
-  if (typeof videoId === "undefined") {
-    throw "Invalid youtube Url";
-  }
-
-  // ****** UGLY - use regex instead *****
-  //
-  // remove anything after &
-  var ampersandPosition = videoId.indexOf('&');
-  if(ampersandPosition != -1) {
-    videoId = videoId.substring(0, ampersandPosition);
-  }
-
-  // remove anything after ?
-  var questionMarkPosition = videoId.indexOf('?');
-  if(questionMarkPosition != -1) {
-    videoId = videoId.substring(0, questionMarkPosition);
-  }
-
-  return videoId;
-}
-
-var getMetadata = function(url,done) {
-  var videoId = getYoutubeId(url);
-
-  $.ajax({
-    url: "https://gdata.youtube.com/feeds/api/videos/" + videoId + "?v=2&alt=jsonc",
-    type: "GET",
-    dataType: "jsonp",
-    success: function(data) {
-      done(data);
-    },
-    error: function(data) {
-      done(JSON.parse(data.responseText));
-    }
-  });
-};
-
-var isEmbeddable = function(metadata) {
-  if (Object.keys(metadata).length === 0) {
-    return true; // assume embeddable if no youtube metadata
-  }
-
-  if (metadata["data"]["accessControl"]["embed"] === "allowed") {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 
 $(document).ready(function(){
 
@@ -159,36 +100,26 @@ function subtitleVideo(url) {
     throw "Only youtube urls are allowed";
   }
 
-  getMetadata(url,function(metadata){
-    try {
-      validateYoutubeMetadata(metadata);
-    } catch (e) {
-      this.handleSubtitleVideoError(e);
-      throw e;
-    }
-
-    $.ajax({
-      url: "/videos/sub",
-      type: "POST",
-      data: {
-        source_url : url,
-        video_metadata: metadata
-      },
-      dataType: "json",
-      success: function(data,status) {
-        var redirectUrl = data.redirect_url;
-        window.location.href = redirectUrl;
-      },
-      error: function(data) {
-        try {
-          var error = JSON.parse(data.responseText).error;
-          this.handleSubtitleVideoError(error);
-        } catch (e) {
-          this.handleSubtitleVideoError("something went weird wrong");
-          throw e;
-        }
-      }.bind(this)
-    });
+  $.ajax({
+    url: "/videos/sub",
+    type: "POST",
+    data: {
+      source_url : url,
+    },
+    dataType: "json",
+    success: function(data,status) {
+      var redirectUrl = data.redirect_url;
+      window.location.href = redirectUrl;
+    },
+    error: function(data) {
+      try {
+        var error = JSON.parse(data.responseText).error;
+        this.handleSubtitleVideoError(error);
+      } catch (e) {
+        this.handleSubtitleVideoError("something went weird wrong");
+        throw e;
+      }
+    }.bind(this)
   });
 }
 
@@ -212,54 +143,31 @@ function addReleaseItem(url, options) {
     throw "Only youtube urls are allowed";
   }
 
-  getMetadata(url,function(metadata){
-    try {
-      validateYoutubeMetadata(metadata);
-    } catch (e) {
-      this.handleSubtitleVideoError(e);
-      throw e;
-    }
-
-    $.ajax({
-      url: "/releases/" + options.release_id + "/release_items",
-      type: "POST",
-      data: {
-        source_url : url,
-        video_metadata: metadata,
-        video_language_code: options.video_language_code,
-        repo_language_code: options.repo_language_code
-      },
-      dataType: "json",
-      success: function(data,status) {
-        var redirectUrl = data.redirect_url;
-        window.location.href = redirectUrl;
-      },
-      error: function(data,x,y) {
-        try {
-          var error = JSON.parse(data.responseText).error;
-          this.handleSubtitleVideoError(error);
-        } catch (e) {
-          this.handleSubtitleVideoError("something went wrong");
-          throw e;
-        }
-      }.bind(this)
-    });
-  }.bind(this));
+  $.ajax({
+    url: "/releases/" + options.release_id + "/release_items",
+    type: "POST",
+    data: {
+      source_url : url,
+      video_metadata: metadata,
+      video_language_code: options.video_language_code,
+      repo_language_code: options.repo_language_code
+    },
+    dataType: "json",
+    success: function(data,status) {
+      var redirectUrl = data.redirect_url;
+      window.location.href = redirectUrl;
+    },
+    error: function(data,x,y) {
+      try {
+        var error = JSON.parse(data.responseText).error;
+        this.handleSubtitleVideoError(error);
+      } catch (e) {
+        this.handleSubtitleVideoError("something went wrong");
+        throw e;
+      }
+    }.bind(this)
+  });
 }
-
-function validateYoutubeMetadata(metadata)
-{
-  if (typeof metadata["error"] !== "undefined") {
-    var e = "Invalid youtube Url - " + metadata["error"]["message"];
-    throw e;
-  }
-
-  if (!isEmbeddable(metadata)) {
-    var e = "Video is not embeddable. Try another url.";
-    throw e;
-  }
-}
-
 
 function setCookie(c_name,value,exdays)
 {

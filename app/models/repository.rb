@@ -179,11 +179,11 @@ class Repository < ActiveRecord::Base
   end
 
   def thumbnail_url
-    self.video.metadata["data"]["thumbnail"]["sqDefault"]
+    self.video.thumbnail_url
   end
 
   def thumbnail_url_hq
-    self.video.metadata["data"]["thumbnail"]["hqDefault"]
+    self.video.thumbnail_url_hq
   end
 
   def publish_url
@@ -442,10 +442,7 @@ class Repository < ActiveRecord::Base
   end
 
   def uploader_human_readable_name
-    @uploader_human_readable_name ||= begin 
-      response = RestClient.get "https://www.googleapis.com/youtube/v3/channels?part=snippet&forUsername=#{self.uploader}&key=#{GOOGLE_API_KEY}"
-      JSON.parse(response)["items"][0]["snippet"]["title"]
-    end
+    video.uploader_username
   end
 
   def video_name
@@ -458,10 +455,6 @@ class Repository < ActiveRecord::Base
 
   def export_url
     "#{self.url}#export"
-  end
-
-  def uploader
-    video.metadata["data"]["uploader"]
   end
 
   def serialize

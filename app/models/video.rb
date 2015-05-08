@@ -5,7 +5,7 @@ class Video < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   attr_accessor :current_user
-  attr_accessible :artist, :genre, :name, :metadata, :url, :language, :current_user
+  attr_accessible :artist, :genre, :name, :metadata, :url, :source_url, :language, :current_user
 
   has_many :repositories
   has_many :users, :through => :repositories
@@ -15,9 +15,23 @@ class Video < ActiveRecord::Base
 
   serialize :metadata, JSON
 
-  validates :name, :presence => true
+  before_validation :assign_metadata
+
+  validate :correct_metadata 
 
   before_create :generate_token
+
+  def correct_metadata
+    unless self.metadata && self.source_id
+      errors.add(:base, "Url is not a valid youtube link.")
+    end
+  end
+
+  def assign_metadata
+    part = "snippet,contentDetails,statistics"
+    response = RestClient.get "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{self.source_id}&key=#{GOOGLE_API_KEY}"
+    self.metadata = JSON.parse(response)["items"][0]
+  end
 
   def serialize
     {
@@ -26,9 +40,6 @@ class Video < ActiveRecord::Base
       :genre => self.genre,
       :url => self.url,
       :source_url => self.source_url,
-      :aspect_ratio => self.aspect_ratio,
-      :uploader_url => self.uploader_url,
-      :uploader_username => self.uploader_username,
       :duration => self.duration
     }
   end
@@ -37,32 +48,40 @@ class Video < ActiveRecord::Base
     self.select("DISTINCT language").map(&:language).compact
   end
 
-  def aspect_ratio
-    self.metadata["data"]["aspectRatio"]
+  def source_id
+    # http://stackoverflow.com/a/9102270
+    match = self.source_url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/)
+    (match && match[2].length == 11) ? match[2] : nil
   end
 
   def view_count
-    self.metadata["data"]["viewCount"]  
+    return 0 unless self.metadata
+    self.metadata["statistics"]["viewCount"]  
   end
 
   def duration
-    self.metadata["data"]["duration"] # youtube video duration
+    return 0 unless self.metadata
+    self.metadata["contentDetails"]["duration"] # youtube video duration
   end
 
   def uploader_username
-    self.metadata["data"]["uploader"]
+    return "unavailable" unless self.metadata
+    self.metadata["snippet"]["channelTitle"]
+  end
+
+  def name
+    return "Video unavailable" unless self.metadata
+    self.metadata["snippet"]["title"]  
   end
 
   def thumbnail_url
-    self.metadata["data"]["thumbnail"]["sqDefault"]
+    return "" unless self.metadata
+    self.metadata["snippet"]["thumbnails"]["default"]["url"]
   end
 
   def thumbnail_url_hq
-    self.metadata["data"]["thumbnail"]["hqDefault"]
-  end
-
-  def uploader_url
-    "http://www.youtube.com/user/#{self.metadata["data"]["uploader"]}"
+    return "" unless self.metadata
+    self.metadata["snippet"]["thumbnails"]["high"]["url"]
   end
 
   def generate_token

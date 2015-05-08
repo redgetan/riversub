@@ -9,10 +9,7 @@ class ReleaseItemsController < ApplicationController
 
     # if video already exist not need to create another one
     @video = Video.where(:source_url => params[:source_url].gsub(/https/,"http"))
-                  .first_or_create!({
-                    :name => metadata[:data][:title],
-                    :metadata => metadata,
-                  })
+                  .first_or_create!
 
     # update video language if needed
     @video.update_attributes!(language: params[:video_language_code]) unless @video.language.present?
