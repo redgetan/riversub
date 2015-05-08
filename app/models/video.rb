@@ -61,7 +61,10 @@ class Video < ActiveRecord::Base
 
   def duration
     return 0 unless self.metadata
-    self.metadata["contentDetails"]["duration"] # youtube video duration
+    ytformat = self.metadata["contentDetails"]["duration"] # youtube video duration
+    # youtube duration format comes in the form of PT1H41M17S
+    match = ytformat.match(/PT(\d{0,2}?)H*(\d{0,2}?)M*(\d{0,2})S/)
+    match[1].to_i * 3600 + match[2].to_i * 60 + match[3].to_i
   end
 
   def uploader_username
