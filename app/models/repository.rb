@@ -602,7 +602,7 @@ class Repository < ActiveRecord::Base
             </a>
             <br />
             <span style="color:rgb(119, 119, 119); font-family:helvetica neue,helvetica,arial,sans-serif; font-size:11px; line-height:17.4603176116943px">
-              #{self.video_title_for_release}
+              #{self.video.view_count} views
             </span>
           </p>
         </div>
