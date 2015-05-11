@@ -2901,7 +2901,8 @@ ul.source_repo_timing_list li span {
 }
 
 .latest_release_container .release_item,
-.group_release_container .release_item {
+.group_release_container .release_item,
+.release_items_container .release_item {
   width: 150px;
   display: table-cell;
   vertical-align: top;
@@ -2909,7 +2910,8 @@ ul.source_repo_timing_list li span {
 }
 
 .latest_release_container .release_item .video_thumb,  
-.group_release_container  .release_item .video_thumb { 
+.group_release_container  .release_item .video_thumb, 
+.release_items_container  .release_item .video_thumb { 
   margin-right: 0px;
 }
 
