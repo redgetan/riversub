@@ -21,9 +21,12 @@
           <span class='orig_video_name river_gray'><%= video.title %></span>
         <% end %>
       </div>
+      <div class='release_item_transcript'>
+        <%= repo.transcript[0..200] %>
+      </div>
       <div class="assignee">
         <span class='repo_owner'>
-          translator: 
+          by: 
           <a href="<%= repo.owner_profile_url %>" class="owner_name"><%= repo.owner %></a>
         </span>
       </div>

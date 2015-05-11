@@ -1074,7 +1074,7 @@ footer a:hover{
 .release_item .assignee .repo_owner .owner_name ,
 .most_commented_repo_item .repo_owner .owner_name {
   color: slategray;
-  border: solid 1px gray;
+  /*border: solid 1px gray;*/
   padding: 2px 2px;
   border-radius: 5px;
 }
@@ -3018,4 +3018,14 @@ ul.source_repo_timing_list li span {
   text-align: center;
   margin-top: 50px;
   margin-bottom: 50px;
+}
+
+.release_item_transcript {
+  /*font-size: 12px;*/
+}
+
+.latest_release_container .release_item_transcript,
+.group_release_container  .release_item_transcript{
+  max-height: 100px;
+  overflow: hidden;
 }
