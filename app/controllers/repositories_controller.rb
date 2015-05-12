@@ -46,6 +46,17 @@ class RepositoriesController < ApplicationController
 
     Comment.highlight_comment(@comments,params[:comment_short_id])
   end
+
+  def embed
+    @repo = Repository.find_by_token! params[:token]
+    @repo.is_embed = true
+
+    if can?(:read, @repo)
+      render layout: false
+    else
+      render :text => "You don't have permission to see that" 
+    end
+  end
   
   def create
     create_common

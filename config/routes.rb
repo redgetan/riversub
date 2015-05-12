@@ -87,6 +87,7 @@ River::Application.routes.draw do
 
     get "/:token",                        to: "repositories#show",   as: "repo"
     get "/r/:token",                        to: "repositories#show",   as: "repo"
+    get "/embed/:token",                    to: "repositories#embed",   as: "repo_embed"
     get "/r/:token/download",               to: "timings#index",   as: "repo_subtitle_download"
     get "/r/:token/comments/:comment_short_id", to: "repositories#show", as: "repo_comment"
     get "/r/:token/subtitles/:subtitle_short_id", to: "repositories#show", as: "repo_subtitle"

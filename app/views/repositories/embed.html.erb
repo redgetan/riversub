@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html class='embed'>
+    <head>
+      <title><%= @repo.title %></title>
+      <meta charset="utf-8">
+      <%= javascript_include_tag "embed_player" %>
+      <%= stylesheet_link_tag    "embed_player" %>
+    </head>
+    <body>
+      <div id='river_player' class='show <%= @repo.is_published? ? "public" : "private"%>' data-repo='<%= @repo.serialize.to_json %>'>
+        <%= render 'videos/player' %>
+      </div>
+    </body>
+</html>
+

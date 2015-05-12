@@ -548,6 +548,46 @@ body {
   background-image: url("ricepaper_v3.png");
 }
 
+html.embed body {
+  background: none;  
+  margin-bottom: 0px;
+  margin-top: -10px;
+  padding: 0px;
+}
+
+html.embed #river_player {
+  margin: 0px;
+  padding: 0px;
+}
+
+html.embed #river_player.show div#media {
+  height: 100%;
+}
+
+html.embed,
+html.embed body,
+html.embed body #river_player,
+html.embed body #river_player #media_container {
+  height: 100%;
+}
+
+html.embed body #river_player #media_container #viewing_screen {
+  height: 90%;
+}
+
+html.embed body #river_player #media_container #viewing_screen #iframe_container {
+  height: 75%;
+}
+
+html.embed body #river_player #media_container #viewing_screen #subtitle_bar {
+  height: 25%;
+}
+
+.player_controls_container {
+  height: 10%;
+}
+
+
 .modal-body {
   /*background-color: darkseagreen;*/
 }

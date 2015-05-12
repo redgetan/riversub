@@ -26,7 +26,7 @@ class Repository < ActiveRecord::Base
   belongs_to :group
   belongs_to :release_item
 
-  attr_accessor :current_user, :highlight_subtitle_short_id
+  attr_accessor :current_user, :highlight_subtitle_short_id, :is_embed
 
   attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :language, :parent_repository_id, :title,
@@ -147,8 +147,12 @@ class Repository < ActiveRecord::Base
     self.user.nil?
   end
 
-  def url
-    repo_url(self.token)
+  def url(embed_repo = nil)
+    (is_embed? || embed_repo) ? repo_embed_url(self.token) : repo_url(self.token)
+  end
+
+  def is_embed?
+    !!self.is_embed  
   end
 
   def favorite_url
@@ -511,7 +515,7 @@ class Repository < ActiveRecord::Base
 
   def player_repository_languages
     result = current_user_owned_and_published_repositories.map do |repo|
-      { url: repo.url, language: repo.language_pretty }
+      { url: repo.url(:embed), language: repo.language_pretty }
     end
 
     result << { url: new_translation_url, language: "- New Translation -" }

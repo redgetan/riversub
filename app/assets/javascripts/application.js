@@ -23,6 +23,8 @@
 //= require lib/backbone.localStorage.js
 
 //= require namespace.js
+//= require utility.js
+//= require home.js
 
 //= require  lib/mousetrap.js
 //= require  lib/mousetrap-global-bind.js
@@ -32,8 +34,6 @@
 
 //= require_tree ./ui/
 
-
 //= require_tree ./models/
 //= require_tree ./controller/
-//= require_tree .
 

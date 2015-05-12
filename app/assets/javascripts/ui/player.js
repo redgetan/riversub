@@ -271,7 +271,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
   hideEditing: function() {
     this.$backwardBtn.hide();
     this.$forwardBtn.hide();
-    this.$iframeOverlay.css("height",this.$mediaContainer.width() / this.IFRAME_OVERLAY_NON_AD_OVERLAPPING_FACTOR);
+    this.$iframeOverlay.css("height",this.$mediaContainer.height() - 
+                                      $(".player_controls_container").height() - 
+                                      $("#subtitle_bar").height());
 
     this.$subtitleBar.css("background-color","rgba(255,0,0,0)");
     this.$subtitleBar.css("z-index","6");

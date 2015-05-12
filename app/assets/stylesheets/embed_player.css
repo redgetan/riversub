@@ -1,5 +1,5 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * This is a manifest file that'll be compiled into embed_player.css, which will include all the files
  * listed below.
  *
  * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
@@ -9,15 +9,9 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require jquery.ui.resizable
- *= require jquery.ui.spinner
  *= require font-awesome
  *= require bootstrap-select.css
  *= require bootstrap_and_overrides.css
  *= require editor.css
  *= require home.css
- *= require introjs.css
- *= require kbdfun.css
- *= require select2.css
- *= require social-buttons.css
  */
