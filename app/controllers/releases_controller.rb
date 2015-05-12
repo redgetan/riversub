@@ -110,7 +110,7 @@ class ReleasesController < ApplicationController
   private
 
     def load_group
-      @group = Group.find_by_short_name(params[:group_id])
+      @group = Group.find_by_short_name(params[:group_id]) || Group.find_by_short_name("jpweekly")
     end
 
     def releases

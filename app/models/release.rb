@@ -34,7 +34,8 @@ class Release < ActiveRecord::Base
   end
 
   def url
-    group_release_url(self.group,self)
+    # group_release_url(self.group,self)
+    release_show_url(self)
   end
 
   def publish_url
