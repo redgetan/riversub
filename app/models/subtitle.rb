@@ -90,8 +90,8 @@ class Subtitle < ActiveRecord::Base
   def serialize
     {
       :id => self.id,
-      :text => ERB::Util.html_escape(self.text),
-      :parent_text => ERB::Util.html_escape(self.parent_text.to_s),
+      :text => self.text,
+      :parent_text => self.parent_text.to_s,
       :score => self.score,
       :short_id => self.short_id,
       :subtitle_item_class_for => self.subtitle_item_class_for(self.class.current_user)
