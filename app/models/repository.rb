@@ -620,6 +620,22 @@ class Repository < ActiveRecord::Base
     html.gsub("\n","")
   end
 
+
+  def get_thumbnail_tempfile
+    @thumbnail_tempfile ||= begin
+      require 'tempfile'
+      require 'open-uri'
+
+      content = open(self.thumbnail_url_hq).read
+
+      tempfile = Tempfile.new("repo_thumbnail")
+      tempfile.binmode # switch to binary mode to be able to write image (default is text)
+      tempfile.write(content)
+      tempfile.rewind
+      tempfile
+    end
+  end
+
   def to_param
     self.token
   end

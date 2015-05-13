@@ -4,8 +4,7 @@ class SocialShare
       raise "Repository #{repo_token} not found"
     end
 
-    thumbnail_tempfile = get_thumbnail_tempfile(repo.thumbnail_url_hq)
-    twitter_client.update_with_media(repo.share_text, thumbnail_tempfile)
+    twitter_client.update_with_media(repo.share_text, repo.get_thumbnail_tempfile)
   end
 
   def tumblr_post_repo(repo_token)
@@ -13,11 +12,10 @@ class SocialShare
       raise "Repository #{repo_token} not found"
     end
 
-    thumbnail_tempfile = get_thumbnail_tempfile(repo.thumbnail_url_hq)
     tumblr_client.photo("redgetan.tumblr.com", {
-      :data => thumbnail_tempfile.path, 
+      :data => repo.get_thumbnail_tempfile.path, 
       :link => repo.url, 
-      :caption => repo.share_text 
+      :caption => tumblr_caption_html(repo)
     })
   end
 
@@ -41,19 +39,15 @@ class SocialShare
     end
   end
 
-  def get_thumbnail_tempfile(thumbnail_url)
-    @thumbnail_tempfile ||= begin
-      require 'tempfile'
-      require 'open-uri'
-
-      content = open(thumbnail_url).read
-
-      tempfile = Tempfile.new("repo_thumbnail")
-      tempfile.binmode # switch to binary mode to be able to write image (default is text)
-      tempfile.write(content)
-      tempfile.rewind
-      tempfile
-    end
+  def tumblr_caption_html(repo)
+    <<-HTML
+      <div style='margin: 15px 20px; color: #fff; position: absolute; top: 0; left: 0; right: 0;   font-weight: 700; font-size: 13px;'>yasub.com</div>
+      <div style='background: #f2f2f2;'>
+        <h2 style='margin: 15px 0px;   font-weight: 700;'>#{repo.share_text}</h2>
+        <div style='margin: 15px 0; font-size: 14px; line-height: 1.5;'>#{repo.share_description}</div>
+      </div>
+      </div>
+    HTML
   end
 
 end
