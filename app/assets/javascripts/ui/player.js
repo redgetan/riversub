@@ -123,6 +123,10 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.togglePlayPause();
   },
 
+  onOverlayBtnClick: function(event) {
+    this.togglePlayPause();
+  },
+
   onPlay: function(event) {
     this.$overlay_btn.hide();
     this.$playBtn.hide();
@@ -152,6 +156,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
   bindEvents: function() {
     river.ui.BasePlayer.prototype.bindEvents.call(this);
     this.$iframeOverlay.on("click",this.onIframeOverlayClick.bind(this));
+    this.$overlay_btn.on("click",this.onOverlayBtnClick.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
