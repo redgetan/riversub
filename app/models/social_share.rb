@@ -41,12 +41,12 @@ class SocialShare
 
   def tumblr_caption_html(repo)
     <<-HTML
-      <div style='margin: 15px 20px; color: #fff; position: absolute; top: 0; left: 0; right: 0;   font-weight: 700; font-size: 13px;'>yasub.com</div>
-      <div style='background: #f2f2f2;'>
-        <h2 style='margin: 15px 0px;   font-weight: 700;'>#{repo.share_text}</h2>
-        <div style='margin: 15px 0; font-size: 14px; line-height: 1.5;'>#{repo.share_description}</div>
+      <div style='margin: 15px 20px; color: #fff; position: absolute; top: 0; left: 10px; right: 0;   font-weight: 700; font-size: 13px;'>yasub.com</div>
+      <a href="#{repo.url}" style='background: #f2f2f2; text-decoration: none; display: block;'>
+        <h2 style='margin: 15px 0px; font-weight: 700; line-height: 25px; padding: 10px 10px 0px 10px;'>#{repo.share_text}</h2>
+        <div style='margin: 15px 0; font-size: 14px; line-height: 1.5; padding: 0px 10px 10px 10px'>#{repo.share_description}</div>
       </div>
-      </div>
+      </a>
     HTML
   end
 
