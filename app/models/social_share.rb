@@ -15,8 +15,8 @@ class SocialShare
 
     # thumbnail_tempfile = get_thumbnail_tempfile(repo.thumbnail_url_hq)
     tumblr_client.post("redgetan", {
-      :title => repo.share_text,  
-      :description => repo.share_description,  
+      :title => repo.share_text,
+      :description => repo.share_description,
       :url => repo.url,
     })
   end
@@ -39,7 +39,7 @@ class SocialShare
   end
 
   def get_thumbnail_tempfile(thumbnail_url)
-    @thumbnail_tempfile ||= begin do
+    @thumbnail_tempfile ||= begin
       require 'tempfile'
       require 'open-uri'
 
