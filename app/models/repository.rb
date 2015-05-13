@@ -515,7 +515,8 @@ class Repository < ActiveRecord::Base
 
   def player_repository_languages
     result = current_user_owned_and_published_repositories.map do |repo|
-      { url: repo.url(:embed), language: repo.language_pretty }
+      url = self.is_embed? ? repo.url(:embed) : repo.url
+      { url: url, language: repo.language_pretty }
     end
 
     result << { url: new_translation_url, language: "- New Translation -" }
