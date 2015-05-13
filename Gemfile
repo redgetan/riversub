@@ -76,6 +76,8 @@ gem "public_activity", "=1.4.2"
 # http://www.rubydoc.info/gems/public_activity/PublicActivity/Tracked/ClassMethods:tracked
 
 gem 'hashie', '~> 2.1.2'
+gem 'twitter', :git => "https://github.com/sferik/twitter", :ref => "b299925d22d9ccf75c50328cea34e3f0194e1a33"
+gem 'tumblr_client'
 
 
 
