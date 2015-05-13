@@ -13,14 +13,13 @@ class SocialShare
       raise "Repository #{repo_token} not found"
     end
 
-    # thumbnail_tempfile = get_thumbnail_tempfile(repo.thumbnail_url_hq)
-    tumblr_client.post("redgetan", {
-      :title => repo.share_text,
-      :description => repo.share_description,
-      :url => repo.url,
+    thumbnail_tempfile = get_thumbnail_tempfile(repo.thumbnail_url_hq)
+    tumblr_client.photo("redgetan.tumblr.com", {
+      :data => thumbnail_tempfile.path, 
+      :link => repo.url, 
+      :caption => repo.share_text 
     })
   end
-
 
   def twitter_client
     @twitter_client ||= Twitter::REST::Client.new do |config|
@@ -30,11 +29,15 @@ class SocialShare
   end
 
   def tumblr_client
-    Tumblr.configure do |config|
-      config.consumer_key       = TUMBLR_CONSUMER_KEY
-      config.consumer_secret    = TUMBLR_CONSUMER_SECRET
-      config.oauth_token        = TUMBLR_OAUTH_TOKEN
-      config.oauth_token_secret = TUMBLR_OAUTH_TOKEN_SECRET
+    @tumblr_client ||= begin 
+      Tumblr.configure do |config|
+        config.consumer_key       = TUMBLR_CONSUMER_KEY
+        config.consumer_secret    = TUMBLR_CONSUMER_SECRET
+        config.oauth_token        = TUMBLR_OAUTH_TOKEN
+        config.oauth_token_secret = TUMBLR_OAUTH_TOKEN_SECRET
+      end
+
+      Tumblr::Client.new
     end
   end
 
