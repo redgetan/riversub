@@ -29,8 +29,8 @@
     </ul>
 
     <div class="tab-content">
-      <div class="tab-pane active" id="translations"><%= render "user_repositories" %></div>
-      <div class="tab-pane" id="video_bookmarks"><%= render "video_bookmarks" %></div>
+      <div class="tab-pane <%= @user.translations_tab_class %>" id="translations"><%= render "user_repositories" %></div>
+      <div class="tab-pane <%= @user.video_bookmarks_tab_class %>" id="video_bookmarks"><%= render "video_bookmarks" %></div>
       <div class="tab-pane" id="line_favorites"><%= render "line_favorites" %></div>
       <div class="tab-pane" id="user_groups"><%= render "user_groups" %></div>
     </div>
