@@ -87,11 +87,16 @@ class Subtitle < ActiveRecord::Base
   #   super
   # end
 
+  def xss_safe_html_content(str)
+    str.gsub("<","[")
+       .gsub(">","]")
+  end
+
   def serialize
     {
       :id => self.id,
-      :text => self.text,
-      :parent_text => self.parent_text.to_s,
+      :text => xss_safe_html_content(self.text),
+      :parent_text => xss_safe_html_content(self.parent_text.to_s),
       :score => self.score,
       :short_id => self.short_id,
       :subtitle_item_class_for => self.subtitle_item_class_for(self.class.current_user)

@@ -198,7 +198,9 @@ function getCookie(c_name)
 }
 
 window.onerror = function(message, file, lineNumber) {
-  ga('send','event', 'error', 'any', 'message', file + ":" + lineNumber + " - " + message);
+  if (typeof ga !== "undefined") {
+    ga('send','event', 'error', 'any', 'message', file + ":" + lineNumber + " - " + message);
+  }
 };
 
 //})();
