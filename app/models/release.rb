@@ -20,6 +20,10 @@ class Release < ActiveRecord::Base
   def publish
     Release.transaction do 
       self.repositories.update_all("is_published = 1")
+      self.repositories.each do |repo|
+        other_repo = repo.other_published_repositories.select { |r| r.language = "ja" }.first
+        other_repo.update_column(:is_published, 1)
+      end
       self.update_column(:is_published, 1)
     end
   end
