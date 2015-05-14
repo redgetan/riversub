@@ -10,10 +10,13 @@ class Repository < ActiveRecord::Base
   include Rails.application.routes.url_helpers
   include ApplicationHelper
   include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::TextHelper
 
   paginates_per 20
+
   acts_as_votable
   acts_as_commentable
+  acts_as_ordered_taggable
 
   belongs_to :video
   belongs_to :user
@@ -552,7 +555,7 @@ class Repository < ActiveRecord::Base
   end
 
   def share_text
-    ["[#{language_pretty} Sub]",release_title[0..100]].join(" ")
+    ["[#{language_pretty} Sub]",truncate(release_title, length: 80)].join(" ")
   end
 
   def share_description
@@ -620,6 +623,10 @@ class Repository < ActiveRecord::Base
     html.gsub("\n","")
   end
 
+  def add_tags(tag_array)
+    self.tag_list.add tag_array  
+    self.save
+  end
 
   def get_thumbnail_tempfile
     @thumbnail_tempfile ||= begin

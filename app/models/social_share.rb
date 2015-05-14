@@ -1,10 +1,13 @@
 class SocialShare
+
+  MAX_TWEET_CHAR = 140
+
   def tweet_repo(repo_token)
     unless repo = Repository.find_by_token(repo_token)
       raise "Repository #{repo_token} not found"
     end
 
-    twitter_client.update_with_media(repo.share_text, repo.get_thumbnail_tempfile)
+    twitter_client.update_with_media(twitter_share_text(repo), repo.get_thumbnail_tempfile)
   end
 
   def tumblr_post_repo(repo_token)
@@ -15,7 +18,8 @@ class SocialShare
     tumblr_client.photo("redgetan.tumblr.com", {
       :data => repo.get_thumbnail_tempfile.path, 
       :link => repo.url, 
-      :caption => tumblr_caption_html(repo)
+      :caption => tumblr_caption_html(repo),
+      :tags => repo.tag_list.join(",")
     })
   end
 
@@ -24,6 +28,20 @@ class SocialShare
       config.consumer_key    = TWITTER_CONSUMER_KEY
       config.consumer_secret = TWITTER_CONSUMER_SECRET
     end
+  end
+
+  def twitter_share_text(repo)
+    tag_list = repo.tag_list 
+
+    loop do
+      tags_text = tag_list.map { |tag| "#" + tag }.join(" ")
+      tag_list.pop
+
+      within_tweet_char_count = [repo.share_text,tags_text].join(" ").length < MAX_TWEET_CHAR
+      break if (tag_list.empty? || within_tweet_char_count)
+    end
+
+    [repo.share_text, tags_text].join(" ")
   end
 
   def tumblr_client
