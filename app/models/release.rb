@@ -22,7 +22,7 @@ class Release < ActiveRecord::Base
       self.repositories.update_all("is_published = 1")
       self.repositories.each do |repo|
         other_repo = repo.other_published_repositories.select { |r| r.language = "ja" }.first
-        other_repo.update_column(:is_published, 1)
+        other_repo.update_column(:is_published, 1) if other_repo
       end
       self.update_column(:is_published, 1)
     end
