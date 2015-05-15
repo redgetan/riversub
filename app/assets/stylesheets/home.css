@@ -2927,6 +2927,10 @@ html.fullscreen #river_player .player_language_select {
   width: 14%;
 }
 
+html.fullscreen #river_player .subtitle_bar {
+  padding-top: 40px;
+}
+
 html.fullscreen #river_player .player_right_controls {
   width: 7%;
 }
