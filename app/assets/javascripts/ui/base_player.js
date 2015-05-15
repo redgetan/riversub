@@ -146,19 +146,17 @@ river.ui.BasePlayer = Backbone.View.extend({
 
   addPlayerControls: function() {
     $("#viewing_screen").after("<div class='player_controls_container'><div class='player_controls'></div></div>");    
-    $(".player_controls").append("<button type='button' class='backward_btn river_btn'><i class='glyphicon glyphicon-backward'></i> </button> ");
-    $(".player_controls").append("<button type='button' class='play_btn river_btn'><i class='glyphicon glyphicon-play'></i></button>");
-    $(".player_controls").append("<button type='button' class='pause_btn river_btn'><i class='glyphicon glyphicon-pause'></i></button>");
-    $(".player_controls").append("<button type='button' class='forward_btn river_btn'><i class='glyphicon glyphicon-forward'></i> </button> ");
+    $(".player_controls").append("<button type='button' class='backward_btn river_btn'><i class='fa fa-backward'></i> </button> ");
+    $(".player_controls").append("<button type='button' class='play_btn river_btn'><i class='fa fa-play'></i></button>");
+    $(".player_controls").append("<button type='button' class='pause_btn river_btn'><i class='fa fa-pause'></i></button>");
+    $(".player_controls").append("<button type='button' class='forward_btn river_btn'><i class='fa fa-forward'></i> </button> ");
     $(".player_controls").append("<div class='player_timeline_container'></div>");
     $("#summary").appendTo(".player_timeline_container")
-    $(".player_controls").append("<button type='button' class='expand_btn river_btn'><i class='glyphicon glyphicon-fullscreen'></i></button>");
 
     this.$playBtn = $(".play_btn");
     this.$pauseBtn = $(".pause_btn");
     this.$backwardBtn = $(".backward_btn");
     this.$forwardBtn = $(".forward_btn");
-    this.$expandBtn = $(".expand_btn");
     this.$pauseBtn.hide();
     
     if (this.timeline) {

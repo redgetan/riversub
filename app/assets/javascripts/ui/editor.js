@@ -26,7 +26,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
     // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
-    this.$expandBtn.hide();
     this.enableHashTab();
 
     // this will showinvalid timings

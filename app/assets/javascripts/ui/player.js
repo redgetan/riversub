@@ -7,8 +7,8 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     river.ui.BasePlayer.prototype.initialize.call(this,options);
 
-    this.setupLanguageSelect();
     this.setupSubtitleZoom();
+    this.setupLanguageSelect();
 
     this.hideEditing();
     this.postBindEvents();
@@ -59,7 +59,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     var selectedAttr;
     var option;
 
-    var html = "<select class='player_language_select' style='width: 17%; float: left;'>";
+    var html = "<select class='player_language_select' style=''>";
 
     for (var i = 0; i < this.repo.player_repository_languages.length ; i++) {
       repo_language = this.repo.player_repository_languages[i];
@@ -87,12 +87,17 @@ river.ui.Player = river.ui.BasePlayer.extend({
     // var zoomOutBtn = "<i class='subtitle_zoom_in_btn glyphicon glyphicon-zoom-out'></i>";
     var zoomInBtn = "<i class='subtitle_zoom_in_btn fa fa-search-plus'></i>";
     var zoomOutBtn = "<i class='subtitle_zoom_out_btn fa fa-search-minus'></i>";
+    var expandBtn = "<i class='expand_btn fa fa-arrows-alt'></i>";
+    var rightControls = "<div class='player_right_controls'></div>";
 
-    $(".player_controls").append(zoomInBtn);
-    $(".player_controls").append(zoomOutBtn);
+    $(".player_controls").append(rightControls);
+    $(".player_right_controls").append(zoomInBtn);
+    $(".player_right_controls").append(zoomOutBtn);
+    $(".player_right_controls").append(expandBtn);
 
     this.$zoomInBtn = $(".subtitle_zoom_in_btn");
     this.$zoomOutBtn = $(".subtitle_zoom_out_btn");
+    this.$expandBtn = $(".expand_btn");
   },
 
   enableHashTab: function() {
@@ -150,7 +155,21 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onExpandBtnClick: function(event) {
-    event.preventDefault();
+    $(".player_controls").show(); // make sure its visible so dimensions can be adjusted
+
+    if ($("html").hasClass("fullscreen")) {
+      $("html").removeClass("fullscreen");
+      this.$expandBtn.removeClass("fa-compress");
+      this.$expandBtn.addClass("fa-arrows-alt");
+    } else {
+      $("html").addClass("fullscreen");
+      this.$expandBtn.removeClass("fa-arrows-alt");
+      this.$expandBtn.addClass("fa-compress");
+    }
+
+    this.timeline.setTimelineWidth();
+    this.renderTimeCurrent();
+    this.renderTimeLoaded();
   },
 
   bindEvents: function() {
@@ -162,6 +181,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
     this.popcorn.on("timeupdate",this.onTimeUpdate.bind(this));
     this.popcorn.on("progress", this.onProgress.bind(this) );
+    $(window).on("resize",this.onWindowResize.bind(this));
   },
 
   postBindEvents: function() {
@@ -216,14 +236,22 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onProgress: function() {
-    var secondsLoaded = this.popcorn.video.buffered.end(0);
-    var width = secondsLoaded * this.resolution(this.timeline.$summary);
-    this.$timeLoaded.css("width", width);
+    this.renderTimeLoaded();
   },
 
   onTimeUpdate: function(event) {
+    this.renderTimeCurrent();
+  },
+
+  renderTimeLoaded: function() {
+    var secondsLoaded = this.popcorn.video.buffered.end(0);
+    var width = secondsLoaded * this.timeline.resolution(this.timeline.$summary);
+    this.$timeLoaded.css("width", width);
+  },
+
+  renderTimeCurrent: function() {
     var seconds = this.media.currentTime;  
-    var width = seconds * this.resolution(this.timeline.$summary);
+    var width = seconds * this.timeline.resolution(this.timeline.$summary);
     this.$timeCurrent.css("width", width);
 
     if (seconds >= (this.media.duration - this.VIDEO_END_PADDING)) {
@@ -234,6 +262,13 @@ river.ui.Player = river.ui.BasePlayer.extend({
   goToBeginningOfVideo: function() {
     this.pause();
     this.seek(0);
+  },
+
+  onWindowResize: function(event) {
+    $(".player_controls").show(); // make sure its visible so dimensions can be adjusted
+    this.timeline.setTimelineWidth();
+    this.renderTimeCurrent();
+    this.renderTimeLoaded();
   },
 
   onTrackStart: function(track) {
@@ -269,6 +304,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     $("#summary").append("<span class='time_loaded'></span>");
     $("#summary").append("<span class='time_current'></span>");
     
+    this.$timeTotal = $(".time_total");
     this.$timeLoaded = $(".time_loaded");
     this.$timeCurrent = $(".time_current");
   },
@@ -276,10 +312,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
   hideEditing: function() {
     this.$backwardBtn.hide();
     this.$forwardBtn.hide();
-    this.$iframeOverlay.css("height",this.$mediaContainer.height() - 
-                                      $(".player_controls_container").height() - 
-                                      $("#subtitle_bar").height());
-
     this.$subtitleBar.css("background-color","rgba(255,0,0,0)");
     this.$subtitleBar.css("z-index","6");
     this.$subtitleBar.css("line-height","20px");

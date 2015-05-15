@@ -335,7 +335,7 @@ div#iframe_container #iframe_overlay {
 }
 
 #river_player.show #iframe_overlay {
-  height: 500px;
+  height: 100%;
 }
 
 
@@ -548,45 +548,74 @@ body {
   background-image: url("ricepaper_v3.png");
 }
 
-html.embed body {
+html.embed body,
+html.fullscreen body {
   background: none;  
   margin-bottom: 0px;
   margin-top: -10px;
   padding: 0px;
 }
 
-html.embed #river_player {
+html.embed #river_player,
+html.fullscreen #river_player {
   margin: 0px;
   padding: 0px;
 }
 
-html.embed #river_player.show div#media {
+html.embed #river_player.show div#media,
+html.fullscreen #river_player.show div#media,
+html.embed #river_player.show div#iframe_overlay,
+html.fullscreen #river_player.show div#iframe_overlay {
   height: 100%;
 }
 
 html.embed,
 html.embed body,
 html.embed body #river_player,
-html.embed body #river_player #media_container {
+html.embed body #river_player #media_container,
+html.fullscreen,
+html.fullscreen body,
+html.fullscreen body #river_player,
+html.fullscreen body #river_player #media_container {
   height: 100%;
 }
 
-html.embed body #river_player #media_container #viewing_screen {
-  height: 90%;
+html.embed,
+html.fullscreen {
+  background-color: black;
 }
 
-html.embed body #river_player #media_container #viewing_screen #iframe_container {
+html.embed body #river_player #media_container #viewing_screen,
+html.fullscreen body #river_player #media_container #viewing_screen {
+  height: 93%;
+}
+
+html.embed body #river_player #media_container #viewing_screen #iframe_container,
+html.fullscreen body #river_player #media_container #viewing_screen #iframe_container {
   height: 75%;
 }
 
-html.embed body #river_player #media_container #viewing_screen #subtitle_bar {
+html.embed body #river_player #media_container #viewing_screen #subtitle_bar,
+html.fullscreen body #river_player #media_container #viewing_screen #subtitle_bar {
   height: 25%;
 }
 
-.player_controls_container {
-  height: 10%;
+html.fullscreen #media_container {
+  position: fixed;
+  margin: 0px !important;
+  padding: 0px;
+  top: 0px;
+  left: 0px;
 }
 
+html.fullscreen #player_details,
+html.fullscreen .original_video_stats {
+  display: none;
+}
+
+html.fullscreen #player_details {
+  display: none;
+}
 
 .modal-body {
   /*background-color: darkseagreen;*/
@@ -1400,12 +1429,13 @@ footer a:hover{
 
 .player_controls_container {
   background-color: black;
-  height: 27px;
+  height: 100%;
+  min-height: 30px;
 }
 
 .player_controls {
   text-align: left;
-  height: inherit;
+  height: 30px;
   padding-left: 10px;
   background-color: black;
 }
@@ -1435,12 +1465,8 @@ footer a:hover{
 
 .player_controls .player_timeline_container {
   float: left;
-  height: inherit;
+  height: 20px;
   margin-left: 5px;
-}
-
-#river_player .player_timeline_container {
-  width: 65%;
   margin-right: 5px;
 }
 
@@ -2851,7 +2877,81 @@ ul.source_repo_timing_list li span {
   margin-left: 5px;
   margin-right: 5px;
   border: solid 1px #333;
+  float: left;
 }
+
+#river_player .play_btn,
+#river_player .pause_btn {
+  width: 4%;
+}
+
+#river_player .player_timeline_container {
+  width: 64%;
+}
+
+#river_player .player_language_select {
+  width: 100px; 
+  min-width: 100px;
+  float: right;
+}
+
+@media screen and (min-width: 100px) {
+  #river_player .player_timeline_container {
+    width: 35%;
+  }
+}
+
+@media screen and (min-width: 480px) {
+  #river_player .player_timeline_container {
+    width: 48%;
+  }
+}
+
+@media screen and (min-width: 580px) {
+  #river_player .player_timeline_container {
+    width: 58%;
+  }
+}
+
+@media screen and (min-width: 680px) {
+  #river_player .player_timeline_container {
+    width: 63%;
+  }
+}
+
+html.fullscreen #river_player .player_timeline_container {
+  width: 70%;
+}
+
+html.fullscreen #river_player .player_language_select {
+  width: 14%;
+}
+
+html.fullscreen #river_player .player_right_controls {
+  width: 7%;
+}
+
+#river_player .subtitle_zoom_in_btn,
+#river_player .subtitle_zoom_out_btn,
+#river_player .expand_btn {
+  width: 20px;
+  text-align: center;
+}
+
+#river_player .player_right_controls {
+  float: right;
+  min-width: 60px;
+  margin-right: 5px;
+  width: 10%;
+  text-align: center;
+}
+
+.subtitle_zoom_in_btn,
+.subtitle_zoom_out_btn {
+  color: white;
+  cursor: pointer;
+}
+
 
 #river_player .player_controls .select2-container--default .select2-selection--single {
   height: 20px;
@@ -2863,9 +2963,12 @@ ul.source_repo_timing_list li span {
 }
 
 #river_player .expand_btn {
-  float: right;
-  margin-right: 10px;
   margin-top: 3px;
+  color: white;
+  cursor: pointer;
+}
+
+html.embed .expand_btn {
   display: none;
 }
 
@@ -3028,13 +3131,6 @@ ul.source_repo_timing_list li span {
 #subtitle_original_display  {
   /*font-size: 12px;*/
   color: lightgray;
-}
-
-.subtitle_zoom_in_btn,
-.subtitle_zoom_out_btn {
-  color: white;
-  margin: 2px;
-  cursor: pointer;
 }
 
 .about_faq_container p {
