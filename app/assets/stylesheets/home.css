@@ -600,6 +600,10 @@ html.fullscreen body #river_player #media_container #viewing_screen #subtitle_ba
   height: 25%;
 }
 
+html.fullscreen body #river_player #media_container #viewing_screen #subtitle_bar {
+  padding-top: 40px;
+}
+
 html.fullscreen #media_container {
   position: fixed;
   margin: 0px !important;
@@ -2925,10 +2929,6 @@ html.fullscreen #river_player .player_timeline_container {
 
 html.fullscreen #river_player .player_language_select {
   width: 14%;
-}
-
-html.fullscreen #river_player .subtitle_bar {
-  padding-top: 40px;
 }
 
 html.fullscreen #river_player .player_right_controls {
