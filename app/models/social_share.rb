@@ -32,6 +32,7 @@ class SocialShare
 
   def twitter_share_text(repo)
     tag_list = repo.tag_list 
+    tags_text = ""
 
     loop do
       tags_text = tag_list.map { |tag| "#" + tag }.join(" ")
