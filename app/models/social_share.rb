@@ -35,7 +35,7 @@ class SocialShare
   def twitter_share_text(repo)
     tag_list = repo.tag_list 
     tags_text = ""
-    short_repo_url = repo.url.gsub("http.+www\.","")
+    short_repo_url = repo.url.gsub(/http.+www\./,"")
 
     loop do
       tags_text = tag_list.map { |tag| "#" + tag }.join(" ")
