@@ -44,7 +44,7 @@ class SocialShare
       break if (tag_list.empty? || within_tweet_char_count)
     end
 
-    [repo.share_text, tags_text].join(" ")
+    [repo.share_text, repo.url, tags_text].join(" ")
   end
 
   def tumblr_client
