@@ -40,7 +40,7 @@ class SocialShare
       tags_text = tag_list.map { |tag| "#" + tag }.join(" ")
       tag_list.pop
 
-      within_tweet_char_count = [repo.share_text,tags_text].join(" ").length < MAX_TWEET_CHAR
+      within_tweet_char_count = [repo.share_text,repo.url,tags_text].join(" ").length < MAX_TWEET_CHAR
       break if (tag_list.empty? || within_tweet_char_count)
     end
 
