@@ -15,7 +15,7 @@ class SocialShare
       raise "Repository #{repo_token} not found"
     end
 
-    tumblr_client.photo("redgetan.tumblr.com", {
+    tumblr_client.photo(TUMBLR_PAGE_URL, {
       :data => repo.get_thumbnail_tempfile.path, 
       :link => repo.url, 
       :caption => tumblr_caption_html(repo),
