@@ -2,8 +2,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   initialize: function(options) {
     this.IFRAME_OVERLAY_NON_AD_OVERLAPPING_FACTOR = 2.3;
-    this.MAX_SUBTITLE_DISPLAY_FONT_SIZE = 24;
+    this.MAX_SUBTITLE_DISPLAY_FONT_SIZE = 36;
     this.MIN_SUBTITLE_DISPLAY_FONT_SIZE = 12;
+    this.FULLSCREEN_PARAM = "?fullscreen=true";
 
     river.ui.BasePlayer.prototype.initialize.call(this,options);
 
@@ -24,6 +25,10 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$el = $("#river_player");
 
     this.enableHashTab();
+
+    if (this.repo.is_fullscreen) {
+      this.enterFullscreenMode();
+    }
 
     // ensure first subtitle appears if it start_time is 0
     this.onTrackStart(this.tracks.at(0));
@@ -79,6 +84,22 @@ river.ui.Player = river.ui.BasePlayer.extend({
     // prevent selection from showing the focus highlight
     $(".select2-selection--single").on("focus",function(){ 
       $(".select2-selection--single").blur(); 
+    });
+  },
+
+  addFullscreenToLanguageSelect: function() {
+    var self = this;
+    $(".player_language_select option").each(function(){ 
+      var url = $(this).data("url");
+      $(this).data("url", url + self.FULLSCREEN_PARAM);
+    });
+  },
+
+  removeFullscreenFromLanguageSelect: function() {
+    var self = this;
+    $(".player_language_select option").each(function(){ 
+      var url = $(this).data("url");
+      $(this).data("url", url.replace(self.FULLSCREEN_PARAM,""));
     });
   },
 
@@ -156,18 +177,30 @@ river.ui.Player = river.ui.BasePlayer.extend({
     $(".player_controls").show(); // make sure its visible so dimensions can be adjusted
 
     if ($("html").hasClass("fullscreen")) {
-      $("html").removeClass("fullscreen");
-      this.$expandBtn.removeClass("fa-compress");
-      this.$expandBtn.addClass("fa-arrows-alt");
+      this.exitFullscreenMode();
     } else {
-      $("html").addClass("fullscreen");
-      this.$expandBtn.removeClass("fa-arrows-alt");
-      this.$expandBtn.addClass("fa-compress");
+      this.enterFullscreenMode();
     }
+  },
 
-    this.timeline.setTimelineWidth();
-    this.renderTimeCurrent();
-    this.renderTimeLoaded();
+  enterFullscreenMode: function() {
+    $("html").addClass("fullscreen");
+    this.$expandBtn.removeClass("fa-arrows-alt");
+    this.$expandBtn.addClass("fa-compress");
+
+    this.addFullscreenToLanguageSelect();
+
+    this.resizePlayerTimeline();
+  },
+
+  exitFullscreenMode: function() {
+    $("html").removeClass("fullscreen");
+    this.$expandBtn.removeClass("fa-compress");
+    this.$expandBtn.addClass("fa-arrows-alt");
+
+    this.removeFullscreenFromLanguageSelect();
+
+    this.resizePlayerTimeline();
   },
 
   bindEvents: function() {
@@ -202,7 +235,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     if (originalFontSize < this.MAX_SUBTITLE_DISPLAY_FONT_SIZE) {
       this.$subtitleDisplay.css("font-size",originalFontSize + 2);
+      this.$subtitleDisplay.css("line-height",originalFontSize + 2 + "px");
       this.$subtitleOriginalDisplay.css("font-size",secondaryOriginalFontSize + 2);
+      this.$subtitleOriginalDisplay.css("line-height",secondaryOriginalFontSize + 2 + "px");
     }
   },
 
@@ -212,7 +247,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     if (originalFontSize > this.MIN_SUBTITLE_DISPLAY_FONT_SIZE) {
       this.$subtitleDisplay.css("font-size",originalFontSize - 2);
+      this.$subtitleDisplay.css("line-height",originalFontSize - 2 + "px");
       this.$subtitleOriginalDisplay.css("font-size",secondaryOriginalFontSize - 2);
+      this.$subtitleOriginalDisplay.css("line-height",secondaryOriginalFontSize - 2 + "px");
     }
   },
 
@@ -264,6 +301,10 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   onWindowResize: function(event) {
     $(".player_controls").show(); // make sure its visible so dimensions can be adjusted
+    this.resizePlayerTimeline();
+  },
+
+  resizePlayerTimeline: function() {
     this.timeline.setTimelineWidth();
     this.renderTimeCurrent();
     this.renderTimeLoaded();

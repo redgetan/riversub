@@ -27,10 +27,12 @@ class Video < ActiveRecord::Base
     end
   end
 
-  def assign_metadata
-    part = "snippet,contentDetails,statistics"
-    response = RestClient.get "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{self.source_id}&key=#{GOOGLE_API_KEY}"
-    self.metadata = JSON.parse(response)["items"][0]
+  def assign_metadata(force = false)
+    if force || self.metadata.nil?
+      part = "snippet,contentDetails,statistics"
+      response = RestClient.get "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{self.source_id}&key=#{GOOGLE_API_KEY}"
+      self.metadata = JSON.parse(response)["items"][0]
+    end
   end
 
   def serialize

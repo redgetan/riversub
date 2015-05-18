@@ -40,6 +40,10 @@ class RepositoriesController < ApplicationController
     @comment = @repo.comment_threads.build
     @comments = @repo.comment_threads.arrange_for_user(current_user)
 
+    if params[:fullscreen]
+      @repo.is_fullscreen = true
+    end
+
     if params[:subtitle_short_id]
       @repo.highlight_subtitle_short_id = params[:subtitle_short_id] 
     end

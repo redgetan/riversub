@@ -29,7 +29,7 @@ class Repository < ActiveRecord::Base
   belongs_to :group
   belongs_to :release_item
 
-  attr_accessor :current_user, :highlight_subtitle_short_id, :is_embed
+  attr_accessor :current_user, :highlight_subtitle_short_id, :is_embed, :is_fullscreen
 
   attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :language, :parent_repository_id, :title,
@@ -489,6 +489,7 @@ class Repository < ActiveRecord::Base
       :subtitle_download_url => self.subtitle_download_url,
       :parent_repository_id => self.parent_repository_id,
       :is_published => self.is_published,
+      :is_fullscreen => self.is_fullscreen,
       :is_guided_walkthrough => self.guided_walkthrough?,
       :group => self.group.try(:serialize),
       :release => self.release.try(:serialize),
