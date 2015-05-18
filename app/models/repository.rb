@@ -151,7 +151,11 @@ class Repository < ActiveRecord::Base
   end
 
   def url(embed_repo = nil)
-    (is_embed? || embed_repo) ? repo_embed_url(self.token) : repo_url(self.token)
+    (is_embed? || embed_repo) ? embed_url  : repo_url(self.token)
+  end
+
+  def embed_url
+    repo_embed_url(self.token)
   end
 
   def is_embed?
@@ -641,6 +645,27 @@ class Repository < ActiveRecord::Base
       tempfile.rewind
       tempfile
     end
+  end
+
+  def embed_code
+    # large
+    # embed_width = "640px"
+    # embed_height = "390px"
+
+    # medium
+    embed_width = "480px"
+    embed_height = "290px"
+
+    <<-HTML.gsub(/\s+/," ")
+      <iframe id="player" 
+              width="#{embed_width}" 
+              height="#{embed_height}" 
+              frameborder="0" 
+              allowfullscreen="1" 
+              title="#{self.title}" 
+              src="#{self.embed_url}">
+      </iframe> 
+    HTML
   end
 
   def to_param

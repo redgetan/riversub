@@ -412,6 +412,7 @@ div#avatar img {
   padding: 0px 10px;
   font-size: 18px;
   margin-bottom: 5px;
+  font-family: Arial;
 }
 
 div#avatar .thumbnail {
@@ -2761,7 +2762,6 @@ form.new_user #user_login {
 .original_video_view_count {
  padding: 5px; 
  margin-left: 10px;
- border: solid 1px lightgray;
  color: gray;
 }
 
@@ -3170,4 +3170,18 @@ html.embed .expand_btn {
 .group_release_container  .release_item_transcript{
   max-height: 100px;
   overflow: hidden;
+}
+
+.embed_container {
+  text-align: left;
+  margin-top: 15px;
+}
+
+.embed_code_input {
+    margin-left: 10px;
+    padding: 0px 5px;
+    background: none;
+    border: solid 2px lightgray;
+    color: gray;  
+    width: 300px;
 }

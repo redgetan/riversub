@@ -39,6 +39,10 @@
         <span class="original_video_source_label">Source:</span>
         <%= link_to "via Youtube", @repo.video.source_url %>
       </div>
+      <div class='embed_container'>
+        <span class='pull-left embed_label'>Embed: </span>
+        <input class='embed_code_input' type='text' value='<%= @repo.embed_code %>' onclick="select()">
+      </div>
       <% if @repo %>
         <%= render 'videos/player_comments' %>
       <% end %>
