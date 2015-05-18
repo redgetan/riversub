@@ -14,18 +14,18 @@
   background-color: rgba(0,0,0,0.3);
 }
 
-#river_player.show #overlay_btn .glyphicon.glyphicon-play,
-#river_player.show #overlay_btn .glyphicon.glyphicon-play {
+#river_player.show #overlay_btn .fa.fa-play,
+#river_player.show #overlay_btn .fa.fa-play {
   font-size: 40px;
   border: solid 5px white;
 }
 
-#overlay_btn .glyphicon.glyphicon-play {
+#overlay_btn .fa.fa-play {
   padding-right: 15px;
-  padding-left: 20px;
+  padding-left: 24px;
 }
 
-#overlay_btn .glyphicon.glyphicon-pause {
+#overlay_btn .fa.fa-pause {
   padding-right: 17px;
   padding-left: 18px;
 }

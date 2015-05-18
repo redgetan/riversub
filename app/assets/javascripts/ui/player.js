@@ -83,8 +83,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   setupSubtitleZoom: function() {
-    // var zoomInBtn = "<i class='subtitle_zoom_in_btn glyphicon glyphicon-zoom-in'></i>";
-    // var zoomOutBtn = "<i class='subtitle_zoom_in_btn glyphicon glyphicon-zoom-out'></i>";
     var zoomInBtn = "<i class='subtitle_zoom_in_btn fa fa-search-plus'></i>";
     var zoomOutBtn = "<i class='subtitle_zoom_out_btn fa fa-search-minus'></i>";
     var expandBtn = "<i class='expand_btn fa fa-arrows-alt'></i>";
