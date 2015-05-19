@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
 
   acts_as_voter   
 
+  has_many :votes, class_name: "ActsAsVotable::Vote", foreign_key: "voter_id"
+
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :bio, :email, :password, :password_confirmation, :remember_me,
                   :avatar, :avatar_cache, :remove_avatar
