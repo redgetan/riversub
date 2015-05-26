@@ -1,6 +1,6 @@
 class SocialShare
 
-  MAX_TWEET_CHAR = 140
+  MAX_TWEET_CHAR = 120
 
   def tweet_repo(repo_token)
     unless repo = Repository.find_by_token(repo_token)
