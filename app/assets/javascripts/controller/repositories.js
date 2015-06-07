@@ -2,9 +2,9 @@ $.extend(river.controller,{
   "repositories#new": function() {
     $("body").addClass("ricepaper");
 
-    $("#video_language_code").select2();
-    $("#repo_language_code").select2();
-    $(".editor_language_select").select2();
+    // $("#video_language_code").select2();
+    // $("#repo_language_code").select2();
+    // $(".editor_language_select").select2();
     $(".editor_language_select").on("change", function(){
       var url = $(".editor_language_select").find("option:selected").data("url");
       window.location.href = url;

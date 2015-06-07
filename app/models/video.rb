@@ -104,6 +104,10 @@ class Video < ActiveRecord::Base
     repositories.select { |repo| repo.visible_to_user?(target_user) }
   end
 
+  def ask_source_language?
+    self.language.blank?  
+  end
+
   def title
     name
   end
