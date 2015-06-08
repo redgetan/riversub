@@ -527,7 +527,11 @@ class Repository < ActiveRecord::Base
       { url: url, language: repo.language_pretty }
     end
 
-    result << { url: new_translation_url, language: "- New Translation -" }
+    if self.is_embed?
+      result << { url: "#", language: "yasub.com" }
+    else
+      result << { url: new_translation_url, language: "- New Translation -" }
+    end
 
     result
   end
