@@ -14,6 +14,9 @@ class RepositoriesController < ApplicationController
     @is_upload = params[:upload].present?
     @is_empty  = params[:empty].present?
 
+    @video_language_code  = params[:video_language_code]
+    @repo_language_code   = params[:repo_language_code]
+
     unless @is_upload || @is_empty
       @source_repo = if params[:source_repo_token]
                        Repository.find_by_token! params[:source_repo_token] 
