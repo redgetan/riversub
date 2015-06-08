@@ -107,7 +107,6 @@ div#editor-bottom {
 #expanded.timeline {
 	cursor: cell;
 	height: 145px;
-	border-top: solid 1px gray ;
 	overflow: hidden;
 }
 
@@ -245,8 +244,7 @@ div#editor-bottom {
 }
 
 #editor #subtitle_container {
-	border-top: solid 1px gray;
-	padding-top: 10px;
+	/*border-top: solid 1px gray;*/
 }
 
 #subtitle_container #controls_extra {
@@ -255,19 +253,17 @@ div#editor-bottom {
   	margin-top: 10px;
 }
 
-#download_container {
-	height: 215px;
-	border-top: solid 1px gray;
+#upload_container {
+	height: 175px;
 }
 
 #upload_subtitle_form {
   margin-left: 150px;
-  margin-top: 50px;
 }
 
 #subtitle_list {
 	padding: 0px 10px;
-	height: 160px;
+	height: 140px;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
@@ -278,7 +274,7 @@ div#editor-bottom {
 }
 
 #editor.translation #subtitle_list {
-	height: 260px;
+	/*height: 260px;*/
 }
 
 #subtitle_list .ui-spinner {
@@ -553,12 +549,15 @@ div#editor-bottom {
 .controls .start_timing_btn {
 	/*min-width: 101px;*/
 	width: 100px;
+	background: none;
+	border: solid 1px #aaa;
 }
 
 .controls .stop_timing_btn {
 	background-color: rgb(128, 164, 240);
 	color: white !important;
 	width: 100px;
+	border: solid 1px #aaa;
 }
 
 div#player-bottom {
@@ -631,6 +630,7 @@ div#keyboard-shortcuts {
 
 #editor-bottom .nav-tabs {
 	margin-bottom: 0px;
+	display: none;
 }
 
 #editor #media_container {
@@ -669,15 +669,17 @@ a.preview_btn {
 	margin-right: 10px;
 */
 	font-size: 16px;
-	width: 578px;
+	width: 500px;
 	height: 30px;
 	border-radius: 0px;
 	padding: 4px;
 	margin-left: 15px;
 	margin-top: 1px;
-	border: solid 1px gray;
 	outline: 0px !important;
   -webkit-appearance: none;
+  background: none;
+  border: none;
+  border-bottom: solid 1px gray;
 }
 
 #editor.published .add_sub_input {
@@ -900,8 +902,11 @@ textarea {
 }
 
 #editor .publish_btn {
-	background-color: rgb(127, 202, 154) !important;
+	border: solid 1px seagreen;
+	background: none;
+	color: seagreen;
 }
+
 #editor.published .publish_btn {
 	background-color: lightgray !important;
 }
@@ -929,11 +934,38 @@ textarea {
 	line-height: 30px;
 }
 
-.controls .select2-container {
+#editor .controls .select2-container {
 	margin-left: 5px;
 	margin-right: 5px;
-	float: right;
+	float: left;
 }
+
+#editor .select2-container--default .select2-selection--single {
+	background: none;
+}
+
+.sub_controls .timeline_btn, 
+.sub_controls .subtitle_btn, 
+.sub_controls .upload_btn {
+	background: none !important;
+	display: block;
+	float: left;
+	border: none;
+/*  border-bottom: none;
+  border-left: none;
+  border-right: none;
+*/}
+
+.sub_controls .timeline_btn.active, 
+.sub_controls .subtitle_btn.active, 
+.sub_controls .upload_btn.active {
+	/*border: solid 1px #aaa;*/
+	text-decoration: underline;
+/*  border-top: none;
+  border-bottom: solid 1px gray;
+  border-left: solid 1px gray;
+  border-right: solid 1px gray;
+*/}
 
 .controls .select2-selection {
 	height: 33px !important;

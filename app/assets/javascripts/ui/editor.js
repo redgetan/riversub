@@ -38,9 +38,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   enableHashTab: function() {
     // http://stackoverflow.com/questions/12131273/twitter-bootstrap-tabs-url-doesnt-change
     var hash = window.location.hash;
+    var tabName = hash.replace("_tab","").replace("#","");
 
     if (hash) {
       $('ul.nav a[href="' + hash + '"]').tab('show');
+      $("." + tabName + "_btn").addClass("active");
     } else {
       $("#subtitle_tab_anchor a").tab("show");
     }
@@ -49,13 +51,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       $(this).tab('show');
       var scrollmem = $('body').scrollTop();
       window.location.hash = this.hash;
+      var tabName = this.hash.replace("_tab","").replace("#","");
+      $(".sub_controls button.active").removeClass("active");
+      $("." + tabName + "_btn").addClass("active");
       $('html,body').scrollTop(scrollmem);
     });
 
     if (hash === "#upload_tab") {
       $("#main_controls").hide();
       if ($("#flash_error").hasClass("alert")) {
-        $("#flash_container").appendTo("#download_container");  
+        $("#flash_container").appendTo("#upload_container");  
       }
     } else if (hash === "#timeline_tab") {
       this.prepareTimerTab();
@@ -148,6 +153,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$replayBtn.on("mousedown",this.onReplayBtnClick.bind(this));
     this.$timelineBtn.on("mousedown",this.onTimelineBtnClick.bind(this));
     this.$subtitleBtn.on("mousedown",this.onSubtitleBtnClick.bind(this));
+    this.$uploadBtn.on("mousedown",this.onUploadBtnClick.bind(this));
     this.$backwardBtn.on("mousedown",this.onBackwardBtnClick.bind(this));
     this.$forwardBtn.on("mousedown",this.onForwardBtnClick.bind(this));
     this.$startTimingBtn.on("mouseenter",this.onStartTimingBtnMouseEnter.bind(this));
@@ -180,8 +186,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPublishBtnClick: function(event) {
-    if (!this.alertTimingErrors(event)) {
-      this.publishRepo(event);
+    if (this.repo.is_published) {
+      window.location.href = this.repo.url;
+    } else {
+      if (!this.alertTimingErrors(event)) {
+        this.publishRepo(event);
+      }
     }
   },
 
@@ -364,7 +374,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     "<ul class='nav nav-tabs'>" +
                       "<li id='timeline_tab_anchor' class='active'><a href='#timeline_tab' data-toggle='tab'>Timer</a></li>" +
                       "<li id='subtitle_tab_anchor' ><a href='#subtitle_tab' data-toggle='tab'>Subtitle</a></li>" +
-                      "<li id='download_tab_anchor' class='pull-right'><a href='#upload_tab' data-toggle='tab'>Upload</a></li>" +
+                      "<li id='upload_tab_anchor' class='pull-right'><a href='#upload_tab' data-toggle='tab'>Upload</a></li>" +
                       // "<li><a id='help_btn' class='' href='#'><i class='icon-question-sign'></i></a></li>" +
                     "</ul>" +
                   "</div> " + // .span12
@@ -382,24 +392,25 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "</div> " +   // #subtitle_container
                       "</div>" +   // tab pane
                       "<div class='tab-pane' id='upload_tab'>" +
-                        "<div id='download_container'> " +
+                        "<div id='upload_container'> " +
                         "</div> " +   // #subtitle_container
                       "</div>" +   // tab pane
                     "</div>" +     // tab content
 
                     "<div class='controls' class=''> " +
                       "<div id='main_controls' class='pull-left'> " +
-                        // "<button type='button' class='timeline_btn river_btn'> <i class='glyphicon glyphicon-time'></i></button> " +
-                        // "<button type='button' class='subtitle_btn river_btn'> <i class='glyphicon glyphicon-list'></i></button> " +
                         "<button type='button' class='start_timing_btn river_btn pull-left'> <i class=''></i>Start</button> " +
                         "<button type='button' class='stop_timing_btn river_btn  pull-left'> <i class='glyphicon glyphicon-stop'></i> Stop</button> " +
                         "<div class='checkbox ask_input_after_timing_checkbox'><label><input type='checkbox'>Ask input after timing</label></div>" +
-                        "<span class='add_sub_input_label'>Input: </span>" +
                         "<input class='add_sub_input' class='' placeholder='Enter Subtitle Here'> " +
                         // "<button type='button' class='add_sub_btn river_btn'>Add</a>" +
                       "</div> " +
-                      "<a class='publish_btn river_btn pull-right'>Publish</a>" +
-                      "<a class='preview_btn river_btn pull-right'><i class=''></i>Preview</a>" +
+                      "<div class='sub_controls pull-right'> " +
+                        "<button type='button' class='river_btn timeline_btn '>Timer</button> " +
+                        "<button type='button' class='river_btn subtitle_btn '>Subtitle</button> " +
+                        "<button type='button' class='river_btn upload_btn '>Upload</button> " +
+                        "<a class='publish_btn river_btn pull-right'>Publish</a>" +
+                      "</div> " +
                     "</div> " +
                   "</div> " + // .span12
                   "<div id='status-bar' class='pull-left'> " +
@@ -458,6 +469,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$replayBtn = $("#replay_btn");
     this.$timelineBtn = $(".timeline_btn");
     this.$subtitleBtn = $(".subtitle_btn");
+    this.$uploadBtn = $(".upload_btn");
 
     $("#seek_head_body").hide();
 
@@ -485,7 +497,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if (this.repo.is_published) {
       this.$publishBtn.attr("disabled","disabled");
-      this.$publishBtn.text("Published");
+      this.$publishBtn.text("View");
       this.$previewBtn.text("View");
       $("#editor").addClass("published");
     }
@@ -512,16 +524,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // tooltips
     this.$timelineBtn.tooltip({title: "Timer Mode"});
     this.$subtitleBtn.tooltip({title: "Subtitle Mode"});
+    this.$uploadBtn.tooltip({title: "Upload Mode"});
 
     // upload form
-    $("#upload_subtitle_form").appendTo("#download_container");
+    $("#upload_subtitle_form").appendTo("#upload_container");
 
     this.setupLanguageSelect();
 
     $("footer").hide();
-    // $("#timeline_tab_anchor").hide();
-    // $("#subtitle_tab_anchor").hide();
-    // $("#download_tab_anchor").hide();
   },
 
   setupLanguageSelect: function() {
@@ -540,7 +550,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     html += "</select>";
 
-    $(".controls").append(html);
+    $("#main_controls").prepend(html);
 
     this.$editorLanguageSelect = $(".editor_language_select");
     this.$editorLanguageSelect.select2();
@@ -1196,12 +1206,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTimelineBtnClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
-    $("#timeline_tab_anchor a").tab("show");
+    $("#timeline_tab_anchor a").trigger("click");
   },
 
   onSubtitleBtnClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
-    $("#subtitle_tab_anchor a").tab("show");
+    $("#subtitle_tab_anchor a").trigger("click");
+  },
+
+  onUploadBtnClick: function(event) {
+    this.preventSubtileInputFromLosingFocus(event);
+    $("#upload_tab_anchor a").trigger("click");
   },
 
   onBackwardBtnClick: function(event) {
