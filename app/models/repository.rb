@@ -504,7 +504,7 @@ class Repository < ActiveRecord::Base
       repo.language == self.video.language
     end.first  
 
-    if other_repo && other_repo != self
+    if other_repo && other_repo != self && !self.is_embed?
       other_repo.timings.map(&:serialize)  
     else
       nil
