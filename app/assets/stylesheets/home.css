@@ -228,7 +228,7 @@ div#media_input {
 .home_try .source_url {
   width: 300px;
   border: solid 3px darkcyan;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .release_item {
@@ -525,6 +525,7 @@ span.repo_owner {
 
 form.sub {
   height: 30px;
+  margin: 50px;
 }
 
 #new_project_modal form.sub {
@@ -3184,4 +3185,79 @@ html.embed .expand_btn {
     border: solid 2px lightgray;
     color: gray;  
     width: 300px;
+}
+
+.groups_videos {
+  margin-top: 50px;
+  border: none; 
+  border-left: solid 1px gray; 
+}
+
+.group_requests {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  border: none; 
+}
+
+.group_members,
+.group_translators {
+  border: none;
+}
+
+.group_requests .section_body {
+  padding-top: 40px;
+}
+
+.group_requests .requests_list {
+  margin-top: 40px;
+  padding-left: 0px;
+  font-size: 12px;
+}
+
+.group_requests .requests_list li {
+  /*height: 16px;*/
+}
+
+.groups_videos .section_header, 
+.group_requests .section_header,
+.group_members .section_header,
+.group_translators .section_header {
+  width: 100px;  
+}
+
+.request_btn {
+  border: solid 1px gray;  
+  color: #333;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.request_btn:hover {
+  background-color: steelblue;
+  color: white;
+  text-decoration: none;
+}
+
+.request_form_submit_btn {
+  font-size: 20px;
+}
+
+.request_form .form_items {
+  list-style: none;
+  border: solid 1px gray;
+  padding: 20px 50px 50px 50px;
+  margin-bottom: 50px;
+}
+
+.request_form .source_url {
+  width: 200px;
+}
+
+.request_form #video_language_code,
+.request_form #request_language_code {
+  background-color: white;
+}
+
+.request_form .help-inline {
+  left: 275px;
 }

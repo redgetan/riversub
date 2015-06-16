@@ -92,6 +92,26 @@ $(document).ready(function(){
     }
   });
 
+  $("form.request_form").on("submit",function(event) {
+    event.preventDefault();
+
+    var url = $(this).find(".source_url").val();
+    var options = { 
+      group_id: $(this).find("[name='group_id']").val(),
+      video_language_code: $(this).find("[name='video_language_code']").val(),
+      request_language_code: $(this).find("[name='request_language_code']").val(),
+    };
+
+    $(this).find(".request_form_submit_btn").button('loading');
+
+    try {
+      addRequest(url, options);
+    } catch(e) {
+      handleSubtitleVideoError(e,$(this));
+      throw e;
+    }
+  });
+
 });
 
 function subtitleVideo(url) {
@@ -134,6 +154,39 @@ function handleSubtitleVideoError(e,$form) {
 
   $("#ajax_loader").remove();
   $subtitle_video_container.find(".sub_btn").button('reset');
+}
+
+function addRequest(url, options) {
+
+  if (!url.match(/youtu\.?be/)) {
+    throw "Only youtube urls are allowed";
+  }
+
+  $.ajax({
+    url: "/requests",
+    type: "POST",
+    data: {
+      source_url : url,
+      video_metadata: metadata,
+      group_id: options.group_id,
+      video_language_code: options.video_language_code,
+      request_language_code: options.request_language_code
+    },
+    dataType: "json",
+    success: function(data,status) {
+      var redirectUrl = data.redirect_url;
+      window.location.href = redirectUrl;
+    },
+    error: function(data,x,y) {
+      try {
+        var error = JSON.parse(data.responseText).error;
+        this.handleSubtitleVideoError(error);
+      } catch (e) {
+        this.handleSubtitleVideoError("something went wrong");
+        throw e;
+      }
+    }.bind(this)
+  });
 }
 
 

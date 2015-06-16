@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150513235927) do
+ActiveRecord::Schema.define(:version => 20150616025707) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -118,6 +118,17 @@ ActiveRecord::Schema.define(:version => 20150513235927) do
     t.integer  "release_item_id"
     t.string   "youtube_sync_email_sent_to"
   end
+
+  create_table "requests", :force => true do |t|
+    t.integer  "video_id"
+    t.integer  "group_id"
+    t.integer  "submitter_id"
+    t.string   "language"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "requests", ["video_id", "group_id"], :name => "index_requests_on_video_id_and_group_id", :unique => true
 
   create_table "settings", :force => true do |t|
     t.string "key"

@@ -8,6 +8,7 @@ class Group < ActiveRecord::Base
   has_many :members, through: :memberships, class_name: "User", source: "user"
 
   has_many :repositories
+  has_many :requests
 
   has_many :releases
 
@@ -25,6 +26,10 @@ class Group < ActiveRecord::Base
 
   def owners
     self.members.where("memberships.is_owner IS TRUE")
+  end
+
+  def translators
+    self.repositories.published.map { |repo| repo.user }.uniq  
   end
 
   def no_whitespace_short_name
@@ -62,6 +67,10 @@ class Group < ActiveRecord::Base
 
   def releases_url
     group_releases_url(self)
+  end
+
+  def published_repositories
+    self.repositories.published  
   end
 
   def unimported_repositories

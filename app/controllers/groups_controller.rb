@@ -12,8 +12,6 @@ class GroupsController < ApplicationController
   end
 
   def show
-    # @group = Group.find_by_short_name(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @group }
