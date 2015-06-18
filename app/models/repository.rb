@@ -540,8 +540,9 @@ class Repository < ActiveRecord::Base
     result
   end
 
-  def new_translation_url
-    self.video.translate_repository_url(source_repo_token: self.token)
+  def new_translation_url(options = {})
+    extra_params = options.reject { |k,v| v.nil? }
+    self.video.translate_repository_url(extra_params.merge(source_repo_token: self.token))
   end
 
   def current_user_owned_and_published_repositories

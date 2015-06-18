@@ -20,10 +20,6 @@ $.extend(river.controller,{
         url = url + "&repo_language_code=" + repoLanguageCode;
       }
 
-      if (typeof groupId !== "undefined") {
-        url = url + "&group_id=" + groupId;
-      }
-
       window.location.href = url;
     });
 
