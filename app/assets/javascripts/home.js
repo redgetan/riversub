@@ -62,9 +62,14 @@ $(document).ready(function(){
     var url = $(this).find(".source_url").val();
 
     $(this).find(".sub_btn").button('loading');
+    var options = { 
+      group_id: $(this).find("[name='group_id']").val(),
+      hide_group: $(this).find("[name='hide_group']").val(),
+      request_id: $(this).find("[name='request_id']").val()
+    };
 
     try {
-      subtitleVideo(url);
+      subtitleVideo(url, options);
     } catch(e) {
       handleSubtitleVideoError(e,$(this));
       throw e;
@@ -92,20 +97,43 @@ $(document).ready(function(){
     }
   });
 
+  $("form.request_form").on("submit",function(event) {
+    event.preventDefault();
+
+    var url = $(this).find(".source_url").val();
+    var options = { 
+      group_id: $(this).find("[name='group_id']").val(),
+      video_language_code: $(this).find("[name='video_language_code']").val(),
+      request_language_code: $(this).find("[name='request_language_code']").val(),
+    };
+
+    $(this).find(".request_form_submit_btn").button('loading');
+
+    try {
+      addRequest(url, options);
+    } catch(e) {
+      handleSubtitleVideoError(e,$(this));
+      throw e;
+    }
+  });
+
 });
 
-function subtitleVideo(url) {
+function subtitleVideo(url, options) {
 
   if (!url.match(/youtube/)) {
     throw "Only youtube urls are allowed";
   }
 
+  var data = {source_url: url};
+  if (typeof options.group_id !== "undefined")   data["group_id"]   = options.group_id;  
+  if (typeof options.hide_group !== "undefined") data["hide_group"] = options.hide_group;  
+  if (typeof options.request_id !== "undefined") data["request_id"] = options.request_id;  
+
   $.ajax({
     url: "/videos/sub",
     type: "POST",
-    data: {
-      source_url : url,
-    },
+    data: data,
     dataType: "json",
     success: function(data,status) {
       var redirectUrl = data.redirect_url;
@@ -134,6 +162,39 @@ function handleSubtitleVideoError(e,$form) {
 
   $("#ajax_loader").remove();
   $subtitle_video_container.find(".sub_btn").button('reset');
+}
+
+function addRequest(url, options) {
+
+  if (!url.match(/youtu\.?be/)) {
+    throw "Only youtube urls are allowed";
+  }
+
+  $.ajax({
+    url: "/requests",
+    type: "POST",
+    data: {
+      source_url : url,
+      video_metadata: metadata,
+      group_id: options.group_id,
+      video_language_code: options.video_language_code,
+      request_language_code: options.request_language_code
+    },
+    dataType: "json",
+    success: function(data,status) {
+      var redirectUrl = data.redirect_url;
+      window.location.href = redirectUrl;
+    },
+    error: function(data,x,y) {
+      try {
+        var error = JSON.parse(data.responseText).error;
+        this.handleSubtitleVideoError(error);
+      } catch (e) {
+        this.handleSubtitleVideoError("something went wrong");
+        throw e;
+      }
+    }.bind(this)
+  });
 }
 
 

@@ -10,6 +10,7 @@ $.extend(river.controller,{
       var url = $(".editor_language_select").find("option:selected").data("url");
       var videoLanguageCode = $("#video_language_code").find("option:selected").val();
       var repoLanguageCode = $("#repo_language_code").find("option:selected").val();
+      var groupId = $("#group_id").find("option:selected").val();
 
       if (typeof videoLanguageCode !== "undefined") {
         url = url + "&video_language_code=" + videoLanguageCode;

@@ -30,6 +30,8 @@ River::Application.routes.draw do
     post "videos/sub",                           :to => "videos#sub",          :as => "sub_videos"
     get  "videos/:video_token/repositories/new", :to => "repositories#new",    :as => "video_repository_new"
     post "videos/:video_token/repositories",     :to => "repositories#create", :as => "video_repository_create"
+    get  "requests/new",     :to => "requests#new",        :as => "video_request_new"
+    post "requests",         :to => "requests#create",     :as => "video_request_create"
     post "videos/:video_token/repositories/upload", :to => "repositories#upload", :as => "video_repository_upload"
     post "/r/:token/upload", :to => "repositories#upload_to_existing_repo", :as => "upload_to_existing_repo"
     get "subs",                                  :to => "repositories#index",  :as => "repositories"

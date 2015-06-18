@@ -228,15 +228,16 @@ div#media_input {
 .home_try .source_url {
   width: 300px;
   border: solid 3px darkcyan;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .release_item {
-  clear: both;
+  /*clear: both;*/
   list-style: none;
 }
 
 .sub_btn {
+  vertical-align: bottom;
 }
 
 div.videos {
@@ -525,6 +526,7 @@ span.repo_owner {
 
 form.sub {
   height: 30px;
+  margin: 50px;
 }
 
 #new_project_modal form.sub {
@@ -2981,7 +2983,7 @@ html.embed .expand_btn {
 
 .latest_activity_container {
   padding-right: 0px;
-  /*margin-top: 30px;*/
+  margin-top: 30px;
   margin-bottom: 50px;
 }
 
@@ -3018,7 +3020,7 @@ html.embed .expand_btn {
 
 .latest_activity_container .activity .title {
   margin: 0px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
 }
 
@@ -3184,4 +3186,166 @@ html.embed .expand_btn {
     border: solid 2px lightgray;
     color: gray;  
     width: 300px;
+}
+
+.groups_videos {
+  margin-top: 30px;
+  border: none; 
+}
+
+.action_container {
+  background-color: mintcream;
+}
+
+.action_container .section_body {
+  padding: 20px;
+}
+
+.group_members,
+.group_requests,
+.group_translators {
+  /*border: none;*/
+}
+
+.action_container .section_body {
+  /*padding-top: 40px;*/
+}
+
+.action_container .requests_list {
+  margin-top: 40px;
+  padding-left: 0px;
+  font-size: 12px;
+}
+
+.action_container .requests_list li {
+  /*height: 16px;*/
+}
+
+.groups_videos .section_header, 
+.action_container .section_header,
+.group_members .section_header,
+.group_requests .section_header,
+.group_translators .section_header {
+/*  border-bottom: solid 1px gray;
+  text-align: center;
+  background: none; 
+  color: #333;
+  margin: auto;
+  width: 250px;
+*/
+}
+
+.request_btn,
+.subtitle_video_btn,
+.join_group_btn {
+  /*border: solid 1px gray;  */
+  color: #333;
+  padding: 5px;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 5px;
+  /*width: 250px;*/
+  text-align: center;
+  margin: auto;
+}
+
+.request_btn:hover,
+.subtitle_video_btn:hover,
+.join_group_btn:hover {
+  background-color: steelblue;
+  color: white;
+  text-decoration: none;
+}
+
+.request_form_submit_btn {
+  font-size: 20px;
+}
+
+.request_form .form_items {
+  list-style: none;
+  border: solid 1px gray;
+  padding: 20px 50px 50px 50px;
+  margin-bottom: 50px;
+}
+
+.request_form .source_url {
+  width: 200px;
+}
+
+.request_form #video_language_code,
+.request_form #request_language_code {
+  background-color: white;
+}
+
+.request_form .help-inline {
+  left: 275px;
+}
+
+#subtitle_modal .modal-header {
+  background: none;
+  color: black;
+}
+
+#subtitle_modal .modal-content {
+  margin-top: 120px;
+}
+
+#subtitle_modal .source_url {
+  width: 350px;
+  font-size: 14px;
+  height: 32px;
+  padding: 5px;
+  border: solid 1px gray;
+}
+
+#subtitle_modal form.sub {
+  margin-left: 75px;
+}
+
+.group_show_container .left_column {
+  /*margin-left: -30px;*/
+}
+
+.group_requests {
+  width: 630px;
+  margin-left: 10px;
+}
+
+.group_requests ul {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.group_header {
+  margin-bottom: 20px;
+}
+
+.action_container .section_header,
+.group_requests .section_header,
+.latest_activity_container .section_header {
+  /*width: 100px;*/
+  border: none;
+  background: none;
+  padding: 10px;
+  text-align: center;
+  color: #333;
+}
+
+.group_requests .section_body {
+  /*padding-left: 20px;*/
+  height: 200px;
+}
+
+.subtitle_request_btn,
+.vote_request_btn {
+  color: brown;
+}
+
+.release_item_editor_btn {
+  margin: 10px 0px;
+}
+
+.request_status {
+  color: darkgreen;
+  text-decoration: underline;
 }

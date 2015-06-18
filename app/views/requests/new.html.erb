@@ -1,0 +1,39 @@
+<div class='header-section col-md-12'></div>
+<div class="background"></div>
+<div class='container'>
+  <div class='row'>
+    <div class="">
+      <div class="center">
+        <h2>Request Subtitle</h2>
+      </div>
+      <br>
+      <br>
+
+      <%= form_tag video_request_create_url, class: "request_form col-md-6 col-md-offset-3" do %>
+        <div class="subtitle_video_container">
+          <ol class='form_items'>
+            <%= hidden_field_tag :group_id, @group_id %>
+            <li>
+              <h4>Youtube Url</h4>
+              <input name="source_url" class="source_url" type="text" placeholder="Paste Youtube Link">
+            </li>
+            <li>
+              <h4>From</h4>
+              <%= select_tag("video_language_code", options_for_select(Video.language_select_options, @video_language_code || "ja")) %>
+            </li>
+            <li>
+              <h4>To</h4>
+              <%= select_tag("request_language_code", options_for_select(Repository.language_select_options, @request_language_code)) %>
+            </li>
+          </ol>
+          <div class='center'>
+            <input class='river_btn request_form_submit_btn sub_btn' type="submit" value="Submit">
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+<div class='header-section col-md-12'></div>
+

@@ -1,6 +1,7 @@
 class VideosController < ApplicationController
 
   def new
+    @group_id = params[:group_id]
   end
 
   def show
@@ -14,7 +15,7 @@ class VideosController < ApplicationController
     @video = Video.where(:source_url => params[:source_url].gsub(/https/,"http"))
                   .first_or_create!
 
-    render :json => { :redirect_url => @video.new_empty_repository_url }
+    render :json => { :redirect_url => @video.new_empty_repository_url(group_id: params[:group_id], hide_group: params[:hide_group])}
   rescue ActiveRecord::RecordInvalid => e
     render :json => { :error => e.message }, :status => 403
   end

@@ -8,6 +8,7 @@ class Group < ActiveRecord::Base
   has_many :members, through: :memberships, class_name: "User", source: "user"
 
   has_many :repositories
+  has_many :requests
 
   has_many :releases
 
@@ -25,6 +26,10 @@ class Group < ActiveRecord::Base
 
   def owners
     self.members.where("memberships.is_owner IS TRUE")
+  end
+
+  def translators
+    self.repositories.published.map { |repo| repo.user }.uniq  
   end
 
   def no_whitespace_short_name
@@ -45,11 +50,16 @@ class Group < ActiveRecord::Base
     self.memberships.create!(user_id: self.creator.id)  
   end
 
-  def self.selection_options_for(user)
+  def self.selection_options_for(user = nil)
     no_group    = ["None", nil]
-    user_groups = user.groups.map { |group|  [group.name,group.id] }
+    
+    groups = if user 
+                user.groups.map { |group|  [group.name,group.id] }
+              else 
+                self.all.map    { |group|  [group.name,group.id] }
+              end
 
-    user_groups.unshift(no_group)
+    groups.unshift(no_group)
   end
 
   def unimported_repositories_grouped_by_video
@@ -62,6 +72,10 @@ class Group < ActiveRecord::Base
 
   def releases_url
     group_releases_url(self)
+  end
+
+  def published_repositories
+    self.repositories.published  
   end
 
   def unimported_repositories

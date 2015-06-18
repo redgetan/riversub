@@ -46,6 +46,11 @@ class Video < ActiveRecord::Base
     }
   end
 
+  def source_url
+    orig_source_url = super  
+    orig_source_url =~ /^http:\/\// ? orig_source_url : orig_source_url.prepend("http://")
+  end
+
   def self.all_language_codes
     self.select("DISTINCT language").map(&:language).compact
   end
@@ -116,20 +121,24 @@ class Video < ActiveRecord::Base
     video_url(self)
   end
 
-  def new_repository_url
-    video_repository_new_url(self) 
+  def new_repository_url(options = {})
+    extra_params = options.reject { |k,v| v.nil? }
+    video_repository_new_url(self, extra_params) 
   end
 
-  def new_empty_repository_url
-    video_repository_new_url(self) + "?empty=true" 
+  def new_empty_repository_url(options = {})
+    extra_params = options.reject { |k,v| v.nil? }
+    video_repository_new_url(self, extra_params.merge(empty: true)) 
   end
 
-  def new_repository_via_upload_url
-    video_repository_new_url(self) + "?upload=true"
+  def new_repository_via_upload_url(options = {})
+    extra_params = options.reject { |k,v| v.nil? }
+    video_repository_new_url(self, extra_params.merge(upload: true)) 
   end
 
-  def translate_repository_url
-    video_repository_new_url(self) 
+  def translate_repository_url(options = {})
+    extra_params = options.reject { |k,v| v.nil? }
+    video_repository_new_url(self, extra_params) 
   end
 
   def published_repositories

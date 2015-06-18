@@ -450,6 +450,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       if (typeof this.release.release_number !== "undefined") {
         this.$el.find("#repo_label").prepend(repo_release);
       }
+      
+      var repo_owner = "<span id='repo_owner'>" +
+                         "<a href='" + this.repo.owner_profile_url + "'>" + this.repo.owner + "</a>" +
+                       "</span> / ";
+      this.$el.find("#repo_label").prepend(repo_owner);
 
       var repo_group = "<span id='repo_group'>" +
                          "<a href=" + this.group.url + ">" + this.group.name + "</a>" +

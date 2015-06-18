@@ -1,7 +1,7 @@
 <div class='header-section span12'></div>
 <div class="background"></div>
-<div class='container'>
-  <div class='row center'>
+<div class='group_show_container container'>
+  <div class='row center group_header'>
     <div class="col-xs-12">
       <span class="title river_gray"><%= @group.name %></span>
       <p>
@@ -15,27 +15,104 @@
     </div>
   </div>
 
-
-  <h3 class="group_releases_header river_gray col-xs-offset-1">
-    <% if can?(:edit, @group) %>
-      <span class="new_group_release_btn">[<%= link_to 'Create New Release', new_group_release_path(@group) %>]</span>
-    <% end %>
-  </h3>
-  <div class='row center group_release_container'>
-    <% @group.releases.each do |release| %>
-      <div class='row'>
-        <% if can?(:read, release) %>
-          <li class="group_release_list_item">
-            <div class="group_release_list_item_header col-xs-9 col-xs-offset-2">
-              <a class="group_release_number" href="<%= release.url %>">Issue <%= release.release_number %></a>
-              - 
-              <%= release.date.strftime("%b %-d, %Y") %>
-            </div>
-            <% @release = release %>
-            <%= render "releases/release_items" %>
-          </li>
-        <% end %>
+  <div class='row'>
+    <div class="left_column col-xs-3 col-xs-offset-1">
+      <div class='action_container section_block'>
+        <div class="section_body">
+          <div class=''>
+            <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn">Subtitle a Video</a>
+            <a href="<%= video_request_new_url(:group_id => @group.id) %>" class="request_btn">Request Subtitle</a>
+            <a href="<%= video_request_new_url(:group_id => @group.id) %>" class="join_group_btn">Join Group</a>
+          </div>
+        </div>
       </div>
-    <% end %>
+      <div class='latest_activity_container'>
+        <div class="section_block">
+          <div class="section_header">
+            Activity
+          </div>
+          <div class="section_body">
+            <%= render_activities(@activities) %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right_column col-xs-8">
+      <div class='group_requests section_block'>
+        <div class="section_header">
+          Requests
+        </div>
+        <div class="section_body">
+
+          <ul class="">
+            <li class='group_requests_header'>
+              <span class='col-xs-6'>Title</span>
+              <span class='col-xs-2'>Language</span>
+              <span class='col-xs-2'>Actions</span>
+              <span class='col-xs-2'>Status</span>
+            </li>
+            <% @group.requests.each do |request| %>
+              <li>
+                <a class='col-xs-6' href="<%= request.video.source_url %>"><%= request.video.title %></a>
+                <span class='col-xs-2 request_langauge'><%= request.language_pretty %></span>
+                <div class='col-xs-2 request_actions'>
+                  <a class='subtitle_request_btn' href="<%= request.new_repository_url %>">[Subtitle]</a>
+                </div>
+                <% if request.completed? %>
+                  <a class='request_status col-xs-2' href='<%= request.completed_repository.url %>'>Done</a>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <div class='groups_videos videos videos_container section_block'>
+        <div class="home_try section_body">
+
+          <% @group.published_repositories.recent.each_slice(4) do |repos| %>
+            <ul class="release_items_container">
+              <% repos.each do |repo| %>
+                <% video = repo.video %>
+                <li class='release_item'>
+                  <div class="video_thumb">
+                    <a href="<%= repo.url %>" >
+                    <img src="<%= video.thumbnail_url %>" alt="">
+                    </a>
+                  </div>
+                  <span class="video_duration">
+                    <%= repo.formatted_duration %>
+                  </span>
+                  <div class="video_title">
+                    <a href="<%= repo.url %>" class="video" >
+                      <span class='video_name'><%= truncate(repo.release_title, length: 80) %></span>
+                    </a>
+                    <% unless repo.release_title == video.title %>
+                      <br/>
+                      <span class='orig_video_name river_gray'><%= video.title %></span>
+                    <% end %>
+                  </div>
+                  <div class='release_item_transcript'>
+                    <%= repo.transcript[0..200] %>
+                  </div>
+                  <div class="assignee">
+                    <span class='repo_owner'>
+                      by:
+                      <a href="<%= repo.owner_profile_url %>" class="owner_name"><%= repo.owner %></a>
+                    </span>
+                  </div>
+                  <% if can?(:edit, repo) %>
+                    <a href="<%= repo.editor_url %>" class="release_item_editor_btn col-xs-5 btn btn-danger btn-xs">Editor</a>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
