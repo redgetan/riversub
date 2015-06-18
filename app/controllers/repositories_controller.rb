@@ -17,6 +17,7 @@ class RepositoriesController < ApplicationController
     @video_language_code  = params[:video_language_code]
     @repo_language_code   = params[:repo_language_code]
     @group_id             = params[:group_id]
+    @hide_group           = params[:hide_group]
 
     unless @is_upload || @is_empty
       @source_repo = if params[:source_repo_token]

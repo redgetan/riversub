@@ -237,6 +237,7 @@ div#media_input {
 }
 
 .sub_btn {
+  vertical-align: bottom;
 }
 
 div.videos {
@@ -3274,3 +3275,23 @@ html.embed .expand_btn {
 .request_form .help-inline {
   left: 275px;
 }
+
+#subtitle_modal .modal-header {
+  background: none;
+  color: black;
+}
+
+#subtitle_modal .modal-content {
+  margin-top: 100px;
+}
+
+#subtitle_modal .source_url {
+  width: 300px;
+  font-size: 19px;
+}
+
+#subtitle_modal form.sub {
+  margin-left: 100px;
+}
+
+

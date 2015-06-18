@@ -63,7 +63,8 @@ $(document).ready(function(){
 
     $(this).find(".sub_btn").button('loading');
     var options = { 
-      group_id: $(this).find("[name='group_id']").val() 
+      group_id: $(this).find("[name='group_id']").val(),
+      hide_group: $(this).find("[name='hide_group']").val() 
     };
 
     try {
@@ -123,13 +124,14 @@ function subtitleVideo(url, options) {
     throw "Only youtube urls are allowed";
   }
 
+  var data = {source_url: url};
+  if (typeof options.group_id !== "undefined")   data["group_id"]   = options.group_id;  
+  if (typeof options.hide_group !== "undefined") data["hide_group"] = options.hide_group;  
+
   $.ajax({
     url: "/videos/sub",
     type: "POST",
-    data: {
-      source_url : url,
-      group_id: options.group_id
-    },
+    data: data,
     dataType: "json",
     success: function(data,status) {
       var redirectUrl = data.redirect_url;

@@ -1,6 +1,6 @@
 <div id="repo_setup_form_list" class="col-md-6 col-md-offset-3">
   <ol >
-    <li>
+    <li style="<%= @hide_group ? "display: none;" : "" %>">
       <h4>Choose group</h4>
       <%= select_tag("group_id", options_for_select(Group.selection_options_for, @group_id)) %>
     </li>
