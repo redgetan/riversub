@@ -28,13 +28,14 @@ class Repository < ActiveRecord::Base
 
   belongs_to :group
   belongs_to :release_item
+  belongs_to :request
 
   attr_accessor :current_user, :highlight_subtitle_short_id, :is_embed, :is_fullscreen
 
   attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :language, :parent_repository_id, :title,
                   :group_id, :release_item_id, :current_user,
-                  :highlight_subtitle_short_id
+                  :highlight_subtitle_short_id, :request_id
 
   validates :video_id, :presence => true
   validates :token, :uniqueness => true, on: :create
@@ -423,7 +424,7 @@ class Repository < ActiveRecord::Base
 
   def owned_by?(target_user)
     if user
-      same_user?(target_user) || same_group?(target_user) || target_user.try(:is_super_admin?)
+      same_user?(target_user) || target_user.try(:is_super_admin?)
     else
       true # anonymous repo belong to everyone
     end

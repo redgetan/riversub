@@ -12,6 +12,7 @@ class GroupsController < ApplicationController
   end
 
   def show
+    @activities = PublicActivity::Activity.order("created_at DESC").limit(3)
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @group }

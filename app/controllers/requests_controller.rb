@@ -19,7 +19,7 @@ class RequestsController < ApplicationController
 
     @request = Request.new(video: @video, 
                            submitter: current_user, 
-                           language: @repo_language_code, 
+                           language: params[:request_language_code], 
                            group_id: params[:group_id])
 
 

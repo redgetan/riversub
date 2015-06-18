@@ -18,6 +18,7 @@ class RepositoriesController < ApplicationController
     @repo_language_code   = params[:repo_language_code]
     @group_id             = params[:group_id]
     @hide_group           = params[:hide_group]
+    @request_id           = params[:request_id]
 
     unless @is_upload || @is_empty
       @source_repo = if params[:source_repo_token]
@@ -69,7 +70,10 @@ class RepositoriesController < ApplicationController
   
   def create
     create_common
-    @repo = Repository.create!(video: @video, user: current_user, language: @repo_language_code)
+    @repo = Repository.create!(video: @video, 
+                               user: current_user, 
+                               language: @repo_language_code,
+                               request_id: params[:request_id])
 
     if params[:group_id].present? && can?(:edit, Group.find(params[:group_id]))
       @repo.update_column(:group_id, params[:group_id]) 

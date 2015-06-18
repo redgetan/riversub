@@ -64,7 +64,8 @@ $(document).ready(function(){
     $(this).find(".sub_btn").button('loading');
     var options = { 
       group_id: $(this).find("[name='group_id']").val(),
-      hide_group: $(this).find("[name='hide_group']").val() 
+      hide_group: $(this).find("[name='hide_group']").val(),
+      request_id: $(this).find("[name='request_id']").val()
     };
 
     try {
@@ -127,6 +128,7 @@ function subtitleVideo(url, options) {
   var data = {source_url: url};
   if (typeof options.group_id !== "undefined")   data["group_id"]   = options.group_id;  
   if (typeof options.hide_group !== "undefined") data["hide_group"] = options.hide_group;  
+  if (typeof options.request_id !== "undefined") data["request_id"] = options.request_id;  
 
   $.ajax({
     url: "/videos/sub",

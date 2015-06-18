@@ -46,6 +46,11 @@ class Video < ActiveRecord::Base
     }
   end
 
+  def source_url
+    orig_source_url = super  
+    orig_source_url =~ /^http:\/\// ? orig_source_url : orig_source_url.prepend("http://")
+  end
+
   def self.all_language_codes
     self.select("DISTINCT language").map(&:language).compact
   end
