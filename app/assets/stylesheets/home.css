@@ -232,7 +232,7 @@ div#media_input {
 }
 
 .release_item {
-  clear: both;
+  /*clear: both;*/
   list-style: none;
 }
 
@@ -3190,49 +3190,62 @@ html.embed .expand_btn {
 .groups_videos {
   margin-top: 50px;
   border: none; 
-  border-left: solid 1px gray; 
 }
 
-.group_requests {
+.action_container {
   margin-top: 50px;
   margin-bottom: 50px;
   border: none; 
+  padding-left: 20px;
 }
 
 .group_members,
+.group_requests,
 .group_translators {
   border: none;
 }
 
-.group_requests .section_body {
+.action_container .section_body {
   padding-top: 40px;
 }
 
-.group_requests .requests_list {
+.action_container .requests_list {
   margin-top: 40px;
   padding-left: 0px;
   font-size: 12px;
 }
 
-.group_requests .requests_list li {
+.action_container .requests_list li {
   /*height: 16px;*/
 }
 
 .groups_videos .section_header, 
-.group_requests .section_header,
+.action_container .section_header,
 .group_members .section_header,
+.group_requests .section_header,
 .group_translators .section_header {
-  width: 100px;  
+  border-bottom: solid 1px gray;
+  text-align: center;
+  background: none; 
+  color: #333;
 }
 
-.request_btn {
+.request_btn,
+.subtitle_video_btn,
+.join_group_btn {
   border: solid 1px gray;  
   color: #333;
-  padding: 10px;
+  padding: 5px;
   text-decoration: none;
+  display: block;
+  margin-bottom: 5px;
+  width: 300px;
+  text-align: center;
 }
 
-.request_btn:hover {
+.request_btn:hover,
+.subtitle_video_btn:hover,
+.join_group_btn:hover {
   background-color: steelblue;
   color: white;
   text-decoration: none;

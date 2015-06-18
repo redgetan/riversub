@@ -62,9 +62,12 @@ $(document).ready(function(){
     var url = $(this).find(".source_url").val();
 
     $(this).find(".sub_btn").button('loading');
+    var options = { 
+      group_id: $(this).find("[name='group_id']").val() 
+    };
 
     try {
-      subtitleVideo(url);
+      subtitleVideo(url, options);
     } catch(e) {
       handleSubtitleVideoError(e,$(this));
       throw e;
@@ -114,7 +117,7 @@ $(document).ready(function(){
 
 });
 
-function subtitleVideo(url) {
+function subtitleVideo(url, options) {
 
   if (!url.match(/youtube/)) {
     throw "Only youtube urls are allowed";
@@ -125,6 +128,7 @@ function subtitleVideo(url) {
     type: "POST",
     data: {
       source_url : url,
+      group_id: options.group_id
     },
     dataType: "json",
     success: function(data,status) {

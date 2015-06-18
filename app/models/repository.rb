@@ -166,6 +166,10 @@ class Repository < ActiveRecord::Base
     upvote_repository_url(self)
   end 
 
+  def post_publish_url
+    group.present? ? group.url : url
+  end
+
   def release
     self.release_item.try(:release)
   end
@@ -537,7 +541,7 @@ class Repository < ActiveRecord::Base
   end
 
   def new_translation_url
-    "#{self.video.translate_repository_url}?source_repo_token=#{self.token}"
+    self.video.translate_repository_url(source_repo_token: self.token)
   end
 
   def current_user_owned_and_published_repositories

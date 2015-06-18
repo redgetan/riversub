@@ -16,6 +16,7 @@ class RepositoriesController < ApplicationController
 
     @video_language_code  = params[:video_language_code]
     @repo_language_code   = params[:repo_language_code]
+    @group_id             = params[:group_id]
 
     unless @is_upload || @is_empty
       @source_repo = if params[:source_repo_token]
@@ -150,7 +151,7 @@ class RepositoriesController < ApplicationController
     if @repo.update_attributes!(is_published: true)
       respond_to do |format|
         format.html  { redirect_to @repo.url  }
-        format.json  { render :json => { :redirect_url => @repo.url }, :status => 200 }
+        format.json  { render :json => { :redirect_url => @repo.post_publish_url }, :status => 200 }
       end
     else
       render :json => { :error => @repo.errors.full_messages }, :status => 403

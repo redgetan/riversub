@@ -1,5 +1,11 @@
 class RequestsController < ApplicationController
   def new
+    if params[:group_id].present? && !user_signed_in?
+      flash[:error] = "You must be logged in to request subtitles"
+      store_location
+      redirect_to new_user_session_url and return
+    end
+
     @group_id = params[:group_id]
   end
 
@@ -11,17 +17,10 @@ class RequestsController < ApplicationController
     # update video language if needed
     @video.update_attributes!(language: params[:video_language_code]) unless @video.language.present?
 
-
-    group_id = if params[:group_id].present? && can?(:edit, Group.find(params[:group_id]))
-                 params[:group_id]
-               else
-                 nil
-               end
-
     @request = Request.new(video: @video, 
                            submitter: current_user, 
                            language: @repo_language_code, 
-                           group_id: group_id)
+                           group_id: params[:group_id])
 
 
     if @request.save
