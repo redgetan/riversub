@@ -550,7 +550,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     html += "</select>";
 
-    $("#main_controls").prepend(html);
+    $(".controls").prepend(html);
 
     this.$editorLanguageSelect = $(".editor_language_select");
     this.$editorLanguageSelect.select2();
