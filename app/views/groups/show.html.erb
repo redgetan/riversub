@@ -71,7 +71,7 @@
       <div class='groups_videos videos videos_container section_block'>
         <div class="home_try section_body">
 
-          <% @group.published_repositories.recent.each_slice(4) do |repos| %>
+          <% @group.published_repositories.where(language: "en").recent.each_slice(4) do |repos| %>
             <ul class="release_items_container">
               <% repos.each do |repo| %>
                 <% video = repo.video %>
