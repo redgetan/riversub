@@ -46,23 +46,29 @@
         <div class="section_body">
 
           <ul class="">
-            <li class='group_requests_header'>
-              <span class='col-xs-6'>Title</span>
-              <span class='col-xs-2'>Language</span>
-              <span class='col-xs-2'>Actions</span>
-              <span class='col-xs-2'>Status</span>
-            </li>
-            <% @group.requests.each do |request| %>
-              <li>
-                <a class='col-xs-6' href="<%= request.video.source_url %>"><%= request.video.title %></a>
-                <span class='col-xs-2 request_langauge'><%= request.language_pretty %></span>
-                <div class='col-xs-2 request_actions'>
-                  <a class='subtitle_request_btn' href="<%= request.new_repository_url %>">[Subtitle]</a>
-                </div>
-                <% if request.completed? %>
-                  <a class='request_status col-xs-2' href='<%= request.completed_repository.url %>'>Done</a>
-                <% end %>
+            <% if @group.requests.present? %>
+              <li class='group_requests_header'>
+                <span class='col-xs-6'>Title</span>
+                <span class='col-xs-2'>Language</span>
+                <span class='col-xs-2'>Actions</span>
+                <span class='col-xs-2'>Status</span>
               </li>
+              <% @group.requests.each do |request| %>
+                <li>
+                  <a class='col-xs-6' href="<%= request.video.source_url %>"><%= request.video.title %></a>
+                  <span class='col-xs-2 request_langauge'><%= request.language_pretty %></span>
+                  <div class='col-xs-2 request_actions'>
+                    <a class='subtitle_request_btn' href="<%= request.new_repository_url %>">[Subtitle]</a>
+                  </div>
+                  <% if request.completed? %>
+                    <a class='request_status col-xs-2' href='<%= request.completed_repository.url %>'>Done</a>
+                  <% end %>
+                </li>
+              <% end %>
+            <% else %>
+              <div class='empty_request_notice'>
+                There's currently nothing here. <a href="<%= video_request_new_url(:group_id => @group.id) %>" class="group_request_add_btn">Add Request</a> 
+              </div>
             <% end %>
           </ul>
         </div>

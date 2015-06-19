@@ -3349,3 +3349,19 @@ html.embed .expand_btn {
   color: darkgreen;
   text-decoration: underline;
 }
+
+.group_requests .group_request_add_btn {
+  text-decoration: underline;
+  margin-top: 60px;
+  width: 200px;
+}
+
+.group_requests .group_request_add_btn:hover {
+  background: none;
+  color: brown;
+}
+
+.empty_request_notice {
+  margin-top: 60px;
+  text-align: center;
+}
