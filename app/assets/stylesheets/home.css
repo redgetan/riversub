@@ -1148,7 +1148,8 @@ footer a:hover{
 }
 
 .release_item .assignee .repo_owner .owner_name ,
-.most_commented_repo_item .repo_owner .owner_name {
+.most_commented_repo_item .repo_owner .owner_name,
+.related_repo_item .repo_owner .owner_name {
   color: slategray;
   /*border: solid 1px gray;*/
   padding: 2px 2px;
@@ -1381,6 +1382,8 @@ footer a:hover{
 
 #player_details {
   clear: both;
+  height: 540px;
+  margin-bottom: 30px;
 }
 
 #video_information .nav-tabs > .active > a,
@@ -3063,11 +3066,13 @@ html.embed .expand_btn {
   margin-right: 0px;
 }
 
-.most_commented_repo_item {
+.most_commented_repo_item,
+.related_repo_item {
   height: 100px;
 }
 
-.most_commented_repo_item .video_name {
+.most_commented_repo_item .video_name,
+.related_repo_item .video_name {
   line-height: 12px;
   font-size: 12px;
   height: 24px;
@@ -3384,4 +3389,12 @@ html.embed .expand_btn {
 
 .home_features .feature_item {
   margin-bottom: 20px;
+}
+
+.related_videos_container {
+  text-align: left;
+}
+
+.related_videos_container .section_header {
+  text-align: center;
 }

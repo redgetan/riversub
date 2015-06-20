@@ -64,6 +64,10 @@ class Repository < ActiveRecord::Base
   GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"
   ANONYMOUS_USERNAME = "default"
 
+  def self.related(repo)
+    self.where(group_id: repo.group_id).shuffle.take(10)
+  end
+
   def self.recent_user_subtitled_published_ids(num_of_entries = 10)
     Repository.select("max(id) AS repo_id")
               .published
