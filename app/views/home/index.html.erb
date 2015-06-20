@@ -14,19 +14,19 @@
 </div>
  -->
 <div class='row how_it_works'>
-  <div class='how_it_works_item col-md-3 '>
+  <div class='how_it_works_item col-md-2 '>
     <div style='width: 100%; height: 100px; '>
       <i class='fa fa-group' style='line-height: 100px; color: cadetblue; font-size: 30px;'></i>
     </div>
     <span>Create a group (i.e. kpop, vocaloid, french lets play)</span>
   </div>
-  <div class='how_it_works_item col-md-3'>
+  <div class='how_it_works_item col-md-2'>
     <div style='width: 100%; height: 100px; '>
       <i class='fa fa-send'  style='line-height: 100px; color: cadetblue; font-size: 30px;'></i>
     </div>
     <span>Invite others to join.</span>
   </div>
-  <div class='how_it_works_item col-md-3'>
+  <div class='how_it_works_item col-md-2'>
     <div style='width: 100%; height: 100px; '>
       <i class='fa fa-video-camera'  style='line-height: 100px; color: cadetblue; font-size: 30px;'></i>
     </div>
@@ -34,29 +34,128 @@
   </div>
 </div>
 
-<div class='header-section span12'></div>
-<div class='header-section span12'></div>
-
-<h3 class='center'>Features</h2>
-<div class='header-section span12'></div>
-
-
-<div class='row home_features'>
-  <div class='feature_item col-md-8 col-md-offset-2'>
-    <img class="col-md-5" src="<%= asset_path("group_page.png") %>">
+<div class='row'>
+  <div class='recent_videos_container col-xs-7 col-xs-offset-1'>
+    <div class="section_block">
+      <div class="section_header">
+        Recent Videos
+      </div>
+      <div class="section_body">
+        <% Repository.published.where(language: "en").recent.limit(5).each do |repo| %>
+          <div class="related_repo_item">
+            <div class="video_thumb">
+              <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                <img src="<%= repo.thumbnail_url %>" alt="">
+              </a>
+            </div>
+            <div class="video_title">
+              <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                <h4 class='video_name'><%= repo.title %></h4>
+              </a>
+            </div>
+            <div class="transcript_preview">
+              <%= repo.transcript[0..100] %>
+            </div>
+            <!-- <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span> -->
+            <span class='repo_owner'>
+              by 
+              <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
-  <div class='feature_item col-md-8 col-md-offset-2'>
-    <img class="col-md-5" src="<%= asset_path("editor_view.png") %>">
-  </div>
-  <div class='feature_item col-md-8 col-md-offset-2'>
-    <img class="col-md-5" src="<%= asset_path("translator_profiles.png") %>">
-  </div>
-  <div class='feature_item col-md-8 col-md-offset-2'>
-    <img class="col-md-5" src="<%= asset_path("video_comments.png") %>">
+
+  <div class='group_list_container col-xs-3'>
+    <div class="section_block">
+      <div class="section_header">
+        Groups
+      </div>
+      <div class="section_body">
+        <% Group.all.each do |group| %>
+          <div style="width: 100px; height: 100px; border: solid 1px gray;"></div>
+          <div><%= group.name %></div>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
 
+
+
 <div class='header-section span12'></div>
+
+<h2 class='col-md-10 col-md-offset-1 center'>Features</h2>
+
+
+<div class='features_container section_block col-xs-11 col-xs-offset-1'>
+<!--   <div class="section_header">
+    Featuers
+  </div>
+ -->  <div class="section_body">
+    <div class='feature_item'>
+      <div class='feature_item_main_header'>
+        1. Player
+      </div>
+      <img class="col-md-6" src="<%= asset_path("video_comments.png") %>">
+      <div class='col-md-5'>
+        <h3 class='feature_item_header'>Drive Traffic to Uploader</h3>
+        <span class='feature_description'>Instead of reuploading a separate video, created subtitles are simply overlayed to the original video. This ensures that video traffic still goes towards the original uploader.</span>
+        <h3 class='feature_item_header'>Share & Embed</h3>
+        <span class='feature_description'>Created subtitles can be shared and embedded in external sites. </span>
+        <h3 class='feature_item_header'>Comments</h3>
+        <span class='feature_description'>Users can also add comments to the subtitle video, thus providing feedback to translators who help subtitle them</span>
+      </div>
+      
+    </div>
+    <div class='feature_item'>
+      <div class='feature_item_main_header'>
+        2. Groups
+      </div>
+      <img class="col-md-6" src="<%= asset_path("group_page.png") %>">
+      <div class='col-md-5'>
+        <h3 class='feature_item_header'>Request Subtitles</h3>
+        <span class='feature_description'>Viewers can request subtitles that's related to the group</span>
+        <h3 class='feature_item_header'>Publish and Subscribe</h3>
+        <span class='feature_description'>Anyone who subscribes to the group will get notified whenever a subtitle has been released for the group. </span>
+        <h3 class='feature_item_header'>Invite Members</h3>
+        <span class='feature_description'>Users can invite members to the group to increase the chance of finding translators who are willing to subtitle videos and also to lets others know about the subs being released.</span>
+      </div>
+    </div>
+    <div class='feature_item'>
+      <div class='feature_item_main_header'>
+        3. Subtitle Editor
+      </div>
+      <img class="col-md-6" src="<%= asset_path("editor_view.png") %>">
+      <div class='col-md-5'>
+        <h3 class='feature_item_header'>Multiple Views</h3>
+        <span class='feature_description'>One can toggle between 'Timeline' and 'Subtitle' view. Timeline offers a more graphical interface for adjusting start and end times of a subtitle, while the 'Subtitle' view gives a more familiar list view that provides easier navigation of the entire subtitle.</span>
+        <h3 class='feature_item_header'>Upload Existing Subtitles</h3>
+        <span class='feature_description'>Sometimes, translators prefer to use other editors such as Aegisub. In those cases, they can create the subtitles using their own tools and later upload them to the online editor.</span>
+      </div>
+    </div>
+    <div class='feature_item'>
+      <div class='feature_item_main_header'>
+        4. Translator Profiles
+      </div>
+      <img class="col-md-6" src="<%= asset_path("translator_profiles.png") %>">
+      <div class='col-md-5'>
+        <h3 class='feature_item_header'>Work History</h3>
+        <span class='feature_description'>Translators will have their own page that list past subtitles that they have created.</span>
+        <h3 class='feature_item_header'>Profile Details</h3>
+        <span class='feature_description'>They can also add their profile picture and profile description to let viewers know about who they are.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='center'>
+  <a href="<%= new_user_registration_url %>" class='home_sign_up_btn btn btn-danger'>Sign Up Now</a>
+</div>
+<div class='header-section span12'></div>
+<div class='header-section span12'></div>
+
 
 
 

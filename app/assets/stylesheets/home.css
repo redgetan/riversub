@@ -3398,3 +3398,62 @@ html.embed .expand_btn {
 .related_videos_container .section_header {
   text-align: center;
 }
+
+.latest_videos {
+  border: none;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.features_container {
+  border: none;
+}
+
+.latest_videos .section_header,
+.features_container .section_header {
+  background: none;
+  color: black;
+  font-size: 20px;
+}
+
+.recent_videos_container,
+.group_list_container {
+  margin-top: 50px;
+}
+
+
+.recent_videos_container .section_body,
+.group_list_container .section_body {
+  height: 560px;
+}
+
+
+
+.features_container .feature_description {
+  font-size: 18px;
+}
+
+.features_container .feature_item {
+  clear: both;
+  margin-bottom: 50px;
+  display: inline-block;
+}
+
+.features_container .feature_item_main_header {
+  font-size: 24px;
+}
+
+.features_container .feature_item img {
+  margin-top: 25px;
+  border: solid 1px gray;
+}
+
+.features_container .feature_item_header {
+  color: cadetblue;
+}
+
+.home_sign_up_btn {
+  margin-top: 50px;
+  font-size: 24px;
+  padding: 10px 20px;
+}
