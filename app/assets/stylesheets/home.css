@@ -3365,3 +3365,23 @@ html.embed .expand_btn {
   margin-top: 60px;
   text-align: center;
 }
+
+.how_it_works {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.how_it_works_item {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+
+.home_features img {
+  border: solid 1px gray;
+  height: 200px;
+}
+
+.home_features .feature_item {
+  margin-bottom: 20px;
+}

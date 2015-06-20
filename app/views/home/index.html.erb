@@ -1,79 +1,62 @@
 <% set_meta_tags :site => 'Yasub', :title => 'Subtitle the Web. One video at a time.', :description => "Yasub is a community of people who subtitle internet videos into their own languages." %>
 
-<h2 class='col-md-10 col-md-offset-1 center'>Japan - Trending Videos Subtitled Weekly</h2>
-<p class='col-md-10 center'>毎週日本で流行ってる英語字幕付きビデオを送る</p>
+<div class='header-section span12'></div>
+
+
+<h2 class='col-md-10 col-md-offset-1 center'>Subtitling Platform for Fans</h2>
+<div class='center'>
+  <span class=''>Watch, create, and request subtitles for your favorite online videos.</span>
+</div>
 
 <!-- <div class='share_home'>
   <a href="https://twitter.com/share" class="twitter-share-button" data-text="Trending Videos in Japan - Subtitled Weekly" data-via="yasub_tv" data-count="none">Tweet</a>
   <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
  -->
-<div class='container intro'>
-  <div class="section_block col-md-10 col-md-offset-1">
-    <div class="section_header">
-      How it Works
+<div class='row how_it_works'>
+  <div class='how_it_works_item col-md-3 '>
+    <div style='width: 100%; height: 100px; '>
+      <i class='fa fa-group' style='line-height: 100px; color: cadetblue; font-size: 30px;'></i>
     </div>
-    <div class="section_body">
-      <ol class='col-md-10 col-md-offset-2 col-xs-11 col-xs-offset-1'>
-        <li>Subscribe to our newsletter</li>
-        <li>We choose 5 trending videos in Japan and subtitle them in English</li>
-        <li>We deliver the results to your email once a week</li>
-      </ol>
-      <%= render 'home/subscribe' %>
+    <span>Create a group (i.e. kpop, vocaloid, french lets play)</span>
+  </div>
+  <div class='how_it_works_item col-md-3'>
+    <div style='width: 100%; height: 100px; '>
+      <i class='fa fa-send'  style='line-height: 100px; color: cadetblue; font-size: 30px;'></i>
     </div>
+    <span>Invite others to join.</span>
+  </div>
+  <div class='how_it_works_item col-md-3'>
+    <div style='width: 100%; height: 100px; '>
+      <i class='fa fa-video-camera'  style='line-height: 100px; color: cadetblue; font-size: 30px;'></i>
+    </div>
+    <span>Requests subtitles or help Translate them.</span>
   </div>
 </div>
 
-<div class='row'>
-  <div class='latest_release_container col-xs-12'>
-    <h4 class="latest_release_header center">Latest Issue - <%= @group.latest_release.date.strftime("%b %-d, %Y") %></h4>
-    <% @release = @group.latest_release %>
-    <%= render "releases/release_items" %>
+<div class='header-section span12'></div>
+<div class='header-section span12'></div>
+
+<h3 class='center'>Features</h2>
+<div class='header-section span12'></div>
+
+
+<div class='row home_features'>
+  <div class='feature_item col-md-8 col-md-offset-2'>
+    <img class="col-md-5" src="<%= asset_path("group_page.png") %>">
+  </div>
+  <div class='feature_item col-md-8 col-md-offset-2'>
+    <img class="col-md-5" src="<%= asset_path("editor_view.png") %>">
+  </div>
+  <div class='feature_item col-md-8 col-md-offset-2'>
+    <img class="col-md-5" src="<%= asset_path("translator_profiles.png") %>">
+  </div>
+  <div class='feature_item col-md-8 col-md-offset-2'>
+    <img class="col-md-5" src="<%= asset_path("video_comments.png") %>">
   </div>
 </div>
 
-<div class='row'>
-  <div class='most_comments_container col-xs-12 col-md-7 col-md-offset-1'>
-    <div class="section_block">
-      <div class="section_header">
-        Most Commented Videos
-      </div>
-      <div class="section_body">
-        <% Repository.most_commented.each do |repo| %>
-          <div class="most_commented_repo_item">
-            <div class="video_thumb">
-              <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                <img src="<%= repo.thumbnail_url %>" alt="">
-              </a>
-            </div>
-            <div class="video_title">
-              <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                <h4 class='video_name'><%= repo.title %></h4>
-              </a>
-            </div>
-            <div class="transcript_preview">
-              <%= repo.transcript[0..100] %>
-            </div>
-            <!-- <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span> -->
-            <span class='repo_owner'>
-              by 
-              <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
-            </span>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
+<div class='header-section span12'></div>
 
-  <div class='latest_activity_container col-xs-12 col-md-3'>
-    <div class="section_block">
-      <div class="section_header">
-        Recent Activity
-      </div>
-      <div class="section_body">
-        <%= render_activities(@activities) %>
-      </div>
-    </div>
-  </div>
-</div>
+
 
