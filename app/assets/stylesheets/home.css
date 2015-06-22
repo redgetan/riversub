@@ -1382,7 +1382,7 @@ footer a:hover{
 
 #player_details {
   clear: both;
-  height: 560px;
+  height: 550px;
   margin-bottom: 30px;
 }
 
@@ -2538,6 +2538,7 @@ iframe.fansubber_signup_form .ss-base-body {
 
 .release_items_container {
   padding-left: 0px;
+  display: inline-block;
 }
 
 .release_items_container .video_title {
@@ -3496,6 +3497,7 @@ html.embed .expand_btn {
 
 .members_container .section_body {
   display: inline-block;
+  width: 100%;
 }
 
 .members_container .member {
