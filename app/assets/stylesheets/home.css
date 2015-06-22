@@ -1382,7 +1382,7 @@ footer a:hover{
 
 #player_details {
   clear: both;
-  height: 540px;
+  height: 560px;
   margin-bottom: 30px;
 }
 
@@ -3399,6 +3399,10 @@ html.embed .expand_btn {
 
 .related_videos_container .section_header {
   text-align: center;
+  border: none;
+  background: none;
+  color: black;
+  padding-top: 15px;
 }
 
 .latest_videos {
