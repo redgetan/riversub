@@ -3329,7 +3329,8 @@ html.embed .expand_btn {
 
 .action_container .section_header,
 .group_requests .section_header,
-.latest_activity_container .section_header {
+.latest_activity_container .section_header,
+.members_container .section_header {
   /*width: 100px;*/
   border: none;
   background: none;
@@ -3487,4 +3488,21 @@ html.embed .expand_btn {
   .latest_activity_container  {
     display: none;
   }
+}
+
+.members_container {
+  margin-bottom: 30px;
+}
+
+.members_container .section_body {
+  display: inline-block;
+}
+
+.members_container .member {
+  padding-left: 5px;
+  margin-bottom: 10px;
+}
+
+.members_container .member img {
+  border: solid 1px #bbb;
 }

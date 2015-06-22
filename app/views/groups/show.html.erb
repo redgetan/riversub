@@ -26,6 +26,22 @@
           </div>
         </div>
       </div>
+      <div class='members_container'>
+        <div class="section_block">
+          <div class="section_header">
+            Members
+          </div>
+          <div class="section_body">
+            <% @group.members.each do |member| %>
+              <div class='member col-xs-3' data-toggle="tooltip" title="<%= member.username %>">
+                <a class="user_avatar" href="<%= member.url %>">
+                  <%= image_tag member.avatar_url %>
+                </a>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
       <div class='latest_activity_container'>
         <div class="section_block">
           <div class="section_header">
