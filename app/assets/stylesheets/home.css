@@ -3249,8 +3249,6 @@ html.embed .expand_btn {
 .join_group_btn {
   /*border: solid 1px gray;  */
   border: solid 1px gray;
-  background-color: whitesmoke;
-  color: #666;
   padding: 5px;
   text-decoration: none;
   display: block;
@@ -3259,12 +3257,16 @@ html.embed .expand_btn {
   text-align: center;
   /*margin: auto;*/
   font-size: 24px;
-  line-height: 65px;
+}
+
+.request_btn,
+.subtitle_video_btn {
+  background-color: whitesmoke;
+  color: #666;
 }
 
 .request_btn:hover,
-.subtitle_video_btn:hover,
-.join_group_btn:hover {
+.subtitle_video_btn:hover {
   background-color: steelblue;
   color: white;
   text-decoration: none;

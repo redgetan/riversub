@@ -38,6 +38,11 @@ class Group < ActiveRecord::Base
     end
   end
 
+  def is_member?(target_user)
+    return false unless target_user
+    target_user.groups.include? self  
+  end
+
   def latest_release
     releases.published.order("created_at DESC").first
   end

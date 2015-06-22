@@ -20,9 +20,12 @@
       <div class='action_container section_block'>
         <div class="section_body">
           <div class=''>
-            <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn btn">Subtitle a Video</a>
-            <a href="<%= video_request_new_url(:group_id => @group.id) %>" class="request_btn btn">Request Subtitle</a>
-            <a href="<%= video_request_new_url(:group_id => @group.id) %>" class="join_group_btn btn">Join Group</a>
+            <% if @group.is_member?(current_user) %>
+              <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn btn">Subtitle a Video</a>
+              <a href="<%= video_request_new_url(:group_id => @group.id) %>" class="request_btn btn">Request Subtitle</a>
+            <% else %>
+              <a href="<%= video_request_new_url(:group_id => @group.id) %>" class="join_group_btn btn btn-danger" data-toggle="tooltip" title="Join to request or subtitle videos for this group">Join Group</a>
+            <% end %>
           </div>
         </div>
       </div>
