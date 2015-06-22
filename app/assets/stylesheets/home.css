@@ -3201,12 +3201,13 @@ html.embed .expand_btn {
 }
 
 .action_container {
-  background-color: mintcream;
+  border: none;
+  /*background-color: mintcream;*/
   margin-bottom: 30px;
 }
 
 .action_container .section_body {
-  padding: 20px;
+  padding: 0px;
 }
 
 .group_members,
@@ -3247,14 +3248,18 @@ html.embed .expand_btn {
 .subtitle_video_btn,
 .join_group_btn {
   /*border: solid 1px gray;  */
-  color: #333;
+  border: solid 1px gray;
+  background-color: whitesmoke;
+  color: #666;
   padding: 5px;
   text-decoration: none;
   display: block;
   margin-bottom: 5px;
   /*width: 250px;*/
   text-align: center;
-  margin: auto;
+  /*margin: auto;*/
+  font-size: 24px;
+  line-height: 65px;
 }
 
 .request_btn:hover,
