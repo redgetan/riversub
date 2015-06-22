@@ -33,7 +33,7 @@
                 <%= repo.language_pretty %>
               </option>
             <% end %>
-            <option value="" data-url="<%= @video.new_empty_repository_url(:group_id => @group_id, hide_group: @hide_group) %>" <%= @is_empty ? "selected" : "" %>>-- Start Empty --</option>
+            <option value="" data-url="<%= @video.new_empty_repository_url(:group_id => @group_id, hide_group: @hide_group) %>" <%= (@is_empty || @source_repo.nil?) ? "selected" : "" %>>-- Start Empty --</option>
           </select>
           <% if @source_repo %>
             <ul class="source_repo_timing_list">

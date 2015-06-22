@@ -20,12 +20,8 @@ class RepositoriesController < ApplicationController
     @hide_group           = params[:hide_group]
     @request_id           = params[:request_id]
 
-    unless @is_upload || @is_empty
-      @source_repo = if params[:source_repo_token]
-                       Repository.find_by_token! params[:source_repo_token] 
-                     else
-                       @video.repositories_visible_to_user(current_user).first
-                     end
+    if !(@is_upload || @is_empty) && params[:source_repo_token]
+      @source_repo = Repository.find_by_token! params[:source_repo_token] 
     end
   end
 
