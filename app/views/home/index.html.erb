@@ -14,19 +14,19 @@
 </div>
  -->
 <div class='row how_it_works'>
-  <div class='how_it_works_item col-md-2'>
+  <div class='how_it_works_item col-xs-2'>
     <div class='icon_container'>
       <i class='fa fa-group'></i>
     </div>
     <span>Create a group (i.e. kpop, vocaloid, french lets play)</span>
   </div>
-  <div class='how_it_works_item col-md-2'>
+  <div class='how_it_works_item col-xs-2'>
     <div class='icon_container'>
       <i class='fa fa-send'></i>
     </div>
     <span>Invite others to join.</span>
   </div>
-  <div class='how_it_works_item col-md-2'>
+  <div class='how_it_works_item col-xs-2'>
     <div class='icon_container'>
       <i class='fa fa-video-camera'></i>
     </div>
@@ -38,7 +38,7 @@
 
 <div class='row'>
   <h3 class='col-md-10 col-md-offset-1 center'>Recent Videos</h3>
-  <div class='latest_videos videos videos_container section_block col-md-offset-2'>
+  <div class='latest_videos videos videos_container section_block col-md-10 col-md-offset-2 col-xs-10 col-xs-offset-1'>
     <div class="home_try section_body">
       <% repos = Repository.where(language: "en").published.recent.limit(5) %>
       <%= render partial: "repositories/list", locals: {repos: repos}  %>
@@ -53,7 +53,7 @@
 <h3 class='col-md-10 col-md-offset-1 center'>Features</h3>
 
 
-<div class='features_container section_block col-xs-10 col-xs-offset-2'>
+<div class='features_container section_block col-md-10 col-md-offset-2 col-xs-10 col-xs-offset-1'>
 <!--   <div class="section_header">
     Featuers
   </div>
@@ -62,8 +62,8 @@
       <div class='feature_item_main_header'>
         1. Player
       </div>
-      <img class="col-md-5" src="<%= asset_path("video_comments.png") %>">
-      <div class='col-md-5 feature_description_container'>
+      <img class="col-md-5 col-xs-12" src="<%= asset_path("video_comments.png") %>">
+      <div class='col-md-5 col-xs-12 feature_description_container'>
         <h3 class='feature_item_header'>Drive Traffic to Uploader</h3>
         <span class='feature_description'>Instead of reuploading a separate video, created subtitles are simply overlayed to the original video. This ensures that video traffic still goes towards the original uploader.</span>
         <h3 class='feature_item_header'>Share & Embed</h3>
@@ -77,8 +77,8 @@
       <div class='feature_item_main_header'>
         2. Groups
       </div>
-      <img class="col-md-5" src="<%= asset_path("group_page.png") %>">
-      <div class='col-md-5 feature_description_container'>
+      <img class="col-md-5 col-xs-12" src="<%= asset_path("group_page.png") %>">
+      <div class='col-md-5 col-xs-12 feature_description_container'>
         <h3 class='feature_item_header'>Request Subtitles</h3>
         <span class='feature_description'>Viewers can request subtitles that's related to the group</span>
         <h3 class='feature_item_header'>Publish and Subscribe</h3>
@@ -91,8 +91,8 @@
       <div class='feature_item_main_header'>
         3. Subtitle Editor
       </div>
-      <img class="col-md-5" src="<%= asset_path("editor_view.png") %>">
-      <div class='col-md-5 feature_description_container'>
+      <img class="col-md-5 col-xs-12" src="<%= asset_path("editor_view.png") %>">
+      <div class='col-md-5 col-xs-12 feature_description_container'>
         <h3 class='feature_item_header'>Multiple Views</h3>
         <span class='feature_description'>One can toggle between 'Timeline' and 'Subtitle' view. Timeline offers a more graphical interface for adjusting start and end times of a subtitle, while the 'Subtitle' view gives a more familiar list view that provides easier navigation of the entire subtitle.</span>
         <h3 class='feature_item_header'>Upload Existing Subtitles</h3>
@@ -103,8 +103,8 @@
       <div class='feature_item_main_header'>
         4. Translator Profiles
       </div>
-      <img class="col-md-5" src="<%= asset_path("translator_profiles.png") %>">
-      <div class='col-md-5 feature_description_container'>
+      <img class="col-md-5 col-xs-12" src="<%= asset_path("translator_profiles.png") %>">
+      <div class='col-md-5 col-xs-12 feature_description_container'>
         <h3 class='feature_item_header'>Work History</h3>
         <span class='feature_description'>Translators will have their own page that list past subtitles that they have created.</span>
         <h3 class='feature_item_header'>Profile Details</h3>
