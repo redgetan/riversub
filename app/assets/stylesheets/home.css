@@ -2986,7 +2986,6 @@ html.embed .expand_btn {
 
 .latest_activity_container {
   padding-right: 0px;
-  margin-top: 30px;
   margin-bottom: 50px;
 }
 
@@ -3058,6 +3057,7 @@ html.embed .expand_btn {
   display: table-cell;
   vertical-align: top;
   padding-right: 10px;
+  padding-left: 5px;
   height: auto;
 }
 
@@ -3201,6 +3201,7 @@ html.embed .expand_btn {
 
 .action_container {
   background-color: mintcream;
+  margin-bottom: 30px;
 }
 
 .action_container .section_body {
@@ -3313,8 +3314,8 @@ html.embed .expand_btn {
 }
 
 .group_requests {
-  width: 630px;
-  margin-left: 10px;
+  /*width: 630px;*/
+  /*margin-left: 10px;*/
 }
 
 .group_requests ul {
@@ -3475,4 +3476,11 @@ html.embed .expand_btn {
 }
 
 .how_it_works_item {
+}
+
+
+@media screen and (max-width: 768px) {
+  .latest_activity_container  {
+    display: none;
+  }
 }

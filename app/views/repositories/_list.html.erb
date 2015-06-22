@@ -1,7 +1,7 @@
 <ul class="release_items_container">
   <% repos.each do |repo| %>
     <% video = repo.video %>
-    <li class='release_item col-xs-12 col-md-2'>
+    <li class='release_item col-xs-12 <%= repo_width %>'>
       <div class="video_thumb">
         <a href="<%= repo.url %>" >
         <img src="<%= video.thumbnail_url %>" alt="">
