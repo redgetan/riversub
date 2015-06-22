@@ -723,7 +723,7 @@ html.fullscreen #player_details {
 }
 
 #river_player #repo_label {
-  width: 400px;
+  width: 500px;
   text-align: left;
   /*float: left;*/
   margin-bottom: 5px;
@@ -732,6 +732,11 @@ html.fullscreen #player_details {
 #river_player #repo_label a {
   color: black;
   font-size: 16px;
+}
+
+#river_player #repo_label .group_name,
+#river_player #repo_label .repo_owner {
+  color: steelblue;
 }
 
 #repo_time_label {

@@ -163,6 +163,14 @@ class Repository < ActiveRecord::Base
     repo_embed_url(self.token)
   end
 
+  def group_url
+    self.group.url  
+  end
+
+  def group_name
+    self.group.name  
+  end
+
   def is_embed?
     !!self.is_embed  
   end

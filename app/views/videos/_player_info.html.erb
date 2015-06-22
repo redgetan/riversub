@@ -3,6 +3,9 @@
     <% if @repo %>
       <h3 id='repo_label' class='pull-left'>
         <div>
+          <% if @repo.group %>
+            <a class="group_name" href="<%= @repo.group_url %>"><%= @repo.group_name %></a> /
+          <% end %>
           <a href="<%= @repo.url %>"><%= @repo.player_title %></a>
         </div>
       </h3>
