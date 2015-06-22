@@ -3280,7 +3280,7 @@ html.embed .expand_btn {
   list-style: none;
   border: solid 1px gray;
   padding: 20px 50px 50px 50px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .request_form .source_url {
@@ -3338,7 +3338,8 @@ html.embed .expand_btn {
 .action_container .section_header,
 .group_requests .section_header,
 .latest_activity_container .section_header,
-.members_container .section_header {
+.members_container .section_header,
+.rules_container .section_header {
   /*width: 100px;*/
   border: none;
   background: none;
@@ -3498,7 +3499,8 @@ html.embed .expand_btn {
   }
 }
 
-.members_container {
+.members_container,
+.rules_container {
   margin-bottom: 30px;
 }
 
@@ -3514,4 +3516,22 @@ html.embed .expand_btn {
 
 .members_container .member img {
   border: solid 1px #bbb;
+}
+
+.request_rules {
+/*  text-align: center;
+  color: blue;
+*/}
+
+.request_rules li {
+  /*list-style: none;*/
+}
+
+.rules_container .section_body {
+  padding-top: 0px;
+  padding-bottom: 10px;
+}
+
+.request_new_header {
+  font-size: 30px;
 }

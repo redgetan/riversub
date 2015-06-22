@@ -6,7 +6,7 @@ class RequestsController < ApplicationController
       redirect_to new_user_session_url and return
     end
 
-    @group_id = params[:group_id]
+    @group = Group.find_by_id params[:group_id]
   end
 
   def create

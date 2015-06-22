@@ -29,6 +29,22 @@
           </div>
         </div>
       </div>
+      <% if @group.short_name == "jpweekly" %>
+        <div class='rules_container'>
+          <div class="section_block">
+            <div class="section_header">
+              Rules
+            </div>
+            <div class="section_body">
+              <ol>
+                <li>Video must be < 10 minutes</li>
+                <li>No movies/tv shows</li>
+                <li>Japanese Videos only</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      <% end %>
       <div class='members_container'>
         <div class="section_block">
           <div class="section_header">

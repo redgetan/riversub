@@ -3,8 +3,11 @@
 <div class='container'>
   <div class='row'>
     <div class="">
-      <div class="center">
-        <h2>Request Subtitle</h2>
+      <div class="center request_new_header">
+        <% if @group %>
+          <a href="<%= @group.url %>"><span><%= @group.name %></span></a> / 
+        <% end %>
+        <span>Request Subtitle</span>
       </div>
       <br>
       <br>
@@ -12,7 +15,7 @@
       <%= form_tag video_request_create_url, class: "request_form col-md-6 col-md-offset-3" do %>
         <div class="subtitle_video_container">
           <ol class='form_items'>
-            <%= hidden_field_tag :group_id, @group_id %>
+            <%= hidden_field_tag :group_id, @group.try(:id) %>
             <li>
               <h4>Youtube Url</h4>
               <input name="source_url" class="source_url" type="text" placeholder="Paste Youtube Link">
@@ -26,6 +29,23 @@
               <%= select_tag("request_language_code", options_for_select(Repository.language_select_options, @request_language_code)) %>
             </li>
           </ol>
+            <% if @group.short_name == "jpweekly" %>
+              <div class='rules_container'>
+                <div class="section_block">
+                  <div class="section_header">
+                    Rules
+                  </div>
+                  <div class="section_body">
+                    <ol>
+                      <li>Video must be < 10 minutes</li>
+                      <li>No movies/tv shows</li>
+                      <li>Japanese Videos only</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+
+            <% end %>
           <div class='center'>
             <input class='river_btn request_form_submit_btn sub_btn' type="submit" value="Submit">
           </div>
