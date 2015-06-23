@@ -1,8 +1,21 @@
 class Group < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
+  include PublicActivity::Model
 
   attr_accessible :description, :name, :creator, :creator_id, :short_name
+
+
+  tracked :only  => :create,
+          :owner => Proc.new{ |controller, model| 
+            model.class.respond_to?(:current_user) ? model.class.current_user : nil
+          },
+          :params => {
+            :group_short_name => Proc.new { |controller, model| 
+              model.short_name
+            }
+          }
+
 
   has_many :memberships
   has_many :members, through: :memberships, class_name: "User", source: "user"
@@ -93,6 +106,11 @@ class Group < ActiveRecord::Base
 
   def published_repositories
     self.repositories.published  
+  end
+
+  def public_activities
+    PublicActivity::Activity.where_params(group_short_name: self.short_name)
+                            .order("created_at DESC")
   end
 
   def unimported_repositories

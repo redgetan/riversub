@@ -24,6 +24,8 @@ class PublicActivity::Activity
       if trackable.commentable_type == "Repository"
         "glyphicon glyphicon-comment"
       end
+    elsif trackable_type == "Group"  
+      "glyphicon glyphicon-plus"  
     end
   end
 
@@ -38,6 +40,8 @@ class PublicActivity::Activity
       if trackable.commentable_type == "Repository"
         "commented on a"
       end
+    elsif trackable_type == "Group"  
+      "created group"
     end
   end
 
@@ -52,6 +56,8 @@ class PublicActivity::Activity
       if trackable.commentable_type == "Repository"
         "video"
       end
+    elsif trackable_type == "Group"  
+      ""
     end
   end
 
@@ -60,6 +66,8 @@ class PublicActivity::Activity
       trackable.votable.url
     elsif trackable_type == "Comment"  
       trackable.commentable.url
+    elsif trackable_type == "Group"  
+      trackable.url
     end
   end
 
@@ -72,6 +80,8 @@ class PublicActivity::Activity
       end
     elsif trackable_type == "Comment"  
       trackable.body
+    elsif trackable_type == "Group"  
+      trackable.name
     end
   end
 end

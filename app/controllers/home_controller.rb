@@ -10,8 +10,10 @@ class HomeController < ApplicationController
   end
 
   def archives
-    @group = Group.find_by_short_name("jpweekly")  
-    @activities = PublicActivity::Activity.order("created_at DESC").limit(3)
+    @group = Group.find_by_short_name("jpweekly")
+    @group_repos = @group.published_repositories.where(language: "en").recent.page params[:page]
+    @activities  = @group.public_activities.limit(3)
+
     render "groups/show"
   end
 
