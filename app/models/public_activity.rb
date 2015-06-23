@@ -1,4 +1,18 @@
 class PublicActivity::Activity
+
+  def self.where_params(args)
+    # based on https://github.com/airblade/paper_trail/blob/v3.0.8/lib/paper_trail/version_concern.rb#L73
+    arel_field = arel_table[:parameters]
+
+    where_conditions = args.map do |field, value|
+      arel_field.matches("%#{field}: #{value}\n%")
+    end.reduce do |condition1, condition2|
+      condition1.and(condition2)
+    end
+
+    where(where_conditions)
+  end
+
   def icon_class
     if trackable_type == "ActsAsVotable::Vote" 
       if trackable.votable_type == "Subtitle"

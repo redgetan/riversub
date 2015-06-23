@@ -14,6 +14,18 @@ class Vote
                    }},
           :owner => Proc.new{ |controller, model| 
             model.class.respond_to?(:current_user) ? model.class.current_user : nil
+          }, 
+          :params => {
+            :group_short_name => Proc.new { |controller, model| 
+              case model.votable
+              when Repository
+                model.votable.group.short_name
+              when Subtitle
+                model.votable.repository.group.short_name
+              else
+                nil
+              end
+            }
           }
 
 end

@@ -18,7 +18,18 @@ class Comment < ActiveRecord::Base
   tracked :only  => :create,
           :owner => Proc.new{ |controller, model| 
             model.class.respond_to?(:current_user) ? model.class.current_user : nil
+          },
+          :params => {
+            :group_short_name => Proc.new { |controller, model| 
+              case model.commentable
+              when Repository
+                model.commentable.group.short_name
+              else
+                nil
+              end
+            }
           }
+
 
   validates :body, :presence => true
   validates :user, :presence => true

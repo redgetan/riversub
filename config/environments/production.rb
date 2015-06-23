@@ -81,6 +81,9 @@ River::Application.configure do
   Rails.application.routes.default_url_options[:protocol] = 'https'
 
   load "#{Rails.root}/lib/object_extensions.rb"
+  # when using Rails Autoload, this file wont be loaded since its class has been defined/loaded via the gem
+  # would need to load it manually for the this class extension to be evaluated
+  load "public_activity.rb" 
 
 
 end
