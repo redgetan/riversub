@@ -73,7 +73,6 @@ class RepositoriesController < ApplicationController
                                language: @repo_language_code,
                                request_id: params[:request_id])
 
-    binding.pry
     @group = Group.find_by_short_name params[:group_id]
 
     if @group && can?(:edit, @group)

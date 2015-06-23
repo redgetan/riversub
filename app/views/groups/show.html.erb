@@ -17,14 +17,14 @@
 
   <div class='row'>
     <div class="left_column col-md-3 col-md-offset-1 col-xs-12 col-xs-offset-0">
-      <div class='action_container section_block'>
+      <div class='action_container section_block <%= @group.is_member?(current_user) ? "joined" : "" %>'>
         <div class="section_body">
           <div class=''>
             <% if @group.is_member?(current_user) %>
               <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn ">Subtitle a Video</a>
               <a href="<%= @group.new_request_url %>" class="request_btn ">Request Subtitle</a>
             <% else %>
-              <%= link_to "Join Group", @group.join_url, method: "post", class: "join_group_btn btn btn-danger" %>
+              <%= link_to "Join Group", @group.join_url, method: "post", class: "join_group_btn" %>
             <% end %>
           </div>
         </div>
@@ -111,10 +111,11 @@
 
       <div class='groups_videos videos videos_container section_block'>
         <div class="home_try section_body">
-          <% @group.published_repositories.where(language: "en").recent.each_slice(4) do |repos| %>
+          <% @group_repos.each_slice(4) do |repos| %>
             <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3"}  %>
           <% end %>
         </div>
+        <%= paginate @group_repos %>
       </div>
     </div>
   </div>

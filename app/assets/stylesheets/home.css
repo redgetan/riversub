@@ -3207,12 +3207,16 @@ html.embed .expand_btn {
 
 .action_container {
   border: none;
-  /*background-color: mintcream;*/
   margin-bottom: 30px;
 }
 
+.action_container.joined {
+  border: solid 1px gray;
+  background-color: mintcream;
+}
+
 .action_container .section_body {
-  padding: 0px;
+  padding: 10px;
 }
 
 .group_members,
@@ -3252,7 +3256,6 @@ html.embed .expand_btn {
 .request_btn,
 .subtitle_video_btn,
 .join_group_btn {
-  border: solid 1px gray;  
   /*border: solid 1px gray;*/
   padding: 5px;
   text-decoration: none;
@@ -3262,10 +3265,12 @@ html.embed .expand_btn {
   text-align: center;
   /*margin: auto;*/
   /*font-size: 24px;*/
+  color: #333;
 }
 
 .join_group_btn {
-  /*background-color: lightcoral;*/
+  background-color: cadetblue;
+  color: white;
 }
 
 .join_group_btn:hover {
@@ -3275,11 +3280,11 @@ html.embed .expand_btn {
 .request_btn,
 .subtitle_video_btn {
   background-color: mintcream;
-  color: #666;
 }
 
 .request_btn:hover,
-.subtitle_video_btn:hover {
+.subtitle_video_btn:hover,
+.join_group_btn:hover {
   background-color: steelblue;
   color: white;
   text-decoration: none;
