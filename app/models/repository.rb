@@ -35,7 +35,7 @@ class Repository < ActiveRecord::Base
   attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :language, :parent_repository_id, :title,
                   :group_id, :release_item_id, :current_user,
-                  :highlight_subtitle_short_id, :request_id
+                  :highlight_subtitle_short_id, :request_id, :group
 
   validates :video_id, :presence => true
   validates :token, :uniqueness => true, on: :create

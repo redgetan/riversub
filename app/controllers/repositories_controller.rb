@@ -11,12 +11,13 @@ class RepositoriesController < ApplicationController
     @video = Video.find_by_token(params[:video_token])
     @video.current_user = current_user
 
+    @group = Group.find_by_short_name params[:group_id]
+
     @is_upload = params[:upload].present?
     @is_empty  = params[:empty].present?
 
     @video_language_code  = params[:video_language_code]
     @repo_language_code   = params[:repo_language_code]
-    @group_id             = params[:group_id]
     @hide_group           = params[:hide_group]
     @request_id           = params[:request_id]
 
@@ -72,8 +73,11 @@ class RepositoriesController < ApplicationController
                                language: @repo_language_code,
                                request_id: params[:request_id])
 
-    if params[:group_id].present? && can?(:edit, Group.find(params[:group_id]))
-      @repo.update_column(:group_id, params[:group_id]) 
+    binding.pry
+    @group = Group.find_by_short_name params[:group_id]
+
+    if @group && can?(:edit, @group)
+      @repo.update_column(:group_id, @group.id) 
     end
 
     if params[:source_repo_token].present?
@@ -112,7 +116,9 @@ class RepositoriesController < ApplicationController
       redirect_to :back and return
     end
 
-    @repo.update_column(:group_id, params[:group_id]) if params[:group_id].present?
+    @group = Group.find_by_short_name params[:group_id]
+    @repo.update_column(:group_id, @group.id) if @group
+
     redirect_to @repo.editor_url
   end
 

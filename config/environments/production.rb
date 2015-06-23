@@ -72,7 +72,7 @@ River::Application.configure do
     :port                 => 587,
     :domain               => "yasub.com",
     :user_name            => 'redge@yasub.com',
-    :password             => 'iwtets90',
+    :password             => 'sigbtnbt9',
     :authentication       => 'plain',
     :enable_starttls_auto => true
   }

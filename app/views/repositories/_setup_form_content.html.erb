@@ -3,7 +3,7 @@
   <ol >
     <li style="<%= @hide_group ? "display: none;" : "" %>">
       <h4>Choose group</h4>
-      <%= select_tag("group_id", options_for_select(Group.selection_options_for, @group_id)) %>
+      <%= select_tag("group_id", options_for_select(Group.selection_options_for, @group.short_name)) %>
     </li>
 
     <% if @video.try(:ask_source_language?) %>

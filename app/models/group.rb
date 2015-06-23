@@ -59,9 +59,9 @@ class Group < ActiveRecord::Base
     no_group    = ["None", nil]
     
     groups = if user 
-                user.groups.map { |group|  [group.name,group.id] }
+                user.groups.map { |group|  [group.name,group.short_name] }
               else 
-                self.all.map    { |group|  [group.name,group.id] }
+                self.all.map    { |group|  [group.name,group.short_name] }
               end
 
     groups.unshift(no_group)
@@ -77,6 +77,18 @@ class Group < ActiveRecord::Base
 
   def releases_url
     group_releases_url(self)
+  end
+
+  def join_url
+    join_group_url(self)  
+  end
+
+  def new_request_url
+    new_group_request_url(self)
+  end
+
+  def create_request_url
+    group_requests_url(self)
   end
 
   def published_repositories

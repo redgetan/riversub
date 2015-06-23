@@ -38,6 +38,12 @@ River::Application.routes.draw do
     get "releases/:id",                          :to => "releases#show",  :as => "release_show"
 
     resources :groups do
+      member do 
+        post "join"
+      end
+
+      resources :requests, :only => [:new, :create] 
+
       resources :releases do 
         collection do 
           get "mailchimp"

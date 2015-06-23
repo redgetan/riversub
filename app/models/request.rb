@@ -16,7 +16,7 @@ class Request < ActiveRecord::Base
   end
 
   def new_repository_url
-    self.video.new_repository_url(group_id: self.group.try(:id), 
+    self.video.new_repository_url(group_id: self.group.try(:short_name), 
                                   hide_group: group.present? ? true : nil,
                                   repo_language_code: self.language,
                                   request_id: self.id)  

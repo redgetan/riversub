@@ -21,10 +21,10 @@
         <div class="section_body">
           <div class=''>
             <% if @group.is_member?(current_user) %>
-              <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn btn">Subtitle a Video</a>
-              <a href="<%= video_request_new_url(:group_id => @group.id) %>" class="request_btn btn">Request Subtitle</a>
+              <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn ">Subtitle a Video</a>
+              <a href="<%= @group.new_request_url %>" class="request_btn ">Request Subtitle</a>
             <% else %>
-              <a href="<%= video_request_new_url(:group_id => @group.id) %>" class="join_group_btn btn btn-danger" data-toggle="tooltip" title="Join to request or subtitle videos for this group">Join Group</a>
+              <%= link_to "Join Group", @group.join_url, method: "post", class: "join_group_btn btn btn-danger" %>
             <% end %>
           </div>
         </div>
@@ -45,6 +45,16 @@
           </div>
         </div>
       <% end %>
+      <div class='latest_activity_container'>
+        <div class="section_block">
+          <div class="section_header">
+            Activity
+          </div>
+          <div class="section_body">
+            <%= render_activities(@activities) %>
+          </div>
+        </div>
+      </div>
       <div class='members_container'>
         <div class="section_block">
           <div class="section_header">
@@ -58,16 +68,6 @@
                 </a>
               </div>
             <% end %>
-          </div>
-        </div>
-      </div>
-      <div class='latest_activity_container'>
-        <div class="section_block">
-          <div class="section_header">
-            Activity
-          </div>
-          <div class="section_body">
-            <%= render_activities(@activities) %>
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@
               <% end %>
             <% else %>
               <div class='empty_request_notice'>
-                There's currently nothing here. <a href="<%= video_request_new_url(:group_id => @group.id) %>" class="group_request_add_btn">Add Request</a> 
+                There's currently nothing here. <a href="<%= @group.new_request_url %>" class="group_request_add_btn">Add Request</a> 
               </div>
             <% end %>
           </ul>
@@ -115,6 +115,27 @@
             <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3"}  %>
           <% end %>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="subtitle_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="subtitle_modal_label" aria-hidden="true">
+  <div class="modal-backdrop fade in" style="height: 984px;"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <form class="sub">
+          <%= hidden_field_tag :group_id, @group.short_name %>
+          <%= hidden_field_tag :hide_group, true %>
+          <div class="subtitle_video_container input-group">
+            <div class="input-append">
+              <input name="source_url" class="source_url" type="text" placeholder="Paste youtube url">
+              <button type="button" class="river_btn sub_btn" data-loading-text="Loading...">Start</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>

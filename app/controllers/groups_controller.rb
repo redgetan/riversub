@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
   load_resource :find_by => :short_name
-  authorize_resource
+  # authorize_resource
 
   def index
     # @groups = Group.all
@@ -31,6 +31,19 @@ class GroupsController < ApplicationController
   def edit
     # @group = Group.find_by_short_name(params[:id])
     # authorize! :create, @release.release_items
+  end
+
+  def join
+    unless user_signed_in?
+      flash[:error] = "You must be logged in to join a group"
+      store_location(@group.url)
+      redirect_to new_user_session_url and return
+    end
+
+    @group.memberships.create!(user_id: current_user.id)
+
+    flash[:notice] = "Joined #{@group.name}"
+    redirect_to @group.url
   end
 
   def create

@@ -12,10 +12,9 @@
       <br>
       <br>
 
-      <%= form_tag video_request_create_url, class: "request_form col-md-6 col-md-offset-3" do %>
+      <%= form_tag (@group.create_request_url || video_request_create_url), class: "request_form col-md-6 col-md-offset-3" do %>
         <div class="subtitle_video_container">
           <ol class='form_items'>
-            <%= hidden_field_tag :group_id, @group.try(:id) %>
             <li>
               <h4>Youtube Url</h4>
               <input name="source_url" class="source_url" type="text" placeholder="Paste Youtube Link">
@@ -29,7 +28,7 @@
               <%= select_tag("request_language_code", options_for_select(Repository.language_select_options, @request_language_code)) %>
             </li>
           </ol>
-            <% if @group.short_name == "jpweekly" %>
+            <% if @group.try(:short_name) == "jpweekly" %>
               <div class='rules_container'>
                 <div class="section_block">
                   <div class="section_header">

@@ -3252,8 +3252,8 @@ html.embed .expand_btn {
 .request_btn,
 .subtitle_video_btn,
 .join_group_btn {
-  /*border: solid 1px gray;  */
-  border: solid 1px gray;
+  border: solid 1px gray;  
+  /*border: solid 1px gray;*/
   padding: 5px;
   text-decoration: none;
   display: block;
@@ -3261,12 +3261,20 @@ html.embed .expand_btn {
   /*width: 250px;*/
   text-align: center;
   /*margin: auto;*/
-  font-size: 24px;
+  /*font-size: 24px;*/
+}
+
+.join_group_btn {
+  /*background-color: lightcoral;*/
+}
+
+.join_group_btn:hover {
+  /*background-color: #d9534f;*/
 }
 
 .request_btn,
 .subtitle_video_btn {
-  background-color: whitesmoke;
+  background-color: mintcream;
   color: #666;
 }
 
@@ -3334,6 +3342,12 @@ html.embed .expand_btn {
 .group_requests ul {
   list-style: none;
   padding-left: 0px;
+}
+
+.group_requests li {
+  clear: both;
+  height: 20px;
+  overflow: hidden;
 }
 
 .group_header {
