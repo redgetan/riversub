@@ -36,6 +36,43 @@
 
 <div class='header-section span12'></div>
 
+<div class='row'>
+  <h3 class='col-md-10 col-md-offset-1 center'>Videos</h3>
+  <div class='latest_videos videos videos_container section_block col-md-10 col-md-offset-2 col-xs-10 col-xs-offset-1'>
+    <div class="home_try section_body">
+      <% repos = Repository.where(language: "en").published.recent.limit(5) %>
+      <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-2"}  %>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <h3 class='home_groups_header col-md-10 center'>Groups</h3>
+
+  <div class='home_group_list_container col-md-10 col-md-offset-2 col-xs-10 col-xs-offset-1'>
+    <% Group.all.sort_by { |group| group.members.count }.reverse[0..4].each_slice(5) do |groups| %>
+      <div class='home_group_row'>
+        <% groups.each do |group| %>
+          <a href="<%= group.url %>" class="home_group_item col-md-2 col-xs-12">
+            <div class='avatar' >
+              <div class="thumbnail">
+                <%= image_tag group.avatar.url  %>
+              </div>
+            </div>
+            <span class="title river_gray"><%= group.name %></span>
+            <p class='group_description'>
+              <%= group.description %>
+            </p>
+          </a>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+</div>
+
+<div class='header-section span12'></div>
+
 <h3 class='col-md-10 col-md-offset-1 center'>Features</h3>
 
 
@@ -99,34 +136,4 @@
     </div>
   </div>
 </div>
-
-<h3 class='home_groups_header col-md-10 center'>Existing Groups</h3>
-
-<div class='home_group_list_container col-md-8 col-md-offset-2'>
-  <% Group.all.sort_by { |group| group.members.count }.reverse[0..3].each_slice(4) do |groups| %>
-    <div class='home_group_row'>
-      <% groups.each do |group| %>
-        <a href="<%= group.url %>" class="home_group_item col-md-3">
-          <div class='avatar' >
-            <div class="thumbnail">
-              <%= image_tag group.avatar.url  %>
-            </div>
-          </div>
-          <span class="title river_gray"><%= group.name %></span>
-          <p class='group_description'>
-            <%= group.description %>
-          </p>
-        </a>
-      <% end %>
-    </div>
-  <% end %>
-</div>
-
-<div class='center'>
-  <a href="<%= new_group_url %>" class='home_sign_up_btn btn btn-danger'><i class='fa fa-plus'></i> Create Your Group</a>
-</div>
-
-<div class='header-section span12'></div>
-<div class='header-section span12'></div>
-<div class='header-section span12'></div>
  
