@@ -37,6 +37,7 @@ River::Application.routes.draw do
     resources :groups do
       member do 
         post "join"
+        put  "change_avatar"
       end
 
       resources :requests, :only => [:new, :create] 

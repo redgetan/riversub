@@ -54,6 +54,15 @@ class GroupsController < ApplicationController
     redirect_to @group.url
   end
 
+  def change_avatar
+    @group.avatar = params[:group][:avatar]
+    if @group.save
+      render :text => @group.avatar.url
+    else 
+      render :text => @group.errors.full_messages.join(". "), :status => 400
+    end
+  end
+
   def create
     @group.creator_id = current_user.try(:id)
 

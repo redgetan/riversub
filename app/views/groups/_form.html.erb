@@ -1,4 +1,4 @@
-<%= form_for(@group) do |f| %>
+<%= form_for(@group, :html => { :id => 'edit_group', :method => :put, :multipart => true, data: { "group-id" => @group.short_name } } ) do |f| %>
   <% if @group.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
@@ -10,6 +10,25 @@
       </ul>
     </div>
   <% end %>
+
+  <div class="field">
+    <div id='avatar' >
+      <%= f.label :photo %>
+      <% if @group.avatar.url.present? %>
+        <div class="thumbnail">
+          <%= image_tag @group.avatar.url  %>
+        </div>
+      <% end %>
+    </div>
+
+    <span id='upload_photo_btn' class="btn btn-primary btn-file">
+      <div id='upload_btn_label'>
+        Change Photo
+      </div>
+      <%= f.file_field :avatar %>
+      <%= f.hidden_field :avatar_cache %>
+    </span >
+  </div>
 
   <div class="field">
     <%= f.label :name %>

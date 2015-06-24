@@ -3601,3 +3601,9 @@ html.embed .expand_btn {
 .repo_label_divider {
   font-size: 18px;
 }
+
+.group_show_container #avatar .thumbnail {
+  margin: auto;
+  margin-bottom: 10px;
+  border: solid 1px gray;
+}

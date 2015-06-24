@@ -3,7 +3,10 @@ class Group < ActiveRecord::Base
   include Rails.application.routes.url_helpers
   include PublicActivity::Model
 
-  attr_accessible :description, :name, :creator, :creator_id, :short_name
+  attr_accessible :description, :name, :creator, :creator_id, :short_name,
+                  :avatar, :avatar_cache, :remove_avatar
+
+  mount_uploader :avatar, AvatarUploader
 
 
   tracked :only  => :create,
@@ -82,6 +85,10 @@ class Group < ActiveRecord::Base
 
   def unimported_repositories_grouped_by_video
     unimported_repositories.group_by { |repo| repo.video }
+  end
+
+  def avatar_url
+    avatar.thumb.url
   end
 
   def url

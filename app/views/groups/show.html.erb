@@ -1,8 +1,12 @@
-<div class='header-section span12'></div>
 <div class="background"></div>
 <div class='group_show_container container'>
   <div class='row center group_header'>
     <div class="col-xs-12">
+      <div id='avatar' >
+        <div class="thumbnail">
+          <%= image_tag @group.avatar.url  %>
+        </div>
+      </div>
       <span class="title river_gray"><%= @group.name %></span>
       <p>
         <%= @group.description %>

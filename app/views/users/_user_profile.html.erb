@@ -1,10 +1,8 @@
 <div id='user_profile' class='col-xs-12 col-md-3 col-md-offset-4'>
   <div id='avatar' >
-    <% if @user.avatar.url.present? %>
-      <div class="thumbnail">
-        <%= image_tag @user.avatar.url  %>
-      </div>
-    <% end %>
+    <div class="thumbnail">
+      <%= image_tag @user.avatar.url  %>
+    </div>
   </div>
   <div id='user_name'><h3><%= @user.username  %></h3></div>
   <% if @user.bio.present? %>

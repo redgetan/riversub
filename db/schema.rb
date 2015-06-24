@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150618201448) do
+ActiveRecord::Schema.define(:version => 20150624151523) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(:version => 20150618201448) do
     t.integer  "creator_id"
     t.string   "short_name",  :null => false
     t.string   "title"
+    t.string   "avatar"
   end
 
   add_index "groups", ["short_name"], :name => "index_groups_on_short_name", :unique => true
