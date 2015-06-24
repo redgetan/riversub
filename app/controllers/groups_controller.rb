@@ -22,6 +22,12 @@ class GroupsController < ApplicationController
   end
 
   def new
+    if !user_signed_in?
+      flash[:error] = "You must be logged in to create a group"
+      store_location
+      redirect_to new_user_session_url and return
+    end
+
     # @group = Group.new
 
     respond_to do |format|

@@ -21,7 +21,7 @@
             </li>
             <li>
               <h4>From</h4>
-              <%= select_tag("video_language_code", options_for_select(Video.language_select_options, @video_language_code || "ja")) %>
+              <%= select_tag("video_language_code", options_for_select(Video.language_select_options, @video_language_code || @group.default_video_language_code)) %>
             </li>
             <li>
               <h4>To</h4>

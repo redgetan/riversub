@@ -1,8 +1,5 @@
 River::Application.routes.draw do
 
-  resources :groups
-
-
   # http://stackoverflow.com/questions/3993651/rails-3-ssl-routing-redirects-from-https-to-http
   protocol = Rails.env.development? ? "http://" : "https://"
 

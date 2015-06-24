@@ -386,7 +386,7 @@ class Repository < ActiveRecord::Base
     if is_template?
       super
     else
-      ["[#{language_pretty} Sub]", self.video.name].join(" ")
+      ["#{language_pretty} Sub :", self.video.name].join(" ")
     end
   end
 

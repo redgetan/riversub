@@ -62,7 +62,7 @@
           </div>
           <div class="section_body">
             <% @group.members.each do |member| %>
-              <div class='member col-md-3 col-xs-2' data-toggle="tooltip" title="<%= member.username %>">
+              <div class='member ' data-toggle="tooltip" title="<%= member.username %>">
                 <a class="user_avatar" href="<%= member.url %>">
                   <%= image_tag member.avatar_url %>
                 </a>

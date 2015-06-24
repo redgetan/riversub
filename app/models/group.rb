@@ -125,6 +125,10 @@ class Group < ActiveRecord::Base
     self.repositories.published.imported
   end
 
+  def default_video_language_code
+    self.short_name == "jpweekly" ? "ja" : nil
+  end
+
   alias_method :orig_save, :save
 
   def save(*)

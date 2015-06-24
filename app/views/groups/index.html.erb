@@ -1,37 +1,41 @@
 <div class='header-section col-xs-12'></div>
 <div class="background"></div>
-<div class='container'>
+<div class='group_index_container container'>
 
-  <div class='row center'>
-    <div class="col-xs-8">
-      <span class="title river_gray">Groups</span>
-    </div>
+  <div class='center'>
   </div>
 
   <div class='group_list row'>
     <div class="col-xs-8 col-xs-offset-2">
+      <%= link_to 'Create new group', new_group_path, class: "new_group_btn btn btn-primary" %>
       <table>
         <tr>
-          <th>Name</th>
+          <th>Group</th>
+          <th>Members</th>
           <th>Description</th>
-          <th></th>
-          <th></th>
-          <th></th>
+          <!-- <th>Subtitles</th> -->
+          <!-- <th>Requests</th> -->
         </tr>
 
-      <% @groups.each do |group| %>
+      <% @groups.sort_by { |group| group.members.count }.reverse.each do |group| %>
         <tr>
           <td class="group_name"><a href="<%= group.url %>"><%= group.name %></a></td>
+          <td class="group_members_count"><%= group.members.count %></td>
           <td class="group_description"><%= group.description %></td>
+          <!-- <td class="group_subtitles_count"><%= group.published_repositories.count %></td> -->
+          <!-- <td class="group_requests_count"><%= group.requests.count %></td> -->
         </tr>
       <% end %>
       </table>
 
       <br />
-
-      <%= link_to 'Create Group', new_group_path, class: "btn btn-primary" %>
+      <br />
+      <div class='center'>
+      </div>
+      <br>
     </div>
   </div>
+
 
   <div class='header-section col-xs-12'></div>
 

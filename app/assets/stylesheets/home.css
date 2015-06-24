@@ -516,7 +516,7 @@ div#how-it-works-background {
 
 span.updated_at {
   color: slategray;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 span.repo_owner {
@@ -2482,9 +2482,9 @@ div.flash-error {
 }
 
 #flash_error {
-  background-color: lightyellow;
+  background-color: ghostwhite;
   font-size: 16px;
-  border: solid 1px green;
+  border: solid 1px gray;
 }
 
 .upload_subtitle_header {
@@ -2622,12 +2622,17 @@ iframe.fansubber_signup_form .ss-base-body {
 }
 
 .group_list .group_name {
-  padding-right: 20px;
+  width: 150px;
 }
 
 .group_list .group_name a {
-  text-decoration: underline;
+  /*text-decoration: underline;*/
 }
+
+.group_list .group_name a:hover {
+  /*color: brown;*/
+}
+
 
 form.new_release .field {
   margin-bottom: 10px;
@@ -2662,7 +2667,7 @@ div.field, div.actions {
 }
 
 #error_explanation {
-  width: 450px;
+  /*width: 450px;*/
   border: 2px solid lightcoral;
   padding: 7px;
   padding-bottom: 0;
@@ -3216,6 +3221,10 @@ html.embed .expand_btn {
 }
 
 .action_container .section_body {
+  padding: 0px; 
+}
+
+.action_container.joined .section_body {
   padding: 10px;
 }
 
@@ -3223,10 +3232,6 @@ html.embed .expand_btn {
 .group_requests,
 .group_translators {
   /*border: none;*/
-}
-
-.action_container .section_body {
-  /*padding-top: 40px;*/
 }
 
 .action_container .requests_list {
@@ -3271,6 +3276,7 @@ html.embed .expand_btn {
 .join_group_btn {
   background-color: cadetblue;
   color: white;
+  border: solid 1px black;
 }
 
 .join_group_btn:hover {
@@ -3536,10 +3542,12 @@ html.embed .expand_btn {
 .members_container .member {
   padding-left: 5px;
   margin-bottom: 10px;
+  float: left;
 }
 
 .members_container .member img {
   border: solid 1px #bbb;
+  width: 40px;
 }
 
 .request_rules {
@@ -3558,4 +3566,38 @@ html.embed .expand_btn {
 
 .request_new_header {
   font-size: 30px;
+}
+
+.new_group_btn {
+  margin-bottom: 30px;
+  border: solid 1px black;
+/*  border: solid 1px gray;
+  padding: 10px;
+  background-color: ghostwhite;
+  color: #333;
+*/}
+
+.new_group_btn:hover {
+/*  text-decoration: none;
+  background-color: lightcoral;
+  color: white;
+*/}
+
+
+.group_list table th,
+.group_list table td {
+  padding-right: 10px;
+  padding-left:  10px;
+}
+
+.group_list table tr {
+  border: solid 1px #ccc;
+}
+
+.group_list table tr:hover {
+  /*background-color: azure;*/
+}
+
+.repo_label_divider {
+  font-size: 18px;
 }
