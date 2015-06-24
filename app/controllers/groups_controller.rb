@@ -12,7 +12,12 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @group_repos = @group.published_repositories.where(language: "en").recent.page params[:page]
+    @group_repos = if @group.short_name == "jpweekly" 
+                     @group.published_repositories.where(language: "en").recent.page params[:page]
+                   else
+                     @group.published_repositories.recent.page params[:page]
+                   end
+                   
     @activities  = @group.public_activities.limit(3)
 
     respond_to do |format|
