@@ -26,6 +26,8 @@ class PublicActivity::Activity
       end
     elsif trackable_type == "Group"  
       "glyphicon glyphicon-plus"  
+    elsif trackable_type == "Membership"  
+      "glyphicon glyphicon-plus"  
     end
   end
 
@@ -42,6 +44,8 @@ class PublicActivity::Activity
       end
     elsif trackable_type == "Group"  
       "created group"
+    elsif trackable_type == "Membership"  
+      "joined group"
     end
   end
 
@@ -68,6 +72,8 @@ class PublicActivity::Activity
       trackable.commentable.url
     elsif trackable_type == "Group"  
       trackable.url
+    elsif trackable_type == "Membership"  
+      trackable.group.url
     end
   end
 
@@ -82,6 +88,8 @@ class PublicActivity::Activity
       trackable.body
     elsif trackable_type == "Group"  
       trackable.name
+    elsif trackable_type == "Membership"  
+      trackable.group.name
     end
   end
 end

@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(user)
-    session[:forwarding_url] || user_url(user)
+    session[:forwarding_url] || groups_url
   end
 
   def require_logged_in_user
