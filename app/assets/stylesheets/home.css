@@ -3503,7 +3503,9 @@ html.embed .expand_btn {
   margin-top: 50px;
   font-size: 20px;
   padding: 10px 20px;
-}
+/*  border: solid 1px steelblue;
+  color: steelblue;
+*/}
 
 .feature_description_container {
 }
@@ -3606,4 +3608,60 @@ html.embed .expand_btn {
   margin: auto;
   margin-bottom: 10px;
   border: solid 1px gray;
+}
+
+.home_groups_header {
+  margin-top: 50px;
+  display: inline-block;
+  margin-left: 100px;
+}
+
+.home_group_list_container {
+  margin-top: 20px;
+}
+
+.home_group_list_container .avatar .thumbnail {
+  width: 150px;
+  height: 150px;
+}
+
+.home_group_list_container .avatar .thumbnail img {
+  width: inherit;
+}
+
+.home_group_row {
+  display: inline-block;
+}
+
+.home_group_item {
+  display: table-cell;
+  min-width: 180px;
+}
+
+.home_group_item:hover {
+  background-color: cadetblue;
+  text-decoration: none;
+}
+
+.home_group_item .title,
+.home_group_item .group_description {
+  text-decoration: none;
+}
+
+.home_group_item .group_description {
+  color: #333;
+}
+
+.home_group_item .avatar {
+  margin-top: 10px;
+}
+
+.home_group_item:hover .title,
+.home_group_item:hover .group_description {
+  color: white;
+}
+
+
+.contact_container {
+  font-size: 18px;
 }

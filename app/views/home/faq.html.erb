@@ -1,50 +1,15 @@
 <% set_meta_tags :site => 'Yasub', :title => 'FAQ', :description => "Frequently Asked Questions. Online Subtitle and Closed Captioning Tool for Youtube Videos" %>
 
-<div class='header-section col-md-12'></div>
-<div class='container '>
-    <div class='row'>
+<div class='contact_container container '>
+  <div class='row'>
+    <div class='header-section col-md-12'></div>
+    <div class='header-section col-md-12'></div>
+    <div class='header-section col-md-12'></div>
+    <p class='center'>If you any questions, feedback or requests, feel free to email us at <a href="mailto:info@yasub.com">info@yasub.com</a></p>
+    <div class='header-section col-md-12'></div>
+    <div class='header-section col-md-12'></div>
+    <div class='header-section col-md-12'></div>
 
-      <div class='about_faq_container'>
-        <h2 class='center'>
-          Watch Japanese Videos with Subtitles
-        </h2>
-        <br/>
-        <%= image_tag "shobon_subtitle.png", class: "center", style: "width: 250px; display: inherit;" %>
-        <div class='col-md-8 col-md-offset-2'>
-          <h4>About</h4>
-          <p>
-            Yasub is a community-driven site that lets you watch trending Japanese Videos with English and Japanese Subtitles. Every week, we choose interesting and popular videos from youtube or niconicodouga (ニコニコ動画), and translate them for you. 
-          </p>
-          <h4>Discover Popular Japanese Videos</h4>
-          <p>
-            Not only will you discover and get up-to-date with the culture in Japan's online video community, you'll also find the site a great way to learn Nihongo. Our diverse content ensures that you'll encounter different Kanji, Katakana, Hiragana words used by native Japanese people. We also show both the Japanese and English Subtitles in some of the videos. 
-          </p>
-
-          <h4>Free Subtitles for Youtube Owners</h4>
-          <p>
-            The subtitles we create are freely available for download and youtube owners can integrate the subtitles to the original video (<a href="<%= Repository.sample_export_instructions %>">see sample instructions</a>). Also, note that we only do softsubbing instead of hardsubbing. This means we simply overlay our subtitles to the original video instead of reuploading a subtitle version to a new channel in order to respect the work of the original author. Any attempts to re-encode these subtitles into a new youtube video is forbidden.
-          </p>
-
-          <h4>Help us with our goal</h4>
-          <p>
-            We're just starting out and would love any help in sustaining this effort of ours. If you like what we do, and want to contribute, there are several things you can do. For helping us with translation, you can go to <a href="<%= community_translations_url %>">community translations</a> to subtitle existing japanese youtube videos. Other than subbing, you can also help us spread the word by sharing the subtitled videos that you liked. You can also leave comments for on the videos for any feedback. And finally, if you have any questions, feedback, or feature requests, feel free to let us know :)
-          </p>
-         
-          <% unless user_signed_in?  %>
-            <div class='col-xs-12 faq_sign_up' style="">
-              <%= link_to "Sign up Now", new_user_registration_url, class: "btn btn-lg btn-success" %>
-            </div>
-          <% end %>
-        </div>
-        <ul>
-
-        </ul>
-      </div>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-
-    </div>
+  </div>
 </div>
 
