@@ -50,6 +50,10 @@ class Ability
         group.members.include?(user)
       end
 
+      can :moderate, Group do |group|
+        group.moderators.include?(user)
+      end
+
       can :destroy, Group do |group|
         group.created_by?(user)
       end

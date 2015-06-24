@@ -44,6 +44,10 @@ class Group < ActiveRecord::Base
     self.members.where("memberships.is_owner IS TRUE")
   end
 
+  def moderators
+    owners  
+  end
+
   def translators
     self.repositories.published.map { |repo| repo.user }.uniq  
   end
@@ -68,7 +72,7 @@ class Group < ActiveRecord::Base
   end
 
   def create_membership
-    self.memberships.create!(user_id: self.creator.id)  
+    self.memberships.create!(user_id: self.creator.id, is_owner: true)  
   end
 
   def self.selection_options_for(user = nil)

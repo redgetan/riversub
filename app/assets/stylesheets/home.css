@@ -3308,13 +3308,19 @@ html.embed .expand_btn {
 }
 
 .request_form .source_url {
-  width: 200px;
+  width: 300px;
 }
 
 .request_form #video_language_code,
 .request_form #request_language_code {
   background-color: white;
 }
+
+.request_form #details {
+  width: 400px;
+  height: 100px;
+}
+
 
 .request_form .help-inline {
   left: 275px;
@@ -3605,7 +3611,8 @@ html.embed .expand_btn {
   font-size: 18px;
 }
 
-.group_show_container #avatar .thumbnail {
+.group_show_container #avatar .thumbnail,
+.request_show_container #avatar .thumbnail {
   margin: auto;
   margin-bottom: 10px;
   border: solid 1px gray;
@@ -3668,4 +3675,21 @@ html.embed .expand_btn {
 
 .contact_container {
   font-size: 18px;
+}
+
+.request_field {
+  margin-bottom: 20px;
+}
+
+.request_field_value {
+  border: solid 1px gray;
+  background-color: ghostwhite;
+  padding: 5px;
+}
+
+.request_show_container .request_title {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #333;
 }

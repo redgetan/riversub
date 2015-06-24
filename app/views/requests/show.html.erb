@@ -1,0 +1,65 @@
+<div class='request_show_container container'>
+  <div class='row'>
+    <div class='col-md-6 col-md-offset-3'>
+      <h2>
+        <% if @group %>
+          <a href="<%= @group.url %>"><span><%= @group.name %></span></a> / 
+        <% end %>
+
+        Request
+      </h2>
+
+      <iframe width="555" height="415" src="<%= @request.source_embed_url %>" frameborder="0" allowfullscreen></iframe>
+      
+      <div class='request_field'>
+        <div class='request_field_key'>
+          Title
+        </div>
+        <div class='request_field_value'>
+          <%= @request.title %>
+        </div>
+      </div>
+
+
+      <% if @request.from_language_pretty.present? %>
+        <div class='request_field'>
+          <div class='request_field_key'>
+            From
+          </div>
+          <div class='request_field_value'>
+            <%= @request.from_language_pretty %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class='request_field'>
+        <div class='request_field_key'>
+          To
+        </div>
+        <div class='request_field_value'>
+          <%= @request.to_language_pretty %>
+        </div>
+      </div>
+
+      <div class='request_field'>
+        <div class='request_field_key'>
+          Details  
+        </div>
+        <div class='request_field_value'>
+          <%= @request.details %>
+        </div>
+      </div>
+
+      <div class='request_field'>
+        <div class='request_field_key'>
+          Requested by  
+        </div>
+        <div class='request_field_value'>
+          <%= @request.submitter.username %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+

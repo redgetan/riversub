@@ -1,0 +1,26 @@
+<div class='row center group_header'>
+  <div class="col-xs-12">
+    <div id='avatar' >
+      <% if user_signed_in? && can?(:moderate, @group) %>
+        <div class="thumbnail" data-toggle="tooltip" title="change avatar" data-placement="left">
+          <a href="<%= edit_group_path(@group) %>">
+            <%= image_tag @group.avatar.url  %>
+          </a>
+        </div>
+      <% else %>
+        <div class="thumbnail">
+          <%= image_tag @group.avatar.url  %>
+        </div>
+      <% end %>
+    </div>
+    <span class="title river_gray"><%= @group.name %></span>
+    <p>
+      <%= @group.description %>
+    </p>
+    <% if can?(:moderate, @group) %>
+      <p>
+        <span>[<%= link_to 'Edit', edit_group_path(@group) %>]</span>
+      </p>
+    <% end %>
+  </div>
+</div>

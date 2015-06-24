@@ -1,31 +1,7 @@
 <div class="background"></div>
 <div class='group_show_container container'>
-  <div class='row center group_header'>
-    <div class="col-xs-12">
-      <div id='avatar' >
-        <% if user_signed_in? && can?(:edit, @group) %>
-          <div class="thumbnail" data-toggle="tooltip" title="change avatar" data-placement="left">
-            <a href="<%= edit_group_path(@group) %>">
-              <%= image_tag @group.avatar.url  %>
-            </a>
-          </div>
-        <% else %>
-          <div class="thumbnail">
-            <%= image_tag @group.avatar.url  %>
-          </div>
-        <% end %>
-      </div>
-      <span class="title river_gray"><%= @group.name %></span>
-      <p>
-        <%= @group.description %>
-      </p>
-      <% if can?(:edit, @group) %>
-        <p>
-          <span>[<%= link_to 'Edit', edit_group_path(@group) %>]</span>
-        </p>
-      <% end %>
-    </div>
-  </div>
+
+  <%= render "header" %>
 
   <div class='row'>
     <div class="left_column col-md-3 col-md-offset-1 col-xs-12 col-xs-offset-0">
@@ -95,15 +71,13 @@
           <ul class="">
             <% if @group.requests.present? %>
               <li class='group_requests_header'>
-                <span class='col-xs-6'>Title</span>
-                <span class='col-xs-2'>Language</span>
-                <span class='col-xs-2'>Actions</span>
-                <span class='col-xs-2'>Status</span>
+                <span class='col-xs-6'></span>
+                <span class='col-xs-2'></span>
+                <span class='col-xs-2'></span>
               </li>
               <% @group.requests.each do |request| %>
                 <li>
-                  <a class='col-xs-6' href="<%= request.video.source_url %>"><%= request.video.title %></a>
-                  <span class='col-xs-2 request_langauge'><%= request.language_pretty %></span>
+                  <a class='col-xs-6' href="<%= request.url %>"><%= request.video.title %></a>
                   <div class='col-xs-2 request_actions'>
                     <a class='subtitle_request_btn' href="<%= request.new_repository_url %>">[Subtitle]</a>
                   </div>

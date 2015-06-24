@@ -40,7 +40,7 @@ River::Application.routes.draw do
         put  "change_avatar"
       end
 
-      resources :requests, :only => [:new, :create] 
+      resources :requests, :only => [:new, :create, :show] 
 
       resources :releases do 
         collection do 

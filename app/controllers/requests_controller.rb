@@ -32,6 +32,7 @@ class RequestsController < ApplicationController
     @request = Request.new(video: @video, 
                            submitter: current_user, 
                            language: params[:request_language_code],
+                           details:  params[:details],
                            group: @group)
 
     if @request.save
@@ -44,6 +45,12 @@ class RequestsController < ApplicationController
   rescue ActiveRecord::RecordNotUnique => e
       flash[:error] = "Video has already been requested"
       render :new 
+  end
+
+  def show
+    @group = Group.find_by_short_name params[:group_id]
+    @request = Request.find params[:id]
+    
   end
 
 end

@@ -1,11 +1,15 @@
 class Request < ActiveRecord::Base
+
+  include Rails.application.routes.url_helpers
+
   belongs_to :video
   belongs_to :group
   belongs_to :submitter, foreign_key: :submitter_id, class_name: "User"
 
   has_many :repositories
 
-  attr_accessible :video_id, :submitter_id, :group_id, :video, :submitter, :group, :language
+  attr_accessible :video_id, :submitter_id, :group_id, :video, :submitter, :group, :language,
+                  :details
 
   validates :video_id, uniqueness: { scope: :group_id }
 
@@ -26,12 +30,36 @@ class Request < ActiveRecord::Base
     ::Language::CODES[self.language]
   end
 
+  def from_language_pretty
+    ::Language::CODES[self.video.language]
+  end
+
+  def to_language_pretty
+    language_pretty
+  end
+
+  def source_url
+    self.video.source_url  
+  end
+
+  def source_embed_url
+    self.video.source_embed_url  
+  end
+
   def completed?
     self.repositories.published.count > 0  
   end
 
   def completed_repository
     self.repositories.published.first  
+  end
+
+  def url
+    group_request_url(self.group,self)  
+  end
+
+  def title
+    video.title  
   end
 
 

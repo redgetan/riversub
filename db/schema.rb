@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150624151523) do
+ActiveRecord::Schema.define(:version => 20150624210625) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(:version => 20150624151523) do
     t.string   "language"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.text     "details"
   end
 
   add_index "requests", ["video_id", "group_id"], :name => "index_requests_on_video_id_and_group_id", :unique => true

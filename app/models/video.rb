@@ -51,6 +51,10 @@ class Video < ActiveRecord::Base
     orig_source_url =~ /^http:\/\// ? orig_source_url : orig_source_url.prepend("http://")
   end
 
+  def source_embed_url
+    "https://www.youtube.com/embed/#{source_id}"
+  end
+
   def self.all_language_codes
     self.select("DISTINCT language").map(&:language).compact
   end
