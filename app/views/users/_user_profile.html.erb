@@ -1,14 +1,16 @@
 <div id='user_profile' class='col-xs-12 col-md-3 col-md-offset-4'>
   <div id='avatar' >
-    <div class="thumbnail" data-toggle="tooltip" title="change avatar" data-placement="left">
-      <% if user_signed_in? && current_user == @user %>
+    <% if user_signed_in? && current_user == @user %>
+      <div class="thumbnail" data-toggle="tooltip" title="change avatar" data-placement="left">
         <a href="<%= edit_user_registration_url %>">
           <%= image_tag @user.avatar.url  %>
         </a>
-      <% else %>
+      </div>
+    <% else %>
+      <div class="thumbnail">
         <%= image_tag @user.avatar.url  %>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
   <div id='user_name'><h3><%= @user.username  %></h3></div>
   <% if @user.bio.present? %>
