@@ -19,7 +19,6 @@ River::Application.routes.draw do
 
     get "faq", :to => "home#faq"
     get "how_to_use", :to => "home#how_to_use"
-    get "archives",   to: "home#archives",   as: "home_archives"
     get "community_translations",   to: "home#community_translations",   as: "community_translations"
 
     get "videos/new",                            :to => "videos#new"
