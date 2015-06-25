@@ -3678,13 +3678,29 @@ html.embed .expand_btn {
 }
 
 .request_field {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+}
+
+.request_field_key {
+  display: inline-block;
+  width: 130px;
+  float: left;
+  color: gray;
 }
 
 .request_field_value {
-  border: solid 1px gray;
+  display: inline-block;
+}
+
+.request_field_value .share_field {
+  border: solid 1px #aaa;
   background-color: ghostwhite;
-  padding: 5px;
+  padding: 0px 5px;
+  width: 400px;
+}
+
+.request_field_value input:focus {
+  outline-width: 0;
 }
 
 .request_show_container .request_title {
@@ -3692,4 +3708,13 @@ html.embed .expand_btn {
   margin-bottom: 20px;
   font-size: 20px;
   color: #333;
+}
+
+.request_details {
+  margin: 10px 10px 50px 10px;
+  font-size: 16px;
+}
+
+.fb-share-button.fb_iframe_widget {
+  top: -5px;
 }

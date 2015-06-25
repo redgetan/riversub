@@ -1,3 +1,17 @@
+<% content_for :head do  %>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="<%= @request.thumbnail_url_hq %>">
+  <meta name="twitter:title" content="<%= @request.share_text %>">
+  <meta name="twitter:description" content="<%= @request.share_description %>">
+
+  <meta property="og:url" content="<%= @request.url %>" />
+  <meta property="og:title" content="<%= @request.share_text %>" />
+  <meta property="og:description" content="<%= @request.share_description %>" />
+  <meta property="og:site_name" content="Yasub" />
+  <meta property="og:image" content="<%= @request.thumbnail_url_hq %>" />
+  <meta property="fb:app_id" content="1465538213665903" />
+<% end %>
+
 <div class='request_show_container container'>
   <div class='row'>
     <div class='col-md-6 col-md-offset-3'>
@@ -6,57 +20,70 @@
           <a href="<%= @group.url %>"><span><%= @group.name %></span></a> / 
         <% end %>
 
-        Request
+        Subtitle Request
       </h2>
 
       <iframe width="555" height="415" src="<%= @request.source_embed_url %>" frameborder="0" allowfullscreen></iframe>
-      
-      <div class='request_field'>
-        <div class='request_field_key'>
-          Title
-        </div>
-        <div class='request_field_value'>
-          <%= @request.title %>
-        </div>
-      </div>
 
-
-      <% if @request.from_language_pretty.present? %>
+      <div class='request_details'>
         <div class='request_field'>
           <div class='request_field_key'>
-            From
+            Title
           </div>
           <div class='request_field_value'>
-            <%= @request.from_language_pretty %>
+            <%= @request.title %>
           </div>
         </div>
-      <% end %>
 
-      <div class='request_field'>
-        <div class='request_field_key'>
-          To
-        </div>
-        <div class='request_field_value'>
-          <%= @request.to_language_pretty %>
-        </div>
-      </div>
 
-      <div class='request_field'>
-        <div class='request_field_key'>
-          Details  
-        </div>
-        <div class='request_field_value'>
-          <%= @request.details %>
-        </div>
-      </div>
+        <% if @request.from_language_pretty.present? %>
+          <div class='request_field'>
+            <div class='request_field_key'>
+              From
+            </div>
+            <div class='request_field_value'>
+              <%= @request.from_language_pretty %>
+            </div>
+          </div>
+        <% end %>
 
-      <div class='request_field'>
-        <div class='request_field_key'>
-          Requested by  
+        <div class='request_field'>
+          <div class='request_field_key'>
+            To
+          </div>
+          <div class='request_field_value'>
+            <%= @request.to_language_pretty %>
+          </div>
         </div>
-        <div class='request_field_value'>
-          <%= @request.submitter.username %>
+
+        <div class='request_field'>
+          <div class='request_field_key'>
+            Requested by  
+          </div>
+          <div class='request_field_value'>
+            <%= @request.submitter.username %>
+          </div>
         </div>
+
+        <div class='request_field'>
+          <div class='request_field_key'>
+            Details  
+          </div>
+          <div class='request_field_value'>
+            <%= @request.details %>
+          </div>
+        </div>
+
+        <div class='request_field'>
+          <div class='request_field_key'>
+            Link  
+          </div>
+          <div class='request_field_value ' >
+            <input class="share_field" type="text" value="<%= @request.url %>" onclick="this.select()">
+          </div>
+        </div>
+
+
       </div>
 
     </div>

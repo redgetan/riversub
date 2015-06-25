@@ -46,6 +46,10 @@ class Request < ActiveRecord::Base
     self.video.source_embed_url  
   end
 
+  def share_text
+    "Can someone subtitle this video please"  
+  end
+
   def completed?
     self.repositories.published.count > 0  
   end
@@ -56,6 +60,14 @@ class Request < ActiveRecord::Base
 
   def url
     group_request_url(self.group,self)  
+  end
+
+  def thumbnail_url_hq
+    self.video.thumbnail_url_hq  
+  end
+
+  def share_description
+    self.video.title
   end
 
   def title
