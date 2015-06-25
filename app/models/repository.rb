@@ -383,8 +383,8 @@ class Repository < ActiveRecord::Base
   end
 
   def title
-    if is_template?
-      super
+    if read_attribute(:title)
+      self.read_attribute(:title)
     else
       ["#{language_pretty} Sub :", self.video.name].join(" ")
     end
@@ -399,12 +399,7 @@ class Repository < ActiveRecord::Base
   end
 
   def player_title
-    # if not title column, use language + video title
-    if read_attribute(:title)
-      self.read_attribute(:title)
-    else
-      title
-    end
+    title
   end
 
   def video_title_for_release
