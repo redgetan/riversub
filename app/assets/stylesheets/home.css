@@ -935,10 +935,13 @@ ul.social_login_buttons a {
 
 .sign_up_container,
 .login_container {
-  border: solid 1px #bbb;
   padding: 20px;
   margin-top: 20px;
   margin-bottom: 100px;
+}
+
+.login_container {
+  border: solid 1px #bbb;
 }
 
 .main-heading {
@@ -3718,4 +3721,20 @@ html.embed .expand_btn {
 
 .fb-share-button.fb_iframe_widget {
   top: -5px;
+}
+
+.home_call_to_action {
+  margin-bottom: 100px;
+}
+
+.sign_in_container {
+  margin-top: 20px;
+}
+
+.signup_container {
+  margin-top: 20px;
+}
+
+.signup_container input[type='submit'] {
+  width: 100%;
 }

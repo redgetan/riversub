@@ -1,9 +1,3 @@
-<%= render "devise/shared/links" %>
-
-<div class="or_login_separator center">
-  or
-</div>
-
 <div class="sign_in_container center">
   <%= form_for(resource, :as => resource_name, :url => session_url(resource_name)) do |f| %>
     <%= devise_error_messages! %>

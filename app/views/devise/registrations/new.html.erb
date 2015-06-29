@@ -4,16 +4,10 @@
 
 <div class='container'>
     <div class='row'>
-        <div class="col-xs-3 center">
+        <div class="col-md-3 col-xs-6 center">
             <h1>Join Us</h1>
         </div>
-        <div class='col-xs-3 center sign_up_container'>
-            <%= render "devise/shared/links" %>
-
-            <div class="or_login_separator center">
-              or
-            </div>
-
+        <div class='col-md-3 col-xs-6 center sign_up_container'>
             <div class="signup_container">
               <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name)) do |f| %>
                 <%= devise_error_messages! %>
