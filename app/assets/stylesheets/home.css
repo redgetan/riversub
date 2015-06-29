@@ -3459,7 +3459,7 @@ html.embed .expand_btn {
 
 .features_container {
   border: none;
-  margin-bottom: 100px;
+  margin-bottom: 30px;
 }
 
 .latest_videos .section_header,
@@ -3625,6 +3625,7 @@ html.embed .expand_btn {
 
 .home_group_list_container {
   margin-top: 20px;
+  margin-bottom: 100px;
 }
 
 .home_group_list_container .avatar .thumbnail {
