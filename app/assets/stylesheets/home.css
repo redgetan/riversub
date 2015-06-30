@@ -616,11 +616,8 @@ html.fullscreen #media_container {
 }
 
 html.fullscreen #player_details,
-html.fullscreen .original_video_stats {
-  display: none;
-}
-
-html.fullscreen #player_details {
+html.fullscreen .original_video_stats,
+html.fullscreen .related_videos_container {
   display: none;
 }
 
