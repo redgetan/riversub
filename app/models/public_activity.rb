@@ -28,6 +28,8 @@ class PublicActivity::Activity
       "glyphicon glyphicon-plus"  
     elsif trackable_type == "Membership"  
       "glyphicon glyphicon-plus"  
+    elsif trackable_type == "Request"  
+      "glyphicon glyphicon-plus"  
     end
   end
 
@@ -46,6 +48,8 @@ class PublicActivity::Activity
       "created group"
     elsif trackable_type == "Membership"  
       "joined group"
+    elsif trackable_type == "Request"  
+      "requested a"
     end
   end
 
@@ -62,6 +66,8 @@ class PublicActivity::Activity
       end
     elsif trackable_type == "Group"  
       ""
+    elsif trackable_type == "Request"  
+      "subtitle"
     end
   end
 
@@ -74,6 +80,8 @@ class PublicActivity::Activity
       trackable.url
     elsif trackable_type == "Membership"  
       trackable.group.url
+    elsif trackable_type == "Request"  
+      trackable.url
     end
   end
 
@@ -90,6 +98,8 @@ class PublicActivity::Activity
       trackable.name
     elsif trackable_type == "Membership"  
       trackable.group.name
+    elsif trackable_type == "Request"  
+      trackable.public_activity_details
     end
   end
 end

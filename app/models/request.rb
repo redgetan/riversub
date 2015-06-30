@@ -1,6 +1,18 @@
 class Request < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
+  include PublicActivity::Model
+
+  tracked :only  => :create,
+          :owner => Proc.new{ |controller, model| 
+            model.class.respond_to?(:current_user) ? model.class.current_user : nil
+          },
+          :params => {
+            :group_short_name => Proc.new { |controller, model| 
+              model.group.short_name
+            }
+          }
+
 
   belongs_to :video
   belongs_to :group
@@ -52,6 +64,10 @@ class Request < ActiveRecord::Base
 
   def completed?
     self.repositories.published.count > 0  
+  end
+
+  def public_activity_details
+    details.present? ? details : "#{self.language_pretty} sub : #{self.video.name}"
   end
 
   def completed_repository

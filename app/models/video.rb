@@ -59,6 +59,14 @@ class Video < ActiveRecord::Base
     self.select("DISTINCT language").map(&:language).compact
   end
 
+  def current_language
+    language || "en"
+  end
+
+  def language_pretty
+    ::Language::CODES[current_language]
+  end
+
   def source_id
     # http://stackoverflow.com/a/9102270
     match = self.source_url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/)

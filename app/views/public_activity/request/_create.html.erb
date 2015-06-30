@@ -1,0 +1,19 @@
+<div class="activity">
+  <div class="body">
+    <div class="activity_icon <%= activity.icon_class %>"></div>
+    <abbr class="timeago"><%= time_ago_in_words(activity.created_at) %> ago</abbr>
+    <div class="title">
+      <a href="<%= activity.owner.url %>"><%= activity.owner.username %></a> 
+        <%= activity.action_description %>
+      <a href="<%= activity.resource_url %>"><%= activity.resource_name %></a> 
+    </div>
+    <div class="details">
+      <div class='avatar' >
+        <div class="thumbnail">
+          <%= image_tag activity.owner.avatar.url  %>
+        </div>
+      </div>
+      <div class="activity_text"><%= truncate(activity.details, length: 120)  %></div>
+    </div>
+  </div>
+</div>
