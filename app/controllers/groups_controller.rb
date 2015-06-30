@@ -18,7 +18,7 @@ class GroupsController < ApplicationController
                      @group.published_repositories.recent.page params[:page]
                    end
                    
-    @activities  = @group.public_activities.limit(3)
+    @activities  = @group.public_activities.limit(5)
 
     respond_to do |format|
       format.html # show.html.erb
