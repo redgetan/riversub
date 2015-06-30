@@ -12,6 +12,7 @@ class RepositoriesController < ApplicationController
     @video.current_user = current_user
 
     @group = Group.find_by_short_name params[:group_id]
+    @group_id = @group.try(:short_name)
 
     @is_upload = params[:upload].present?
     @is_empty  = params[:empty].present?
@@ -81,9 +82,9 @@ class RepositoriesController < ApplicationController
 
     if params[:source_repo_token].present?
       source_repo = Repository.find_by_token params[:source_repo_token]
-      @repo.update_column(:group_id, source_repo.group_id) if can?(:edit, source_repo.group)
       @repo.setup_translation!(source_repo) 
     end
+
 
     redirect_to @repo.editor_url
   end
