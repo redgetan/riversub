@@ -532,7 +532,7 @@ class Repository < ActiveRecord::Base
       { url: repo.editor_url, language: repo.language_pretty }
     end
 
-    result << { url: new_translation_url, language: "-- New Translation --" }
+    result << { url: new_translation_url(group_id: self.group.try(:short_name)), language: "-- New Translation --" }
 
     result
   end
@@ -546,7 +546,7 @@ class Repository < ActiveRecord::Base
     if self.is_embed?
       result << { url: "#", language: "yasub.com" }
     else
-      result << { url: new_translation_url, language: "- New Translation -" }
+      result << { url: new_translation_url(group_id: self.group.try(:short_name)), language: "- New Translation -" }
     end
 
     result
