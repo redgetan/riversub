@@ -65,7 +65,11 @@ class Repository < ActiveRecord::Base
   ANONYMOUS_USERNAME = "default"
 
   def self.related(repo)
-    self.where(group_id: repo.group_id).shuffle.take(10)
+    if repo.group.try(:short_name) == "jpweekly"
+      self.where(group_id: repo.group_id).where(language: "en").shuffle.take(10)
+    else
+      self.where(group_id: repo.group_id).shuffle.take(10)
+    end
   end
 
   def self.recent_user_subtitled_published_ids(num_of_entries = 10)
