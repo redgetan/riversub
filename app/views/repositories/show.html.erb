@@ -43,6 +43,12 @@
         <span class='pull-left embed_label'>Embed: </span>
         <input class='embed_code_input' type='text' value='<%= @repo.embed_code %>' onclick="select()">
       </div>
+      <% if @repo.request %>
+        <div class='request_details_container'>
+          <span class='pull-left request_details_label'>Request: </span>
+          <span class='request_details_value'><%= @repo.request.details %></span>
+        </div>
+      <% end %>
       <% if @repo %>
         <%= render 'videos/player_comments' %>
       <% end %>

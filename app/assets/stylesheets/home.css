@@ -3734,3 +3734,13 @@ html.embed .expand_btn {
 .signup_container input[type='submit'] {
   width: 100%;
 }
+
+.request_details_container {
+  margin-top: 15px;
+  text-align: left;
+}
+
+.request_details_container .request_details_value {
+  color: gray;
+  margin-left: 10px;
+}
