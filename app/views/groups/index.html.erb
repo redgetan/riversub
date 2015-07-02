@@ -6,33 +6,31 @@
   </div>
 
   <div class='group_list row'>
-    <div class="col-xs-8 col-xs-offset-2">
-      <%= link_to 'Create new group', new_group_path, class: "new_group_btn btn btn-primary" %>
-      <table>
-        <tr>
-          <th>Group</th>
-          <th>Members</th>
-          <th>Description</th>
-          <!-- <th>Subtitles</th> -->
-          <!-- <th>Requests</th> -->
-        </tr>
-
-      <% @groups.sort_by { |group| group.members.count }.reverse.each do |group| %>
-        <tr>
-          <td class="group_name"><a href="<%= group.url %>"><%= group.name %></a></td>
-          <td class="group_members_count"><%= group.members.count %></td>
-          <td class="group_description"><%= group.description %></td>
-          <!-- <td class="group_subtitles_count"><%= group.published_repositories.count %></td> -->
-          <!-- <td class="group_requests_count"><%= group.requests.count %></td> -->
-        </tr>
-      <% end %>
-      </table>
-
-      <br />
-      <br />
-      <div class='center'>
-      </div>
+    <div class="center">
+      <h2>List of Groups</h2>
       <br>
+      <br>
+      <%= link_to '+ Create your group', new_group_path, class: "new_group_btn btn btn-danger" %>
+    </div>
+      
+    <div class='home_group_list_container col-md-10 col-md-offset-2 col-xs-10 col-xs-offset-1'>
+      <% Group.all.sort_by { |group| group.members.count }.reverse.each_slice(5) do |groups| %>
+        <div class='home_group_row'>
+          <% groups.each do |group| %>
+            <a href="<%= group.url %>" class="home_group_item col-md-2 col-xs-12">
+              <div class='avatar' >
+                <div class="thumbnail">
+                  <%= image_tag group.avatar.url  %>
+                </div>
+              </div>
+              <span class="title river_gray"><%= group.name %></span>
+              <p class='group_description'>
+                <%= group.description %>
+              </p>
+            </a>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 

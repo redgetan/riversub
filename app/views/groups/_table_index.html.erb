@@ -1,0 +1,20 @@
+<table>
+  <tr>
+    <th>Group</th>
+    <th>Members</th>
+    <th>Description</th>
+    <!-- <th>Subtitles</th> -->
+    <!-- <th>Requests</th> -->
+  </tr>
+
+<% @groups.sort_by { |group| group.members.count }.reverse.each do |group| %>
+  <tr>
+    <td class="group_name"><a href="<%= group.url %>"><%= group.name %></a></td>
+    <td class="group_members_count"><%= group.members.count %></td>
+    <td class="group_description"><%= group.description %></td>
+    <!-- <td class="group_subtitles_count"><%= group.published_repositories.count %></td> -->
+    <!-- <td class="group_requests_count"><%= group.requests.count %></td> -->
+  </tr>
+<% end %>
+</table>
+
