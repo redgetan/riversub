@@ -12,6 +12,8 @@ class Comment < ActiveRecord::Base
     end
   end
 
+  after_create :send_notification
+
   acts_as_nested_set :parent_column => :parent_comment_id ,
                      :scope => [:commentable_id, :commentable_type]
 
@@ -351,6 +353,14 @@ class Comment < ActiveRecord::Base
     end
   end
 
+  def send_notification
+    case commentable
+    when Repository
+      RepositoryMailer.new_comment_notify(self).deliver
+    else
+      nil
+    end
+  end
 
   def url
     repo_comment_url(self.commentable, self)

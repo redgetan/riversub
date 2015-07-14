@@ -9,4 +9,13 @@ class RepositoryMailer < ActionMailer::Base
     @from = "redge@yasub.com"
     mail(:to => to_email, :subject => "Your Video has been subtitled | YouTubeのビデオ字幕", :from => @from)
   end
+
+  def new_comment_notify(comment)
+    @comment = comment
+    @repo = comment.commentable
+    @user = @repo.user
+    @url  = "http://www.yasub.com/"
+    @from = "info@yasub.com"
+    mail(:to => @repo.user.email, :subject => "#{@comment.user.username} commented on your subtitle #{@repo.title}", :from => @from)
+  end
 end

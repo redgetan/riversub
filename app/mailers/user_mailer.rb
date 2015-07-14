@@ -7,4 +7,5 @@ class UserMailer < ActionMailer::Base
     @from = "info@yasub.com"
     mail(:to => user.email, :subject => "Welcome to Yasub", :from => @from)
   end
+
 end
