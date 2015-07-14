@@ -23,7 +23,7 @@ class Comment < ActiveRecord::Base
             :group_short_name => Proc.new { |controller, model| 
               case model.commentable
               when Repository
-                model.commentable.group.short_name
+                model.commentable.group.try(:short_name)
               else
                 nil
               end
