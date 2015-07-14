@@ -16,7 +16,7 @@ river.model.SocialShare = {
 
     // Facebook Shares Count
     $.ajax({
-      url: "http://api.facebook.com/restserver.php?method=links.getStats&format=json&urls=" + url,
+      url: "https://api.facebook.com/restserver.php?method=links.getStats&format=json&urls=" + url,
       type: "GET",
       dataType: "jsonp",
       success: function(data) {
