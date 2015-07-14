@@ -69,19 +69,15 @@
 
           <ul class="">
             <% if @group.requests.present? %>
-              <li class='group_requests_header'>
-                <span class='col-xs-6'></span>
-                <span class='col-xs-2'></span>
-                <span class='col-xs-2'></span>
-              </li>
-              <% @group.requests.each do |request| %>
+              <% @group.requests.sort_by(&:created_at).reverse.each do |request| %>
                 <li>
+                  <a class='col-xs-2' href="<%= request.url %>"><%= image_tag(request.video.thumbnail_url, width: "80px") %></a>
                   <a class='col-xs-6' href="<%= request.url %>"><%= request.video.title %></a>
                   <div class='col-xs-2 request_actions'>
                     <a class='subtitle_request_btn' href="<%= request.new_repository_url %>">[Subtitle]</a>
                   </div>
                   <% if request.completed? %>
-                    <a class='request_status col-xs-2' href='<%= request.completed_repository.url %>'>Done</a>
+                    <a class='request_status col-xs-2' href='<%= request.completed_repository.url %>'>Closed</a>
                   <% end %>
                 </li>
               <% end %>

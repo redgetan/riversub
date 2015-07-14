@@ -48,6 +48,10 @@ class Group < ActiveRecord::Base
     owners  
   end
 
+  def pending_requests
+    requests.reject { |request| request.completed? } 
+  end
+
   def translators
     self.repositories.published.map { |repo| repo.user }.uniq  
   end

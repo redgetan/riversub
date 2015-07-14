@@ -3358,7 +3358,8 @@ html.embed .expand_btn {
 
 .group_requests li {
   clear: both;
-  height: 20px;
+  height: 60px;
+  margin-bottom: 5px;
   overflow: hidden;
 }
 
@@ -3381,7 +3382,8 @@ html.embed .expand_btn {
 
 .group_requests .section_body {
   /*padding-left: 20px;*/
-  height: 200px;
+  /*height: 200px;*/
+  overflow: auto;
 }
 
 .subtitle_request_btn,
@@ -3395,7 +3397,7 @@ html.embed .expand_btn {
 
 .request_status {
   color: darkgreen;
-  text-decoration: underline;
+  /*text-decoration: underline;*/
 }
 
 .group_requests .group_request_add_btn {
