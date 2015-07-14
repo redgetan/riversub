@@ -8,12 +8,11 @@
       <div class='action_container section_block <%= @group.is_member?(current_user) ? "joined" : "" %>'>
         <div class="section_body">
           <div class=''>
-            <% if @group.is_member?(current_user) %>
-              <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn ">Subtitle a Video</a>
-              <a href="<%= @group.new_request_url %>" class="request_btn ">Request Subtitle</a>
-            <% else %>
+            <% unless @group.is_member?(current_user) %>
               <%= link_to "Join Group", @group.join_url, method: "post", class: "join_group_btn" %>
             <% end %>
+            <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn ">Subtitle a Video</a>
+            <a href="<%= @group.new_request_url %>" class="request_btn ">Request Subtitle</a>
           </div>
         </div>
       </div>

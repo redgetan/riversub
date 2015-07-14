@@ -3211,20 +3211,15 @@ html.embed .expand_btn {
 }
 
 .action_container {
-  border: none;
   margin-bottom: 30px;
+  border: solid 1px gray;
 }
 
 .action_container.joined {
-  border: solid 1px gray;
-  background-color: mintcream;
+  /*background-color: mintcream;*/
 }
 
 .action_container .section_body {
-  padding: 0px; 
-}
-
-.action_container.joined .section_body {
   padding: 10px;
 }
 
@@ -3274,10 +3269,10 @@ html.embed .expand_btn {
 }
 
 .join_group_btn {
-  background-color: cadetblue;
+/*  background-color: cadetblue;
   color: white;
   border: solid 1px black;
-}
+*/}
 
 .join_group_btn:hover {
   /*background-color: #d9534f;*/
@@ -3285,7 +3280,7 @@ html.embed .expand_btn {
 
 .request_btn,
 .subtitle_video_btn {
-  background-color: mintcream;
+  /*background-color: mintcream;*/
 }
 
 .request_btn:hover,
