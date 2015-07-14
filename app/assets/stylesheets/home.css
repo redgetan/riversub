@@ -3382,7 +3382,7 @@ html.embed .expand_btn {
 
 .group_requests .section_body {
   /*padding-left: 20px;*/
-  /*height: 200px;*/
+  min-height: 200px;
   overflow: auto;
 }
 
