@@ -1,6 +1,7 @@
 class Request < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
+  
   include PublicActivity::Model
 
   tracked :only  => :create,
@@ -62,6 +63,24 @@ class Request < ActiveRecord::Base
     "Can someone subtitle this video please"  
   end
 
+  def self.pending
+    self.joins("LEFT JOIN repositories on repositories.request_id = requests.id")
+        .select("requests.*,COUNT(nullif(repositories.is_published,false)) as pub_count")
+        .group("requests.id")
+        .having("pub_count = 0")
+  end
+
+  def self.open
+    self.pending  
+  end
+
+  def self.closed
+    self.joins("LEFT JOIN repositories on repositories.request_id = requests.id")
+        .select("requests.*,COUNT(nullif(repositories.is_published,false)) as pub_count")
+        .group("requests.id")
+        .having("pub_count > 0")
+  end
+
   def completed?
     self.repositories.published.count > 0  
   end
@@ -74,8 +93,12 @@ class Request < ActiveRecord::Base
     self.repositories.published.first  
   end
 
+  def completed_repositories
+    self.repositories.published
+  end
+
   def url
-    group_request_url(self.group,self)  
+    group.present? ? group_request_url(self.group,self) : video_request_show_url(self) 
   end
 
   def thumbnail_url_hq
@@ -88,6 +111,13 @@ class Request < ActiveRecord::Base
 
   def title
     video.title  
+  end
+
+  def self.request_category_select_options
+    [
+      ["Open",   Rails.application.routes.url_helpers.video_request_index_url(status: 'open'), ],
+      ["Closed", Rails.application.routes.url_helpers.video_request_index_url(status: 'closed')]
+    ]
   end
 
 

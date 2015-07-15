@@ -25,6 +25,8 @@
 
       <iframe width="555" height="415" src="<%= @request.source_embed_url %>" frameborder="0" allowfullscreen></iframe>
 
+      <a class='subtitle_request_btn' href="<%= @request.new_repository_url %>">Subtitle This Video</a>
+
       <div class='request_details'>
         <div class='request_field'>
           <div class='request_field_key'>
@@ -35,6 +37,15 @@
           </div>
         </div>
 
+
+        <div class='request_field'>
+          <div class='request_field_key'>
+            Link  
+          </div>
+          <div class='request_field_value ' >
+            <input class="share_field" type="text" value="<%= @request.url %>" onclick="this.select()">
+          </div>
+        </div>
 
         <% if @request.from_language_pretty.present? %>
           <div class='request_field'>
@@ -74,23 +85,25 @@
           </div>
         </div>
 
-        <div class='request_field'>
-          <div class='request_field_key'>
-            Link  
+        <% if @request.completed_repositories.present? %>
+          <div class='request_field'>
+            <div class='request_field_key'>
+              Completed 
+            </div>
+            <div class='request_field_value ' >
+              <ul class='request_completed_repo_list'>
+                <% @request.completed_repositories.each do |repo| %>
+                  <li>
+                    <a href="<%= repo.url %>">by <%= repo.owner %></a>
+                    <%= time_ago_in_words(repo.updated_at) %> ago 
+                  </li>
+                <% end %>
+              </ul>
+            </div>
           </div>
-          <div class='request_field_value ' >
-            <input class="share_field" type="text" value="<%= @request.url %>" onclick="this.select()">
-          </div>
-        </div>
+        <% end %>
 
-        <div class='request_field'>
-          <div class='request_field_key'>
-            Subtitle  
-          </div>
-          <div class='request_field_value ' >
-            <a class='subtitle_request_btn' href="<%= @request.new_repository_url %>">Subtitle This Video</a>
-          </div>
-        </div>
+        <%= render "groups/social_share" %>
 
 
       </div>

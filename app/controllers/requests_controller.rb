@@ -1,4 +1,15 @@
 class RequestsController < ApplicationController
+
+  def index
+    @requests = if params[:status] == "open"
+                  Request.open
+                elsif params[:status] == "closed"
+                  Request.closed
+                else
+                  Request.all
+                end
+  end
+
   def new
     @group = Group.find_by_short_name params[:group_id]
 

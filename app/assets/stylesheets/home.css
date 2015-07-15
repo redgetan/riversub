@@ -3358,7 +3358,7 @@ html.embed .expand_btn {
 
 .group_requests li {
   clear: both;
-  height: 60px;
+  /*height: 60px;*/
   margin-bottom: 5px;
   overflow: hidden;
 }
@@ -3707,6 +3707,20 @@ html.embed .expand_btn {
   color: #333;
 }
 
+.request_show_container .subtitle_request_btn {
+  display: block;
+  border: solid 1px;
+  margin: 30px;
+  padding: 10px;
+  text-align: center; 
+}
+
+.request_show_container .subtitle_request_btn:hover {
+  background-color: steelblue;
+  color: white;
+  text-decoration: none;
+}
+
 .request_details {
   margin: 10px 10px 50px 10px;
   font-size: 16px;
@@ -3740,4 +3754,79 @@ html.embed .expand_btn {
 .request_details_container .request_details_value {
   color: gray;
   margin-left: 10px;
+}
+
+.request_list_title {
+  font-size: 16px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.request_list_details {
+  font-size: 14px;
+  display: block;
+}
+
+.request_list_submitter {
+  color: gray;
+}
+
+.global_requests li {
+  clear: both;
+  overflow: hidden;
+  margin-bottom: 10px;
+  list-style: none;
+}
+
+.global_requests .request_list_group {
+  border: solid 1px gray;
+  padding: 2px;
+  color: gray;
+}
+
+.global_requests {
+  border: none;
+  margin-top: 40px;
+}
+
+.request_list_subtitle_btn {
+  border: solid 1px gray;
+  padding: 5px;
+  display: inline-block;
+  color: gray;
+}
+
+.request_list_subtitle_btn:hover {
+  background-color: darkseagreen;
+  color: black;
+  text-decoration: none;
+}
+
+.request_must_login_caption {
+  border: solid 1px #ccc;
+  padding: 10px 20px;
+}
+
+.request_must_login_btn {
+  text-decoration: underline;
+}
+
+.request_completed_repo_list {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.request_categories {
+  margin-bottom: 30px;
+  margin-left: 40px;
+}
+
+.request_categories a {
+  border: solid 1px gray;
+  padding: 5px;
+  margin: 5px;
+}
+
+select.request_category_select {
+  background-color: white;
 }

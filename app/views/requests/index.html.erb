@@ -1,0 +1,72 @@
+<div class='header-section col-xs-12'></div>
+<div class="background"></div>
+<div class='request_index_container container'>
+
+  <div class='center'>
+  </div>
+
+  <div class='row'>
+    <div class="center">
+      <h2>Requests</h2>
+      <br>
+      <br>
+      <% if user_signed_in? %>
+        <%= link_to '+ New Request', video_request_new_path, class: "new_request_btn btn btn-primary" %>
+      <% else %>
+        <span class='request_must_login_caption'>
+          You must <%= link_to "log in", new_user_session_url(location: video_request_index_url), class: "request_must_login_btn" %> to request subtitles
+        </span>
+      <% end %>
+    </div>
+      
+    <div class='global_requests section_block col-xs-offset-1'>
+      <div class="section_body">
+        <div class='request_categories'>
+          Status: 
+          <%= select_tag("request_category_select", options_for_select(Request.request_category_select_options, request.url), class: "request_category_select") %>
+        </div>
+
+        <ul class="">
+          <% @requests.each do |request| %>
+            <li>
+              <a class='col-xs-2' href="<%= request.url %>"><%= image_tag(request.video.thumbnail_url, width: "100%") %></a>
+              <div class='col-xs-4 request_title_details'>
+                <a href="<%= request.url %>" class='request_list_title'><%= request.video.title %></a>
+                <% if request.details %>
+                  <span class='request_list_details'><%= request.details %></span>
+                <% end %>
+                <div class='request_list_sub_details'>
+                  <% if request.group.present? %>
+                    <a class='request_list_group' href="<%= request.group.url %>"><%= request.group.name %></a>
+                  <% end %>
+                  requested 
+                  <span class='request_list_date'><%= time_ago_in_words(request.created_at) %> ago</span>
+                  by
+                  <a class='request_list_submitter' href="<%= request.submitter.url %>">
+                    <%= request.submitter.username %>
+                  </a>
+                </div>
+              </div>
+              <div class='col-xs-2 request_to_language'>
+                <%= request.from_language_pretty %>
+                >
+                <%= request.to_language_pretty %>
+              </div>
+              <div class='col-xs-1 request_actions'>
+                <% if request.completed? %>
+                  <a class='request_status col-xs-2' href='<%= request.completed_repository.url %>'>Completed</a>
+                <% else %>
+                  <a class='request_list_subtitle_btn' href="<%= request.new_repository_url %>">Subtitle</a>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+
+
+  <div class='header-section col-xs-12'></div>
+
+</div>
