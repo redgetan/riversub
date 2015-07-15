@@ -18,6 +18,8 @@ class Request < ActiveRecord::Base
   belongs_to :video
   belongs_to :group
   belongs_to :submitter, foreign_key: :submitter_id, class_name: "User"
+  scope :recent,                order("created_at DESC")
+
 
   has_many :repositories
 
