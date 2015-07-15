@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
   has_many :repositories
   has_many :videos, :through => :repositories
   has_many :identities
+  has_many :settings, class_name: "UserSetting"
 
   has_many :memberships
   has_many :groups, through: :memberships
@@ -152,6 +153,14 @@ class User < ActiveRecord::Base
 
   def line_favorites
     self.votes.where(votable_type: "Subtitle").map(&:votable)
+  end
+
+  def allow_subtitle_download 
+    settings.get(:allow_subtitle_download)  == "true"
+  end
+
+  def allow_subtitle_download=(bool) 
+    settings.set(:allow_subtitle_download, bool)  
   end
 
   def to_param

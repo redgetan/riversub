@@ -4,7 +4,7 @@ class Group < ActiveRecord::Base
   include PublicActivity::Model
 
   attr_accessible :description, :name, :creator, :creator_id, :short_name,
-                  :avatar, :avatar_cache, :remove_avatar
+                  :avatar, :avatar_cache, :remove_avatar, :allow_subtitle_download
 
   mount_uploader :avatar, AvatarUploader
 
@@ -161,6 +161,14 @@ class Group < ActiveRecord::Base
       :description => self.description,
       :url => self.url
     }
+  end
+
+  def allow_subtitle_download 
+    settings.get(:allow_subtitle_download) == "true"
+  end
+
+  def allow_subtitle_download=(bool) 
+    settings.set(:allow_subtitle_download, bool)  
   end
 
   def to_param

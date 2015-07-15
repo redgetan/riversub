@@ -690,6 +690,16 @@ class Repository < ActiveRecord::Base
     HTML
   end
 
+  def is_downloadable?
+    if is_downloadable.present? 
+      !!is_downloadable
+    elsif group.present? 
+      group.allow_subtitle_download
+    else
+      user.allow_subtitle_download
+    end
+  end
+
   def to_param
     self.token
   end

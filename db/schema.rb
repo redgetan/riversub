@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150624210625) do
+ActiveRecord::Schema.define(:version => 20150715191956) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(:version => 20150624210625) do
     t.integer  "release_item_id"
     t.string   "youtube_sync_email_sent_to"
     t.integer  "request_id"
+    t.boolean  "is_downloadable"
   end
 
   create_table "requests", :force => true do |t|
@@ -177,6 +178,16 @@ ActiveRecord::Schema.define(:version => 20150624210625) do
     t.float    "end_time"
     t.integer  "subtitle_id"
   end
+
+  create_table "user_settings", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "key"
+    t.text     "value"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "user_settings", ["user_id"], :name => "index_user_settings_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "",    :null => false

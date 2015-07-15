@@ -1,7 +1,7 @@
-class GroupSetting < ActiveRecord::Base
-  attr_accessible :group_id, :key, :value
+class UserSetting < ActiveRecord::Base
+  attr_accessible :user_id, :key, :value
 
-  belongs_to :group
+  belongs_to :user
   
   def self.get(key)
     where(key: key).first.try(:value)
@@ -10,6 +10,5 @@ class GroupSetting < ActiveRecord::Base
   def self.set(key, value)
     obj = where(key: key).first_or_create!
     obj.update_column(:value, value)
-    obj
   end
 end

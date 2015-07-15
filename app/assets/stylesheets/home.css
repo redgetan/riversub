@@ -1,3 +1,7 @@
+select {
+  background-color: white;
+}
+ 
 #overlay_btn {
   text-align: center;
 }
@@ -3827,6 +3831,8 @@ html.embed .expand_btn {
   margin: 5px;
 }
 
-select.request_category_select {
-  background-color: white;
+label[for='group_allow_subtitle_download'] {
+  float: left;
+  margin-right: 10px;
 }
+
