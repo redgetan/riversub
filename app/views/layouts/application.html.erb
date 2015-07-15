@@ -68,6 +68,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="<%= 'activer' if params[:controller] == 'requests' && params[:action] == 'index' %>"><a href="<%= video_request_index_url %>">Requests</a></li>
+        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'community_translations' %>"><a href="<%= community_translations_url %>">Videos</a></li>
         <li class="<%= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li>
       
         <!-- <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'new' %>"><a href="<%= videos_new_url %>"><i class="glyphicon glyphicon-plus"></i> Subtitle a Video</a></li>  -->

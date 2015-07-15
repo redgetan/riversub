@@ -10,7 +10,7 @@ class HomeController < ApplicationController
   end
 
   def community_translations
-    @repos = Repository.community_translations
+    @repos = Repository.where(language: "en").published.recent.page params[:page]
   end
 
   def faq
