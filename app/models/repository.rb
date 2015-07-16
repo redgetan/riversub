@@ -64,11 +64,17 @@ class Repository < ActiveRecord::Base
   GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"
   ANONYMOUS_USERNAME = "default"
 
-  def self.related(repo)
+  def self.related(repo, num_of_entries = 10)
     if repo.group.try(:short_name) == "jpweekly"
-      self.where(group_id: repo.group_id).where(language: "en").shuffle.take(10)
+      self.where(group_id: repo.group_id).where(language: "en").order("RAND()").limit(num_of_entries)
+    elsif repo.group.present?
+      self.where(group_id: repo.group_id).order("RAND()").limit(num_of_entries)
+    elsif repo.user.present?
+      user_repos = self.where(user_id: repo.user_id)
+      other_repos = self.order("RAND()").limit(num_of_entries - user_repos.count)
+      user_repos + other_repos
     else
-      self.where(group_id: repo.group_id).shuffle.take(10)
+      self.order("RAND()").limit(num_of_entries)
     end
   end
 
