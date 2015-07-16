@@ -637,7 +637,7 @@ class Repository < ActiveRecord::Base
             </a>
             <br />
             <span style="color:rgb(119, 119, 119); font-family:helvetica neue,helvetica,arial,sans-serif; font-size:11px; line-height:17.4603176116943px">
-              #{number_with_delimiter(self.video.view_count, delimiter: ",")} views
+              requested by #{request.submitter.username} "#{request.details}"
             </span>
           </p>
         </div>
