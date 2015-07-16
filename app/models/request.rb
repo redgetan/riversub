@@ -10,7 +10,7 @@ class Request < ActiveRecord::Base
           },
           :params => {
             :group_short_name => Proc.new { |controller, model| 
-              model.group.short_name
+              model.group.try(:short_name)
             }
           }
 

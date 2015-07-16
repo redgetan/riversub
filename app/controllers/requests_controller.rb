@@ -48,7 +48,7 @@ class RequestsController < ApplicationController
 
     if @request.save
       flash[:notice] = "Request added"
-      redirect_to (@group.try(:url) || root_url)
+      redirect_to (@group.try(:url) || video_request_index_url)
     else
       flash[:error] = @request.errors.full_messages.join(".")
       render :new and return 
