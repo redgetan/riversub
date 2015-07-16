@@ -635,7 +635,7 @@ class Repository < ActiveRecord::Base
 
   def mailchimp_html
     repo_details = if request.present?
-                     "requested by #{request.submitter.username} #{request.details}"
+                     "requested by #{request.submitter.username} - \"#{request.details}\""
                    else
                     "#{number_with_delimiter(self.video.view_count, delimiter: ",")} views"
                    end
