@@ -12,7 +12,7 @@
       <br>
       <br>
 
-      <%= form_tag (@group.create_request_url || video_request_create_url), class: "request_form col-md-6 col-md-offset-3" do %>
+      <%= form_tag (@group.try(:create_request_url) || video_request_create_url), class: "request_form col-md-6 col-md-offset-3" do %>
         <div class="subtitle_video_container">
           <ol class='form_items'>
             <li>
@@ -21,7 +21,7 @@
             </li>
             <li>
               <h4>From</h4>
-              <%= select_tag("video_language_code", options_for_select(Video.language_select_options, @video_language_code || @group.default_video_language_code)) %>
+              <%= select_tag("video_language_code", options_for_select(Video.language_select_options, @video_language_code || @group.try(:default_video_language_code))) %>
             </li>
             <li>
               <h4>To</h4>
