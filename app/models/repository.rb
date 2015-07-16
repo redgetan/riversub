@@ -696,7 +696,7 @@ class Repository < ActiveRecord::Base
     elsif group.present? 
       group.allow_subtitle_download
     else
-      user.allow_subtitle_download
+      !!user.try(:allow_subtitle_download)
     end
   end
 
