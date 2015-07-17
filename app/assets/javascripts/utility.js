@@ -13,7 +13,7 @@ $.extend(river.utility,{
       return w;
   },
 
-  resizeInput: function(maxWidth) {
+  resizeInput: function(maxWidth, adjustHeight) {
     var text = $(this).val();
     var textWidth = river.utility.textWidth(text);
     var minWidth  = 100;
@@ -21,10 +21,13 @@ $.extend(river.utility,{
 
     var width = Math.max(minWidth, textWidth);
 
-    if ((typeof maxWidth !== "undefined") && (textWidth > maxWidth)) {
-      var heightMultiplier = Math.ceil(textWidth / maxWidth);
+    adjustHeight = typeof(adjustHeight) === "undefined" ?  true : adjustHeight;
 
-      $(this).height(baseHeight * heightMultiplier);
+    if ((typeof maxWidth !== "undefined") && (textWidth > maxWidth)) {
+      if (adjustHeight) {
+        var heightMultiplier = Math.ceil(textWidth / maxWidth);
+        $(this).height(baseHeight * heightMultiplier);
+      }
       $(this).width(maxWidth);
     } else {
       $(this).width(width);

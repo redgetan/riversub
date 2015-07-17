@@ -333,7 +333,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                 "<div id='editor-top' class='row'> " +
                   "<div class='repo_label_container'> " +
                     "<h5 id='repo_label'>" +
-                      "<a href=" + this.repo.url + " class='repo_title'>" + this.repo.video.name.substring(0,70) + "</a>" +
+                      "<input type='text' class='repo_title_input' value='" + this.repo.title.substring(0,70) + "'>" +
                     "</h5>" +
                     "<h5 class='keyboard_shortcut_container pull-right'><a class='keyboard_shortcut_btn pull-right'  data-toggle='modal' data-target='#keyboard_shortcuts_modal'> Shortcuts</a></h5>" + 
                     // "<div id='language' class='pull-left'>" +
@@ -467,6 +467,21 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.$el.find("#repo_label").prepend(repo_owner);
     }
 
+    this.$el.find("#repo_label").append("<a class='title_input_handle'>Edit Title</a>");
+    this.$titleInput = $(".repo_label_container").find(".repo_title_input");
+    this.$titleInputHandle = $(".repo_label_container").find(".title_input_handle");
+
+    var maxTitleWidth = 500;
+    var adjustHeight = false;
+    river.utility.resizeInput.bind(this.$titleInput,maxTitleWidth).call();
+    this.$titleInput.on("keydown", river.utility.resizeInput.bind(this.$titleInput,maxTitleWidth, adjustHeight));
+
+    this.$titleInput.on("focus", this.onTitleInputFocus.bind(this));
+    this.$titleInput.on("keyup", this.onTitleInputKeyup.bind(this));
+    this.$titleInput.on("blur", this.onTitleInputBlur.bind(this));
+    this.$titleInputHandle.on("click", this.onTitleInputHandleClick.bind(this));
+
+
     this.$playBtn = $(".play_btn");
     this.$pauseBtn = $(".pause_btn");
     this.$pauseBtn.hide();
@@ -538,6 +553,59 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     $("footer").hide();
   },
+
+  onTitleInputFocus: function(event) {
+    this.$titleInputHandle.text("save");
+    this.$titleInputHandle.addClass("save_input");
+  },
+
+  onTitleInputKeyup: function(event) {
+    // enter key
+    if (event.which == 13 ) {
+      this.$titleInput.blur();
+    }
+  },
+
+  onTitleInputHandleClick: function(event) {
+    console.log("title handle click");
+    if (this.$titleInputHandle.hasClass("save_input")) {
+      this.$titleInput.blur();
+    } else {
+      this.$titleInput.focus();
+    }
+  },
+
+  onTitleInputBlur: function() {
+    this.$titleInputHandle.text("Edit Title");
+    this.$titleInputHandle.removeClass("save_input");
+    this.saveRepoTitle();
+  },
+
+  saveRepoTitle: function(callback) {
+    var repoTitle = this.$titleInput.val();
+
+    this.saveNotify();
+
+    $.ajax({
+      url: this.repo.update_title_url,
+      type: "POST",
+      dataType: "json",
+      data: { repo_title: repoTitle },
+      success: function(data) {
+        repo.title = repoTitle;
+        this.clearStatusBar();
+        if (typeof callback !== "undefined") {
+          callback();
+        }
+      }.bind(this),
+      error: function(data) {
+        this.clearStatusBar();
+        alert("Unable to save Title. We would look into this shortly.");
+        throw data.responseText;
+      }.bind(this)
+    });
+  },
+
 
   setupLanguageSelect: function() {
     var repo_language;
@@ -762,6 +830,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       // alphanumeric
       
       if (!this.$addSubInput.is(":focus") && 
+          !this.$titleInput.is(":focus") &&
           !$(document.activeElement).hasClass("sub_text_area") &&
           !$(document.activeElement).hasClass("select2-search__field")) {
         this.$addSubInput.focus();

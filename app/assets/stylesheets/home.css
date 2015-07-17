@@ -718,7 +718,7 @@ html.fullscreen .related_videos_container {
   padding: 5px;
 }
 
-#editor #repo_label a.repo_title{
+#editor #repo_label .repo_title{
   color: #777;
   font-size: 12px;
 }
@@ -1730,10 +1730,9 @@ form#request_beta_invite input[name='email'] {
 
 .repo_title_input {
   background: none;
-  text-align: center;
-  height: 30px;
-  width: 500px;
-  border: solid 1px rgb(180,180,180);
+  /*text-align: center;*/
+  width: 400px;
+  border: none;
 }
 
 .repo_title_input:hover {
@@ -1758,9 +1757,11 @@ form#request_beta_invite input[name='email'] {
 }
 
 .title_input_handle {
-  margin-left: 30px;
-  font-size: 20px;
+  margin-left: 10px;
   cursor: pointer;
+  border: solid 1px;
+  padding: 0px 5px;
+  color: gray;
 }
 
 #forks_container i {
