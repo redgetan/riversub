@@ -70,7 +70,7 @@ class Repository < ActiveRecord::Base
     elsif repo.group.present?
       self.where(group_id: repo.group_id).where("id <> ?", repo.id).order("RAND()").limit(num_of_entries)
     elsif repo.user.present?
-      user_repos = self.where(user_id: repo.user_id).where("id <> ?", repo.id)
+      user_repos = self.where(user_id: repo.user_id).where("id <> ?", repo.id).limit(num_of_entries)
       remaining_count = (num_of_entries - user_repos.count)
       remaining_count = remaining_count < 0 ? 0 : remaining_count
       other_repos = self.order("RAND()").limit(remaining_count)
