@@ -1,7 +1,6 @@
-<% set_meta_tags :site => 'Yasub', :title => 'Subtitle the Web. One video at a time.', :description => "Yasub is a community of people who subtitle internet videos into their own languages." %>
+<% set_meta_tags :site => 'Yasub', :title => 'Subtitling Platform for Fans', :description => "Watch, create, and request subtitles for your favorite online videos." %>
 
 <div class='header-section span12'></div>
-
 
 <h2 class='col-md-10 col-md-offset-1 center'>Subtitling Platform for Fans</h2>
 <div class='center'>
@@ -138,5 +137,26 @@
 
 <div class='center home_call_to_action'>
   <a href="<%= new_user_registration_url %>" class='btn btn-danger btn-lg'>Sign up for FREE</a>
+</div>
+
+<% share_text = "Subtitling Platform for Fans. Watch, create, and request subtitles for your favorite online videos." %>
+
+<div class='center'>
+  Share
+  <br>
+  <br>
+  <a href="https://www.facebook.com/sharer/sharer.php" target="_blank" class='facebook_home_share'>
+    <%= image_tag "fb-32.png", style: "" %>
+  </a>
+  <a href="https://twitter.com/share?text=<%= share_text %>" target="_blank" class='twitter_home_share' >
+    <%= image_tag "twitter-32.png", style: "" %>
+  </a>
+  <br>
+  <br>
+  <br>
+      <div class="fb-share-button" data-layout="box_count"></div>
+    <a href="https://twitter.com/share?count=vertical&text=<%= share_text %>" target="_blank" class="twitter-share-button">Tweet</a>
+
+  <br>
 </div>
 
