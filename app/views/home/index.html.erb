@@ -1,5 +1,20 @@
 <% set_meta_tags :site => 'Yasub', :title => 'Subtitling Platform for Fans', :description => "Watch, create, and request subtitles for your favorite online videos." %>
 
+<% share_text = "Subtitling Platform for Fans. Watch, create, and request subtitles for your favorite online videos." %>
+<% share_image_url = "#{request.protocol}#{request.host_with_port}#{asset_path("video_comments.png")}" %>
+
+<% content_for :head do  %>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="<%= share_image_url %>">
+  <meta name="twitter:title" content="<%= share_text %>">
+
+  <meta property="og:url" content="<%= request.original_url %>" />
+  <meta property="og:title" content="<%= share_text %>" />
+  <meta property="og:site_name" content="Yasub" />
+  <meta property="og:image" content="<%= share_image_url %>" />
+  <meta property="fb:app_id" content="1465538213665903" />
+<% end %>
+
 <div class='header-section span12'></div>
 
 <h2 class='col-md-10 col-md-offset-1 center'>Subtitling Platform for Fans</h2>
@@ -139,13 +154,11 @@
   <a href="<%= new_user_registration_url %>" class='btn btn-danger btn-lg'>Sign up for FREE</a>
 </div>
 
-<% share_text = "Subtitling Platform for Fans. Watch, create, and request subtitles for your favorite online videos." %>
-
 <div class='center'>
   Share
   <br>
   <br>
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.yasub.com" target="_blank" class='facebook_home_share'>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=<%= request.original_url %>" target="_blank" class='facebook_home_share'>
     <%= image_tag "fb-32.png", style: "" %>
   </a>
   <a href="https://twitter.com/share?text=<%= share_text %>" target="_blank" class='twitter_home_share' >
