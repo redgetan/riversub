@@ -29,9 +29,7 @@ class Video < ActiveRecord::Base
 
   def assign_metadata(force = false)
     if force || self.metadata.nil?
-      part = "snippet,contentDetails,statistics"
-      response = RestClient.get "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{self.source_id}&key=#{GOOGLE_API_KEY}"
-      self.metadata = JSON.parse(response)["items"][0]
+      self.metadata = YoutubeClient.new.get_metadata(self.source_id)[0]
     end
   end
 
@@ -81,9 +79,7 @@ class Video < ActiveRecord::Base
   def duration
     return 0 unless self.metadata
     ytformat = self.metadata["contentDetails"]["duration"] # youtube video duration
-    # youtube duration format comes in the form of PT1H41M17S
-    match = ytformat.match(/PT(\d+H)?(\d+M)?(\d+S)?/)
-    match[1].to_i * 3600 + match[2].to_i * 60 + match[3].to_i
+    yt_duration_to_seconds(ytformat)
   end
 
   def uploader_username

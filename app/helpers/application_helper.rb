@@ -71,7 +71,7 @@ module ApplicationHelper
   end
 
   def format_time(secs)
-    [60, 60, 24, 1000].map{ |count|
+    tokens = [60, 60, 24, 1000].map{ |count|
       if secs > 0
         secs, n = secs.divmod(count)
         n
@@ -82,7 +82,14 @@ module ApplicationHelper
       else
         n
       end
-    }.join(':')
+    }
+    tokens.length == 1 ? tokens.unshift("0").join(":") : tokens.join(":")
+  end
+
+  def yt_duration_to_seconds(ytformat)
+    # youtube duration format comes in the form of PT1H41M17S
+    match = ytformat.match(/PT(\d+H)?(\d+M)?(\d+S)?/)
+    match[1].to_i * 3600 + match[2].to_i * 60 + match[3].to_i
   end
 
 end

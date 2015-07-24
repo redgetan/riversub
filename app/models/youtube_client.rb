@@ -1,7 +1,9 @@
 class YoutubeClient
+  include ApplicationHelper
+
   attr_accessor :client
 
-  def initialize(access_token, refresh_token, expires_at)
+  def initialize(options = {})
     @client = Google::APIClient.new(:application_name => "riversub",
                                     :application_version => "0.0.1",
                                     :auto_refresh_token => false) # we want to refresh it ourselves 
@@ -9,9 +11,9 @@ class YoutubeClient
     @client.authorization.client_id = GOOGLE_CLIENT_ID
     @client.authorization.client_secret = GOOGLE_CLIENT_SECRET
 
-    @client.authorization.access_token  = access_token
-    @client.authorization.refresh_token = refresh_token
-    @client.authorization.expires_at    = expires_at
+    @client.authorization.access_token  = options[:access_token]
+    @client.authorization.refresh_token = options[:refresh_token]
+    @client.authorization.expires_at    = options[:expires_at]
   end
 
   def expired?
@@ -22,8 +24,38 @@ class YoutubeClient
     @client.authorization.refresh!
   end
 
+  # list of videos with these metadata
+  #   - thumbnail, title, duration, list of captions
+  # return
+  #   array of hashes
+
   def producer_public_videos
-    
+    @producer_public_videos ||= begin
+      result = []
+
+      playlist_items = get_public_uploads    
+      video_ids = playlist_items.map { |item| item["snippet"]["resourceId"]["videoId"] }
+
+      metadata_list = get_metadata(video_ids)
+      duration_hash = metadata_list.map do |metadata|
+        { metadata["id"] => metadata["contentDetails"]["duration"] }
+      end.reduce(&:merge)
+
+      playlist_items.map do |playlist_item|
+        video_id = playlist_item["snippet"]["resourceId"]["videoId"]
+
+        {
+          :id => video_id,
+          :thumbnail_url => playlist_item["snippet"]["thumbnails"]["default"]["url"],
+          :source_url => "https://youtube.com/watch?v=#{video_id}",
+          :title => playlist_item["snippet"]["title"],
+          :duration => yt_duration_to_seconds(duration_hash[video_id]),
+        }
+      end
+    end
+  end
+
+  def get_public_uploads
     youtube = @client.discovered_api("youtube","v3")
     channels_response = @client.execute!(:api_method => youtube.channels.list,:parameters => {:mine => true,:part => 'contentDetails'})
     uploads_list_id = channels_response.data.items.first['contentDetails']['relatedPlaylists']['uploads']
@@ -35,7 +67,7 @@ class YoutubeClient
         :api_method => youtube.playlist_items.list,
         :parameters => {
           :playlistId => uploads_list_id,
-          :part => 'snippet,status',
+          :part => 'snippet,status,contentDetails',
           :maxResults => 50,
           :pageToken => next_page_token
         }
@@ -52,5 +84,18 @@ class YoutubeClient
     return public_uploads
   rescue Google::APIClient::TransmissionError => e
     return []
+  end
+
+  def get_caption_list(video_id, part="snippet")
+    youtube = @client.discovered_api("youtube","v3")
+    captions_list = @client.execute!({
+      :api_method => youtube.captions.list, 
+      :parameters => {:part => 'snippet', :videoId => video_id }
+    })
+  end
+
+  def get_metadata(video_ids, part = "snippet,contentDetails,statistics")
+    response = RestClient.get "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{video_ids.join(",")}&key=#{GOOGLE_API_KEY}"
+    JSON.parse(response)["items"]
   end
 end

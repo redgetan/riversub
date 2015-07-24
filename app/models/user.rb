@@ -208,7 +208,11 @@ class User < ActiveRecord::Base
   end
 
   def youtube_client
-    @youtube_client ||= YoutubeClient.new(youtube_access_token, youtube_refresh_token, youtube_expires_at)
+    @youtube_client ||= YoutubeClient.new({
+      access_token: youtube_access_token, 
+      refresh_token: youtube_refresh_token, 
+      expires_at: youtube_expires_at
+    })
   end
 
   def youtube_client_expired?
