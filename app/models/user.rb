@@ -1,3 +1,4 @@
+require 'google/api_client'
 
 class User < ActiveRecord::Base
 
@@ -122,12 +123,24 @@ class User < ActiveRecord::Base
     user_url(self)
   end
 
+  def youtube_identity
+    self.identities.where(provider: "google_oauth2").first
+  end
+
+  def youtube_access_token
+    youtube_identity.try(:access_token)
+  end
+
+  def youtube_refresh_token
+    youtube_identity.try(:refresh_token)
+  end
+
+  def youtube_expires_at
+    youtube_identity.try(:expires_at)
+  end
+
   def youtube_account_connected?
-    if youtube_identity = self.identities.where(provider: "google_oauth2").first
-      youtube_identity.access_token.present?
-    else
-      false
-    end
+    youtube_access_token.present?
   end
 
   def serialize
@@ -188,6 +201,28 @@ class User < ActiveRecord::Base
 
   def allow_subtitle_download=(bool) 
     settings.set(:allow_subtitle_download, bool)  
+  end
+
+  def producer_public_videos
+    youtube_client.producer_public_videos
+  end
+
+  def youtube_client
+    @youtube_client ||= YoutubeClient.new(youtube_access_token, youtube_refresh_token, youtube_expires_at)
+  end
+
+  def youtube_client_expired?
+    youtube_client.expired?
+  end
+
+  def youtube_client_refresh!
+    youtube_client.refresh!  
+
+    # we need to save the new access token and expiry back to DB, refresh token is always the same so no need to save it
+    youtube_identity.update_attributes!(
+      :token => youtube_client.client.authorization.access_token,
+      :expires_at => Time.now + youtube_client.client.authorization.expires_in
+    )
   end
 
   def to_param

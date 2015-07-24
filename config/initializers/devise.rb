@@ -1,4 +1,5 @@
 require "omniauth-facebook"
+require_relative "youtube_api"
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
@@ -211,7 +212,7 @@ Devise.setup do |config|
   Net::HTTP.class_eval { def verify_mode; OpenSSL::SSL::VERIFY_NONE ;end } if Rails.env.development? 
   
   config.omniauth :facebook, "1465538213665903", "fe99cd7801bce59b120a6c0ddea48b09"
-  config.omniauth :google_oauth2, "451571491990-l5cvsmjcva83v25vc0neptktsc0l3kb2.apps.googleusercontent.com", "m6dJwYtiqJJB-txcu35y5V8g",  
+  config.omniauth :google_oauth2, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,  
     scope: "https://www.googleapis.com/auth/youtube"
   #https://www.googleapis.com/auth/youtube
 

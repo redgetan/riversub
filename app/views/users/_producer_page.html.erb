@@ -17,6 +17,16 @@
       </li>
       <li>
         <h5>Manage User Translations</h5>
+        <% if @user.youtube_account_connected? %>
+          <ul class='uploaded_items'>
+            <% @user.producer_public_videos.each do |playlist_item| %>
+              <li class='row'>
+                <div class='col-md-3'><%= image_tag playlist_item["snippet"]["thumbnails"]["default"]["url"] %></div>
+                <div class='col-md-3'><%= playlist_item["snippet"]["title"] %></div>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
       </li>
     </ol>
   </div>
