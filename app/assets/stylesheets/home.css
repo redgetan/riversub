@@ -3837,3 +3837,14 @@ label[for='group_allow_subtitle_download'] {
   margin-right: 10px;
 }
 
+.sign_up_role_container {
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 20px;
+}
+
+.youtube_account_connected_label {
+  padding: 5px;
+  background-color: gray;
+  color: white;
+}

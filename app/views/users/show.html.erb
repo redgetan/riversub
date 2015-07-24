@@ -14,25 +14,9 @@
       </ul>
     <% end %>
 
-  <div class='row'>
-    <%= render "user_profile" %>
-
-    <% if @youtube_owner %>
-    <% end %>
-  </div>
-  <div class='row'>
-    <ul class="nav nav-tabs col-xs-8  col-xs-offset-3" >
-      <li class="<%= @user.translations_tab_class %>"><a href="#translations" data-toggle="tab">Translations</a></li>
-      <li class="<%= @user.video_bookmarks_tab_class %>"><a href="#video_bookmarks" data-toggle="tab">Video Bookmarks</a></li>
-      <li><a href="#line_favorites" data-toggle="tab">Line Favorites</a></li>
-      <li><a href="#user_groups" data-toggle="tab">Groups</a></li>
-    </ul>
-
-    <div class="tab-content">
-      <div class="tab-pane <%= @user.translations_tab_class %>" id="translations"><%= render "user_repositories" %></div>
-      <div class="tab-pane <%= @user.video_bookmarks_tab_class %>" id="video_bookmarks"><%= render "video_bookmarks" %></div>
-      <div class="tab-pane" id="line_favorites"><%= render "line_favorites" %></div>
-      <div class="tab-pane" id="user_groups"><%= render "user_groups" %></div>
-    </div>
-  </div>
+  <% if @user.is_producer? %>
+    <%= render "producer_page" %>
+  <% else %>
+    <%= render "translator_or_viewer_page" %>
+  <% end %>
 </div>

@@ -12,6 +12,11 @@
               <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name)) do |f| %>
                 <%= devise_error_messages! %>
 
+                <div class='sign_up_role_container'>
+                  <span>I'm a </span>
+                  <%= f.select :role, options_for_select(User::roles_select_options) %>
+                </div>
+
                 <%= f.text_field :username, :placeholder => "username", class: "form-control" %>
 
                 <%= f.email_field :email, :placeholder => "email", class: "form-control" %>

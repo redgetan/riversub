@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :bio, :email, :password, :password_confirmation, :remember_me,
-                  :avatar, :avatar_cache, :remove_avatar
+                  :avatar, :avatar_cache, :remove_avatar, :role
 
   validates :username, :presence => true
 
@@ -32,12 +32,20 @@ class User < ActiveRecord::Base
 
   has_many :group_creations, class_name: "Group", foreign_key: "creator_id"
 
-  attr_accessor :login
+  attr_accessor :login, :role
 
   mount_uploader :avatar, AvatarUploader
 
+  ROLES = %w[youtuber translator viewer]
+
   before_create do
     self.username.downcase!
+  end
+
+  def self.roles_select_options
+    ROLES.map do |role_name|
+      [role_name.capitalize,role_name]
+    end  
   end
 
   def self.recent_contributors(num_of_entries = 10)
@@ -96,12 +104,30 @@ class User < ActiveRecord::Base
     username
   end
 
+  def role=(role_name)
+    case role_name
+    when "youtuber"  
+      self.is_producer = true
+    when "translator"  
+      self.is_translator = true
+    when "viewer"
+    end
+  end
+
   def avatar_url
     avatar.thumb.url
   end
 
   def url
     user_url(self)
+  end
+
+  def youtube_account_connected?
+    if youtube_identity = self.identities.where(provider: "google_oauth2").first
+      youtube_identity.access_token.present?
+    else
+      false
+    end
   end
 
   def serialize
@@ -131,6 +157,7 @@ class User < ActiveRecord::Base
     false
   end
 
+  # used for lobster comments (might need changing in future)
   def is_moderator?
     is_admin?  
   end

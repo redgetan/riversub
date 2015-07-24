@@ -1,0 +1,23 @@
+<div class='row'>
+  <div class="col-xs-8  col-xs-offset-2" >
+
+    <h4>Hello <%= @user.username %>! </h4>
+    <p>As a youtube producer, yasub allows you to create an official page where users can help increase your Youtube traffic by translating your videos and sharing it with their followers. </p>
+    <br>
+    <h4>Follow these steps to get started:</h4>
+    <ol>
+      <li>
+        <h5>Connect Youtube Account</h5>
+        <p>This will allow us to list your available videos for users to subtitle and help you manage user subtitles.</p>
+        <% if @user.youtube_account_connected? %>
+          <span class='youtube_account_connected_label'>Connected</span>
+        <% else %>
+          <a class="btn btn-<%= social_button_provider_name(:google_oauth2) %>" href="<%= user_omniauth_authorize_path(:google_oauth2) %>">Connect</a>
+        <% end %>
+      </li>
+      <li>
+        <h5>Manage User Translations</h5>
+      </li>
+    </ol>
+  </div>
+</div>
