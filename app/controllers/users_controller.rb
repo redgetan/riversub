@@ -20,16 +20,7 @@ class UsersController < ApplicationController
                       @user.repositories.published.recent # if not logged in, show only published ones
                     end
 
-    refresh_access_token_if_expired
+    @page = @user.pages.build
   end
-
-  private
-
-    def refresh_access_token_if_expired
-      if @user.is_producer? && @user.youtube_client_expired?
-        @user.youtube_client_refresh!
-      end
-    end
-
 
 end

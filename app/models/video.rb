@@ -3,6 +3,7 @@ class Video < ActiveRecord::Base
   has_paper_trail :on => [:update, :destroy]
 
   include Rails.application.routes.url_helpers
+  include ApplicationHelper
 
   attr_accessor :current_user
   attr_accessible :artist, :genre, :name, :metadata, :url, :source_url, :language, :current_user

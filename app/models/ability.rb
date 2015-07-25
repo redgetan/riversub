@@ -10,6 +10,7 @@ class Ability
     define_group_abilities(user)
     define_release_item_abilities(user)
     define_release_abilities(user)
+    define_page_abilities(user)
     #
     # The first argument to `can` is the action you are giving the user 
     # permission to do.
@@ -37,6 +38,12 @@ class Ability
 
     can :edit, Repository do |repo|
       repo.owned_by?(user)
+    end
+  end
+
+  def define_page_abilities(user)
+    can :edit, Page do |page|
+      page.owned_by?(user)
     end
   end
 

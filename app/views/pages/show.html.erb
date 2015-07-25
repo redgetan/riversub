@@ -1,0 +1,9 @@
+<ul class='uploaded_items'>
+  <% @page.producer_public_videos.each do |video_hash| %>
+    <li class='row'>
+      <div class='col-md-3'><a href="<%= video_hash.source_url %>" target="_blank"><%= image_tag(video_hash.thumbnail_url) %></a></div>
+      <div class='col-md-3'><a href="<%= video_hash.source_url %>" target="_blank"><%= video_hash.title %></a></div>
+      <div class='col-md-3'><%= format_time(video_hash.duration) %></div>
+    </li>
+  <% end %>
+</ul>

@@ -3848,3 +3848,23 @@ label[for='group_allow_subtitle_download'] {
   background-color: gray;
   color: white;
 }
+
+.name_page_btn {
+  border: solid 1px #ccc;
+  padding: 5px;
+}
+
+.name_page_btn:hover {
+/*  background-color: steelblue;
+  color: white;
+  text-decoration: none;
+*/}
+
+.new_page .field_with_errors {
+  display: inline-block;
+}
+
+.new_page .field_error_message {
+  color: lightcoral;
+  margin-left: 5px;
+}

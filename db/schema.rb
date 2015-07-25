@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150723195159) do
+ActiveRecord::Schema.define(:version => 20150724184955) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(:version => 20150723195159) do
     t.string   "token"
     t.string   "refresh_token"
     t.integer  "expires_at"
+    t.string   "yt_channel_id"
   end
 
   create_table "memberships", :force => true do |t|
@@ -89,6 +90,16 @@ ActiveRecord::Schema.define(:version => 20150723195159) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end
+
+  create_table "pages", :force => true do |t|
+    t.string   "short_name"
+    t.text     "metadata"
+    t.integer  "identity_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "pages", ["identity_id"], :name => "index_pages_on_identity_id"
 
   create_table "release_items", :force => true do |t|
     t.integer  "release_id"

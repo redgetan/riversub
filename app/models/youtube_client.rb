@@ -30,6 +30,7 @@ class YoutubeClient
   #   array of hashes
 
   def producer_public_videos
+
     @producer_public_videos ||= begin
       result = []
 
@@ -55,9 +56,21 @@ class YoutubeClient
     end
   end
 
+  def get_channel_data
+    @channel_data ||= begin
+      channels_response = @client.execute!(
+        :api_method => youtube.channels.list,
+        :parameters => {:mine => true,:part => 'snippet,contentDetails'}
+      )
+    end
+  end
+
+  def youtube
+    @client.discovered_api("youtube","v3")
+  end
+
   def get_public_uploads
-    youtube = @client.discovered_api("youtube","v3")
-    channels_response = @client.execute!(:api_method => youtube.channels.list,:parameters => {:mine => true,:part => 'contentDetails'})
+    channels_response = get_channel_data
     uploads_list_id = channels_response.data.items.first['contentDetails']['relatedPlaylists']['uploads']
 
     public_uploads = []
@@ -87,7 +100,6 @@ class YoutubeClient
   end
 
   def get_caption_list(video_id, part="snippet")
-    youtube = @client.discovered_api("youtube","v3")
     captions_list = @client.execute!({
       :api_method => youtube.captions.list, 
       :parameters => {:part => 'snippet', :videoId => video_id }
@@ -95,7 +107,8 @@ class YoutubeClient
   end
 
   def get_metadata(video_ids, part = "snippet,contentDetails,statistics")
-    response = RestClient.get "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{video_ids.join(",")}&key=#{GOOGLE_API_KEY}"
+    url = "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{video_ids.join(",")}&key=#{GOOGLE_API_KEY}"
+    response = RestClient::Request.execute(method: :get, url: url, verify_ssl: false)
     JSON.parse(response)["items"]
   end
 end

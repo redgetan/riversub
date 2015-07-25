@@ -8,27 +8,28 @@
     <ol>
       <li>
         <h5>Connect Youtube Account</h5>
-        <p>This will allow us to list your available videos for users to subtitle and help you manage user subtitles.</p>
+        <p>This will allow us to list your available videos and help you manage user subtitles.</p>
         <% if @user.youtube_account_connected? %>
           <span class='youtube_account_connected_label'>Connected</span>
         <% else %>
           <a class="btn btn-<%= social_button_provider_name(:google_oauth2) %>" href="<%= user_omniauth_authorize_path(:google_oauth2) %>">Connect</a>
         <% end %>
       </li>
-      <li>
-        <h5>Manage User Translations</h5>
-        <% if @user.youtube_account_connected? %>
-          <ul class='uploaded_items'>
-            <% @user.producer_public_videos.each do |video_hash| %>
-              <li class='row'>
-                <div class='col-md-3'><a href="<%= video_hash.source_url %>" target="_blank"><%= image_tag(video_hash.thumbnail_url) %></a></div>
-                <div class='col-md-3'><a href="<%= video_hash.source_url %>" target="_blank"><%= video_hash.title %></a></div>
-                <div class='col-md-3'><%= format_time(video_hash.duration) %></div>
-              </li>
+      <% if @user.youtube_account_connected? %>
+        <li>
+          <h5>Name your page</h5>
+          <% if @user.page.present? %>
+            <a href="<%= @user.page.url %>"><%= @user.page.url %></a>
+          <% else %>
+            <%= form_for @page do |f| %>
+              <input name="page[identity_id]" type="hidden" value="<%= @user.youtube_identity.id %>">
+              <span>yasub.com/p/</span>
+              <%= f.text_field :short_name, placeholder: "ie. #{@user.username}" %>
+              <%= f.submit "create", class: "name_page_btn" %>
             <% end %>
-          </ul>
-        <% end %>
-      </li>
+          <% end %>
+        </li>
+      <% end %>
     </ol>
   </div>
 </div>
