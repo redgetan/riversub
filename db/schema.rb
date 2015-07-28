@@ -223,6 +223,7 @@ ActiveRecord::Schema.define(:version => 20150727232800) do
     t.boolean  "is_admin",               :default => false
     t.boolean  "is_super_admin",         :default => false
     t.boolean  "is_producer"
+    t.boolean  "is_translator"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

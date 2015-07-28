@@ -38,16 +38,15 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
-  ROLES = %w[youtuber translator viewer]
+  ROLES = %w[producer translator viewer]
 
   before_create do
     self.username.downcase!
   end
 
   def self.roles_select_options
-    ROLES.map do |role_name|
-      [role_name.capitalize,role_name]
-    end  
+    [
+    ]
   end
 
   def self.recent_contributors(num_of_entries = 10)
@@ -108,7 +107,7 @@ class User < ActiveRecord::Base
 
   def role=(role_name)
     case role_name
-    when "youtuber"  
+    when "producer"  
       self.is_producer = true
     when "translator"  
       self.is_translator = true

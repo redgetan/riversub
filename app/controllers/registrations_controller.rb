@@ -10,6 +10,17 @@ class RegistrationsController < Devise::RegistrationsController
     UserMailer.welcome_email(@user).deliver unless @user.invalid?
   end
 
+  def new
+    @role = params[:role]
+
+    if @role && !User::ROLES.include?(@role)
+      flash[:error] = "There is no role called #{@role}"
+      redirect_to new_user_registration_url and return
+    end
+
+    super  
+  end
+
   # https://github.com/plataformatec/devise/wiki/How-To%3a-Allow-users-to-edit-their-account-without-providing-a-password
   def update
     @user = User.find(current_user.id)

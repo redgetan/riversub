@@ -3840,7 +3840,7 @@ label[for='group_allow_subtitle_download'] {
 .sign_up_role_container {
   margin-bottom: 20px;
   padding: 10px;
-  font-size: 20px;
+  /*font-size: 20px;*/
 }
 
 .youtube_account_connected_label {
@@ -3914,4 +3914,27 @@ label[for='group_allow_subtitle_download'] {
 
 .page_user_submissions .release_items_container {
   width: 100%;
+}
+
+.role_item {
+  border: solid 1px black;
+  float: left;
+  width: 250px;
+  height: 120px;
+  padding: 0px 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  color: #333;
+}
+
+.role_item:hover {
+  text-decoration: none;
+  background-color: steelblue;
+  color: white;
+}
+
+.sub_role_item {
+  margin-top: 150px;
+  clear: both;
+  display: block;
 }

@@ -4,29 +4,49 @@
 
 <div class='container'>
     <div class='row'>
-        <div class="col-md-3 col-xs-6 center">
-            <h1>Join Us</h1>
-        </div>
-        <div class='col-md-3 col-xs-6 center sign_up_container'>
-            <div class="signup_container">
-              <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name)) do |f| %>
-                <%= devise_error_messages! %>
-
-                <div class='sign_up_role_container'>
-                  <span>I'm a </span>
-                  <%= f.select :role, options_for_select(User::roles_select_options) %>
-                </div>
-
-                <%= f.text_field :username, :placeholder => "username", class: "form-control" %>
-
-                <%= f.email_field :email, :placeholder => "email", class: "form-control" %>
-
-                <%= f.password_field :password, :placeholder => "password", class: "form-control" %>
-
-                <%= f.submit "Sign up", :class => 'btn btn-primary pull-right' %>
-              <% end %>
+        <% if @role %>
+            <div class="col-md-3 col-xs-6 center">
+                <h1>Join Us </h1>
+                <p><%= @role.capitalize %></p>
             </div>
-        </div>
+            <div class='col-md-3 col-xs-6 center sign_up_container'>
+                <div class="signup_container">
+                  <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name)) do |f| %>
+                    <%= devise_error_messages! %>
+
+                    <input type='hidden' name='user[role]' value='<%= @role %>'>
+
+                    <%= f.text_field :username, :placeholder => "username", class: "form-control" %>
+
+                    <%= f.email_field :email, :placeholder => "email", class: "form-control" %>
+
+                    <%= f.password_field :password, :placeholder => "password", class: "form-control" %>
+
+                    <%= f.submit "Sign up", :class => 'btn btn-primary pull-right' %>
+                  <% end %>
+                </div>
+            </div>
+        <% else %>
+            <div class='col-md-6 col-xs-6 center sign_up_container'>
+              <div class="signup_container">
+                <div class='sign_up_role_container'>
+                  <h4>Choose what best describes you</h4>
+                    <br>
+                    <a class='role_item' href="<%= new_user_registration_url(role: "producer") %>">
+                      <h3>Producer</h3>
+                      <span>I want my viewers to translate my videos</span>
+                    </a>
+                    <a class='role_item' href="<%= new_user_registration_url(role: "translator") %>">
+                      <h3>Translator</h3>
+                      <span>I want to translate someone else video</span>
+                    </a>
+                    <a class='sub_role_item' href="<%= new_user_registration_url(role: "viewer") %>">
+                      I just want to view or request subtitles
+                    </a>
+                </div>
+              </div>
+            </div>
+        <% end %>
     </div>
 </div>
 <div class='header-section col-xs-12'></div>
