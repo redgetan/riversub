@@ -32,6 +32,7 @@ River::Application.routes.draw do
     get "requests/:id",      :to => "requests#show",       :as => "video_request_show"
     post "videos/:video_token/repositories/upload", :to => "repositories#upload", :as => "video_repository_upload"
     post "/r/:token/upload", :to => "repositories#upload_to_existing_repo", :as => "upload_to_existing_repo"
+    post "/r/:token/import_to_youtube", :to => "repositories#import_to_youtube", :as => "import_to_youtube_repo"
     get "subs",                                  :to => "repositories#index",  :as => "repositories"
     get "releases/:id",                          :to => "releases#show",  :as => "release_show"
 

@@ -3937,3 +3937,8 @@ label[for='group_allow_subtitle_download'] {
   clear: both;
   display: block;
 }
+
+.yt_imported_label {
+  border: solid 1px gray;
+  padding: 2px;
+}

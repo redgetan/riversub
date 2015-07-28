@@ -498,6 +498,10 @@ class Repository < ActiveRecord::Base
     video.source_url  
   end
 
+  def source_url
+    video_source_url  
+  end
+
   def export_url
     "#{self.url}#export"
   end
@@ -721,6 +725,22 @@ class Repository < ActiveRecord::Base
     else
       !!user.try(:allow_subtitle_download)
     end
+  end
+
+  def import_caption_to_youtube!
+    return unless self.page
+
+    self.page.youtube_client.upload_caption(self.video.source_id,
+      language_code: current_language,
+      title: self.user.try(:username),
+      body: self.to_srt
+    )
+
+    update_column(:is_youtube_imported, true)
+  end
+
+  def import_to_youtube_url
+    import_to_youtube_repo_url(self)  
   end
 
   def to_param

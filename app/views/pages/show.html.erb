@@ -41,8 +41,8 @@
         User Submissions
       </div>
       <div class='section_body'>
-        <% @page.published_repositories.each_slice(4) do |repos| %>
-          <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3"}  %>
+        <% @page.published_repositories.recent.each_slice(4) do |repos| %>
+          <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3", show_import_actions: current_user == @page.user }  %>
         <% end %>
       </div>
     </div> 

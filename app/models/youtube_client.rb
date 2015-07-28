@@ -112,6 +112,16 @@ class YoutubeClient
     })
   end
 
+  def upload_caption(video_id, options={})
+    url = "https://gdata.youtube.com/feeds/api/videos/#{video_id}/captions" 
+    RestClient.post(url, options[:body], 
+      :content_type => "application/vnd.youtube.timedtext; charset=UTF-8", 
+      :content_language => options[:language_code], 
+      "Authorization" => "Bearer #{@client.authorization.access_token}", 
+      "X-GData-Key" => "key=#{X_GDATA_KEY}", 
+      "Slug" => options[:title])
+  end
+
   def get_metadata(video_ids, part = "snippet,contentDetails,statistics")
     url = "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{Array(video_ids).join(",")}&key=#{GOOGLE_API_KEY}"
     response = RestClient::Request.execute(method: :get, url: url, verify_ssl: false)

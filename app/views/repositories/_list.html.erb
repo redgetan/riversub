@@ -29,6 +29,15 @@
           <a href="<%= repo.owner_profile_url %>" class="owner_name"><%= repo.owner %></a>
         </span>
       </div>
+      <div class='actions'>
+        <% if show_import_actions %>
+          <% if repo.is_youtube_imported? %>
+            <a class='yt_imported_label' href="<%= repo.source_url %>">Imported</a>
+          <% else %>
+            <%= link_to("Import to Youtube", repo.import_to_youtube_url, method: "post", class: "btn btn-danger btn-xs") %>
+          <% end %>
+        <% end %>
+      </div>
     </li>
   <% end %>
 </ul>

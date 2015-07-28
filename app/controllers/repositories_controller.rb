@@ -185,6 +185,14 @@ class RepositoriesController < ApplicationController
     end
   end
 
+  def import_to_youtube
+    @repo = Repository.find_by_token! params[:token]
+
+    @repo.import_caption_to_youtube!
+
+    redirect_to @repo.page_url
+  end
+
   def editor
     @repo = Repository.find_by_token! params[:token]
     @repo.current_user = current_user
