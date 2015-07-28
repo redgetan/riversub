@@ -3868,3 +3868,50 @@ label[for='group_allow_subtitle_download'] {
   color: lightcoral;
   margin-left: 5px;
 }
+
+.page_show_container .thumbnail {
+  margin: auto !important;
+  margin-bottom: 10px !important;
+  border: solid 1px gray;
+}
+
+.page_directions {
+  margin-bottom: 20px;
+  border: none;
+}
+
+.page_available_videos {
+  margin-bottom: 50px;  
+}
+
+.page_show_container .section_block {
+  border: none;
+}
+
+.page_show_container .section_header {
+  border-bottom: solid 1px gray;
+  font-size: 22px;
+  color: #777;
+  background: none;
+}
+
+.page_available_videos .uploaded_items .row {
+  margin-bottom: 10px;
+}
+
+.page_new_sub_btn {
+  display: none;
+}
+
+.page_available_videos .uploaded_items .row:hover .page_new_sub_btn {
+  display: block;
+}
+
+.page_video_title {
+  display: block;
+  clear: both;
+}
+
+.page_user_submissions .release_items_container {
+  width: 100%;
+}

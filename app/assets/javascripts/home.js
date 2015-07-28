@@ -97,6 +97,18 @@ $(document).ready(function(){
     }
   });
 
+
+  $(".page_new_sub_btn").click(function (event) {
+    var url = $(this).data("source-url");
+    var options = {
+      page_id: $(".page_id_container").text(),
+      hide_group: true
+    }
+
+    subtitleVideo(url, options);
+  });
+ 
+
 });
 
 function subtitleVideo(url, options) {
@@ -109,6 +121,7 @@ function subtitleVideo(url, options) {
   if (typeof options.group_id !== "undefined")   data["group_id"]   = options.group_id;  
   if (typeof options.hide_group !== "undefined") data["hide_group"] = options.hide_group;  
   if (typeof options.request_id !== "undefined") data["request_id"] = options.request_id;  
+  if (typeof options.page_id !== "undefined")    data["page_id"]    = options.page_id;  
 
   $.ajax({
     url: "/videos/sub",

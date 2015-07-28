@@ -27,6 +27,7 @@ class Repository < ActiveRecord::Base
   has_many :votes, :as => :votable, :class_name => "ActsAsVotable::Vote"
 
   belongs_to :group
+  belongs_to :page
   belongs_to :release_item
   belongs_to :request
 

@@ -13,6 +13,11 @@ class Page < ActiveRecord::Base
   validates :short_name, uniqueness: true
   validates :short_name, presence: true
 
+  serialize :metadata, JSON
+
+  has_many :repositories
+
+
   def assign_metadata
     self.metadata = self.identity.youtube_client.get_channel_data.data.items.first.to_hash
   end
@@ -22,7 +27,7 @@ class Page < ActiveRecord::Base
   end
 
   def description
-    self.metadata["snippet"]["title"]
+    self.metadata["snippet"]["description"]
   end
 
   def thumbnail_url
@@ -60,6 +65,25 @@ class Page < ActiveRecord::Base
     else
       super
     end
+  end
+
+  def published_repositories
+    self.repositories.published
+  end
+
+  def channel_id
+    self.metadata["id"]  
+  end
+
+  def source_url
+    "https://youtube.com/channel/#{channel_id}"  
+  end
+
+  def new_repository_url
+    self.video.new_repository_url(page_id: self.short_name, 
+                                  hide_group: group.present? ? true : nil,
+                                  repo_language_code: self.language,
+                                  request_id: self.id)  
   end
 
   def url

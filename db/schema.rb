@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150724184955) do
+ActiveRecord::Schema.define(:version => 20150727232800) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -134,6 +134,7 @@ ActiveRecord::Schema.define(:version => 20150724184955) do
     t.string   "youtube_sync_email_sent_to"
     t.integer  "request_id"
     t.boolean  "is_downloadable"
+    t.integer  "page_id"
   end
 
   create_table "requests", :force => true do |t|

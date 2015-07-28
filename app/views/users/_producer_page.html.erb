@@ -17,8 +17,8 @@
       </li>
       <% if @user.youtube_account_connected? %>
         <li>
-          <h5>Name your page</h5>
-          <% if @user.page.present? %>
+          <h5>Create your page</h5>
+          <% if @user.pages.count > 0 %>
             <a href="<%= @user.page.url %>"><%= @user.page.url %></a>
           <% else %>
             <%= form_for @page do |f| %>
@@ -28,6 +28,12 @@
               <%= f.submit "create", class: "name_page_btn" %>
             <% end %>
           <% end %>
+        </li>
+      <% end %>
+      <% if @user.pages.count > 0 %>
+        <li>
+          <h5>Done! You're all set</h5>
+          <p>You can now share the above page with your existing viewers/followers</p>
         </li>
       <% end %>
     </ol>

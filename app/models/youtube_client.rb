@@ -11,9 +11,9 @@ class YoutubeClient
     @client.authorization.client_id = GOOGLE_CLIENT_ID
     @client.authorization.client_secret = GOOGLE_CLIENT_SECRET
 
-    @client.authorization.access_token  = options[:access_token]
-    @client.authorization.refresh_token = options[:refresh_token]
-    @client.authorization.expires_at    = options[:expires_at]
+    @client.authorization.access_token  = options[:access_token]  if options[:access_token]
+    @client.authorization.refresh_token = options[:refresh_token] if options[:refresh_token]
+    @client.authorization.expires_at    = options[:expires_at]    if options[:expires_at]
   end
 
   def expired?
@@ -42,6 +42,10 @@ class YoutubeClient
         { metadata["id"] => metadata["contentDetails"]["duration"] }
       end.reduce(&:merge)
 
+      view_hash = metadata_list.map do |metadata|
+        { metadata["id"] => metadata["statistics"]["viewCount"] }
+      end.reduce(&:merge)
+
       playlist_items.map do |playlist_item|
         video_id = playlist_item["snippet"]["resourceId"]["videoId"]
 
@@ -51,6 +55,8 @@ class YoutubeClient
           :source_url => "https://youtube.com/watch?v=#{video_id}",
           :title => playlist_item["snippet"]["title"],
           :duration => yt_duration_to_seconds(duration_hash[video_id]),
+          :views => view_hash[video_id],
+          :published_at => playlist_item["snippet"]["publishedAt"]
         }
       end
     end
@@ -107,7 +113,7 @@ class YoutubeClient
   end
 
   def get_metadata(video_ids, part = "snippet,contentDetails,statistics")
-    url = "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{video_ids.join(",")}&key=#{GOOGLE_API_KEY}"
+    url = "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{Array(video_ids).join(",")}&key=#{GOOGLE_API_KEY}"
     response = RestClient::Request.execute(method: :get, url: url, verify_ssl: false)
     JSON.parse(response)["items"]
   end
