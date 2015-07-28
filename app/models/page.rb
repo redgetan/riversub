@@ -86,6 +86,10 @@ class Page < ActiveRecord::Base
                                   request_id: self.id)  
   end
 
+  def name
+    title  
+  end
+
   def url
     page_url(self)  
   end

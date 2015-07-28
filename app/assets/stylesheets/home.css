@@ -736,6 +736,7 @@ html.fullscreen .related_videos_container {
 }
 
 #river_player #repo_label .group_name,
+#river_player #repo_label .page_name,
 #river_player #repo_label .repo_owner {
   color: steelblue;
 }

@@ -180,6 +180,14 @@ class Repository < ActiveRecord::Base
     self.group.url  
   end
 
+  def page_url
+    self.page.url  
+  end
+
+  def page_name
+    self.page.name  
+  end
+
   def group_name
     self.group.name  
   end

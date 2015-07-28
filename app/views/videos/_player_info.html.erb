@@ -3,6 +3,10 @@
     <% if @repo %>
       <h3 id='repo_label' class='pull-left'>
         <div>
+          <% if @repo.page %>
+            <a class="page_name" href="<%= @repo.page_url %>"><%= @repo.page_name %></a>
+            <span class='repo_label_divider'>/</span>
+          <% end %>
           <% if @repo.group %>
             <a class="group_name" href="<%= @repo.group_url %>"><%= @repo.group_name %></a>
             <span class='repo_label_divider'>/</span>

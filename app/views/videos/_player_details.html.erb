@@ -1,7 +1,6 @@
 <div id="player_details">
   <ul class="nav nav-tabs" >
-    <li class="<%= @repo.try(:is_downloadable?) ? "col-xs-4" : "col-xs-6" %> active"><a href="#transcript" data-toggle="tab">Transcript</a></li>
-    <li class="<%= @repo.try(:is_downloadable?) ? "col-xs-4" : "col-xs-6" %>"><a href="#contribute" data-toggle="tab">Contribute</a></li>
+    <li class="<%= @repo.try(:is_downloadable?) ? "col-xs-6" : "col-xs-12" %> active"><a href="#transcript" data-toggle="tab">Transcript</a></li>
     <% if @repo.try(:is_downloadable?) %>
       <li class="col-xs-4"><a href="#export" data-toggle="tab">Export</a></li>
     <% end %>
@@ -12,10 +11,6 @@
       <div id='transcript_container'>
         <div id='subtitle_list'></div>
       </div>
-    </div>
-
-    <div class="tab-pane <%= @repo ? @repo.contribute_tab_class : "active" %>" id='contribute'>
-      <%= render 'videos/player_repositories' %>
     </div>
 
     <% if @repo.try(:is_downloadable?) %>
