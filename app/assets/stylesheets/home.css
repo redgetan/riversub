@@ -3579,13 +3579,11 @@ html.embed .expand_btn {
 }
 
 .new_group_btn {
-  margin-bottom: 30px;
-  border: solid 1px black;
-/*  border: solid 1px gray;
-  padding: 10px;
-  background-color: ghostwhite;
-  color: #333;
-*/}
+  margin-bottom: 40px;
+  border: solid 1px gray;
+  padding: 5px;
+  display: inline-block;
+}
 
 .new_group_btn:hover {
 /*  text-decoration: none;
