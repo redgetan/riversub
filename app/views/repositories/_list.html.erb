@@ -30,7 +30,7 @@
         </span>
       </div>
       <div class='actions'>
-        <% if show_import_actions %>
+        <% if defined?(show_import_actions) && show_import_actions %>
           <% if repo.is_youtube_imported? %>
             <a class='yt_imported_label' href="<%= repo.source_url %>">Imported</a>
           <% else %>
