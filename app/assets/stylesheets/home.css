@@ -3942,3 +3942,23 @@ label[for='group_allow_subtitle_download'] {
   border: solid 1px gray;
   padding: 2px;
 }
+
+.home_title {
+  font-weight: normal;
+}
+
+.home_description {
+  /*font-size: 20px;*/
+}
+
+.home_section_header {
+  text-align: left;
+  border-bottom: solid 1px gray;
+  padding-bottom: 5px;
+  margin-bottom: 50px;
+}
+
+.layout_social_share_btn {
+  position: relative;
+  top: -5px;
+}

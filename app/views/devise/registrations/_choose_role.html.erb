@@ -1,0 +1,19 @@
+<div class='col-md-12 col-xs-6 center sign_up_container'>
+  <div class="signup_container">
+    <div class='sign_up_role_container'>
+      <h4><%= sign_up_header %></h4>
+        <br>
+        <a class='role_item' href="<%= new_user_registration_url(role: "producer") %>">
+          <h3>Producer</h3>
+          <span>I want my viewers to translate my youtube videos</span>
+        </a>
+        <a class='role_item' href="<%= new_user_registration_url(role: "translator") %>">
+          <h3>Translator</h3>
+          <span>I want to translate other people's video</span>
+        </a>
+        <a class='sub_role_item' href="<%= new_user_registration_url(role: "viewer") %>">
+          I just want to view or request subtitles
+        </a>
+    </div>
+  </div>
+</div>

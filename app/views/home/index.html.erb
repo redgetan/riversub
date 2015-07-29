@@ -16,42 +16,24 @@
   <meta property="fb:app_id" content="1465538213665903" />
 <% end %>
 
-<div class='header-section span12'></div>
+<div class='header-section col-xs-12'></div>
 
-<h2 class='col-md-10 col-md-offset-1 center'>Subtitling Platform for Fans</h2>
+<h1 class='col-md-10 col-md-offset-1 center home_title'>Subtitling Platform for Fans</h1>
 <div class='center'>
-  <span class=''>Watch, create, and request subtitles for your favorite online videos.</span>
+  <span class='home_description'>Reach out to foreign fans by having viewers subtitle your Youtube Videos </span>
 </div>
 
-<!-- <div class='share_home'>
-  <a href="https://twitter.com/share" class="twitter-share-button" data-text="Trending Videos in Japan - Subtitled Weekly" data-via="yasub_tv" data-count="none">Tweet</a>
-  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</div>
- -->
-<div class='row how_it_works'>
-  <div class='how_it_works_item col-xs-2'>
-    <div class='icon_container'>
-      <i class='fa fa-group'></i>
-    </div>
-    <span>Create a group (i.e. kpop, vocaloid, french lets play)</span>
-  </div>
-  <div class='how_it_works_item col-xs-2'>
-    <div class='icon_container'>
-      <i class='fa fa-send'></i>
-    </div>
-    <span>Invite others to join.</span>
-  </div>
-  <div class='how_it_works_item col-xs-2'>
-    <div class='icon_container'>
-      <i class='fa fa-video-camera'></i>
-    </div>
-    <span>Requests subtitles or help Translate them.</span>
-  </div>
+<div class='header-section col-xs-12'></div>
+<div style='border: solid 1px gray; height: 350px; display: block; background-color: black;' class='col-xs-10 col-xs-offset-1'></div>
+
+<div class='header-section col-xs-12'></div>
+<div class='center'>
+  <a href="<%= new_user_registration_url %>" class='btn btn-danger btn-lg'>Sign up Now</a>
 </div>
 
-<div class='header-section span12'></div>
-
-<h3 class='col-md-10 col-md-offset-1 center'>Features</h3>
+<div class='header-section col-xs-12'></div>
+<div class='header-section col-xs-12'></div>
+<h3 class='col-md-10 col-md-offset-1 center home_section_header'>Features</h3>
 
 
 <div class='row '>
@@ -63,7 +45,7 @@
       </div>
       <img class="col-md-5 col-xs-12" src="<%= asset_path("video_comments.png") %>">
       <div class='col-md-5 col-xs-12 feature_description_container'>
-        <h3 class='feature_item_header'>Drive Traffic to Uploader</h3>
+        <h3 class='feature_item_header'>Increase Traffic to Uploader</h3>
         <span class='feature_description'>Softsubs. Instead of reuploading a separate video, created subtitles are simply overlayed to the original video. This ensures that video traffic still goes towards the original uploader.</span>
         <h3 class='feature_item_header'>Share & Embed</h3>
         <span class='feature_description'>Created subtitles can be shared and embedded in external sites. </span>
@@ -74,16 +56,16 @@
     </div>
     <div class='feature_item'>
       <div class='feature_item_main_header'>
-        2. Groups
+        2. Official Page
       </div>
-      <img class="col-md-5 col-xs-12" src="<%= asset_path("group_page.png") %>">
+      <img class="col-md-5 col-xs-12" src="<%= asset_path("official_page.png") %>">
       <div class='col-md-5 col-xs-12 feature_description_container'>
-        <h3 class='feature_item_header'>Request Subtitles</h3>
-        <span class='feature_description'>Viewers can request subtitles that's related to the group</span>
-        <h3 class='feature_item_header'>Publish and Subscribe</h3>
-        <span class='feature_description'>Anyone who subscribes to the group will get notified whenever a subtitle has been released for the group. </span>
-        <h3 class='feature_item_header'>Invite Members</h3>
-        <span class='feature_description'>Users can invite members to the group to increase the chance of finding translators who are willing to subtitle videos and also to lets others know about the subs being released.</span>
+        <h3 class='feature_item_header'>International Fans</h3>
+        <span class='feature_description'>Viewers who subtitle your videos and share it with their followers would help reach out to international fans and increase your youtube traffic at the same time.</span>
+        <h3 class='feature_item_header'>Grant Permission</h3>
+        <span class='feature_description'>Youtube Producers can create an official fan translation page and grant users permission to subtitle their videos. </span>
+        <h3 class='feature_item_header'>Import Subtitles to Youtube</h3>
+        <span class='feature_description'>One-click import of user submitted translations to the original youtube video.</span>
       </div>
     </div>
     <div class='feature_item'>
@@ -110,48 +92,33 @@
         <span class='feature_description'>They can also add their profile picture and profile description to let viewers know about who they are.</span>
       </div>
     </div>
+    <div class='feature_item'>
+      <div class='feature_item_main_header'>
+        5. Unofficial Groups
+      </div>
+      <img class="col-md-5 col-xs-12" src="<%= asset_path("group_page.png") %>">
+      <div class='col-md-5 col-xs-12 feature_description_container'>
+        <h3 class='feature_item_header'>Request Subtitles</h3>
+        <span class='feature_description'>Viewers can request subtitles that's related to the group</span>
+        <h3 class='feature_item_header'>Publish and Subscribe</h3>
+        <span class='feature_description'>Anyone who subscribes to the group will get notified whenever a subtitle has been released for the group. </span>
+        <h3 class='feature_item_header'>Invite Members</h3>
+        <span class='feature_description'>Users can invite members to the group to increase the chance of finding translators who are willing to subtitle videos and also to lets others know about the subs being released.</span>
+      </div>
+    </div>
   </div>
 </div>
 </div>
  
-<div class='header-section span12'></div>
+<div class='header-section col-xs-12'></div>
 
 <div class='row'>
-  <h3 class='col-md-10 col-md-offset-1 center'>Videos</h3>
+  <h3 class='col-md-10 col-md-offset-1 center home_section_header'>Videos</h3>
   <div class='latest_videos videos videos_container section_block col-md-10 col-md-offset-2 col-xs-10 col-xs-offset-1'>
     <div class="home_try section_body">
       <% repos = Repository.where(language: "en").published.recent.limit(5) %>
       <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-2"}  %>
     </div>
   </div>
-</div>
-
-<!--
-<div class='row'>
-  <h3 class='home_groups_header col-md-10 center'>Groups</h3>
-
-  <%= render "groups/list", :locals => { :number_of_groups => 5} %>
-
-</div>
--->
-
-<div class='center home_call_to_action'>
-  <a href="<%= new_user_registration_url %>" class='btn btn-danger btn-lg'>Sign up for FREE</a>
-</div>
-
-<div class='center'>
-  Share
-  <br>
-  <br>
-  <a href="https://www.facebook.com/sharer/sharer.php?u=<%= request.original_url %>" target="_blank" class='facebook_home_share'>
-    <%= image_tag "fb-32.png", style: "" %>
-  </a>
-  <a href="https://twitter.com/share?text=<%= share_text %>" target="_blank" class='twitter_home_share' >
-    <%= image_tag "twitter-32.png", style: "" %>
-  </a>
-  <br>
-  <br>
-  <br>
-  <br>
 </div>
 
