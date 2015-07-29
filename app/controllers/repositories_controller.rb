@@ -190,7 +190,7 @@ class RepositoriesController < ApplicationController
 
     @repo.import_caption_to_youtube!
 
-    redirect_to @repo.page_url
+    redirect_to :back
   end
 
   def editor

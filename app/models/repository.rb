@@ -149,7 +149,7 @@ class Repository < ActiveRecord::Base
         .published
         .recent
         .first
-        .try(:export_url)
+        .try(:import_url)
   end
 
   def self.templates
@@ -502,8 +502,8 @@ class Repository < ActiveRecord::Base
     video_source_url  
   end
 
-  def export_url
-    "#{self.url}#export"
+  def import_url
+    "#{self.url}#import"
   end
 
   def serialize
