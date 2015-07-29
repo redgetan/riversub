@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   around_filter :add_current_user_to_models
+  before_filter :clear_forwarding_url
 
 
   #before_filter :authenticate_user!
@@ -27,6 +28,14 @@ class ApplicationController < ActionController::Base
                                elsif request.get?
                                  request.url 
                                end
+  end
+
+  # i visit a first page that requires login. i decided to visit another page
+  # then i decide to login. i should not be redirected to first page.
+  def clear_forwarding_url
+    return if params[:controller] == "sessions" 
+    
+    session[:forwarding_url] = nil
   end
 
   def render_404
