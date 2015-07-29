@@ -2561,8 +2561,15 @@ iframe.fansubber_signup_form .ss-base-body {
   height: 125px;
 }
 
+
 .release_item .video_thumb img {
-  width: 150px;
+  width: 125px;
+}
+
+@media (min-width: 1200px) { 
+  .release_item .video_thumb img {
+    width: 150px;
+  }
 }
 
 .help-inline {
@@ -3962,3 +3969,8 @@ label[for='group_allow_subtitle_download'] {
   position: relative;
   top: -5px;
 }
+
+#player_details li.is_not_downloadable a {
+  border: none !important;
+}
+
