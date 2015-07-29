@@ -130,7 +130,9 @@ river.ui.BasePlayer = Backbone.View.extend({
     if (url == "") {
       popcorn = Popcorn(targetSelector);
     } else {
-      url = url + this.options.url_options; // make sure youtube controls are shown
+      if (typeof this.options.url_options !== "undefined") {
+        url = url + this.options.url_options; 
+      }
       popcorn = Popcorn.smart(targetSelector,url);
     }
     return popcorn;
