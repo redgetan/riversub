@@ -7,11 +7,11 @@ class CommentsController < ApplicationController
     # needs commentbox,postedreply
     @repo = Repository.find_by_token! params[:commentable_short_id]
 
-    unless current_user
-      render :json => {}, :status => 401 and return
-    end
+    # unless current_user
+    #   render :json => {}, :status => 401 and return
+    # end
 
-    comment = Comment.build_from(@repo, current_user.id, params[:comment].to_s)
+    comment = Comment.build_from(@repo, current_user.try(:id), params[:comment].to_s)
 
     if params[:parent_comment_short_id].present?
       if parent_comment = Comment.where(commentable_id: @repo.id,
@@ -24,7 +24,7 @@ class CommentsController < ApplicationController
 
     # prevent double-clicks of the post button
     if parent_comment = Comment.where(:commentable_id => @repo.id,
-                                      :user_id => current_user.id,
+                                      :user_id => current_user.try(:id),
                                       :parent_comment_id => comment.parent_comment_id).first
 
       if (Time.now - parent_comment.created_at) < 30.seconds

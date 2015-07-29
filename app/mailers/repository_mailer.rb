@@ -16,6 +16,7 @@ class RepositoryMailer < ActionMailer::Base
     @user = @repo.user
     @url  = "http://www.yasub.com/"
     @from = "info@yasub.com"
-    mail(:to => @repo.user.email, :subject => "#{@comment.user.username} commented on your subtitle #{@repo.title}", :from => @from)
+    @commenter = @comment.user.try(:username) || "Anonymous user"
+    mail(:to => @repo.user.email, :subject => "#{@commenter} commented on your subtitle #{@repo.title}", :from => @from)
   end
 end

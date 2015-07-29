@@ -16,7 +16,7 @@ class="comment <%= comment.comment_item_class_for(current_user) %>">
     <div class="byline">
       <a name="c_<%= comment.short_id %>"></a>
 
-      <a href="<%= comment.user.url %>"><%= comment.user.username %></a>
+      <a href="<%= comment.user.try(:url) %>"><%= comment.user.try(:username) %></a>
 
       <% if comment.has_been_edited? %>
         edited
@@ -41,7 +41,7 @@ class="comment <%= comment.comment_item_class_for(current_user) %>">
         <a class="comment_deletor">delete</a>
       <% end %>
 
-      <% if user_signed_in? && !comment.is_gone? %>
+      <% if !comment.is_gone? %>
           |
           <a class="comment_replier">reply</a>
       <% end %>

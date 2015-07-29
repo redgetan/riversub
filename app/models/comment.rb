@@ -34,7 +34,6 @@ class Comment < ActiveRecord::Base
 
 
   validates :body, :presence => true
-  validates :user, :presence => true
 
   attr_accessible :commentable, :body, :user_id, :comment
 

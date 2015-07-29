@@ -14,16 +14,15 @@ data-shortid="<%= comment.short_id %>">
 
   <div style="width: 100%;">
     <%= text_area_tag "comment", comment.body, :rows => 5,
-      :style => "", :autocomplete => "off", :disabled => !user_signed_in?,
-      :placeholder => (user_signed_in? ? "" : "You must be logged in to leave a comment.")
-      %>
+      :style => "", :autocomplete => "off" %>
+      
 
     <p></p>
 
     <div class="markdown_help_toggler">
       <%= button_tag "#{comment.new_record?? "Post" : "Update"}",
-        :class => "comment-post", :type => "button",
-        :disabled => !user_signed_in? %>
+        :class => "comment-post", :type => "button" %>
+         
       <% if comment.persisted? || comment.parent_comment_id %>
         <%= button_tag "Cancel", :class => "comment-cancel", :type => "button" %>
       <% end %>
