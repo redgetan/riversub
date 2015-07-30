@@ -40,7 +40,6 @@ river.ui.BasePlayer = Backbone.View.extend({
 
     // player settings
     this.popcorn.volume(0.2);
-
     // misc
     this.defineAttributeAccessors();
     this.displayNoInternetConnectionIfNeeded();
@@ -144,6 +143,17 @@ river.ui.BasePlayer = Backbone.View.extend({
     Backbone.on("trackstart",this.onTrackStart.bind(this));
     this.$subtitleBar.on("mousedown",this.onSubtitleBarClick.bind(this));
     Backbone.on("trackend",this.onTrackEnd.bind(this));
+    this.popcorn.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
+  },
+
+  playerObject: function() {
+    return this.popcorn.media.playerObject;
+  },
+
+  onLoadedMetadata: function() {
+    // prevent Youtube's caption from showing up - we only show Yasub Subtitles :)
+    this.playerObject().unloadModule("cc");        // for AS3 player
+    this.playerObject().unloadModule("captions");  // for HTML5 player
   },
 
   addPlayerControls: function() {
