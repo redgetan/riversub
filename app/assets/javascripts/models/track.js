@@ -1,10 +1,10 @@
 river.model.Track = Backbone.Model.extend({
   initialize: function(attributes, options) {
-
     if (typeof options['popcorn'] === "undefined") throw new Error("Missing popcorn object in Track options attribute");
     this.popcorn = options['popcorn'];
     this.isGhost = options['isGhost'] || false;
     this.isOriginal = options['original'] || false;
+    this.showUI = (typeof options["showUI"] === "undefined") ?  true : options["showUI"];
 
     if (typeof options.view_enabled === "undefined" ) {
       options.view_enabled = true;
@@ -19,27 +19,28 @@ river.model.Track = Backbone.Model.extend({
     // will use subtitle so by that time subtitle should already exist. Its very tightly coupled....
     this.trackEvent     = this.createTrackEvent(attributes.start_time,attributes.end_time);
 
-    this.expandedView = new river.ui.ExpandedTrack({model: this});
-    this.summaryView  = new river.ui.SummaryTrack({model: this});
+    if (this.showUI) {
+      this.expandedView = new river.ui.ExpandedTrack({model: this});
+      this.summaryView  = new river.ui.SummaryTrack({model: this});
 
-    this.views = [this.expandedView,this.summaryView];
+      this.views = [this.expandedView,this.summaryView];
 
-    if (this.isGhost) {
-      Backbone.trigger("ghosttrackstart",this);
+      if (this.isGhost) {
+        Backbone.trigger("ghosttrackstart",this);
 
-      _.each(this.views,function(view){
-        view.addGhost();
-      });
+        _.each(this.views,function(view){
+          view.addGhost();
+        });
+      }
+
+      this.listenTo(this, "change", this.onChanged);
+      this.listenTo(this, "add", this.onAdd);
+      this.listenTo(this, "request", this.onRequest);
+      Backbone.on("editorseek", this.unsetPauseOnTrackEnd.bind(this));
+      Backbone.on("tracksuccess", this.onTrackSuccess.bind(this));
+      Backbone.on("trackchange", this.onTrackChange.bind(this));
+      Backbone.on("trackremove", this.onTrackRemove.bind(this));
     }
-
-    this.listenTo(this, "change", this.onChanged);
-    this.listenTo(this, "add", this.onAdd);
-    this.listenTo(this, "request", this.onRequest);
-    Backbone.on("editorseek", this.unsetPauseOnTrackEnd.bind(this));
-    Backbone.on("tracksuccess", this.onTrackSuccess.bind(this));
-    Backbone.on("trackchange", this.onTrackChange.bind(this));
-    Backbone.on("trackremove", this.onTrackRemove.bind(this));
-
   },
 
   normalizeTime: function(time) {
@@ -109,6 +110,8 @@ river.model.Track = Backbone.Model.extend({
   },
 
   showInvalid: function() {
+    if (!this.showUI) return;
+
     _.each(this.views,function(view){
       view.showInvalid();
     });
@@ -117,6 +120,8 @@ river.model.Track = Backbone.Model.extend({
   },
 
   showValid: function() {
+    if (!this.showUI) return;
+
     _.each(this.views,function(view){
       view.showValid();
     });
@@ -174,11 +179,13 @@ river.model.Track = Backbone.Model.extend({
   },
 
   removeGhost: function() {
-    this.isGhost = false;
+    if (this.showUI) {
+      this.isGhost = false;
 
-    _.each(this.views,function(view){
-      view.removeGhost();
-    });
+      _.each(this.views,function(view){
+        view.removeGhost();
+      });
+    }
   },
 
   updateSubtitleAttributes: function() {
@@ -209,11 +216,15 @@ river.model.Track = Backbone.Model.extend({
   },
 
   openEditor: function() {
-    this.expandedView.openEditor();
+    if (this.showUI) {
+      this.expandedView.openEditor();
+    }
   },
 
   closeEditor: function() {
-    this.expandedView.closeEditor();
+    if (this.showUI) {
+      this.expandedView.closeEditor();
+    }
   },
 
   toJSON: function() {
@@ -330,6 +341,8 @@ river.model.Track = Backbone.Model.extend({
   },
 
   highlight: function() {
+    if (!this.showUI) return;
+
     if (typeof this.collection !== "undefined") {
       if (this.collection.currentTrackHighlight) {
         this.collection.currentTrackHighlight.unhighlight();
@@ -344,12 +357,16 @@ river.model.Track = Backbone.Model.extend({
   },
 
   unhighlight: function() {
+    if (!this.showUI) return;
+
     _.each(this.views,function(view){
       view.unhighlight();
     });
   },
 
   fadingHighlight: function() {
+    if (!this.showUI) return;
+
     this.expandedView.fadingHighlight();
   },
 

@@ -35,8 +35,18 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   initializeRepository: function() {
-    river.ui.BasePlayer.prototype.initializeRepository.call(this);
+    this.user = this.repo.user;
+    this.addPlayerControls();
 
+    this.repository = new river.model.Repository(this.repo);
+    this.subtitles  = new river.model.SubtitleSet("",this.options);
+    this.tracks = this.repository.tracks;
+
+    var timings = this.repo.timings || [];
+    var options = $.extend(this.options,{ popcorn: this.popcorn });
+    this.loadTracks(timings, options);
+
+    // show second subtitle (i.e eng/jap - show jap "original"  below eng sub)
     var timings = this.repo.original_timings || [];
     var options = $.extend(this.options,{ 
       popcorn: this.popcorn,
@@ -45,6 +55,20 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     this.loadTracks(timings, options);
 
+    this.bindEvents();
+  },
+
+  loadTracks: function(timings, options) {
+    if (typeof timings !== "undefined") {
+      for (var i = 0; i < timings.length; i++) {
+        try {
+          var track = new river.model.Track(timings[i],$.extend(options,{showUI: false}));
+          this.tracks.add(track);
+        } catch(e) {
+          console.log(e.stack);
+        }
+      };
+    }
   },
 
   setupElement: function() {
