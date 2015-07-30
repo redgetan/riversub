@@ -2,11 +2,11 @@ class RequestsController < ApplicationController
 
   def index
     @requests = if params[:status] == "open"
-                  Request.open.recent
+                  Request.includes(:group, :video, :submitter).open.recent
                 elsif params[:status] == "closed"
-                  Request.closed.recent
+                  Request.includes(:group, :video, :submitter).closed.recent
                 else
-                  Request.open.recent
+                  Request.includes(:group, :video, :submitter).open.recent
                 end
   end
 

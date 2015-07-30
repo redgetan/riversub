@@ -172,7 +172,7 @@ class User < ActiveRecord::Base
   end
   
   def video_bookmarks_tab_class
-    self.repositories.published.present? ? "" : "active"
+    self.repositories.includes(:video).published.present? ? "" : "active"
   end
 
   def can_downvote?(obj)
@@ -180,11 +180,11 @@ class User < ActiveRecord::Base
   end
 
   def video_bookmarks
-    self.votes.where(votable_type: "Repository").map(&:votable)
+    Repository.includes(:video).joins(:votes).where("voter_id = ?", self.id)
   end
 
   def line_favorites
-    self.votes.where(votable_type: "Subtitle").map(&:votable)
+    Subtitle.includes(:repository).joins(:votes).where("voter_id = ?", self.id)
   end
 
   def allow_subtitle_download 

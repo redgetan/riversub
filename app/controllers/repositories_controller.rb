@@ -194,7 +194,7 @@ class RepositoriesController < ApplicationController
   end
 
   def editor
-    @repo = Repository.find_by_token! params[:token]
+    @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
     @repo.current_user = current_user
 
     unless can? :edit, @repo
