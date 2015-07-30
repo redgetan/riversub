@@ -326,6 +326,7 @@ div.videos li.selected {
 #river_player div#iframe_container {
   position: relative;
   height: inherit;
+  min-height: 380px;
   width: inherit;
   background-color: #000;
 }
@@ -3974,3 +3975,8 @@ label[for='group_allow_subtitle_download'] {
   border: none !important;
 }
 
+.player_loading_notice {
+  font-size: 30px;
+  position: relative;
+  top: 30%;
+}

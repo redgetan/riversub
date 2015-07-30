@@ -8,6 +8,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     river.ui.BasePlayer.prototype.initialize.call(this,options);
 
+    this.setupOverlayBtn();
     this.setupSubtitleZoom();
     this.setupLanguageSelect();
 
@@ -32,6 +33,10 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     // ensure first subtitle appears if it start_time is 0
     this.onTrackStart(this.tracks.at(0));
+  },
+
+  setupOverlayBtn: function () {
+    this.$overlay_btn.html("<i class='fa fa-play'></i>");
   },
 
   initializeRepository: function() {
