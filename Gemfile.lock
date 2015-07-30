@@ -86,6 +86,9 @@ GEM
       debug_inspector (>= 0.0.1)
     buftok (0.2.0)
     builder (3.0.4)
+    bullet (4.14.7)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.9.0)
     cancan (1.6.10)
     capistrano (2.15.4)
       highline
@@ -365,6 +368,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    uniform_notifier (1.9.0)
     uuidtools (2.1.4)
     view_inspect (0.3.8)
       nokogiri
@@ -378,6 +382,7 @@ DEPENDENCIES
   acts-as-taggable-on (~> 3.4)
   acts_as_commentable_with_threading (= 1.2.0)
   acts_as_votable (~> 0.10.0)
+  bullet
   cancan
   capistrano (~> 2.15.4)
   capistrano-unicorn

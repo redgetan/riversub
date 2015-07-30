@@ -46,6 +46,15 @@ River::Application.configure do
   config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
   config.action_mailer.raise_delivery_errors = false
 
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.alert = true
+    Bullet.bullet_logger = true
+    Bullet.console = true
+    Bullet.rails_logger = true
+    Bullet.add_footer = true
+  end
+
   # Mail::SMTP.class_eval do
   #   alias_method :orig_initialize, :initialize
   #   def initialize(values)
@@ -54,4 +63,34 @@ River::Application.configure do
   #   end
   # end
 
+end
+
+# http://stackoverflow.com/a/4531494
+if ENV["RAILS_SQL_TRACE"].present?
+  module QueryTrace
+    def self.append_features(klass)
+      super
+      klass.class_eval do
+        unless method_defined?(:log_info_without_trace)
+          alias_method :log_info_without_trace, :sql
+          alias_method :sql, :log_info_with_trace
+        end
+      end
+    end
+
+    def log_info_with_trace(event)
+      log_info_without_trace(event)
+      logger.debug("\e[1m\e[35m\e[1m\e[47mCalled from:\e[0m " + clean_trace(caller[2..-2]).join("\n "))
+    end
+
+    def clean_trace(trace)
+      Rails.respond_to?(:backtrace_cleaner) ?
+        Rails.backtrace_cleaner.clean(trace) :
+        trace
+    end
+  end
+
+  class ::ActiveRecord::LogSubscriber
+    include QueryTrace
+  end
 end

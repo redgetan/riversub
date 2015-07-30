@@ -56,27 +56,27 @@ class Subtitle < ActiveRecord::Base
     points
   end
 
-  def subtitle_item_class_for(user)
-    css_class = ""
-    css_class += " positive"    if score  > 0
-    css_class += " negative"    if score <= 0
-    css_class += " negative_1"  if score <= -1
-    css_class += " negative_3"  if score <= -3
-    css_class += " negative_5"  if score <= -5
+  # def subtitle_item_class_for(user)
+  #   css_class = ""
+  #   css_class += " positive"    if score  > 0
+  #   css_class += " negative"    if score <= 0
+  #   css_class += " negative_1"  if score <= -1
+  #   css_class += " negative_3"  if score <= -3
+  #   css_class += " negative_5"  if score <= -5
 
-    return css_class unless user
+  #   return css_class unless user
 
-    css_class += if user.liked?(self)
-                   " upvoted"
-                 elsif user.disliked?(self)
-                   " downvoted"
-                 else
-                   ""
-                 end
+  #   css_class += if user.liked?(self)
+  #                  " upvoted"
+  #                elsif user.disliked?(self)
+  #                  " downvoted"
+  #                else
+  #                  ""
+  #                end
 
 
-    css_class
-  end
+  #   css_class
+  # end
 
   def to_param
     self.token  
@@ -97,9 +97,8 @@ class Subtitle < ActiveRecord::Base
       :id => self.id,
       :text => xss_safe_html_content(self.text),
       :parent_text => xss_safe_html_content(self.parent_text.to_s),
-      :score => self.score,
       :short_id => self.short_id,
-      :subtitle_item_class_for => self.subtitle_item_class_for(self.class.current_user)
+      # :subtitle_item_class_for => self.subtitle_item_class_for(self.class.current_user)
     }
   end
 

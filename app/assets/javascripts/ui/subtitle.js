@@ -60,18 +60,18 @@ river.ui.Subtitle = Backbone.View.extend({
       this.readOnlyStartEndTime();
       this.readOnlyText();
 
-      this.$el.addClass(this.model.get("subtitle_item_class_for"));
+      // this.$el.addClass(this.model.get("subtitle_item_class_for"));
       this.$el.data("shortid", this.model.get("short_id"));
 
-      var score = this.model.score();
-      if (score <= 0) score = "";
+      // var score = this.model.score();
+      // if (score <= 0) score = "";
     
-      var favoriteContent = "<a class='subtitle_favorite_btn pull-right'>" + 
-                              "<div class='score pull-left'>" + score + "</div>" + 
-                              "<i class='glyphicon glyphicon-star'></i>" +
-                            "</a>";
+      // var favoriteContent = "<a class='subtitle_favorite_btn pull-right'>" + 
+      //                         "<div class='score pull-left'>" + score + "</div>" + 
+      //                         "<i class='glyphicon glyphicon-star'></i>" +
+      //                       "</a>";
 
-      this.$text.append(favoriteContent);
+      // this.$text.append(favoriteContent);
     }
 
     if (repo.parent_repository_id) {
