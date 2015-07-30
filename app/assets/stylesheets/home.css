@@ -3980,3 +3980,9 @@ label[for='group_allow_subtitle_download'] {
   position: relative;
   top: 30%;
 }
+
+.twitter_follow_btn img {
+  width: 25px;
+  position: relative;
+  top: -2px;
+}
