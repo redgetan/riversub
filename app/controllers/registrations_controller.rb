@@ -6,6 +6,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def create
+    @role = params[:user][:role]
     super
     UserMailer.welcome_email(@user).deliver unless @user.invalid?
   end
