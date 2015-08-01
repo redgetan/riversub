@@ -10,7 +10,9 @@
     <div class="details">
       <div class='avatar' >
         <div class="thumbnail">
-          <%= image_tag activity.owner.try(:avatar).try(:url)  %>
+          <% if activity.owner.present? %>
+            <%= image_tag activity.owner.avatar.url  %>
+          <% end %>
         </div>
       </div>
       <div class="activity_text"><%= truncate(activity.details, length: 120)  %></div>
