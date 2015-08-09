@@ -3904,7 +3904,7 @@
       type: "HTML5",
 
       // How often to trigger timeupdate events
-      TIMEUPDATE_MS: 250,
+      TIMEUPDATE_MS: 16,
 
       // Standard width and height
       MIN_WIDTH: 300,
@@ -5853,7 +5853,7 @@
 
   var
 
-  CURRENT_TIME_MONITOR_MS = 10,
+  CURRENT_TIME_MONITOR_MS = 16,
   EMPTY_STRING = "",
 
   // Example: http://www.youtube.com/watch?v=12345678901
@@ -5941,7 +5941,8 @@
       lastLoadedFraction = 0,
       currentTimeInterval,
       timeUpdateInterval,
-      firstPlay = true;
+      firstPlay = true,
+      lastPlayerTime;
 
     // Namespace all events we'll produce
     self._eventNamespace = Popcorn.guid( "HTMLYouTubeVideoElement::" );
@@ -6241,10 +6242,19 @@
 
     function monitorCurrentTime() {
       var playerTime = player.getCurrentTime();
+      var playing = player.getPlayerState();
+
       if ( !impl.seeking ) {
 
-        var oldCurrentTime = impl.currentTime;
-        impl.currentTime = playerTime;
+        // var oldCurrentTime = impl.currentTime;
+
+        // making youtube player emit time at 60fps - http://stackoverflow.com/a/24514978/803865
+        var playerTimeHasNotChanged = lastPlayerTime == playerTime;
+        if (playing == 1 && playerTimeHasNotChanged) {
+          impl.currentTime += CURRENT_TIME_MONITOR_MS/1000;
+        } else {
+          impl.currentTime = playerTime;
+        }
 
         // if (ABS( oldCurrentTime - playerTime ) > 0) {
         //   onTimeUpdate();
@@ -6257,6 +6267,8 @@
       } else if ( ABS( playerTime - impl.currentTime ) < 1 ) {
         onSeeked();
       }
+
+      lastPlayerTime = playerTime;
     }
 
     function monitorBuffered() {
