@@ -14,6 +14,10 @@ class HomeController < ApplicationController
                        .where(language: "en").published.recent.page params[:page]
   end
 
+  def features
+    
+  end
+
   def faq
     # @guided_walkthrough_repo = Repository.guided_walkthrough
   end

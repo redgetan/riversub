@@ -17,6 +17,7 @@ River::Application.routes.draw do
       get "/users/:username/repositories", :to => "repositories#index",  :as => "user_repositories"
     end
 
+    get "features", :to => "home#features"
     get "faq", :to => "home#faq"
     get "how_to_use", :to => "home#how_to_use"
     get "explore",   to: "home#community_translations",   as: "community_translations"
