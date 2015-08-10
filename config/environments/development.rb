@@ -53,6 +53,7 @@ River::Application.configure do
     Bullet.console = true
     Bullet.rails_logger = true
     Bullet.add_footer = true
+    Bullet.add_whitelist :type => :n_plus_one_query, :class_name => "Comment", :association => :commentable
   end
 
   # Mail::SMTP.class_eval do

@@ -49,7 +49,7 @@ class Group < ActiveRecord::Base
   end
 
   def pending_requests
-    requests.reject { |request| request.completed? } 
+    requests.includes(:video, :group).reject { |request| request.completed? } 
   end
 
   def translators

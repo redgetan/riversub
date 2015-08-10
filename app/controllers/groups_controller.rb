@@ -13,12 +13,13 @@ class GroupsController < ApplicationController
 
   def show
     @group_repos = if @group.short_name == "jpweekly" 
-                     @group.published_repositories.where(language: "en").recent.page params[:page]
+                     @group.published_repositories.includes(:video, { :timings => :subtitle }, :user).where(language: "en").recent.page params[:page]
                    else
-                     @group.published_repositories.recent.page params[:page]
+                     @group.published_repositories.includes(:video, { :timings => :subtitle }, :user).recent.page params[:page]
                    end
                    
-    @activities  = @group.public_activities.limit(5)
+    @activities  = @group.public_activities.includes(:trackable, :owner).limit(5)
+    @pending_requests = @group.pending_requests.sort_by(&:created_at).reverse
 
     respond_to do |format|
       format.html # show.html.erb

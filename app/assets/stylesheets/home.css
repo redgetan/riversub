@@ -3986,3 +3986,8 @@ label[for='group_allow_subtitle_download'] {
   position: relative;
   top: -2px;
 }
+
+.why_container {
+  font-size: 18px;
+  border: none;
+}

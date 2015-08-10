@@ -57,7 +57,7 @@
         <li class="<%= 'activer' if params[:controller] == 'requests' && params[:action] == 'index' %>"><a href="<%= video_request_index_url %>">Request</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="<%= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Unofficial Groups</a></li> 
+        <li class="<%= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li> 
         <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">Contact</a></li>
             <li class="divider-vertical"></li>
              <% if user_signed_in?  %>

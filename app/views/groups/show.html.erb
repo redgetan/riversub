@@ -68,8 +68,8 @@
         <div class="section_body">
 
           <ul class="">
-            <% if @group.pending_requests.present? %>
-              <% @group.pending_requests.sort_by(&:created_at).reverse.each do |request| %>
+            <% if @pending_requests.present? %>
+              <% @pending_requests.each do |request| %>
                 <li>
                   <a class='col-xs-2' href="<%= request.url %>"><%= image_tag(request.video.thumbnail_url, width: "80px") %></a>
                   <a class='col-xs-6' href="<%= request.url %>"><%= request.video.title %></a>
