@@ -37,7 +37,7 @@ River::Application.routes.draw do
     get "subs",                                  :to => "repositories#index",  :as => "repositories"
     get "releases/:id",                          :to => "releases#show",  :as => "release_show"
 
-    resources :pages, :only => [:create, :show, :update], :path => "p"
+    resources :pages, :only => [:index, :create, :show, :update], :path => "p"
 
     resources :groups do
       member do 

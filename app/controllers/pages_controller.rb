@@ -1,5 +1,9 @@
 class PagesController < ApplicationController
 
+  def index
+    render text: Page.all.map(&:url).join("\n")
+  end
+
   def create
     @page = Page.new(params[:page])
 
