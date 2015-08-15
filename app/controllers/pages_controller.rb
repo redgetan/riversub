@@ -13,7 +13,7 @@ class PagesController < ApplicationController
   end
 
   def show
-    @page = Page.find_by_short_name params[:id]  
+    @page = Page.find_by_short_name! params[:id]  
 
     respond_to do |format|
       format.html # show.html.erb
