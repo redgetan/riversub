@@ -1,0 +1,10 @@
+<div class='page_available_videos section_block col-md-8 col-md-offset-2 col-xs-offset-0'>
+  <div class='section_header'>
+    Available Videos
+  </div>
+  <div class='section_body'>
+    <div class='page_id_container' style="display:none;"><%= @page.short_name %></div>
+    <% producer_public_videos = @page.producer_public_videos %>
+    <%= render partial: "producer_uploads", locals: { page: @page, producer_public_videos: producer_public_videos.items, next_page_token: producer_public_videos.next_page_token} %>
+  </div>
+</div> 

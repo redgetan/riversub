@@ -3120,6 +3120,7 @@ html.embed .expand_btn {
   margin-bottom: 100px;
 }
 
+.see_more_producer_uploads_btn,
 .user_repositories_see_more_link {
   font-size: 14px;
   margin-left: 20px;
@@ -3990,4 +3991,8 @@ label[for='group_allow_subtitle_download'] {
 .why_container {
   font-size: 18px;
   border: none;
+}
+
+.page_show_container .title {
+  display: block;
 }

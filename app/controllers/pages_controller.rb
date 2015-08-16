@@ -19,11 +19,20 @@ class PagesController < ApplicationController
 
   def show
     @page = Page.find_by_short_name! params[:id]  
+    @user_submissions = @page.published_repositories.includes(:video, { :timings => :subtitle }, :user).recent
 
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @page }
     end
+  end
+
+  def producer_uploads
+    @page = Page.find_by_short_name! params[:page_id]  
+
+    producer_public_videos = @page.producer_public_videos(params[:page_token])
+
+    render partial: "pages/producer_uploads", locals: { page: @page, producer_public_videos: producer_public_videos.items, next_page_token: producer_public_videos.next_page_token}
   end
 
   def update_name

@@ -1,0 +1,10 @@
+<div class='page_user_submissions section_block col-md-8 col-md-offset-2 col-xs-offset-0'>
+  <div class='section_header'>
+    User Submissions
+  </div>
+  <div class='section_body'>
+    <% @user_submissions.each_slice(4) do |repos| %>
+      <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3", show_import_actions: current_user == @page.user }  %>
+    <% end %>
+  </div>
+</div> 

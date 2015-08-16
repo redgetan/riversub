@@ -50,10 +50,13 @@ class Page < ActiveRecord::Base
     youtube_identity.try(:youtube_client)
   end
 
-  def producer_public_videos
-    youtube_client.producer_public_videos
+  def producer_public_videos(page_token = '')
+    youtube_client.producer_public_videos(page_token)
   end
 
+  def more_uploads_url(page_token)
+    page_producer_uploads_url(self, page_token: page_token)    
+  end
 
   def owned_by?(target_user)
     user == target_user   

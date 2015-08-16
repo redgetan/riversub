@@ -1,0 +1,22 @@
+<ul class='uploaded_items' data-next-page-token="<%= next_page_token %>">
+  <% producer_public_videos.each do |video_hash| %>
+    <li class='row'>
+      <div class='pull-left'><a href="<%= video_hash.source_url %>" target="_blank"><%= image_tag(video_hash.thumbnail_url) %></a></div>
+      <div class='col-xs-3'>
+        <a class='page_video_title' href="<%= video_hash.source_url %>" target="_blank"><%= video_hash.title %></a>
+        <span class='page_video_duration'><%= format_time(video_hash.duration) %></span>
+      </div>
+      <div class='col-xs-2'><%= video_hash.views %> views</div>
+      <div class='col-xs-2'><%= video_hash.published_at.to_date.to_s %></div>
+      <div class='col-xs-2'>
+        <a class='page_new_sub_btn btn btn-danger btn-sm' data-source-url="<%= video_hash.source_url %>">
+          Subtitle
+        </a>
+      </div>
+    </li>
+  <% end %>
+</ul>
+
+<% if next_page_token %>
+  <h3 class='see_more_producer_uploads_container center'><a href="" class="see_more_producer_uploads_btn" data-more-uploads-url="<%= page.more_uploads_url(next_page_token) %>">See More...</a></h3>
+<% end %>

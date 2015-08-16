@@ -29,12 +29,16 @@ class YoutubeClient
   # return
   #   array of hashes
 
-  def producer_public_videos
+  def producer_public_videos(page_token = '')
 
     @producer_public_videos ||= begin
       result = []
 
-      playlist_items = get_public_uploads    
+      channels_response = get_channel_data
+      uploads_list_id = channels_response.data.items.first['contentDetails']['relatedPlaylists']['uploads']
+
+      public_uploads = get_public_uploads(uploads_list_id, page_token)    
+      playlist_items = public_uploads.items
       video_ids = playlist_items.map { |item| item["snippet"]["resourceId"]["videoId"] }
 
       metadata_list = get_metadata(video_ids)
@@ -46,19 +50,26 @@ class YoutubeClient
         { metadata["id"] => metadata["statistics"]["viewCount"] }
       end.reduce(&:merge)
 
-      playlist_items.map do |playlist_item|
-        video_id = playlist_item["snippet"]["resourceId"]["videoId"]
+      { 
+        :next_page_token => public_uploads.next_page_token, 
+        :items => serialize_playlist_items(playlist_items, duration_hash, view_hash)
+      }
+    end
+  end
 
-        {
-          :id => video_id,
-          :thumbnail_url => playlist_item["snippet"]["thumbnails"]["default"]["url"],
-          :source_url => "https://youtube.com/watch?v=#{video_id}",
-          :title => playlist_item["snippet"]["title"],
-          :duration => yt_duration_to_seconds(duration_hash[video_id]),
-          :views => view_hash[video_id],
-          :published_at => playlist_item["snippet"]["publishedAt"]
-        }
-      end
+  def serialize_playlist_items(playlist_items, duration_hash, view_hash)
+    playlist_items.map do |playlist_item|
+      video_id = playlist_item["snippet"]["resourceId"]["videoId"]
+
+      {
+        :id => video_id,
+        :thumbnail_url => playlist_item["snippet"]["thumbnails"]["default"]["url"],
+        :source_url => "https://youtube.com/watch?v=#{video_id}",
+        :title => playlist_item["snippet"]["title"],
+        :duration => yt_duration_to_seconds(duration_hash[video_id]),
+        :views => view_hash[video_id],
+        :published_at => playlist_item["snippet"]["publishedAt"]
+      }
     end
   end
 
@@ -75,32 +86,30 @@ class YoutubeClient
     @client.discovered_api("youtube","v3")
   end
 
-  def get_public_uploads
-    channels_response = get_channel_data
-    uploads_list_id = channels_response.data.items.first['contentDetails']['relatedPlaylists']['uploads']
-
+  def get_public_uploads(uploads_list_id, page_token = '')
     public_uploads = []
-    next_page_token = ''
-    until next_page_token.nil?
-      playlistitems_response = @client.execute!(
-        :api_method => youtube.playlist_items.list,
-        :parameters => {
-          :playlistId => uploads_list_id,
-          :part => 'snippet,status,contentDetails',
-          :maxResults => 50,
-          :pageToken => next_page_token
-        }
-      )
 
-      # Print information about each video.
-      playlistitems_response.data.items.each do |playlist_item|
-        public_uploads << playlist_item if playlist_item["status"]["privacyStatus"] == "public"
-      end
+    playlistitems_response = @client.execute!(
+      :api_method => youtube.playlist_items.list,
+      :parameters => {
+        :playlistId => uploads_list_id,
+        :part => 'snippet,status,contentDetails',
+        :maxResults => 50,
+        :pageToken => page_token
+      }
+    )
 
-      next_page_token = playlistitems_response.next_page_token
+    # Print information about each video.
+    playlistitems_response.data.items.each do |playlist_item|
+      public_uploads << playlist_item if playlist_item["status"]["privacyStatus"] == "public"
     end
 
-    return public_uploads
+    next_page_token = playlistitems_response.next_page_token
+
+    return {
+      next_page_token: next_page_token,
+      items: public_uploads
+    }
   rescue Google::APIClient::TransmissionError => e
     return []
   end

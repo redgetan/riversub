@@ -10,42 +10,13 @@
         This is the officially approved fan translation page of the Youtube Channel, <a href="<%= @page.source_url %>"><%= @page.title %></a>. Below, you can view subtitles done by other users or you can create one yourself. Any subtitles created will drive traffic to the original youtube owner. The owner will get notified of user submitted subtitles and will have the option to include them in the youtube video.
       </div>
     </div>
-    <div class='page_available_videos section_block col-md-8 col-md-offset-2 col-xs-offset-0'>
-      <div class='section_header'>
-        Available Videos
-      </div>
-      <div class='section_body'>
-        <div class='page_id_container' style="display:none;"><%= @page.short_name %></div>
-        <ul class='uploaded_items'>
-          <% @page.producer_public_videos.each do |video_hash| %>
-            <li class='row'>
-              <div class='pull-left'><a href="<%= video_hash.source_url %>" target="_blank"><%= image_tag(video_hash.thumbnail_url) %></a></div>
-              <div class='col-xs-3'>
-                <a class='page_video_title' href="<%= video_hash.source_url %>" target="_blank"><%= video_hash.title %></a>
-                <span class='page_video_duration'><%= format_time(video_hash.duration) %></span>
-              </div>
-              <div class='col-xs-2'><%= video_hash.views %> views</div>
-              <div class='col-xs-2'><%= video_hash.published_at.to_date.to_s %></div>
-              <div class='col-xs-2'>
-                <a class='page_new_sub_btn btn btn-danger btn-sm' data-source-url="<%= video_hash.source_url %>">
-                  Subtitle
-                </a>
-              </div>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-    </div> 
-    <div class='page_user_submissions section_block col-md-8 col-md-offset-2 col-xs-offset-0'>
-      <div class='section_header'>
-        User Submissions
-      </div>
-      <div class='section_body'>
-        <% @page.published_repositories.recent.each_slice(4) do |repos| %>
-          <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3", show_import_actions: current_user == @page.user }  %>
-        <% end %>
-      </div>
-    </div> 
+    <% if @user_submissions.present? %>
+      <%= render "user_submissions" %>
+      <%= render "available_videos" %>
+    <% else %>
+      <%= render "available_videos" %>
+      <%= render "user_submissions" %>
+    <% end %>
   </div>
 </div>
 
