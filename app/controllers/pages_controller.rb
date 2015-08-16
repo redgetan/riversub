@@ -1,7 +1,8 @@
 class PagesController < ApplicationController
 
   def index
-    render text: Page.all.map(&:url).join("\n")
+    page_list = Page.all.map(&:url).join("\n")
+    render :text => "<pre>#{page_list}</pre>"  
   end
 
   def create
