@@ -11,7 +11,11 @@
       <li>
         <h5>Connect Youtube Account</h5>
         <p>By clicking connect, you're approving users to subtitle your videos. This will also list your available videos and help you manage user subtitles.</p>
-        <a class="btn btn-<%= social_button_provider_name(:google_oauth2) %>" href="<%= user_omniauth_authorize_path(:google_oauth2) %>">Connect</a>
+        <% if @identity.present? %>
+          <span class='youtube_account_connected_label'>Connected</span>
+        <% else %>
+          <a class="btn btn-<%= social_button_provider_name(:google_oauth2) %>" href="<%= user_omniauth_authorize_path(:google_oauth2) %>">Connect</a>
+        <% end %>
       </li>
       <% if @identity && @identity.page.nil? %>
         <li>
