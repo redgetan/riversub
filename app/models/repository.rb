@@ -737,6 +737,11 @@ class Repository < ActiveRecord::Base
     )
 
     update_column(:is_youtube_imported, true)
+
+  rescue YoutubeClient::InsufficientPermissions => e
+    binding.pry
+    self.page.youtube_identity.update_column(:insufficient_scopes, e.message)
+    raise e
   end
 
   def import_to_youtube_url

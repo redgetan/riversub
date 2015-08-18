@@ -189,8 +189,10 @@ class RepositoriesController < ApplicationController
     @repo = Repository.find_by_token! params[:token]
 
     @repo.import_caption_to_youtube!
-
     redirect_to :back
+
+  rescue YoutubeClient::InsufficientPermissions
+    redirect_to @repo.page.status_url
   end
 
   def editor

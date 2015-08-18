@@ -213,7 +213,12 @@ Devise.setup do |config|
   
   config.omniauth :facebook, "1465538213665903", "fe99cd7801bce59b120a6c0ddea48b09"
   config.omniauth :google_oauth2, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,  
-    scope: "https://www.googleapis.com/auth/youtube,userinfo.email"
+    scope: [
+      "userinfo.email",                                    # to get uid (uniquely identify diff YT accounts)
+      "https://www.googleapis.com/auth/youtube",           # query channel info
+      "https://www.googleapis.com/auth/youtube.force-ssl", # for captions.list + captions.insert 
+      "https://www.googleapis.com/auth/youtubepartner"     # for captions.list + captions.insert
+    ].join(",")
   #https://www.googleapis.com/auth/youtube
 
 

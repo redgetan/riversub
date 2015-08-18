@@ -105,6 +105,10 @@ class Page < ActiveRecord::Base
     youtube_identity.try(:access_token).present?
   end
 
+  def insufficient_scope?
+    insufficient_scopes.present?
+  end
+
   def name
     title  
   end

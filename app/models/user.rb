@@ -189,7 +189,7 @@ class User < ActiveRecord::Base
 
   def youtube_connect!(auth)
     # create identity + store oauth tokens
-    Identity.find_or_create_with_omniauth!(auth)
+    identity = Identity.find_or_create_with_omniauth!(auth)
   end
 
   def to_param

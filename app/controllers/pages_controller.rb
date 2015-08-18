@@ -47,6 +47,7 @@ class PagesController < ApplicationController
 
   def status
     @page = Page.find_by_short_name! params[:page_id]    
+    @request_additional_permissions = params[:request_additional_permissions]
   end
 
   def producer_uploads

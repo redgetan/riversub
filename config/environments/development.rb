@@ -96,3 +96,19 @@ if ENV["RAILS_SQL_TRACE"].present?
   end
 end
 
+ENV['http_proxy'] = "http://localhost:8080"
+ENV['SSL_CERT_FILE'] = "/Users/reg/.mitmproxy/mitmproxy-ca-cert.pem"
+
+module Net
+  class HTTP
+    alias_method :orig_initialize, :initialize
+    def initialize(address, port = nil)
+      orig_initialize(address, port)
+      self.use_ssl = true
+      self.verify_mode = OpenSSL::SSL::VERIFY_PEER
+      self.ca_path = "/Users/reg/.mitmproxy"
+    end
+  end
+end
+
+RestClient.proxy = ENV['http_proxy']
