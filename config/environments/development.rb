@@ -95,3 +95,4 @@ if ENV["RAILS_SQL_TRACE"].present?
     include QueryTrace
   end
 end
+

@@ -1,0 +1,28 @@
+<div class='row'>
+  <div class="col-xs-8  col-xs-offset-2" >
+    <div class='center'>
+      <h2><%= @page.short_name.capitalize %> - Connected</h2>
+    </div>
+    <br>
+    <br>
+
+    <h4>Follow these steps to get started:</h4>
+    <ol>
+      <li>
+        <h5>Connect Youtube Account</h5>
+        <p>By clicking connect, you're approving users to subtitle your videos. This will also list your available videos and help you manage user subtitles.</p>
+        <span class='youtube_account_connected_label'>Connected</span>
+      </li>
+      <li>
+        <h5>Create your page</h5>
+        <a href="<%= @page.url %>"><%= @page.url %></a>
+      </li>
+      <li>
+        <h5>Done! You're all set</h5>
+        <p>You can now share the above page with your existing viewers/followers. <a href="<%= current_user.url %>" style='text-decoration: underline;'>Return to User Profile</a></p>. 
+      </li>
+    </ol>
+    <br>
+    <br>
+  </div>
+</div>

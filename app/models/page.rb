@@ -10,7 +10,7 @@ class Page < ActiveRecord::Base
 
   before_validation :assign_metadata
 
-  validates :short_name, uniqueness: true
+  validates :short_name, uniqueness: { message: "%{value} is already taken" }
   validates :short_name, presence: true
 
   serialize :metadata, JSON
@@ -20,6 +20,14 @@ class Page < ActiveRecord::Base
 
   def assign_metadata
     self.metadata = self.identity.youtube_client.get_channel_data.data.items.first.to_hash
+  end
+
+  def producer_name
+    identity.user.username
+  end
+
+  def producer_url
+    identity.user.url
   end
 
   def title
@@ -58,6 +66,10 @@ class Page < ActiveRecord::Base
     page_producer_uploads_url(self, page_token: page_token)    
   end
 
+  def status_url
+    page_status_url(self)  
+  end
+
   def owned_by?(target_user)
     user == target_user   
   end
@@ -87,6 +99,10 @@ class Page < ActiveRecord::Base
                                   hide_group: group.present? ? true : nil,
                                   repo_language_code: self.language,
                                   request_id: self.id)  
+  end
+
+  def youtube_account_connected?
+    youtube_identity.try(:access_token).present?
   end
 
   def name

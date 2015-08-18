@@ -123,16 +123,8 @@ class User < ActiveRecord::Base
     avatar.thumb.url
   end
 
-  def url
-    user_url(self)
-  end
-
-  def youtube_identity
-    @youtube_identity ||= self.identities.where(provider: "google_oauth2").first
-  end
-
-  def youtube_account_connected?
-    youtube_identity.try(:access_token).present?
+  def url(params = {})
+    user_url(self, params)
   end
 
   def serialize
@@ -197,7 +189,7 @@ class User < ActiveRecord::Base
 
   def youtube_connect!(auth)
     # create identity + store oauth tokens
-    identity = Identity.find_or_create_with_omniauth!(auth)
+    Identity.find_or_create_with_omniauth!(auth)
   end
 
   def to_param

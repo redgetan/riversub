@@ -18,8 +18,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def youtube_connect
     auth = request.env['omniauth.auth']
-    current_user.youtube_connect!(auth)
-    redirect_to current_user.url
+    identity = current_user.youtube_connect!(auth)
+    redirect_to new_page_url(identity_id: identity.id)
   end
 
   def after_omniauth_failure_path_for(scope)

@@ -5,16 +5,34 @@ class PagesController < ApplicationController
     render :text => "<pre>#{page_list}</pre>"  
   end
 
+  def new
+    unless user_signed_in?
+      flash[:error] = "You must be logged in to create official page"
+      store_location
+      redirect_to new_user_session_url and return
+    end
+
+    @user = current_user
+    @page = @user.pages.build
+    @identity = Identity.find_by_id params[:identity_id]
+
+    if @identity && @identity.page.present?
+      flash[:error] = "The #{@identity.page.title} account was already previously connected, which you can see at #{@identity.page.url}"
+    end
+
+  end
+
   def create
     @page = Page.new(params[:page])
+    @identity_id = @page.identity_id
 
     unless @page.save
       flash[:error] = @page.errors.full_messages.join(".")
       @user = current_user
-      render "users/show" and return
+      redirect_to new_page_url(identity_id: @identity_id) and return
     end
 
-   redirect_to current_user.url
+   redirect_to @page.status_url
   end
 
   def show
@@ -25,6 +43,10 @@ class PagesController < ApplicationController
       format.html # show.html.erb
       format.json { render json: @page }
     end
+  end
+
+  def status
+    @page = Page.find_by_short_name! params[:page_id]    
   end
 
   def producer_uploads

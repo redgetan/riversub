@@ -45,12 +45,7 @@ class Identity < ActiveRecord::Base
   end
 
   def self.find_with_omniauth(auth)
-    if auth['provider'] == "google_oauth2"
-      # for youtube oauth, user is already logged in, so we simply check against user_id instead of uid
-      where(provider: auth['provider'], user_id: current_user.try(:id)).first
-    else
-      where(provider: auth['provider'], uid: auth['uid']).first
-    end
+    where(provider: auth['provider'], uid: auth['uid']).first
   end
 
   def self.create_with_omniauth!(auth)

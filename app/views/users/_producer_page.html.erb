@@ -1,41 +1,41 @@
 <div class='row'>
+  <%= render "user_profile" %>
+</div>
+
+<div class='row'>
   <div class="col-xs-8  col-xs-offset-2" >
 
-    <h4>Hello <%= @user.username %>! </h4>
-    <p>As a youtube producer, yasub allows you to create an official page where users can help increase your Youtube traffic by translating your videos and sharing it with their followers. </p>
-    <br>
-    <h4>Follow these steps to get started:</h4>
-    <ol>
-      <li>
-        <h5>Connect Youtube Account</h5>
-        <p>By clicking connect, you're approving users to subtitle your videos. This will also list your available videos and help you manage user subtitles.</p>
-        <% if @user.youtube_account_connected? %>
-          <span class='youtube_account_connected_label'>Connected</span>
-        <% else %>
-          <a class="btn btn-<%= social_button_provider_name(:google_oauth2) %>" href="<%= user_omniauth_authorize_path(:google_oauth2) %>">Connect</a>
-        <% end %>
-      </li>
-      <% if @user.youtube_account_connected? %>
-        <li>
-          <h5>Create your page</h5>
-          <% if @user.pages.count > 0 %>
-            <a href="<%= @user.page.url %>"><%= @user.page.url %></a>
-          <% else %>
-            <%= form_for @page do |f| %>
-              <input name="page[identity_id]" type="hidden" value="<%= @user.youtube_identity.id %>">
-              <span>yasub.com/p/</span>
-              <%= f.text_field :short_name, placeholder: "ie. #{@user.username}" %>
-              <%= f.submit "create", class: "name_page_btn" %>
-            <% end %>
-          <% end %>
+    <% if user_signed_in? && current_user == @user %>
+      <h4 class=''>Hello! </h4>
+      <p>As a youtube producer, yasub allows you to create an official page where users can help increase your Youtube traffic by translating your videos and sharing it with their followers. </p> 
+      <br>
+      <h4 class=''>
+        <a href="<%= new_page_url %>" class='new_producer_page_btn pull-right'>+ New Official Page</a>
+      </h4>
+    <% end %>
+
+    <h4>Official Pages</h4>
+
+    <ul class='producer_page_list_container'>
+      <% @user.pages.each do |page| %>
+        <li class='col-xs-2'>
+          <a class='producer_page_list_item' href="<%= page.url %>">
+            <div class='pull-left'>
+              <div id='avatar' >
+                <div class="thumbnail">
+                  <%= image_tag page.thumbnail_url  %>
+                </div>
+              </div>
+              <span class=""><%= page.title %></span>
+            </div>
+            <div class='pull-right'>
+              <span><%= page.description %></span>
+            </div>
+          </a>
         </li>
       <% end %>
-      <% if @user.pages.count > 0 %>
-        <li>
-          <h5>Done! You're all set</h5>
-          <p>You can now share the above page with your existing viewers/followers</p>
-        </li>
-      <% end %>
-    </ol>
+    </ul>
+
+
   </div>
 </div>
