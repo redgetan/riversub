@@ -18,7 +18,7 @@
 
     <ul class='producer_page_list_container'>
       <% @user.pages.each do |page| %>
-        <li class='col-xs-2'>
+        <li class='col-xs-12'>
           <a class='producer_page_list_item' href="<%= page.url %>">
             <div class='pull-left'>
               <div id='avatar' >
@@ -28,7 +28,7 @@
               </div>
               <span class=""><%= page.title %></span>
             </div>
-            <div class='pull-right'>
+            <div class='pull-right col-xs-10'>
               <span><%= page.description %></span>
             </div>
           </a>
