@@ -4026,3 +4026,17 @@ label[for='group_allow_subtitle_download'] {
   display: block;
 }
 
+.oauth_scope_list {
+  margin-top: 10px;
+  display: block;
+  color: gray;
+}
+
+.page_status {
+  border: solid 1px red;
+  color: red;
+  padding: 2px 5px;
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+}

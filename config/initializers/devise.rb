@@ -213,11 +213,15 @@ Devise.setup do |config|
   
   config.omniauth :facebook, "1465538213665903", "fe99cd7801bce59b120a6c0ddea48b09"
   config.omniauth :google_oauth2, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,  
+    callback_path: lambda { |env| 
+      [
+        "/users/auth/google_oauth2/callback",
+        "/users/auth/google_oauth2_reconnect/callback"
+      ].include? env["REQUEST_PATH"]  
+    },
     scope: [
-      "userinfo.email",                                    # to get uid (uniquely identify diff YT accounts)
       "https://www.googleapis.com/auth/youtube",           # query channel info
       "https://www.googleapis.com/auth/youtube.force-ssl", # for captions.list + captions.insert 
-      "https://www.googleapis.com/auth/youtubepartner"     # for captions.list + captions.insert
     ].join(",")
   #https://www.googleapis.com/auth/youtube
 
@@ -251,19 +255,22 @@ end
 # Since a user could have multiple youtube accounts, we want to get UID from the auth hash
 # which can only be acquired by adding userinfo.email scope. Undo code below.
 
-# OmniAuth::Strategies::GoogleOauth2.class_eval do
-#   # overrides the default behavior of omniauth-1.2.2/lib/omniauth/strategy.rb
-#   # by default, its necessary to add userinfo.email scope in oauth request
-#   # in order to get uid field of the auth hash. But this means users would see 
-#   # 2 additional items when requesting their permission to grant access to their Youtube Account. 
-#   #   - View all your personal info
-#   #   - View your email address
-#   #   - Manage your Youtube Account
-#   # To cut it down to just the last one "Manage your Youtube account", modify 
-#   # the auth_hash method such that it's no longer required to get the uid
-#   def auth_hash
-#     hash = OmniAuth::AuthHash.new(:provider => name)
-#     hash.credentials = credentials if credentials
-#     hash
-#   end
-# end
+# UPDATE: we actually don't need UID as we can uniquely identify youtube accounts by their channel_id, which we
+# store in yt_channel_id column in identities table
+
+OmniAuth::Strategies::GoogleOauth2.class_eval do
+  # overrides the default behavior of omniauth-1.2.2/lib/omniauth/strategy.rb
+  # by default, its necessary to add userinfo.email scope in oauth request
+  # in order to get uid field of the auth hash. But this means users would see 
+  # 2 additional items when requesting their permission to grant access to their Youtube Account. 
+  #   - View all your personal info
+  #   - View your email address
+  #   - Manage your Youtube Account
+  # To cut it down to just the last one "Manage your Youtube account", modify 
+  # the auth_hash method such that it's no longer required to get the uid
+  def auth_hash
+    hash = OmniAuth::AuthHash.new(:provider => name)
+    hash.credentials = credentials if credentials
+    hash
+  end
+end

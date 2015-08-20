@@ -17,7 +17,19 @@ class Identity < ActiveRecord::Base
   end
 
   def set_yt_channel_id
-    self.update_column(:yt_channel_id, self.youtube_client.get_channel_data.data.items.first["id"])
+    self.update_column(:yt_channel_id, fetch_yt_channel_id)
+  end
+
+  def fetch_yt_channel_id
+    get_channel_data_hash["id"]  
+  end
+
+  def channel_id
+    yt_channel_id  
+  end
+
+  def get_channel_data_hash
+    youtube_client.get_channel_data.data.items.first.to_hash
   end
 
   def youtube_client
@@ -45,7 +57,15 @@ class Identity < ActiveRecord::Base
   end
 
   def self.find_with_omniauth(auth)
-    where(provider: auth['provider'], uid: auth['uid']).first
+    if auth['provider'] == "google_oauth2"
+      # build a temp identity instance
+      temp_identity = self.new(auth: auth)
+      temp_identity.set_oauth_tokens
+      auth_channel_id = temp_identity.fetch_yt_channel_id
+      where(provider: auth['provider'], yt_channel_id: auth_channel_id).first
+    else
+      where(provider: auth['provider'], uid: auth['uid']).first
+    end
   end
 
   def self.create_with_omniauth!(auth)
@@ -65,6 +85,13 @@ class Identity < ActiveRecord::Base
     return identity if identity
 
     self.create_with_omniauth!(auth)
+  end
+
+  def fix_insufficient_scopes!(auth)
+    self.auth = auth
+    self.set_oauth_tokens
+    self.insufficient_scopes = ""
+    self.save!
   end
 
   def access_token

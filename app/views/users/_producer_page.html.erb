@@ -27,9 +27,7 @@
                 </div>
               </div>
               <span class=""><%= page.title %></span>
-            </div>
-            <div class='pull-right'>
-              <span><%= page.description %></span>
+              <a href="<%= page.status_url %>" class="page_status"><%= page.status == "connected" ? "" : "remove permission error" %></a>
             </div>
           </a>
         </li>

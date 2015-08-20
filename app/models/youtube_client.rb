@@ -2,6 +2,7 @@ class YoutubeClient
   include ApplicationHelper
 
   class InsufficientPermissions < StandardError; end
+  class ImportCaptionError < StandardError; end
 
   attr_accessor :client
 
@@ -139,14 +140,19 @@ class YoutubeClient
       :api_method => youtube.captions.insert,
       :parameters => { 'part' => 'snippet', 'uploadType' => 'multipart', },
       :body_object => metadata,
-      :media => media )
+      :media => media
     })
 
     if result.status == 403 && result.body =~ /Insufficient Permission/i
       scopes_matcher = /scope=\"(.*)\"/
       result.response.env.response_headers["www-authenticate"] =~ scopes_matcher
       insufficient_scope = $1
-      raise InsufficientPermissions(insufficient_scope)
+      raise InsufficientPermissions.new(insufficient_scope)
+    end
+
+    if result.status != 200
+      error_message = JSON.parse(result.body)["error"]["message"]
+      raise ImportCaptionError.new(error_message)
     end
   end
 

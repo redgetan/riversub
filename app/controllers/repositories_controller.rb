@@ -189,10 +189,15 @@ class RepositoriesController < ApplicationController
     @repo = Repository.find_by_token! params[:token]
 
     @repo.import_caption_to_youtube!
+    flash[:notice] = "Subtitle successfully added to Youtube"
     redirect_to :back
 
   rescue YoutubeClient::InsufficientPermissions
+    flash[:error] = "You need to let your Youtube account grant more permission in order to import the caption"
     redirect_to @repo.page.status_url
+  rescue YoutubeClient::ImportCaptionError
+    flash[:error] = "Unable to import caption. We're currently taking a look and will contact you shortly."
+    redirect_to @repo.page.url
   end
 
   def editor

@@ -11,6 +11,7 @@ River::Application.routes.draw do
     }
 
     devise_scope :user do
+      get "/users/auth/google_oauth2_reconnect/callback", :to => "users/omniauth_callbacks#google_oauth2_reconnect", :as => "google_omniauth_reconnect_callback"
       put "/users/change_avatar",  :to => "registrations#change_avatar", :as => "user_change_avatar"
       get "/users/fansubber",      :to => "registrations#fansubber",     :as => "user_fansubber"
       get "/users/:username",      :to => "users#show",                  :as => "user"

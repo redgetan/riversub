@@ -2,29 +2,34 @@
   <div class="col-xs-8  col-xs-offset-2" >
     <div class='center'>
       <% if @page.insufficient_scope? %>
-        <h2><%= @page.short_name.capitalize %> - Grant Permission </h2>
+        <h2><a href="<%= @page.url %>"><%= @page.short_name %> </a> - Grant Permission</h2>
       <% else %>
-        <h2><%= @page.short_name.capitalize %> - Connected</h2>
+        <h2><a href="<%= @page.url %>"><%= @page.short_name %> </a> - Connected</h2>
       <% end %>
     </div>
     <br>
     <br>
 
-    <h4>Follow these steps to get started:</h4>
     <% if @page.insufficient_scope? %>
       <ol>
         <li>
-          <h5>Grant Permissions</h5>
-          <p>By clicking connect, you're approving users extra permissions to make the application work.</p>
-          <a class="btn btn-<%= social_button_provider_name(:google_oauth2) %>" href="<%= user_omniauth_authorize_path(:google_oauth2) %>">Connect</a>
-        </li>
-        <li>
-          <h5>Create your page</h5>
-          <a href="<%= @page.url %>"><%= @page.url %></a>
-        </li>
-        <li>
-          <h5>Done! You're all set</h5>
-          <p>You can now share the above page with your existing viewers/followers. <a href="<%= current_user.url %>" style='text-decoration: underline;'>Return to User Profile</a></p>. 
+          <h5>Grant Extra Permissions</h5>
+          <p>By clicking button below, you're approving users extra permissions to make the application work.</p>
+          <a class="btn btn-<%= social_button_provider_name(:google_oauth2) %>" href="<%= user_omniauth_authorize_path(:google_oauth2, redirect_uri: @redirect_uri, state: @state, scope: @scope) %>">Grant Additional Permission</a>
+          <br>
+          <br>
+          <span class='oauth_scope_list'>Missing Permissions</span>
+          <ul>
+            <% @page.insufficient_scopes.split(",").each do |permission| %>
+              <li><%= permission %></li>
+            <% end %>
+          </ul>
+          <span class='oauth_scope_list'>Current Permissions</span>
+          <ul>
+            <% @current_permissions.each do |permission| %>
+              <li><%= permission %></li>
+            <% end %>
+          </ul>
         </li>
       </ol>
     <% else %>
@@ -35,7 +40,7 @@
           <span class='youtube_account_connected_label'>Connected</span>
         </li>
         <li>
-          <h5>Create your page</h5>
+          <h5>Page Link</h5>
           <a href="<%= @page.url %>"><%= @page.url %></a>
         </li>
         <li>
