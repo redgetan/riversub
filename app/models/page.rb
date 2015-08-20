@@ -19,7 +19,7 @@ class Page < ActiveRecord::Base
 
 
   def assign_metadata
-    self.metadata = self.identity.youtube_client.get_channel_data.data.items.first.to_hash
+    self.metadata = self.identity.get_channel_data_hash
   end
 
   def producer_name
@@ -70,6 +70,10 @@ class Page < ActiveRecord::Base
     page_status_url(self)  
   end
 
+  def status
+    insufficient_scope? ? "insufficient scope" : "connected"  
+  end
+
   def owned_by?(target_user)
     user == target_user   
   end
@@ -105,8 +109,20 @@ class Page < ActiveRecord::Base
     youtube_identity.try(:access_token).present?
   end
 
+  def insufficient_scope?
+    insufficient_scopes.present?
+  end
+
+  def insufficient_scopes
+    youtube_identity.insufficient_scopes
+  end
+
   def name
     title  
+  end
+
+  def access_token
+    youtube_identity.access_token
   end
 
   def url

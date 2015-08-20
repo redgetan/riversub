@@ -1,6 +1,9 @@
 class YoutubeClient
   include ApplicationHelper
 
+  class InsufficientPermissions < StandardError; end
+  class ImportCaptionError < StandardError; end
+
   attr_accessor :client
 
   def initialize(options = {})
@@ -122,13 +125,35 @@ class YoutubeClient
   end
 
   def upload_caption(video_id, options={})
-    url = "https://gdata.youtube.com/feeds/api/videos/#{video_id}/captions" 
-    RestClient.post(url, options[:body], 
-      :content_type => "application/vnd.youtube.timedtext; charset=UTF-8", 
-      :content_language => options[:language_code], 
-      "Authorization" => "Bearer #{@client.authorization.access_token}", 
-      "X-GData-Key" => "key=#{X_GDATA_KEY}", 
-      "Slug" => options[:title])
+    # content type may need to be 'application/vnd.youtube.timedtext; charset=UTF-8'
+    media = Google::APIClient::UploadIO.new(StringIO.new(options[:body]), 'application/x-subrip')
+    metadata = {
+      snippet: {
+        isDraft: false,
+        name: options[:title],
+        language: options[:language_code],
+        videoId: video_id
+      }
+    }
+
+    result = @client.execute({
+      :api_method => youtube.captions.insert,
+      :parameters => { 'part' => 'snippet', 'uploadType' => 'multipart', },
+      :body_object => metadata,
+      :media => media
+    })
+
+    if result.status == 403 && result.body =~ /Insufficient Permission/i
+      scopes_matcher = /scope=\"(.*)\"/
+      result.response.env.response_headers["www-authenticate"] =~ scopes_matcher
+      insufficient_scope = $1
+      raise InsufficientPermissions.new(insufficient_scope)
+    end
+
+    if result.status != 200
+      error_message = JSON.parse(result.body)["error"]["message"]
+      raise ImportCaptionError.new(error_message)
+    end
   end
 
   def get_metadata(video_ids, part = "snippet,contentDetails,statistics")

@@ -19,4 +19,12 @@ class RepositoryMailer < ActionMailer::Base
     @commenter = @comment.user.try(:username) || "Anonymous user"
     mail(:to => @repo.user.email, :subject => "#{@commenter} commented on your subtitle #{@repo.title}", :from => @from)
   end
+
+  def import_caption_failure(repo, message, actor)
+    @repo = repo
+    @url  = "http://www.yasub.com/"
+    @from = "redge@yasub.com"
+    mail(:to => @from, :subject => "Import caption failure for repo #{@repo.id} by user #{actor.try(:username)} ", :from => @from,
+         :body => message)
+  end
 end

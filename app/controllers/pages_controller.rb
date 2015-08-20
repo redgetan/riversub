@@ -47,6 +47,16 @@ class PagesController < ApplicationController
 
   def status
     @page = Page.find_by_short_name! params[:page_id]    
+    if @page.insufficient_scope?
+      result = RestClient.get("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=#{@page.access_token}")
+      @current_permissions = JSON.parse(result)["scope"].split(" ")
+      @redirect_uri = google_omniauth_reconnect_callback_url
+      @state = CGI.escape "page_id=#{@page.id}"
+
+      @devise_scope_list       = Devise.omniauth_configs[:google_oauth2].options[:scope].split(",")
+      @insufficient_scope_list = @page.insufficient_scopes.split(",")
+      @scope = (@devise_scope_list | @insufficient_scope_list).join(",")
+    end
   end
 
   def producer_uploads

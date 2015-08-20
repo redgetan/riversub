@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150730215711) do
+ActiveRecord::Schema.define(:version => 20150818190349) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -74,13 +74,14 @@ ActiveRecord::Schema.define(:version => 20150730215711) do
   create_table "identities", :force => true do |t|
     t.string   "uid"
     t.string   "provider"
-    t.integer  "user_id",       :null => false
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "user_id",             :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.string   "token"
     t.string   "refresh_token"
     t.integer  "expires_at"
     t.string   "yt_channel_id"
+    t.text     "insufficient_scopes"
   end
 
   create_table "memberships", :force => true do |t|
