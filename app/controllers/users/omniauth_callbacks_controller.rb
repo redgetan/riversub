@@ -34,10 +34,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # if identity didnt match, it means the account is not the same as what's linked to the page before
       flash[:error] = "The Youtube Account you selected didn't match the account that was previously linked to the page. " + 
                       "Make sure you select the correct youtube account"
+    else
+      identity.fix_insufficient_scopes!(auth)
+      flash[:notice] = "Permission successfully granted. "
     end
 
-    identity.fix_insufficient_scopes!(auth)
-    flash[:notice] = "Permission successfully granted. "
     redirect_to page.status_url
   end
 
