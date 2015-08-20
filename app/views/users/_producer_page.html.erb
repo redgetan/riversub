@@ -27,7 +27,11 @@
                 </div>
               </div>
               <span class=""><%= page.title %></span>
-              <a href="<%= page.status_url %>" class="page_status"><%= page.status == "connected" ? "" : "remove permission error" %></a>
+              <% if user_signed_in? && current_user == @user %>
+                <% unless page.status == "connected" %>
+                  <a href="<%= page.status_url %>" class="page_status">remove permission error</a>
+                <% end %>
+              <% end %>
             </div>
           </a>
         </li>
