@@ -22,8 +22,8 @@
       <% if @repo %>
         <% @sharable = @repo %>
       <div class="original_video_stats">
-        <span class="original_video_view_label">Views:</span>
-        <span class="original_video_view_count" style=""><%= number_with_delimiter(@repo.video.view_count, delimiter: ",") %></span>
+        <span class="original_video_view_label">Contribution:</span>
+        <span class="original_video_view_count" style=""><span class='original_video_view_count_number'>430</span> views to the <a class='original_video_source_link' href="<%= @repo.video.source_url %>">original video</a></span>
         <%= render 'videos/player_editor' %>
         <div class='repository favorite_container pull-right <%= @repo.repo_item_class_for(current_user) %>' data-shortid="<%= @repo.short_id %>">
           <a class="repo_favorite_btn pull-right">
@@ -35,10 +35,6 @@
         <%= render 'videos/social_share' %>
       <% end %>
       <br>
-      <div class="original_video">
-        <span class="original_video_source_label">Source:</span>
-        <%= link_to "via Youtube", @repo.video.source_url %>
-      </div>
       <div class='embed_container'>
         <span class='pull-left embed_label'>Embed: </span>
         <input class='embed_code_input' type='text' value='<%= @repo.embed_code %>' onclick="select()">

@@ -2458,7 +2458,7 @@ div.comment_form_container form {
 
 #comments_container textarea#comment {
   height: 50px;
-  background-color: aliceblue;
+  /*background-color: aliceblue;*/
 }
 
 div.flash-error {
@@ -2801,7 +2801,6 @@ form.new_user #user_login {
 
 .original_video_view_count {
  padding: 5px; 
- margin-left: 10px;
  color: gray;
 }
 
@@ -3219,7 +3218,9 @@ html.embed .expand_btn {
 
 .embed_container {
   text-align: left;
-  margin-top: 15px;
+  margin-top: 20px;
+  float: left;
+  margin-bottom: 20px;
 }
 
 .embed_code_input {
@@ -4090,4 +4091,14 @@ label[for='group_allow_subtitle_download'] {
   margin-top: 20px;
   display: inline-block;
   margin-bottom: 20px;  
+}
+
+.original_video_source_link {
+  text-decoration: underline;
+  color: black;
+}
+
+.original_video_view_count_number {
+  font-size: 20px;
+  color: black;
 }
