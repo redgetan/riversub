@@ -5,16 +5,16 @@ class CommentsController < ApplicationController
   def create
     # needs :commentable_id, :comment, :parent_id
     # needs commentbox,postedreply
-    @repo = Repository.find_by_token! params[:commentable_short_id]
+    @commentable = params[:commentable_type].constantize.find_by_short_id params[:commentable_short_id]
 
     # unless current_user
     #   render :json => {}, :status => 401 and return
     # end
 
-    comment = Comment.build_from(@repo, current_user.try(:id), params[:comment].to_s)
+    comment = Comment.build_from(@commentable, current_user.try(:id), params[:comment].to_s)
 
     if params[:parent_comment_short_id].present?
-      if parent_comment = Comment.where(commentable_id: @repo.id,
+      if parent_comment = Comment.where(commentable_id: @commentable.id,
                                         short_id: params[:parent_comment_short_id]).first
         comment.parent = parent_comment
       else
@@ -23,7 +23,7 @@ class CommentsController < ApplicationController
     end
 
     # prevent double-clicks of the post button
-    if parent_comment = Comment.where(:commentable_id => @repo.id,
+    if parent_comment = Comment.where(:commentable_id => @commentable.id,
                                       :user_id => current_user.try(:id),
                                       :parent_comment_id => comment.parent_comment_id).first
 

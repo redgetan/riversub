@@ -362,7 +362,14 @@ class Comment < ActiveRecord::Base
   end
 
   def url
-    repo_comment_url(self.commentable, self)
+    case commentable
+    when Repository
+      repo_comment_url(self.commentable, self)
+    when Group
+      comment_group_url(self.commentable, self) + "#comments"
+    else
+      raise "unimplemented commentable url"
+    end
   end
 
   def to_param

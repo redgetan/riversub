@@ -28,6 +28,10 @@ $.extend(river.controller,{
         processData: false
       });
     });
-
+  },
+  "groups#show": function() {
+    river.model.Comment.bindCommentEvents();
+    river.utility.enableHashTab();
   }
+
 });

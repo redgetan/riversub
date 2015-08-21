@@ -25,7 +25,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     this.$el = $("#river_player");
 
-    this.enableHashTab();
+    river.utility.enableHashTab();
 
     if (this.repo.is_fullscreen) {
       this.enterFullscreenMode();
@@ -146,22 +146,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$zoomInBtn = $(".subtitle_zoom_in_btn");
     this.$zoomOutBtn = $(".subtitle_zoom_out_btn");
     this.$expandBtn = $(".expand_btn");
-  },
-
-  enableHashTab: function() {
-    // http://stackoverflow.com/questions/12131273/twitter-bootstrap-tabs-url-doesnt-change
-    var hash = window.location.hash;
-
-    if (hash) {
-      $('ul.nav a[href="' + hash + '"]').tab('show');
-    }
-
-    $('.nav-tabs a').click(function (e) {
-      $(this).tab('show');
-      var scrollmem = $('body').scrollTop();
-      window.location.hash = this.hash;
-      $('html,body').scrollTop(scrollmem);
-    });
   },
 
   seekDuration: function() {

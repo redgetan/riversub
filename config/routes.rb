@@ -47,6 +47,7 @@ River::Application.routes.draw do
       member do 
         post "join"
         put  "change_avatar"
+        get  "comments/:comment_short_id", to: "groups#show", as: "comment"
       end
 
       resources :requests, :only => [:new, :create, :show] 

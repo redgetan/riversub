@@ -43,6 +43,10 @@ class Group < ActiveRecord::Base
 
   after_create :create_membership
 
+  def self.find_by_short_id(short_id)
+    self.find_by_short_name(short_id)  
+  end
+
   def owners
     self.members.where("memberships.is_owner IS TRUE")
   end

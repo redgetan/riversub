@@ -1,7 +1,7 @@
 <div class="comment comment_form_container"
 data-shortid="<%= comment.short_id %>">
 
-<%= form_for comment, :html => { :id => "edit_comment_#{comment.short_id}" } do |f| %>
+<%= form_for comment, :html => { :id => "edit_comment_#{comment.short_id}", :data => { "commentable-type" => comment.commentable_type } } do |f| %>
   <% if comment.errors.any? %>
     <%= lobster_errors_for comment %>
   <% end %>
