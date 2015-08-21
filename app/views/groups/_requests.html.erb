@@ -1,0 +1,16 @@
+<div class='group_requests section_block'>
+  <div class="section_body">
+
+    <div class='center'>
+      <% if user_signed_in? %>
+        <%= link_to '+ New Request', @group.new_request_url, class: "new_request_btn btn btn-primary" %>
+      <% else %>
+        <span class='request_must_login_caption'>
+          You must <%= link_to "log in", new_user_session_url(location: @group.requests_url), class: "request_must_login_btn" %> to request subtitles
+        </span>
+      <% end %>
+    </div>
+
+    <%= render "requests/list" %>
+  </div>
+</div>

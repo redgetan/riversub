@@ -7,6 +7,8 @@ class Group < ActiveRecord::Base
                   :avatar, :avatar_cache, :remove_avatar, :allow_subtitle_download
 
   mount_uploader :avatar, AvatarUploader
+  acts_as_commentable
+
 
 
   tracked :only  => :create,
@@ -20,6 +22,7 @@ class Group < ActiveRecord::Base
           }
 
 
+  has_many :comments, :foreign_key => "commentable_id"
   has_many :memberships
   has_many :members, through: :memberships, class_name: "User", source: "user"
 
@@ -169,6 +172,18 @@ class Group < ActiveRecord::Base
 
   def allow_subtitle_download=(bool) 
     settings.set(:allow_subtitle_download, bool)  
+  end
+
+  def requests_url
+    url + "#requests"  
+  end
+
+  def user_submissions_url
+    url + "#user_submissions"  
+  end
+
+  def short_id
+    self.short_name
   end
 
   def to_param

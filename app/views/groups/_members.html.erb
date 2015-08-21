@@ -1,16 +1,16 @@
-<h3 class="group_releases_header river_gray col-xs-offset-2">
-  Members
-</h3>
-<div class='row group_members_container'>
-  <div class="col-xs-8 col-xs-offset-2">
-    <ul>
+<div class='members_container'>
+  <div class="section_block">
+    <div class="section_body">
       <% @group.members.each do |member| %>
-        <li>
-          <a href="<%= member.url %>" >
+        <div class='member ' data-toggle="tooltip" title="<%= member.username %>">
+          <a class="user_avatar" href="<%= member.url %>">
             <%= image_tag member.avatar_url %>
           </a>
-        </li>
+        </div>
       <% end %>
-    </ul>
+      <% unless @group.is_member?(current_user) %>
+        <%= link_to "Join Group", @group.join_url, method: "post", class: "join_group_btn" %>
+      <% end %>
+    </div>
   </div>
 </div>

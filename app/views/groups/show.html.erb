@@ -4,101 +4,47 @@
   <%= render "header" %>
 
   <div class='row'>
-    <div class="left_column col-md-3 col-md-offset-1 col-xs-12 col-xs-offset-0">
-      <div class='action_container section_block <%= @group.is_member?(current_user) ? "joined" : "" %>'>
-        <div class="section_body">
-          <div class=''>
-            <% unless @group.is_member?(current_user) %>
-              <%= link_to "Join Group", @group.join_url, method: "post", class: "join_group_btn" %>
-            <% end %>
-            <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn ">Subtitle a Video</a>
-            <a href="<%= @group.new_request_url %>" class="request_btn ">Request Subtitle</a>
-          </div>
-        </div>
+    <div class='col-md-8 col-md-offset-2 col-xs-12 col-xs-offset-0'>
+      <div class='section_header'>
+        Let's Subtitle 
       </div>
-      <% if @group.short_name == "jpweekly" %>
-        <div class='rules_container'>
-          <div class="section_block">
-            <div class="section_header">
-              Rules
-            </div>
-            <div class="section_body">
-              <ol>
-                <li>Video must be < 10 minutes</li>
-                <li>No movies/tv shows</li>
-                <li>Japanese Videos only</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      <% end %>
-      <div class='latest_activity_container'>
-        <div class="section_block">
-          <div class="section_header">
-            Activity
-          </div>
-          <div class="section_body">
-            <%= render_activities(@activities) %>
-          </div>
-        </div>
-      </div>
-      <div class='members_container'>
-        <div class="section_block">
-          <div class="section_header">
-            Members
-          </div>
-          <div class="section_body">
-            <% @group.members.each do |member| %>
-              <div class='member ' data-toggle="tooltip" title="<%= member.username %>">
-                <a class="user_avatar" href="<%= member.url %>">
-                  <%= image_tag member.avatar_url %>
-                </a>
-              </div>
-            <% end %>
-          </div>
-        </div>
+      <div class='section_body'>
+        <p>
+          <%= @group.description %>
+        </p>
       </div>
     </div>
+  </div>
 
-    <div class="right_column col-md-7 col-xs-12">
-      <div class='group_requests section_block'>
-        <div class="section_header">
-          Requests
+  <div class='header-section col-xs-12'></div>
+
+
+  <div class='row'>
+    <div class="left_column col-md-8 col-md-offset-2 col-xs-12 col-xs-offset-0">
+      <ul class="nav nav-tabs" >
+        <li class="active"><a href="#user_submissions" data-toggle="tab">User Submissions</a></li>
+        <li class=""><a href="#requests" data-toggle="tab">Requests</a></li>
+        <li class=""><a href="#comments" data-toggle="tab">Comments</a></li>
+        <li class="pull-right"><a href="#members" data-toggle="tab">Members</a></li>
+      </ul>
+
+      <div class='tab-content'>
+        <div class="tab-pane active" id='user_submissions'>
+          <%= render "user_submissions" %>
         </div>
-        <div class="section_body">
-
-          <ul class="">
-            <% if @pending_requests.present? %>
-              <% @pending_requests.each do |request| %>
-                <li>
-                  <a class='col-xs-2' href="<%= request.url %>"><%= image_tag(request.video.thumbnail_url, width: "80px") %></a>
-                  <a class='col-xs-6' href="<%= request.url %>"><%= request.video.title %></a>
-                  <div class='col-xs-2 request_actions'>
-                    <a class='subtitle_request_btn' href="<%= request.new_repository_url %>">[Subtitle]</a>
-                  </div>
-                  <% if request.completed? %>
-                    <a class='request_status col-xs-2' href='<%= request.completed_repository.url %>'>Closed</a>
-                  <% end %>
-                </li>
-              <% end %>
-            <% else %>
-              <div class='empty_request_notice'>
-                There's currently nothing here. <a href="<%= @group.new_request_url %>" class="group_request_add_btn">Add Request</a> 
-              </div>
-            <% end %>
-          </ul>
+        <div class="tab-pane" id='requests'>
+          <%= render "requests" %>
+        </div>
+        <div class="tab-pane" id='comments'>
+          <%= render "comments" %>
+        </div>
+        <div class="tab-pane" id='members'>
+          <%= render "members" %>
         </div>
       </div>
 
-      <div class='groups_videos videos videos_container section_block'>
-        <div class="home_try section_body">
-          <% @group_repos.each_slice(4) do |repos| %>
-            <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3"}  %>
-          <% end %>
-        </div>
-        <%= paginate @group_repos %>
-      </div>
     </div>
+
   </div>
 </div>
 

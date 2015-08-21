@@ -19,7 +19,16 @@ class GroupsController < ApplicationController
                    end
                    
     @activities  = @group.public_activities.includes(:trackable, :owner).limit(5)
-    @pending_requests = @group.pending_requests.sort_by(&:created_at).reverse
+    @requests = if params[:status] == "open"
+                  @group.requests.includes(:group, :video, :submitter).open.recent
+                elsif params[:status] == "closed"
+                  @group.requests.includes(:group, :video, :submitter).closed.recent
+                else
+                  @group.requests.includes(:group, :video, :submitter).open.recent
+                end
+
+    @comment = @group.comment_threads.build
+    @comments = @group.comment_threads.arrange_for_user(current_user)
 
     respond_to do |format|
       format.html # show.html.erb

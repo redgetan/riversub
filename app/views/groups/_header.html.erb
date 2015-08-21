@@ -14,9 +14,6 @@
       <% end %>
     </div>
     <span class="title river_gray"><%= @group.name %></span>
-    <p>
-      <%= @group.description %>
-    </p>
     <% if can?(:moderate, @group) %>
       <p>
         <span>[<%= link_to 'Edit', edit_group_path(@group) %>]</span>
