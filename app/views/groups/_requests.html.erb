@@ -11,6 +11,11 @@
       <% end %>
     </div>
 
+    <div class='request_categories'>
+      Status: 
+      <%= select_tag("request_category_select", options_for_select(@group.request_category_select_options, request.url + "#requests"), class: "request_category_select") %>
+    </div>
+
     <%= render "requests/list" %>
   </div>
 </div>

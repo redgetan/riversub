@@ -106,8 +106,8 @@ class Group < ActiveRecord::Base
     avatar.thumb.url
   end
 
-  def url
-    group_url(self)  
+  def url(params = {})
+    group_url(self, params)  
   end
 
   def releases_url
@@ -178,12 +178,19 @@ class Group < ActiveRecord::Base
     settings.set(:allow_subtitle_download, bool)  
   end
 
-  def requests_url
-    url + "#requests"  
+  def requests_url(params = {})
+    url(params) + "#requests"  
   end
 
   def user_submissions_url
     url + "#user_submissions"  
+  end
+
+  def request_category_select_options
+    [
+      ["Open",   requests_url(status: 'open'), ],
+      ["Closed", requests_url(status: 'closed')]
+    ]
   end
 
   def short_id

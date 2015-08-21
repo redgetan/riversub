@@ -32,6 +32,10 @@ $.extend(river.controller,{
   "groups#show": function() {
     river.model.Comment.bindCommentEvents();
     river.utility.enableHashTab();
+    
+    $(".request_category_select").on("change", function() {
+      document.location.href = $(this).val();
+    });
   }
 
 });

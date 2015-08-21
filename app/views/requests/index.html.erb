@@ -21,6 +21,11 @@
       
     <div class='global_requests section_block col-xs-10 col-xs-offset-1'>
       <div class="section_body">
+        <div class='request_categories'>
+          Status: 
+          <%= select_tag("request_category_select", options_for_select(Request.request_category_select_options, request.url), class: "request_category_select") %>
+        </div>
+
         <%= render "list" %>
       </div>
     </div>

@@ -1,8 +1,3 @@
-<div class='request_categories'>
-  Status: 
-  <%= select_tag("request_category_select", options_for_select(Request.request_category_select_options, request.url), class: "request_category_select") %>
-</div>
-
 <ul class="">
   <% @requests.each do |request| %>
     <li>
