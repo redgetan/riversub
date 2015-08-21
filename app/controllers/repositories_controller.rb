@@ -46,7 +46,7 @@ class RepositoriesController < ApplicationController
 
     @video = @repo.video
     @comment = @repo.comment_threads.build
-    @comments = @repo.comment_threads.arrange_for_user(current_user)
+    @comments = @repo.comment_threads.includes(:user).arrange_for_user(current_user)
 
     if params[:fullscreen]
       @repo.is_fullscreen = true
