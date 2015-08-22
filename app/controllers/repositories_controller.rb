@@ -2,12 +2,6 @@ class RepositoriesController < ApplicationController
 
 
   def new
-    unless user_signed_in?
-      flash[:error] = "You must be logged in to #{params[:upload] ? 'upload a subtitle' : 'add a subtitle'}"
-      store_location
-      redirect_to new_user_session_url and return
-    end
-
     @video = Video.find_by_token(params[:video_token])
     @video.current_user = current_user
 
@@ -22,7 +16,7 @@ class RepositoriesController < ApplicationController
 
     @video_language_code  = params[:video_language_code]
     @repo_language_code   = params[:repo_language_code]
-    @hide_group           = params[:hide_group] || current_user.groups.count == 0
+    @hide_group           = params[:hide_group] || current_user.try(:groups).try(:count).to_i == 0
     @request_id           = params[:request_id]
 
     if !(@is_upload || @is_empty) && params[:source_repo_token]
@@ -133,13 +127,9 @@ class RepositoriesController < ApplicationController
 
     @repo = Repository.find_by_token! params[:token]
 
-    unless can? :edit, @repo
+    unless user_signed_in? && can?(:edit, @repo)
       flash[:error] = "You don't have permission to do that"
-      if user_signed_in?
-        redirect_to @repo.editor_url and return
-      else
-        redirect_to root_url and return
-      end
+      redirect_to @repo.editor_url and return
     end
 
     if params[:subtitle_file].blank?
@@ -163,6 +153,10 @@ class RepositoriesController < ApplicationController
   def publish
     @repo = Repository.find_by_token! params[:token]
 
+    unless user_signed_in? && can?(:edit, @repo)
+      render :json => { :error => "You must be signed in to publish" }, :status => 403 and return
+    end
+
     if @repo.update_attributes!(is_published: true)
       respond_to do |format|
         format.html  { redirect_to @repo.url  }
@@ -175,6 +169,15 @@ class RepositoriesController < ApplicationController
 
   def update_title
     @repo = Repository.find_by_token! params[:token]
+
+    unless can? :edit, @repo
+      flash[:error] = "You don't have permission to do that"
+      if user_signed_in?
+        redirect_to @repo.editor_url and return
+      else
+        redirect_to root_url and return
+      end
+    end
 
     if @repo.update_attributes!(title: params[:repo_title])
       respond_to do |format|
@@ -203,15 +206,14 @@ class RepositoriesController < ApplicationController
   def editor
     @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
     @repo.current_user = current_user
+    
+    if cannot?(:edit, @repo)
+      flash[:error] = "You don't have permission to see that"
+      redirect_to root_url and return
+    end
 
-    unless can? :edit, @repo
-      if user_signed_in?
-        flash[:error] = "You don't have permission to see that"
-        redirect_to root_url and return
-      else
-        store_location
-        redirect_to new_user_session_url and return
-      end
+    if !user_signed_in? 
+      flash[:notice] = "Demo mode. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
     end
 
     # http://stackoverflow.com/a/14428894

@@ -119,8 +119,8 @@ class Video < ActiveRecord::Base
     !repositories.select { |repo| repo.visible_to_user?(target_user) }.present?
   end
 
-  def repositories_visible_to_user(target_user)
-    repositories.select { |repo| repo.visible_to_user?(target_user) }
+  def repositories_visible_to_user(target_user, show_published_only = true)
+    repositories.select { |repo| repo.visible_to_user?(target_user, show_published_only) }
   end
 
   def ask_source_language?

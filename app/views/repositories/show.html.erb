@@ -36,7 +36,7 @@
       <% end %>
         <div class="translator_container pull-left">
           <span class="translator_label">Translator:</span>
-          <%= link_to @repo.owner, @repo.user.url, class: "river_gray" %>
+          <%= link_to @repo.owner, @repo.user.try(:url), class: "river_gray" %>
         </div>
         <div class="original_video_owner pull-left">
           <span class="original_video_owner_label">Video Owner:</span>

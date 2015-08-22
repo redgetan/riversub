@@ -74,11 +74,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   useLocalStorageIfNeeded: function() {
     var self = this;
     Backbone.getSyncMethod = function(model) {
-      if(self.repo.is_guided_walkthrough) {
+      if(self.repo.current_user) {
+        return Backbone.ajaxSync;
+      } else {
         return Backbone.localSync;
       }
-
-      return Backbone.ajaxSync;
     };
   },
 
@@ -208,8 +208,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         window.location.href = data.redirect_url;
       },
       error: function(data) {
-        alert("Publish failed. We would look into this shortly.");
-        throw data.responseText;
+        if (data.status === 403) {
+          alert(JSON.parse(data.responseText)["error"]);  
+        } else {
+          alert("Publish failed. We would look into this shortly.");
+          throw data.responseText;
+        }
       }
     });
   },

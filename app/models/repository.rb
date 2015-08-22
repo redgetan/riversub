@@ -479,8 +479,12 @@ class Repository < ActiveRecord::Base
     "active"
   end
 
-  def visible_to_user?(target_user)
-    is_published || owned_by?(target_user)
+  def visible_to_user?(target_user, show_published_only = true)
+    if show_published_only
+      is_published && owned_by?(target_user)
+    else
+      owned_by?(target_user)
+    end
   end
 
   def email_youtube_sync_request(to_email)
@@ -532,6 +536,7 @@ class Repository < ActiveRecord::Base
       :is_published => self.is_published,
       :is_fullscreen => self.is_fullscreen,
       :is_guided_walkthrough => self.guided_walkthrough?,
+      :current_user => self.class.current_user.try(:username),
       :group => self.group.try(:serialize),
       :release => self.release.try(:serialize),
       :repository_languages => self.current_user_owned_repository_languages,
@@ -584,7 +589,7 @@ class Repository < ActiveRecord::Base
   end
 
   def current_user_owned_and_published_repositories
-    (current_user_owned_repositories + published_repositories).uniq
+    (published_repositories).uniq
   end
 
   def current_user_owned_repositories
