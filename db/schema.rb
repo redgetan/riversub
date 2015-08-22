@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150818190349) do
+ActiveRecord::Schema.define(:version => 20150821204206) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -29,6 +29,18 @@ ActiveRecord::Schema.define(:version => 20150818190349) do
   add_index "activities", ["owner_id", "owner_type"], :name => "index_activities_on_owner_id_and_owner_type"
   add_index "activities", ["recipient_id", "recipient_type"], :name => "index_activities_on_recipient_id_and_recipient_type"
   add_index "activities", ["trackable_id", "trackable_type"], :name => "index_activities_on_trackable_id_and_trackable_type"
+
+  create_table "ahoy_events", :force => true do |t|
+    t.uuid     "visit_id"
+    t.integer  "user_id"
+    t.string   "name"
+    t.text     "properties"
+    t.datetime "time"
+  end
+
+  add_index "ahoy_events", ["time"], :name => "index_ahoy_events_on_time"
+  add_index "ahoy_events", ["user_id"], :name => "index_ahoy_events_on_user_id"
+  add_index "ahoy_events", ["visit_id"], :name => "index_ahoy_events_on_visit_id"
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",                                     :default => 0
@@ -254,6 +266,36 @@ ActiveRecord::Schema.define(:version => 20150818190349) do
     t.string   "language"
     t.string   "source_url"
   end
+
+  create_table "visits", :force => true do |t|
+    t.uuid     "visitor_id"
+    t.string   "ip"
+    t.text     "user_agent"
+    t.text     "referrer"
+    t.text     "landing_page"
+    t.integer  "user_id"
+    t.string   "referring_domain"
+    t.string   "search_keyword"
+    t.string   "browser"
+    t.string   "os"
+    t.string   "device_type"
+    t.integer  "screen_height"
+    t.integer  "screen_width"
+    t.string   "country"
+    t.string   "region"
+    t.string   "city"
+    t.string   "postal_code"
+    t.decimal  "latitude",         :precision => 10, :scale => 0
+    t.decimal  "longitude",        :precision => 10, :scale => 0
+    t.string   "utm_source"
+    t.string   "utm_medium"
+    t.string   "utm_term"
+    t.string   "utm_content"
+    t.string   "utm_campaign"
+    t.datetime "started_at"
+  end
+
+  add_index "visits", ["user_id"], :name => "index_visits_on_user_id"
 
   create_table "votes", :force => true do |t|
     t.integer  "votable_id"

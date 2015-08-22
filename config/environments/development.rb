@@ -64,6 +64,9 @@ River::Application.configure do
   #   end
   # end
 
+  Ahoy.visit_duration = 1.minutes
+  Ahoy.track_visits_immediately = true
+
 end
 
 # http://stackoverflow.com/a/4531494

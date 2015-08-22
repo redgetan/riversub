@@ -34,6 +34,8 @@ class RepositoriesController < ApplicationController
     @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
     @related_repos = Repository.includes(:video, :user).related(@repo)
 
+    ahoy.track "repo_view"
+
     unless can? :read, @repo
       if user_signed_in?
         flash[:error] = "You don't have permission to see that"

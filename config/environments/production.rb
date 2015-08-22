@@ -85,5 +85,7 @@ River::Application.configure do
   # would need to load it manually for the this class extension to be evaluated
   load "public_activity.rb" 
 
+  Ahoy.visit_duration = 30.minutes
+  Ahoy.track_visits_immediately = true
 
 end

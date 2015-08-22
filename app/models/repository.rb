@@ -755,6 +755,10 @@ class Repository < ActiveRecord::Base
     import_to_youtube_repo_url(self)  
   end
 
+  def views_contributed
+    Visit.where("landing_page LIKE ? ", url + "%").count
+  end
+
   def to_param
     self.token
   end
