@@ -88,6 +88,11 @@ class Video < ActiveRecord::Base
     self.metadata["snippet"]["channelTitle"]
   end
 
+  def uploader_url
+    return "unavailable" unless self.metadata
+    "https://www.youtube.com/channel/#{self.metadata["snippet"]["channelId"]}"
+  end
+
   def name
     return "Video unavailable" unless self.metadata
     self.metadata["snippet"]["title"]  

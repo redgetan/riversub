@@ -872,7 +872,7 @@ ul.social_login_buttons a {
 #transcript_container,
 #comments_container,
 .share_container {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 #river_player .share_container {
@@ -1815,6 +1815,7 @@ form#request_beta_invite input[name='email'] {
   clear: both;
   text-align: left;
   margin-bottom: 50px;
+  margin-top: 50px;
 }
 
 /*
@@ -2776,6 +2777,7 @@ form.new_user #user_login {
   margin-bottom: 10px;
 }
 
+#river_player .original_video_owner,
 #river_player .original_video {
   clear: both;
   text-align: left;
@@ -2801,7 +2803,7 @@ form.new_user #user_login {
 
 .original_video_view_count {
  padding: 5px; 
- margin-left: 10px;
+ /*margin-left: 10px;*/
  color: gray;
 }
 
@@ -3230,11 +3232,11 @@ html.embed .expand_btn {
 
 .embed_container {
   text-align: left;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 .embed_code_input {
-    margin-left: 10px;
+    /*margin-left: 10px;*/
     padding: 0px 5px;
     background: none;
     border: solid 2px lightgray;
@@ -4101,4 +4103,35 @@ label[for='group_allow_subtitle_download'] {
   margin-top: 20px;
   display: inline-block;
   margin-bottom: 20px;  
+}
+
+#river_player .translator_container {
+  text-align: left;
+  margin-top: 10px;
+  clear: both;
+  margin-bottom: 5px;
+}
+
+#river_player .translator_label {
+  margin-right: 30px;
+}
+
+.original_video_owner_label {
+  margin-right: 10px;
+}
+
+.original_video_source_label {
+  margin-right: 45px;
+}
+
+.embed_label {
+  margin-right: 50px;
+}
+
+.share_label {
+  margin-right: 60px !important;
+}
+
+.original_video_view_label {
+  margin-right: 55px;
 }

@@ -34,6 +34,15 @@
 
         <%= render 'videos/social_share' %>
       <% end %>
+        <div class="translator_container pull-left">
+          <span class="translator_label">Translator:</span>
+          <%= link_to @repo.owner, @repo.user.url, class: "river_gray" %>
+        </div>
+        <div class="original_video_owner pull-left">
+          <span class="original_video_owner_label">Video Owner:</span>
+          <%= link_to @repo.video.uploader_username, @repo.video.uploader_url, class: "river_gray" %>
+        </div>
+
       <br>
       <div class="original_video">
         <span class="original_video_source_label">Source:</span>
