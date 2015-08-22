@@ -21,21 +21,20 @@
       <%= render 'videos/player' %>
       <% if @repo %>
         <% @sharable = @repo %>
-      <div class="original_video_stats">
-        <span class="original_video_view_label">Contribution:</span>
-        <span class="original_video_view_count" style="">
-          <span class='original_video_view_count_number'><%= @repo.views_contributed %></span>
-          views to the
-          <a class='original_video_source_link' href="<%= @repo.video.source_url %>">original video</a>
-        </span>
-        <%= render 'videos/player_editor' %>
-        <div class='repository favorite_container pull-right <%= @repo.repo_item_class_for(current_user) %>' data-shortid="<%= @repo.short_id %>">
-          <a class="repo_favorite_btn pull-right">
-            <i class="glyphicon glyphicon-heart"></i>
-            <div class="score pull-right"><%= @repo.score > 0 ? @repo.score : "Favorite" %></div>
-          </a>
+        <div class="original_video_stats pull-left">
+          <span class="original_video_view_label">Contribution:</span>
+          <span class="original_video_view_count" style="">
+            <span class='original_video_view_count_number'><%= @repo.views_contributed %></span>
+            views to the
+            <a class='original_video_source_link' href="<%= @repo.video.source_url %>">original video</a>
+          </span>
         </div>
-      </div>
+        <% if can?(:edit, @repo) %>
+          <a href="<%= @repo.editor_url %>" class="repo_open_editor_btn pull-right btn btn-danger btn-sm">Open Editor<a>
+        <% end %>
+        <div class='new_translation_container pull-right'>
+          <a href="<%= @repo.new_translation_url %>" class='new_translation_btn'>New Subtitle</a>
+        </div>
         <%= render 'videos/social_share' %>
       <% end %>
       <br>

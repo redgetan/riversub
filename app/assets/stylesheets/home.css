@@ -2717,7 +2717,7 @@ div.field, div.actions {
 }
 
 .repo_open_editor_btn {
-  /*margin-top: 20px;*/
+  margin-top: 30px;
 }
 
 .publish_release_btn {
@@ -2866,7 +2866,7 @@ ul.source_repo_timing_list li span {
 }
 
 .new_translation_container {
-  margin-top: 5px;
+  margin-top: 35px;
 }
 
 .repo_favorite_btn div.score {
@@ -4112,3 +4112,4 @@ label[for='group_allow_subtitle_download'] {
   font-size: 20px;
   color: black;
 }
+
