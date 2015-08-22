@@ -481,7 +481,7 @@ class Repository < ActiveRecord::Base
 
   def visible_to_user?(target_user, show_published_only = true)
     if show_published_only
-      is_published && owned_by?(target_user)
+      is_published 
     else
       owned_by?(target_user)
     end
