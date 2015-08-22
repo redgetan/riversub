@@ -1,5 +1,6 @@
 require 'bundler/capistrano'
 require 'rvm/capistrano'
+require "delayed/recipes"  
 
 set :rvm_ruby_string, ENV['GEM_HOME'].gsub(/.*\//,"")
 set :rvm_type, :system
@@ -25,6 +26,7 @@ set :use_sudo, false
 
 
 set :deploy_environment, ENV['RAILS_ENV'] ? ENV['RAILS_ENV'].to_sym : nil
+set :rails_env, ENV['RAILS_ENV'] ? ENV['RAILS_ENV'].to_sym : nil
 
 if !deploy_environment || ![:staging, :production].include?(deploy_environment)
   puts "Usage: "
@@ -57,6 +59,10 @@ after "deploy:restart", "deploy:reload" # unicorn pre init app true uses reload 
 after "deploy:update_code", "deploy:setup_database"
 after "deploy:setup_database", "deploy:migrate_environment_aware"
 after "deploy:create_symlink", "deploy:update_unicorn_init_script"
+
+after "deploy:stop",    "delayed_job:stop"
+after "deploy:start",   "delayed_job:start"
+after "deploy:restart", "delayed_job:restart"
 
 namespace :deploy do
   %w[start stop reload upgrade].each do |command|

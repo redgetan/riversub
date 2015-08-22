@@ -82,6 +82,8 @@ gem 'tumblr_client'
 gem 'acts-as-taggable-on', '~> 3.4'
 gem 'ahoy_matey'
 gem 'activeuuid', '>= 0.5.0'
+gem 'delayed_job_active_record'
+gem 'daemons'
 
 
 
