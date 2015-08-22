@@ -557,7 +557,7 @@ class Repository < ActiveRecord::Base
       { url: repo.editor_url, language: repo.language_pretty }
     end
 
-    result << { url: new_translation_url(group_id: self.group.try(:short_name)), language: "-- New Translation --" }
+    result << { url: new_translation_url, language: "-- New Translation --" }
 
     result
   end
@@ -571,13 +571,14 @@ class Repository < ActiveRecord::Base
     if self.is_embed?
       result << { url: "#", language: "yasub.com" }
     else
-      result << { url: new_translation_url(group_id: self.group.try(:short_name)), language: "- New Translation -" }
+      result << { url: new_translation_url, language: "- New Translation -" }
     end
 
     result
   end
 
   def new_translation_url(options = {})
+    options[:group_id] ||=  self.group.try(:short_name)
     extra_params = options.reject { |k,v| v.nil? }
     self.video.translate_repository_url(extra_params.merge(source_repo_token: self.token))
   end
