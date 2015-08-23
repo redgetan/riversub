@@ -886,6 +886,7 @@ ul.social_login_buttons a {
 #river_player .share_container {
   text-align: left;
   width: 400px;
+  clear: both;
 }
 
 .release_show_container .share_container {
