@@ -6,17 +6,13 @@
       <br>
       <p>The subtitle have already been added to the <a class='yt_imported_label' href="<%= @repo.source_url %>">original youtube video</a></p>
     <% else %>
-      <% if @repo.page  %>
+      <% if @repo.belong_to_producer?(current_user)  %>
         <br>
-        <% if @repo.page.user == current_user %>
-          <%= link_to("Import to Youtube", @repo.import_to_youtube_url, method: "post", class: "btn btn-danger btn-xs") %>
-        <% else %>
-          <p>If you're the original uploader, you can <a href="<%= new_user_session_url(location: @repo.import_url) %>">login</a> to import the subtitle in one-click</p>
-        <% end %>
+        <%= link_to("Import to Youtube", @repo.import_to_youtube_url, method: "post", class: "btn btn-danger btn-xs") %>
       <% else %>
-        <p>If you are the owner of this video, you can make the subtitle show up in the original youtube video.</p>
+        <p>If you are the owner of this video, you can add the subtitle to the original youtube video.</p>
         <ul class="">
-          <li>Create an official fan translation page by signing up for an <a href="<%= new_user_registration_url(role: "producer") %>">account</a> and you'll be able to import subtitles in one-click. </li>
+          <li>Signup <a href="<%= new_user_registration_url(role: "producer") %>">here</a> and after linking your youtube account, you'll be able to import subtitles in one-click. </li>
           <br>
           <span>or</span>
           <br>
