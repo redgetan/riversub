@@ -40,6 +40,8 @@ class User < ActiveRecord::Base
 
   ROLES = %w[producer translator viewer]
 
+  after_create :user_signup_notification
+
   before_create do
     self.username.downcase!
   end
@@ -190,6 +192,10 @@ class User < ActiveRecord::Base
   def youtube_connect!(auth)
     # create identity + store oauth tokens
     identity = Identity.find_or_create_with_omniauth!(auth)
+  end
+
+  def user_signup_notification
+    UserMailer.signup_notify(self).deliver 
   end
 
   def to_param
