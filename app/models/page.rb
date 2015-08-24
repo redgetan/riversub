@@ -126,7 +126,11 @@ class Page < ActiveRecord::Base
   end
 
   def url
-    page_url(self)  
+    created_at < official_page_expiration ? page_url(self) : source_url
+  end
+
+  def official_page_expiration
+    "2015-08-24".to_date  
   end
 
 end
