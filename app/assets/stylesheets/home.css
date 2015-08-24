@@ -4144,3 +4144,14 @@ label[for='group_allow_subtitle_download'] {
   padding:  2px 5px;
   margin-left: 10px;
 }
+
+
+.group_description_container strong,
+.group_description_container h1,
+.group_description_container h2,
+.group_description_container h3,
+.group_description_container h4,
+.group_description_container h5,
+.group_description_container h6 {
+  color: gray;
+}

@@ -4,13 +4,13 @@
   <%= render "header" %>
 
   <div class='row'>
-    <div class='col-md-8 col-md-offset-2 col-xs-12 col-xs-offset-0'>
+    <div class='group_description_container col-md-8 col-md-offset-2 col-xs-12 col-xs-offset-0'>
       <div class='section_header'>
         Let's Subtitle 
       </div>
       <div class='section_body'>
         <p>
-          <%= @group.description %>
+          <%= raw @group.description %>
         </p>
       </div>
     </div>

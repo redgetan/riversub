@@ -78,6 +78,19 @@ class Group < ActiveRecord::Base
     releases.published.order("created_at DESC").first
   end
 
+  def description
+    self.markeddown_description  
+  end
+
+  def description=(text)
+    write_attribute(:description, text.to_s.rstrip)
+    self.markeddown_description  = self.generated_markeddown_description
+  end
+
+  def generated_markeddown_description
+    Markdowner.to_html(read_attribute(:description), dont_convert_headers_to_strong: true)
+  end
+
   def past_releases
     releases.published - [latest_release]
   end
