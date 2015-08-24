@@ -33,7 +33,7 @@
         <% if defined?(show_import_actions) && show_import_actions %>
           <% if repo.is_youtube_imported? %>
             <a class='yt_imported_label' href="<%= repo.source_url %>">Imported</a>
-          <% else %>
+          <% elsif repo.belong_to_producer?(current_user) %>
             <%= link_to("Import to Youtube", repo.import_to_youtube_url, method: "post", class: "btn btn-danger btn-xs") %>
           <% end %>
         <% end %>

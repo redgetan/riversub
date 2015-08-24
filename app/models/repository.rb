@@ -738,9 +738,10 @@ class Repository < ActiveRecord::Base
   end
 
   def import_caption_to_youtube!
-    return unless self.page
+    youtube_client = get_youtube_client
+    return unless youtube_client
 
-    self.page.youtube_client.upload_caption(self.video.source_id,
+    youtube_client.upload_caption(self.video.source_id,
       language_code: current_language,
       title: self.user.try(:username),
       body: self.to_srt
@@ -749,11 +750,23 @@ class Repository < ActiveRecord::Base
     update_column(:is_youtube_imported, true)
 
   rescue YoutubeClient::InsufficientPermissions => e
-    self.page.youtube_identity.update_column(:insufficient_scopes, e.message)
+    youtube_identity.update_column(:insufficient_scopes, e.message)
     raise e
   rescue YoutubeClient::ImportCaptionError => e
     RepositoryMailer.import_caption_failure(self, e.message, self.class.current_user).deliver
     raise e
+  end
+
+  def get_youtube_client
+    youtube_identity.try(:youtube_client)
+  end
+
+  def youtube_identity
+    @youtube_identity ||= Identity.where(yt_channel_id: self.yt_channel_id).first
+  end
+
+  def yt_channel_id
+    self.video.yt_channel_id
   end
 
   def import_to_youtube_url
@@ -765,6 +778,16 @@ class Repository < ActiveRecord::Base
     if group
       group.notify_subscribers_repo_published(self)
     end
+  end
+
+  def self.for_channel_id(channel_ids)
+    video_ids = Video.select(:id).for_channel_id(channel_ids)  
+    self.where(video_id: video_ids)
+  end
+
+  def belong_to_producer?(target_user)
+    return false unless target_user.try(:youtube_channel_ids).present?  
+    target_user.youtube_channel_ids.include?(self.yt_channel_id)
   end
 
   def to_param

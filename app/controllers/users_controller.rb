@@ -8,6 +8,8 @@ class UsersController < ApplicationController
                     else
                       @user.repositories.includes(:video).published.recent # if not logged in, show only published ones
                     end
+
+    @user_submissions_for_producer = Repository.for_channel_id(@user.youtube_channel_ids) if @user.youtube_channel_ids.present?
   end
 
 end

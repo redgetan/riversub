@@ -194,6 +194,14 @@ class User < ActiveRecord::Base
     identity = Identity.find_or_create_with_omniauth!(auth)
   end
 
+  def youtube_identities
+    identities.where(provider: :google_oauth2).where("yt_channel_id IS NOT NULL")  
+  end
+
+  def youtube_channel_ids
+    youtube_identities.map(&:yt_channel_id)
+  end
+
   def user_signup_notification
     UserMailer.signup_notify(self).deliver 
   end

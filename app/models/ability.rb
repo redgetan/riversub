@@ -39,6 +39,10 @@ class Ability
     can :edit, Repository do |repo|
       repo.owned_by?(user)
     end
+
+    can :import, Repository do |repo|
+      repo.belong_to_producer?(user)
+    end
   end
 
   def define_page_abilities(user)

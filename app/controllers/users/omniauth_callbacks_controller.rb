@@ -19,6 +19,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def youtube_connect
     auth = request.env['omniauth.auth']
     identity = current_user.youtube_connect!(auth)
+    Page.create!(short_name: identity.yt_channel_id, identity_id: identity.id)
     redirect_to new_page_url(identity_id: identity.id)
   end
 

@@ -167,6 +167,10 @@ class Video < ActiveRecord::Base
     group.settings.get("default_video_language_code")
   end
 
+  def self.for_channel_id(channel_ids)
+    self.where(yt_channel_id: channel_ids)
+  end
+
   def to_param
     self.token
   end

@@ -5,7 +5,7 @@
   
   <div class="home_try section_body">
     <% @group_repos.each_slice(4) do |repos| %>
-      <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3"}  %>
+      <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3", show_import_actions: true}  %>
     <% end %>
   </div>
   <%= paginate @group_repos %>
