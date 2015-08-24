@@ -1,5 +1,9 @@
 $.extend(river.controller,{
+  "groups#new": function() {
+    river.utility.enableMarkdownHelper();
+  },
   "groups#edit": function() {
+    river.utility.enableMarkdownHelper();
 
     $("form.edit_group input#group_avatar").on("change",function(event){
       // http://stackoverflow.com/questions/166221/how-can-i-upload-files-asynchronously-with-jquery

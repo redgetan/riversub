@@ -2193,6 +2193,8 @@ div.markdown_help {
   border: 1px solid #e0e0e0;
   padding: 0 1em;
   margin-top: 0.5em;
+  width: 400px;
+  padding: 10px;
 }
 
 div.markdown_help_label {
@@ -4157,4 +4159,20 @@ label[for='group_allow_subtitle_download'] {
 .group_description_container h5,
 .group_description_container h6 {
   color: gray;
+}
+
+.markdown_help_toggler {
+  text-decoration: underline;
+  margin-left: 20px;
+}
+
+textarea#group_description {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.markdown_help td {
+  padding-right: 20px;
+  border: solid 1px lightgray;
 }

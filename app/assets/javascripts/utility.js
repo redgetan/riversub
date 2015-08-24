@@ -62,6 +62,20 @@ $.extend(river.utility,{
       window.location.hash = this.hash;
       $('html,body').scrollTop(scrollmem);
     });
+  },
+
+  enableMarkdownHelper: function() {
+    $(".markdown_help_toggler").on("click", function(event){
+      event.preventDefault();
+      
+      if ($(".markdown_help").is(":visible")) {
+        $(".markdown_help").hide();  
+        $(".markdown_help_toggler").text("formatting help");
+      } else {
+        $(".markdown_help").show();  
+        $(".markdown_help_toggler").text("hide help");
+      }
+    });
   }
 });
 
