@@ -4097,7 +4097,7 @@ label[for='group_allow_subtitle_download'] {
 }
 
 .group_show_container .group_requests ul li {
-  height: 90px;
+  margin-bottom: 15px;
 }
 
 .group_show_container .request_must_login_caption {
