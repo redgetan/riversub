@@ -22,9 +22,21 @@
   <div class='row'>
     <div class="left_column col-md-8 col-md-offset-2 col-xs-12 col-xs-offset-0">
       <ul class="nav nav-tabs" >
-        <li class="active"><a href="#user_submissions" data-toggle="tab">User Submissions</a></li>
-        <li class=""><a href="#requests" data-toggle="tab">Requests</a></li>
-        <li class=""><a href="#comments" data-toggle="tab">Comments</a></li>
+        <li class="active">
+          <a href="#user_submissions" data-toggle="tab">User Submissions 
+            <span class='group_user_submission_count'>(<%= @group.repositories.published.count %>)</span>
+          </a>
+        </li>
+        <li class="">
+          <a href="#requests" data-toggle="tab">Requests 
+            <span class='group_request_count'>(<%= @group.requests.count %>)</span>
+          </a>
+        </li>
+        <li class="">
+          <a href="#comments" data-toggle="tab">Comments 
+            <span class='group_comment_count'>(<%= @group.comments.count %>)</span>
+          </a>
+        </li>
         <li class="pull-right"><a href="#members" data-toggle="tab">Members</a></li>
       </ul>
 

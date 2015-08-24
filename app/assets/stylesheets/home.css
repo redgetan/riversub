@@ -4136,3 +4136,11 @@ label[for='group_allow_subtitle_download'] {
 .original_video_view_label {
   margin-right: 55px;
 }
+
+.group_user_submission_count,
+.group_request_count,
+.group_comment_count {
+  color: gray;
+  padding:  2px 5px;
+  margin-left: 10px;
+}

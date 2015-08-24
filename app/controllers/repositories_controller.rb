@@ -157,7 +157,7 @@ class RepositoriesController < ApplicationController
       render :json => { :error => "You must be signed in to publish" }, :status => 403 and return
     end
 
-    if @repo.update_attributes!(is_published: true)
+    if @repo.publish!
       respond_to do |format|
         format.html  { redirect_to @repo.url  }
         format.json  { render :json => { :redirect_url => @repo.post_publish_url }, :status => 200 }

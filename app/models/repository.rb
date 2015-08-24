@@ -760,6 +760,13 @@ class Repository < ActiveRecord::Base
     import_to_youtube_repo_url(self)  
   end
 
+  def publish!
+    update_attributes!(is_published: true)
+    if group
+      group.notify_subscribers_repo_published(self)
+    end
+  end
+
   def to_param
     self.token
   end

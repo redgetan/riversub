@@ -200,6 +200,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if (this.$publishBtn.attr("disabled") == "disabled") return;
 
+    this.$publishBtn.text("wait...")
+    this.$publishBtn.attr("disabled", "disabled");
+
     $.ajax({
       url: this.repo.publish_url,
       type: "POST",

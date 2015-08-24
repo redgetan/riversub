@@ -23,8 +23,16 @@ class RepositoryMailer < ActionMailer::Base
   def import_caption_failure(repo, message, actor)
     @repo = repo
     @url  = "http://www.yasub.com/"
-    @from = "redge@yasub.com"
+    @from = "info@yasub.com"
     mail(:to => @from, :subject => "Import caption failure for repo #{@repo.id} by user #{actor.try(:username)} ", :from => @from,
          :body => message)
+  end
+
+  def group_repo_published_notify(repo, members)
+    @repo = repo
+    @url  = "http://www.yasub.com/"
+    @from = "info@yasub.com"
+    
+    mail(:to => nil, :bcc => members.map(&:email), :subject => "#{@repo.title} has been subtitled by #{@repo.owner}", :from => @from)
   end
 end

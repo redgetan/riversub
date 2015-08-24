@@ -171,7 +171,8 @@ class Group < ActiveRecord::Base
   end
 
   def allow_subtitle_download 
-    settings.get(:allow_subtitle_download) == "true"
+    allow_subtitle_download_setting = settings.get(:allow_subtitle_download)
+    allow_subtitle_download_setting.present? ? allow_subtitle_download_setting == "true" : true
   end
 
   def allow_subtitle_download=(bool) 
@@ -195,6 +196,10 @@ class Group < ActiveRecord::Base
 
   def short_id
     self.short_name
+  end
+
+  def notify_subscribers_repo_published(repo)
+    RepositoryMailer.group_repo_published_notify(repo,members).deliver      
   end
 
   def to_param
