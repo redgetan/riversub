@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 class RepositoryMailer < ActionMailer::Base
-  default from: "info@yasub.com"
+  @@from = "Yasub <info@yasub.com>"
 
   def youtube_sync_request(repo, to_email)
     @repo = repo
@@ -15,24 +15,20 @@ class RepositoryMailer < ActionMailer::Base
     @repo = comment.commentable
     @user = @repo.user
     @url  = "http://www.yasub.com/"
-    @from = "info@yasub.com"
     @commenter = @comment.user.try(:username) || "Anonymous user"
-    mail(:to => @repo.user.email, :subject => "#{@commenter} commented on your subtitle #{@repo.title}", :from => @from)
+    mail(:to => @repo.user.email, :subject => "#{@commenter} commented on your subtitle #{@repo.title}", :from => @@from)
   end
 
   def import_caption_failure(repo, message, actor)
     @repo = repo
     @url  = "http://www.yasub.com/"
-    @from = "info@yasub.com"
-    mail(:to => @from, :subject => "Import caption failure for repo #{@repo.id} by user #{actor.try(:username)} ", :from => @from,
+    mail(:to => @from, :subject => "Import caption failure for repo #{@repo.id} by user #{actor.try(:username)} ", :from => @@from,
          :body => message)
   end
 
   def group_repo_published_notify(repo, members)
     @repo = repo
     @url  = "http://www.yasub.com/"
-    @from = "info@yasub.com"
-    
-    mail(:to => nil, :bcc => members.map(&:email), :subject => "#{@repo.title} has been subtitled by #{@repo.owner}", :from => @from)
+    mail(:to => nil, :bcc => members.map(&:email), :subject => "#{@repo.owner} has been subtitled a video for #{@repo.group.name} members", :from => @@from)
   end
 end

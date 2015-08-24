@@ -2563,7 +2563,7 @@ iframe.fansubber_signup_form .ss-base-body {
 
 .release_items_container {
   padding-left: 0px;
-  display: inline-block;
+  display: flex;
 }
 
 .release_items_container .video_title {
