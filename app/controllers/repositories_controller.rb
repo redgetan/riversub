@@ -25,8 +25,8 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
-    @related_repos = Repository.includes(:video, :user).related(@repo)
+    @repo = Repository.find_by_token! params[:token]
+    @related_repos = Repository.includes(:user, :video).related(@repo)
 
     unless can? :read, @repo
       if user_signed_in?

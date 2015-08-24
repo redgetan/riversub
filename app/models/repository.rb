@@ -593,7 +593,7 @@ class Repository < ActiveRecord::Base
   end
 
   def current_user_owned_repositories
-    self.video.repositories.select do |repo|
+    self.video.repositories.includes(:user).select do |repo|
       repo.owned_by?(self.class.current_user)
     end
   end
