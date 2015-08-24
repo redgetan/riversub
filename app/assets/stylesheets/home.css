@@ -3703,6 +3703,9 @@ html.embed .expand_btn {
 
 .home_group_item .group_description {
   color: #333;
+  word-wrap: break-word;
+  max-height: 200px;
+  overflow: hidden;
 }
 
 .home_group_item .avatar {

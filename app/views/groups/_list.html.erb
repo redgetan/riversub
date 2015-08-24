@@ -12,7 +12,7 @@
           </div>
           <span class="title river_gray"><%= group.name %></span>
           <p class='group_description'>
-            <%= group.description %>
+            <%= group.read_attribute(:description) %>
           </p>
         </a>
       <% end %>
