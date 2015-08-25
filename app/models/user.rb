@@ -162,7 +162,7 @@ class User < ActiveRecord::Base
   end
 
   def translations_tab_class
-    self.repositories.published.present? ? "active" : ""
+    "active"
   end
   
   def video_bookmarks_tab_class
