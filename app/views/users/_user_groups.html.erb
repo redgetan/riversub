@@ -9,8 +9,6 @@
       <% @user.groups.each do |group| %>
         <div class='user_group'>
           <a href="<%= group.url %>" class='user_group'><%= group.name %></a>
-          -
-          <%= group.description %>
         </div>
       <% end %>
     </div>
