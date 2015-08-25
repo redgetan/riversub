@@ -158,19 +158,18 @@ class RepositoriesController < ApplicationController
   def publish
     @repo = Repository.find_by_token! params[:token]
 
+    binding.pry
     if !user_signed_in? 
       render :json => { :error => "You must be signed in to publish" }, :status => 403 and return
-    else cannot?(:edit, @repo)
+    elsif cannot?(:edit, @repo)
       render :json => { :error => "You dont have permission to publish" }, :status => 403 and return
     end
 
-    if @repo.publish!
-      respond_to do |format|
-        format.html  { redirect_to @repo.url  }
-        format.json  { render :json => { :redirect_url => @repo.post_publish_url }, :status => 200 }
-      end
-    else
-      render :json => { :error => @repo.errors.full_messages }, :status => 403
+    @repo.publish!
+    
+    respond_to do |format|
+      format.html  { redirect_to @repo.url  }
+      format.json  { render :json => { :redirect_url => @repo.post_publish_url }, :status => 200 }
     end
   end
 
