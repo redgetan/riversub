@@ -71,17 +71,17 @@ class Repository < ActiveRecord::Base
 
   def self.related(repo, num_of_entries = 10)
     if repo.group.try(:short_name) == "jpweekly"
-      self.where(group_id: repo.group_id).where(language: "en").where("id <> ?", repo.id).order("RAND()").limit(num_of_entries)
+      self.where(group_id: repo.group_id).where(language: "en").where("id <> ?", repo.id).published.order("RAND()").limit(num_of_entries)
     elsif repo.group.present?
-      self.where(group_id: repo.group_id).where("id <> ?", repo.id).order("RAND()").limit(num_of_entries)
+      self.where(group_id: repo.group_id).where("id <> ?", repo.id).order("RAND()").published.limit(num_of_entries)
     elsif repo.user.present?
-      user_repos = self.where(user_id: repo.user_id).where("id <> ?", repo.id).limit(num_of_entries)
+      user_repos = self.where(user_id: repo.user_id).where("id <> ?", repo.id).published.limit(num_of_entries)
       remaining_count = (num_of_entries - user_repos.count)
       remaining_count = remaining_count < 0 ? 0 : remaining_count
       other_repos = self.order("RAND()").limit(remaining_count)
       user_repos + other_repos
     else
-      self.where("id <> ?", repo.id).order("RAND()").limit(num_of_entries)
+      self.where("id <> ?", repo.id).order("RAND()").published.limit(num_of_entries)
     end
   end
 
