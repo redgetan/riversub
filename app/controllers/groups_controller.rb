@@ -13,9 +13,17 @@ class GroupsController < ApplicationController
 
   def show
     @group_repos = if @group.short_name == "jpweekly" 
-                     @group.published_repositories.includes(:video, { :timings => :subtitle }, :user).where(language: "en").recent.page params[:page]
+                     if params[:repo_status] == "draft"
+                       @group.draft_repositories.includes(:video, { :timings => :subtitle }, :user).where(language: "en").recent.page params[:page]
+                     else
+                       @group.published_repositories.includes(:video, { :timings => :subtitle }, :user).where(language: "en").recent.page params[:page]
+                     end
                    else
-                     @group.published_repositories.includes(:video, { :timings => :subtitle }, :user).recent.page params[:page]
+                     if params[:repo_status] == "draft"
+                       @group.draft_repositories.includes(:video, { :timings => :subtitle }, :user).recent.page params[:page]
+                     else
+                       @group.published_repositories.includes(:video, { :timings => :subtitle }, :user).recent.page params[:page]
+                     end
                    end
                    
     @activities  = @group.public_activities.includes(:trackable, :owner).limit(5)

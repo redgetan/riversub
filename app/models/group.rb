@@ -143,6 +143,10 @@ class Group < ActiveRecord::Base
     self.repositories.published  
   end
 
+  def draft_repositories
+    self.repositories.where(is_published: nil)  
+  end
+
   def public_activities
     PublicActivity::Activity.where_params(group_short_name: self.short_name)
                             .order("created_at DESC")
@@ -196,14 +200,21 @@ class Group < ActiveRecord::Base
     url(params) + "#requests"  
   end
 
-  def user_submissions_url
-    url + "#user_submissions"  
+  def user_submissions_url(params = {})
+    url(params) + "#user_submissions"  
   end
 
   def request_category_select_options
     [
       ["Open",   requests_url(status: 'open'), ],
       ["Closed", requests_url(status: 'closed')]
+    ]
+  end
+
+  def user_submission_category_select_options
+    [
+      ["Published",   user_submissions_url(repo_status: 'published'), ],
+      ["In Progress", user_submissions_url(repo_status: 'draft')]
     ]
   end
 
