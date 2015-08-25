@@ -3112,6 +3112,7 @@ html.embed .expand_btn {
   padding-right: 10px;
   padding-left: 5px;
   height: auto;
+  word-wrap: break-word;
 }
 
 .latest_release_container .release_item .video_thumb,  
