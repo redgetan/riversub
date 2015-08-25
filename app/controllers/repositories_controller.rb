@@ -26,6 +26,11 @@ class RepositoriesController < ApplicationController
 
   def show
     @repo = Repository.find_by_token! params[:token]
+
+    unless @repo.is_published?
+      redirect_to @repo.editor_url and return 
+    end
+
     @related_repos = Repository.includes(:user, :video).related(@repo)
 
     unless can? :read, @repo
@@ -153,8 +158,10 @@ class RepositoriesController < ApplicationController
   def publish
     @repo = Repository.find_by_token! params[:token]
 
-    unless user_signed_in? && can?(:edit, @repo)
+    if !user_signed_in? 
       render :json => { :error => "You must be signed in to publish" }, :status => 403 and return
+    else cannot?(:edit, @repo)
+      render :json => { :error => "You dont have permission to publish" }, :status => 403 and return
     end
 
     if @repo.publish!
@@ -212,13 +219,13 @@ class RepositoriesController < ApplicationController
     @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
     @repo.current_user = current_user
     
-    if cannot?(:edit, @repo)
-      flash[:error] = "You don't have permission to see that"
-      redirect_to root_url and return
-    end
-
     if !user_signed_in? 
       flash[:notice] = "Demo mode. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
+    elsif cannot?(:edit, @repo) && @repo.group.present?
+      flash[:notice] = "Read only mode. You can't edit someone else subtitle. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
+    elsif cannot?(:edit, @repo)
+      flash[:error] = "You don't have permission to see that"
+      redirect_to root_url and return
     end
 
     # http://stackoverflow.com/a/14428894

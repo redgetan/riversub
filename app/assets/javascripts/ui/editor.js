@@ -74,7 +74,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   useLocalStorageIfNeeded: function() {
     var self = this;
     Backbone.getSyncMethod = function(model) {
-      if(self.repo.current_user) {
+      if(self.repo.current_user === self.repo.owner) {
         return Backbone.ajaxSync;
       } else {
         return Backbone.localSync;
