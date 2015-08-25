@@ -10,7 +10,7 @@ class UsersController < ApplicationController
                     end
 
     @user_submissions_for_producer = if @user.youtube_channel_ids.present?
-                                       Repository.includes(:video, :user, {:timings => :subtitle}).for_channel_id(@user.youtube_channel_ids) 
+                                       Repository.includes(:video, :user, {:timings => :subtitle}).published.for_channel_id(@user.youtube_channel_ids) 
                                      else
                                        []
                                      end
