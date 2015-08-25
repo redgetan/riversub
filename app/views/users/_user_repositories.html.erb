@@ -20,7 +20,7 @@
               <img src="<%= repo.thumbnail_url %>" alt="" >
             </a>
             <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-              <h6 class='video_name'><%= repo.video.name %></h6>
+              <h6 class='video_name'><%= truncate(repo.player_title, length: 80) %></h6>
             </a>
           </div>
         </div>
