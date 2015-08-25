@@ -182,7 +182,8 @@ class User < ActiveRecord::Base
   end
 
   def allow_subtitle_download 
-    settings.get(:allow_subtitle_download)  == "true"
+    allow_subtitle_download_setting = settings.get(:allow_subtitle_download)
+    allow_subtitle_download_setting.present? ? allow_subtitle_download_setting == "true" : true
   end
 
   def allow_subtitle_download=(bool) 
