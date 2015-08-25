@@ -380,6 +380,7 @@ div#subtitle_bar {
 #editor #subtitle_bar {
   padding: 5px;
   height: 30px;
+  margin-top: 20px;
   line-height: 18px;
   width: inherit;
 }
