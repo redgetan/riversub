@@ -356,6 +356,8 @@ class Comment < ActiveRecord::Base
     case commentable
     when Repository
       RepositoryMailer.new_comment_notify(self).deliver
+    when Group
+      GroupMailer.new_comment_notify(self).deliver
     else
       nil
     end
