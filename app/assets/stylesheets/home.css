@@ -4201,3 +4201,7 @@ textarea#group_description {
 .user_show_container .nav.nav-tabs li.active a {
   border-bottom: solid 1px seashell !important;
 }
+
+.add_moderator_form input {
+  margin-left: 5px;
+}

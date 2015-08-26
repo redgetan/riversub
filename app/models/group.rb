@@ -55,6 +55,10 @@ class Group < ActiveRecord::Base
     owners  
   end
 
+  def non_moderators
+    self.members.where("memberships.is_owner IS FALSE")
+  end
+
   def pending_requests
     requests.includes(:video, :group).reject { |request| request.completed? } 
   end
@@ -204,6 +208,10 @@ class Group < ActiveRecord::Base
     url(params) + "#user_submissions"  
   end
 
+  def members_url(params = {})
+    url(params) + "#members"  
+  end
+
   def request_category_select_options
     [
       ["Open",   requests_url(status: 'open'), ],
@@ -216,6 +224,10 @@ class Group < ActiveRecord::Base
       ["Published",   user_submissions_url(repo_status: 'published'), ],
       ["In Progress", user_submissions_url(repo_status: 'draft')]
     ]
+  end
+
+  def is_moderator?(target_user)
+    self.memberships.where(user_id: target_user.try(:id)).first.try(:is_moderator?)
   end
 
   def short_id

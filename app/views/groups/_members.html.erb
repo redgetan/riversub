@@ -1,16 +1,45 @@
 <div class='members_container'>
   <div class="section_block">
     <div class="section_body">
-      <% @group.members.each do |member| %>
-        <div class='member ' data-toggle="tooltip" title="<%= member.username %>">
-          <a class="user_avatar" href="<%= member.url %>">
-            <%= image_tag member.avatar_url %>
-          </a>
+      <div class='row'>
+        <h5>Moderators</h5>
+        <% @group.moderators.each do |member| %>
+          <div class='member ' data-toggle="tooltip" title="<%= member.username %>">
+            <a class="user_avatar" href="<%= member.url %>">
+              <%= image_tag member.avatar_url %>
+            </a>
+          </div>
+        <% end %>
+      </div>
+
+      <% if @group.non_moderators.present? %>
+        <div class='row'>
+          <h5>Members</h5>
+          <% @group.non_moderators.each do |member| %>
+            <div class='member ' data-toggle="tooltip" title="<%= member.username %>">
+              <a class="user_avatar" href="<%= member.url %>">
+                <%= image_tag member.avatar_url %>
+              </a>
+            </div>
+          <% end %>
         </div>
       <% end %>
+
       <% unless @group.is_member?(current_user) %>
         <%= link_to "Join Group", @group.join_url, method: "post", class: "join_group_btn" %>
       <% end %>
+
+      <div class='header-section col-xs-12'></div>
+
+      <div class='row'>
+        <% if @group.is_moderator?(current_user) %>
+          <%= form_tag add_moderator_group_url, class: "add_moderator_form" do %>
+            <span>Add Moderator</span>
+            <%= text_field_tag :username, nil, :placeholder => "type username" %>
+            <%= submit_tag "Add" %>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

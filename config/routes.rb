@@ -46,6 +46,7 @@ River::Application.routes.draw do
     resources :groups do
       member do 
         post "join"
+        post "add_moderator"
         put  "change_avatar"
         get  "comments/:comment_short_id", to: "groups#show", as: "comment"
       end

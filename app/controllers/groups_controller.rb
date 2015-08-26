@@ -78,6 +78,25 @@ class GroupsController < ApplicationController
     redirect_to @group.url
   end
 
+  def add_moderator
+    unless can? :edit, @group
+      flash[:error] = "You dont have permission to do that"
+      redirect_to @group.members_url and return
+    end
+
+    unless @user = User.find_by_username(params[:username])
+      flash[:error] = "User #{params[:username]} does not exist"
+      redirect_to @group.members_url and return
+    end
+
+    @membership = @group.memberships.where(user_id: @user.id).first_or_create!
+    @membership.is_owner = true
+    @membership.save!
+
+    flash[:notice] = "#{@user.username} added as moderator"
+    redirect_to @group.members_url
+  end
+
   def change_avatar
     @group.avatar = params[:group][:avatar]
     if @group.save
