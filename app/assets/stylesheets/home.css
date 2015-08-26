@@ -623,6 +623,7 @@ html.fullscreen #media_container {
 
 html.fullscreen #player_details,
 html.fullscreen .original_video_stats,
+html.fullscreen .twitter_follow_btn,
 html.fullscreen .related_videos_container {
   display: none;
 }
