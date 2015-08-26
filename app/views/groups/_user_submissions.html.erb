@@ -3,10 +3,12 @@
     <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn ">+ Subtitle a Video</a>
   </div>
 
-  <div class='request_categories'>
-    Status: 
-    <%= select_tag("user_submission_category_select", options_for_select(@group.user_submission_category_select_options, request.url + "#user_submissions"), class: "user_submission_category_select") %>
-  </div>
+  <% if @group.is_member?(current_user) %>
+    <div class='request_categories'>
+      Status: 
+      <%= select_tag("user_submission_category_select", options_for_select(@group.user_submission_category_select_options, request.url + "#user_submissions"), class: "user_submission_category_select") %>
+    </div>
+  <% end %>
   
   <div class="home_try section_body">
     <% @group_repos.each_slice(4) do |repos| %>
