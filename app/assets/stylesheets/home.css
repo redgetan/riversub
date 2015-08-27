@@ -677,6 +677,7 @@ html.fullscreen .related_videos_container {
 
 .pagination {
   text-align: center;
+  clear: both;
 }
 
 #instructions_modal .accordion-heading .accordion-toggle {
@@ -2566,8 +2567,9 @@ iframe.fansubber_signup_form .ss-base-body {
 }
 
 .release_items_container {
+  clear: both;
   padding-left: 0px;
-  display: flex;
+  display: inline-block;
 }
 
 .release_items_container .video_title {
@@ -3691,7 +3693,7 @@ html.embed .expand_btn {
 
 .home_group_item {
   display: table-cell;
-  min-width: 157px;
+  min-width: 150px;
   padding-right: 10px;
   padding-left: 5px;
 }
