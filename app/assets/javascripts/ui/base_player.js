@@ -39,7 +39,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.popcorn = this.loadMedia(targetSelector,mediaSource);
 
     // player settings
-    this.popcorn.volume(0.2);
+    // this.popcorn.volume(0.2);
     // misc
     this.defineAttributeAccessors();
     this.displayNoInternetConnectionIfNeeded();
