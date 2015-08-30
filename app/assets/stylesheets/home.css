@@ -612,7 +612,7 @@ html.fullscreen body #river_player #media_container #viewing_screen #subtitle_ba
 }
 
 html.fullscreen body #river_player #media_container #viewing_screen #subtitle_bar {
-  padding-top: 40px;
+  padding-top: 20px;
 }
 
 html.fullscreen #media_container {
