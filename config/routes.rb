@@ -83,6 +83,7 @@ River::Application.routes.draw do
 
     resources :subtitles, :only => [] do
       member do
+        post "fix"
         post "upvote"
         post "downvote"
         post "unvote"

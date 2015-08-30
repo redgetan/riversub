@@ -1690,8 +1690,15 @@ form#request_beta_invite input[name='email'] {
 
 
 #river_player .forks_list_item:hover ,
-#river_player .subtitle:hover {
+#river_player .subtitle:hover span.text_holder {
   background-color: lightgray ;
+}
+
+#river_player .subtitle span.text_holder {
+  min-width: 450px;
+  display: inline-block;
+  margin-left: 30px !important;
+  padding: 2px 5px;
 }
 
 
@@ -4208,4 +4215,27 @@ textarea#group_description {
 
 .add_moderator_form input {
   margin-left: 5px;
+}
+
+.correct_sub_btn {
+  cursor: pointer;
+  display: block;
+  color: steelblue;
+  position: absolute;
+  font-size: 20px;
+}
+
+#subtitle_list,
+#subtitle_list .table,
+#subtitle_list .table .subtitle,
+#subtitle_list .table .subtitle .text,
+#subtitle_list .table .subtitle .text .correct_sub_btn {
+  overflow: visible;
+}
+
+.subtitle:hover .text .correct_sub_btn {
+  display: block !important;
+}
+
+.subtitle .text span.text_holder {
 }

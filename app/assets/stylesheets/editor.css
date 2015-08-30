@@ -414,9 +414,8 @@ div#editor-bottom {
 */}
 
 
-#river_player .subtitle.selected .text span {
+#river_player .subtitle.selected .text span.text_holder {
 	background-color: #AECBC8 !important;
-	padding: 5px;
 }
 
 #editor .subtitle:hover {
