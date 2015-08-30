@@ -597,6 +597,7 @@ html.fullscreen {
 html.embed body #river_player #media_container #viewing_screen,
 html.fullscreen body #river_player #media_container #viewing_screen {
   height: 93%;
+  padding-top: 2%;
 }
 
 html.embed body #river_player #media_container #viewing_screen #iframe_container,
@@ -3199,7 +3200,7 @@ html.embed .expand_btn {
 
 #subtitle_original_display  {
   font-family: Arial;
-  color: lightgray;
+  color: #555;
   font-weight: 100;
 }
 
