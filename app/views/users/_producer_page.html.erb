@@ -40,9 +40,9 @@
 
     <div class='header-section col-xs-12'></div>
 
-    <% if @user_submissions_for_producer.present? %>
-      <h4>Translations of videos that belong to <%= @user.username %></h4>
+    <h4>Translations of videos that belong to <%= @user.username %></h4>
 
+    <% if @user_submissions_for_producer.present? %>
       <div class='row'>
         <div class='latest_videos videos videos_container section_block '>
           <div class="home_try section_body">
@@ -52,7 +52,8 @@
           </div>
         </div>
       </div>
+    <% else %>
+      <p>There are currently no translations submitted by users in yasub.</p>
     <% end %>
-
   </div>
 </div>
