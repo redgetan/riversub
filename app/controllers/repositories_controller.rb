@@ -25,7 +25,7 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repo = Repository.find_by_token! params[:token]
+    @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
 
     unless @repo.is_published?
       redirect_to @repo.editor_url and return 
