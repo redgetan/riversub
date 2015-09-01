@@ -717,6 +717,7 @@ html.fullscreen .related_videos_container {
 
 #river_player #subtitle_list {
   padding: 0px;
+  padding-left: 20px;
 }
 
 #editor #repo_label {
@@ -872,6 +873,10 @@ ul.social_login_buttons a {
   width: 300px;
   height: 30px;
   margin-left: 20px;
+}
+
+#river_player #transcript_container {
+  width: 500px;
 }
 
 #transcript_container,
@@ -3503,6 +3508,8 @@ html.embed .expand_btn {
 
 .related_videos_container {
   text-align: left;
+  padding-left: 40px;
+  width: 480px;
 }
 
 .related_videos_container .section_header {
