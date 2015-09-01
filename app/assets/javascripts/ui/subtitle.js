@@ -89,7 +89,11 @@ river.ui.Subtitle = Backbone.View.extend({
   readOnlyText: function() {
     var correctSubBtn = "<span class='correct_sub_btn' style='display: none;'><i class='fa fa-plus-square'></i></span>";
     var textSpan = "<span class='text_holder'></span>";
-    this.$text.append(correctSubBtn + textSpan);
+    if (repo.current_user === repo.owner) {
+      this.$text.append(textSpan);
+    } else {
+      this.$text.append(correctSubBtn + textSpan);
+    }
   },
 
   showParentText: function() {

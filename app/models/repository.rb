@@ -25,6 +25,7 @@ class Repository < ActiveRecord::Base
   has_many :timings
   has_many :comments, :foreign_key => "commentable_id"
   has_many :votes, :as => :votable, :class_name => "ActsAsVotable::Vote"
+  has_many :correction_requests
 
   belongs_to :group
   belongs_to :page

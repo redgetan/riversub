@@ -17,7 +17,7 @@
     <h4>Youtube Accounts</h4>
 
     <ul class='producer_page_list_container'>
-      <% @user.pages.each do |page| %>
+      <% @user.pages.includes(:identity).each do |page| %>
         <li class='col-xs-2'>
           <a class='producer_page_list_item' href="<%= page.url %>">
             <div class='pull-left'>
@@ -53,6 +53,9 @@
         </div>
       </div>
     <% end %>
+
+    <%= render "user_corrections" %>
+
 
   </div>
 </div>

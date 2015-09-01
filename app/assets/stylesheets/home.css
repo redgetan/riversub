@@ -4239,3 +4239,57 @@ textarea#group_description {
 
 .subtitle .text span.text_holder {
 }
+
+del.differ {
+  background-color: lightcoral;
+}
+
+ins.differ {
+  background-color: lightgreen;
+}
+
+.corrections_received_table td,
+.corrections_sent_table td {
+  padding: 5px;
+  border: solid 1px gray;
+}
+
+.correction_request_video_title {
+  /*width: 200px;*/
+}
+
+.approve_correction_request_btn,
+.reject_correction_request_btn {
+  float: left;
+  clear: both;
+}
+
+.fix_sub_input {
+  width: 100%;
+}
+
+.fix_sub_form_container {
+  border: solid 1px gray;
+  margin-top: 10px;
+  margin-left: 32px;
+  padding: 10px;
+  display: inline-block;
+}
+
+.fix_sub_form_container .requester {
+  margin-top: 5px;
+  float: left;
+}
+
+.fix_sub_requester_name {
+  margin-right: 5px;
+}
+
+.fix_sub_form_cancel_btn,
+.fix_sub_form_submit_btn {
+  float: right;
+}
+
+.correction_request_date {
+  width: 90px;
+}

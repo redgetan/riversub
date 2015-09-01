@@ -13,20 +13,36 @@ class Subtitle < ActiveRecord::Base
   has_one    :timing
   belongs_to :repository
   has_many :votes, :as => :votable, :class_name => "ActsAsVotable::Vote"
+  has_many :correction_requests
 
 
   before_save :strip_crlf_text
+  after_save :touch_parent
 
   after_create do
     self.assign_short_id
+  end
+
+  def touch_parent
+    self.repository.touch if self.repository
   end
 
   def strip_crlf_text
     self.text.gsub!("\n"," ")
   end
 
+  def correction_request(new_text)
+    cr = CorrectionRequest.new(correction_text: new_text,
+                               subtitle_id: self.id,
+                               repository_id: self.repository.id,
+                               approver_id: self.repository.user.try(:id),
+                               requester_id: self.class.current_user.try(:id))
+    
+    cr.save 
+  end
+
   def url
-    repo_subtitle_url(self.repository, self)  
+    repo_subtitle_url(self.repository_token, self)  
   end
 
   def assign_short_id

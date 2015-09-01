@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150824152711) do
+ActiveRecord::Schema.define(:version => 20150901030155) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -63,6 +63,25 @@ ActiveRecord::Schema.define(:version => 20150824152711) do
 
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
+
+  create_table "correction_requests", :force => true do |t|
+    t.integer  "subtitle_id",     :null => false
+    t.integer  "repository_id",   :null => false
+    t.integer  "requester_id"
+    t.integer  "approver_id"
+    t.text     "correction_text"
+    t.boolean  "is_approved"
+    t.datetime "approved_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.datetime "rejected_at"
+    t.text     "original_text"
+  end
+
+  add_index "correction_requests", ["approver_id"], :name => "index_correction_requests_on_approver_id"
+  add_index "correction_requests", ["repository_id"], :name => "index_correction_requests_on_repository_id"
+  add_index "correction_requests", ["requester_id"], :name => "index_correction_requests_on_requester_id"
+  add_index "correction_requests", ["subtitle_id"], :name => "index_correction_requests_on_subtitle_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0, :null => false
@@ -186,11 +205,12 @@ ActiveRecord::Schema.define(:version => 20150824152711) do
 
   create_table "subtitles", :force => true do |t|
     t.string   "text"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.string   "parent_text"
     t.string   "token"
     t.integer  "repository_id"
+    t.string   "repository_token"
   end
 
   add_index "subtitles", ["repository_id"], :name => "index_subtitles_on_repository_id"

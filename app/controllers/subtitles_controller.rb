@@ -23,6 +23,18 @@ class SubtitlesController < ApplicationController
 
   end
 
+  def fix
+    if !(subtitle = find_subtitle)
+      return render :text => "can't find subtitle", :status => 400
+    end
+
+    if correction_request = subtitle.correction_request(params[:text])
+      render :json => {}, :status => 200
+    else
+      render :json => { error: correction_request.errors.full_messages, :status => 400 }
+    end
+  end
+
   def destroy
     @video = Video.find params[:video_id]
     params[:subtitles].each do |id|
@@ -33,11 +45,11 @@ class SubtitlesController < ApplicationController
   end
 
   def unvote
-    if !(repo = find_subtitle)
-      return render :text => "can't find repo", :status => 400
+    if !(subtitle = find_subtitle)
+      return render :text => "can't find subtitle", :status => 400
     end
 
-    repo.unvote_by current_user
+    subtitle.unvote_by current_user
 
     render :text => "ok"
   end

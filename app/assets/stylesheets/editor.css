@@ -874,6 +874,7 @@ textarea {
 	display: inline-table;
 	width: inherit;
 	margin-right: 20px;
+	margin-left: -20px;
 }
 
 #editor .header div {

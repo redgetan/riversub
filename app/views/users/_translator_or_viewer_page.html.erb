@@ -2,13 +2,19 @@
   <%= render "user_profile" %>
 </div>
 <div class='row'>
-  <ul class="nav nav-tabs col-xs-5  col-xs-offset-3" >
+  <ul class="nav nav-tabs col-xs-8  col-xs-offset-2" >
     <li class="<%= @user.translations_tab_class %>"><a href="#translations" data-toggle="tab">Translations</a></li>
+    <li class=""><a href="#corrections" data-toggle="tab">Corrections</a></li>
     <li><a href="#user_groups" data-toggle="tab">Groups</a></li>
   </ul>
 
   <div class="tab-content">
     <div class="tab-pane <%= @user.translations_tab_class %>" id="translations"><%= render "user_repositories" %></div>
+    <div class="tab-pane" id="corrections">
+      <div class='col-xs-8 col-xs-offset-2'>
+        <%= render "user_corrections" %>
+      </div>
+    </div>
     <div class="tab-pane" id="user_groups"><%= render "user_groups" %></div>
   </div>
 </div>

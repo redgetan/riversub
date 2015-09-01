@@ -28,6 +28,8 @@ class User < ActiveRecord::Base
   has_many :identities
   has_many :pages, :through => :identities
   has_many :settings, class_name: "UserSetting"
+  has_many :correction_requests_sent,     class_name: "CorrectionRequest", foreign_key: "requester_id"
+  has_many :correction_requests_received, class_name: "CorrectionRequest", foreign_key: "approver_id"
 
   has_many :memberships
   has_many :groups, through: :memberships
@@ -127,6 +129,10 @@ class User < ActiveRecord::Base
 
   def url(params = {})
     user_url(self, params)
+  end
+
+  def corrections_url
+    user_url(self) + "#corrections"
   end
 
   def serialize

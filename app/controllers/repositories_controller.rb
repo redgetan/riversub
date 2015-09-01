@@ -58,10 +58,6 @@ class RepositoriesController < ApplicationController
     Comment.highlight_comment(@comments,params[:comment_short_id])
   end
 
-  def fix
-    
-  end
-
   def embed
     @repo = Repository.find_by_token! params[:token]
     @repo.is_embed = true
