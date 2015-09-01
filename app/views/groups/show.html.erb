@@ -60,24 +60,6 @@
   </div>
 </div>
 
-<div id="subtitle_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="subtitle_modal_label" aria-hidden="true">
-  <div class="modal-backdrop fade in" style="height: 984px;"></div>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <form class="sub">
-          <%= hidden_field_tag :group_id, @group.short_name %>
-          <%= hidden_field_tag :hide_group, true %>
-          <div class="subtitle_video_container input-group">
-            <div class="input-append">
-              <input name="source_url" class="source_url" type="text" placeholder="Paste youtube url">
-              <button type="button" class="river_btn sub_btn" data-loading-text="Loading...">Start</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render partial: "shared/subtitle_modal", locals: { chosen_group: @group, hide_group: true } %>
+
 
