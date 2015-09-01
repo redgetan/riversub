@@ -128,7 +128,7 @@ river.ui.SubtitleList = Backbone.View.extend({
 
     if (repo.current_user === null) {
       $form.find(".fix_sub_requester_name").text("Anonymous");
-      $form.find(".requester").append("<a href='/users/sign_in'>(Login)</a>");
+      $form.find(".requester").append("<a href='/users/sign_in'>[ Login ]</a>");
     }
 
     return $form;

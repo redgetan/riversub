@@ -4274,6 +4274,11 @@ ins.differ {
   margin-left: 32px;
   padding: 10px;
   display: inline-block;
+  background-color: black;
+}
+
+.fix_sub_form_container a {
+  color: lightblue;
 }
 
 .fix_sub_form_container .requester {
@@ -4283,6 +4288,7 @@ ins.differ {
 
 .fix_sub_requester_name {
   margin-right: 5px;
+  color: gray;
 }
 
 .fix_sub_form_cancel_btn,
@@ -4290,6 +4296,15 @@ ins.differ {
   float: right;
 }
 
+.fix_sub_form_submit_btn {
+  opacity: 1;
+}
+
 .correction_request_date {
   width: 90px;
+}
+
+.fix_sub_form_cancel_btn:hover {
+  text-decoration: underline;
+  color: lightblue;
 }
