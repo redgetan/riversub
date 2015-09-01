@@ -1690,8 +1690,15 @@ form#request_beta_invite input[name='email'] {
 
 
 #river_player .forks_list_item:hover ,
-#river_player .subtitle:hover {
+#river_player .subtitle:hover span.text_holder {
   background-color: lightgray ;
+}
+
+#river_player .subtitle span.text_holder {
+  min-width: 450px;
+  display: inline-block;
+  margin-left: 30px !important;
+  padding: 2px 5px;
 }
 
 
@@ -4208,4 +4215,81 @@ textarea#group_description {
 
 .add_moderator_form input {
   margin-left: 5px;
+}
+
+.correct_sub_btn {
+  cursor: pointer;
+  display: block;
+  color: steelblue;
+  position: absolute;
+  font-size: 20px;
+}
+
+#subtitle_list,
+#subtitle_list .table,
+#subtitle_list .table .subtitle,
+#subtitle_list .table .subtitle .text,
+#subtitle_list .table .subtitle .text .correct_sub_btn {
+  overflow: visible;
+}
+
+.subtitle:hover .text .correct_sub_btn {
+  display: block !important;
+}
+
+.subtitle .text span.text_holder {
+}
+
+del.differ {
+  background-color: lightcoral;
+}
+
+ins.differ {
+  background-color: lightgreen;
+}
+
+.corrections_received_table td,
+.corrections_sent_table td {
+  padding: 5px;
+  border: solid 1px gray;
+}
+
+.correction_request_video_title {
+  /*width: 200px;*/
+}
+
+.approve_correction_request_btn,
+.reject_correction_request_btn {
+  float: left;
+  clear: both;
+}
+
+.fix_sub_input {
+  width: 100%;
+}
+
+.fix_sub_form_container {
+  border: solid 1px gray;
+  margin-top: 10px;
+  margin-left: 32px;
+  padding: 10px;
+  display: inline-block;
+}
+
+.fix_sub_form_container .requester {
+  margin-top: 5px;
+  float: left;
+}
+
+.fix_sub_requester_name {
+  margin-right: 5px;
+}
+
+.fix_sub_form_cancel_btn,
+.fix_sub_form_submit_btn {
+  float: right;
+}
+
+.correction_request_date {
+  width: 90px;
 }

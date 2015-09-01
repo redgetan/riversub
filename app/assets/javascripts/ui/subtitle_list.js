@@ -78,6 +78,16 @@ river.ui.SubtitleList = Backbone.View.extend({
       Backbone.trigger("subtitleenter", subtitle);
     } else if ($target.hasClass("sub_text_area")) {
       Backbone.trigger("subtitlelineinputclick",subtitle, $target);
+    } else if ($target.closest("span").hasClass("correct_sub_btn")) {
+      if ($(".fix_sub_form_container").length > 0) return;
+      var $li = $target.closest(".subtitle");
+      var subtitleToken = $li.data("shortid");
+      var subtitleText  = $li.find(".text_holder").text();
+      $li.append(this.createCorrectSubForm(subtitleToken, subtitleText));
+    } else if ($target.hasClass("fix_sub_form_cancel_btn")) {
+      $(".fix_sub_form_container").remove();
+    } else if ($target.hasClass("fix_sub_form_submit_btn")) {
+      this.submitCorrectionRequest();
     } else {
       Backbone.trigger("subtitlelineclick",subtitle, $target);
     }
@@ -96,6 +106,61 @@ river.ui.SubtitleList = Backbone.View.extend({
   onTrackStart: function(track) {
     var subtitle = track.subtitle;
     this.ensureCorrectWindowPosition(subtitle);
+  },
+
+  createCorrectSubForm: function(token, text) {
+    var form =  "<div class='fix_sub_form_container'>" +
+                  "<form accept-charset='UTF-8' action='/subtitles/" + token + "/fix' >" + 
+                    "<textarea class='fix_sub_input'>" + 
+                      text + 
+                    "</textarea>" + 
+                    "<div class='requester'><span class='fix_sub_requester_name'></span></div>" + 
+                    "<a class='fix_sub_form_cancel_btn btn'>Cancel</a>" + 
+                    "<a class='fix_sub_form_submit_btn btn btn-primary'>Send Correction Request</a>" + 
+                  "</form>" + 
+                "</div>";
+    var $form = $(form);
+
+    if (repo.current_user === null) {
+      $form.find(".fix_sub_requester_name").text("Anonymous");
+      $form.find(".requester").append("<a href='/users/sign_in'>(Login)</a>");
+    } else {
+      $form.find(".fix_sub_requester_name").text(repo.current_user);
+    }
+
+    return $form;
+  },
+
+  submitCorrectionRequest: function() {
+    var $form = $(".fix_sub_form_container form");
+    var text = $form.find(".fix_sub_input").val();
+
+    $.ajax({
+      url: $form.attr("action"),
+      type: "POST",
+      data: { text: text},
+      dataType: "json",
+      success: function(data,status) {
+        $(".fix_sub_form_container").remove();
+        var notice = "<div id='flash_error' class='flash alert alert-block'>Correction Request sent to " + 
+                     repo.owner + " for approval </div>";
+
+        $("#flash_container").html(notice);
+
+        setTimeout(function(){
+          $("#flash_container").text(""); 
+        },3000);
+      },
+      error: function(data) {
+        var notice = "<div id='flash_error' class='flash alert alert-block'>Failed to submit correction</div>";
+        $("#flash_container").html(notice);
+
+        setTimeout(function(){
+          $("#flash_container").text(""); 
+        },3000);
+      }.bind(this)
+    });
+
   },
 
   ensureCorrectWindowPosition: function(subtitle) {

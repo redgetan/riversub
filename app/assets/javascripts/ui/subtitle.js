@@ -87,7 +87,13 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   readOnlyText: function() {
-    this.$text.append("<span></span>");
+    var correctSubBtn = "<span class='correct_sub_btn' style='display: none;'><i class='fa fa-plus-square'></i></span>";
+    var textSpan = "<span class='text_holder'></span>";
+    if (repo.current_user === repo.owner) {
+      this.$text.append(textSpan);
+    } else {
+      this.$text.append(correctSubBtn + textSpan);
+    }
   },
 
   showParentText: function() {
@@ -354,7 +360,7 @@ river.ui.Subtitle = Backbone.View.extend({
     } else {
       var startTimeHolder = this.$el.find(".start_time span");
       var endTimeHolder   = this.$el.find(".end_time span");
-      var textHolder      = this.$el.find(".text span");
+      var textHolder      = this.$el.find(".text span.text_holder");
     }
 
     if (this.model.track !== null ) {

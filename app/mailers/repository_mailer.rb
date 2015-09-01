@@ -31,4 +31,13 @@ class RepositoryMailer < ActionMailer::Base
     @url  = "http://www.yasub.com/"
     mail(:to => nil, :bcc => members.map(&:email), :subject => "#{@repo.owner} has been subtitled a video for #{@repo.group.name} members", :from => @@from)
   end
+
+  def subtitle_correction_notify(correction_request)
+    @repo = correction_request.repository
+    @to   = correction_request.approver
+    @url  = "http://www.yasub.com/"
+    @submitter = correction_request.submitter
+    @approver = correction_request.approver
+    mail(:to => @to.email, :subject => "#{@submitter} corrected a subtitle pending your approval", :from => @@from)
+  end
 end

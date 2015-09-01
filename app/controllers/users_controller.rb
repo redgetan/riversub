@@ -1,7 +1,10 @@
 class UsersController < ApplicationController
   #before_filter :fetch_youtube_owner_caption, :only => [:show]
   def show
-    @user = User.find_by_username(params[:username])
+    @user = User.includes(
+      {:correction_requests_sent => [ :subtitle, :repository ]}, 
+      {:correction_requests_received => [ :subtitle, :repository ]}
+    ).find_by_username(params[:username])
 
     @repositories = if user_signed_in? && current_user == @user
                       @user.repositories.includes(:video).recent # all

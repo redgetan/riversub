@@ -81,8 +81,16 @@ River::Application.routes.draw do
       end
     end
 
+    resources :correction_requests, :only => [], :controller => "correction_requests" do
+      member do
+        post "approve"
+        post "reject"
+      end
+    end
+
     resources :subtitles, :only => [] do
       member do
+        post "fix"
         post "upvote"
         post "downvote"
         post "unvote"
