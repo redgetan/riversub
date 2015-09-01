@@ -4230,7 +4230,7 @@ textarea#group_description {
 #subtitle_list .table .subtitle,
 #subtitle_list .table .subtitle .text,
 #subtitle_list .table .subtitle .text .correct_sub_btn {
-  overflow: visible;
+  /*overflow: visible;*/
 }
 
 .subtitle:hover .text .correct_sub_btn {
