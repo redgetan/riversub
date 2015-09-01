@@ -79,9 +79,14 @@ river.ui.SubtitleList = Backbone.View.extend({
     } else if ($target.hasClass("sub_text_area")) {
       Backbone.trigger("subtitlelineinputclick",subtitle, $target);
     } else if ($target.closest("span").hasClass("correct_sub_btn")) {
-      if ($(".fix_sub_form_container").length > 0) return;
       var $li = $target.closest(".subtitle");
       var subtitleToken = $li.data("shortid");
+
+      var isSameForm = $(".fix_sub_form_container").data("shortid") === subtitleToken;
+      if ($(".fix_sub_form_container").length > 0 && isSameForm) return;
+
+      // clear form if any exists
+      $(".fix_sub_form_container").remove();
       var subtitleText  = $li.find(".text_holder").text();
       $li.append(this.createCorrectSubForm(subtitleToken, subtitleText));
     } else if ($target.hasClass("fix_sub_form_cancel_btn")) {
@@ -109,7 +114,7 @@ river.ui.SubtitleList = Backbone.View.extend({
   },
 
   createCorrectSubForm: function(token, text) {
-    var form =  "<div class='fix_sub_form_container'>" +
+    var form =  "<div class='fix_sub_form_container' data-shortid='"+ token + "'>" +
                   "<form accept-charset='UTF-8' action='/subtitles/" + token + "/fix' >" + 
                     "<textarea class='fix_sub_input'>" + 
                       text + 
