@@ -217,10 +217,13 @@ class RepositoriesController < ApplicationController
     @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
     @repo.current_user = current_user
     
-    if !user_signed_in? 
-      flash[:notice] = "Demo mode. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
-    elsif cannot?(:edit, @repo) && @repo.group.present?
+    if cannot?(:edit, @repo) && @repo.group.present?
       flash[:notice] = "Read only mode. You can't edit someone else subtitle. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
+    elsif @repo.user && !user_signed_in?
+      store_location(@repo.editor_url)
+      redirect_to new_user_session_url and return 
+    elsif !@repo.user && !user_signed_in? 
+      flash[:notice] = "Demo mode. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
     elsif cannot?(:edit, @repo)
       flash[:error] = "You don't have permission to see that"
       redirect_to root_url and return
