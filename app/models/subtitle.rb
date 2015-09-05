@@ -1,10 +1,22 @@
 require_dependency "vote"
 require_dependency "public_activity"
 
+require 'elasticsearch/model'
+
 class Subtitle < ActiveRecord::Base
 
   has_paper_trail 
   acts_as_votable
+
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  settings index: { number_of_shards: 1 } do
+    mappings dynamic: 'false' do
+      indexes :text, type: "string"
+    end
+  end
+
 
   include Rails.application.routes.url_helpers
 

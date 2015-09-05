@@ -1,6 +1,17 @@
+require 'elasticsearch/model'
+
 class Video < ActiveRecord::Base
 
   has_paper_trail :on => [:update, :destroy]
+
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  settings index: { number_of_shards: 1 } do
+    mappings dynamic: 'true' do
+      indexes :metadata, type: "object"
+    end
+  end
 
   include Rails.application.routes.url_helpers
   include ApplicationHelper

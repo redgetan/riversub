@@ -14,6 +14,10 @@ class HomeController < ApplicationController
                        .where("language <> 'ja'").published.recent.page params[:page]
   end
 
+  def search
+    @repos = Repository.search(params[:q], params[:page])
+  end
+
   def features
     
   end
