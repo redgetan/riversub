@@ -609,6 +609,14 @@ class Repository < ActiveRecord::Base
     }
   end
 
+  def font_family
+    super || "Arial,sans-serif"  
+  end
+
+  def font_size
+    super || "16px"  
+  end
+
   def serialized_original_timings
     other_repo = self.other_published_repositories.select do |repo|
       repo.language == self.video.language
