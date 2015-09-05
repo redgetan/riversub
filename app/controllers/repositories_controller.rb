@@ -193,6 +193,23 @@ class RepositoriesController < ApplicationController
     end
   end
 
+  def update_font
+    @repo = Repository.find_by_token! params[:token]
+
+    unless can? :edit, @repo
+      render :json => { :error => "You don't have permission to do that" }, :status => 403 and return
+    end
+
+    if @repo.update_attributes!(font_params)
+      respond_to do |format|
+        format.json  { render :json => {}, :status => 200 }
+      end
+    else
+      render :json => { :error => @repo.errors.full_messages }, :status => 403
+    end
+    
+  end
+
   def import_to_youtube
     @repo = Repository.find_by_token! params[:token]
 
@@ -315,6 +332,10 @@ class RepositoriesController < ApplicationController
 
       @video = Video.find_by_token(params[:video_token])
       @video.update_attributes!(language: @video_language_code) if @video_language_code
+    end
+
+    def font_params
+      params.slice(*Repository.font_attributes)
     end
 
 end

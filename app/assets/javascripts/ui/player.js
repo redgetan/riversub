@@ -31,7 +31,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
       this.enterFullscreenMode();
     }
 
-    // ensure first subtitle appears if it start_time is 0
+    // ensure first subtitle appears 
     this.onTrackStart(this.tracks.at(0));
   },
 

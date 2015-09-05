@@ -118,6 +118,7 @@ River::Application.routes.draw do
     get "/r/:token/subtitles/:subtitle_short_id", to: "repositories#show", as: "repo_subtitle"
     post "/r/:token/publish",               to: "repositories#publish", as: "publish_repo"
     post "/r/:token/update_title",          to: "repositories#update_title", as: "update_repo_title"
+    post "/r/:token/update_font",          to: "repositories#update_font", as: "update_repo_font"
     post "/r/:token/fork",                  to: "repositories#fork",   as: "fork_repo"
     get "/r/:token/editor",                 to: "repositories#editor", as: "editor_repo"
     get '/:username/:token',              to: 'repositories#show',   as: 'user_repo'

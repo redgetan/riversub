@@ -89,6 +89,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     // subclass implements callback if needed
   },
 
+
   defineAttributeAccessors: function() {
     Object.defineProperty( this, "numTracks", {
       get: function() {
@@ -115,6 +116,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     }
 
     this.$subtitleDisplay = $("#subtitle_display");
+    this.applyFontSettings();
 
     this.$mediaContainer = this.$mediaContainer || $("#media_container");
 
@@ -155,6 +157,28 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.playerObject().unloadModule("cc");        // for AS3 player
     this.playerObject().unloadModule("captions");  // for HTML5 player
   },
+
+  applyFontSettings: function() {
+    var $el = this.getTargetFontSettingElement();
+    $el.css("font-family", this.repo.font_family);
+    $el.css("font-size", this.repo.font_size);
+    $el.css("font-weight", this.repo.font_weight);
+    $el.css("font-style", this.repo.font_style);
+    $el.css("color", this.repo.font_color);
+    this.applyOutlineColor($el,this.repo.font_outline_color);
+  },
+
+  applyOutlineColor: function($el, color) {
+    $el.css("text-shadow", "-1px 0 " + color + ", " +
+                           "0  1px " + color + ", " +
+                           "1px  0 " + color + ", " +
+                           "0 -1px " + color + "  ");
+  },
+
+  getTargetFontSettingElement: function() {
+    return this.$subtitleDisplay;
+  },
+
 
   addPlayerControls: function() {
     $("#viewing_screen").after("<div class='player_controls_container'><div class='player_controls'></div></div>");    

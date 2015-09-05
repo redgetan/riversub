@@ -32,12 +32,15 @@ class Repository < ActiveRecord::Base
   belongs_to :release_item
   belongs_to :request
 
+  FONT_ATTRIBUTES = %w[font_family font_size font_weight font_style font_color font_outline_color].map(&:to_sym)
+
   attr_accessor :current_user, :highlight_subtitle_short_id, :is_embed, :is_fullscreen
 
   attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :language, :parent_repository_id, :title,
                   :group_id, :release_item_id, :current_user,
-                  :highlight_subtitle_short_id, :request_id, :group
+                  :highlight_subtitle_short_id, :request_id, :group,
+                  *FONT_ATTRIBUTES
 
   validates :video_id, :presence => true
   validates :token, :uniqueness => true, on: :create
@@ -65,6 +68,26 @@ class Repository < ActiveRecord::Base
 
   GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"
   ANONYMOUS_USERNAME = "default"
+  FONT_FAMILIES = { 
+    "serif"      => ["Georgia", "Times New Roman", "Lucida Bright", "Lucida Fax", 
+                     "Palatino", "Palatino Linotype", "Palladio", "URW Palladio"],
+    "sans-serif" => ["Arial", "Helvetica", "Comic Sans MS", "Chalkboard", "Impact", 
+                     "Charcoal", "Verdana", "Open Sans", "Fira Sans", "Lucida Sans", 
+                     "Lucida Sans Unicode", "Trebuchet MS", "Liberation Sans", "Nimbus Sans L"],
+    "monospace"  => ["Courier New", "Courier", "Fira Mono", "DejaVu Sans Mono", "Menlo", 
+                     "Consolas", "Liberation Mono", "Monaco", "Lucida Console"],
+    "cursive"    => ["Brush Script MT", "Brush Script Std", "Lucida Calligraphy", 
+                     "Lucida Handwriting", "Apple Chancery"],
+    "fantasy"    => ["Papyrus", "Herculanum", "Party LET", "Curlz MT", "Harrington"]
+  }
+  FONT_WEIGHTS = %w[normal bold]
+  FONT_STYLES = %w[normal italic]
+  FONT_SIZES = (12..30).to_a.map { |i| [i,"px"].join } 
+  FONT_COLORS = []
+
+  def self.font_attributes
+    FONT_ATTRIBUTES  
+  end
 
   def self.find_by_short_id(short_id)
     self.find_by_token(short_id)  
@@ -249,6 +272,10 @@ class Repository < ActiveRecord::Base
     update_repo_title_url(self)
   end
 
+  def update_font_url
+    update_repo_font_url(self)
+  end
+
   def subtitle_download_url
     repo_subtitle_download_url(self)
   end
@@ -326,6 +353,35 @@ class Repository < ActiveRecord::Base
 
   def self.language_select_options
     Language::CODES.map{|k,v| [v,k]}
+  end
+
+  def self.font_family_select_options
+    FONT_FAMILIES.inject([]) do |result, (generic_font_family,font_family_names)| 
+      font_family_names.each do |font_family_name|
+        result.push [font_family_name, [font_family_name,generic_font_family].join(",")]
+      end
+      result
+    end
+  end
+
+  def self.font_size_select_options
+    FONT_SIZES.map { |f| [f,f] }
+  end
+
+  def self.font_weight_select_options
+    FONT_WEIGHTS.map { |f| [f,f] }
+  end
+
+  def self.font_style_select_options
+    FONT_STYLES.map { |f| [f,f] }
+  end
+
+  def self.font_color_select_options
+    FONT_COLORS.map { |f| [f,f] }
+  end
+
+  def self.font_outline_color_select_options
+    FONT_COLORS.map { |f| [f,f] }
   end
 
   def upload_subtitle_url
@@ -532,6 +588,7 @@ class Repository < ActiveRecord::Base
       :editor_url => self.editor_url,
       :publish_url => self.publish_url,
       :update_title_url => self.update_title_url,
+      :update_font_url => self.update_font_url,
       :subtitle_download_url => self.subtitle_download_url,
       :parent_repository_id => self.parent_repository_id,
       :is_published => self.is_published,
@@ -542,7 +599,13 @@ class Repository < ActiveRecord::Base
       :release => self.release.try(:serialize),
       :repository_languages => self.current_user_owned_repository_languages,
       :player_repository_languages => self.player_repository_languages,
-      :highlight_subtitle_short_id => self.highlight_subtitle_short_id
+      :highlight_subtitle_short_id => self.highlight_subtitle_short_id,
+      :font_family => self.font_family,
+      :font_size => self.font_size,
+      :font_weight => self.font_weight,
+      :font_style => self.font_style,
+      :font_color => self.font_color,
+      :font_outline_color => self.font_outline_color
     }
   end
 

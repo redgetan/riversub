@@ -9,6 +9,33 @@
   <input class="btn upload_subtitle_to_existing_repo_btn" type="submit" value="Submit">
 <% end %>
 
+<div class='font_manager' style='display: none;'>
+  <div class='font_family_container'>
+    Font Family: 
+    <%= select_tag("font_family_select", options_for_select(Repository.font_family_select_options,@repo.font_family)) %>
+  </div>
+  <div class='font_size_container'>
+    Font Size: 
+    <%= select_tag("font_size_select", options_for_select(Repository.font_size_select_options,@repo.font_size)) %>
+  </div>
+  <div class='font_weight_container'>
+    Font Weight: 
+    <%= select_tag("font_weight_select", options_for_select(Repository.font_weight_select_options,@repo.font_weight)) %>
+  </div>
+  <div class='font_style_container'>
+    Font Style: 
+    <%= select_tag("font_style_select", options_for_select(Repository.font_style_select_options,@repo.font_style)) %>
+  </div>
+  <div class='font_color_container'>
+    Font Color: 
+    <input id='font_color_input' value="<%= @repo.font_color %>">
+  </div>
+  <div class='font_outline_color_container'>
+    Font Outline Color: 
+    <input id='font_outline_color_input' value="<%= @repo.font_outline_color %>">
+  </div>
+</div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="keyboard_shortcuts_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
