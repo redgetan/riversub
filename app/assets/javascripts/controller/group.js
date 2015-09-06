@@ -12,7 +12,7 @@ $.extend(river.controller,{
       var formData = new FormData($form[0]);
 
       $.ajax({
-        url: '/groups/' + groupId + '/change_avatar',
+        url: '/topics/' + groupId + '/change_avatar',
         type: 'PUT',
         data: formData,
         beforeSend: function() {
