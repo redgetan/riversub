@@ -44,7 +44,9 @@ River::Application.routes.draw do
       get "status"
     end
 
-    resources :groups, :path => "topic" do
+    match "/groups/:name" => redirect("/topics/%{name}")
+
+    resources :groups, :path => "topics" do
       member do 
         post "join"
         post "add_moderator"
