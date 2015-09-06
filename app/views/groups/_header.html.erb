@@ -14,9 +14,6 @@
       <% end %>
     </div>
     <span class="title river_gray"><%= @group.name %></span>
-    <div class='group_description'>
-      <%= raw @group.description %>
-    </div>
 
     <% if can?(:moderate, @group) %>
       <p>

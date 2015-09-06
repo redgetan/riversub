@@ -4325,10 +4325,12 @@ ins.differ {
   text-indent: 30px;
   background-position: 4px center;
   border: solid 1px gray;
+  margin-right: 30px;
+  width: 200px;
 }
 
 .home_search_list_item,
-.home_watch_list_item {
+.no_left_border_list_item {
   border-left: none !important;
 }
 
@@ -4338,7 +4340,7 @@ ins.differ {
   padding: 5px;
 }
 
-.group_description {
+.group_header_description {
   width: 700px;
   margin: auto;
 }
