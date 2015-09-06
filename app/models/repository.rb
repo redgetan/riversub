@@ -196,7 +196,8 @@ class Repository < ActiveRecord::Base
   end
 
   def self.search(query, page_index)
-    results = Elasticsearch::Model.search(query, [Video, Repository, Subtitle]).records 
+    normalized_query = "*" + query.gsub(/[^0-9a-z ]/i, '') + "*"
+    results = Elasticsearch::Model.search(normalized_query, [Video, Repository, Subtitle], {size: 1000}).records 
 
     array_results = results.to_a.map do |result|
       if result.class.to_s == "Video"
