@@ -9,7 +9,7 @@ class Video < ActiveRecord::Base
 
   settings index: { number_of_shards: 1 } do
     mappings dynamic: 'true' do
-      indexes :metadata, type: "object"
+      indexes :metadata, type: "nested"
     end
   end
 
