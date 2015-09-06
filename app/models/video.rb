@@ -33,7 +33,7 @@ class Video < ActiveRecord::Base
 
   before_create :generate_token
 
-  def self.nested_search(query)
+  def self.nested_search(query, options = {})
     self.search({
       query: { 
         nested: { 
@@ -50,8 +50,7 @@ class Video < ActiveRecord::Base
           } 
         }
       },
-      size: 1000
-    })
+    }.merge(options))
   end
 
   def correct_metadata

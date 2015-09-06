@@ -35,6 +35,16 @@ class Subtitle < ActiveRecord::Base
     self.assign_short_id
   end
 
+  def self.phrase_search(query, options = {})
+    self.search({
+      query: {
+        match_phrase: {
+          text: query
+        }
+      }  
+    }.merge(options))  
+  end
+
   def touch_parent
     self.repository.touch if self.repository
   end

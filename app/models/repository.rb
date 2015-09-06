@@ -199,16 +199,17 @@ class Repository < ActiveRecord::Base
     # repo_subtitle_results = Elasticsearch::Model.search(normalized_query, [Repository, Subtitle], {size: 1000}).records 
     # results = video_results + repo_subtitle_results
 
-    normalized_query = "\"" + query.gsub(/[^0-9a-z ]/i, '') + "\""
+    normalized_query = query.gsub(/[^0-9a-z ]/i, '') 
 
-    video_ids = Array(Video.nested_search(normalized_query).records.ids)
+    video_ids = Array(Video.nested_search(normalized_query, {size: 1000}).records.ids)
     repository_ids  = Array(Repository.search(normalized_query, {size: 1000}).records.ids)
-    subtitle_ids = Array(Subtitle.search(normalized_query, {size: 1000}).records.ids)
+    subtitle_ids = Array(Subtitle.phrase_search(normalized_query, {size: 1000}).records.ids)
 
     Repository.joins(:video)
               .joins("LEFT JOIN subtitles on subtitles.repository_id = repositories.id")
               .where("videos.id IN (?) OR repositories.id IN (?) OR subtitles.id IN (?)", 
                       video_ids, repository_ids, subtitle_ids)
+              .includes({ :timings => :subtitle }, :user)
               .published
               .recent
               .uniq
