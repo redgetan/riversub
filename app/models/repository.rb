@@ -195,23 +195,23 @@ class Repository < ActiveRecord::Base
     where("is_template is true")
   end
 
-  def self.search(query, page_index)
-    normalized_query = "*" + query.gsub(/[^0-9a-z ]/i, '') + "*"
-    results = Elasticsearch::Model.search(normalized_query, [Video, Repository, Subtitle], {size: 1000}).records 
+  def self.search_query(query)
+    # repo_subtitle_results = Elasticsearch::Model.search(normalized_query, [Repository, Subtitle], {size: 1000}).records 
+    # results = video_results + repo_subtitle_results
 
-    array_results = results.to_a.map do |result|
-      if result.class.to_s == "Video"
-        result.published_repositories 
-      elsif result.class.to_s == "Repository" && result.is_published?
-        result
-      elsif result.class.to_s == "Subtitle" && result.repository.try(:is_published?)
-        result.repository
-      else
-        nil
-      end
-    end.flatten.compact.uniq
+    normalized_query = query.gsub(/[^0-9a-z ]/i, '') + "*"
 
-    Kaminari.paginate_array(array_results).page(page_index).per(20)
+    video_ids = Array(Video.nested_search(normalized_query).records.ids)
+    repository_ids  = Array(Repository.search(normalized_query, {size: 1000}).records.ids)
+    subtitle_ids = Array(Subtitle.search(normalized_query, {size: 1000}).records.ids)
+
+    Repository.joins(:video)
+              .joins("LEFT JOIN subtitles on subtitles.repository_id = repositories.id")
+              .where("videos.id IN (?) OR repositories.id IN (?) OR subtitles.id IN (?)", 
+                      video_ids, repository_ids, subtitle_ids)
+              .published
+              .recent
+              .uniq
   end
 
   def filename

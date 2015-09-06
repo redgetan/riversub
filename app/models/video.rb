@@ -33,6 +33,27 @@ class Video < ActiveRecord::Base
 
   before_create :generate_token
 
+  def self.nested_search(query)
+    self.search({
+      query: { 
+        nested: { 
+          path: 'metadata', 
+          query: { 
+            bool: { 
+              must: [{ 
+                multi_match: { 
+                  query: query, 
+                  fields: ['metadata.snippet.title','metadata.snippet.description','metadata.snippet.tags']  
+                } 
+              }] 
+            } 
+          } 
+        }
+      },
+      size: 1000
+    })
+  end
+
   def correct_metadata
     unless self.metadata && self.source_id
       errors.add(:base, "Url is not a valid youtube link.")
