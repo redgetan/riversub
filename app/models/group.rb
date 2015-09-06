@@ -8,6 +8,10 @@ class Group < ActiveRecord::Base
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
 
+  include ApplicationHelper
+  include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::TextHelper
+
   settings index: { number_of_shards: 1 } do
     mappings dynamic: 'false' do
       indexes :name, type: "string"
@@ -132,6 +136,18 @@ class Group < ActiveRecord::Base
 
   def avatar_url
     avatar.thumb.url
+  end
+
+  def thumbnail_url_hq
+    avatar_url
+  end
+
+  def share_text
+    "#{self.name} Subtitling Community"
+  end
+
+  def share_description
+    truncate(self.description, length: 180)
   end
 
   def url(params = {})
