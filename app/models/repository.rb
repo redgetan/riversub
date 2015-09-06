@@ -199,7 +199,7 @@ class Repository < ActiveRecord::Base
     # repo_subtitle_results = Elasticsearch::Model.search(normalized_query, [Repository, Subtitle], {size: 1000}).records 
     # results = video_results + repo_subtitle_results
 
-    normalized_query = query.gsub(/[^0-9a-z ]/i, '') + "*"
+    normalized_query = "\"" + query.gsub(/[^0-9a-z ]/i, '') + "\""
 
     video_ids = Array(Video.nested_search(normalized_query).records.ids)
     repository_ids  = Array(Repository.search(normalized_query, {size: 1000}).records.ids)
