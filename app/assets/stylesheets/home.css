@@ -4343,4 +4343,20 @@ ins.differ {
 .group_header_description {
   width: 700px;
   margin: auto;
+  margin-top: 20px;
+}
+
+.group_show_container .subtitle_video_btn {
+  background-color: steelblue;
+  color: white;
+  font-size: 20px;
+  width: 200px;
+}
+
+.group_show_container .subtitle_video_btn:hover {
+  background-color: black;
+}
+
+.group_show_container .group_header .title {
+  color: brown;
 }
