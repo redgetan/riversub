@@ -196,14 +196,14 @@ class Repository < ActiveRecord::Base
   end
 
   def self.search(query, page_index)
-    results = Elasticsearch::Model.search(query, [Video, Repository, Subtitle]).page(page_index).records 
+    results = Elasticsearch::Model.search(query, [Video, Repository, Subtitle]).records 
 
     array_results = results.to_a.map do |result|
       if result.class.to_s == "Video"
         result.published_repositories 
-      elsif result.class.to_s == "Repository"
+      elsif result.class.to_s == "Repository" && result.is_published?
         result
-      elsif result.class.to_s == "Subtitle"
+      elsif result.class.to_s == "Subtitle" && result.repository.is_published?
         result.repository
       else
         nil

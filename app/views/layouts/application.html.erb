@@ -61,7 +61,6 @@
         </li>
         <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'community_translations' %> home_watch_list_item"><a href="<%= community_translations_url %>">Watch</a></li>
         <li class="<%= 'activer' if params[:controller] == 'groups' && params[:action] == 'index' %>"><a href="<%= groups_url %>">Groups</a></li> 
-        <li class="<%= 'activer' if params[:controller] == 'home' && params[:action] == 'faq' %>"><a href="<%= faq_url %>">Contact</a></li>
             <li class="divider-vertical"></li>
              <% if user_signed_in?  %>
               <li class="dropdown">
