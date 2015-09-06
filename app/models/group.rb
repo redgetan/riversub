@@ -140,7 +140,7 @@ class Group < ActiveRecord::Base
 
   def thumbnail_url_hq
     root_url_without_trailing_slash = root_url[0..-2]
-    root_url_without_trailing_slash + avatar_url
+    root_url_without_trailing_slash + avatar.url
   end
 
   def share_text
