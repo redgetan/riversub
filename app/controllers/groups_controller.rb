@@ -47,7 +47,7 @@ class GroupsController < ApplicationController
 
   def new
     if !user_signed_in?
-      flash[:error] = "You must be logged in to create a group"
+      flash[:error] = "You must be logged in to create a topic"
       store_location
       redirect_to new_user_session_url and return
     end
@@ -67,7 +67,7 @@ class GroupsController < ApplicationController
 
   def join
     unless user_signed_in?
-      flash[:error] = "You must be logged in to join a group"
+      flash[:error] = "You must be logged in to join a topic"
       store_location(@group.url)
       redirect_to new_user_session_url and return
     end
@@ -111,7 +111,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
-        format.html { redirect_to @group, notice: 'Group was successfully created.' }
+        format.html { redirect_to @group, notice: 'Topic was successfully created.' }
         format.json { render json: @group, status: :created, location: @group }
       else
         format.html { render action: "new" }
@@ -125,7 +125,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
-        format.html { redirect_to @group, notice: 'Group was successfully updated.' }
+        format.html { redirect_to @group, notice: 'Topic was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

@@ -4337,3 +4337,8 @@ ins.differ {
   background-color: #eee;
   padding: 5px;
 }
+
+.group_description {
+  width: 700px;
+  margin: auto;
+}

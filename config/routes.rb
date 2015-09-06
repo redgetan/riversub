@@ -44,7 +44,7 @@ River::Application.routes.draw do
       get "status"
     end
 
-    resources :groups do
+    resources :groups, :path => "topic" do
       member do 
         post "join"
         post "add_moderator"
