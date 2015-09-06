@@ -203,7 +203,7 @@ class Repository < ActiveRecord::Base
         result.published_repositories 
       elsif result.class.to_s == "Repository" && result.is_published?
         result
-      elsif result.class.to_s == "Subtitle" && result.repository.is_published?
+      elsif result.class.to_s == "Subtitle" && result.repository.try(:is_published?)
         result.repository
       else
         nil
