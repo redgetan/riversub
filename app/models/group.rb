@@ -148,7 +148,7 @@ class Group < ActiveRecord::Base
   end
 
   def share_description
-    truncate(self.description, length: 180)
+    truncate(self.read_attribute(:description), length: 180)
   end
 
   def url(params = {})
