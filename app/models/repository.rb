@@ -204,11 +204,13 @@ class Repository < ActiveRecord::Base
     video_ids = Array(Video.nested_search(normalized_query, {size: 1000}).records.ids)
     repository_ids  = Array(Repository.search(normalized_query, {size: 1000}).records.ids)
     subtitle_ids = Array(Subtitle.phrase_search(normalized_query, {size: 1000}).records.ids)
+    group_ids = Array(Group.search(normalized_query, {size: 1000}).records.ids)
 
     Repository.joins(:video)
               .joins("LEFT JOIN subtitles on subtitles.repository_id = repositories.id")
-              .where("videos.id IN (?) OR repositories.id IN (?) OR subtitles.id IN (?)", 
-                      video_ids, repository_ids, subtitle_ids)
+              .joins("LEFT JOIN groups on repositories.group_id = groups.id")
+              .where("videos.id IN (?) OR repositories.id IN (?) OR subtitles.id IN (?) OR groups.id IN (?)", 
+                      video_ids, repository_ids, subtitle_ids, group_ids)
               .includes({ :timings => :subtitle }, :user)
               .published
               .recent
@@ -288,7 +290,7 @@ class Repository < ActiveRecord::Base
   end
 
   def thumbnail_url
-    self.video.thumbnail_url
+    self.video.try(:thumbnail_url)
   end
 
   def thumbnail_url_hq

@@ -1,14 +1,25 @@
+require 'elasticsearch/model'
+
 class Group < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
   include PublicActivity::Model
+
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  settings index: { number_of_shards: 1 } do
+    mappings dynamic: 'false' do
+      indexes :name, type: "string"
+      indexes :description, type: "string"
+    end
+  end
 
   attr_accessible :description, :name, :creator, :creator_id, :short_name,
                   :avatar, :avatar_cache, :remove_avatar, :allow_subtitle_download
 
   mount_uploader :avatar, AvatarUploader
   acts_as_commentable
-
 
 
   tracked :only  => :create,
