@@ -3123,7 +3123,7 @@ html.embed .expand_btn {
 .latest_release_container .release_item,
 .group_release_container .release_item,
 .release_items_container .release_item {
-  /*width: 150px;*/
+  min-width: 150px;
   display: table-cell;
   vertical-align: top;
   padding-right: 10px;
