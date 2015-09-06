@@ -82,6 +82,8 @@ gem 'tumblr_client'
 gem 'acts-as-taggable-on', '~> 3.4'
 gem "differ"
 
+gem "elasticsearch-model", :git => "git://github.com/elasticsearch/elasticsearch-rails.git", :ref => "ded20356920802c35d258756113acfd95b25ade6"
+
 
 
 

@@ -3,9 +3,20 @@
 require_dependency "vote"
 require_dependency "public_activity"
 
+require 'elasticsearch/model'
+
 class Repository < ActiveRecord::Base
 
   has_paper_trail
+
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  settings index: { number_of_shards: 1 } do
+    mappings dynamic: 'false' do
+      indexes :title, type: "string"
+    end
+  end
 
   include Rails.application.routes.url_helpers
   include ApplicationHelper
@@ -182,6 +193,24 @@ class Repository < ActiveRecord::Base
 
   def self.templates
     where("is_template is true")
+  end
+
+  def self.search(query, page_index)
+    results = Elasticsearch::Model.search(query, [Video, Repository, Subtitle]).page(page_index).records 
+
+    array_results = results.to_a.map do |result|
+      if result.class.to_s == "Video"
+        result.published_repositories 
+      elsif result.class.to_s == "Repository"
+        result
+      elsif result.class.to_s == "Subtitle"
+        result.repository
+      else
+        nil
+      end
+    end.flatten.compact.uniq
+
+    Kaminari.paginate_array(array_results).page(page_index).per(20)
   end
 
   def filename

@@ -4314,3 +4314,26 @@ ins.differ {
   text-decoration: underline;
   color: lightblue;
 }
+
+.home_search_form {
+  padding-top: 7px;
+}
+
+.home_search_input {
+  background-image: url("/assets/search_glass.png");
+  background-repeat: no-repeat;
+  text-indent: 30px;
+  background-position: 4px center;
+  border: solid 1px gray;
+}
+
+.home_search_list_item,
+.home_watch_list_item {
+  border-left: none !important;
+}
+
+.search_term {
+  border: solid 1px #bbb;
+  background-color: #eee;
+  padding: 5px;
+}
