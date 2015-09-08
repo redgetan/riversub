@@ -20,7 +20,7 @@ class RequestsController < ApplicationController
     end
 
     if @group && cannot?(:edit, @group)
-      flash[:error] = "You must be a member of #{@group.name} to add requests to the group"
+      flash[:error] = "You must be a member of #{@group.name} to add requests to the topic"
       redirect_to @group.url
     end
   end

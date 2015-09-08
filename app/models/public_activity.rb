@@ -47,9 +47,9 @@ class PublicActivity::Activity
         "commented on a"
       end
     elsif trackable_type == "Group"  
-      "created group"
+      "created topic"
     elsif trackable_type == "Membership"  
-      "joined group"
+      "joined topic"
     elsif trackable_type == "Request"  
       "requested a"
     end
