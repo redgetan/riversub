@@ -506,11 +506,7 @@ class Repository < ActiveRecord::Base
   end
 
   def release_title
-    if read_attribute(:title)
-      self.read_attribute(:title)
-    else
-      video.title
-    end
+    title
   end
 
   def player_title
@@ -717,7 +713,7 @@ class Repository < ActiveRecord::Base
   end
 
   def share_text
-    ["[#{language_pretty} Sub]",truncate(release_title, length: 80)].join(" ")
+    truncate(release_title, length: 80)
   end
 
   def share_description
