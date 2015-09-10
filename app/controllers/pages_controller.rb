@@ -48,7 +48,7 @@ class PagesController < ApplicationController
   def status
     @page = Page.find_by_short_name! params[:page_id]    
     if @page.insufficient_scope?
-      result = RestClient.get("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=#{@page.access_token}")
+      result = @page.youtube_client.get_access_token_status
       @current_permissions = JSON.parse(result)["scope"].split(" ")
       @redirect_uri = google_omniauth_reconnect_callback_url
       @state = CGI.escape "page_id=#{@page.id}"

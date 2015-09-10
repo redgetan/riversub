@@ -156,6 +156,10 @@ class YoutubeClient
     end
   end
 
+  def get_access_token_status
+    RestClient.get("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=#{@client.authorization.access_token}")  
+  end
+
   def get_metadata(video_ids, part = "snippet,contentDetails,statistics")
     tries ||= 3
 
