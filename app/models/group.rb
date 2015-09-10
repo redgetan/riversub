@@ -59,8 +59,8 @@ class Group < ActiveRecord::Base
   after_create :create_membership
 
   def self.ordered_by_number_of_repositories  
-    self.select("groups.*,COUNT(*) as repo_count")
-        .joins(:repositories)
+    self.select("groups.*,COUNT(case repositories.is_published when '1' then repositories.group_id else null end) as repo_count")
+        .joins("LEFT JOIN repositories ON repositories.group_id = groups.id")
         .group("groups.id")
         .order("repo_count DESC")
   end

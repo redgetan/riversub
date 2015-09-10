@@ -10,8 +10,8 @@
 <% @groups.each do |group| %>
   <tr onclick="document.location = '<%= group.url %>';">
     <td class="group_name"><%= group.name %></td>
-    <td class="group_members_count"><%= group.repositories.published.count %></td>
-    <td class="group_description"><%= truncate(group.raw_description, length: 200) %></td>
+    <td class="group_members_count"><%= group.repo_count %></td>
+    <td class="group_description"><%= truncate(group.raw_description, length: 100) %></td>
   </tr>
 <% end %>
 </table>
