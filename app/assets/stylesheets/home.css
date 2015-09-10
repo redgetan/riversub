@@ -4373,3 +4373,8 @@ ins.differ {
   cursor: pointer;
 }
 
+.topics_table .group_description {
+  height: 20px !important;
+  overflow: hidden;
+  display: inline-block;
+}
