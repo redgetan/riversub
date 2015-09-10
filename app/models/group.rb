@@ -58,6 +58,13 @@ class Group < ActiveRecord::Base
 
   after_create :create_membership
 
+  def self.ordered_by_number_of_repositories  
+    self.select("groups.*,COUNT(*) as repo_count")
+        .joins(:repositories)
+        .group("groups.id")
+        .order("repo_count DESC")
+  end
+
   def self.find_by_short_id(short_id)
     self.find_by_short_name(short_id)  
   end
@@ -145,6 +152,10 @@ class Group < ActiveRecord::Base
 
   def share_description
     truncate(self.read_attribute(:description), length: 180)
+  end
+
+  def raw_description
+    read_attribute(:description)  
   end
 
   def url(params = {})

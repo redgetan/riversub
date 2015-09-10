@@ -4126,8 +4126,6 @@ label[for='group_allow_subtitle_download'] {
 
 .group_show_container .subtitle_video_btn {
   width: 150px;
-  margin-top: 40px;
-  margin-bottom: 30px;
   color: steelblue;
 }
 
@@ -4343,7 +4341,6 @@ ins.differ {
 .group_header_description {
   width: 700px;
   margin: auto;
-  margin-top: 20px;
 }
 
 .group_show_container .subtitle_video_btn {
@@ -4360,3 +4357,19 @@ ins.differ {
 .group_show_container .group_header .title {
   color: brown;
 }
+
+.topics_table th, 
+.topics_table td {
+  padding: 0px 5px;
+}
+
+.topics_table .group_name {
+  color: brown;
+}
+
+.topics_table tr:hover {
+  background-color: lightcyan;
+  border: solid 1px lightgray;
+  cursor: pointer;
+}
+

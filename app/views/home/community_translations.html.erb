@@ -1,5 +1,20 @@
 <div class='header-section col-md-12'></div>
 
+<h2 class='col-md-10 col-md-offset-1 center'>Topics</h2>
+
+<div class="center">
+  <br>
+  <br>
+  <%= link_to '+ New topic', new_group_path, class: "new_group_btn" %>
+</div>
+
+
+<div class='row'>
+  <%= render "groups/table_index" %>
+</div>
+
+<div class='header-section col-md-12'></div>
+
 <h2 class='col-md-10 col-md-offset-1 center'>User Submissions</h2>
 
 <div class='row'>

@@ -10,6 +10,7 @@ class HomeController < ApplicationController
   end
 
   def community_translations
+    @groups = Group.ordered_by_number_of_repositories
     @repos = Repository.includes({:timings => :subtitle}, :video, :user)
                        .where("language <> 'ja'").published.recent.page params[:page]
   end
