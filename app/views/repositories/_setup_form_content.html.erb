@@ -2,7 +2,7 @@
   <%= hidden_field_tag :request_id, @request_id  %>
   <%= hidden_field_tag :page_id, @page_id  %>
   <ol >
-    <li style="<%= @hide_group ? "display: none;" : "" %>">
+    <li style="">
       <h4>Choose Topic</h4>
       <%= select_tag("group_id", options_for_select(Group.selection_options_for(current_user), @group_id)) %>
     </li>

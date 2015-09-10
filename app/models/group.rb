@@ -121,11 +121,7 @@ class Group < ActiveRecord::Base
   def self.selection_options_for(user = nil)
     no_group    = ["None", nil]
     
-    groups = if user 
-                user.groups.map { |group|  [group.name,group.short_name] }
-              else 
-                self.all.map    { |group|  [group.name,group.short_name] }
-              end
+    groups = self.all.map    { |group|  [group.name,group.short_name] }
 
     groups.unshift(no_group)
   end

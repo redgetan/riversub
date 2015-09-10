@@ -77,10 +77,7 @@ class RepositoriesController < ApplicationController
                                request_id: params[:request_id])
 
     @group = Group.find_by_short_name params[:group_id]
-
-    if @group && can?(:edit, @group)
-      @repo.update_column(:group_id, @group.id) 
-    end
+    @repo.update_column(:group_id, @group.id) 
 
     @page = Page.find_by_short_name params[:page_id]
 

@@ -157,8 +157,12 @@ class YoutubeClient
   end
 
   def get_metadata(video_ids, part = "snippet,contentDetails,statistics")
+    tries ||= 3
+
     url = "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{Array(video_ids).join(",")}&key=#{GOOGLE_API_KEY}"
     response = RestClient::Request.execute(method: :get, url: url, verify_ssl: false)
     JSON.parse(response)["items"]
+  rescue RestClient::Forbidden
+    retry unless (tries -= 1).zero?
   end
 end
