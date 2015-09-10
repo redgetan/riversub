@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150904210148) do
+ActiveRecord::Schema.define(:version => 20150910160411) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(:version => 20150904210148) do
     t.string   "font_style"
     t.string   "font_color"
     t.string   "font_outline_color"
+    t.datetime "published_at"
   end
 
   create_table "requests", :force => true do |t|

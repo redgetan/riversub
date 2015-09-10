@@ -48,7 +48,7 @@ class Repository < ActiveRecord::Base
   attr_accessor :current_user, :highlight_subtitle_short_id, :is_embed, :is_fullscreen
 
   attr_accessible :video_id, :user_id, :video, :user, :token,
-                  :is_published, :language, :parent_repository_id, :title,
+                  :is_published, :published_at, :language, :parent_repository_id, :title,
                   :group_id, :release_item_id, :current_user,
                   :highlight_subtitle_short_id, :request_id, :group,
                   *FONT_ATTRIBUTES
@@ -875,7 +875,7 @@ class Repository < ActiveRecord::Base
   end
 
   def publish!
-    update_attributes!(is_published: true)
+    update_attributes!(is_published: true, published_at: Time.now)
     if group
       group.notify_subscribers_repo_published(self)
     end

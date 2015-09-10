@@ -13,11 +13,11 @@ $.extend(river.controller,{
       var groupId = $("#group_id").find("option:selected").val();
 
       if (typeof videoLanguageCode !== "undefined") {
-        url = url + "&video_language_code=" + videoLanguageCode;
+        url = url + "&video_language_code=" + videoLanguageCode + "&group_id=" + groupId;
       }
 
       if (typeof repoLanguageCode !== "undefined") {
-        url = url + "&repo_language_code=" + repoLanguageCode;
+        url = url + "&repo_language_code=" + repoLanguageCode + "&group_id=" + groupId;
       }
 
       window.location.href = url;
