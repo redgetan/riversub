@@ -4365,6 +4365,9 @@ ins.differ {
 
 .topics_table .group_name {
   color: brown;
+  overflow: hidden;
+  height: 20px;
+  display: inline-block;
 }
 
 .topics_table tr:hover {
