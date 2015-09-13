@@ -16,9 +16,12 @@
 <div class='group_show_container container'>
 
   <%= render "header" %>
-
   <div class='center'>
-    <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn ">+ Subtitle a Video</a>
+    <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn ">+ Translate</a>
+
+    <% unless @group.is_member?(current_user) %>
+      <%= link_to "Subscribe", @group.join_url, method: "post", class: "group_subscribe_btn" %>
+    <% end %>
   </div>
 
   <div class='header-section col-xs-12'></div>
@@ -41,7 +44,7 @@
             <span class='group_comment_count'>(<%= @group.comments.count %>)</span>
           </a>
         </li>
-        <li class="pull-right"><a href="#members" data-toggle="tab">Members</a></li>
+        <li class="pull-right"><a href="#members" data-toggle="tab"><%= @group.is_member?(current_user) ? "Members" : "Members" %></a></li>
       </ul>
 
       <div class='tab-content'>

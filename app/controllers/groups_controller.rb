@@ -67,14 +67,14 @@ class GroupsController < ApplicationController
 
   def join
     unless user_signed_in?
-      flash[:error] = "You must be logged in to join a topic"
+      flash[:error] = "You must be logged in to subscribe to a topic"
       store_location(@group.url)
       redirect_to new_user_session_url and return
     end
 
     @group.memberships.create!(user_id: current_user.id)
 
-    flash[:notice] = "Joined #{@group.name}"
+    flash[:notice] = "Subscribed to #{@group.name}"
     redirect_to @group.url
   end
 

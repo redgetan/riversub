@@ -26,7 +26,7 @@
       <% end %>
 
       <% unless @group.is_member?(current_user) %>
-        <%= link_to "Join Topic", @group.join_url, method: "post", class: "join_group_btn" %>
+        <%= link_to "Subscribe Topic", @group.join_url, method: "post", class: "join_group_btn" %>
       <% end %>
 
       <div class='header-section col-xs-12'></div>

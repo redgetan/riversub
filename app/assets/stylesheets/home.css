@@ -4127,6 +4127,7 @@ label[for='group_allow_subtitle_download'] {
 .group_show_container .subtitle_video_btn {
   width: 150px;
   color: steelblue;
+  display: inline-block;
 }
 
 .group_show_container .subtitle_video_btn:hover {
@@ -4380,4 +4381,13 @@ ins.differ {
   height: 20px !important;
   overflow: hidden;
   display: inline-block;
+}
+
+.group_subscribe_btn {
+      border: solid 1px steelblue;
+    padding: 7px 10px;
+    margin-right: 5px;
+    background: none;
+    color: steelblue;
+    font-size: 20px;
 }
