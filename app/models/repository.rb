@@ -874,6 +874,10 @@ class Repository < ActiveRecord::Base
     import_to_youtube_repo_url(self)  
   end
 
+  def display_date
+    published_at || updated_at  
+  end
+
   def publish!
     update_attributes!(is_published: true, published_at: Time.now)
     if group

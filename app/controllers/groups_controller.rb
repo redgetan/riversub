@@ -14,13 +14,13 @@ class GroupsController < ApplicationController
   def show
     @group_repos = if @group.short_name == "jpweekly" 
                      if params[:repo_status] == "draft"
-                       @group.draft_repositories.includes(:video, { :timings => :subtitle }, :user).where(language: "en").recent.page params[:page]
+                       @group.draft_repositories.includes(:video, { :timings => :subtitle }, :user).where(language: "en").order("updated_at DESC").page params[:page]
                      else
                        @group.published_repositories.includes(:video, { :timings => :subtitle }, :user).where(language: "en").recent.page params[:page]
                      end
                    else
                      if params[:repo_status] == "draft"
-                       @group.draft_repositories.includes(:video, { :timings => :subtitle }, :user).recent.page params[:page]
+                       @group.draft_repositories.includes(:video, { :timings => :subtitle }, :user).order("updated_at DESC").page params[:page]
                      else
                        @group.published_repositories.includes(:video, { :timings => :subtitle }, :user).recent.page params[:page]
                      end

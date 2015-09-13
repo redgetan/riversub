@@ -2,7 +2,7 @@
   <% repos.each do |repo| %>
     <% video = repo.video %>
     <li class='release_item col-xs-12 <%= repo_width %>'>
-                    <span class='updated_at'><%= time_ago_in_words(repo.published_at) %> ago</span>
+                    <span class='updated_at'><%= time_ago_in_words(repo.display_date) %> ago</span>
       <div class="video_thumb">
         <a href="<%= repo.url %>" >
         <img src="<%= video.thumbnail_url %>" alt="">
