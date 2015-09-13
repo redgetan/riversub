@@ -17,7 +17,7 @@
 
   <%= render "header" %>
   <div class='center'>
-    <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn ">+ Translate</a>
+    <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn ">+ Subtitle</a>
 
     <% unless @group.is_member?(current_user) %>
       <%= link_to "Subscribe", @group.join_url, method: "post", class: "group_subscribe_btn" %>
