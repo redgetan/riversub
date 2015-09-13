@@ -4391,3 +4391,8 @@ ins.differ {
     color: steelblue;
     font-size: 20px;
 }
+
+.what_container {
+  font-size: 18px;
+  border: none;
+}
