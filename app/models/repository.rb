@@ -70,7 +70,7 @@ class Repository < ActiveRecord::Base
   scope :unpublished,           where("is_published is NULL")
   scope :imported,              where("is_youtube_imported is true")
   scope :unimported,            where("is_youtube_imported is false")
-  scope :recent,                order("updated_at DESC")
+  scope :recent,                order("published_at DESC")
 
   scope :for_country, lambda { |country_code|
     language_code = Language.country_code_to_language_code(country_code)
