@@ -2,7 +2,7 @@ class YoutubeClient
   include ApplicationHelper
 
   class InsufficientPermissions < StandardError; end
-  class ImportCaptionError < StandardError; end
+  class ExportCaptionError < StandardError; end
 
   attr_accessor :client
 
@@ -152,7 +152,7 @@ class YoutubeClient
 
     if result.status != 200
       error_message = JSON.parse(result.body)["error"]["message"]
-      raise ImportCaptionError.new(error_message)
+      raise ExportCaptionError.new(error_message)
     end
   end
 

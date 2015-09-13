@@ -27,11 +27,11 @@ class Group < ActiveRecord::Base
 
 
   tracked :only  => :create,
-          :owner => Proc.new{ |controller, model| 
+          :owner => Proc.new{ |controller, model|
             model.class.respond_to?(:current_user) ? model.class.current_user : nil
           },
           :params => {
-            :group_short_name => Proc.new { |controller, model| 
+            :group_short_name => Proc.new { |controller, model|
               model.short_name
             }
           }
@@ -58,7 +58,7 @@ class Group < ActiveRecord::Base
 
   after_create :create_membership
 
-  def self.ordered_by_number_of_repositories  
+  def self.ordered_by_number_of_repositories
     self.select("groups.*,COUNT(case repositories.is_published when '1' then repositories.group_id else null end) as repo_count")
         .joins("LEFT JOIN repositories ON repositories.group_id = groups.id")
         .group("groups.id")
@@ -66,7 +66,7 @@ class Group < ActiveRecord::Base
   end
 
   def self.find_by_short_id(short_id)
-    self.find_by_short_name(short_id)  
+    self.find_by_short_name(short_id)
   end
 
   def owners
@@ -74,7 +74,7 @@ class Group < ActiveRecord::Base
   end
 
   def moderators
-    owners  
+    owners
   end
 
   def non_moderators
@@ -82,11 +82,11 @@ class Group < ActiveRecord::Base
   end
 
   def pending_requests
-    requests.includes(:video, :group).reject { |request| request.completed? } 
+    requests.includes(:video, :group).reject { |request| request.completed? }
   end
 
   def translators
-    self.repositories.published.map { |repo| repo.user }.uniq  
+    self.repositories.published.map { |repo| repo.user }.uniq
   end
 
   def no_whitespace_short_name
@@ -97,7 +97,7 @@ class Group < ActiveRecord::Base
 
   def is_member?(target_user)
     return false unless target_user
-    target_user.groups.include? self  
+    target_user.groups.include? self
   end
 
   def latest_release
@@ -105,7 +105,7 @@ class Group < ActiveRecord::Base
   end
 
   def description
-    self.markeddown_description  
+    self.markeddown_description
   end
 
   def description=(text)
@@ -122,19 +122,19 @@ class Group < ActiveRecord::Base
   end
 
   def create_membership
-    self.memberships.create!(user_id: self.creator.id, is_owner: true)  
+    self.memberships.create!(user_id: self.creator.id, is_owner: true)
   end
 
   def self.selection_options_for(user = nil)
     no_group    = ["None", nil]
-    
+
     groups = self.all.map    { |group|  [group.name,group.short_name] }
 
     groups.unshift(no_group)
   end
 
-  def unimported_repositories_grouped_by_video
-    unimported_repositories.group_by { |repo| repo.video }
+  def unexported_repositories_grouped_by_video
+    unexported_repositories.group_by { |repo| repo.video }
   end
 
   def avatar_url
@@ -155,11 +155,11 @@ class Group < ActiveRecord::Base
   end
 
   def raw_description
-    read_attribute(:description)  
+    read_attribute(:description)
   end
 
   def url(params = {})
-    group_url(self, params)  
+    group_url(self, params)
   end
 
   def releases_url
@@ -167,7 +167,7 @@ class Group < ActiveRecord::Base
   end
 
   def join_url
-    join_group_url(self)  
+    join_group_url(self)
   end
 
   def new_request_url
@@ -179,11 +179,11 @@ class Group < ActiveRecord::Base
   end
 
   def published_repositories
-    self.repositories.published  
+    self.repositories.published
   end
 
   def draft_repositories
-    self.repositories.where(is_published: nil)  
+    self.repositories.where(is_published: nil)
   end
 
   def public_activities
@@ -191,16 +191,16 @@ class Group < ActiveRecord::Base
                             .order("created_at DESC")
   end
 
-  def unimported_repositories
-    self.repositories.published.unimported
+  def unexported_repositories
+    self.repositories.published.unexported
   end
 
-  def imported_repositories_grouped_by_video
-    imported_repositories.group_by { |repo| repo.video }
+  def exported_repositories_grouped_by_video
+    exported_repositories.group_by { |repo| repo.video }
   end
 
-  def imported_repositories
-    self.repositories.published.imported
+  def exported_repositories
+    self.repositories.published.exported
   end
 
   def default_video_language_code
@@ -226,25 +226,25 @@ class Group < ActiveRecord::Base
     }
   end
 
-  def allow_subtitle_download 
+  def allow_subtitle_download
     allow_subtitle_download_setting = settings.get(:allow_subtitle_download)
     allow_subtitle_download_setting.present? ? allow_subtitle_download_setting == "true" : true
   end
 
-  def allow_subtitle_download=(bool) 
-    settings.set(:allow_subtitle_download, bool)  
+  def allow_subtitle_download=(bool)
+    settings.set(:allow_subtitle_download, bool)
   end
 
   def requests_url(params = {})
-    url(params) + "#requests"  
+    url(params) + "#requests"
   end
 
   def user_submissions_url(params = {})
-    url(params) + "#user_submissions"  
+    url(params) + "#user_submissions"
   end
 
   def members_url(params = {})
-    url(params) + "#members"  
+    url(params) + "#members"
   end
 
   def request_category_select_options
@@ -270,11 +270,11 @@ class Group < ActiveRecord::Base
   end
 
   def notify_subscribers_repo_published(repo)
-    RepositoryMailer.group_repo_published_notify(repo,members).deliver      
+    RepositoryMailer.group_repo_published_notify(repo,members).deliver
   end
 
   def to_param
-    self.short_name  
+    self.short_name
   end
 
 

@@ -2,17 +2,17 @@
   <div class="export_subtitle_container">
     <b>How to make the subtitle available in the original video</b>
     <br>
-    <% if @repo.is_youtube_imported? %>
+    <% if @repo.is_youtube_exported? %>
       <br>
-      <p>The subtitle have already been added to the <a class='yt_imported_label' href="<%= @repo.source_url %>">original youtube video</a></p>
+      <p>The subtitle have already been added to the <a class='yt_exported_label' href="<%= @repo.source_url %>">original youtube video</a></p>
     <% else %>
       <% if @repo.belong_to_producer?(current_user)  %>
         <br>
-        <%= link_to("Import to Youtube", @repo.import_to_youtube_url, method: "post", class: "btn btn-danger btn-xs") %>
+        <%= link_to("Export to Youtube", @repo.export_to_youtube_url, method: "post", class: "btn btn-danger btn-xs") %>
       <% else %>
         <p>If you are the owner of this video, you can add the subtitle to the original youtube video.</p>
         <ul class="">
-          <li>Signup <a href="<%= new_user_registration_url(role: "producer") %>">here</a> and after linking your youtube account, you'll be able to import subtitles in one-click. </li>
+          <li>Signup <a href="<%= new_user_registration_url(role: "producer") %>">here</a> and after linking your youtube account, you'll be able to export subtitles in one-click. </li>
           <br>
           <span>or</span>
           <br>
@@ -29,6 +29,6 @@
       <li>Try it now - <a class="btn btn-xs btn-danger export_subtitle_btn" href="">Sync to Youtube</a></li>
     </ol>
     <br>
- -->    
+ -->
   </div>
 <% end %>

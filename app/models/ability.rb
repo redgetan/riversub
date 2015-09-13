@@ -12,12 +12,12 @@ class Ability
     define_release_abilities(user)
     define_page_abilities(user)
     #
-    # The first argument to `can` is the action you are giving the user 
+    # The first argument to `can` is the action you are giving the user
     # permission to do.
     # If you pass :manage it will apply to every action. Other common actions
     # here are :read, :create, :update and :destroy.
     #
-    # The second argument is the resource the user can perform the action on. 
+    # The second argument is the resource the user can perform the action on.
     # If you pass :all it will apply to every resource. Otherwise pass a Ruby
     # class of the resource.
     #
@@ -33,14 +33,14 @@ class Ability
 
   def define_repository_abilities(user)
     can :read, Repository do |repo|
-      repo.is_published || repo.owned_by?(user) 
+      repo.is_published || repo.owned_by?(user)
     end
 
     can :edit, Repository do |repo|
       repo.owned_by?(user)
     end
 
-    can :import, Repository do |repo|
+    can :export, Repository do |repo|
       repo.belong_to_producer?(user)
     end
   end
@@ -56,7 +56,7 @@ class Ability
 
     if user.registered?
       can :create, Group
-      
+
       can :edit, Group do |group|
         group.members.include?(user)
       end
@@ -73,7 +73,7 @@ class Ability
 
   def define_release_abilities(user)
     can :read, Release do |release|
-      if release.is_published? 
+      if release.is_published?
         true
       else
         release.group.members.include?(user)

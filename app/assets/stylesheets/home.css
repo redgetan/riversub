@@ -1333,12 +1333,12 @@ footer a:hover{
   margin: 20px;
 }
 
-#group_repositories_container .unimported_repository_controls {
+#group_repositories_container .unexported_repository_controls {
   color: lightgray;
   padding-right: 10px;
 }
 
-#group_repositories_container .unimported_repository_controls a {
+#group_repositories_container .unexported_repository_controls a {
   margin: 0px 10px;
 }
 
@@ -4008,7 +4008,7 @@ label[for='group_allow_subtitle_download'] {
   display: block;
 }
 
-.yt_imported_label {
+.yt_exported_label {
   border: solid 1px gray;
   padding: 2px;
 }

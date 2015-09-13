@@ -20,7 +20,7 @@ class RepositoriesController < ApplicationController
     @request_id           = params[:request_id]
 
     if !(@is_upload || @is_empty) && params[:source_repo_token]
-      @source_repo = Repository.find_by_token! params[:source_repo_token] 
+      @source_repo = Repository.find_by_token! params[:source_repo_token]
     end
   end
 
@@ -28,7 +28,7 @@ class RepositoriesController < ApplicationController
     @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
 
     unless @repo.is_published?
-      redirect_to @repo.editor_url and return 
+      redirect_to @repo.editor_url and return
     end
 
     @related_repos = Repository.includes(:user, :video).related(@repo)
@@ -52,7 +52,7 @@ class RepositoriesController < ApplicationController
     end
 
     if params[:subtitle_short_id]
-      @repo.highlight_subtitle_short_id = params[:subtitle_short_id] 
+      @repo.highlight_subtitle_short_id = params[:subtitle_short_id]
     end
 
     Comment.highlight_comment(@comments,params[:comment_short_id])
@@ -65,19 +65,19 @@ class RepositoriesController < ApplicationController
     if can?(:read, @repo)
       render layout: false
     else
-      render :text => "You don't have permission to see that" 
+      render :text => "You don't have permission to see that"
     end
   end
-  
+
   def create
     create_common
-    @repo = Repository.create!(video: @video, 
-                               user: current_user, 
+    @repo = Repository.create!(video: @video,
+                               user: current_user,
                                language: @repo_language_code,
                                request_id: params[:request_id])
 
     @group = Group.find_by_short_name params[:group_id]
-    @repo.update_column(:group_id, @group.id) 
+    @repo.update_column(:group_id, @group.id)
 
     @page = Page.find_by_short_name params[:page_id]
 
@@ -85,7 +85,7 @@ class RepositoriesController < ApplicationController
 
     if params[:source_repo_token].present?
       source_repo = Repository.find_by_token params[:source_repo_token]
-      @repo.setup_translation!(source_repo) 
+      @repo.setup_translation!(source_repo)
     end
 
 
@@ -93,11 +93,11 @@ class RepositoriesController < ApplicationController
   end
 
   def fork
-    @source_repo = Repository.find_by_token! params[:token]  
+    @source_repo = Repository.find_by_token! params[:token]
     @target_repo = Repository.create!(video: @source_repo.video, user: current_user)
 
-    @target_repo.copy_timing_from!(@source_repo) 
-    
+    @target_repo.copy_timing_from!(@source_repo)
+
     redirect_to @target_repo.editor_url
   end
 
@@ -110,9 +110,9 @@ class RepositoriesController < ApplicationController
     create_common
 
     begin
-      @repo = Repository.create_from_subtitle_file!(video: @video, 
-                                                    user: current_user, 
-                                                    language: @repo_language_code, 
+      @repo = Repository.create_from_subtitle_file!(video: @video,
+                                                    user: current_user,
+                                                    language: @repo_language_code,
                                                     subtitle_file: params[:subtitle_file])
     rescue SRT::File::InvalidError => e
       flash[:error] = e.message
@@ -155,7 +155,7 @@ class RepositoriesController < ApplicationController
   def publish
     @repo = Repository.find_by_token! params[:token]
 
-    if !user_signed_in? 
+    if !user_signed_in?
       render :json => { :error => "You must be signed in to publish" }, :status => 403 and return
     elsif cannot?(:edit, @repo)
       render :json => { :error => "You dont have permission to publish" }, :status => 403 and return
@@ -204,39 +204,39 @@ class RepositoriesController < ApplicationController
     else
       render :json => { :error => @repo.errors.full_messages }, :status => 403
     end
-    
+
   end
 
-  def import_to_youtube
+  def export_to_youtube
     @repo = Repository.find_by_token! params[:token]
 
-    unless can? :import, @repo
+    unless can? :export, @repo
       flash[:error] = "You don't have permission to do that"
       redirect_to :back and return
     end
 
-    @repo.import_caption_to_youtube!
+    @repo.export_caption_to_youtube!
     flash[:notice] = "Subtitle successfully added to Youtube"
     redirect_to :back
 
   rescue YoutubeClient::InsufficientPermissions
-    flash[:error] = "You need to let your Youtube account grant more permission in order to import the caption"
+    flash[:error] = "You need to let your Youtube account grant more permission in order to export the caption"
     redirect_to @repo.page.status_url
-  rescue YoutubeClient::ImportCaptionError
-    flash[:error] = "Unable to import caption. We're currently taking a look and will contact you shortly."
+  rescue YoutubeClient::ExportCaptionError
+    flash[:error] = "Unable to export caption. We're currently taking a look and will contact you shortly."
     redirect_to :back
   end
 
   def editor
     @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
     @repo.current_user = current_user
-    
+
     if cannot?(:edit, @repo) && @repo.group.present?
       flash[:notice] = "Read only mode. You can't edit someone else subtitle. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
     elsif @repo.user && !user_signed_in?
       store_location(@repo.editor_url)
-      redirect_to new_user_session_url and return 
-    elsif !@repo.user && !user_signed_in? 
+      redirect_to new_user_session_url and return
+    elsif !@repo.user && !user_signed_in?
       flash[:notice] = "Demo mode. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
     elsif cannot?(:edit, @repo)
       flash[:error] = "You don't have permission to see that"
@@ -269,7 +269,7 @@ class RepositoriesController < ApplicationController
   end
 
   def sync_to_youtube
-    
+
   end
 
 

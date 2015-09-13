@@ -47,7 +47,7 @@
         <div class='latest_videos videos videos_container section_block '>
           <div class="home_try section_body">
             <% @user_submissions_for_producer.each_slice(4) do |repos| %>
-              <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3", show_import_actions: true}  %>
+              <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3", show_export_actions: true}  %>
             <% end %>
           </div>
         </div>

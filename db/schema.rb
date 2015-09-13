@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150910160411) do
+ActiveRecord::Schema.define(:version => 20150913215438) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -175,7 +175,7 @@ ActiveRecord::Schema.define(:version => 20150910160411) do
     t.boolean  "is_published"
     t.string   "language"
     t.integer  "parent_repository_id"
-    t.boolean  "is_youtube_imported",        :default => false
+    t.boolean  "is_youtube_exported",        :default => false
     t.boolean  "is_template",                :default => false
     t.string   "title"
     t.integer  "group_id"

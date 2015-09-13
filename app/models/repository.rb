@@ -68,8 +68,8 @@ class Repository < ActiveRecord::Base
   scope :user_subtitled,        where("user_id IS NOT NULL")
   scope :published,             where("is_published is true")
   scope :unpublished,           where("is_published is NULL")
-  scope :imported,              where("is_youtube_imported is true")
-  scope :unimported,            where("is_youtube_imported is false")
+  scope :exported,              where("is_youtube_imported is true")
+  scope :unexported,            where("is_youtube_imported is false")
   scope :recent,                order("published_at DESC")
 
   scope :for_country, lambda { |country_code|
@@ -79,29 +79,29 @@ class Repository < ActiveRecord::Base
 
   GUIDED_WALKTHROUGH_YOUTUBE_URL = "http://www.youtube.com/watch?v=6tNTcZOpZ7c"
   ANONYMOUS_USERNAME = "default"
-  FONT_FAMILIES = { 
-    "serif"      => ["Georgia", "Times New Roman", "Lucida Bright", "Lucida Fax", 
+  FONT_FAMILIES = {
+    "serif"      => ["Georgia", "Times New Roman", "Lucida Bright", "Lucida Fax",
                      "Palatino", "Palatino Linotype", "Palladio", "URW Palladio"],
-    "sans-serif" => ["Arial", "Helvetica", "Comic Sans MS", "Chalkboard", "Impact", 
-                     "Charcoal", "Verdana", "Open Sans", "Fira Sans", "Lucida Sans", 
+    "sans-serif" => ["Arial", "Helvetica", "Comic Sans MS", "Chalkboard", "Impact",
+                     "Charcoal", "Verdana", "Open Sans", "Fira Sans", "Lucida Sans",
                      "Lucida Sans Unicode", "Trebuchet MS", "Liberation Sans", "Nimbus Sans L"],
-    "monospace"  => ["Courier New", "Courier", "Fira Mono", "DejaVu Sans Mono", "Menlo", 
+    "monospace"  => ["Courier New", "Courier", "Fira Mono", "DejaVu Sans Mono", "Menlo",
                      "Consolas", "Liberation Mono", "Monaco", "Lucida Console"],
-    "cursive"    => ["Brush Script MT", "Brush Script Std", "Lucida Calligraphy", 
+    "cursive"    => ["Brush Script MT", "Brush Script Std", "Lucida Calligraphy",
                      "Lucida Handwriting", "Apple Chancery"],
     "fantasy"    => ["Papyrus", "Herculanum", "Party LET", "Curlz MT", "Harrington"]
   }
   FONT_WEIGHTS = %w[normal bold]
   FONT_STYLES = %w[normal italic]
-  FONT_SIZES = (12..30).to_a.map { |i| [i,"px"].join } 
+  FONT_SIZES = (12..30).to_a.map { |i| [i,"px"].join }
   FONT_COLORS = []
 
   def self.font_attributes
-    FONT_ATTRIBUTES  
+    FONT_ATTRIBUTES
   end
 
   def self.find_by_short_id(short_id)
-    self.find_by_token(short_id)  
+    self.find_by_token(short_id)
   end
 
   def self.related(repo, num_of_entries = 10)
@@ -143,7 +143,7 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def self.most_commented(num_of_entries = 6)        
+  def self.most_commented(num_of_entries = 6)
     Repository.select("COUNT(repositories.id) AS comment_count, repositories.*")
               .joins(:comments)
               .published
@@ -164,7 +164,7 @@ class Repository < ActiveRecord::Base
   end
 
   def self.community_translations
-    self.where("group_id IS NULL")  
+    self.where("group_id IS NULL")
         .joins(:video)
         .published
         .where("videos.language = 'ja'")
@@ -188,7 +188,7 @@ class Repository < ActiveRecord::Base
         .published
         .recent
         .first
-        .try(:import_url)
+        .try(:export_url)
   end
 
   def self.templates
@@ -196,10 +196,10 @@ class Repository < ActiveRecord::Base
   end
 
   def self.search_query(query)
-    # repo_subtitle_results = Elasticsearch::Model.search(normalized_query, [Repository, Subtitle], {size: 1000}).records 
+    # repo_subtitle_results = Elasticsearch::Model.search(normalized_query, [Repository, Subtitle], {size: 1000}).records
     # results = video_results + repo_subtitle_results
 
-    normalized_query = query.gsub(/[^0-9a-z ]/i, '') 
+    normalized_query = query.gsub(/[^0-9a-z ]/i, '')
 
     video_ids = Array(Video.nested_search(normalized_query, {size: 1000}).records.ids)
     repository_ids  = Array(Repository.search(normalized_query, {size: 1000}).records.ids)
@@ -209,7 +209,7 @@ class Repository < ActiveRecord::Base
     Repository.joins(:video)
               .joins("LEFT JOIN subtitles on subtitles.repository_id = repositories.id")
               .joins("LEFT JOIN groups on repositories.group_id = groups.id")
-              .where("videos.id IN (?) OR repositories.id IN (?) OR subtitles.id IN (?) OR groups.id IN (?)", 
+              .where("videos.id IN (?) OR repositories.id IN (?) OR subtitles.id IN (?) OR groups.id IN (?)",
                       video_ids, repository_ids, subtitle_ids, group_ids)
               .includes({ :timings => :subtitle }, :user)
               .published
@@ -238,28 +238,28 @@ class Repository < ActiveRecord::Base
   end
 
   def group_url
-    self.group.url  
+    self.group.url
   end
 
   def page_url
-    self.page.url  
+    self.page.url
   end
 
   def page_name
-    self.page.name  
+    self.page.name
   end
 
   def group_name
-    self.group.name  
+    self.group.name
   end
 
   def is_embed?
-    !!self.is_embed  
+    !!self.is_embed
   end
 
   def favorite_url
     upvote_repository_url(self)
-  end 
+  end
 
   def post_publish_url
     group.present? ? group.url : url
@@ -364,8 +364,8 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def youtube_imported?
-    !!is_youtube_imported
+  def youtube_exported?
+    !!is_youtube_exported
   end
 
   def published_repositories
@@ -389,7 +389,7 @@ class Repository < ActiveRecord::Base
   end
 
   def self.font_family_select_options
-    FONT_FAMILIES.inject([]) do |result, (generic_font_family,font_family_names)| 
+    FONT_FAMILIES.inject([]) do |result, (generic_font_family,font_family_names)|
       font_family_names.each do |font_family_name|
         result.push [font_family_name, [font_family_name,generic_font_family].join(",")]
       end
@@ -567,7 +567,7 @@ class Repository < ActiveRecord::Base
 
   def visible_to_user?(target_user, show_published_only = true)
     if show_published_only
-      is_published 
+      is_published
     else
       owned_by?(target_user)
     end
@@ -576,7 +576,7 @@ class Repository < ActiveRecord::Base
   def email_youtube_sync_request(to_email)
     if self.youtube_sync_email_sent_to.blank?
       RepositoryMailer.youtube_sync_request(self,to_email).deliver
-      self.update_column(:youtube_sync_email_sent_to, to_email) if Rails.env.production? 
+      self.update_column(:youtube_sync_email_sent_to, to_email) if Rails.env.production?
     end
   end
 
@@ -585,19 +585,19 @@ class Repository < ActiveRecord::Base
   end
 
   def video_name
-    video.name  
+    video.name
   end
 
   def video_source_url
-    video.source_url  
+    video.source_url
   end
 
   def source_url
-    video_source_url  
+    video_source_url
   end
 
-  def import_url
-    "#{self.url}#import"
+  def export_url
+    "#{self.url}#export"
   end
 
   def serialize
@@ -639,20 +639,20 @@ class Repository < ActiveRecord::Base
   end
 
   def font_family
-    super || "Arial,sans-serif"  
+    super || "Arial,sans-serif"
   end
 
   def font_size
-    super || "16px"  
+    super || "16px"
   end
 
   def serialized_original_timings
     other_repo = self.other_published_repositories.select do |repo|
       repo.language == self.video.language
-    end.first  
+    end.first
 
     if other_repo && other_repo != self && !self.is_embed?
-      other_repo.timings.map(&:serialize)  
+      other_repo.timings.map(&:serialize)
     else
       nil
     end
@@ -788,7 +788,7 @@ class Repository < ActiveRecord::Base
   end
 
   def add_tags(tag_array)
-    self.tag_list.add tag_array  
+    self.tag_list.add tag_array
     self.save
   end
 
@@ -817,28 +817,28 @@ class Repository < ActiveRecord::Base
     embed_height = "290px"
 
     <<-HTML.gsub(/\s+/," ")
-      <iframe id="player" 
-              width="#{embed_width}" 
-              height="#{embed_height}" 
-              frameborder="0" 
-              allowfullscreen="1" 
-              title="#{self.title}" 
+      <iframe id="player"
+              width="#{embed_width}"
+              height="#{embed_height}"
+              frameborder="0"
+              allowfullscreen="1"
+              title="#{self.title}"
               src="#{self.embed_url}">
-      </iframe> 
+      </iframe>
     HTML
   end
 
   def is_downloadable?
-    if is_downloadable.present? 
+    if is_downloadable.present?
       !!is_downloadable
-    elsif group.present? 
+    elsif group.present?
       group.allow_subtitle_download
     else
       !!user.try(:allow_subtitle_download)
     end
   end
 
-  def import_caption_to_youtube!
+  def export_caption_to_youtube!
     youtube_client = get_youtube_client
     return unless youtube_client
 
@@ -853,8 +853,8 @@ class Repository < ActiveRecord::Base
   rescue YoutubeClient::InsufficientPermissions => e
     youtube_identity.update_column(:insufficient_scopes, e.message)
     raise e
-  rescue YoutubeClient::ImportCaptionError => e
-    RepositoryMailer.import_caption_failure(self, e.message, self.class.current_user).deliver
+  rescue YoutubeClient::ExportCaptionError => e
+    RepositoryMailer.export_caption_failure(self, e.message, self.class.current_user).deliver
     raise e
   end
 
@@ -870,12 +870,12 @@ class Repository < ActiveRecord::Base
     self.video.yt_channel_id
   end
 
-  def import_to_youtube_url
-    import_to_youtube_repo_url(self)  
+  def export_to_youtube_url
+    export_to_youtube_repo_url(self)
   end
 
   def display_date
-    published_at || updated_at  
+    published_at || updated_at
   end
 
   def publish!
@@ -886,12 +886,12 @@ class Repository < ActiveRecord::Base
   end
 
   def self.for_channel_id(channel_ids)
-    video_ids = Video.select(:id).for_channel_id(channel_ids)  
+    video_ids = Video.select(:id).for_channel_id(channel_ids)
     self.where(video_id: video_ids)
   end
 
   def belong_to_producer?(target_user)
-    return false unless target_user.try(:youtube_channel_ids).present?  
+    return false unless target_user.try(:youtube_channel_ids).present?
     target_user.youtube_channel_ids.include?(self.yt_channel_id)
   end
 

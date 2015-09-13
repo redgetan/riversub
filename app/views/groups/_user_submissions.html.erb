@@ -1,14 +1,14 @@
 <div class='groups_videos videos videos_container section_block'>
   <% if @group.is_member?(current_user) %>
     <div class='request_categories'>
-      Status: 
+      Status:
       <%= select_tag("user_submission_category_select", options_for_select(@group.user_submission_category_select_options, request.url + "#user_submissions"), class: "user_submission_category_select") %>
     </div>
   <% end %>
-  
+
   <div class="home_try section_body">
     <% @group_repos.each_slice(4) do |repos| %>
-      <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3", show_import_actions: true}  %>
+      <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3", show_export_actions: true}  %>
     <% end %>
   </div>
   <%= paginate @group_repos %>
