@@ -5,7 +5,7 @@
     <th>Description</th>
   </tr>
   <% @groups.each do |group| %>
-    <tr>
+    <tr onclick="document.location = '<%= group.url %>';">
       <td><span class='group_name'><%= group.name %></span></td>
       <td><%= group.repo_count %></td>
       <td><span class='group_description'><%= truncate(group.raw_description, length: 100) %></span></td>
