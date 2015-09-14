@@ -4418,3 +4418,45 @@ ins.differ {
 .release_item_bottom_container {
   margin-top: 120px;
 }
+
+.repo_delete_btn {
+  color: gray;
+  margin-right: 10px;
+  border: solid 1px;
+  padding: 0px 5px;
+}
+
+.repo_edit_btn {
+  border: solid 1px gray;
+  background-color: lightcoral;
+  color: white;
+  padding: 0px 5px;
+}
+
+.repo_delete_btn, .repo_edit_btn {
+  display: none;
+}
+
+#user_repositories .thumbnail:hover .repo_user_action_items .repo_delete_btn, 
+#user_repositories .thumbnail:hover .repo_user_action_items .repo_edit_btn {
+  display: inline-block !important;
+}
+
+.repo_user_action_items {
+  margin-top: 10px;
+  min-height: 30px;
+}
+
+#user_repositories .video_name {
+  text-align: center;
+}
+
+#user_repositories.logged_in .thumbnail {
+  background: none;
+  border: none;
+}
+
+.new_project_thumbnail {
+  background-color: #fff !important;
+  border: solid 1px lightgray !important;
+}

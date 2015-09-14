@@ -113,6 +113,8 @@ River::Application.routes.draw do
     end
 
 
+    post "/r/:token/delete",                to: "repositories#destroy",   as: "repo_destroy"
+
     get "/:token",                        to: "repositories#show",   as: "repo"
     get "/r/:token",                        to: "repositories#show",   as: "repo"
     get "/embed/:token",                    to: "repositories#embed",   as: "repo_embed"

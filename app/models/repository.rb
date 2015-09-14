@@ -245,6 +245,10 @@ class Repository < ActiveRecord::Base
     self.page.url
   end
 
+  def destroy_url
+    repo_destroy_url(self)  
+  end
+
   def page_name
     self.page.name
   end

@@ -317,6 +317,20 @@ class RepositoriesController < ApplicationController
     render :text => "ok"
   end
 
+  def destroy
+    @repo = Repository.find_by_token! params[:token]
+
+    if cannot?(:edit, @repo)
+      flash[:error] = "You don't have permission to see that"
+      redirect_to @repo.user.url and return
+    end
+
+    @repo.delete
+
+    flash[:notice] = "Subtitle deleted"
+    redirect_to @repo.user.url
+  end
+
   private
 
     def find_repo
