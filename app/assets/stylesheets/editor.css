@@ -949,7 +949,8 @@ textarea {
 
 .sub_controls .timeline_btn.active, 
 .sub_controls .subtitle_btn.active, 
-.sub_controls .upload_btn.active {
+.sub_controls .upload_btn.active,
+.sub_controls .font_btn.active {
 	/*border: solid 1px #aaa;*/
 	text-decoration: underline;
 /*  border-top: none;
