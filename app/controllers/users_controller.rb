@@ -6,7 +6,7 @@ class UsersController < ApplicationController
       {:correction_requests_received => [ :subtitle, :repository ]}
     ).find_by_username(params[:username])
 
-    @repositories = if user_signed_in? && current_user == @user
+    @repositories = if (user_signed_in? && current_user == @user) || @user.is_super_admin?
                       @user.repositories.includes(:video).recent # all
                     else
                       @user.repositories.includes(:video).published.recent # if not logged in, show only published ones
