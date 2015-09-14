@@ -4367,8 +4367,12 @@ ins.differ {
 .topics_table .group_name {
   color: brown;
   overflow: hidden;
-  height: 20px;
+  height: 18px;
   display: inline-block;
+}
+
+.topics_table tr {
+  border: solid 1px lightgray;
 }
 
 .topics_table tr:hover {
@@ -4378,7 +4382,7 @@ ins.differ {
 }
 
 .topics_table .group_description {
-  height: 20px !important;
+  height: 18px !important;
   overflow: hidden;
   display: inline-block;
 }
