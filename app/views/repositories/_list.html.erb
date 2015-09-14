@@ -11,32 +11,37 @@
       <span class="video_duration">
         <%= repo.formatted_duration %>
       </span>
-      <div class="video_title">
-        <a href="<%= repo.url %>" class="video" >
-          <span class='video_name'><%= truncate(repo.player_title, length: 80) %></span>
-        </a>
-        <% unless repo.release_title == video.title %>
-          <br/>
-          <span class='orig_video_name river_gray'><%= video.title %></span>
+      <div class='release_item_bottom_container'>
+        <% if repo.group.present? %>
+          <a class='repo_group' href="<%= repo.group.url %>"><%= repo.group.name %></a>
         <% end %>
-      </div>
-      <div class='release_item_transcript'>
-        <%= repo.transcript[0..200] %>
-      </div>
-      <div class="assignee">
-        <span class='repo_owner'>
-          by:
-          <a href="<%= repo.owner_profile_url %>" class="owner_name"><%= repo.owner %></a>
-        </span>
-      </div>
-      <div class='actions'>
-        <% if defined?(show_export_actions) && show_export_actions %>
-          <% if repo.is_youtube_exported? %>
-            <a class='yt_exported_label' href="<%= repo.source_url %>">Exported</a>
-          <% elsif repo.belong_to_producer?(current_user) %>
-            <%= link_to("Export to Youtube", repo.export_to_youtube_url, method: "post", class: "btn btn-danger btn-xs") %>
+        <div class="video_title">
+          <a href="<%= repo.url %>" class="video" >
+            <span class='video_name'><%= truncate(repo.player_title, length: 80) %></span>
+          </a>
+          <% unless repo.release_title == video.title %>
+            <br/>
+            <span class='orig_video_name river_gray'><%= video.title %></span>
           <% end %>
-        <% end %>
+        </div>
+        <div class='release_item_transcript'>
+          <%= repo.transcript[0..200] %>
+        </div>
+        <div class="assignee">
+          <span class='repo_owner'>
+            by:
+            <a href="<%= repo.owner_profile_url %>" class="owner_name"><%= repo.owner %></a>
+          </span>
+        </div>
+        <div class='actions'>
+          <% if defined?(show_export_actions) && show_export_actions %>
+            <% if repo.is_youtube_exported? %>
+              <a class='yt_exported_label' href="<%= repo.source_url %>">Exported</a>
+            <% elsif repo.belong_to_producer?(current_user) %>
+              <%= link_to("Export to Youtube", repo.export_to_youtube_url, method: "post", class: "btn btn-danger btn-xs") %>
+            <% end %>
+          <% end %>
+        </div>
       </div>
     </li>
   <% end %>

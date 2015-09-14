@@ -8,7 +8,7 @@
           <span class='request_list_details'><%= request.details %></span>
         <% end %>
         <div class='request_list_sub_details'>
-          <% if request.group.present? && @group.nil? %>
+          <% if request.group.present? %>
             <a class='request_list_group' href="<%= request.group.url %>"><%= request.group.name %></a>
           <% end %>
           requested 

@@ -3050,8 +3050,15 @@ html.embed .expand_btn {
   display: none;
 }
 
-.video_duration {
+.release_item .video_duration {
   display: none;
+  position: absolute;
+  top: 112px;
+  left: 5px;
+  color: white;
+  background-color: black;
+  padding: 0px 5px;
+  font-size: 14px;
 }
 
 .latest_activity_container {
@@ -3850,10 +3857,17 @@ html.embed .expand_btn {
   list-style: none;
 }
 
+.release_item .repo_group, 
 .global_requests .request_list_group {
   border: solid 1px gray;
   padding: 2px;
   color: gray;
+}
+
+.release_item .repo_group {
+  margin-bottom: 5px;
+  display: inline-block;
+  padding: 0px 5px;
 }
 
 .global_requests {
@@ -4388,15 +4402,20 @@ ins.differ {
 }
 
 .group_subscribe_btn {
-      border: solid 1px steelblue;
-    padding: 7px 10px;
-    margin-right: 5px;
-    background: none;
-    color: steelblue;
-    font-size: 20px;
+  border: solid 1px steelblue;
+  padding: 7px 10px;
+  margin-right: 5px;
+  background: none;
+  color: steelblue;
+  font-size: 20px;
 }
 
 .what_container {
   font-size: 18px;
   border: none;
+}
+
+.release_item_bottom_container {
+  margin-top: 10px;
+  display: inline-block;
 }
