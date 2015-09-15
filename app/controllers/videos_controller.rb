@@ -5,7 +5,7 @@ class VideosController < ApplicationController
   end
 
   def show
-    @video = Video.find_by_token params[:token]
+    @video = Video.find_by_token! params[:token]
   end
 
   def sub
