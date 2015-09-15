@@ -22,7 +22,7 @@ class RepositoryMailer < ActionMailer::Base
   def export_caption_failure(repo, message, actor)
     @repo = repo
     @url  = "http://www.yasub.com/"
-    mail(:to => @from, :subject => "Export caption failure for repo #{@repo.id} by user #{actor.try(:username)} ", :from => @@from,
+    mail(:to => @@from, :subject => "Export caption failure for repo #{@repo.id} by user #{actor.try(:username)} ", :from => @@from,
          :body => message)
   end
 
