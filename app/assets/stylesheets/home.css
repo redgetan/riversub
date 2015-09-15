@@ -1352,9 +1352,7 @@ footer a:hover{
 }
 
 .user_groups_container  {
-  padding: 10px;
 }
-
 
 .sidebar-home {
   position: absolute;
@@ -3699,6 +3697,10 @@ html.embed .expand_btn {
 .home_group_list_container {
   margin-top: 20px;
   margin-bottom: 100px;
+}
+
+#user_groups .home_group_list_container {
+  margin-top: 0px;
 }
 
 .home_group_list_container .avatar .thumbnail {
