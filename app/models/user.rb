@@ -171,7 +171,7 @@ class User < ActiveRecord::Base
     self.is_producer? ? "" : "active"
   end
 
-  def self.is_producer?
+  def is_producer?
     self.pages.count > 0 && self.repositories.published.count == 0
   end
 
