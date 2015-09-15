@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
   # authorize_resource
 
   def index
-    # @groups = Group.all
+    @groups = Group.all.sort_by { |group| group.members.count }.reverse
 
     respond_to do |format|
       format.html # index.html.erb
