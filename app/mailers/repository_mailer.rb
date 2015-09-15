@@ -29,7 +29,7 @@ class RepositoryMailer < ActionMailer::Base
   def group_repo_published_notify(repo, members)
     @repo = repo
     @url  = "http://www.yasub.com/"
-    mail(:to => nil, :bcc => members.map(&:email), :subject => "#{@repo.owner} has been subtitled a video for #{@repo.group.name} members", :from => @@from)
+    mail(:to => nil, :bcc => members.map(&:email), :subject => "#{@repo.owner} has subtitled a video for #{@repo.group.name} members", :from => @@from)
   end
 
   def subtitle_correction_notify(correction_request)
