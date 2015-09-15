@@ -172,7 +172,7 @@ class User < ActiveRecord::Base
   end
 
   def self.is_producer?
-    (self.repositories.published.count == 0 && self.pages.count > 0 ) || self.read_attribute(:is_producer) == true
+    self.pages.count > 0 && self.repositories.published.count == 0
   end
 
   def youtube_accounts_tab_class
