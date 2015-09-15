@@ -1,13 +1,10 @@
-<div class='row'>
-  <%= render "user_profile" %>
-</div>
+<div class='header-section col-xs-12'></div>
 
 <div class='row'>
   <div class="col-xs-8  col-xs-offset-2" >
 
     <% if user_signed_in? && current_user == @user %>
-      <h4 class=''>Hello! </h4>
-      <p>As a youtube producer, yasub will list all user submitted translations of your videos and you can add them back to the original video. But In order to do that, you need to link your youtube account so that the system would recognize which translated videos belong to you.</p>
+      <p>If you're a youtube channel owner, yasub can list all user submitted translations of your videos and you can add them back to the original video. But In order to do that, you need to link your youtube account so that the system would recognize which translated videos belong to you.</p>
       <br>
       <h4 class=''>
         <a href="<%= new_page_url %>" class='new_producer_page_btn pull-right'>+ Link Youtube Account</a>
@@ -56,8 +53,6 @@
       <p>There are currently no translations submitted by users in yasub.</p>
     <% end %>
 
-    <%= render "user_corrections" %>
-
-
   </div>
 </div>
+

@@ -2,9 +2,28 @@
 
 <div class='header-section col-xs-12'></div>
 <div class='container user_show_container'>
-  <% if @user.is_producer? %>
-    <%= render "users/producer_page" %>
-  <% else %>
-    <%= render "users/translator_or_viewer_page" %>
-  <% end %>
+  <div class='row'>
+    <%= render "user_profile" %>
+  </div>
+  <div class='row'>
+    <ul class="nav nav-tabs col-xs-8  col-xs-offset-2" >
+      <li class="<%= @user.translations_tab_class %>"><a href="#translations" data-toggle="tab">Subtitles</a></li>
+      <li class=""><a href="#corrections" data-toggle="tab">Corrections</a></li>
+      <li><a href="#user_groups" data-toggle="tab">Topics</a></li>
+      <% if (user_signed_in? && current_user == @user) || @user.pages.length > 0 %>
+        <li class="<%= @user.youtube_accounts_tab_class %>"><a href="#user_youtube_accounts" data-toggle="tab">Youtube Accounts</a></li>
+      <% end %>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane <%= @user.translations_tab_class %>" id="translations"><%= render "user_repositories" %></div>
+      <div class="tab-pane" id="corrections">
+        <div class='col-xs-8 col-xs-offset-2'>
+          <%= render "user_corrections" %>
+        </div>
+      </div>
+      <div class="tab-pane" id="user_groups"><%= render "user_groups" %></div>
+      <div class="tab-pane <%= @user.youtube_accounts_tab_class %>" id="user_youtube_accounts"><%= render "user_youtube_accounts" %></div>
+    </div>
+  </div>
 </div>

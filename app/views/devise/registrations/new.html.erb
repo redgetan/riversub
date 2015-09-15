@@ -4,31 +4,24 @@
 
 <div class='container'>
     <div class='row'>
-        <% if @role %>
-            <div class="col-md-3 col-xs-6 center">
-                <h1>Join Us </h1>
-                <p><%= @role.capitalize %></p>
+        <div class="col-md-3 col-xs-6 center">
+            <h1>Join Us </h1>
+        </div>
+        <div class='col-md-3 col-xs-6 center sign_up_container'>
+            <div class="signup_container">
+              <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name)) do |f| %>
+                <%= devise_error_messages! %>
+
+                <%= f.text_field :username, :placeholder => "username", class: "form-control" %>
+
+                <%= f.email_field :email, :placeholder => "email", class: "form-control" %>
+
+                <%= f.password_field :password, :placeholder => "password", class: "form-control" %>
+
+                <%= f.submit "Sign up", :class => 'btn btn-primary pull-right' %>
+              <% end %>
             </div>
-            <div class='col-md-3 col-xs-6 center sign_up_container'>
-                <div class="signup_container">
-                  <%= form_for(resource, :as => resource_name, :url => registration_url(resource_name)) do |f| %>
-                    <%= devise_error_messages! %>
-
-                    <input type='hidden' name='user[role]' value='<%= @role %>'>
-
-                    <%= f.text_field :username, :placeholder => "username", class: "form-control" %>
-
-                    <%= f.email_field :email, :placeholder => "email", class: "form-control" %>
-
-                    <%= f.password_field :password, :placeholder => "password", class: "form-control" %>
-
-                    <%= f.submit "Sign up", :class => 'btn btn-primary pull-right' %>
-                  <% end %>
-                </div>
-            </div>
-        <% else %>
-          <%= render partial: "choose_role", locals: { sign_up_header: "Choose what best describes you"} %>
-        <% end %>
+        </div>
     </div>
 </div>
 <div class='header-section col-xs-12'></div>

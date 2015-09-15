@@ -168,7 +168,15 @@ class User < ActiveRecord::Base
   end
 
   def translations_tab_class
-    "active"
+    self.is_producer? ? "" : "active"
+  end
+
+  def self.is_producer?
+    (self.repositories.published.count == 0 && self.pages.count > 0 ) || self.read_attribute(:is_producer) == true
+  end
+
+  def youtube_accounts_tab_class
+    self.is_producer? ? "active" : ""
   end
   
   def video_bookmarks_tab_class

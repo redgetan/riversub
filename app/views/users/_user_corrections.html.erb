@@ -71,6 +71,9 @@
       </table>
     <% else %>
       <span>There is currently nothing here.</span>
+      <% if user_signed_in? && current_user == @user %>
+        <span>Instead of subtitling a complete video, you can start small by correcting subtitles of other translators <a href="<%= community_translations_url %>">here</a>.</span>
+      <% end %>
     <% end %>
 
 
