@@ -5,6 +5,7 @@
     <% if @repo.is_youtube_exported? %>
       <br>
       <p>The subtitle have already been added to the <a class='yt_exported_label' href="<%= @repo.source_url %>">original youtube video</a></p>
+      <p>You can also download the subtitle <a href="<%= @repo.subtitle_download_url %>">here</a></p>
     <% else %>
       <% if @repo.belong_to_producer?(current_user)  %>
         <br>
@@ -23,12 +24,5 @@
     <% end %>
     <p style=""></p>
     <br>
-<!--     <b>Method 1: Youtube Sync</b>
-    <ol class="youtube_sync_method">
-      <li>If you own this video, we allow you to instantly link the subtitle to the original video</li>
-      <li>Try it now - <a class="btn btn-xs btn-danger export_subtitle_btn" href="">Sync to Youtube</a></li>
-    </ol>
-    <br>
- -->
   </div>
 <% end %>
