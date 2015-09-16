@@ -3262,7 +3262,11 @@ html.embed .expand_btn {
 
 .embed_container {
   text-align: left;
-  margin-top: 10px;
+  margin-top: 15px;
+  display: inline-block;
+  float: left;
+  clear: both;
+  margin-bottom: 10px;
 }
 
 .embed_code_input {
