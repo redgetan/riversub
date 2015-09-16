@@ -385,11 +385,11 @@ river.ui.Subtitle = Backbone.View.extend({
 
   },
 
-  onMouseEnter: function() {
+  onMouseEnter: function(event) {
     this.$close.show();
   },
 
-  onMouseLeave: function() {
+  onMouseLeave: function(event) {
     this.$close.hide();
   },
 
