@@ -2,7 +2,7 @@ class RepositoriesController < ApplicationController
 
 
   def new
-    @video = Video.find_by_token(params[:video_token])
+    @video = Video.find_by_token!(params[:video_token])
     @video.current_user = current_user
 
     @group = Group.find_by_short_name params[:group_id]
