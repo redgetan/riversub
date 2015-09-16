@@ -362,7 +362,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<div id='iframe_container'>" +
                           "<div id='iframe_overlay'>" +
                           "</div>" +
-                          "<div id='overlay_btn'><i class='fa fa-play'></i></div>" +
+                          // "<div id='overlay_btn'><i class='fa fa-play'></i></div>" +
                         "</div> " +
                         "<div id='subtitle_bar' class='center'> " +
                           "<span id='subtitle_display' class='center'></span> " +
