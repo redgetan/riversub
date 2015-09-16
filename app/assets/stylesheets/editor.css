@@ -1014,3 +1014,15 @@ textarea {
 	height: 185px;
 }
 
+.editor_zoom_controls {
+	display: inline-block;
+  float: right;
+  padding-right: 10px;
+}
+
+.editor_zoom_in_btn,
+.editor_zoom_out_btn {
+	color: white;
+	margin-right: 5px;
+	cursor: pointer;
+}

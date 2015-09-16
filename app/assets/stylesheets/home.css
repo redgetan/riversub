@@ -1459,7 +1459,6 @@ footer a:hover{
 
 .player_controls_container {
   background-color: black;
-  height: 100%;
   min-height: 30px;
 }
 
@@ -1501,7 +1500,7 @@ footer a:hover{
 }
 
 #editor .player_timeline_container {
-  width: 810px;
+  width: 750px;
 }
 
 .player_controls #summary {
@@ -2992,7 +2991,7 @@ ul.source_repo_timing_list li span {
 
 @media screen and (min-width: 680px) {
   #river_player .player_timeline_container {
-    width: 63%;
+    width: 62%;
   }
 }
 
@@ -4463,3 +4462,70 @@ ins.differ {
   background-color: #fff !important;
   border: solid 1px lightgray !important;
 }
+
+.volume_control {
+  display: inline-block;
+  position: relative;
+}
+
+#player .volume_control {
+  float: left;
+}
+
+.mute_btn i {
+  font-size: 18px;
+}
+
+.mute_btn:focus {
+  outline: none;
+}
+
+._3pao {
+  background-color: rgba(0,0,0,.7);
+  cursor: pointer;
+  display: none;
+  height: 100px;
+  left: 0;
+  margin: -100px 3px 0;
+  position: absolute;
+  top: 0;
+  width: 30px;
+  z-index: 10;
+}
+
+._3paq {
+  background-color: silver;
+  height: 66px;
+  margin: 10px 13px 0;
+  position: absolute;
+  width: 4px;
+}
+
+._3par {
+  background-color: #fff;
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+}
+
+._3pas {
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 1px black;
+  height: 16px;
+  left: 0;
+  margin: 0 0 0 -6px;
+  position: absolute;
+  top: 0;
+  width: 16px;
+}
+
+._3pat {
+  background-color: #fff;
+  bottom: 0;
+  height: 16px;
+  margin: 0 13px 8px;
+  position: absolute;
+  width: 4px;
+}
+
