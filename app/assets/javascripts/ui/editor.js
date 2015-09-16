@@ -594,14 +594,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     $(".player_controls").append(screenZoom);
 
     $(".screen_zoom").on("click", function(){
-      if ($("#iframe_container").css("zoom") === "1.5") {
-        $("#iframe_container").css("zoom","1");
+      if ($("#iframe_container").css("height") === "290px") {
+        $("#iframe_container").css("height","190px");
         $(".screen_zoom_btn").removeClass("fa-laptop");
         $(".screen_zoom_btn").addClass("fa-desktop");
         $("#editor").removeClass("desktop");
         $("#editor").addClass("laptop");
       } else {
-        $("#iframe_container").css("zoom","1.5");
+        $("#iframe_container").css("height","290px");
         $(".screen_zoom_btn").removeClass("fa-desktop");
         $(".screen_zoom_btn").addClass("fa-laptop");
         $("#editor").removeClass("laptop");
