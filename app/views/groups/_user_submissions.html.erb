@@ -1,17 +1,14 @@
 <div class='groups_videos videos videos_container section_block'>
-  <div class='center'>
-    <% if user_signed_in? %>
-      <a href="#" data-toggle="modal" data-target="#subtitle_modal" class="subtitle_video_btn ">Subtitle a Video</a>
-    <% else %>
-      <span class='request_must_login_caption'>
-        You must <%= link_to "log in", new_user_session_url(location: @group.user_submissions_url), class: "request_must_login_btn" %> to subtitle a video
-      </span>
-    <% end %>
-  </div>
-  
+  <% if @group.is_member?(current_user) %>
+    <div class='request_categories'>
+      Status:
+      <%= select_tag("user_submission_category_select", options_for_select(@group.user_submission_category_select_options, request.url + "#user_submissions"), class: "user_submission_category_select") %>
+    </div>
+  <% end %>
+
   <div class="home_try section_body">
     <% @group_repos.each_slice(4) do |repos| %>
-      <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3"}  %>
+      <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3", show_export_actions: true}  %>
     <% end %>
   </div>
   <%= paginate @group_repos %>

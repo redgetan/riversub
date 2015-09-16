@@ -18,8 +18,14 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def youtube_connect
     auth = request.env['omniauth.auth']
+    if identity = Identity.find_with_omniauth(auth)
+      flash[:error] = "Youtube account #{identity.page.source_url} was already previously connected. If you're trying to link multiple youtube accounts, make sure to log out from youtube first before linking another account."
+      redirect_to new_page_url and return
+    end
     identity = current_user.youtube_connect!(auth)
-    redirect_to new_page_url(identity_id: identity.id)
+    Page.create!(short_name: identity.yt_channel_id, identity_id: identity.id)
+    flash[:notice] = "Successfully connected youtube account"
+    redirect_to current_user.url
   end
 
   def google_oauth2_reconnect

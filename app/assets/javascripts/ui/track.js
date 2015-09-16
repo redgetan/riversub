@@ -111,25 +111,25 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
     });
   },
 
-  onTrackHoverIn: function() {
+  onTrackHoverIn: function(event) {
     Backbone.trigger("trackhoverin",this.model);
   },
 
-  onTrackHoverOut: function() {
+  onTrackHoverOut: function(event) {
     Backbone.trigger("trackhoverout",this.model);
   },
 
-  onTextDisplayFocus: function() {
+  onTextDisplayFocus: function(event) {
     this.$el.addClass("focused");
     Backbone.trigger("trackinputfocus",this.model);
   },
 
-  onTextDisplayBlur: function() {
+  onTextDisplayBlur: function(event) {
     this.$el.removeClass("focused");
     Backbone.trigger("trackinputblur",this.model);
   },
 
-  onTextDisplayKeyup: function() {
+  onTextDisplayKeyup: function(event) {
     var $input = $(event.target);
     var text = $input.val();
 

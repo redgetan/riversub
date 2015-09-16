@@ -15,7 +15,9 @@ class Markdowner
     html = RDiscount.new(text.to_s, *args).to_html
 
     # change <h1> headings to just emphasis tags
-    html.gsub!(/<(\/)?h(\d)>/) {|_| "<#{$1}strong>" }
+    unless opts[:dont_convert_headers_to_strong]
+      html.gsub!(/<(\/)?h(\d)>/) {|_| "<#{$1}strong>" }
+    end
 
     # fix links that got the trailing punctuation appended to move it outside
     # the link

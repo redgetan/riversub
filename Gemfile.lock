@@ -1,4 +1,14 @@
 GIT
+  remote: git://github.com/elasticsearch/elasticsearch-rails.git
+  revision: ded20356920802c35d258756113acfd95b25ade6
+  ref: ded20356920802c35d258756113acfd95b25ade6
+  specs:
+    elasticsearch-model (0.1.7)
+      activesupport (> 3)
+      elasticsearch (> 0.4)
+      hashie
+
+GIT
   remote: https://github.com/getsentry/raven-ruby.git
   revision: 74961786c7bd839c73128faa02304357c9abbc23
   specs:
@@ -143,8 +153,17 @@ GEM
       railties (~> 3.1)
       warden (~> 1.2.1)
     diff-lcs (1.2.4)
+    differ (0.1.2)
     domain_name (0.5.23)
       unf (>= 0.0.5, < 1.0.0)
+    elasticsearch (1.0.12)
+      elasticsearch-api (= 1.0.12)
+      elasticsearch-transport (= 1.0.12)
+    elasticsearch-api (1.0.12)
+      multi_json
+    elasticsearch-transport (1.0.12)
+      faraday
+      multi_json
     equalizer (0.0.11)
     errbase (0.0.3)
     erubis (2.7.0)
@@ -418,6 +437,8 @@ DEPENDENCIES
   debugger
   delayed_job_active_record
   devise
+  differ
+  elasticsearch-model!
   factory_girl (~> 4.0)
   factory_girl_rails (~> 4.0)
   faraday (~> 0.9)

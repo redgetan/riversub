@@ -39,7 +39,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.popcorn = this.loadMedia(targetSelector,mediaSource);
 
     // player settings
-    this.popcorn.volume(0.2);
+    this.setVolume(0.5);
     // misc
     this.defineAttributeAccessors();
     this.displayNoInternetConnectionIfNeeded();
@@ -78,7 +78,25 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   setVolume: function(level) {
+    this.lastSavedVolume = this.popcorn.volume() * 100;
     this.popcorn.volume(level);
+
+    var percentage = level * 100;
+    $("._3par").css("height",  percentage + "%");
+
+    if (percentage > 50) {
+      $(".mute_btn i").removeClass("fa-volume-off");
+      $(".mute_btn i").removeClass("fa-volume-down");
+      $(".mute_btn i").addClass("fa-volume-up");
+    } else if (percentage > 0) {
+      $(".mute_btn i").removeClass("fa-volume-up");
+      $(".mute_btn i").removeClass("fa-volume-off");
+      $(".mute_btn i").addClass("fa-volume-down");
+    } else {
+      $(".mute_btn i").removeClass("fa-volume-down");
+      $(".mute_btn i").removeClass("fa-volume-up");
+      $(".mute_btn i").addClass("fa-volume-off");
+    }
   },
 
   mediaDuration: function() {
@@ -88,6 +106,7 @@ river.ui.BasePlayer = Backbone.View.extend({
   postInitializeCommon: function() {
     // subclass implements callback if needed
   },
+
 
   defineAttributeAccessors: function() {
     Object.defineProperty( this, "numTracks", {
@@ -115,6 +134,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     }
 
     this.$subtitleDisplay = $("#subtitle_display");
+    this.applyFontSettings();
 
     this.$mediaContainer = this.$mediaContainer || $("#media_container");
 
@@ -144,6 +164,54 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$subtitleBar.on("mousedown",this.onSubtitleBarClick.bind(this));
     Backbone.on("trackend",this.onTrackEnd.bind(this));
     this.popcorn.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
+    this.handleVolumeEvents();
+  },
+
+  handleVolumeEvents: function() {
+    $(".mute_btn").on("click", function(event) {
+      event.preventDefault();
+
+      if (this.popcorn.volume() === 0) {
+        this.setVolume(this.lastSavedVolume);
+      } else {
+        this.setVolume(0)
+      }
+    }.bind(this));
+
+    $(".volume_control, ._3pao").on("mouseover", function(event){ 
+      $("._3pao").show();  
+    }.bind(this));
+
+    $(".volume_control, ._3pao").on("mouseout", function(event){ 
+      if (!this.isVolumeDragging) {
+        $("._3pao").hide();  
+      }
+    }.bind(this));
+
+    $("._3pao").on("click", function(event){ 
+      this.setVolume(this.getVolumeFromY(event.pageY));
+    }.bind(this));
+
+    $("._3pao").on("mousedown", function(event) {
+      this.pauseEvent(event);
+      this.isVolumeDragging = true;
+    }.bind(this));
+
+    $("._3pao, #viewing_screen").on("mousemove", function(event) {
+      this.pauseEvent(event);
+      if (this.isVolumeDragging) {
+        this.setVolume(this.getVolumeFromY(event.pageY));
+      }
+    }.bind(this));
+
+    $("#viewing_screen").on("mouseup", function(event) {
+      $("._3pao").hide();  
+    }.bind(this));
+
+    $("._3pao, #viewing_screen").on("mouseup", function(event) {
+      this.isVolumeDragging = false;
+    }.bind(this));
+
   },
 
   playerObject: function() {
@@ -156,24 +224,86 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.playerObject().unloadModule("captions");  // for HTML5 player
   },
 
+  applyFontSettings: function() {
+    var $el = this.getTargetFontSettingElement();
+    $el.css("font-family", this.repo.font_family);
+    $el.css("font-size", this.repo.font_size);
+    $el.css("font-weight", this.repo.font_weight);
+    $el.css("font-style", this.repo.font_style);
+    $el.css("color", this.repo.font_color);
+    this.applyOutlineColor($el,this.repo.font_outline_color);
+  },
+
+  applyOutlineColor: function($el, color) {
+    $el.css("text-shadow", "-1px 0 " + color + ", " +
+                           "0  1px " + color + ", " +
+                           "1px  0 " + color + ", " +
+                           "0 -1px " + color + "  ");
+  },
+
+  getTargetFontSettingElement: function() {
+    return this.$subtitleDisplay;
+  },
+
+
   addPlayerControls: function() {
+    var volumeControl = "<div class='volume_control'>" + 
+                          "<button type='button' class='mute_btn'><i class='fa fa-volume-up'></i></button>" + 
+                          "<div class='_3pao'>" + 
+                            "<div class='_3paq'>" + 
+                              "<div style='height: 40%;' class='_3par'>" + 
+                                "<div class='_3pas'>" + 
+                                "</div>" + 
+                              "</div>" + 
+                            "</div>" + 
+                            "<div class='_3pat'>" + 
+                            "</div>" + 
+                          "</div>" + 
+                        "</div>";
     $("#viewing_screen").after("<div class='player_controls_container'><div class='player_controls'></div></div>");    
     $(".player_controls").append("<button type='button' class='backward_btn river_btn'><i class='fa fa-backward'></i> </button> ");
     $(".player_controls").append("<button type='button' class='play_btn river_btn'><i class='fa fa-play'></i></button>");
     $(".player_controls").append("<button type='button' class='pause_btn river_btn'><i class='fa fa-pause'></i></button>");
     $(".player_controls").append("<button type='button' class='forward_btn river_btn'><i class='fa fa-forward'></i> </button> ");
+    $(".player_controls").append(volumeControl);
     $(".player_controls").append("<div class='player_timeline_container'></div>");
     $("#summary").appendTo(".player_timeline_container")
+
+    this.setupScreenZoom();
 
     this.$playBtn = $(".play_btn");
     this.$pauseBtn = $(".pause_btn");
     this.$backwardBtn = $(".backward_btn");
     this.$forwardBtn = $(".forward_btn");
     this.$pauseBtn.hide();
-    
+
     if (this.timeline) {
       this.timeline.setTimelineWidth();
     }
+  },
+
+  setupScreenZoom: function() {
+    // nothing by default
+  },
+
+  pauseEvent: function(e){
+      if(e.stopPropagation) e.stopPropagation();
+      if(e.preventDefault) e.preventDefault();
+      e.cancelBubble=true;
+      e.returnValue=false;
+      return false;
+  },
+
+  getVolumeFromY: function(pageY) {
+    var maxHeight = 80;
+    var actualMaxTop = $("._3pao").offset().top + 10;
+    var currHeight = actualMaxTop - pageY + maxHeight ;
+    var ratio = currHeight / maxHeight;
+    if (ratio > 1) ratio = 1;
+    if (ratio < 0) ratio = 0;
+
+    // console.log("_3pao_top: " + $("._3pao").offset().top + " pageY: " + event.pageY + " calc: " + currHeight + "ratio: " + ratio);
+    return ratio;
   },
 
   onTimelineSeekHandler: function(time) {

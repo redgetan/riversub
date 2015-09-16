@@ -28,6 +28,8 @@ class User < ActiveRecord::Base
   has_many :identities
   has_many :pages, :through => :identities
   has_many :settings, class_name: "UserSetting"
+  has_many :correction_requests_sent,     class_name: "CorrectionRequest", foreign_key: "requester_id"
+  has_many :correction_requests_received, class_name: "CorrectionRequest", foreign_key: "approver_id"
 
   has_many :memberships
   has_many :groups, through: :memberships
@@ -39,6 +41,8 @@ class User < ActiveRecord::Base
   mount_uploader :avatar, AvatarUploader
 
   ROLES = %w[producer translator viewer]
+
+  after_create :user_signup_notification
 
   before_create do
     self.username.downcase!
@@ -127,6 +131,10 @@ class User < ActiveRecord::Base
     user_url(self, params)
   end
 
+  def corrections_url
+    user_url(self) + "#corrections"
+  end
+
   def serialize
     {
       :id => self.id,
@@ -160,7 +168,15 @@ class User < ActiveRecord::Base
   end
 
   def translations_tab_class
-    self.repositories.published.present? ? "active" : ""
+    self.is_producer? ? "" : "active"
+  end
+
+  def is_producer?
+    self.pages.count > 0 && self.repositories.published.count == 0
+  end
+
+  def youtube_accounts_tab_class
+    self.is_producer? ? "active" : ""
   end
   
   def video_bookmarks_tab_class
@@ -180,7 +196,8 @@ class User < ActiveRecord::Base
   end
 
   def allow_subtitle_download 
-    settings.get(:allow_subtitle_download)  == "true"
+    allow_subtitle_download_setting = settings.get(:allow_subtitle_download)
+    allow_subtitle_download_setting.present? ? allow_subtitle_download_setting == "true" : true
   end
 
   def allow_subtitle_download=(bool) 
@@ -190,6 +207,18 @@ class User < ActiveRecord::Base
   def youtube_connect!(auth)
     # create identity + store oauth tokens
     identity = Identity.find_or_create_with_omniauth!(auth)
+  end
+
+  def youtube_identities
+    identities.where(provider: :google_oauth2).where("yt_channel_id IS NOT NULL")  
+  end
+
+  def youtube_channel_ids
+    youtube_identities.map(&:yt_channel_id)
+  end
+
+  def user_signup_notification
+    UserMailer.signup_notify(self).deliver 
   end
 
   def to_param

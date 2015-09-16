@@ -1,14 +1,14 @@
 <div class='header-section col-xs-12'></div>
 
-<div id='user_repositories' class='col-xs-8  col-xs-offset-2'>
+<div id='user_repositories' class='<%= user_signed_in? && current_user == @user ? "logged_in" : "" %> col-xs-8  col-xs-offset-2'>
   <div class='row'>
     <div class="videos">
       <% if user_signed_in? && current_user == @user  %>
         <div class='col-xs-6 col-md-3'>
-          <div class='thumbnail'>
+          <div class='thumbnail new_project_thumbnail'>
             <a href="<%= videos_new_url %>" class="new_project_user_btn user_big_action_btn" >
               <i class='glyphicon glyphicon-plus'></i>
-              <h6>New Project</h6>
+              <h6>New Subtitle</h6>
             </a>
           </div>
         </div>
@@ -20,8 +20,14 @@
               <img src="<%= repo.thumbnail_url %>" alt="" >
             </a>
             <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-              <h6 class='video_name'><%= repo.video.name %></h6>
+              <h6 class='video_name'><%= truncate(repo.player_title, length: 80) %></h6>
             </a>
+            <% if user_signed_in? && current_user == @user  %>
+              <div class='repo_user_action_items center' style=''>
+                <%= link_to "Edit", repo.editor_url, class: "repo_edit_btn" %>
+                <%= link_to "Delete", repo.destroy_url, method: "post", class: "repo_delete_btn", data: {confirm: "Are you sure?"} %>
+              </div>
+            <% end %>
           </div>
         </div>
       <% end %>

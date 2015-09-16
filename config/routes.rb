@@ -22,6 +22,7 @@ River::Application.routes.draw do
     get "faq", :to => "home#faq"
     get "how_to_use", :to => "home#how_to_use"
     get "explore",   to: "home#community_translations",   as: "community_translations"
+    post "search",   to: "home#search",   as: "search"
 
     get "videos/new",                            :to => "videos#new"
     get "videos/:token",                        to: "videos#show",            as: "video"
@@ -34,7 +35,7 @@ River::Application.routes.draw do
     get "requests/:id",      :to => "requests#show",       :as => "video_request_show"
     post "videos/:video_token/repositories/upload", :to => "repositories#upload", :as => "video_repository_upload"
     post "/r/:token/upload", :to => "repositories#upload_to_existing_repo", :as => "upload_to_existing_repo"
-    post "/r/:token/import_to_youtube", :to => "repositories#import_to_youtube", :as => "import_to_youtube_repo"
+    post "/r/:token/export_to_youtube", :to => "repositories#export_to_youtube", :as => "export_to_youtube_repo"
     get "subs",                                  :to => "repositories#index",  :as => "repositories"
     get "releases/:id",                          :to => "releases#show",  :as => "release_show"
 
@@ -43,9 +44,12 @@ River::Application.routes.draw do
       get "status"
     end
 
-    resources :groups do
+    match "/groups/:name" => redirect("/topics/%{name}")
+
+    resources :groups, :path => "topics" do
       member do 
         post "join"
+        post "add_moderator"
         put  "change_avatar"
         get  "comments/:comment_short_id", to: "groups#show", as: "comment"
       end
@@ -80,8 +84,16 @@ River::Application.routes.draw do
       end
     end
 
+    resources :correction_requests, :only => [], :controller => "correction_requests" do
+      member do
+        post "approve"
+        post "reject"
+      end
+    end
+
     resources :subtitles, :only => [] do
       member do
+        post "fix"
         post "upvote"
         post "downvote"
         post "unvote"
@@ -101,6 +113,8 @@ River::Application.routes.draw do
     end
 
 
+    post "/r/:token/delete",                to: "repositories#destroy",   as: "repo_destroy"
+
     get "/:token",                        to: "repositories#show",   as: "repo"
     get "/r/:token",                        to: "repositories#show",   as: "repo"
     get "/embed/:token",                    to: "repositories#embed",   as: "repo_embed"
@@ -109,6 +123,7 @@ River::Application.routes.draw do
     get "/r/:token/subtitles/:subtitle_short_id", to: "repositories#show", as: "repo_subtitle"
     post "/r/:token/publish",               to: "repositories#publish", as: "publish_repo"
     post "/r/:token/update_title",          to: "repositories#update_title", as: "update_repo_title"
+    post "/r/:token/update_font",          to: "repositories#update_font", as: "update_repo_font"
     post "/r/:token/fork",                  to: "repositories#fork",   as: "fork_repo"
     get "/r/:token/editor",                 to: "repositories#editor", as: "editor_repo"
     get '/:username/:token',              to: 'repositories#show',   as: 'user_repo'

@@ -84,6 +84,9 @@ gem 'ahoy_matey'
 gem 'activeuuid', '>= 0.5.0'
 gem 'delayed_job_active_record'
 gem 'daemons'
+gem "differ"
+
+gem "elasticsearch-model", :git => "git://github.com/elasticsearch/elasticsearch-rails.git", :ref => "ded20356920802c35d258756113acfd95b25ade6"
 
 
 

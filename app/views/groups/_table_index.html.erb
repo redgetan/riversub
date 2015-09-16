@@ -1,20 +1,15 @@
-<table>
+<table class='topics_table col-md-9 col-md-offset-2 col-xs-10 col-xs-offset-1'>
   <tr>
-    <th>Group</th>
-    <th>Members</th>
+    <th>Topic</th>
+    <th>Subtitles</th>
     <th>Description</th>
-    <!-- <th>Subtitles</th> -->
-    <!-- <th>Requests</th> -->
   </tr>
-
-<% @groups.sort_by { |group| group.members.count }.reverse.each do |group| %>
-  <tr>
-    <td class="group_name"><a href="<%= group.url %>"><%= group.name %></a></td>
-    <td class="group_members_count"><%= group.members.count %></td>
-    <td class="group_description"><%= group.description %></td>
-    <!-- <td class="group_subtitles_count"><%= group.published_repositories.count %></td> -->
-    <!-- <td class="group_requests_count"><%= group.requests.count %></td> -->
-  </tr>
-<% end %>
+  <% @groups.each do |group| %>
+    <tr onclick="document.location = '<%= group.url %>';">
+      <td><span class='group_name'><%= group.name %></span></td>
+      <td><%= group.repo_count %></td>
+      <td><span class='group_description'><%= truncate(group.raw_description, length: 100) %></span></td>
+    </tr>
+  <% end %>
 </table>
 

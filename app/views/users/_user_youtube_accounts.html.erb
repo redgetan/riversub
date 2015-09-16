@@ -1,0 +1,58 @@
+<div class='header-section col-xs-12'></div>
+
+<div class='row'>
+  <div class="col-xs-8  col-xs-offset-2" >
+
+    <% if user_signed_in? && current_user == @user %>
+      <p>If you're a youtube channel owner, yasub can list all user submitted translations of your videos and you can add them back to the original video. But In order to do that, you need to link your youtube account so that the system would recognize which translated videos belong to you.</p>
+      <br>
+      <h4 class=''>
+        <a href="<%= new_page_url %>" class='new_producer_page_btn pull-right'>+ Link Youtube Account</a>
+      </h4>
+    <% end %>
+
+    <h4>Youtube Accounts</h4>
+
+    <ul class='producer_page_list_container'>
+      <% @user.pages.includes(:identity).each do |page| %>
+        <li class='col-xs-2'>
+          <a class='producer_page_list_item' href="<%= page.url %>">
+            <div class='pull-left'>
+              <div id='avatar' >
+                <div class="thumbnail">
+                  <%= image_tag page.thumbnail_url  %>
+                </div>
+              </div>
+              <span class=""><%= page.title %></span>
+              <% if user_signed_in? && current_user == @user %>
+                <% unless page.status == "connected" %>
+                  <a href="<%= page.status_url %>" class="page_status">remove permission error</a>
+                <% end %>
+              <% end %>
+            </div>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+
+    <div class='header-section col-xs-12'></div>
+
+    <h4>Translations of videos that belong to <%= @user.username %></h4>
+
+    <% if @user_submissions_for_producer.present? %>
+      <div class='row'>
+        <div class='latest_videos videos videos_container section_block '>
+          <div class="home_try section_body">
+            <% @user_submissions_for_producer.each_slice(4) do |repos| %>
+              <%= render partial: "repositories/list", locals: {repos: repos, repo_width: "col-md-3", show_export_actions: true}  %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <p>There are currently no translations submitted by users in yasub.</p>
+    <% end %>
+
+  </div>
+</div>
+

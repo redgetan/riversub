@@ -1,7 +1,7 @@
 <%= form_for(@group, :html => { :multipart => true, data: { "group-id" => @group.short_name } } ) do |f| %>
   <% if @group.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
+      <h2><%= pluralize(@group.errors.count, "error") %> prohibited this topic from being saved:</h2>
 
       <ul>
       <% @group.errors.full_messages.each do |msg| %>
@@ -41,14 +41,12 @@
     <%= f.text_field :short_name, style: "clear: both;" %>
   </div>
   <div class="field">
-    <%= f.label :description %>
-    <%= f.text_area :description, rows: 10, style: "clear: both;"  %>
-  </div>
-  <div class="field">
-    <%= f.label :allow_subtitle_download, "Allow anyone to download subtitles" %>
-    <%= f.select :allow_subtitle_download, [true, false], style: "clear: both;"  %>
+    <%= f.label :description, style: "float: left;" %>
+    <a href="" class='markdown_help_toggler'>formatting help</a>
+    <%= render "shared/markdownhelp" %>
+    <%= f.text_area :description, rows: 10, cols: 80, style: "clear: both;"  %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Submit" %>
   </div>
 <% end %>

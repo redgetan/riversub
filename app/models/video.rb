@@ -1,6 +1,17 @@
+require 'elasticsearch/model'
+
 class Video < ActiveRecord::Base
 
   has_paper_trail :on => [:update, :destroy]
+
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  settings index: { number_of_shards: 1 } do
+    mappings dynamic: 'true' do
+      indexes :metadata, type: "nested"
+    end
+  end
 
   include Rails.application.routes.url_helpers
   include ApplicationHelper
@@ -22,6 +33,26 @@ class Video < ActiveRecord::Base
 
   before_create :generate_token
 
+  def self.nested_search(query, options = {})
+    self.search({
+      query: { 
+        nested: { 
+          path: 'metadata', 
+          query: { 
+            bool: { 
+              must: [{ 
+                multi_match: { 
+                  query: query, 
+                  fields: ['metadata.snippet.title','metadata.snippet.description','metadata.snippet.tags']  
+                } 
+              }] 
+            } 
+          } 
+        }
+      },
+    }.merge(options))
+  end
+
   def correct_metadata
     unless self.metadata && self.source_id
       errors.add(:base, "Url is not a valid youtube link.")
@@ -31,6 +62,7 @@ class Video < ActiveRecord::Base
   def assign_metadata(force = false)
     if force || self.metadata.nil?
       self.metadata = YoutubeClient.new.get_metadata(self.source_id)[0]
+      self.yt_channel_id = self.metadata["snippet"]["channelId"]
     end
   end
 
@@ -88,6 +120,11 @@ class Video < ActiveRecord::Base
     self.metadata["snippet"]["channelTitle"]
   end
 
+  def uploader_url
+    return "unavailable" unless self.metadata
+    "https://www.youtube.com/channel/#{self.metadata["snippet"]["channelId"]}"
+  end
+
   def name
     return "Video unavailable" unless self.metadata
     self.metadata["snippet"]["title"]  
@@ -114,8 +151,8 @@ class Video < ActiveRecord::Base
     !repositories.select { |repo| repo.visible_to_user?(target_user) }.present?
   end
 
-  def repositories_visible_to_user(target_user)
-    repositories.select { |repo| repo.visible_to_user?(target_user) }
+  def repositories_visible_to_user(target_user, show_published_only = true)
+    repositories.select { |repo| repo.visible_to_user?(target_user, show_published_only) }
   end
 
   def ask_source_language?
@@ -160,6 +197,10 @@ class Video < ActiveRecord::Base
 
   def self.selected_language_select_for(group)
     group.settings.get("default_video_language_code")
+  end
+
+  def self.for_channel_id(channel_ids)
+    self.where(yt_channel_id: channel_ids)
   end
 
   def to_param

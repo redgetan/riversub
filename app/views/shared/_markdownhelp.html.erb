@@ -1,0 +1,53 @@
+<div class="markdown_help" style="display: none; padding-top: 0.5em;">
+  <table>
+    <tr>
+      <th>you type:</th>
+      <th>you see:</th>
+    </th>
+    <tr>
+      <td><tt>*italics*</tt></td>
+      <td width=""><em>italics</em></td>
+    </tr>
+    <tr>
+      <td><tt>**bold**</tt></td>
+      <td><strong>bold</strong></td>
+    </tr>
+    <tr>
+      <td><tt>[yasub](http://yasub.com/)</tt></td>
+      <td><a href="http://example.com/"
+        style="color: steelblue; text-decoration: underline;">yasub</a></td>
+    </tr>
+    <tr>
+      <td><tt>
+        * item 1
+        <br>
+        * item 2
+        <br>
+        * item 3
+        <br>
+      </tt></td>
+      <td>
+        <ul>
+          <li>item 1</li>
+          <li>item 2</li>
+          <li>item 3</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><tt>&gt; quoted text</tt></td>
+      <td><blockquote> quoted text</blockquote></td>
+    </tr>
+    <tr>
+      <td><tt>~~struckthrough~~</tt></td>
+      <td><strike>struckthrough</strike></td>
+    </tr>
+    </tr>
+    <% if defined?(allow_images) && allow_images %>
+      <tr>
+        <td><tt>![alt text](http://example.com/image.jpg)</tt></td>
+        <td>(inline image)</td>
+      </tr>
+    <% end %>
+  </table>
+</div>

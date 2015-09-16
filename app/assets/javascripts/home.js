@@ -113,7 +113,7 @@ $(document).ready(function(){
 
 function subtitleVideo(url, options) {
 
-  if (!url.match(/youtube/)) {
+  if (!url.match(/youtu\.?be/)) {
     throw "Only youtube urls are allowed";
   }
 

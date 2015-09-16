@@ -33,6 +33,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       Backbone.trigger("trackchange", this.tracks.at(0));
     }
 
+    // ensure first subtitle appears if it start_time is 0
+    this.onTrackStart(this.tracks.at(0));
   },
 
   enableHashTab: function() {
@@ -64,6 +66,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       }
     } else if (hash === "#timeline_tab") {
       this.prepareTimerTab();
+    } else if (hash === "#font_tab") {
+      $("#main_controls").hide();
     }
   },
 
@@ -74,11 +78,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   useLocalStorageIfNeeded: function() {
     var self = this;
     Backbone.getSyncMethod = function(model) {
-      if(self.repo.is_guided_walkthrough) {
+      if(self.repo.current_user === self.repo.owner) {
+        return Backbone.ajaxSync;
+      } else {
         return Backbone.localSync;
       }
-
-      return Backbone.ajaxSync;
     };
   },
 
@@ -153,6 +157,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$replayBtn.on("mousedown",this.onReplayBtnClick.bind(this));
     this.$timelineBtn.on("mousedown",this.onTimelineBtnClick.bind(this));
     this.$subtitleBtn.on("mousedown",this.onSubtitleBtnClick.bind(this));
+    this.$fontBtn.on("mousedown",this.onFontBtnClick.bind(this));
     this.$uploadBtn.on("mousedown",this.onUploadBtnClick.bind(this));
     this.$backwardBtn.on("mousedown",this.onBackwardBtnClick.bind(this));
     this.$forwardBtn.on("mousedown",this.onForwardBtnClick.bind(this));
@@ -200,6 +205,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if (this.$publishBtn.attr("disabled") == "disabled") return;
 
+    this.$publishBtn.text("wait...")
+    this.$publishBtn.attr("disabled", "disabled");
+
     $.ajax({
       url: this.repo.publish_url,
       type: "POST",
@@ -208,8 +216,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         window.location.href = data.redirect_url;
       },
       error: function(data) {
-        alert("Publish failed. We would look into this shortly.");
-        throw data.responseText;
+        if (data.status === 403) {
+          alert(JSON.parse(data.responseText)["error"]);  
+        } else {
+          alert("Publish failed. We would look into this shortly.");
+          throw data.responseText;
+        }
       }
     });
   },
@@ -316,7 +328,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.prepareSubtitleTab();
     }
 
-    if ($(e.target).attr("href") === "#upload_tab") {
+    if (($(e.target).attr("href") === "#upload_tab") ||
+        ($(e.target).attr("href") === "#font_tab")) {
       $("#main_controls").hide();
     } else {
       $("#main_controls").show();
@@ -349,7 +362,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<div id='iframe_container'>" +
                           "<div id='iframe_overlay'>" +
                           "</div>" +
-                          "<div id='overlay_btn'><i class='fa fa-play'></i></div>" +
+                          // "<div id='overlay_btn'><i class='fa fa-play'></i></div>" +
                         "</div> " +
                         "<div id='subtitle_bar' class='center'> " +
                           "<span id='subtitle_display' class='center'></span> " +
@@ -374,6 +387,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                     "<ul class='nav nav-tabs'>" +
                       "<li id='timeline_tab_anchor' class='active'><a href='#timeline_tab' data-toggle='tab'>Timer</a></li>" +
                       "<li id='subtitle_tab_anchor' ><a href='#subtitle_tab' data-toggle='tab'>Subtitle</a></li>" +
+                      "<li id='font_tab_anchor' ><a href='#font_tab' data-toggle='tab'>Font</a></li>" +
                       "<li id='upload_tab_anchor' class='pull-right'><a href='#upload_tab' data-toggle='tab'>Upload</a></li>" +
                       // "<li><a id='help_btn' class='' href='#'><i class='icon-question-sign'></i></a></li>" +
                     "</ul>" +
@@ -391,9 +405,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                           "<div id='subtitle_list'></div> " +
                         "</div> " +   // #subtitle_container
                       "</div>" +   // tab pane
+                      "<div class='tab-pane' id='font_tab'>" +
+                        "<div id='font_container'> " +
+                        "</div> " +   
+                      "</div>" +   // tab pane
                       "<div class='tab-pane' id='upload_tab'>" +
                         "<div id='upload_container'> " +
-                        "</div> " +   // #subtitle_container
+                        "</div> " +   
                       "</div>" +   // tab pane
                     "</div>" +     // tab content
 
@@ -408,6 +426,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                       "<div class='sub_controls pull-right'> " +
                         "<button type='button' class='river_btn timeline_btn '>Timer</button> " +
                         "<button type='button' class='river_btn subtitle_btn '>Subtitle</button> " +
+                        "<button type='button' class='river_btn font_btn '>Font</button> " +
                         "<button type='button' class='river_btn upload_btn '>Upload</button> " +
                         "<a class='publish_btn river_btn pull-right'>Publish</a>" +
                       "</div> " +
@@ -489,6 +508,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$replayBtn = $("#replay_btn");
     this.$timelineBtn = $(".timeline_btn");
     this.$subtitleBtn = $(".subtitle_btn");
+    this.$fontBtn = $(".font_btn");
     this.$uploadBtn = $(".upload_btn");
 
     $("#seek_head_body").hide();
@@ -540,6 +560,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$keyboard_shortcuts = $("#keyboard-shortcuts");
     this.$status_bar = $("#status-bar");
 
+    this.applyFontSettings();
 
     // tooltips
     this.$timelineBtn.tooltip({title: "Timer Mode"});
@@ -547,11 +568,128 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$uploadBtn.tooltip({title: "Upload Mode"});
 
     // upload form
+    // $(".editor_loading_notice").remove();
+    // $("#upload_subtitle_form").show();
     $("#upload_subtitle_form").appendTo("#upload_container");
+
+    this.setupFontManager();
 
     this.setupLanguageSelect();
 
     $("footer").hide();
+  },
+
+  setupFontManager: function() {
+    $(".font_manager").show();
+    $(".font_manager").appendTo("#font_container");
+    this.setupFontSelect("font-family", "200px");
+    this.setupFontSelect("font-size");
+    this.setupFontSelect("font-weight");
+    this.setupFontSelect("font-style");
+    this.setupFontColorInput();
+  },
+
+  setupScreenZoom: function() {
+    var screenZoom = "<div class='screen_zoom'><i class='screen_zoom_btn fa fa-desktop'></i></div>";
+    $(".player_controls").append(screenZoom);
+
+    $(".screen_zoom").on("click", function(){
+      if ($("#iframe_container").css("height") === "310px") {
+        $("#iframe_container").css("height","190px");
+        $(".screen_zoom_btn").removeClass("fa-laptop");
+        $(".screen_zoom_btn").addClass("fa-desktop");
+        $("#editor").removeClass("desktop");
+        $("#editor").addClass("laptop");
+      } else {
+        $("#iframe_container").css("height","310px");
+        $(".screen_zoom_btn").removeClass("fa-desktop");
+        $(".screen_zoom_btn").addClass("fa-laptop");
+        $("#editor").removeClass("laptop");
+        $("#editor").addClass("desktop");
+      }
+    });
+  },
+
+  setupFontSelect: function(font_property, width) {
+    var width = width || "100px"; 
+    var prop = font_property.split("-")[1];
+
+    $("#font_" + prop + "_select").select2({width: width});
+
+    // user highlights selection but doesnt choose yet
+    $("#font_" + prop + "_select").data("select2").on("results:focus", function(params){
+      var value = params.data.id;
+      this.getTargetFontSettingElement().css("font-" + prop,value);
+    }.bind(this));
+
+    // user cancels selection
+    $("#font_" + prop +"_select").data("select2").on("close", function(params){
+      var value = $(".font_" + prop +"_container" + " .select2-selection__rendered").text();
+      this.getTargetFontSettingElement().css("font-" + prop,value);
+    }.bind(this));
+
+    // user finally chooses selection
+    $("#font_" + prop +"_select").data("select2").on("select", function(params){
+      var key = "font_" + prop;
+      var value = params.data.id;
+      var data = {}
+      data[key] = value;
+
+      this.getTargetFontSettingElement().css("font-" + prop,value);
+      this.saveFontProperty(data);
+    }.bind(this));
+  },
+
+  setupFontColorInput: function() {
+    $("#font_color_input").spectrum({
+      showInput: true,
+      preferredFormat: "hex", 
+      change: this.fontColorInputChange.bind(this)
+    });
+
+    $("#font_outline_color_input").spectrum({
+      showInput: true,
+      preferredFormat: "hex",
+      change: this.fontOutlineColorInputChange.bind(this)
+    });
+  },
+
+  fontColorInputChange: function(color) {
+    var value = color.toHexString();
+    this.getTargetFontSettingElement().css("color", value);
+    this.saveFontProperty({ "font_color" : value});
+  },
+
+  fontOutlineColorInputChange: function(color) {
+    var value = color.toHexString();
+    this.applyOutlineColor(this.getTargetFontSettingElement(),value);
+    this.saveFontProperty({ "font_outline_color" : value});
+  },
+
+
+  saveFontProperty: function(obj) {
+    this.saveNotify();
+    $.ajax({
+      url: this.repo.update_font_url,
+      type: "POST",
+      dataType: "json",
+      data: obj,
+      success: function(data) {
+        this.clearStatusBar();
+      }.bind(this),
+      error: function(data) {
+        this.clearStatusBar();
+        
+        try {
+          var message = JSON.parse(data.responseText).error;
+          alert(message);
+        } catch(e) {
+          alert("Unable to save font property. We would look into this shortly.");
+        }
+
+        throw data.responseText;
+      }.bind(this)
+    });
   },
 
   onTitleInputFocus: function(event) {
@@ -567,7 +705,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTitleInputHandleClick: function(event) {
-    console.log("title handle click");
     if (this.$titleInputHandle.hasClass("save_input")) {
       this.$titleInput.blur();
     } else {
@@ -778,6 +915,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       !$(event.target).hasClass("ui-spinner") &&
       !$(event.target).hasClass("repo_title_input") &&
       !$(event.target).hasClass("add_sub_input") && 
+      !$(event.target).hasClass("sp-input") && 
+      !$(event.target).prop("tagName") === "SELECT" && 
       !isInsideTimelineContainer && 
       !isInsideSubtitleContainer ) {
       this.preventSubtileInputFromLosingFocus(event);
@@ -806,6 +945,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onDocumentKeydown: function(event) {
+    if ($(event.target).hasClass("select2-search__field") ||
+        $(event.target).hasClass("sp-input")) {
+      return;
+    } 
 
     if (event.which === 16) {
       // shift key
@@ -1286,6 +1429,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onSubtitleBtnClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
     $("#subtitle_tab_anchor a").trigger("click");
+  },
+
+  onFontBtnClick: function(event) {
+    this.preventSubtileInputFromLosingFocus(event);
+    $("#font_tab_anchor a").trigger("click");
   },
 
   onUploadBtnClick: function(event) {

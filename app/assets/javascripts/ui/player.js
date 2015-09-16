@@ -2,7 +2,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   initialize: function(options) {
     this.IFRAME_OVERLAY_NON_AD_OVERLAPPING_FACTOR = 2.3;
-    this.MAX_SUBTITLE_DISPLAY_FONT_SIZE = 36;
+    this.MAX_SUBTITLE_DISPLAY_FONT_SIZE = 40;
     this.MIN_SUBTITLE_DISPLAY_FONT_SIZE = 12;
     this.FULLSCREEN_PARAM = "?fullscreen=true";
 
@@ -31,7 +31,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
       this.enterFullscreenMode();
     }
 
-    // ensure first subtitle appears if it start_time is 0
+    // ensure first subtitle appears 
     this.onTrackStart(this.tracks.at(0));
   },
 
@@ -280,7 +280,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$timer = setTimeout(function () {
       $(".player_controls").fadeOut();
       this.$fadeInBuffer = true;
-    }, 2000)
+    }, 5000)
   },
 
   onProgress: function() {

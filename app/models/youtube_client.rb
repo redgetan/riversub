@@ -2,7 +2,7 @@ class YoutubeClient
   include ApplicationHelper
 
   class InsufficientPermissions < StandardError; end
-  class ImportCaptionError < StandardError; end
+  class ExportCaptionError < StandardError; end
 
   attr_accessor :client
 
@@ -152,13 +152,21 @@ class YoutubeClient
 
     if result.status != 200
       error_message = JSON.parse(result.body)["error"]["message"]
-      raise ImportCaptionError.new(error_message)
+      raise ExportCaptionError.new(error_message)
     end
   end
 
+  def get_access_token_status
+    RestClient.get("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=#{@client.authorization.access_token}")  
+  end
+
   def get_metadata(video_ids, part = "snippet,contentDetails,statistics")
+    tries ||= 3
+
     url = "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{Array(video_ids).join(",")}&key=#{GOOGLE_API_KEY}"
     response = RestClient::Request.execute(method: :get, url: url, verify_ssl: false)
     JSON.parse(response)["items"]
+  rescue RestClient::Forbidden
+    retry unless (tries -= 1).zero?
   end
 end

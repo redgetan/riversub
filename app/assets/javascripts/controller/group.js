@@ -1,5 +1,9 @@
 $.extend(river.controller,{
+  "groups#new": function() {
+    river.utility.enableMarkdownHelper();
+  },
   "groups#edit": function() {
+    river.utility.enableMarkdownHelper();
 
     $("form.edit_group input#group_avatar").on("change",function(event){
       // http://stackoverflow.com/questions/166221/how-can-i-upload-files-asynchronously-with-jquery
@@ -8,7 +12,7 @@ $.extend(river.controller,{
       var formData = new FormData($form[0]);
 
       $.ajax({
-        url: '/groups/' + groupId + '/change_avatar',
+        url: '/topics/' + groupId + '/change_avatar',
         type: 'PUT',
         data: formData,
         beforeSend: function() {
@@ -34,6 +38,10 @@ $.extend(river.controller,{
     river.utility.enableHashTab();
     
     $(".request_category_select").on("change", function() {
+      document.location.href = $(this).val();
+    });
+
+    $(".user_submission_category_select").on("change", function() {
       document.location.href = $(this).val();
     });
   }

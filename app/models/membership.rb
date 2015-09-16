@@ -17,5 +17,9 @@ class Membership < ActiveRecord::Base
           }
 
 
+  def is_moderator?
+    is_owner?  
+  end
+
   
 end

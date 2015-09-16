@@ -6,7 +6,10 @@ class ApplicationController < ActionController::Base
 
 
   #before_filter :authenticate_user!
-  rescue_from ActiveRecord::RecordNotFound, :with => :render_404
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    flash[:error] = "Sorry, that page doesnt exist"
+    redirect_to root_url
+  end
 
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|

@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
   # authorize_resource
 
   def index
-    # @groups = Group.all
+    @groups = Group.all.sort_by { |group| group.members.count }.reverse
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,9 +13,17 @@ class GroupsController < ApplicationController
 
   def show
     @group_repos = if @group.short_name == "jpweekly" 
-                     @group.published_repositories.includes(:video, { :timings => :subtitle }, :user).where(language: "en").recent.page params[:page]
+                     if params[:repo_status] == "draft"
+                       @group.draft_repositories.includes(:video, { :timings => :subtitle }, :user).where(language: "en").order("updated_at DESC").page params[:page]
+                     else
+                       @group.published_repositories.includes(:video, { :timings => :subtitle }, :user).where(language: "en").recent.page params[:page]
+                     end
                    else
-                     @group.published_repositories.includes(:video, { :timings => :subtitle }, :user).recent.page params[:page]
+                     if params[:repo_status] == "draft"
+                       @group.draft_repositories.includes(:video, { :timings => :subtitle }, :user).order("updated_at DESC").page params[:page]
+                     else
+                       @group.published_repositories.includes(:video, { :timings => :subtitle }, :user).recent.page params[:page]
+                     end
                    end
                    
     @activities  = @group.public_activities.includes(:trackable, :owner).limit(5)
@@ -39,7 +47,7 @@ class GroupsController < ApplicationController
 
   def new
     if !user_signed_in?
-      flash[:error] = "You must be logged in to create a group"
+      flash[:error] = "You must be logged in to create a topic"
       store_location
       redirect_to new_user_session_url and return
     end
@@ -59,15 +67,34 @@ class GroupsController < ApplicationController
 
   def join
     unless user_signed_in?
-      flash[:error] = "You must be logged in to join a group"
+      flash[:error] = "You must be logged in to subscribe to a topic"
       store_location(@group.url)
       redirect_to new_user_session_url and return
     end
 
     @group.memberships.create!(user_id: current_user.id)
 
-    flash[:notice] = "Joined #{@group.name}"
+    flash[:notice] = "Subscribed to #{@group.name}"
     redirect_to @group.url
+  end
+
+  def add_moderator
+    unless can? :edit, @group
+      flash[:error] = "You dont have permission to do that"
+      redirect_to @group.members_url and return
+    end
+
+    unless @user = User.find_by_username(params[:username])
+      flash[:error] = "User #{params[:username]} does not exist"
+      redirect_to @group.members_url and return
+    end
+
+    @membership = @group.memberships.where(user_id: @user.id).first_or_create!
+    @membership.is_owner = true
+    @membership.save!
+
+    flash[:notice] = "#{@user.username} added as moderator"
+    redirect_to @group.members_url
   end
 
   def change_avatar
@@ -84,7 +111,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
-        format.html { redirect_to @group, notice: 'Group was successfully created.' }
+        format.html { redirect_to @group, notice: 'Topic was successfully created.' }
         format.json { render json: @group, status: :created, location: @group }
       else
         format.html { render action: "new" }
@@ -98,7 +125,7 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
-        format.html { redirect_to @group, notice: 'Group was successfully updated.' }
+        format.html { redirect_to @group, notice: 'Topic was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

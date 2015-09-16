@@ -16,9 +16,20 @@ class Timing < ActiveRecord::Base
   accepts_nested_attributes_for :subtitle
 
   after_save :touch_parent
+  after_save :set_subtitle_repository
 
   def touch_parent
-    self.repository.touch
+    self.repository.touch if self.repository
+  end
+
+  def set_subtitle_repository
+    unless self.subtitle.repository_id  
+      self.subtitle.update_column(:repository_id, self.repository_id)
+    end
+
+    unless self.subtitle.repository_token  
+      self.subtitle.update_column(:repository_token, self.repository.try(:token)) 
+    end
   end
 
   def end_time_must_be_greater_than_start_time

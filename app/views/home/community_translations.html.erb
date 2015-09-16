@@ -1,30 +1,21 @@
 <div class='header-section col-md-12'></div>
 
-<h2 class='col-md-10 col-md-offset-1 center'>Fan Translations</h2>
+<h2 class='col-md-10 col-md-offset-1 center'>Topics</h2>
 
-<div class="create_subtitle">
-  <div class="home_about col-md-offset-3 col-md-6 section_block">
-    <div class="section_body">
-      <p>
-        Use our FREE online subtitle editor to add subtitles to any existing youtube video. Published translations would be shown below.
-      </p>
-    </div>
-  </div>
-
-
-  <div class="home_try col-md-offset-2 col-md-8 section_block">
-    <div class="section_body">
-      <form class="sub">
-        <div class="subtitle_video_container input-group">
-          <div class="input-append">
-            <input name="source_url" class="source_url" type="text" placeholder="Paste youtube url">
-            <button type="button" class="river_btn sub_btn" data-loading-text="Loading...">Start</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
+<div class="center">
+  <br>
+  <br>
+  <%= link_to '+ New topic', new_group_path, class: "new_group_btn" %>
 </div>
+
+
+<div class='row'>
+  <%= render "groups/table_index" %>
+</div>
+
+<div class='header-section col-md-12'></div>
+
+<h2 class='col-md-10 col-md-offset-1 center'>User Submissions</h2>
 
 <div class='row'>
   <div class='latest_videos videos videos_container section_block col-md-10 col-md-offset-2 col-xs-10 col-xs-offset-1'>

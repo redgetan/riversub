@@ -2,13 +2,7 @@ class RepositoriesController < ApplicationController
 
 
   def new
-    unless user_signed_in?
-      flash[:error] = "You must be logged in to #{params[:upload] ? 'upload a subtitle' : 'add a subtitle'}"
-      store_location
-      redirect_to new_user_session_url and return
-    end
-
-    @video = Video.find_by_token(params[:video_token])
+    @video = Video.find_by_token!(params[:video_token])
     @video.current_user = current_user
 
     @group = Group.find_by_short_name params[:group_id]
@@ -22,17 +16,22 @@ class RepositoriesController < ApplicationController
 
     @video_language_code  = params[:video_language_code]
     @repo_language_code   = params[:repo_language_code]
-    @hide_group           = params[:hide_group] || current_user.groups.count == 0
+    @hide_group           = params[:hide_group] || current_user.try(:groups).try(:count).to_i == 0
     @request_id           = params[:request_id]
 
     if !(@is_upload || @is_empty) && params[:source_repo_token]
-      @source_repo = Repository.find_by_token! params[:source_repo_token] 
+      @source_repo = Repository.find_by_token! params[:source_repo_token]
     end
   end
 
   def show
     @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
-    @related_repos = Repository.includes(:video, :user).related(@repo)
+
+    unless @repo.is_published?
+      redirect_to @repo.editor_url and return
+    end
+
+    @related_repos = Repository.includes(:user, :video).related(@repo)
 
     ahoy.track "repo_view"
 
@@ -55,7 +54,7 @@ class RepositoriesController < ApplicationController
     end
 
     if params[:subtitle_short_id]
-      @repo.highlight_subtitle_short_id = params[:subtitle_short_id] 
+      @repo.highlight_subtitle_short_id = params[:subtitle_short_id]
     end
 
     Comment.highlight_comment(@comments,params[:comment_short_id])
@@ -68,22 +67,19 @@ class RepositoriesController < ApplicationController
     if can?(:read, @repo)
       render layout: false
     else
-      render :text => "You don't have permission to see that" 
+      render :text => "You don't have permission to see that"
     end
   end
-  
+
   def create
     create_common
-    @repo = Repository.create!(video: @video, 
-                               user: current_user, 
+    @repo = Repository.create!(video: @video,
+                               user: current_user,
                                language: @repo_language_code,
                                request_id: params[:request_id])
 
     @group = Group.find_by_short_name params[:group_id]
-
-    if @group && can?(:edit, @group)
-      @repo.update_column(:group_id, @group.id) 
-    end
+    @repo.update_column(:group_id, @group.try(:id))
 
     @page = Page.find_by_short_name params[:page_id]
 
@@ -91,7 +87,7 @@ class RepositoriesController < ApplicationController
 
     if params[:source_repo_token].present?
       source_repo = Repository.find_by_token params[:source_repo_token]
-      @repo.setup_translation!(source_repo) 
+      @repo.setup_translation!(source_repo)
     end
 
 
@@ -99,11 +95,11 @@ class RepositoriesController < ApplicationController
   end
 
   def fork
-    @source_repo = Repository.find_by_token! params[:token]  
+    @source_repo = Repository.find_by_token! params[:token]
     @target_repo = Repository.create!(video: @source_repo.video, user: current_user)
 
-    @target_repo.copy_timing_from!(@source_repo) 
-    
+    @target_repo.copy_timing_from!(@source_repo)
+
     redirect_to @target_repo.editor_url
   end
 
@@ -116,9 +112,9 @@ class RepositoriesController < ApplicationController
     create_common
 
     begin
-      @repo = Repository.create_from_subtitle_file!(video: @video, 
-                                                    user: current_user, 
-                                                    language: @repo_language_code, 
+      @repo = Repository.create_from_subtitle_file!(video: @video,
+                                                    user: current_user,
+                                                    language: @repo_language_code,
                                                     subtitle_file: params[:subtitle_file])
     rescue SRT::File::InvalidError => e
       flash[:error] = e.message
@@ -135,13 +131,9 @@ class RepositoriesController < ApplicationController
 
     @repo = Repository.find_by_token! params[:token]
 
-    unless can? :edit, @repo
+    unless user_signed_in? && can?(:edit, @repo)
       flash[:error] = "You don't have permission to do that"
-      if user_signed_in?
-        redirect_to @repo.editor_url and return
-      else
-        redirect_to root_url and return
-      end
+      redirect_to @repo.editor_url and return
     end
 
     if params[:subtitle_file].blank?
@@ -165,18 +157,31 @@ class RepositoriesController < ApplicationController
   def publish
     @repo = Repository.find_by_token! params[:token]
 
-    if @repo.update_attributes!(is_published: true)
-      respond_to do |format|
-        format.html  { redirect_to @repo.url  }
-        format.json  { render :json => { :redirect_url => @repo.post_publish_url }, :status => 200 }
-      end
-    else
-      render :json => { :error => @repo.errors.full_messages }, :status => 403
+    if !user_signed_in?
+      render :json => { :error => "You must be signed in to publish" }, :status => 403 and return
+    elsif cannot?(:edit, @repo)
+      render :json => { :error => "You dont have permission to publish" }, :status => 403 and return
+    end
+
+    @repo.publish!
+
+    respond_to do |format|
+      format.html  { redirect_to @repo.url  }
+      format.json  { render :json => { :redirect_url => @repo.post_publish_url }, :status => 200 }
     end
   end
 
   def update_title
     @repo = Repository.find_by_token! params[:token]
+
+    unless can? :edit, @repo
+      flash[:error] = "You don't have permission to do that"
+      if user_signed_in?
+        redirect_to @repo.editor_url and return
+      else
+        redirect_to root_url and return
+      end
+    end
 
     if @repo.update_attributes!(title: params[:repo_title])
       respond_to do |format|
@@ -187,33 +192,57 @@ class RepositoriesController < ApplicationController
     end
   end
 
-  def import_to_youtube
+  def update_font
     @repo = Repository.find_by_token! params[:token]
 
-    @repo.import_caption_to_youtube!
+    unless can? :edit, @repo
+      render :json => { :error => "You don't have permission to do that" }, :status => 403 and return
+    end
+
+    if @repo.update_attributes!(font_params)
+      respond_to do |format|
+        format.json  { render :json => {}, :status => 200 }
+      end
+    else
+      render :json => { :error => @repo.errors.full_messages }, :status => 403
+    end
+
+  end
+
+  def export_to_youtube
+    @repo = Repository.find_by_token! params[:token]
+
+    unless can? :export, @repo
+      flash[:error] = "You don't have permission to do that"
+      redirect_to :back and return
+    end
+
+    @repo.export_caption_to_youtube!
     flash[:notice] = "Subtitle successfully added to Youtube"
     redirect_to :back
 
   rescue YoutubeClient::InsufficientPermissions
-    flash[:error] = "You need to let your Youtube account grant more permission in order to import the caption"
+    flash[:error] = "You need to let your Youtube account grant more permission in order to export the caption"
     redirect_to @repo.page.status_url
-  rescue YoutubeClient::ImportCaptionError
-    flash[:error] = "Unable to import caption. We're currently taking a look and will contact you shortly."
-    redirect_to @repo.page.url
+  rescue YoutubeClient::ExportCaptionError
+    flash[:error] = "Unable to export caption. We're currently taking a look and will contact you shortly."
+    redirect_to :back
   end
 
   def editor
     @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
     @repo.current_user = current_user
 
-    unless can? :edit, @repo
-      if user_signed_in?
-        flash[:error] = "You don't have permission to see that"
-        redirect_to root_url and return
-      else
-        store_location
-        redirect_to new_user_session_url and return
-      end
+    if cannot?(:edit, @repo) && @repo.group.present?
+      flash[:notice] = "Read only mode. You can't edit someone else subtitle. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
+    elsif @repo.user && !user_signed_in?
+      store_location(@repo.editor_url)
+      redirect_to new_user_session_url and return
+    elsif !@repo.user && !user_signed_in?
+      flash[:notice] = "Demo mode. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
+    elsif cannot?(:edit, @repo)
+      flash[:error] = "You don't have permission to see that"
+      redirect_to root_url and return
     end
 
     # http://stackoverflow.com/a/14428894
@@ -238,11 +267,11 @@ class RepositoriesController < ApplicationController
      redirect_to new_user_session_url and return
     end
 
-    @repos = Repository.unpublished.recent
+    @repos = Repository.unpublished.order("updated_at DESC")
   end
 
   def sync_to_youtube
-    
+
   end
 
 
@@ -290,6 +319,20 @@ class RepositoriesController < ApplicationController
     render :text => "ok"
   end
 
+  def destroy
+    @repo = Repository.find_by_token! params[:token]
+
+    if cannot?(:edit, @repo)
+      flash[:error] = "You don't have permission to see that"
+      redirect_to @repo.user.url and return
+    end
+
+    @repo.delete
+
+    flash[:notice] = "Subtitle deleted"
+    redirect_to @repo.user.url
+  end
+
   private
 
     def find_repo
@@ -302,6 +345,10 @@ class RepositoriesController < ApplicationController
 
       @video = Video.find_by_token(params[:video_token])
       @video.update_attributes!(language: @video_language_code) if @video_language_code
+    end
+
+    def font_params
+      params.slice(*Repository.font_attributes)
     end
 
 end

@@ -1,7 +1,7 @@
 select {
   background-color: white;
 }
- 
+
 #overlay_btn {
   text-align: center;
 }
@@ -373,13 +373,16 @@ div#subtitle_bar {
 }
 
 #river_player #subtitle_bar {
-  height: 90px;
+  min-height: 90px;
+  height: auto;
   padding-top: 5px;
+  max-width: 1000px;
 }
 
 #editor #subtitle_bar {
   padding: 5px;
   height: 30px;
+  margin-top: 20px;
   line-height: 18px;
   width: inherit;
 }
@@ -397,8 +400,13 @@ div#subtitle_bar {
   background-color: rgba(128,128,128,0.5);
 }
 
-#editor .time_indicator {
+#editor .time_indicator,
+#editor.laptop .time_indicator {
   top: -180px;
+}
+
+#editor.desktop .time_indicator {
+  top: -300px;
 }
 
 #river_player .time_indicator {
@@ -417,7 +425,6 @@ div#avatar img {
 #river_player #subtitle_display {
   padding: 0px 10px;
   font-size: 18px;
-  margin-bottom: 5px;
   font-family: Arial;
 }
 
@@ -558,7 +565,7 @@ body {
 
 html.embed body,
 html.fullscreen body {
-  background: none;  
+  background: none;
   margin-bottom: 0px;
   margin-top: -10px;
   padding: 0px;
@@ -596,6 +603,7 @@ html.fullscreen {
 html.embed body #river_player #media_container #viewing_screen,
 html.fullscreen body #river_player #media_container #viewing_screen {
   height: 93%;
+  padding-top: 2%;
 }
 
 html.embed body #river_player #media_container #viewing_screen #iframe_container,
@@ -609,7 +617,7 @@ html.fullscreen body #river_player #media_container #viewing_screen #subtitle_ba
 }
 
 html.fullscreen body #river_player #media_container #viewing_screen #subtitle_bar {
-  padding-top: 40px;
+  padding-top: 20px;
 }
 
 html.fullscreen #media_container {
@@ -622,6 +630,7 @@ html.fullscreen #media_container {
 
 html.fullscreen #player_details,
 html.fullscreen .original_video_stats,
+html.fullscreen .twitter_follow_btn,
 html.fullscreen .related_videos_container {
   display: none;
 }
@@ -675,6 +684,7 @@ html.fullscreen .related_videos_container {
 
 .pagination {
   text-align: center;
+  clear: both;
 }
 
 #instructions_modal .accordion-heading .accordion-toggle {
@@ -712,6 +722,7 @@ html.fullscreen .related_videos_container {
 
 #river_player #subtitle_list {
   padding: 0px;
+  padding-left: 20px;
 }
 
 #editor #repo_label {
@@ -869,10 +880,14 @@ ul.social_login_buttons a {
   margin-left: 20px;
 }
 
+#river_player #transcript_container {
+  width: 500px;
+}
+
 #transcript_container,
 #comments_container,
 .share_container {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 #river_player .share_container {
@@ -886,6 +901,7 @@ ul.social_login_buttons a {
 #river_player .share_container {
   text-align: left;
   width: 400px;
+  clear: both;
 }
 
 .release_show_container .share_container {
@@ -1253,6 +1269,7 @@ footer a:hover{
 .video_thumb {
   float: left;
   margin-right: 10px;
+  margin-bottom: 8px;
 }
 
 .videos .row {
@@ -1322,12 +1339,12 @@ footer a:hover{
   margin: 20px;
 }
 
-#group_repositories_container .unimported_repository_controls {
+#group_repositories_container .unexported_repository_controls {
   color: lightgray;
   padding-right: 10px;
 }
 
-#group_repositories_container .unimported_repository_controls a {
+#group_repositories_container .unexported_repository_controls a {
   margin: 0px 10px;
 }
 
@@ -1340,9 +1357,7 @@ footer a:hover{
 }
 
 .user_groups_container  {
-  padding: 10px;
 }
-
 
 .sidebar-home {
   position: absolute;
@@ -1449,7 +1464,6 @@ footer a:hover{
 
 .player_controls_container {
   background-color: black;
-  height: 100%;
   min-height: 30px;
 }
 
@@ -1491,7 +1505,7 @@ footer a:hover{
 }
 
 #editor .player_timeline_container {
-  width: 810px;
+  width: 750px;
 }
 
 .player_controls #summary {
@@ -1684,8 +1698,15 @@ form#request_beta_invite input[name='email'] {
 
 
 #river_player .forks_list_item:hover ,
-#river_player .subtitle:hover {
+#river_player .subtitle:hover span.text_holder {
   background-color: lightgray ;
+}
+
+#river_player .subtitle span.text_holder {
+  min-width: 450px;
+  display: inline-block;
+  margin-left: 30px !important;
+  padding: 2px 5px;
 }
 
 
@@ -1815,6 +1836,7 @@ form#request_beta_invite input[name='email'] {
   clear: both;
   text-align: left;
   margin-bottom: 50px;
+  margin-top: 50px;
 }
 
 /*
@@ -2191,6 +2213,8 @@ div.markdown_help {
   border: 1px solid #e0e0e0;
   padding: 0 1em;
   margin-top: 0.5em;
+  width: 400px;
+  padding: 10px;
 }
 
 div.markdown_help_label {
@@ -2560,6 +2584,7 @@ iframe.fansubber_signup_form .ss-base-body {
 }
 
 .release_items_container {
+  clear: both;
   padding-left: 0px;
   display: inline-block;
 }
@@ -2578,7 +2603,7 @@ iframe.fansubber_signup_form .ss-base-body {
   width: 125px;
 }
 
-@media (min-width: 1200px) { 
+@media (min-width: 1200px) {
   .release_item .video_thumb img {
     width: 150px;
   }
@@ -2717,7 +2742,7 @@ div.field, div.actions {
 }
 
 .repo_open_editor_btn {
-  margin-top: 30px;
+  margin-top: 25px;
 }
 
 .publish_release_btn {
@@ -2776,6 +2801,7 @@ form.new_user #user_login {
   margin-bottom: 10px;
 }
 
+#river_player .original_video_owner,
 #river_player .original_video {
   clear: both;
   text-align: left;
@@ -2800,7 +2826,7 @@ form.new_user #user_login {
 }
 
 .original_video_view_count {
- padding: 5px; 
+ padding: 5px;
  color: gray;
 }
 
@@ -2866,7 +2892,7 @@ ul.source_repo_timing_list li span {
 }
 
 .new_translation_container {
-  margin-top: 35px;
+  margin-top: 30px;
 }
 
 .repo_favorite_btn div.score {
@@ -2943,8 +2969,8 @@ ul.source_repo_timing_list li span {
 }
 
 #river_player .player_language_select {
-  width: 100px; 
-  min-width: 100px;
+  width: 95px;
+  min-width: 95px;
   float: right;
 }
 
@@ -2968,7 +2994,7 @@ ul.source_repo_timing_list li span {
 
 @media screen and (min-width: 680px) {
   #river_player .player_timeline_container {
-    width: 63%;
+    width: 62%;
   }
 }
 
@@ -3025,8 +3051,15 @@ html.embed .expand_btn {
   display: none;
 }
 
-.video_duration {
+.release_item .video_duration {
   display: none;
+  position: absolute;
+  top: 112px;
+  left: 5px;
+  color: white;
+  background-color: black;
+  padding: 0px 5px;
+  font-size: 14px;
 }
 
 .latest_activity_container {
@@ -3098,17 +3131,18 @@ html.embed .expand_btn {
 .latest_release_container .release_item,
 .group_release_container .release_item,
 .release_items_container .release_item {
-  /*width: 150px;*/
+  min-width: 150px;
   display: table-cell;
   vertical-align: top;
   padding-right: 10px;
   padding-left: 5px;
   height: auto;
+  word-wrap: break-word;
 }
 
-.latest_release_container .release_item .video_thumb,  
-.group_release_container  .release_item .video_thumb, 
-.release_items_container  .release_item .video_thumb { 
+.latest_release_container .release_item .video_thumb,
+.group_release_container  .release_item .video_thumb,
+.release_items_container  .release_item .video_thumb {
   /*margin-right: 0px;*/
 }
 
@@ -3129,7 +3163,7 @@ html.embed .expand_btn {
 }
 
 .home_try .subtitle_video_container {
-  margin: auto; 
+  margin: auto;
 }
 
 .create_subtitle .section_block {
@@ -3155,7 +3189,7 @@ html.embed .expand_btn {
 .add_your_subtitle_container {
   margin-top: 30px;
   margin-bottom: 100px;
-  text-align: center; 
+  text-align: center;
 }
 
 .add_your_subtitle_explanation {
@@ -3187,7 +3221,7 @@ html.embed .expand_btn {
 
 #subtitle_original_display  {
   font-family: Arial;
-  color: lightgray;
+  color: #555;
   font-weight: 100;
 }
 
@@ -3228,23 +3262,21 @@ html.embed .expand_btn {
 
 .embed_container {
   text-align: left;
-  margin-top: 20px;
-  float: left;
-  margin-bottom: 20px;
+  margin-top: 10px;
 }
 
 .embed_code_input {
-    margin-left: 10px;
+    /*margin-left: 10px;*/
     padding: 0px 5px;
     background: none;
     border: solid 2px lightgray;
-    color: gray;  
+    color: gray;
     width: 300px;
 }
 
 .groups_videos {
   /*margin-top: 30px;*/
-  border: none; 
+  border: none;
 }
 
 .action_container {
@@ -3276,14 +3308,14 @@ html.embed .expand_btn {
   /*height: 16px;*/
 }
 
-.groups_videos .section_header, 
+.groups_videos .section_header,
 .action_container .section_header,
 .group_members .section_header,
 .group_requests .section_header,
 .group_translators .section_header {
 /*  border-bottom: solid 1px gray;
   text-align: center;
-  background: none; 
+  background: none;
   color: #333;
   margin: auto;
   width: 250px;
@@ -3484,6 +3516,7 @@ html.embed .expand_btn {
 
 .related_videos_container {
   text-align: left;
+  width: 480px;
 }
 
 .related_videos_container .section_header {
@@ -3560,13 +3593,13 @@ html.embed .expand_btn {
 }
 
 .icon_container {
-  width: 100%; 
-  height: 100px; 
+  width: 100%;
+  height: 100px;
 }
 
 .how_it_works_item i {
-  line-height: 100px; 
-  color: cadetblue; 
+  line-height: 100px;
+  color: cadetblue;
   font-size: 30px;
 }
 
@@ -3668,6 +3701,10 @@ html.embed .expand_btn {
   margin-bottom: 100px;
 }
 
+#user_groups .home_group_list_container {
+  margin-top: 0px;
+}
+
 .home_group_list_container .avatar .thumbnail {
   width: 150px;
   height: 150px;
@@ -3683,9 +3720,10 @@ html.embed .expand_btn {
 
 .home_group_item {
   display: table-cell;
-  min-width: 157px;
+  min-width: 160px;
   padding-right: 10px;
   padding-left: 5px;
+  overflow: hidden;
 }
 
 .home_group_item:hover {
@@ -3700,6 +3738,9 @@ html.embed .expand_btn {
 
 .home_group_item .group_description {
   color: #333;
+  word-wrap: break-word;
+  max-height: 200px;
+  overflow: hidden;
 }
 
 .home_group_item .avatar {
@@ -3756,7 +3797,7 @@ html.embed .expand_btn {
   border: solid 1px;
   margin: 30px;
   padding: 10px;
-  text-align: center; 
+  text-align: center;
 }
 
 .request_show_container .subtitle_request_btn:hover {
@@ -3822,10 +3863,17 @@ html.embed .expand_btn {
   list-style: none;
 }
 
+.release_item .repo_group,
 .global_requests .request_list_group {
   border: solid 1px gray;
   padding: 2px;
   color: gray;
+}
+
+.release_item .repo_group {
+  margin-bottom: 5px;
+  display: inline-block;
+  padding: 0px 5px;
 }
 
 .global_requests {
@@ -3920,7 +3968,7 @@ label[for='group_allow_subtitle_download'] {
 }
 
 .page_available_videos {
-  margin-bottom: 50px;  
+  margin-bottom: 50px;
 }
 
 .page_show_container .section_block {
@@ -3980,7 +4028,7 @@ label[for='group_allow_subtitle_download'] {
   display: block;
 }
 
-.yt_imported_label {
+.yt_exported_label {
   border: solid 1px gray;
   padding: 2px;
 }
@@ -4085,22 +4133,35 @@ label[for='group_allow_subtitle_download'] {
 .group_show_container .new_request_btn {
   margin-top: 20px;
   margin-bottom: 40px;
+  background: none;
+  color: steelblue;
+  opacity: 1;
+  border-radius: 0px;
+}
+
+.group_show_container .new_request_btn:hover {
+  background-color: steelblue;
+  color: white;
 }
 
 .group_show_container .subtitle_video_btn {
   width: 150px;
-  margin-top: 40px;
-  margin-bottom: 30px;
+  color: steelblue;
+  display: inline-block;
+}
+
+.group_show_container .subtitle_video_btn:hover {
+  color: white;
 }
 
 .group_show_container .group_requests ul li {
-  height: 90px;
+  margin-bottom: 15px;
 }
 
 .group_show_container .request_must_login_caption {
   margin-top: 20px;
   display: inline-block;
-  margin-bottom: 20px;  
+  margin-bottom: 20px;
 }
 
 .original_video_source_link {
@@ -4113,3 +4174,379 @@ label[for='group_allow_subtitle_download'] {
   color: black;
 }
 
+#river_player .translator_container {
+  text-align: left;
+  margin-top: 10px;
+  clear: both;
+  margin-bottom: 5px;
+}
+
+#river_player .translator_label {
+  margin-right: 30px;
+}
+
+.original_video_owner_label {
+  margin-right: 10px;
+}
+
+.original_video_source_label {
+  margin-right: 45px;
+}
+
+.embed_label {
+  margin-right: 50px;
+}
+
+.share_label {
+  margin-right: 60px !important;
+}
+
+.original_video_view_label {
+  margin-right: 55px;
+}
+
+.group_user_submission_count,
+.group_request_count,
+.group_comment_count {
+  color: gray;
+  padding:  2px 5px;
+  margin-left: 10px;
+}
+
+
+.group_description_container strong,
+.group_description_container h1,
+.group_description_container h2,
+.group_description_container h3,
+.group_description_container h4,
+.group_description_container h5,
+.group_description_container h6 {
+  color: gray;
+}
+
+.markdown_help_toggler {
+  text-decoration: underline;
+  margin-left: 20px;
+}
+
+textarea#group_description {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.markdown_help td {
+  padding-right: 20px;
+  border: solid 1px lightgray;
+}
+
+.user_show_container .nav-tabs {
+  border-bottom: solid 1px gray;
+}
+
+.user_show_container .nav.nav-tabs li.active a {
+  border-bottom: solid 1px seashell !important;
+}
+
+.add_moderator_form input {
+  margin-left: 5px;
+}
+
+.correct_sub_btn {
+  cursor: pointer;
+  display: block;
+  color: steelblue;
+  position: absolute;
+  font-size: 20px;
+}
+
+#subtitle_list,
+#subtitle_list .table,
+#subtitle_list .table .subtitle,
+#subtitle_list .table .subtitle .text,
+#subtitle_list .table .subtitle .text .correct_sub_btn {
+  /*overflow: visible;*/
+}
+
+.subtitle:hover .text .correct_sub_btn {
+  display: block !important;
+}
+
+.subtitle .text span.text_holder {
+}
+
+del.differ {
+  background-color: lightcoral;
+}
+
+ins.differ {
+  background-color: lightgreen;
+}
+
+.corrections_received_table td,
+.corrections_sent_table td {
+  padding: 5px;
+  border: solid 1px gray;
+}
+
+.correction_request_video_title {
+  /*width: 200px;*/
+}
+
+.approve_correction_request_btn,
+.reject_correction_request_btn {
+  float: left;
+  clear: both;
+}
+
+.fix_sub_input {
+  width: 100%;
+}
+
+.fix_sub_form_container {
+  border: solid 1px gray;
+  margin-top: 10px;
+  margin-left: 32px;
+  padding: 10px;
+  display: inline-block;
+  background-color: black;
+}
+
+.fix_sub_form_container a {
+  color: lightblue;
+}
+
+.fix_sub_form_container .requester {
+  margin-top: 5px;
+  float: left;
+}
+
+.fix_sub_requester_name {
+  margin-right: 5px;
+  color: gray;
+}
+
+.fix_sub_form_cancel_btn,
+.fix_sub_form_submit_btn {
+  float: right;
+}
+
+.fix_sub_form_submit_btn {
+  opacity: 1;
+}
+
+.correction_request_date {
+  width: 90px;
+}
+
+.fix_sub_form_cancel_btn:hover {
+  text-decoration: underline;
+  color: lightblue;
+}
+
+.home_search_form {
+  padding-top: 7px;
+}
+
+.home_search_input {
+  background-image: url("/assets/search_glass.png");
+  background-repeat: no-repeat;
+  text-indent: 30px;
+  background-position: 4px center;
+  border: solid 1px gray;
+  margin-right: 30px;
+  width: 150px;
+}
+
+.home_search_list_item,
+.no_left_border_list_item {
+  border-left: none !important;
+}
+
+.search_term {
+  border: solid 1px #bbb;
+  background-color: #eee;
+  padding: 5px;
+}
+
+.group_header_description {
+  width: 700px;
+  margin: auto;
+}
+
+.group_show_container .subtitle_video_btn {
+  background-color: steelblue;
+  color: white;
+  font-size: 20px;
+  width: 200px;
+}
+
+.group_show_container .subtitle_video_btn:hover {
+  background-color: black;
+}
+
+.group_show_container .group_header .title {
+  color: brown;
+}
+
+.topics_table th,
+.topics_table td {
+  padding: 0px 5px;
+}
+
+.topics_table .group_name {
+  color: brown;
+  overflow: hidden;
+  height: 18px;
+  display: inline-block;
+}
+
+.topics_table tr {
+  border: solid 1px lightgray;
+}
+
+.topics_table tr:hover {
+  background-color: lightcyan;
+  border: solid 1px lightgray;
+  cursor: pointer;
+}
+
+.topics_table .group_description {
+  height: 18px !important;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.group_subscribe_btn {
+  border: solid 1px steelblue;
+  padding: 7px 10px;
+  margin-right: 5px;
+  background: none;
+  color: steelblue;
+  font-size: 20px;
+}
+
+.what_container {
+  font-size: 18px;
+  border: none;
+}
+
+.release_item_bottom_container {
+}
+
+.repo_delete_btn {
+  color: gray;
+  margin-right: 10px;
+  border: solid 1px;
+  padding: 0px 5px;
+}
+
+.repo_edit_btn {
+  border: solid 1px gray;
+  background-color: lightcoral;
+  color: white;
+  padding: 0px 5px;
+}
+
+.repo_delete_btn, .repo_edit_btn {
+  display: none;
+}
+
+#user_repositories .thumbnail:hover .repo_user_action_items .repo_delete_btn,
+#user_repositories .thumbnail:hover .repo_user_action_items .repo_edit_btn {
+  display: inline-block !important;
+}
+
+.repo_user_action_items {
+  margin-top: 10px;
+  min-height: 30px;
+}
+
+#user_repositories .video_name {
+  text-align: center;
+}
+
+#user_repositories.logged_in .thumbnail {
+  background: none;
+  border: none;
+}
+
+.new_project_thumbnail {
+  background-color: #fff !important;
+  border: solid 1px lightgray !important;
+}
+
+.volume_control {
+  display: inline-block;
+  position: relative;
+}
+
+#player .volume_control {
+  float: left;
+}
+
+.mute_btn i {
+  font-size: 18px;
+}
+
+.mute_btn:focus {
+  outline: none;
+}
+
+._3pao {
+  background-color: rgba(0,0,0,.7);
+  cursor: pointer;
+  display: none;
+  height: 100px;
+  left: 0;
+  margin: -100px 3px 0;
+  position: absolute;
+  top: 0;
+  width: 30px;
+  z-index: 10;
+}
+
+._3paq {
+  background-color: silver;
+  height: 66px;
+  margin: 10px 13px 0;
+  position: absolute;
+  width: 4px;
+}
+
+._3par {
+  background-color: #fff;
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+}
+
+._3pas {
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 1px black;
+  height: 16px;
+  left: 0;
+  margin: 0 0 0 -6px;
+  position: absolute;
+  top: 0;
+  width: 16px;
+}
+
+._3pat {
+  background-color: #fff;
+  bottom: 0;
+  height: 16px;
+  margin: 0 13px 8px;
+  position: absolute;
+  width: 4px;
+}
+
+
+.screen_zoom {
+  display: inline-block;
+  float: right;
+  margin-right: 20px;
+  color: white;
+  cursor: pointer;
+}
