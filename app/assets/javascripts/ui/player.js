@@ -280,7 +280,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$timer = setTimeout(function () {
       $(".player_controls").fadeOut();
       this.$fadeInBuffer = true;
-    }, 2000)
+    }, 5000)
   },
 
   onProgress: function() {
