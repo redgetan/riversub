@@ -502,7 +502,7 @@ class Repository < ActiveRecord::Base
   end
 
   def title
-    if read_attribute(:title)
+    if read_attribute(:title).present?
       self.read_attribute(:title)
     else
       ["#{language_pretty} Sub :", self.video.name].join(" ")
