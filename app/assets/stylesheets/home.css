@@ -400,8 +400,13 @@ div#subtitle_bar {
   background-color: rgba(128,128,128,0.5);
 }
 
-#editor .time_indicator {
+#editor .time_indicator,
+#editor.laptop .time_indicator {
   top: -180px;
+}
+
+#editor.desktop .time_indicator {
+  top: -275px;
 }
 
 #river_player .time_indicator {
@@ -4529,3 +4534,11 @@ ins.differ {
   width: 4px;
 }
 
+
+.screen_zoom {
+  display: inline-block;
+  float: right;
+  margin-right: 20px;
+  color: white;
+  cursor: pointer;
+}

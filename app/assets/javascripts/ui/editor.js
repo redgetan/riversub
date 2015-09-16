@@ -589,6 +589,27 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.setupFontColorInput();
   },
 
+  setupScreenZoom: function() {
+    var screenZoom = "<div class='screen_zoom'><i class='screen_zoom_btn fa fa-desktop'></i></div>";
+    $(".player_controls").append(screenZoom);
+
+    $(".screen_zoom").on("click", function(){
+      if ($("#iframe_container").css("zoom") === "1.5") {
+        $("#iframe_container").css("zoom","1");
+        $(".screen_zoom_btn").removeClass("fa-laptop");
+        $(".screen_zoom_btn").addClass("fa-desktop");
+        $("#editor").removeClass("desktop");
+        $("#editor").addClass("laptop");
+      } else {
+        $("#iframe_container").css("zoom","1.5");
+        $(".screen_zoom_btn").removeClass("fa-desktop");
+        $(".screen_zoom_btn").addClass("fa-laptop");
+        $("#editor").removeClass("laptop");
+        $("#editor").addClass("desktop");
+      }
+    });
+  },
+
   setupFontSelect: function(font_property, width) {
     var width = width || "100px"; 
     var prop = font_property.split("-")[1];

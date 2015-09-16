@@ -269,6 +269,8 @@ river.ui.BasePlayer = Backbone.View.extend({
     $(".player_controls").append("<div class='player_timeline_container'></div>");
     $("#summary").appendTo(".player_timeline_container")
 
+    this.setupScreenZoom();
+
     this.$playBtn = $(".play_btn");
     this.$pauseBtn = $(".pause_btn");
     this.$backwardBtn = $(".backward_btn");
@@ -278,6 +280,10 @@ river.ui.BasePlayer = Backbone.View.extend({
     if (this.timeline) {
       this.timeline.setTimelineWidth();
     }
+  },
+
+  setupScreenZoom: function() {
+    // nothing by default
   },
 
   pauseEvent: function(e){
