@@ -7,7 +7,7 @@ module Yasub
       result = client.overall_traffic
 
       Repository.published.find_each(batch_size: 1000) do |repo|
-        total_view_count   = result[repo.relative_url].try(:[],:pageviews].to_i
+        total_view_count   = result[repo.relative_url].try(:[],:pageviews).to_i
         current_view_count = repo.views_contributed
         missing_view_count = total_view_count - current_view_count
 
