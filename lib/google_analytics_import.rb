@@ -14,12 +14,14 @@ module Yasub
         STDOUT.puts("#{repo.relative_url}\t total: #{total_view_count},\t current_view_count: #{current_view_count}" )
 
         if !options[:pretend] && missing_view_count > 0
-          v = Visit.new
-          v.id = Ahoy::Tracker.new.visit_id
-          v.landing_page = repo.url
-          v.started_at = Date.today - 1.day
-          v.is_google_analytics_imported = true
-          v.save!
+          missing_view_count.times do
+            v = Visit.new
+            v.id = Ahoy::Tracker.new.visit_id
+            v.landing_page = repo.url
+            v.started_at = Date.today - 1.day
+            v.is_google_analytics_imported = true
+            v.save!
+          end
         end
       end
     end
