@@ -75,7 +75,7 @@ class ApplicationController < ActionController::Base
   end
 
   def track_ahoy_visit
-    super if params.controller == "repositories" && params.action == "show"
+    super if params.controller == "repositories" && params.action == "show" 
   end
 
 

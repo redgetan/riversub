@@ -103,7 +103,7 @@
           </div>
         <% end %>
 
-        <%= render "groups/social_share" %>
+        <%= render partial: "groups/social_share", locals: { sharable: @request } %>
 
 
       </div>

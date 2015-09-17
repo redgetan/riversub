@@ -1,10 +1,10 @@
-<div class='request_field'>
-  <div class='request_field_key'>
-    Share
+<div class='request_field social_share_original_container'>
+  <div class='request_field_key social_share_original_label'>
+    Share:
   </div>
-  <div class='request_field_value ' >
-    <div class="fb-share-button" data-href="<%= @request.url %>" data-layout="box_count"></div>
-    <a href="https://twitter.com/share?count=vertical&url=<%= @request.url %>&text=<%= CGI.escape(@request.share_text) %>" target="_blank" class="twitter-share-button">Tweet</a>
+  <div class='request_field_value social_share_original_value' >
+    <div class="fb-share-button" data-href="<%= sharable.url %>" data-layout="box_count"></div>
+    <a href="https://twitter.com/share?count=vertical&url=<%= sharable.url %>&text=<%= CGI.escape(sharable.share_text) %>" target="_blank" class="twitter-share-button">Tweet</a>
     <div class="g-plus" data-action="share" data-annotation="vertical-bubble" data-height="60"></div>
   </div>
 </div>

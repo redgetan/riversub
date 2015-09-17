@@ -1408,7 +1408,7 @@ footer a:hover{
 
 #player_details {
   clear: both;
-  height: 550px;
+  height: 600px;
   margin-bottom: 30px;
 }
 
@@ -2742,7 +2742,7 @@ div.field, div.actions {
 }
 
 .repo_open_editor_btn {
-  margin-top: 25px;
+  margin-top: 35px;
 }
 
 .publish_release_btn {
@@ -2810,7 +2810,7 @@ form.new_user #user_login {
 
 #river_player .original_video a {
   border: solid 1px lightgray;
-  padding: 5px;
+  padding: 2px 5px;
   margin-right: 5px;
   line-height: 30px;
 }
@@ -2821,13 +2821,16 @@ form.new_user #user_login {
 }
 
 .original_video_stats {
-  margin-top: 30px;
+  margin-top: 10px;
   text-align: left;
+  clear: both;
 }
 
+.traffic_contribution_count,
 .original_video_view_count {
  padding: 5px;
  color: gray;
+ cursor: default;
 }
 
 .export_subtitle_container .youtube_sync_method,
@@ -2892,7 +2895,7 @@ ul.source_repo_timing_list li span {
 }
 
 .new_translation_container {
-  margin-top: 30px;
+  margin-top: 40px;
 }
 
 .repo_favorite_btn div.score {
@@ -3262,11 +3265,7 @@ html.embed .expand_btn {
 
 .embed_container {
   text-align: left;
-  margin-top: 15px;
-  display: inline-block;
-  float: left;
-  clear: both;
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .embed_code_input {
@@ -3529,6 +3528,12 @@ html.embed .expand_btn {
   background: none;
   color: black;
   padding-top: 15px;
+}
+
+.related_videos_container .section_block {
+  border: solid 1px #bbb;
+  padding-left: 20px;
+  padding-bottom: 20px;
 }
 
 .latest_videos {
@@ -4174,9 +4179,9 @@ label[for='group_allow_subtitle_download'] {
 }
 
 .original_video_view_count_number {
-  font-size: 20px;
+/*  font-size: 20px;
   color: black;
-}
+*/}
 
 #river_player .translator_container {
   text-align: left;
@@ -4190,7 +4195,7 @@ label[for='group_allow_subtitle_download'] {
 }
 
 .original_video_owner_label {
-  margin-right: 10px;
+  margin-right: 15px;
 }
 
 .original_video_source_label {
@@ -4207,6 +4212,16 @@ label[for='group_allow_subtitle_download'] {
 
 .original_video_view_label {
   margin-right: 55px;
+}
+
+.traffic_contribution_label {
+  margin-right: 5px;
+}
+
+.traffic_contribution_count {
+  color: green;
+  font-weight: bold;
+  font-size: 24px;
 }
 
 .group_user_submission_count,
@@ -4553,4 +4568,36 @@ ins.differ {
   margin-right: 20px;
   color: white;
   cursor: pointer;
+}
+
+
+.original_video_contribution_count_number {
+  color: green;
+}
+
+.traffic_contribution_stats {
+  margin-top: 30px;
+  font-size: 20px;
+}
+
+.repo_details_line_separator {
+  border-top: solid 1px #bbb;
+  margin-top: 30px;
+  height: 1px;
+  display: inline-block;
+  width: 100%;
+}
+
+#river_player .social_share_original_container {
+  margin-top: 10px;
+}
+
+#river_player .social_share_original_label {
+  width: 35px;
+  color: #333;
+  margin-right: 60px;
+}
+
+#river_player .social_share_original_value {
+  float: left;
 }

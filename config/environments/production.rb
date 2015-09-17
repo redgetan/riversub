@@ -85,7 +85,8 @@ River::Application.configure do
   # would need to load it manually for the this class extension to be evaluated
   load "public_activity.rb" 
 
-  Ahoy.visit_duration = 30.minutes
+  # this is the cookie expiration time of visit. since we track immediately and ignore cookies, set this to a high value
+  Ahoy.visit_duration = 24.hours 
   Ahoy.track_visits_immediately = true
 
 end

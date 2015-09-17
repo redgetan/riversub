@@ -64,7 +64,8 @@ River::Application.configure do
   #   end
   # end
 
-  Ahoy.visit_duration = 1.minutes
+  # this is the cookie expiration time of visit. since we track immediately and ignore cookies, set this to a high value
+  Ahoy.visit_duration = 24.hours
   Ahoy.track_visits_immediately = true
 
 end

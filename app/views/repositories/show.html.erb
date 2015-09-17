@@ -21,22 +21,28 @@
       <%= render 'videos/player' %>
       <% if @repo %>
         <% @sharable = @repo %>
-        <div class="original_video_stats pull-left">
-          <span class="original_video_view_label">Contribution:</span>
-          <span class="original_video_view_count" style="">
-            <span class='original_video_view_count_number'><%= @repo.views_contributed %></span>
-            views to the
-            <a class='original_video_source_link' href="<%= @repo.video.source_url %>">original video</a>
+        <div class="traffic_contribution_stats pull-left">
+          <span class="traffic_contribution_label">Traffic Contribution:</span>
+          <span class="traffic_contribution_value" style="">
+            <span class="traffic_contribution_count" data-toggle="tooltip" data-placement="bottom" title="Subtitle's View Contribution to the Original Video">
+              <%= @repo.views_contributed %>
+            </span>
           </span>
         </div>
         <% if can?(:edit, @repo) %>
           <a href="<%= @repo.editor_url %>" class="repo_open_editor_btn pull-right btn btn-danger btn-sm">Open Editor<a>
         <% end %>
         <div class='new_translation_container pull-right'>
-          <a href="<%= @repo.new_translation_url %>" class='new_translation_btn'>New Subtitle</a>
+          <a href="<%= @repo.new_translation_url %>" class='new_translation_btn'>+ Subtitle</a>
         </div>
-        <%= render 'videos/social_share' %>
       <% end %>
+        <div class='repo_details_line_separator'></div>
+        <div class='original_video_stats'>
+          <div class='original_video_view_label pull-left'>Views:</div>
+          <span class="original_video_view_count" data-toggle="tooltip" data-placement="bottom" title="Total Views on Youtube">
+            <%= number_with_delimiter(@repo.video.view_count, delimiter: ",") %>
+          </span>
+        </div>
         <div class="translator_container pull-left">
           <span class="translator_label">Translator:</span>
           <%= link_to @repo.owner, @repo.user.try(:url), class: "river_gray" %>
@@ -45,20 +51,21 @@
           <span class="original_video_owner_label">Video Owner:</span>
           <%= link_to @repo.video.uploader_username, @repo.video.uploader_url, class: "river_gray" %>
         </div>
+        <div class="original_video">
+          <span class="original_video_source_label">Source:</span>
+          <%= link_to "via Youtube", @repo.video.source_url %>
+        </div>
 
-      <br>
-      <div class='embed_container'>
-        <span class='pull-left embed_label'>Embed: </span>
-        <input class='embed_code_input' type='text' value='<%= @repo.embed_code %>' onclick="select()">
-      </div>
+        <div class='embed_container'>
+          <span class='pull-left embed_label'>Embed: </span>
+          <input class='embed_code_input' type='text' value='<%= @repo.embed_code %>' onclick="select()">
+        </div>
+        <%= render partial: 'groups/social_share', locals: { sharable: @repo } %>
       <% if @repo.request %>
         <div class='request_details_container'>
           <span class='pull-left request_details_label'>Request: </span>
           <span class='request_details_value'><%= @repo.request.details %></span>
         </div>
-      <% end %>
-      <% if @repo %>
-        <%= render 'videos/player_comments' %>
       <% end %>
     </div>
     <div class='col-lg-5 col-md-4'>

@@ -371,7 +371,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$subtitleDisplay.css("background-color","black");
     this.$subtitleDisplay.css("opacity",0.8);
 
-    this.$subtitleList.css("height","430px");
+    this.$subtitleList.css("height","500px");
     this.$subtitleContainer.find(".header").remove(); // remove heading
     this.$subtitleList.find(".start_time").each(function(){
       $(this).remove();
