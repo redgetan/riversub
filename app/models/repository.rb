@@ -233,6 +233,10 @@ class Repository < ActiveRecord::Base
     (is_embed? || embed_repo) ? embed_url  : repo_url(self.token)
   end
 
+  def relative_url
+    "/r/#{token}"  
+  end
+
   def embed_url
     repo_embed_url(self.token)
   end

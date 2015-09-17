@@ -39,6 +39,7 @@ River::Application.configure do
   Rails.application.routes.default_url_options[:host] = 'dev.yasub.com:3000'
 
   load "#{Rails.root}/lib/object_extensions.rb"
+  load "#{Rails.root}/lib/google_analytics_import.rb"
 
   config.action_mailer.default_url_options = { host: "http://dev.yasub.com:3000" }
   config.action_mailer.perform_deliveries = true

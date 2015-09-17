@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150913215438) do
+ActiveRecord::Schema.define(:version => 20150917155242) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -330,14 +330,15 @@ ActiveRecord::Schema.define(:version => 20150913215438) do
     t.string   "region"
     t.string   "city"
     t.string   "postal_code"
-    t.decimal  "latitude",         :precision => 10, :scale => 0
-    t.decimal  "longitude",        :precision => 10, :scale => 0
+    t.decimal  "latitude",                     :precision => 10, :scale => 0
+    t.decimal  "longitude",                    :precision => 10, :scale => 0
     t.string   "utm_source"
     t.string   "utm_medium"
     t.string   "utm_term"
     t.string   "utm_content"
     t.string   "utm_campaign"
     t.datetime "started_at"
+    t.boolean  "is_google_analytics_imported"
   end
 
   add_index "visits", ["user_id"], :name => "index_visits_on_user_id"
