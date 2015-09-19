@@ -1,15 +1,18 @@
 <% set_meta_tags :site => 'Yasub', :title => 'Subtitling Platform for Fans', :description => "Promote your Favorite Videos with your own Translation Channel." %>
 
-<% share_text = "Subtitling Platform for Fans. Promote your Favorite Videos with your own Translation Channel." %>
-<% share_image_url = "#{request.protocol}#{request.host_with_port}#{asset_path("video_comments_small.png")}" %>
+<% share_text = "Subtitling Platform for Fans." %>
+<% share_description = "Promote your Favorite Videos with your own Translation Channel." %>
+<% share_image_url = "#{request.protocol}#{request.host_with_port}#{asset_path("yasub_share_image.jpg")}" %>
 
 <% content_for :head do  %>
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="<%= share_image_url %>">
   <meta name="twitter:title" content="<%= share_text %>">
+  <meta name="twitter:description" content="<%= share_description %>">
 
   <meta property="og:url" content="<%= request.original_url %>" />
   <meta property="og:title" content="<%= share_text %>" />
+  <meta property="og:description" content="<%= share_description %>" />
   <meta property="og:site_name" content="Yasub" />
   <meta property="og:image" content="<%= share_image_url %>" />
   <meta property="og:image:secure_url" content="<%= share_image_url %>" />
