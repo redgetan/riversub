@@ -56,9 +56,9 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="home_search_list_item">
-          <%= form_tag search_url, :class => "home_search_form"  do %>
-            <%= text_field_tag :q, nil, :placeholder => "Search", :value => params[:q],:class => "home_search_input" %>
-          <% end %>
+          <form action="<%= search_url %>" class="home_search_form" method="get">
+            <input class="home_search_input" id="q" name="q" placeholder="Search" type="text">
+          </form>
         </li>
             <li class="divider-vertical"></li>
              <% if user_signed_in?  %>
