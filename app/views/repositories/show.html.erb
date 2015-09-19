@@ -60,13 +60,14 @@
           <span class='pull-left embed_label'>Embed: </span>
           <input class='embed_code_input' type='text' value='<%= @repo.embed_code %>' onclick="select()">
         </div>
-        <%= render partial: 'groups/social_share', locals: { sharable: @repo } %>
+        <%= render partial: 'videos/social_share', locals: { sharable: @repo } %>
       <% if @repo.request %>
         <div class='request_details_container'>
           <span class='pull-left request_details_label'>Request: </span>
           <span class='request_details_value'><%= @repo.request.details %></span>
         </div>
       <% end %>
+      <%= render "videos/player_comments" %>
     </div>
     <div class='col-lg-5 col-md-4'>
       <%= render 'videos/player_details' %>
