@@ -577,6 +577,11 @@ html.fullscreen #river_player {
   padding: 0px;
 }
 
+html.embed #river_player .fb-share-button,
+html.fullscreen #river_player .fb-share-button {
+  display: none;
+}
+
 html.embed #river_player.show div#media,
 html.fullscreen #river_player.show div#media,
 html.embed #river_player.show div#iframe_overlay,
