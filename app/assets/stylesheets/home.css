@@ -1182,7 +1182,8 @@ footer a:hover{
 .release_item .assignee .repo_owner .owner_name ,
 .most_commented_repo_item .repo_owner .owner_name,
 .related_repo_item .repo_owner .owner_name {
-  color: slategray;
+  color: tomato;
+  font-weight: bold;
   /*border: solid 1px gray;*/
   padding: 2px 2px;
   border-radius: 5px;
