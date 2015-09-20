@@ -1,4 +1,20 @@
 $.extend(river.utility,{
+
+  escapeHtml: function(string) {
+    var entityMap = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': '&quot;',
+      "'": '&#39;',
+      "/": '&#x2F;'
+    };
+    
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+      return entityMap[s];
+    });
+  },
+
   textWidth: function(text) {
     // http://stackoverflow.com/a/5047712
       var padding = 25;

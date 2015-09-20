@@ -346,7 +346,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                 "<div id='editor-top' class='row'> " +
                   "<div class='repo_label_container'> " +
                     "<h5 id='repo_label'>" +
-                      "<input type='text' class='repo_title_input' value='" + this.repo.title.substring(0,70) + "'>" +
+                      "<input type='text' class='repo_title_input' value='" + river.utility.escapeHtml(this.repo.title) + "'>" +
                     "</h5>" +
                     "<h5 class='keyboard_shortcut_container pull-right'><a class='keyboard_shortcut_btn pull-right'  data-toggle='modal' data-target='#keyboard_shortcuts_modal'> Shortcuts</a></h5>" + 
                     // "<div id='language' class='pull-left'>" +
