@@ -316,11 +316,15 @@ div.videos li.selected {
   border: solid 1px black;
 }
 
-#editor div#iframe_container {
+#editor.laptop div#iframe_container {
   position: relative;
   height: 190px;
   width: inherit;
   background-color: #000;
+}
+
+#editor.desktop div#iframe_container {
+  height: 310px;
 }
 
 #river_player div#iframe_container {

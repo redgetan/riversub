@@ -342,7 +342,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   getEditorElement: function() {
     return  "<div class=''>" +
-              "<div id='editor'> " +
+              "<div id='editor' class='desktop'> " +
                 "<div id='editor-top' class='row'> " +
                   "<div class='repo_label_container'> " +
                     "<h5 id='repo_label'>" +
@@ -590,18 +590,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   setupScreenZoom: function() {
-    var screenZoom = "<div class='screen_zoom'><i class='screen_zoom_btn fa fa-desktop'></i></div>";
+    var screenZoom = "<div class='screen_zoom'><i class='screen_zoom_btn fa fa-laptop'></i></div>";
     $(".player_controls").append(screenZoom);
 
     $(".screen_zoom").on("click", function(){
       if ($("#iframe_container").css("height") === "310px") {
-        $("#iframe_container").css("height","190px");
         $(".screen_zoom_btn").removeClass("fa-laptop");
         $(".screen_zoom_btn").addClass("fa-desktop");
         $("#editor").removeClass("desktop");
         $("#editor").addClass("laptop");
       } else {
-        $("#iframe_container").css("height","310px");
         $(".screen_zoom_btn").removeClass("fa-desktop");
         $(".screen_zoom_btn").addClass("fa-laptop");
         $("#editor").removeClass("laptop");
