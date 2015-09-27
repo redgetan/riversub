@@ -4624,3 +4624,7 @@ ins.differ {
   color: brown !important;
   font-weight: bold;
 }
+
+.latest_videos .release_item_transcript {
+  display: none;
+}
