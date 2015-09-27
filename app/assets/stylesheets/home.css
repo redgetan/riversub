@@ -4619,3 +4619,8 @@ ins.differ {
 #river_player .social_share_original_value {
   float: left;
 }
+
+.layout_subtitle_video_btn {
+  color: brown !important;
+  font-weight: bold;
+}
