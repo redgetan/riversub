@@ -4628,3 +4628,10 @@ ins.differ {
 .latest_videos .release_item_transcript {
   display: none;
 }
+
+.hardsub_notice,
+.softsub_notice {
+  border: solid 1px #bbb;
+  background-color: #ddd;
+  padding: 0px 3px;
+}
