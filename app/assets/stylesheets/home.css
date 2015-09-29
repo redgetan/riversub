@@ -2904,7 +2904,7 @@ ul.source_repo_timing_list li span {
   border: solid 1px steelblue;
   padding: 5px 10px;
   cursor: pointer;
-  margin-right: 5px;
+  margin: 0px 5px;
 }
 
 .new_translation_btn {
@@ -4634,4 +4634,9 @@ ins.differ {
   border: solid 1px #bbb;
   background-color: #ddd;
   padding: 0px 3px;
+}
+
+.user_repo_traffic_contribution {
+  text-align: center;
+  color: gray;
 }
