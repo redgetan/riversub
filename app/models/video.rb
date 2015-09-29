@@ -61,9 +61,19 @@ class Video < ActiveRecord::Base
 
   def assign_metadata(force = false)
     if force || self.metadata.nil?
-      self.metadata = YoutubeClient.new.get_metadata(self.source_id)[0]
-      self.yt_channel_id = self.metadata["snippet"]["channelId"]
+      if youtube?
+        self.metadata = YoutubeClient.new.get_metadata(self.source_id)[0]
+        self.yt_channel_id = self.metadata["snippet"]["channelId"]
+      end
     end
+  end
+
+  def youtube?
+    source_url =~ /youtu\.?be/  
+  end
+
+  def vimeo?
+    source_url =~ /vimeo/
   end
 
   def serialize

@@ -113,8 +113,9 @@ $(document).ready(function(){
 
 function subtitleVideo(url, options) {
 
-  if (!url.match(/youtu\.?be/)) {
-    throw "Only youtube urls are allowed";
+  if (url.match(/youtu\.?be.com/) || url.match(/vimeo.com/)) {
+  } else {
+    throw "Only youtube/vimeo urls are allowed";
   }
 
   var data = {source_url: url};
