@@ -27,7 +27,7 @@
         <div class='new_translation_container pull-left'>
           <a href="<%= @repo.new_translation_url %>" class='new_translation_btn'>+ Subtitle</a>
         </div>
-        <% if (user_signed_in? && current_user == @repo.user) %>
+        <% if (user_signed_in? && current_user == @repo.user) || current_user.try(:is_super_admin?) %>
           <div class="traffic_contribution_stats pull-right">
             <span class="traffic_contribution_label">Traffic Contribution:</span>
             <span class="traffic_contribution_value" style="">
