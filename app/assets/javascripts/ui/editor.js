@@ -34,7 +34,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
 
     // ensure first subtitle appears if it start_time is 0
-    this.onTrackStart(this.tracks.at(0));
+    var firstTrack = this.tracks.at(0);
+    
+    if (typeof firstTrack !== "undefined") {
+      this.onTrackStart(this.tracks.at(0));
+    }
   },
 
   enableHashTab: function() {
