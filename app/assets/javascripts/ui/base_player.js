@@ -152,7 +152,11 @@ river.ui.BasePlayer = Backbone.View.extend({
       if (typeof this.options.url_options !== "undefined") {
         url = url + this.options.url_options; 
       }
-      popcorn = Popcorn.smart(targetSelector,url);
+      if (url.match("vimeo.com")) {
+        popcorn = Popcorn.vimeo(targetSelector,url);
+      } else {
+        popcorn = Popcorn.smart(targetSelector,url);
+      }
     }
     return popcorn;
   },
@@ -164,7 +168,16 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$subtitleBar.on("mousedown",this.onSubtitleBarClick.bind(this));
     Backbone.on("trackend",this.onTrackEnd.bind(this));
     this.popcorn.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
+    this.popcorn.media.addEventListener("playprogress",this.onPlayProgress.bind(this));
     this.handleVolumeEvents();
+  },
+
+  onPlayProgress: function(event) {
+    if (this.media.paused) {
+      this.onPause(event);  
+    } else {
+      this.onPlay(event);
+    }
   },
 
   handleVolumeEvents: function() {
@@ -220,8 +233,14 @@ river.ui.BasePlayer = Backbone.View.extend({
 
   onLoadedMetadata: function() {
     // prevent Youtube's caption from showing up - we only show Yasub Subtitles :)
-    this.playerObject().unloadModule("cc");        // for AS3 player
-    this.playerObject().unloadModule("captions");  // for HTML5 player
+    if (repo.video.source_type == "youtube") {
+      this.playerObject().unloadModule("cc");        // for AS3 player
+      this.playerObject().unloadModule("captions");  // for HTML5 player
+    } else if (repo.video.source_type == "vimeo") {
+      // vimeo autoplays but doesnt trigger the onPlay callback 
+      // (trigger playprogress instead), so we trigger it manually
+      this.onPlay(); 
+    }
   },
 
   applyFontSettings: function() {

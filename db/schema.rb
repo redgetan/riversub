@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150917155242) do
+ActiveRecord::Schema.define(:version => 20150929230250) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -310,6 +310,7 @@ ActiveRecord::Schema.define(:version => 20150917155242) do
     t.string   "language"
     t.string   "source_url"
     t.string   "yt_channel_id"
+    t.string   "source_type"
   end
 
   create_table "visits", :force => true do |t|

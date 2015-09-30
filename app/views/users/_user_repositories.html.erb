@@ -17,7 +17,7 @@
         <div class='col-xs-6 col-md-3'>
           <div class='thumbnail'>
             <a href="<%= user_signed_in? && current_user == @user ? repo.editor_url : repo.url %>" id="<%= repo.id %>" class="video" >
-              <img src="<%= repo.thumbnail_url %>" alt="" >
+              <img src="<%= repo.thumbnail_url %>" alt="" class='user_repo_thumbnail_image'>
             </a>
             <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
               <h6 class='video_name'><%= truncate(repo.player_title, length: 80) %></h6>

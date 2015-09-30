@@ -2,7 +2,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   initialize: function(options) {
     this.IFRAME_OVERLAY_NON_AD_OVERLAPPING_FACTOR = 2.3;
-    this.MAX_SUBTITLE_DISPLAY_FONT_SIZE = 40;
+    this.MAX_SUBTITLE_DISPLAY_FONT_SIZE = 80;
     this.MIN_SUBTITLE_DISPLAY_FONT_SIZE = 12;
     this.FULLSCREEN_PARAM = "?fullscreen=true";
 

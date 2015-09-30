@@ -213,6 +213,10 @@ GEM
       domain_name (~> 0.5)
     http-form_data (1.0.1)
     http_parser.rb (0.6.0)
+    httparty (0.13.7)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
+    httpclient (2.6.0.1)
     i18n (0.6.1)
     journey (1.0.4)
     jquery-rails (2.2.1)
@@ -417,6 +421,12 @@ GEM
     uuidtools (2.1.4)
     view_inspect (0.3.8)
       nokogiri
+    vimeo (1.5.4)
+      httparty (>= 0.4.5)
+      httpclient (>= 2.1.5.2)
+      json (>= 1.1.9)
+      multipart-post (>= 1.0.1)
+      oauth (>= 0.4.3)
     warden (1.2.1)
       rack (>= 1.0)
 
@@ -483,3 +493,4 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicorn
   view_inspect (~> 0.3.8)
+  vimeo

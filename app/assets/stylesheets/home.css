@@ -327,6 +327,10 @@ div.videos li.selected {
   height: 310px;
 }
 
+#editor.vimeo div#iframe_container {
+  height: 370px;
+}
+
 #river_player div#iframe_container {
   position: relative;
   height: inherit;
@@ -620,9 +624,15 @@ html.fullscreen body #river_player #media_container #viewing_screen #iframe_cont
   height: 75%;
 }
 
-html.embed body #river_player #media_container #viewing_screen #subtitle_bar,
-html.fullscreen body #river_player #media_container #viewing_screen #subtitle_bar {
-  height: 25%;
+html.embed body #river_player.vimeo #media_container #viewing_screen #iframe_container,
+html.fullscreen body #river_player.vimeo #media_container #viewing_screen #iframe_container {
+  height: 100%;
+}
+
+html.embed body #river_player.vimeo #media_container #viewing_screen #subtitle_bar,
+html.fullscreen body #river_player.vimeo #media_container #viewing_screen #subtitle_bar {
+  height: 100%;
+  margin-top: -200px;
 }
 
 html.fullscreen body #river_player #media_container #viewing_screen #subtitle_bar {
@@ -4635,3 +4645,63 @@ ins.differ {
   background-color: #ddd;
   padding: 0px 3px;
 }
+
+.user_repo_thumbnail_image {
+  width: 120px;
+  height: 90px;
+}
+
+#river_player.vimeo #iframe_overlay {
+  display: none;
+}
+
+#river_player.vimeo .backward_btn,
+#river_player.vimeo .forward_btn,
+#river_player.vimeo .play_btn,
+#river_player.vimeo .pause_btn,
+#river_player.vimeo .volume_control {
+  display: none !important;
+}
+
+#river_player.vimeo .player_timeline_container {
+  display: none !important;
+}
+
+#river_player.vimeo #subtitle_bar {
+  background: none;
+  margin-top: -80px;
+}
+
+
+#editor.vimeo .player_controls_container {
+  display: none;
+}
+
+#editor.vimeo #subtitle_bar {
+  background: none;
+  width: 500px;
+  margin-top: -80px;
+}
+
+#editor.vimeo #subtitle_display,
+#river_player.vimeo #subtitle_display {
+  background-color: black;
+  opacity: 0.9;
+  padding: 2px 8px;
+  display: inline-block;
+}
+
+#editor.vimeo #subtitle_display:empty,
+#river_player.vimeo #subtitle_display:empty {
+  padding: 0px;
+}
+
+#editor.vimeo #editor-bottom {
+  margin-top: 80px;
+}
+
+#editor.vimeo .time_indicator {
+  top: -250px;
+  left: -200px;
+}
+

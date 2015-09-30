@@ -64,6 +64,10 @@ class Video < ActiveRecord::Base
       if youtube?
         self.metadata = YoutubeClient.new.get_metadata(self.source_id)[0]
         self.yt_channel_id = self.metadata["snippet"]["channelId"]
+        self.source_type = "youtube"
+      elsif vimeo?
+        self.metadata = Vimeo::Simple::Video.info(source_id).parsed_response.first
+        self.source_type = "vimeo"
       end
     end
   end
@@ -83,6 +87,7 @@ class Video < ActiveRecord::Base
       :genre => self.genre,
       :url => self.url,
       :source_url => self.source_url,
+      :source_type => self.source_type,
       :duration => self.duration
     }
   end
@@ -109,45 +114,99 @@ class Video < ActiveRecord::Base
   end
 
   def source_id
-    # http://stackoverflow.com/a/9102270
-    match = self.source_url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/)
-    (match && match[2].length == 11) ? match[2] : nil
+    if youtube?
+      # http://stackoverflow.com/a/9102270
+      match = self.source_url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/)
+      (match && match[2].length == 11) ? match[2] : nil
+    elsif vimeo?
+      # http://stackoverflow.com/a/13286930
+      match = self.source_url.match(/https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/)
+      match && match[3] ? match[3] : nil
+    end
   end
 
   def view_count
     return 0 unless self.metadata
-    self.metadata["statistics"]["viewCount"]  
+    if youtube?
+      self.metadata["statistics"]["viewCount"]  
+    elsif vimeo?
+      self.metadata["stats_number_of_plays"]
+    else 
+      0
+    end
   end
 
   def duration
     return 0 unless self.metadata
-    ytformat = self.metadata["contentDetails"]["duration"] # youtube video duration
-    yt_duration_to_seconds(ytformat)
+
+    if youtube?
+      ytformat = self.metadata["contentDetails"]["duration"] # youtube video duration
+      yt_duration_to_seconds(ytformat)
+    elsif vimeo?
+      self.metadata["duration"]
+    else
+      0
+    end
   end
 
   def uploader_username
     return "unavailable" unless self.metadata
-    self.metadata["snippet"]["channelTitle"]
+
+    if youtube?
+      self.metadata["snippet"]["channelTitle"]
+    elsif vimeo?
+      self.metadata["user_name"]
+    else 
+      "unavailable"
+    end
   end
 
   def uploader_url
     return "unavailable" unless self.metadata
-    "https://www.youtube.com/channel/#{self.metadata["snippet"]["channelId"]}"
+
+    if youtube?
+      "https://www.youtube.com/channel/#{self.metadata["snippet"]["channelId"]}"
+    elsif vimeo?
+      self.metadata["user_url"]
+    else 
+      "unavailable"
+    end
   end
 
   def name
     return "Video unavailable" unless self.metadata
-    self.metadata["snippet"]["title"]  
+
+    if youtube?
+      self.metadata["snippet"]["title"]  
+    elsif vimeo?
+      self.metadata["title"]
+    else 
+      "Video unavailable"
+    end
   end
 
   def thumbnail_url
     return "" unless self.metadata
-    self.metadata["snippet"]["thumbnails"]["default"]["url"]
+
+    if youtube?
+      self.metadata["snippet"]["thumbnails"]["default"]["url"]
+    elsif vimeo?
+      self.metadata["thumbnail_medium"]
+    else 
+      ""
+    end
   end
 
   def thumbnail_url_hq
     return "" unless self.metadata
-    self.metadata["snippet"]["thumbnails"]["high"]["url"]
+
+    if youtube?
+      self.metadata["snippet"]["thumbnails"]["high"]["url"]
+    elsif vimeo?
+      self.metadata["thumbnail_large"]
+    else 
+      ""
+    end
   end
 
   def generate_token

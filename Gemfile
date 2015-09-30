@@ -88,6 +88,7 @@ gem "differ"
 
 gem "elasticsearch-model", :git => "git://github.com/elasticsearch/elasticsearch-rails.git", :ref => "ded20356920802c35d258756113acfd95b25ade6"
 gem "legato", "= 0.4.0"
+gem "vimeo"
 
 
 

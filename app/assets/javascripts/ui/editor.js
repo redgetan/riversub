@@ -346,7 +346,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   getEditorElement: function() {
     return  "<div class=''>" +
-              "<div id='editor' class='desktop'> " +
+              "<div id='editor' class='desktop " + repo.video.source_type + "'> " +
                 "<div id='editor-top' class='row'> " +
                   "<div class='repo_label_container'> " +
                     "<h5 id='repo_label'>" +
@@ -1058,6 +1058,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$addSubBtn.removeAttr("disabled");
     Backbone.trigger("editor.ready");
     this.setupIntroJS();
+
+    if (repo.video.source_type == "vimeo") {
+      // vimeo autoplays but doesnt trigger the onPlay callback 
+      // (trigger playprogress instead), so we trigger it manually
+      this.onPlay(); 
+    }
   },
 
   initializeKeyboardShortcuts: function() {
