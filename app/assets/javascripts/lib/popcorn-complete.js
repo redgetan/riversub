@@ -5233,7 +5233,7 @@
 
   CURRENT_TIME_MONITOR_MS = 16,
   EMPTY_STRING = "",
-  VIMEO_HOST = window.location.protocol + "//player.vimeo.com";
+  VIMEO_HOST = "https://player.vimeo.com";
 
   // Utility wrapper around postMessage interface
   function VimeoPlayer( vimeoIFrame ) {
@@ -5299,7 +5299,7 @@
         currentTime: 0,
         duration: NaN,
         ended: false,
-        paused: true,
+        paused: false,
         error: null
       },
       playerReady = false,
@@ -5323,6 +5323,8 @@
     }
 
     function onPlayerReady( event ) {
+      playerReady = true;
+
       player.addEventListener( 'loadProgress' );
       player.addEventListener( 'playProgress' );
       player.addEventListener( 'play' );
@@ -5425,6 +5427,7 @@
     }
 
     self.pause = function() {
+      impl.paused = true;
       if( !playerReady ) {
         addPlayerReadyCallback( function() { self.pause(); } );
         return;
@@ -5444,6 +5447,7 @@
     }
 
     function onPlay() {
+
       if( impl.ended ) {
         changeCurrentTime( 0 );
       }
@@ -5522,14 +5526,6 @@
           player.play();
           break;
         case "loadProgress":
-          var duration = parseFloat( data.data.duration );
-          if( duration > 0 && !playerReady ) {
-            playerReady = true;
-            player.pause();
-          }
-          break;
-        case "pause":
-          player.setVolume( 1 );
           // Switch message pump to use run-time message callback vs. startup
           window.removeEventListener( "message", startupMessage, false );
           window.addEventListener( "message", onStateChange, false );
@@ -5539,6 +5535,7 @@
     }
 
     function onStateChange( event ) {
+
       if( event.origin !== VIMEO_HOST ) {
         return;
       }
@@ -5555,6 +5552,7 @@
       }
 
       // Methods
+
       switch ( data.method ) {
         case "getCurrentTime":
           onCurrentTime( parseFloat( data.value ) );
@@ -5575,6 +5573,7 @@
           break;
         case "playProgress":
           onCurrentTime( parseFloat( data.data.seconds ) );
+          onPlayProgress();
           break;
         case "play":
           onPlay();
@@ -5594,6 +5593,11 @@
           }
           break;
       }
+    }
+
+    function onPlayProgress() {
+      impl.paused = false;
+      self.dispatchEvent( "playprogress" );
     }
 
     function monitorCurrentTime() {
