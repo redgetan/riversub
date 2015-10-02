@@ -44,7 +44,17 @@ class Video < ActiveRecord::Base
               must: [{ 
                 multi_match: { 
                   query: query, 
-                  fields: ['metadata.snippet.title','metadata.snippet.description','metadata.snippet.tags']  
+                  fields: [
+                    'metadata.snippet.title',
+                    'metadata.snippet.description',
+                    'metadata.snippet.tags',
+                    'metadata.nicovideo_thumb_response.thumb.title', 
+                    'metadata.nicovideo_thumb_response.thumb.description',
+                    'metadata.nicovideo_thumb_response.thumb.tags.tag',
+                    'metadata.title',
+                    'metadata.description',
+                    'metadata.tags'
+                  ]  
                 } 
               }] 
             } 
