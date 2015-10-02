@@ -1,7 +1,7 @@
 River::Application.routes.draw do
 
   # http://stackoverflow.com/questions/3993651/rails-3-ssl-routing-redirects-from-https-to-http
-  protocol = Rails.env.development? ? "http://" : "https://"
+  protocol = Rails.env.development? ? "http://" : "http://"
 
   scope :protocol => protocol, :constraints => { :protocol => protocol } do
     devise_for :users, :controllers => { 
