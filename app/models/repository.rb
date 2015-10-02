@@ -266,7 +266,11 @@ class Repository < ActiveRecord::Base
   end
 
   def favorite_url
-    upvote_repository_url(self)
+    if self.class.repond_to?(:http_protocol) 
+      upvote_repository_url(self, protocol: self.class.http_protocol)
+    else
+      upvote_repository_url(self)
+    end
   end
 
   def post_publish_url
@@ -306,19 +310,35 @@ class Repository < ActiveRecord::Base
   end
 
   def publish_url
-    publish_repo_url(self)
+    if self.class.repond_to?(:http_protocol) 
+      publish_repo_url(self, protocol: self.class.http_protocol)
+    else
+      publish_repo_url(self)
+    end
   end
 
   def update_title_url
-    update_repo_title_url(self)
+    if self.class.repond_to?(:http_protocol) 
+      update_repo_title_url(self, protocol: self.class.http_protocol)
+    else
+      update_repo_title_url(self)
+    end
   end
 
   def update_font_url
-    update_repo_font_url(self)
+    if self.class.repond_to?(:http_protocol) 
+      update_repo_font_url(self, protocol: self.class.http_protocol)
+    else
+      update_repo_font_url(self)
+    end
   end
 
   def subtitle_download_url
-    repo_subtitle_download_url(self)
+    if self.class.repond_to?(:http_protocol) 
+      repo_subtitle_download_url(self, protocol: self.class.http_protocol)
+    else
+      repo_subtitle_download_url(self)
+    end
   end
 
   def original?
@@ -426,7 +446,11 @@ class Repository < ActiveRecord::Base
   end
 
   def upload_subtitle_url
-    upload_to_existing_repo_url(self)
+    if self.class.repond_to?(:http_protocol) 
+      upload_to_existing_repo_url(self, protocol: self.class.http_protocol)
+    else
+      upload_to_existing_repo_url(self)
+    end
   end
 
   def editor_upload_tab_url

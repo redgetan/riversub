@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   around_filter :add_current_user_to_models
+  around_filter :add_http_protocol_to_models
   before_filter :clear_forwarding_url
 
 
@@ -78,6 +79,19 @@ class ApplicationController < ActionController::Base
     yield
     klasses.each do |k|
       k.send :remove_method, 'current_user'
+    end
+  end
+
+  def add_http_protocol_to_models
+    klasses = [ActiveRecord::Base, ActiveRecord::Base.class]
+    klasses.each do |k|
+      protocol = request.protocol
+
+      k.send(:define_method, 'http_protocol', proc { protocol } )
+    end    
+    yield
+    klasses.each do |k|
+      k.send :remove_method, 'http_protocol'
     end
   end
 
