@@ -58,6 +58,10 @@ $.extend(river.controller,{
 
   },
   "repositories#editor": function() {
+    if ($('#demo_mode_modal').length > 0) {
+      $('#demo_mode_modal').modal();
+    }
+    
     // add ?local=true to url to test locally w/o internet connection
     if (location.search.match("local=true")) {
       repo = $("#editor_container").data("repo") ;

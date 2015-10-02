@@ -234,12 +234,14 @@ class RepositoriesController < ApplicationController
     @repo.current_user = current_user
 
     if cannot?(:edit, @repo) && @repo.group.present?
-      flash[:notice] = "Read only mode. You can't edit someone else subtitle. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
+      @modal_title = "Read Only Mode"
+      @modal_message = "You can't edit someone else subtitle. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
     elsif @repo.user && !user_signed_in?
       store_location(@repo.editor_url)
       redirect_to new_user_session_url and return
     elsif !@repo.user && !user_signed_in?
-      flash[:notice] = "Demo mode. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
+      @modal_title = "Demo Mode"
+      @modal_message = "Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
     elsif cannot?(:edit, @repo)
       flash[:error] = "You don't have permission to see that"
       redirect_to root_url and return
