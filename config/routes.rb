@@ -33,9 +33,6 @@ River::Application.routes.draw do
     get  "requests/new",     :to => "requests#new",        :as => "video_request_new"
     post "requests",         :to => "requests#create",     :as => "video_request_create"
     get "requests/:id",      :to => "requests#show",       :as => "video_request_show"
-    post "videos/:video_token/repositories/upload", :to => "repositories#upload", :as => "video_repository_upload"
-    post "/r/:token/upload", :to => "repositories#upload_to_existing_repo", :as => "upload_to_existing_repo"
-    post "/r/:token/export_to_youtube", :to => "repositories#export_to_youtube", :as => "export_to_youtube_repo"
     get "subs",                                  :to => "repositories#index",  :as => "repositories"
     get "releases/:id",                          :to => "releases#show",  :as => "release_show"
 
@@ -102,9 +99,6 @@ River::Application.routes.draw do
     post "/r/:token/delete",                to: "repositories#destroy",   as: "repo_destroy"
 
     get "/r/:token/download",               to: "timings#index",   as: "repo_subtitle_download"
-    post "/r/:token/publish",               to: "repositories#publish", as: "publish_repo"
-    post "/r/:token/update_title",          to: "repositories#update_title", as: "update_repo_title"
-    post "/r/:token/update_font",          to: "repositories#update_font", as: "update_repo_font"
     post "/r/:token/fork",                  to: "repositories#fork",   as: "fork_repo"
 
 
@@ -121,6 +115,9 @@ River::Application.routes.draw do
   get "/r/:token/editor",                 to: "repositories#editor", as: "editor_repo"
   get '/:username/:token',              to: 'repositories#show',   as: 'user_repo'
   get '/:username/:token/editor',       to: 'repositories#editor', as: 'editor_user_repo'
+  post "/r/:token/publish",               to: "repositories#publish", as: "publish_repo"
+  post "/r/:token/update_title",          to: "repositories#update_title", as: "update_repo_title"
+  post "/r/:token/update_font",          to: "repositories#update_font", as: "update_repo_font"
 
   resources "repositories", :only => [] do
     resources "timings", :only => [:index, :create, :update, :destroy]
@@ -136,6 +133,9 @@ River::Application.routes.draw do
     end
   end
 
+  post "videos/:video_token/repositories/upload", :to => "repositories#upload", :as => "video_repository_upload"
+  post "/r/:token/upload", :to => "repositories#upload_to_existing_repo", :as => "upload_to_existing_repo"
+  post "/r/:token/export_to_youtube", :to => "repositories#export_to_youtube", :as => "export_to_youtube_repo"
 
 
   # The priority is based upon order of creation:
