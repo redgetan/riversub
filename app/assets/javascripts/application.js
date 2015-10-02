@@ -29,6 +29,8 @@
 
 //= require  lib/mousetrap.js
 //= require  lib/mousetrap-global-bind.js
+//= require  lib/popcorn-complete.js
+//= require  lib/popcorn_nicovideo.js
 //= require_tree ./lib/
 
 //= require ui/base_player.js

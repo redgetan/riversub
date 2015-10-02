@@ -33,6 +33,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       Backbone.trigger("trackchange", this.tracks.at(0));
     }
 
+    if (repo.video.source_type === "youtube") {
+      this.setupScreenZoom();
+    }
+
+    if (repo.video.source_type === "nicovideo") {
+      this.setupNicoCommentToggle();
+      $(".player_controls_container").hide();
+    }
+
     // ensure first subtitle appears if it start_time is 0
     var firstTrack = this.tracks.at(0);
     
@@ -180,8 +189,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$editorLanguageSelect.on("change", this.onEditorLanguageSelectChange.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
-    this.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
+    this.popcorn.on("progress", this.onProgress.bind(this) );
   },
 
   preventSubtileInputFromLosingFocus: function(event) {
@@ -346,7 +355,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   getEditorElement: function() {
     return  "<div class=''>" +
-              "<div id='editor' class='desktop " + repo.video.source_type + "'> " +
+              "<div id='editor' class='desktop " + (repo.video.source_type ? repo.video.source_type : "") + "'> " +
                 "<div id='editor-top' class='row'> " +
                   "<div class='repo_label_container'> " +
                     "<h5 id='repo_label'>" +
@@ -555,6 +564,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // }.bind(this));
 
     this.$iframeOverlay = $("#iframe_overlay");
+
+
     this.$overlay_btn = $("#overlay_btn");
 
     this.$video_name = $("#video_name");
@@ -610,6 +621,23 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         $("#editor").addClass("desktop");
       }
     });
+  },
+
+  setupNicoCommentToggle: function() {
+    var nicoComment = "<div class='nico_comment'><i class='nico_comment_btn fa fa-comment-o'></i></div>";
+    $(".player_controls").append(nicoComment);
+
+    $(".nico_comment").on("click", function(){
+      if (this.popcorn.media.playerObject.ext_isCommentVisible()) {
+        this.hideNicoComments();  
+        $(".nico_comment").removeClass("on");
+        $(".nico_comment").addClass("off");
+      } else {
+        this.showNicoComments();  
+        $(".nico_comment").removeClass("off");
+        $(".nico_comment").addClass("on");
+      }
+    }.bind(this));
   },
 
   setupFontSelect: function(font_property, width) {
@@ -1054,16 +1082,19 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onLoadedMetadata: function(event) {
+    river.ui.BasePlayer.prototype.onLoadedMetadata.call(this, event);
+
     this.$startTimingBtn.removeAttr("disabled");
     this.$addSubBtn.removeAttr("disabled");
     Backbone.trigger("editor.ready");
     this.setupIntroJS();
 
-    if (repo.video.source_type == "vimeo") {
+    if (repo.video.source_type === "vimeo") {
       // vimeo autoplays but doesnt trigger the onPlay callback 
       // (trigger playprogress instead), so we trigger it manually
       this.onPlay(); 
     }
+
   },
 
   initializeKeyboardShortcuts: function() {
@@ -1881,6 +1912,25 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       this.tracks.models[i].remove();
     }
     this.tracks.reset();
+  },
+
+  addPlayerControls: function() {
+    river.ui.BasePlayer.prototype.addPlayerControls.call(this);
+    $("#summary").append("<span class='time_loaded'></span>");
+    
+    this.$timeLoaded = $(".time_loaded");
+  },
+
+  onProgress: function() {
+    if (repo.video.source_type === "nicovideo") {
+       this.renderTimeLoaded();
+    }
+  },
+
+  renderTimeLoaded: function() {
+    var secondsLoaded = this.popcorn.video.buffered.end(0);
+    var width = secondsLoaded * this.timeline.resolution(this.timeline.$summary);
+    this.$timeLoaded.css("width", width);
   },
 
   stringifyTime: function(time) {

@@ -92,4 +92,11 @@ module ApplicationHelper
     match[1].to_i * 3600 + match[2].to_i * 60 + match[3].to_i
   end
 
+  def nico_duration_to_seconds(nicoformat)
+    nicoformat.split(":").reverse.each_with_index.map do |item, index|  
+      multiplier = index
+      item.to_i * (60 ** multiplier)
+    end.reduce(:+)
+  end
+
 end

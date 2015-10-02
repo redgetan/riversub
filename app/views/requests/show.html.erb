@@ -23,7 +23,11 @@
         Subtitle Request
       </h2>
 
-      <iframe width="555" height="415" src="<%= @request.source_embed_url %>" frameborder="0" allowfullscreen></iframe>
+      <% if @request.video.youtube? %>
+        <iframe width="555" height="415" src="<%= @request.source_embed_url %>" frameborder="0" allowfullscreen></iframe>
+      <% else  %>
+        <a href="<%= @request.video.source_url %>"><img class='request_show_video_thumbnail' src="<%= @request.video.thumbnail_url_hq %>"></a>
+      <% end %>
 
       <a class='subtitle_request_btn' href="<%= @request.new_repository_url %>">Subtitle This Video</a>
 

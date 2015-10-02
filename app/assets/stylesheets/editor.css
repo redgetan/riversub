@@ -621,6 +621,7 @@ div#keyboard-shortcuts {
 	text-align: center;
 	width: 100%;
 	height: inherit;
+	position: relative;
 }
 
 /*#language_select {

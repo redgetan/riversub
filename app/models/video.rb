@@ -1,4 +1,5 @@
 require 'elasticsearch/model'
+require 'active_support/core_ext/hash/conversions'
 
 class Video < ActiveRecord::Base
 
@@ -68,6 +69,9 @@ class Video < ActiveRecord::Base
       elsif vimeo?
         self.metadata = Vimeo::Simple::Video.info(source_id).parsed_response.first
         self.source_type = "vimeo"
+      elsif nicovideo?
+        self.metadata = get_nicovideo_metadata(source_id)
+        self.source_type = "nicovideo"
       end
     end
   end
@@ -78,6 +82,10 @@ class Video < ActiveRecord::Base
 
   def vimeo?
     source_url =~ /vimeo/
+  end
+
+  def nicovideo?
+    source_url =~ /nicovideo.jp/
   end
 
   def serialize
@@ -122,6 +130,9 @@ class Video < ActiveRecord::Base
       # http://stackoverflow.com/a/13286930
       match = self.source_url.match(/https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/)
       match && match[3] ? match[3] : nil
+    elsif nicovideo?
+      match = self.source_url.match(/.*nicovideo.jp\/watch\/(.*)/)
+      match && match[1] ? match[1] : nil
     end
   end
 
@@ -131,6 +142,8 @@ class Video < ActiveRecord::Base
       self.metadata["statistics"]["viewCount"]  
     elsif vimeo?
       self.metadata["stats_number_of_plays"]
+    elsif nicovideo?
+      self.metadata["nicovideo_thumb_response"]["thumb"]["view_counter"]
     else 
       0
     end
@@ -144,6 +157,8 @@ class Video < ActiveRecord::Base
       yt_duration_to_seconds(ytformat)
     elsif vimeo?
       self.metadata["duration"]
+    elsif nicovideo?
+      nico_duration_to_seconds(self.metadata["nicovideo_thumb_response"]["thumb"]["length"])
     else
       0
     end
@@ -156,6 +171,8 @@ class Video < ActiveRecord::Base
       self.metadata["snippet"]["channelTitle"]
     elsif vimeo?
       self.metadata["user_name"]
+    elsif nicovideo?
+      self.metadata["nicovideo_thumb_response"]["thumb"]["user_nickname"]
     else 
       "unavailable"
     end
@@ -168,6 +185,8 @@ class Video < ActiveRecord::Base
       "https://www.youtube.com/channel/#{self.metadata["snippet"]["channelId"]}"
     elsif vimeo?
       self.metadata["user_url"]
+    elsif nicovideo?
+      "http://www.nicovideo.jp/user/#{self.metadata["nicovideo_thumb_response"]["thumb"]["user_id"]}"
     else 
       "unavailable"
     end
@@ -180,6 +199,8 @@ class Video < ActiveRecord::Base
       self.metadata["snippet"]["title"]  
     elsif vimeo?
       self.metadata["title"]
+    elsif nicovideo?
+      self.metadata["nicovideo_thumb_response"]["thumb"]["title"]
     else 
       "Video unavailable"
     end
@@ -192,6 +213,8 @@ class Video < ActiveRecord::Base
       self.metadata["snippet"]["thumbnails"]["default"]["url"]
     elsif vimeo?
       self.metadata["thumbnail_medium"]
+    elsif nicovideo?
+      self.metadata["nicovideo_thumb_response"]["thumb"]["thumbnail_url"]
     else 
       ""
     end
@@ -204,6 +227,8 @@ class Video < ActiveRecord::Base
       self.metadata["snippet"]["thumbnails"]["high"]["url"]
     elsif vimeo?
       self.metadata["thumbnail_large"]
+    elsif nicovideo?
+      self.metadata["nicovideo_thumb_response"]["thumb"]["thumbnail_url"] + ".L"
     else 
       ""
     end
@@ -270,6 +295,11 @@ class Video < ActiveRecord::Base
 
   def self.for_channel_id(channel_ids)
     self.where(yt_channel_id: channel_ids)
+  end
+
+  def get_nicovideo_metadata(source_id)
+    getthumbinfo_url = "http://ext.nicovideo.jp/api/getthumbinfo/#{source_id}"
+    Hash.from_xml(RestClient.get(getthumbinfo_url))
   end
 
   def to_param

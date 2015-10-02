@@ -10,6 +10,12 @@ river.ui.BasePlayer = Backbone.View.extend({
     }
 
     this.initializeKeyboardShortcuts();
+
+    // hide it initially so that we can click on flash object to load/request the actual nicoplayer
+    if (this.repo.video.source_type === "nicovideo" || this.repo.video.source_type === "vimeo") {
+      this.$overlay_btn.remove();
+      this.$iframeOverlay.hide();
+    }
   },
 
   seekDuration: function() {
@@ -38,8 +44,10 @@ river.ui.BasePlayer = Backbone.View.extend({
     var mediaSource = typeof this.video.source_url === "undefined" ? "" : this.video.source_url;
     this.popcorn = this.loadMedia(targetSelector,mediaSource);
 
-    // player settings
-    this.setVolume(0.5);
+    if (repo.video.source_type === "nicovideo") {
+      this.popcorn.on("nicothumbloaded", this.onNicoThumbLoaded.bind(this));
+    }
+
     // misc
     this.defineAttributeAccessors();
     this.displayNoInternetConnectionIfNeeded();
@@ -66,6 +74,42 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.loadTracks(timings, options);
 
     this.bindEvents();
+  },
+
+  onNicoThumbLoaded: function() {
+    var thumbOffset = $(this.popcorn.media.playerObject).offset();
+    var thumbHeight = $(this.popcorn.media.playerObject).height();
+    var thumbWidth  = $(this.popcorn.media.playerObject).width();
+
+    var thumbPlayBtnHalfHeight = 30;
+    var thumbPlayBtnHalfWidth  = 50;
+
+    $(document.body).append($("<div class='nico_frame_top'>"));
+    $(document.body).append($("<div class='nico_frame_bottom'>"));
+    $(document.body).append($("<div class='nico_frame_left'>"));
+    $(document.body).append($("<div class='nico_frame_right'>"));
+
+    this.$frameTop = $(".nico_frame_top");
+    this.$frameBottom = $(".nico_frame_bottom");
+    this.$frameLeft = $(".nico_frame_left");
+    this.$frameRight = $(".nico_frame_right");
+
+    this.$frameTop.css("width", thumbWidth);
+    this.$frameTop.css("height", thumbHeight / 2 - thumbPlayBtnHalfHeight);
+    this.$frameBottom.css("width", thumbWidth);
+    this.$frameBottom.css("height", thumbHeight / 2 - thumbPlayBtnHalfHeight);
+
+    this.$frameLeft.css("width", thumbWidth / 2 - thumbPlayBtnHalfWidth);
+    this.$frameLeft.css("height", thumbHeight);
+    this.$frameRight.css("width", thumbWidth / 2 - thumbPlayBtnHalfWidth);
+    this.$frameRight.css("height", thumbHeight);
+
+    this.$frameTop.offset(thumbOffset);
+    this.$frameBottom.offset({ top: thumbOffset.top + thumbHeight / 2 + thumbPlayBtnHalfHeight, left: thumbOffset.left });
+    this.$frameLeft.offset(thumbOffset);
+    this.$frameRight.offset({ top: thumbOffset.top, left: thumbOffset.left + thumbWidth / 2 + thumbPlayBtnHalfWidth });
+
+
   },
 
   displayNoInternetConnectionIfNeeded: function() {
@@ -152,8 +196,10 @@ river.ui.BasePlayer = Backbone.View.extend({
       if (typeof this.options.url_options !== "undefined") {
         url = url + this.options.url_options; 
       }
-      if (url.match("vimeo.com")) {
+      if (repo.video.source_type === "vimeo") {
         popcorn = Popcorn.vimeo(targetSelector,url);
+      } else if (repo.video.source_type === "nicovideo") {
+        popcorn = Popcorn.nicovideo(targetSelector,url);
       } else {
         popcorn = Popcorn.smart(targetSelector,url);
       }
@@ -240,7 +286,21 @@ river.ui.BasePlayer = Backbone.View.extend({
       // vimeo autoplays but doesnt trigger the onPlay callback 
       // (trigger playprogress instead), so we trigger it manually
       this.onPlay(); 
+    } else if (this.repo.video.source_type === "nicovideo") {
+      // hide the nicothumbwatch frame blocker 
+      this.$frameTop.hide();
+      this.$frameBottom.hide();
+      this.$frameLeft.hide();
+      this.$frameRight.hide();
+      // show the previously hidden iframeoverlay
+      this.$iframeOverlay.show();
+      $(".player_controls_container").show();
+      // hide nico comments initially
+      this.popcorn.media.playerObject.ext_setCommentVisible(false);
     }
+
+    // player settings
+    this.setVolume(0.5);
   },
 
   applyFontSettings: function() {
@@ -288,8 +348,6 @@ river.ui.BasePlayer = Backbone.View.extend({
     $(".player_controls").append("<div class='player_timeline_container'></div>");
     $("#summary").appendTo(".player_timeline_container")
 
-    this.setupScreenZoom();
-
     this.$playBtn = $(".play_btn");
     this.$pauseBtn = $(".pause_btn");
     this.$backwardBtn = $(".backward_btn");
@@ -299,10 +357,6 @@ river.ui.BasePlayer = Backbone.View.extend({
     if (this.timeline) {
       this.timeline.setTimelineWidth();
     }
-  },
-
-  setupScreenZoom: function() {
-    // nothing by default
   },
 
   pauseEvent: function(e){
@@ -335,6 +389,13 @@ river.ui.BasePlayer = Backbone.View.extend({
 
   seek: function(time) {
     this.popcorn.currentTime(time);
+
+    if (repo.video.source_type === "nicovideo") {
+      // nico doesnt give u the accurate seeked time unless its playing
+      if (this.media.paused) {
+        this.play();      
+      }
+    }
   },
 
   backwardTime: function() {
@@ -412,6 +473,15 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.popcorn.pause();
   },
 
+  // nico nico douga specific
+  showNicoComments: function() {
+    this.popcorn.media.playerObject.ext_setCommentVisible(true);
+  },
+
+  hideNicoComments: function() {
+    this.popcorn.media.playerObject.ext_setCommentVisible(false);
+  },
+
   // how many pixels per second
   resolution: function($container) {
     var widthPixel = $container.width();
@@ -422,3 +492,4 @@ river.ui.BasePlayer = Backbone.View.extend({
 
 
 });
+

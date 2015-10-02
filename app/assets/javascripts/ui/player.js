@@ -30,7 +30,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     if (this.repo.is_fullscreen) {
       this.enterFullscreenMode();
     }
-
+    
     // ensure first subtitle appears 
     this.onTrackStart(this.tracks.at(0));
   },

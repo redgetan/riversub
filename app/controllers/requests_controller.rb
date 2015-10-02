@@ -28,8 +28,8 @@ class RequestsController < ApplicationController
   def create
     @group = Group.find_by_short_name params[:group_id]
 
-    if (!params[:source_url].match(/youtu\.?be/))
-      flash[:error] = "Only youtube urls are allowed"
+    if !(params[:source_url].match(/youtu\.?be/) || params[:source_url].match(/vimeo.com/) || params[:source_url].match(/nicovideo.jp/))
+      flash[:error] = "Only youtube, nicovideo, and vimeo urls are allowed"
       render :new and return
     end
 

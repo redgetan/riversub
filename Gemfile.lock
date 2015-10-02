@@ -466,6 +466,7 @@ DEPENDENCIES
   libv8 (~> 3.11.8)
   meta-tags
   mysql2
+  nokogiri
   omniauth-facebook
   omniauth-google-oauth2 (>= 0.2.6)
   omniauth-twitter

@@ -327,6 +327,7 @@ div.videos li.selected {
   height: 310px;
 }
 
+#editor.nicovideo div#iframe_container,
 #editor.vimeo div#iframe_container {
   height: 370px;
 }
@@ -341,7 +342,7 @@ div.videos li.selected {
 
 div#iframe_container #iframe_overlay {
   height: inherit;
-  width: inherit;
+  width: 100%;
   position: absolute;
   z-index: 2;
   background-color: white;
@@ -1539,6 +1540,11 @@ footer a:hover{
   display: block;
   position: absolute;
   top: 0px;
+}
+
+#editor.nicovideo .time_loaded {
+  margin-top: 0px;
+  height: 100%;
 }
 
 .time_total {
@@ -4590,6 +4596,7 @@ ins.differ {
 }
 
 
+.nico_comment,
 .screen_zoom {
   display: inline-block;
   float: right;
@@ -4598,6 +4605,15 @@ ins.differ {
   cursor: pointer;
 }
 
+.nico_comment.off i {
+  color: white;
+  font-weight: normal;
+}
+
+.nico_comment.on i {
+  color: green;
+  font-weight: bold;
+}
 
 .original_video_contribution_count_number {
   color: green;
@@ -4648,7 +4664,7 @@ ins.differ {
 
 .user_repo_thumbnail_image {
   width: 120px;
-  height: 90px;
+  max-height: 90px;
 }
 
 #river_player.vimeo #iframe_overlay {
@@ -4705,3 +4721,17 @@ ins.differ {
   left: -200px;
 }
 
+#editor.nicovideo .time_indicator {
+  top: -350px;
+}
+
+.nico_frame_top, 
+.nico_frame_bottom, 
+.nico_frame_left,
+.nico_frame_right {
+  opacity: 0;
+}
+
+.request_show_video_thumbnail {
+  min-width: 550px;
+}
