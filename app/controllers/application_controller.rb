@@ -1,4 +1,11 @@
 class ApplicationController < ActionController::Base
+
+  force_ssl unless: lambda { |x|
+    Rails.env.development? || 
+      (params[:controller] == "repositories" && params[:action] ==  "show") || 
+      (params[:controller] == "repositories" && params[:action] ==  "editor")
+  }
+
   protect_from_forgery
 
   around_filter :add_current_user_to_models
