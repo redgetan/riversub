@@ -1,10 +1,10 @@
 class ApplicationController < ActionController::Base
 
-  force_ssl unless: lambda { |x|
-    Rails.env.development? || 
-      (params[:controller] == "repositories" && params[:action] ==  "show") || 
-      (params[:controller] == "repositories" && params[:action] ==  "editor")
-  }
+  # force_ssl unless: lambda { |x|
+  #   Rails.env.development? || 
+  #     (params[:controller] == "repositories" && params[:action] ==  "show") || 
+  #     (params[:controller] == "repositories" && params[:action] ==  "editor")
+  # }
 
   protect_from_forgery
 
