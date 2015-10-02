@@ -4662,7 +4662,8 @@ ins.differ {
   padding: 0px 3px;
 }
 
-.user_repo_thumbnail_image {
+.user_repo_thumbnail_image,
+.user_repo_index_thumbnail {
   width: 120px;
   max-height: 90px;
 }
@@ -4762,3 +4763,4 @@ ins.differ {
   text-align: center;
   color: gray;
 }
+
