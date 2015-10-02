@@ -55,7 +55,7 @@
         </div>
         <div class="original_video">
           <span class="original_video_source_label">Source:</span>
-          <%= link_to "via Youtube", @repo.video.source_url %>
+          <%= link_to @repo.video.source_type.capitalize, @repo.video.source_url %>
         </div>
 
         <div class='embed_container'>
