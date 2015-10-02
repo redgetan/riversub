@@ -65,6 +65,13 @@ class Group < ActiveRecord::Base
         .order("repo_count DESC")
   end
 
+  def self.ordered_by_latest_release_date
+    self.select("groups.*,MAX(repositories.published_at) as latest_release_date,COUNT(case repositories.is_published when '1' then repositories.group_id else null end) as repo_count")
+        .joins("LEFT JOIN repositories ON repositories.group_id = groups.id")
+        .group("groups.id")
+        .order("latest_release_date DESC")
+  end
+
   def self.find_by_short_id(short_id)
     self.find_by_short_name(short_id)
   end
