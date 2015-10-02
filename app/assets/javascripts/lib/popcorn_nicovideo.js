@@ -4,17 +4,14 @@
 
   CURRENT_TIME_MONITOR_MS = 16,
   EMPTY_STRING = "",
-
   // Example: http://www.nicovideo.jp/watch/sm26803766
   regexNicovideo = /.*nicovideo.jp\/watch\/(.*)/,
-
-  ABS = Math.abs,
+  ABS = Math.abs;
 
   function HTMLNicoVideoElement( id ) {
 
     var self = this,
       parent = typeof id === "string" ? document.querySelector( id ) : id,
-      elem = document.createElement( "div" ),
       impl = {
         src: EMPTY_STRING,
         networkState: self.NETWORK_EMPTY,
@@ -53,12 +50,10 @@
     // Mark this as YouTube
     self._util.type = "Nico";
 
-    function onNicoPlayerReady() {
+    window["onNicoPlayerReady"] = function() {
       // dispatch loaded metadata  
 
       playerReady = true;
-      player = document.external_nico_0; // the nicoplayer flash object
-
 
       impl.duration = player.ext_getTotalTime();
       impl.readyState = self.HAVE_METADATA;
@@ -79,10 +74,10 @@
     }
 
     function getDuration() {
-      return document.external_nico_0.ext_getTotalTime();
+      return player.ext_getTotalTime();
     }
 
-    function onNicoPlayerStatus( object, event ) {
+    window["onNicoPlayerStatus"] = function( object, event ) {
       switch( event ) {
 
         // ended
@@ -125,8 +120,9 @@
       clearInterval( bufferedInterval );
       player.ext_play(false);
 
-      parent.removeChild( elem );
-      elem = document.createElement( "div" );
+      while (parent.hasChildNodes()) {
+        parent.removeChild(parent.lastChild);
+      }
     }
 
     function changeSrc( aSrc ) {
@@ -146,17 +142,25 @@
         destroyPlayer();
       }
 
-      parent.appendChild( elem );
-
       // Get ID out of nicovideo url
       aSrc = regexNicovideo.exec( aSrc )[ 1 ];
 
-      var thumbwatch = "<script type='text/javascript' src='http://ext.nicovideo.jp/thumb_watch/" + aSrc + "'></script>";
-      elem.innerHTML = thumbwatch;
+       var oldDocumentWrite = document.write;
+
+      document.write = function(node){
+        $(parent).append(node);
+      };
+
+      $.getScript("http://ext.nicovideo.jp/thumb_watch/" + aSrc, function() {
+        document.write = oldDocumentWrite;
+        player = document.external_nico_0; // the nicoplayer flash object
+        self.dispatchEvent("nicothumbloaded");
+      });
+
     }
 
     function monitorCurrentTime() {
-      var playerTime = player.ext_setPlayheadTime();
+      var playerTime = player.ext_getPlayheadTime();
       var playing = player.ext_getStatus();
 
       if ( !impl.seeking ) {
@@ -188,7 +192,7 @@
     }
 
     function monitorBuffered() {
-      var fraction = player.ext_getLoadedRatio();
+      var fraction = getRealLoadedFraction();
 
       if ( lastLoadedFraction !== fraction ) {
         lastLoadedFraction = fraction;
@@ -206,6 +210,8 @@
     }
 
     function changeCurrentTime( aTime ) {
+      if (!playerReady) return;
+      
       onSeeking();
       player.ext_setPlayheadTime( aTime );
       impl.currentTime = player.ext_getPlayheadTime();
@@ -257,9 +263,26 @@
     }
 
     self.play = function() {
+      if (!playerReady) return;
+      
       impl.paused = false;
       player.ext_play(true);
     };
+
+
+    function getRealLoadedFraction() {
+      var fraction = player.ext_getLoadedRatio();
+      var totalTime = player.ext_getTotalTime();
+
+      var loadedTime = fraction * totalTime;
+      var playerTime = player.ext_getPlayheadTime();
+
+      if (loadedTime < playerTime) {
+        return playerTime / totalTime;
+      } else {
+        return fraction;
+      }
+    }
 
     function onPause() {
       impl.paused = true;
@@ -271,6 +294,7 @@
     }
 
     self.pause = function() {
+      if (!playerReady) return;
       impl.paused = true;
       player.ext_play(false);
     };
@@ -288,6 +312,8 @@
     }
 
     function setVolume( aValue ) {
+      if (!playerReady) return;
+
       impl.volume = aValue;
       player.ext_setVolume( impl.volume * 100 );
       self.dispatchEvent( "volumechange" );
@@ -299,6 +325,8 @@
     }
 
     function setMuted( aValue ) {
+      if (!playerReady) return;
+      
       impl.muted = aValue;
       setVolume(0);
       self.dispatchEvent( "volumechange" );
@@ -451,8 +479,8 @@
                 if ( !duration ) {
                   return 0;
                 }
-
-                return duration * player.getVideoLoadedFraction();
+                
+                return duration * getRealLoadedFraction();
               }
 
               //throw fake DOMException/INDEX_SIZE_ERR
@@ -500,7 +528,10 @@
     var media = Popcorn.HTMLNicoVideoElement( container ),
         popcorn = Popcorn( media, options );
 
+    media.src = url;
+
     return popcorn;
   };
 
 }( Popcorn, window, document ));
+
