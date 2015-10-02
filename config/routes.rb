@@ -115,24 +115,26 @@ River::Application.routes.draw do
 
     post "/r/:token/delete",                to: "repositories#destroy",   as: "repo_destroy"
 
-    get "/:token",                        to: "repositories#show",   as: "repo"
-    get "/r/:token",                        to: "repositories#show",   as: "repo"
-    get "/embed/:token",                    to: "repositories#embed",   as: "repo_embed"
     get "/r/:token/download",               to: "timings#index",   as: "repo_subtitle_download"
-    get "/r/:token/comments/:comment_short_id", to: "repositories#show", as: "repo_comment"
-    get "/r/:token/subtitles/:subtitle_short_id", to: "repositories#show", as: "repo_subtitle"
     post "/r/:token/publish",               to: "repositories#publish", as: "publish_repo"
     post "/r/:token/update_title",          to: "repositories#update_title", as: "update_repo_title"
     post "/r/:token/update_font",          to: "repositories#update_font", as: "update_repo_font"
     post "/r/:token/fork",                  to: "repositories#fork",   as: "fork_repo"
-    get "/r/:token/editor",                 to: "repositories#editor", as: "editor_repo"
-    get '/:username/:token',              to: 'repositories#show',   as: 'user_repo'
-    get '/:username/:token/editor',       to: 'repositories#editor', as: 'editor_user_repo'
 
 
     root :to => "home#index"
 
   end
+
+  # NON HTTPS - to allow external scripts that's non https (i.e. niconico douga)
+  get "/:token",                        to: "repositories#show",   as: "repo"
+  get "/r/:token",                        to: "repositories#show",   as: "repo"
+  get "/r/:token/comments/:comment_short_id", to: "repositories#show", as: "repo_comment"
+  get "/r/:token/subtitles/:subtitle_short_id", to: "repositories#show", as: "repo_subtitle"
+  get "/embed/:token",                    to: "repositories#embed",   as: "repo_embed"
+  get "/r/:token/editor",                 to: "repositories#editor", as: "editor_repo"
+  get '/:username/:token',              to: 'repositories#show',   as: 'user_repo'
+  get '/:username/:token/editor',       to: 'repositories#editor', as: 'editor_user_repo'
 
 
   # The priority is based upon order of creation:
