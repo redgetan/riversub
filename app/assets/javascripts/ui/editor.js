@@ -731,24 +731,25 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // enter key
     if (event.which == 13 ) {
       this.$titleInput.blur();
+      this.saveRepoTitle();
     }
   },
 
   onTitleInputHandleClick: function(event) {
     if (this.$titleInputHandle.hasClass("save_input")) {
-      this.$titleInput.blur();
+      this.saveRepoTitle();
     } else {
       this.$titleInput.focus();
     }
   },
 
   onTitleInputBlur: function() {
-    this.$titleInputHandle.text("Edit Title");
-    this.$titleInputHandle.removeClass("save_input");
-    this.saveRepoTitle();
   },
 
   saveRepoTitle: function(callback) {
+    this.$titleInputHandle.text("Edit Title");
+    this.$titleInputHandle.removeClass("save_input");
+
     var repoTitle = this.$titleInput.val();
 
     this.saveNotify();
