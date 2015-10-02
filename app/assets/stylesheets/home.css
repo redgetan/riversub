@@ -2920,7 +2920,7 @@ ul.source_repo_timing_list li span {
   border: solid 1px steelblue;
   padding: 5px 10px;
   cursor: pointer;
-  margin-right: 5px;
+  margin: 0px 5px;
 }
 
 .new_translation_btn {
@@ -4725,8 +4725,8 @@ ins.differ {
   top: -350px;
 }
 
-.nico_frame_top, 
-.nico_frame_bottom, 
+.nico_frame_top,
+.nico_frame_bottom,
 .nico_frame_left,
 .nico_frame_right {
   opacity: 0;
@@ -4737,7 +4737,7 @@ ins.differ {
 }
 
 .video_support_logo {
-  margin: 20px; 
+  margin: 20px;
 }
 
 .youtube_logo,
@@ -4756,4 +4756,9 @@ ins.differ {
 
 .videos_new .nico_logo {
   width: 150px;
+}
+
+.user_repo_traffic_contribution {
+  text-align: center;
+  color: gray;
 }

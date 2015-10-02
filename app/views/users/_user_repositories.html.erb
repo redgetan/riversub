@@ -15,6 +15,9 @@
       <% end %>
       <% @repositories.limit(12).each do |repo| %>
         <div class='col-xs-6 col-md-3'>
+          <% if (user_signed_in? && current_user == @user) || current_user.try(:is_super_admin?)  %>
+            <div class='user_repo_traffic_contribution'><%= repo.views_contributed %> views</div>
+          <% end %>
           <div class='thumbnail'>
             <a href="<%= user_signed_in? && current_user == @user ? repo.editor_url : repo.url %>" id="<%= repo.id %>" class="video" >
               <img src="<%= repo.thumbnail_url %>" alt="" class='user_repo_thumbnail_image'>

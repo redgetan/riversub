@@ -21,20 +21,22 @@
       <%= render 'videos/player' %>
       <% if @repo %>
         <% @sharable = @repo %>
-        <div class="traffic_contribution_stats pull-left">
-          <span class="traffic_contribution_label">Traffic Contribution:</span>
-          <span class="traffic_contribution_value" style="">
-            <span class="traffic_contribution_count" data-toggle="tooltip" data-placement="bottom" title="Subtitle's View Contribution to the Original Video">
-              <%= @repo.views_contributed %>
-            </span>
-          </span>
-        </div>
         <% if can?(:edit, @repo) %>
-          <a href="<%= @repo.editor_url %>" class="repo_open_editor_btn pull-right btn btn-danger btn-sm">Open Editor<a>
+          <a href="<%= @repo.editor_url %>" class="repo_open_editor_btn pull-left btn btn-danger btn-sm">Open Editor<a>
         <% end %>
-        <div class='new_translation_container pull-right'>
+        <div class='new_translation_container pull-left'>
           <a href="<%= @repo.new_translation_url %>" class='new_translation_btn'>+ Subtitle</a>
         </div>
+        <% if (user_signed_in? && current_user == @repo.user) || current_user.try(:is_super_admin?) %>
+          <div class="traffic_contribution_stats pull-right">
+            <span class="traffic_contribution_label">Traffic Contribution:</span>
+            <span class="traffic_contribution_value" style="">
+              <span class="traffic_contribution_count" data-toggle="tooltip" data-placement="bottom" title="Subtitle's View Contribution to the Original Video">
+                <%= @repo.views_contributed %>
+              </span>
+            </span>
+          </div>
+        <% end %>
       <% end %>
         <div class='repo_details_line_separator'></div>
         <div class='original_video_stats'>
