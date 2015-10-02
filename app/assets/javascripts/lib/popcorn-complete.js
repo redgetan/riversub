@@ -5838,8 +5838,8 @@
 
   // Helper for identifying URLs we know how to play.
   HTMLVimeoVideoElement.prototype._canPlaySrc = function( url ) {
-    return ( (/player.vimeo.com\/video\/\d+/).test( url ) ||
-             (/vimeo.com\/\d+/).test( url ) ) ? "probably" : EMPTY_STRING;
+    return ( /https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/).test( url ) 
+              ? "probably" : EMPTY_STRING;
   };
 
   // We'll attempt to support a mime type of video/x-vimeo
