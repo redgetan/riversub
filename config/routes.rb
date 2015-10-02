@@ -70,20 +70,6 @@ River::Application.routes.draw do
       resources :release_items, :only => [:create, :show, :update, :destroy]
     end
 
-    resources "repositories", :only => [] do
-      resources "timings", :only => [:index, :create, :update, :destroy]
-
-      collection do
-        get "unpublished"
-      end
-
-      member do
-        post "upvote"
-        post "downvote"
-        post "unvote"
-      end
-    end
-
     resources :correction_requests, :only => [], :controller => "correction_requests" do
       member do
         post "approve"
@@ -135,6 +121,21 @@ River::Application.routes.draw do
   get "/r/:token/editor",                 to: "repositories#editor", as: "editor_repo"
   get '/:username/:token',              to: 'repositories#show',   as: 'user_repo'
   get '/:username/:token/editor',       to: 'repositories#editor', as: 'editor_user_repo'
+
+  resources "repositories", :only => [] do
+    resources "timings", :only => [:index, :create, :update, :destroy]
+
+    collection do
+      get "unpublished"
+    end
+
+    member do
+      post "upvote"
+      post "downvote"
+      post "unvote"
+    end
+  end
+
 
 
   # The priority is based upon order of creation:
