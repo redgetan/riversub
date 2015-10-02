@@ -904,7 +904,7 @@ class Repository < ActiveRecord::Base
   end
 
   def views_contributed
-    Visit.where("landing_page LIKE ? ", url + "%").count
+    Visit.where("landing_page LIKE ? ", "%" + relative_url + "%").count
   end
 
   def to_param
