@@ -2,6 +2,7 @@
 <ul class="release_items_container col-lg-9 col-lg-offset-2 col-md-9 col-md-offset-1 col-xs-9 col-xs-offset-0">
   <% @release.release_items.order("position").each do |item| %>
     <% repo = item.repository %>
+    <% next unless repo %>
     <% video = repo.video %>
     <li class='release_item'>
       <div class="video_thumb">
