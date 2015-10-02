@@ -266,7 +266,7 @@ class Repository < ActiveRecord::Base
   end
 
   def favorite_url
-    if self.class.repond_to?(:http_protocol) 
+    if self.class.respond_to?(:http_protocol) 
       upvote_repository_url(self, protocol: self.class.http_protocol)
     else
       upvote_repository_url(self)
