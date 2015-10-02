@@ -310,7 +310,7 @@ class Repository < ActiveRecord::Base
   end
 
   def publish_url
-    if self.class.repond_to?(:http_protocol) 
+    if self.class.respond_to?(:http_protocol) 
       publish_repo_url(self, protocol: self.class.http_protocol)
     else
       publish_repo_url(self)
@@ -318,7 +318,7 @@ class Repository < ActiveRecord::Base
   end
 
   def update_title_url
-    if self.class.repond_to?(:http_protocol) 
+    if self.class.respond_to?(:http_protocol) 
       update_repo_title_url(self, protocol: self.class.http_protocol)
     else
       update_repo_title_url(self)
@@ -326,7 +326,7 @@ class Repository < ActiveRecord::Base
   end
 
   def update_font_url
-    if self.class.repond_to?(:http_protocol) 
+    if self.class.respond_to?(:http_protocol) 
       update_repo_font_url(self, protocol: self.class.http_protocol)
     else
       update_repo_font_url(self)
@@ -334,7 +334,7 @@ class Repository < ActiveRecord::Base
   end
 
   def subtitle_download_url
-    if self.class.repond_to?(:http_protocol) 
+    if self.class.respond_to?(:http_protocol) 
       repo_subtitle_download_url(self, protocol: self.class.http_protocol)
     else
       repo_subtitle_download_url(self)
@@ -446,7 +446,7 @@ class Repository < ActiveRecord::Base
   end
 
   def upload_subtitle_url
-    if self.class.repond_to?(:http_protocol) 
+    if self.class.respond_to?(:http_protocol) 
       upload_to_existing_repo_url(self, protocol: self.class.http_protocol)
     else
       upload_to_existing_repo_url(self)
