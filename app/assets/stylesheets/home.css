@@ -4735,3 +4735,25 @@ ins.differ {
 .request_show_video_thumbnail {
   min-width: 550px;
 }
+
+.video_support_logo {
+  margin: 20px; 
+}
+
+.youtube_logo,
+.vimeo_logo {
+  width: 150px;
+}
+
+.nico_logo {
+  width: 250px;
+}
+
+.videos_new .youtube_logo,
+.videos_new .vimeo_logo {
+  width: 100px;
+}
+
+.videos_new .nico_logo {
+  width: 150px;
+}
