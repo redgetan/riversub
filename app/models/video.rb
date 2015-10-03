@@ -238,7 +238,7 @@ class Video < ActiveRecord::Base
     elsif vimeo?
       self.metadata["thumbnail_large"]
     elsif nicovideo?
-      self.metadata["nicovideo_thumb_response"]["thumb"]["thumbnail_url"] + ".L"
+      self.metadata["nicovideo_thumb_response"]["thumb"]["thumbnail_url"] 
     else 
       ""
     end
