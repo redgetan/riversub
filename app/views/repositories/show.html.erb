@@ -47,7 +47,7 @@
       <% @user = @repo.user %>
       <% if @user %>
         <h3 class='player_right_header'>Translator:</h3>
-        <div class='repo_translator_profile'>
+        <div class='repo_translator_profile' onclick="document.location.href = '<%= @repo.user.url %>';">
           <div class='thumbnail'>
             <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
           </div>
@@ -55,7 +55,7 @@
             <a href="<%= @repo.owner_profile_url %>" class='player_repo_owner_name'><%= @repo.owner %></a>
             <% if @user.repositories.count > 0 %>
               <div class='num_of_subtitles'>
-                <span><i class='fa fa-filter'></i>  <%= @user.repositories.count  %></span>
+                <span><i class='fa fa-microphone'></i>  <%= @user.repositories.count  %></span>
               </div>
             <% end %>
           </div>

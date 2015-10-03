@@ -4901,3 +4901,15 @@ ins.differ {
 .related_videos_container .section_block {
   border: none;
 }
+
+.repo_translator_profile:hover {
+  cursor: pointer;
+  color: white;
+  background-color: cadetblue;
+}
+
+
+
+.repo_translator_profile:hover .player_repo_owner_name {
+  color: white;
+}
