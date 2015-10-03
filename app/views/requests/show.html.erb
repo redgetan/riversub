@@ -12,10 +12,10 @@
   <meta property="fb:app_id" content="1465538213665903" />
 <% end %>
 
-<div class='request_show_container container'>
+<div class='request_show_container container <%= @request.video.source_type %>'>
   <div class='row'>
     <div class='col-md-6 col-md-offset-3'>
-      <h2>
+      <h2 class='request_show_title'>
         <% if @group %>
           <a href="<%= @group.url %>"><span><%= @group.name %></span></a> / 
         <% end %>

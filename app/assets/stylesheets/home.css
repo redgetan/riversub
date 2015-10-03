@@ -4775,3 +4775,12 @@ ins.differ {
 #demo_mode_modal .modal-body {
   font-size: 18px;
 }
+
+.request_show_container.nicovideo .request_show_title {
+  text-align: center;
+}
+
+.request_show_container.nicovideo .request_show_video_thumbnail {
+  min-width: 250px;
+  margin-left: 150px;
+}
