@@ -629,10 +629,26 @@ html.fullscreen body #river_player.vimeo #media_container #viewing_screen #ifram
   height: 100%;
 }
 
+html.fullscreen #river_player.vimeo #viewing_screen {
+  height: 91% !important;
+  padding-top: 2%;
+}
+
+html.fullscreen #river_player.vimeo .player_controls_container {
+  height: 60px;
+}
+
+html.fullscreen #river_player.vimeo .player_controls {
+  padding-top: 20px;
+}
+
+#river_player.vimeo #viewing_screen {
+  height: 430px !important;
+}
+
 html.embed body #river_player.vimeo #media_container #viewing_screen #subtitle_bar,
 html.fullscreen body #river_player.vimeo #media_container #viewing_screen #subtitle_bar {
-  height: 100%;
-  margin-top: -200px;
+  top: -140px;
 }
 
 html.fullscreen body #river_player #media_container #viewing_screen #subtitle_bar {
@@ -647,6 +663,8 @@ html.fullscreen #media_container {
   left: 0px;
 }
 
+html.fullscreen #transcript_container,
+html.fullscreen .player_right_container,
 html.fullscreen #player_details,
 html.fullscreen .original_video_stats,
 html.fullscreen .twitter_follow_btn,
@@ -4704,7 +4722,8 @@ ins.differ {
 
 #river_player.vimeo #subtitle_bar {
   background: none;
-  margin-top: -80px;
+  top: -100px;
+  min-height: 0px;
 }
 
 
@@ -4847,7 +4866,7 @@ ins.differ {
 .repo_export_container,
 .related_videos_container {
   width: 400px;
-  border: solid 1px gray;
+  border: solid 1px #aaa;
   padding: 10px;
   overflow: auto;
 }
