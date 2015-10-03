@@ -526,7 +526,7 @@ class Repository < ActiveRecord::Base
   end
 
   def user_avatar_thumb_url
-    user.avatar.thumb.url
+    user.avatar.url
   end
 
   def title
@@ -861,6 +861,8 @@ class Repository < ActiveRecord::Base
   end
 
   def is_downloadable?
+    return false unless self.video.youtube?
+
     if is_downloadable.present?
       !!is_downloadable
     elsif group.present?

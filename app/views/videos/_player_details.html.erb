@@ -1,21 +1,27 @@
 <div id="player_details">
   <ul class="nav nav-tabs" >
-    <li class="<%= @repo.try(:is_downloadable?) ? "col-xs-6" : "is_not_downloadable col-xs-12" %> active"><a href="#transcript" data-toggle="tab">Transcript</a></li>
+    <li class="active"><a href="#info" data-toggle="tab">Info</a></li>
+    <li class=""><a href="#transcript" data-toggle="tab">Transcript</a></li>
+    <li class=""><a href="#comments" data-toggle="tab">Comments</a></li>
     <% if @repo.try(:is_downloadable?) %>
-      <li class="col-xs-6"><a href="#export" data-toggle="tab">Export</a></li>
+      <li class=""><a href="#export" data-toggle="tab">Export</a></li>
     <% end %>
   </ul>
 
   <div class='tab-content'>
-    <div class="tab-pane <%= @repo ? @repo.transcript_tab_class : "" %>" id='transcript'>
-      <div id='transcript_container'>
-        <div id='subtitle_list'></div>
-      </div>
+    <div class="tab-pane active" id='info'>
+      <%= render 'videos/player_description' %>
+    </div>
+
+    <div class="tab-pane" id='transcript'>
+    </div>
+
+    <div class="tab-pane" id='comments'>
+      <%= render 'videos/player_comments' %>
     </div>
 
     <% if @repo.try(:is_downloadable?) %>
       <div class="tab-pane" id='export'>
-        <%= render 'videos/player_export' %>
       </div>
     <% end %>
 

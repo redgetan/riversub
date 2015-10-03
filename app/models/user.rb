@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :bio, :email, :password, :password_confirmation, :remember_me,
-                  :avatar, :avatar_cache, :remove_avatar, :role
+                  :avatar, :avatar_cache, :remove_avatar, :role, :allow_subtitle_download
 
   validates :username, :presence => true
 

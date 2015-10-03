@@ -1,15 +1,15 @@
 <% if @related_repos.present? %>
   <div class='related_videos_container'>
     <div class="section_block">
-      <div class="section_header">
+<!--       <div class="section_header">
         Related <%= @repo.group ? @repo.group.name : "" %> Subtitles
       </div>
-      <div class="section_body">
+ -->      <div class="section_body">
         <% @related_repos.each do |repo| %>
           <div class="related_repo_item">
             <div class="video_thumb">
               <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                <img src="<%= repo.thumbnail_url %>" alt="">
+                <img src="<%= repo.thumbnail_url %>" alt="" class='related_repo_thumbnail_image'>
               </a>
             </div>
             <div class="video_title">

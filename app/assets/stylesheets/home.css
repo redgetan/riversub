@@ -304,7 +304,7 @@ div.videos li.selected {
 
 #river_player.show div#media {
   margin-top: 0px;
-  height: 380px;
+  height: 420px;
 }
 
 #demo-container #river_player div#media {
@@ -335,7 +335,6 @@ div.videos li.selected {
 #river_player div#iframe_container {
   position: relative;
   height: inherit;
-  min-height: 380px;
   width: inherit;
   background-color: #000;
 }
@@ -382,7 +381,7 @@ div#subtitle_bar {
 }
 
 #river_player #subtitle_bar {
-  min-height: 90px;
+  min-height: 60px;
   height: auto;
   padding-top: 5px;
   max-width: 1000px;
@@ -756,15 +755,22 @@ html.fullscreen .related_videos_container {
 }
 
 #river_player #repo_label {
-  width: 500px;
+  /*max-width: 600px;*/
   text-align: left;
   /*float: left;*/
   margin-bottom: 5px;
 }
 
+#river_player #repo_label,
+#river_player #repo_time_label {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+
 #river_player #repo_label a {
   color: black;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 #river_player #repo_label .group_name,
@@ -901,7 +907,9 @@ ul.social_login_buttons a {
 }
 
 #river_player #transcript_container {
-  width: 500px;
+  clear: both;
+  padding-top: 20px;
+  margin-left: -25px;
 }
 
 #transcript_container,
@@ -1431,6 +1439,8 @@ footer a:hover{
   clear: both;
   height: 600px;
   margin-bottom: 30px;
+  float: left;
+  margin-top: -50px;
 }
 
 #video_information .nav-tabs > .active > a,
@@ -1637,6 +1647,7 @@ footer a:hover{
 
 #player_details .tab-content {
   min-height: 300px;
+  margin-top: 50px;
 }
 
 #info_container table {
@@ -2777,6 +2788,7 @@ div.field, div.actions {
 
 .repo_open_editor_btn {
   margin-top: 35px;
+  font-size: 14px;
 }
 
 .publish_release_btn {
@@ -2836,7 +2848,8 @@ form.new_user #user_login {
 }
 
 #river_player .original_video_owner,
-#river_player .original_video {
+#river_player .original_video,
+#river_player .original_description {
   clear: both;
   text-align: left;
   padding-top: 10px;
@@ -2917,15 +2930,18 @@ ul.source_repo_timing_list li span {
 
 .new_translation_btn,
 .repo_favorite_btn {
-  border: solid 1px steelblue;
+  text-decoration: none;
+  border: solid 1px black;
+  color: black;
   padding: 5px 10px;
   cursor: pointer;
   margin: 0px 5px;
+  font-size: 18px;
 }
 
-.new_translation_btn {
-  /*padding: 8px 10px;*/
-  /*font-size: 16px;*/
+.new_translation_btn:hover {
+  background-color: black;
+  color: white;
 }
 
 .new_translation_container {
@@ -3308,7 +3324,7 @@ html.embed .expand_btn {
     background: none;
     border: solid 2px lightgray;
     color: gray;
-    width: 300px;
+    width: 275px;
 }
 
 .groups_videos {
@@ -3553,7 +3569,7 @@ html.embed .expand_btn {
 
 .related_videos_container {
   text-align: left;
-  width: 480px;
+  /*width: 480px;*/
 }
 
 .related_videos_container .section_header {
@@ -4634,6 +4650,7 @@ ins.differ {
 
 #river_player .social_share_original_container {
   margin-top: 10px;
+  overflow: auto;
 }
 
 #river_player .social_share_original_label {
@@ -4663,7 +4680,8 @@ ins.differ {
 }
 
 .user_repo_thumbnail_image,
-.user_repo_index_thumbnail {
+.user_repo_index_thumbnail,
+.related_repo_thumbnail_image {
   width: 120px;
   max-height: 90px;
 }
@@ -4783,4 +4801,84 @@ ins.differ {
 .request_show_container.nicovideo .request_show_video_thumbnail {
   min-width: 250px;
   margin-left: 150px;
+}
+
+#flash_container:empty {
+  display: none;
+  height: 0px;
+  margin-top: 0px !important;
+}
+
+.original_description {
+  display: block;
+  overflow: auto;
+}
+
+.original_video_description_label {
+  float: left;
+}
+
+.original_video_description_value {
+  margin-left: 20px;
+  color: gray;
+  display: block;
+  width: 250px;
+  float: left;  
+}
+
+#river_player .repo_owner {
+  display: inline-block;  
+}
+
+#river_player .repo_translator_profile .thumbnail {
+  width: 100px;
+  float: left;
+  margin-bottom: 0px;
+}
+
+.player_repo_owner_name {
+  color: gray;
+  font-size: 24px;
+}
+
+#river_player .repo_translator_profile,
+.repo_share_container,
+.original_video_information,
+.repo_export_container,
+.related_videos_container {
+  width: 400px;
+  border: solid 1px gray;
+  padding: 10px;
+  overflow: auto;
+}
+
+.player_right_header {
+  text-align: left;
+}
+
+.player_repo_owner_name,
+.num_of_subtitles,
+.user_topics {
+  float: left;
+  clear: both;
+  text-align: left;
+}
+
+.user_topics {
+  width: 250px;
+  line-height: 20px;
+}
+
+.user_details {
+  float: left;
+  margin-left: 20px;
+}
+
+.user_topic {
+  border: solid 1px lightgray;
+  padding: 2px 4px;
+}
+
+.related_videos_container .section_block {
+  border: none;
 }

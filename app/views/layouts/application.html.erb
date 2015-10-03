@@ -84,18 +84,20 @@
 </nav>
 
     <div class="container">
-            <div id="flash_container">
-                <% if flash[:error] %>
-                <div id="flash_error" class="flash alert alert-block"><%= flash[:error] %></div>
-                <% end %>
-                <% if flash[:notice] %>
-                <div id="flash_error" class="flash alert alert-block"><%= flash[:notice] %></div>
-                <% end %>
-                <% if flash[:alert] %>
-                <div id="flash_error" class="flash alert alert-block"><%= flash[:alert] %></div>
-                <% end %>
-                </div>
-            <%= yield %>
+      <% if flash.present? %>
+        <div id="flash_container">
+          <% if flash[:error] %>
+            <div id="flash_error" class="flash alert alert-block"><%= flash[:error] %></div>
+          <% end %>
+          <% if flash[:notice] %>
+            <div id="flash_error" class="flash alert alert-block"><%= flash[:notice] %></div>
+          <% end %>
+          <% if flash[:alert] %>
+            <div id="flash_error" class="flash alert alert-block"><%= flash[:alert] %></div>
+          <% end %>
+        </div>
+      <% end %>
+      <%= yield %>
     </div>
     <footer>
       <div class="container">

@@ -16,7 +16,7 @@
 
 <div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%> <%= @repo.video.source_type %>' data-repo='<%= @repo.serialize.to_json %>'>
   <div class="row">
-    <div class="col-lg-7 col-md-8 player_column">
+    <div class="col-lg-8 col-md-8 player_column">
       <%= render 'videos/player_info' %>
       <%= render 'videos/player' %>
       <% if @repo %>
@@ -25,7 +25,7 @@
           <a href="<%= @repo.editor_url %>" class="repo_open_editor_btn pull-left btn btn-danger btn-sm">Open Editor<a>
         <% end %>
         <div class='new_translation_container pull-left'>
-          <a href="<%= @repo.new_translation_url %>" class='new_translation_btn'>+ Subtitle</a>
+          <a href="<%= @repo.new_translation_url %>" class='new_translation_btn'>+ Subtitle this Video</a>
         </div>
         <% if (user_signed_in? && current_user == @repo.user) || current_user.try(:is_super_admin?) %>
           <div class="traffic_contribution_stats pull-right">
@@ -38,16 +38,36 @@
           </div>
         <% end %>
       <% end %>
-        <div class='repo_details_line_separator'></div>
+      <div class='repo_details_line_separator'></div>
+      <div id='transcript_container'>
+        <div id='subtitle_list'></div>
+      </div>
+    </div>
+    <div class='col-lg-2'>
+      <% @user = @repo.user %>
+      <% if @user %>
+        <h3 class='player_right_header'>Translator:</h3>
+        <div class='repo_translator_profile'>
+          <div class='thumbnail'>
+            <a class="user_avatar" href="<%= @repo.owner_profile_url %>"><%= image_tag @repo.user_avatar_thumb_url %></a>
+          </div>
+          <div class='user_details'>
+            <a href="<%= @repo.owner_profile_url %>" class='player_repo_owner_name'><%= @repo.owner %></a>
+            <% if @user.repositories.count > 0 %>
+              <div class='num_of_subtitles'>
+                <span><i class='fa fa-filter'></i>  <%= @user.repositories.count  %></span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <h3 class='player_right_header'>Video:</h3>
+      <div class='original_video_information'>
         <div class='original_video_stats'>
           <div class='original_video_view_label pull-left'>Views:</div>
           <span class="original_video_view_count" data-toggle="tooltip" data-placement="bottom" title="Total Views on Youtube">
             <%= number_with_delimiter(@repo.video.view_count, delimiter: ",") %>
           </span>
-        </div>
-        <div class="translator_container pull-left">
-          <span class="translator_label">Translator:</span>
-          <%= link_to @repo.owner, @repo.user.try(:url), class: "river_gray" %>
         </div>
         <div class="original_video_owner pull-left">
           <span class="original_video_owner_label">Video Owner:</span>
@@ -57,23 +77,40 @@
           <span class="original_video_source_label">Source:</span>
           <%= link_to @repo.video.source_type.capitalize, @repo.video.source_url %>
         </div>
+        <% if @repo.video.source_description.present? %>
+          <div class="original_description">
+            <span class="original_video_description_label">Description:</span>
+            <span class="original_video_description_value"><%= truncate(@repo.video.source_description, length: 100) %></span>
+          </div>
+        <% end %>
+      </div>
 
+      <h3 class='player_right_header'>Share:</h3>
+      <div class='repo_share_container'>
         <div class='embed_container'>
           <span class='pull-left embed_label'>Embed: </span>
           <input class='embed_code_input' type='text' value='<%= @repo.embed_code %>' onclick="select()">
         </div>
-        <%= render partial: 'videos/social_share', locals: { sharable: @repo } %>
-      <% if @repo.request %>
-        <div class='request_details_container'>
-          <span class='pull-left request_details_label'>Request: </span>
-          <span class='request_details_value'><%= @repo.request.details %></span>
+
+        <%= render partial: 'groups/social_share', locals: { sharable: @repo } %>
+      </div>
+
+      <% if @repo.try(:is_downloadable?) %>
+        <h3 class='player_right_header'>Export:</h3>
+        <div class='repo_export_container'>
+          <%= render 'videos/player_export' %>
         </div>
       <% end %>
-      <%= render "videos/player_comments" %>
+
+      <h3 class='player_right_header'>Related:</h3>
+        <%= render 'videos/player_related' %>
+
+
     </div>
-    <div class='col-lg-5 col-md-4'>
-      <%= render 'videos/player_details' %>
-      <%= render 'videos/player_related' %>
+  </div>
+
+  <div class='row'>
+    <div class='col-lg-3 col-md-4'>
     </div>
   </div>
 </div>

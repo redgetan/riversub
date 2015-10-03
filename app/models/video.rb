@@ -119,6 +119,20 @@ class Video < ActiveRecord::Base
     "https://www.youtube.com/embed/#{source_id}"
   end
 
+  def source_description
+    return "" unless self.metadata
+    
+    if youtube?
+      self.metadata["snippet"]["description"]  
+    elsif vimeo?
+      self.metadata["description"]
+    elsif nicovideo?
+      self.metadata["nicovideo_thumb_response"]["thumb"]["description"]
+    else 
+      ""
+    end
+  end
+
   def self.all_language_codes
     self.select("DISTINCT language").map(&:language).compact
   end
