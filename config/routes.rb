@@ -107,18 +107,6 @@ River::Application.routes.draw do
   end
 
   # NON HTTPS - to allow external scripts that's non https (i.e. niconico douga)
-  get "/:token",                        to: "repositories#show",   as: "repo"
-  get "/r/:token",                        to: "repositories#show",   as: "repo"
-  get "/r/:token/comments/:comment_short_id", to: "repositories#show", as: "repo_comment"
-  get "/r/:token/subtitles/:subtitle_short_id", to: "repositories#show", as: "repo_subtitle"
-  get "/embed/:token",                    to: "repositories#embed",   as: "repo_embed"
-  get "/r/:token/editor",                 to: "repositories#editor", as: "editor_repo"
-  get '/:username/:token',              to: 'repositories#show',   as: 'user_repo'
-  get '/:username/:token/editor',       to: 'repositories#editor', as: 'editor_user_repo'
-  post "/r/:token/publish",               to: "repositories#publish", as: "publish_repo"
-  post "/r/:token/update_title",          to: "repositories#update_title", as: "update_repo_title"
-  post "/r/:token/update_font",          to: "repositories#update_font", as: "update_repo_font"
-
   resources "repositories", :only => [] do
     resources "timings", :only => [:index, :create, :update, :destroy]
 
@@ -132,6 +120,18 @@ River::Application.routes.draw do
       post "unvote"
     end
   end
+
+  get "/:token",                        to: "repositories#show",   as: "repo"
+  get "/r/:token",                        to: "repositories#show",   as: "repo"
+  get "/r/:token/comments/:comment_short_id", to: "repositories#show", as: "repo_comment"
+  get "/r/:token/subtitles/:subtitle_short_id", to: "repositories#show", as: "repo_subtitle"
+  get "/embed/:token",                    to: "repositories#embed",   as: "repo_embed"
+  get "/r/:token/editor",                 to: "repositories#editor", as: "editor_repo"
+  get '/:username/:token',              to: 'repositories#show',   as: 'user_repo'
+  get '/:username/:token/editor',       to: 'repositories#editor', as: 'editor_user_repo'
+  post "/r/:token/publish",               to: "repositories#publish", as: "publish_repo"
+  post "/r/:token/update_title",          to: "repositories#update_title", as: "update_repo_title"
+  post "/r/:token/update_font",          to: "repositories#update_font", as: "update_repo_font"
 
   post "videos/:video_token/repositories/upload", :to => "repositories#upload", :as => "video_repository_upload"
   post "/r/:token/upload", :to => "repositories#upload_to_existing_repo", :as => "upload_to_existing_repo"
