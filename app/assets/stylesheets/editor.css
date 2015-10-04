@@ -913,6 +913,7 @@ textarea {
 
 .keyboard_shortcut_container {
 	padding: 5px;
+	padding-top: 15px;
 	font-size: 12px;
 	cursor: pointer;
 }
