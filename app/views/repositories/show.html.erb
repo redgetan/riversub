@@ -53,9 +53,9 @@
           </div>
           <div class='user_details'>
             <a href="<%= @repo.owner_profile_url %>" class='player_repo_owner_name'><%= @repo.owner %></a>
-            <% if @user.repositories.count > 0 %>
+            <% if @user.repositories.published.count > 0 %>
               <div class='num_of_subtitles'>
-                <span><i class='fa fa-microphone'></i>  <%= @user.repositories.count  %></span>
+                <span><i class='fa fa-microphone'></i>  <%= @user.repositories.published.count  %></span>
               </div>
             <% end %>
           </div>
