@@ -80,7 +80,8 @@
         <% if @repo.video.source_description.present? %>
           <div class="original_description">
             <span class="original_video_description_label">Description:</span>
-            <span class="original_video_description_value"><%= truncate(@repo.video.source_description, length: 100) %></span>
+            <span class="original_video_description_value less"><%= @repo.video.source_description %></span>
+            <a href="#" class="read_more_description_btn">show more...</a>
           </div>
         <% end %>
       </div>

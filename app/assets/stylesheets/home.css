@@ -4933,3 +4933,24 @@ ins.differ {
   position: absolute;
   width: 100%;
 }
+
+.read_more_description_btn {
+  border: solid 1px lightgray;
+  float: left;
+  margin-left: 95px;
+  margin-top: 10px;
+  padding: 0px 5px; 
+}
+
+.original_video_description_value {
+  overflow: hidden;
+}
+
+.original_video_description_value.less {
+  height: 140px;
+}
+
+.original_video_description_value.more {
+  height: auto;
+}
+

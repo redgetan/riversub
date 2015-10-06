@@ -32,6 +32,20 @@ $.extend(river.controller,{
 
     river.model.SocialShare.populateShareCounts(repo.url);
 
+    $(".read_more_description_btn").on("click", function(event){
+      event.preventDefault();
+
+      if ($(".original_video_description_value").hasClass("more")) {
+        $(".original_video_description_value").removeClass("more");
+        $(".original_video_description_value").addClass("less");
+        $(".read_more_description_btn").text("show more...");
+      } else {
+        $(".original_video_description_value").removeClass("less");
+        $(".original_video_description_value").addClass("more");
+        $(".read_more_description_btn").text("show less..");
+      }
+    });
+
     $(".forks_list_item").click(function(event){ 
       window.location.href = $(this).data("url");
     });
