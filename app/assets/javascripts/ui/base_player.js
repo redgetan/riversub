@@ -45,6 +45,8 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.popcorn = this.loadMedia(targetSelector,mediaSource);
 
     if (repo.video.source_type === "nicovideo") {
+      this.$nicoplayerLoading = $("<div class='nicoplayer_loading'>Loading Niconico Player...please wait a few seconds.</div>");
+      this.$media.append(this.$nicoplayerLoading);
       this.popcorn.on("nicothumbloaded", this.onNicoThumbLoaded.bind(this));
     }
 
@@ -77,8 +79,16 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   onNicoThumbLoaded: function() {
+    $(this.playerObject()).attr("wmode", "transparent");
+    this.onNicoThumbMousedownCallback = this.onNicoThumbMousedown.bind(this);
+    this.$media.on("mousedown",this.onNicoThumbMousedownCallback);
     this.setupNicoFrame();
     this.renderNicoFramePosition();
+  },
+
+  onNicoThumbMousedown: function(event) {
+    this.$nicoplayerLoading.show();
+    console.log(event.target);
   },
 
   setupNicoFrame: function() {
@@ -307,6 +317,9 @@ river.ui.BasePlayer = Backbone.View.extend({
       $(".player_controls_container").show();
       // hide nico comments initially
       this.popcorn.media.playerObject.ext_setCommentVisible(false);
+
+      this.$nicoplayerLoading.hide();
+      this.$media.off("mousedown",this.onNicoThumbMousedownCallback);
     }
 
     // player settings

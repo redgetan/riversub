@@ -4923,3 +4923,13 @@ ins.differ {
 #editor.nicovideo #media embed#external_nico_0 {
   width: 735px;
 }
+
+.nicoplayer_loading {
+  display: none;
+  background-color: lightgray;
+  font-size: 18px;
+  border: solid 3px black;
+  font-weight: bold;
+  position: absolute;
+  width: 100%;
+}
