@@ -77,22 +77,28 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   onNicoThumbLoaded: function() {
-    var thumbOffset = $(this.popcorn.media.playerObject).offset();
-    var thumbHeight = $(this.popcorn.media.playerObject).height();
-    var thumbWidth  = $(this.popcorn.media.playerObject).width();
+    this.setupNicoFrame();
+    this.renderNicoFramePosition();
+  },
 
-    var thumbPlayBtnHalfHeight = 30;
-    var thumbPlayBtnHalfWidth  = 50;
-
+  setupNicoFrame: function() {
     $(document.body).append($("<div class='nico_frame_top'>"));
     $(document.body).append($("<div class='nico_frame_bottom'>"));
     $(document.body).append($("<div class='nico_frame_left'>"));
     $(document.body).append($("<div class='nico_frame_right'>"));
-
     this.$frameTop = $(".nico_frame_top");
     this.$frameBottom = $(".nico_frame_bottom");
     this.$frameLeft = $(".nico_frame_left");
     this.$frameRight = $(".nico_frame_right");
+  },
+
+  renderNicoFramePosition: function() {
+    var thumbOffset = $(this.popcorn.media.playerObject).offset();
+    var thumbHeight = $(this.popcorn.media.playerObject).height();
+    var thumbWidth  = $(this.popcorn.media.playerObject).width();
+
+    var thumbPlayBtnHalfHeight = thumbWidth / 16;
+    var thumbPlayBtnHalfWidth  = thumbWidth / 9;
 
     this.$frameTop.css("width", thumbWidth);
     this.$frameTop.css("height", thumbHeight / 2 - thumbPlayBtnHalfHeight);
@@ -108,8 +114,6 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$frameBottom.offset({ top: thumbOffset.top + thumbHeight / 2 + thumbPlayBtnHalfHeight, left: thumbOffset.left });
     this.$frameLeft.offset(thumbOffset);
     this.$frameRight.offset({ top: thumbOffset.top, left: thumbOffset.left + thumbWidth / 2 + thumbPlayBtnHalfWidth });
-
-
   },
 
   displayNoInternetConnectionIfNeeded: function() {
@@ -215,6 +219,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     Backbone.on("trackend",this.onTrackEnd.bind(this));
     this.popcorn.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.popcorn.media.addEventListener("playprogress",this.onPlayProgress.bind(this));
+    $(window).on("resize",this.onWindowResize.bind(this));
     this.handleVolumeEvents();
   },
 
@@ -224,6 +229,10 @@ river.ui.BasePlayer = Backbone.View.extend({
     } else {
       this.onPlay(event);
     }
+  },
+
+  onWindowResize: function() {
+    this.renderNicoFramePosition();
   },
 
   handleVolumeEvents: function() {
@@ -278,6 +287,7 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   onLoadedMetadata: function() {
+    this.isLoadedMetadata = true;
     // prevent Youtube's caption from showing up - we only show Yasub Subtitles :)
     if (repo.video.source_type == "youtube") {
       this.playerObject().unloadModule("cc");        // for AS3 player

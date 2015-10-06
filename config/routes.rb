@@ -137,6 +137,8 @@ River::Application.routes.draw do
   post "/r/:token/upload", :to => "repositories#upload_to_existing_repo", :as => "upload_to_existing_repo"
   post "/r/:token/export_to_youtube", :to => "repositories#export_to_youtube", :as => "export_to_youtube_repo"
 
+  post "shit", :to => "home#shit"
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

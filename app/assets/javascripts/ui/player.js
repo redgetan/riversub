@@ -225,7 +225,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
     this.popcorn.on("timeupdate",this.onTimeUpdate.bind(this));
     this.popcorn.on("progress", this.onProgress.bind(this) );
-    $(window).on("resize",this.onWindowResize.bind(this));
   },
 
   postBindEvents: function() {
@@ -302,7 +301,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     var width = seconds * this.timeline.resolution(this.timeline.$summary);
     this.$timeCurrent.css("width", width);
 
-    if (seconds >= (this.media.duration - this.VIDEO_END_PADDING)) {
+    if (seconds >= (this.mediaDuration() - this.VIDEO_END_PADDING)) {
       this.goToBeginningOfVideo();
     }
   },
@@ -313,6 +312,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onWindowResize: function(event) {
+    river.ui.BasePlayer.prototype.onWindowResize.call(this, event);
     $(".player_controls").show(); // make sure its visible so dimensions can be adjusted
     this.resizePlayerTimeline();
   },
@@ -320,7 +320,10 @@ river.ui.Player = river.ui.BasePlayer.extend({
   resizePlayerTimeline: function() {
     this.timeline.setTimelineWidth();
     this.renderTimeCurrent();
-    this.renderTimeLoaded();
+    
+    if (this.isLoadedMetadata) {
+      this.renderTimeLoaded();
+    }
   },
 
   onTrackStart: function(track) {

@@ -4767,6 +4767,7 @@ ins.differ {
 .nico_frame_bottom,
 .nico_frame_left,
 .nico_frame_right {
+  position: absolute;
   opacity: 0;
 }
 
@@ -4912,4 +4913,13 @@ ins.differ {
 
 .repo_translator_profile:hover .player_repo_owner_name {
   color: white;
+}
+
+#river_player.nicovideo #media embed#external_nico_0 {
+  width: 735px;
+  height: 420px;
+}
+
+#editor.nicovideo #media embed#external_nico_0 {
+  width: 735px;
 }
