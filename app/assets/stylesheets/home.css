@@ -4944,13 +4944,16 @@ ins.differ {
 
 .original_video_description_value {
   overflow: hidden;
+  font-family: inherit;
+  background: none;
+  border: none;
 }
 
 .original_video_description_value.less {
-  height: 140px;
+  max-height: 135px;
 }
 
 .original_video_description_value.more {
-  height: auto;
+  max-height: none;
 }
 
