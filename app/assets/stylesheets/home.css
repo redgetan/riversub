@@ -4866,7 +4866,6 @@ ins.differ {
 .original_video_information,
 .repo_export_container,
 .related_videos_container {
-  width: 400px;
   border: solid 1px #aaa;
   padding: 10px;
   overflow: auto;
