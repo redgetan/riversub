@@ -2481,6 +2481,10 @@ div.comment_form_container form {
   padding-right: 0px;
 }
 
+.group_show_container {
+  margin-top: 10px;
+}
+
 .group_show_container .nav.nav-tabs {
   border-bottom: solid 1px gray;
   margin-bottom: 20px;
