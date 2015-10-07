@@ -357,7 +357,7 @@ class Comment < ActiveRecord::Base
     when Repository
       RepositoryMailer.new_comment_notify(self).deliver
     when Group
-      GroupMailer.new_comment_notify(self).deliver
+      # GroupMailer.new_comment_notify(self).deliver
     else
       nil
     end
