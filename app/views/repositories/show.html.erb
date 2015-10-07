@@ -29,7 +29,7 @@
         </div>
         <% if (user_signed_in? && current_user == @repo.user) || current_user.try(:is_super_admin?) %>
           <div class="traffic_contribution_stats pull-right">
-            <span class="traffic_contribution_label">Traffic Contribution:</span>
+            <span class="traffic_contribution_label">Contribution:</span>
             <span class="traffic_contribution_value" style="">
               <span class="traffic_contribution_count" data-toggle="tooltip" data-placement="bottom" title="Subtitle's View Contribution to the Original Video">
                 <%= @repo.views_contributed %>
