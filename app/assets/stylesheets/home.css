@@ -4918,7 +4918,7 @@ ins.differ {
 }
 
 #river_player.nicovideo #media embed#external_nico_0 {
-  width: 735px;
+  width: inherit;
   height: 420px;
 }
 
