@@ -24,7 +24,7 @@ div#editor {
 }
 
 div#editor_container {
-	margin-top: -20px;
+	margin-top: 0px;
 }
 
 div#editor #repo_label {
@@ -89,7 +89,7 @@ div#editor-bottom {
 #summary.timeline {
 	height: 10px;
 	position: relative;
-	/*overflow: hidden;*/
+	overflow: hidden;
 }
 
 #editor #summary.timeline {

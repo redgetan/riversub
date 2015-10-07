@@ -242,7 +242,9 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   onWindowResize: function() {
-    this.renderNicoFramePosition();
+    if (repo.video.source_type === "nicovideo") {
+      this.renderNicoFramePosition();
+    }
   },
 
   handleVolumeEvents: function() {
