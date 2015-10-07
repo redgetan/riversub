@@ -3232,6 +3232,10 @@ html.embed .expand_btn {
   height: 24px;
 }
 
+.latest_videos .home_try {
+  margin-left: -40px;
+}
+
 .home_try .section_body {
   padding: 30px;
 }
