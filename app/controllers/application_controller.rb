@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
   end
 
   def track_ahoy_visit
-    super if params.controller == "repositories" && params.action == "show" 
+    # don't track it automatically. only track ones called by ahoy.track_visit manually
   end
 
 
