@@ -615,7 +615,7 @@ html.fullscreen {
 
 html.embed body #river_player #media_container #viewing_screen,
 html.fullscreen body #river_player #media_container #viewing_screen {
-  height: 93%;
+  height: 90%;
   padding-top: 2%;
 }
 
@@ -643,12 +643,11 @@ html.fullscreen #river_player.vimeo .player_controls {
 }
 
 #river_player.vimeo #viewing_screen {
-  height: 430px !important;
 }
 
 html.embed body #river_player.vimeo #media_container #viewing_screen #subtitle_bar,
 html.fullscreen body #river_player.vimeo #media_container #viewing_screen #subtitle_bar {
-  top: -140px;
+  top: -30%;
 }
 
 html.fullscreen body #river_player #media_container #viewing_screen #subtitle_bar {
