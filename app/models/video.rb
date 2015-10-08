@@ -44,6 +44,7 @@ class Video < ActiveRecord::Base
               must: [{ 
                 multi_match: { 
                   query: query, 
+                  type: "phrase", 
                   fields: [
                     'metadata.snippet.title',
                     'metadata.snippet.description',

@@ -57,6 +57,16 @@ class Group < ActiveRecord::Base
   validate :no_whitespace_short_name
 
   after_create :create_membership
+  
+  def self.phrase_search(query, options = {})
+    self.search({
+      query: {
+        match_phrase: {
+          text: query
+        }
+      }  
+    }.merge(options))  
+  end
 
   def self.ordered_by_number_of_repositories
     self.select("groups.*,COUNT(case repositories.is_published when '1' then repositories.group_id else null end) as repo_count")

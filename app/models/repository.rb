@@ -100,6 +100,16 @@ class Repository < ActiveRecord::Base
     FONT_ATTRIBUTES
   end
 
+  def self.phrase_search(query, options = {})
+    self.search({
+      query: {
+        match_phrase: {
+          text: query
+        }
+      }  
+    }.merge(options))  
+  end
+
   def self.find_by_short_id(short_id)
     self.find_by_token(short_id)
   end
@@ -202,9 +212,9 @@ class Repository < ActiveRecord::Base
     normalized_query = query.gsub(/[^0-9a-z ]/i, '')
 
     video_ids = Array(Video.nested_search(normalized_query, {size: 1000}).records.ids)
-    repository_ids  = Array(Repository.search(normalized_query, {size: 1000}).records.ids)
+    repository_ids  = Array(Repository.phrase_search(normalized_query, {size: 1000}).records.ids)
     subtitle_ids = Array(Subtitle.phrase_search(normalized_query, {size: 1000}).records.ids)
-    group_ids = Array(Group.search(normalized_query, {size: 1000}).records.ids)
+    group_ids = Array(Group.phrase_search(normalized_query, {size: 1000}).records.ids)
 
     Repository.joins(:video)
               .joins("LEFT JOIN subtitles on subtitles.repository_id = repositories.id")
