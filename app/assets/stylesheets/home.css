@@ -3349,7 +3349,7 @@ html.embed .expand_btn {
     background: none;
     border: solid 2px lightgray;
     color: gray;
-    width: 275px;
+    width: 230px;
 }
 
 .groups_videos {
@@ -3897,6 +3897,9 @@ html.embed .expand_btn {
 
 .fb-share-button.fb_iframe_widget {
   top: -5px;
+  width: 60px;
+  margin-right: 2px;
+  float: left;
 }
 
 .home_call_to_action {
