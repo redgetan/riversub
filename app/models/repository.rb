@@ -104,7 +104,7 @@ class Repository < ActiveRecord::Base
     self.search({
       query: {
         match_phrase: {
-          text: query
+          title: query
         }
       }  
     }.merge(options))  

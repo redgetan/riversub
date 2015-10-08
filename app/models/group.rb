@@ -62,7 +62,7 @@ class Group < ActiveRecord::Base
     self.search({
       query: {
         match_phrase: {
-          text: query
+          name: query
         }
       }  
     }.merge(options))  
