@@ -27,9 +27,8 @@ river.ui.Timeline = Backbone.View.extend({
   setupElement: function() {
     this.$summary_container = $("#media_container");
 
-    var summary = "<div id='summary' class='timeline' >" +
+    var summary = "<div id='time_float'><div id='summary' class='timeline' >" +
                      // "<div class='window_slider'></div>" +
-                     "<div id='time_float'></div>" +
                    "</div>";
 
     this.$summary_container.find("#viewing_screen").after(summary);
@@ -386,7 +385,7 @@ river.ui.Timeline = Backbone.View.extend({
     if (seconds > this.mediaDuration) seconds = this.mediaDuration;
 
     this.$time_float.text(this.stringifyTimeShort(seconds));
-    this.$time_float.css("left",posX - this.$summary.offset().left - this.$time_float.width() / 2);
+    this.$time_float.css("left",posX - this.$time_float.width() / 2);
   },
 
   onSeekHeadDragHandler: function(event) {
