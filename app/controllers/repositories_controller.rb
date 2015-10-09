@@ -259,7 +259,7 @@ class RepositoriesController < ApplicationController
     elsif params[:username]
       @user = User.find_by_username(params[:username])
       @repos = Repository.where(user_id: @user.id).includes(timings: :subtitle)
-      unless user_signed_in? && @user == current_user
+      unless user_signed_in? && (@user == current_user) || current_user.try(:is_super_admin?)
         @repos = @repos.published
       end
       @repos = @repos.recent.page params[:page]
