@@ -33,7 +33,7 @@ class RepositoriesController < ApplicationController
 
     @related_repos = Repository.includes(:user, :video).related(@repo)
 
-    ahoy.track_visit 
+    ahoy.track_visit if ahoy.new_visit?
 
     unless can? :read, @repo
       if user_signed_in?
