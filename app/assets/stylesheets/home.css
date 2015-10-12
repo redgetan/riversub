@@ -3896,9 +3896,9 @@ html.embed .expand_btn {
 }
 
 .fb-share-button.fb_iframe_widget {
-  top: -5px;
+  top: 2px;
   width: 60px;
-  margin-right: 2px;
+  margin-right: -5px;
   float: left;
 }
 
@@ -4688,6 +4688,7 @@ ins.differ {
 }
 
 #river_player .social_share_original_value {
+  min-width: 195px;
   float: left;
 }
 
