@@ -1611,6 +1611,7 @@ footer a:hover{
 
 #river_player .player_column {
   padding-right: 30px;
+  position: initial;
 }
 
 .signup_container {
