@@ -28,9 +28,14 @@
 </div>
 
 <div class='header-section col-xs-12'></div>
-
-<div class='center'>
-  <a href="<%= videos_new_url %>" class='btn btn-danger btn-lg'>Try it Now</a>
+<div class='row '>
+  <div class='videosite_support_container section_block col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1'>
+    <div class="section_body">
+      <%= image_tag(asset_path('youtube_logo_gray.png'), class: "video_support_logo youtube_logo") %>  
+      <%= image_tag(asset_path('nico_logo.png'), class: "video_support_logo nico_logo") %>  
+      <%= image_tag(asset_path('vimeo_logo_gray.png'), class: "video_support_logo vimeo_logo") %> 
+    </div>
+  </div>
 </div>
 
 <!-- <div style='border: solid 1px gray; height: 350px; display: block; background-color: black;' class='col-xs-10 col-xs-offset-1'></div> -->
@@ -74,10 +79,6 @@
         We want people to be able to easily translate any internet video and share it with their friends or family in a way where original video content owners are credited properly. This is done via softsubs, where subtitles you create are simply overlayed to the original video. No more reprinting, re-encoding, and reuploading to a separate channel. 
       </p>
       <br>
-      <p>
-        See <a class='' href="/how_it_works" style='text-decoration: underline; padding: 5px; font-size: 16px;'>How it Works</a> for more details.
-      </p>
-
     </div>
   </div>
 </div>
@@ -85,17 +86,10 @@
 
 <div class='header-section col-xs-12'></div>
 
-<h3 class='col-md-10 col-md-offset-1 center home_section_header '>Supports</h3>
+<h3 class='col-md-10 col-md-offset-1 center home_section_header '>How it Works</h3>
 
-<div class='row '>
-  <div class='videosite_support_container section_block col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1'>
-    <div class="section_body">
-      <%= image_tag(asset_path('youtube_logo_gray.png'), class: "video_support_logo youtube_logo") %>  
-      <%= image_tag(asset_path('nico_logo.png'), class: "video_support_logo nico_logo") %>  
-      <%= image_tag(asset_path('vimeo_logo_gray.png'), class: "video_support_logo vimeo_logo") %> 
-    </div>
-  </div>
-</div>
+<%= render "features" %>
+
 
 <div class='header-section col-xs-12'></div>
 <div class='header-section col-xs-12'></div>
