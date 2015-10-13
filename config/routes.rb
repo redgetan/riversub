@@ -21,6 +21,7 @@ River::Application.routes.draw do
     get "features", :to => "home#features"
     get "faq", :to => "home#faq"
     get "how_to_use", :to => "home#how_to_use"
+    get "how_it_works", :to => "home#how_it_works"
     get "explore",   to: "home#community_translations",   as: "community_translations"
     get "search",   to: "home#search",   as: "search"
 

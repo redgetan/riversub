@@ -25,7 +25,7 @@ class HomeController < ApplicationController
     @repos = Repository.search_query(params[:q]).page params[:page]
   end
 
-  def features
+  def how_it_works
     
   end
 

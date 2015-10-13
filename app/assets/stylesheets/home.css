@@ -4970,3 +4970,10 @@ ins.differ {
   max-height: none;
 }
 
+.videosite_support_container {
+  border: none;
+}
+
+.videosite_support_container .section_body {
+  margin-left: 40px;
+}
