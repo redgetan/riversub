@@ -231,7 +231,7 @@ div#media_input {
 
 .home_try .source_url {
   width: 280px;
-  border: solid 3px darkcyan;
+  border: solid 1px gray;
   font-size: 18px;
 }
 
@@ -1316,6 +1316,7 @@ footer a:hover{
   float: left;
   margin-right: 10px;
   margin-bottom: 8px;
+  border: solid 1px black;
 }
 
 .videos .row {
