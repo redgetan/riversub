@@ -4794,11 +4794,11 @@ ins.differ {
 
 .youtube_logo,
 .vimeo_logo {
-  width: 150px;
+  width: 18%;
 }
 
 .nico_logo {
-  width: 250px;
+  width: 30%;
 }
 
 .videos_new .youtube_logo,
@@ -4976,5 +4976,5 @@ ins.differ {
 }
 
 .videosite_support_container .section_body {
-  margin-left: 40px;
+  margin-left: 15%;
 }
