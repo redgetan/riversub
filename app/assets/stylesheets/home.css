@@ -384,6 +384,8 @@ div#subtitle_bar {
   min-height: 60px;
   height: auto;
   padding-top: 5px;
+  top: -5px;
+  background-color: black;
   max-width: 1000px;
 }
 
@@ -431,7 +433,7 @@ div#avatar img {
 }
 
 #river_player #subtitle_display {
-  padding: 0px 10px;
+  padding: 5px 10px;
   font-size: 18px;
   font-family: Arial;
 }
@@ -4735,6 +4737,7 @@ ins.differ {
 
 #river_player.vimeo #subtitle_bar {
   background: none;
+  border: none;
   top: -100px;
   min-height: 0px;
 }

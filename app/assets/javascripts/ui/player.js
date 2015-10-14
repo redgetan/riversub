@@ -367,7 +367,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
   hideEditing: function() {
     this.$backwardBtn.hide();
     this.$forwardBtn.hide();
-    this.$subtitleBar.css("background-color","rgba(255,0,0,0)");
     this.$subtitleBar.css("z-index","6");
     this.$subtitleBar.css("line-height","20px");
     this.$subtitleBar.css("position","relative");
