@@ -855,8 +855,8 @@ class Repository < ActiveRecord::Base
     # embed_height = "390px"
 
     # medium
-    embed_width = "560px"
-    embed_height = "450px"
+    embed_width = "580px"
+    embed_height = "465px"
 
     <<-HTML.gsub(/\s+/," ")
       <iframe id="player"
