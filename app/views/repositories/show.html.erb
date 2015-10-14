@@ -61,6 +61,16 @@
           </div>
         </div>
       <% end %>
+      <h3 class='player_right_header'>Share:</h3>
+      <div class='repo_share_container'>
+        <div class='embed_container'>
+          <span class='pull-left embed_label'>Embed: </span>
+          <input class='embed_code_input' type='text' value='<%= @repo.embed_code %>' onclick="select()">
+        </div>
+
+        <%= render partial: 'groups/social_share', locals: { sharable: @repo } %>
+      </div>
+
       <h3 class='player_right_header'>Video:</h3>
       <div class='original_video_information'>
         <div class='original_video_stats'>
@@ -84,16 +94,6 @@
             <a href="#" class="read_more_description_btn">show more...</a>
           </div>
         <% end %>
-      </div>
-
-      <h3 class='player_right_header'>Share:</h3>
-      <div class='repo_share_container'>
-        <div class='embed_container'>
-          <span class='pull-left embed_label'>Embed: </span>
-          <input class='embed_code_input' type='text' value='<%= @repo.embed_code %>' onclick="select()">
-        </div>
-
-        <%= render partial: 'groups/social_share', locals: { sharable: @repo } %>
       </div>
 
       <% if @repo.try(:is_downloadable?) %>
