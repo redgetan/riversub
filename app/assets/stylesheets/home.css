@@ -3064,7 +3064,7 @@ ul.source_repo_timing_list li span {
   }
 }
 
-@media screen and (min-width: 580px) {
+@media screen and (min-width: 560px) {
   #river_player .player_timeline_container {
     width: 58%;
   }
