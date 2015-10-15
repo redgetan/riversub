@@ -123,7 +123,7 @@ class Repository < ActiveRecord::Base
       user_repos = self.where(user_id: repo.user_id).where("id <> ?", repo.id).published.limit(num_of_entries)
       remaining_count = (num_of_entries - user_repos.count)
       remaining_count = remaining_count < 0 ? 0 : remaining_count
-      other_repos = self.order("RAND()").limit(remaining_count)
+      other_repos = self.order("RAND()").published.limit(remaining_count)
       user_repos + other_repos
     else
       self.where("id <> ?", repo.id).order("RAND()").published.limit(num_of_entries)
