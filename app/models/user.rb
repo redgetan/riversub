@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   attr_accessible :login, :username, :bio, :email, :password, :password_confirmation, :remember_me,
                   :avatar, :avatar_cache, :remove_avatar, :role, :allow_subtitle_download
 
-  validates :username, :presence => true
+  validates :username, :presence => true, format: { with: /^[a-z0-9_]+$/, message: "can only contain a-z, 0-9, and _" }
 
 
   has_many :repositories
