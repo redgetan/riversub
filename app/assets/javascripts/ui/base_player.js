@@ -88,7 +88,7 @@ river.ui.BasePlayer = Backbone.View.extend({
 
   onNicoThumbMousedown: function(event) {
     this.$nicoplayerLoading.show();
-    console.log(event.target);
+    this.$frameCenter.show();
   },
 
   setupNicoFrame: function() {
@@ -96,10 +96,12 @@ river.ui.BasePlayer = Backbone.View.extend({
     $(document.body).append($("<div class='nico_frame_bottom'>"));
     $(document.body).append($("<div class='nico_frame_left'>"));
     $(document.body).append($("<div class='nico_frame_right'>"));
+    $(document.body).append($("<div class='nico_frame_center'>"));
     this.$frameTop = $(".nico_frame_top");
     this.$frameBottom = $(".nico_frame_bottom");
     this.$frameLeft = $(".nico_frame_left");
     this.$frameRight = $(".nico_frame_right");
+    this.$frameCenter = $(".nico_frame_center");
   },
 
   renderNicoFramePosition: function() {
@@ -120,10 +122,14 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$frameRight.css("width", thumbWidth / 2 - thumbPlayBtnHalfWidth);
     this.$frameRight.css("height", thumbHeight);
 
+    this.$frameCenter.css("height", thumbPlayBtnHalfHeight * 2);
+    this.$frameCenter.css("width", thumbPlayBtnHalfWidth * 2);
+
     this.$frameTop.offset(thumbOffset);
     this.$frameBottom.offset({ top: thumbOffset.top + thumbHeight / 2 + thumbPlayBtnHalfHeight, left: thumbOffset.left });
     this.$frameLeft.offset(thumbOffset);
     this.$frameRight.offset({ top: thumbOffset.top, left: thumbOffset.left + thumbWidth / 2 + thumbPlayBtnHalfWidth });
+    this.$frameCenter.css({ top: thumbOffset.top + thumbHeight / 2 - thumbPlayBtnHalfHeight, left: thumbOffset.left + thumbWidth / 2 - thumbPlayBtnHalfWidth});
   },
 
   displayNoInternetConnectionIfNeeded: function() {
@@ -314,6 +320,7 @@ river.ui.BasePlayer = Backbone.View.extend({
       this.$frameBottom.hide();
       this.$frameLeft.hide();
       this.$frameRight.hide();
+      this.$frameCenter.hide();
       // show the previously hidden iframeoverlay
       this.$iframeOverlay.show();
       $(".player_controls_container").show();

@@ -4782,9 +4782,14 @@ ins.differ {
 .nico_frame_top,
 .nico_frame_bottom,
 .nico_frame_left,
-.nico_frame_right {
+.nico_frame_right,
+.nico_frame_center {
   position: absolute;
   opacity: 0;
+}
+
+.nico_frame_center {
+  display: none;
 }
 
 .request_show_video_thumbnail {
