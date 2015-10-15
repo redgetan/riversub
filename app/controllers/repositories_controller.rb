@@ -78,8 +78,10 @@ class RepositoriesController < ApplicationController
                                language: @repo_language_code,
                                request_id: params[:request_id])
 
-    @group = Group.find_by_short_name params[:group_id]
-    @repo.update_column(:group_id, @group.try(:id))
+    if user_signed_in?
+      @group = Group.find_by_short_name params[:group_id]
+      @repo.update_column(:group_id, @group.try(:id))
+    end
 
     @page = Page.find_by_short_name params[:page_id]
 
@@ -157,9 +159,7 @@ class RepositoriesController < ApplicationController
   def publish
     @repo = Repository.find_by_token! params[:token]
 
-    if !user_signed_in?
-      render :json => { :error => "You must be signed in to publish" }, :status => 403 and return
-    elsif cannot?(:edit, @repo)
+    if cannot?(:edit, @repo)
       render :json => { :error => "You dont have permission to publish" }, :status => 403 and return
     end
 
@@ -240,8 +240,8 @@ class RepositoriesController < ApplicationController
       store_location(@repo.editor_url)
       redirect_to new_user_session_url and return
     elsif !@repo.user && !user_signed_in?
-      @modal_title = "Demo Mode"
-      @modal_message = "Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
+      @modal_title = "Anonymous Mode"
+      @modal_message = "Anonymous subtitles won't appear in our search results. However, anyone can directly edit/delete this subtitle if they have access to the link. Sign in or create an account to have more control over your work."
     elsif cannot?(:edit, @repo)
       flash[:error] = "You don't have permission to see that"
       redirect_to root_url and return

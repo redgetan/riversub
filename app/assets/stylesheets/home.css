@@ -2964,6 +2964,7 @@ ul.source_repo_timing_list li span {
   font-size: 18px;
 }
 
+#river_player.anonymous .repo_open_editor_btn:hover,
 .new_translation_btn:hover {
   background-color: black;
   color: white;
@@ -4985,4 +4986,10 @@ ins.differ {
 
 .videosite_support_container .section_body {
   margin-left: 15%;
+}
+
+#river_player.anonymous .repo_open_editor_btn {
+  background: none;  
+  color: black;
+  border: solid 1px black;
 }

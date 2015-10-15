@@ -222,6 +222,7 @@ class Repository < ActiveRecord::Base
               .where("videos.id IN (?) OR repositories.id IN (?) OR subtitles.id IN (?) OR groups.id IN (?)",
                       video_ids, repository_ids, subtitle_ids, group_ids)
               .includes({ :timings => :subtitle }, :user)
+              .user_subtitled
               .published
               .recent
               .uniq

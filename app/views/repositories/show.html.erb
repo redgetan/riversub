@@ -14,7 +14,7 @@
   <meta property="fb:app_id" content="1465538213665903" />
 <% end %>
 
-<div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%> <%= @repo.video.source_type %>' data-repo='<%= @repo.serialize.to_json %>'>
+<div id='river_player' class='show container <%= @repo.is_published? ? "public" : "private"%> <%= @repo.video.source_type %> <%= @repo.anonymous? ? "anonymous" : "" %>' data-repo='<%= @repo.serialize.to_json %>'>
   <div class="row">
     <div class="col-lg-8 col-md-8 player_column">
       <%= render 'videos/player_info' %>
@@ -22,12 +22,12 @@
       <% if @repo %>
         <% @sharable = @repo %>
         <% if can?(:edit, @repo) %>
-          <a href="<%= @repo.editor_url %>" class="repo_open_editor_btn pull-left btn btn-danger btn-sm">Open Editor<a>
+          <a href="<%= @repo.editor_url %>" class="repo_open_editor_btn pull-left btn btn-danger btn-sm"><i class='fa fa-edit'></i> Edit<a>
         <% end %>
         <div class='new_translation_container pull-left'>
           <a href="<%= @repo.new_translation_url %>" class='new_translation_btn'>+ Subtitle this Video</a>
         </div>
-        <% if (user_signed_in? && current_user == @repo.user) || current_user.try(:is_super_admin?) %>
+        <% if (user_signed_in? && current_user == @repo.user) || current_user.try(:is_super_admin?) || @repo.anonymous? %>
           <div class="traffic_contribution_stats pull-right">
             <span class="traffic_contribution_label">Contribution:</span>
             <span class="traffic_contribution_value" style="">

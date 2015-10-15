@@ -4,7 +4,7 @@ class HomeController < ApplicationController
     @group = Group.find_by_short_name("jpweekly")
     @activities = PublicActivity::Activity.order("created_at DESC").limit(6)
     @repos = Repository.includes({:timings => :subtitle}, :video, :user)
-                       .where("language <> 'ja'").published.recent.limit(5)
+                       .where("language <> 'ja'").published.user_subtitled.recent.limit(5)
 
     respond_to :html
   end
@@ -12,7 +12,7 @@ class HomeController < ApplicationController
   def community_translations
     @groups = Group.ordered_by_latest_release_date
     @repos = Repository.includes({:timings => :subtitle}, :video, :user)
-                       .where("language <> 'ja'").published.recent.page params[:page]
+                       .where("language <> 'ja'").published.user_subtitled.recent.page params[:page]
   end
 
   def shit
