@@ -871,8 +871,6 @@ class Repository < ActiveRecord::Base
   end
 
   def is_downloadable?
-    return false unless self.video.youtube?
-
     if is_downloadable.present?
       !!is_downloadable
     elsif group.present?

@@ -99,7 +99,6 @@ River::Application.routes.draw do
 
     post "/r/:token/delete",                to: "repositories#destroy",   as: "repo_destroy"
 
-    get "/r/:token/download",               to: "timings#index",   as: "repo_subtitle_download"
     post "/r/:token/fork",                  to: "repositories#fork",   as: "fork_repo"
 
 
@@ -122,6 +121,7 @@ River::Application.routes.draw do
     end
   end
 
+  get "/r/:token/download",               to: "timings#index",   as: "repo_subtitle_download"
   get "/:token",                        to: "repositories#show",   as: "repo"
   get "/r/:token",                        to: "repositories#show",   as: "repo"
   get "/r/:token/comments/:comment_short_id", to: "repositories#show", as: "repo_comment"
