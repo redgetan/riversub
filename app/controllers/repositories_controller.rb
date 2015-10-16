@@ -281,7 +281,7 @@ class RepositoriesController < ApplicationController
      redirect_to new_user_session_url and return
     end
 
-    @repos = Repository.anonymous.order("updated_at DESC")
+    @repos = Repository.anonymous.published.order("updated_at DESC")
   end
 
   def sync_to_youtube
