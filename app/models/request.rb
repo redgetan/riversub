@@ -72,10 +72,6 @@ class Request < ActiveRecord::Base
         .having("pub_count = 0")
   end
 
-  def self.open
-    self.pending  
-  end
-
   def self.closed
     self.joins("LEFT JOIN repositories on repositories.request_id = requests.id")
         .select("requests.*,COUNT(nullif(repositories.is_published,false)) as pub_count")

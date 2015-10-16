@@ -28,11 +28,11 @@ class GroupsController < ApplicationController
                    
     @activities  = @group.public_activities.includes(:trackable, :owner).limit(5)
     @requests = if params[:status] == "open"
-                  @group.requests.includes(:group, :video, :submitter).open.recent
+                  @group.requests.includes(:group, :video, :submitter).pending.recent
                 elsif params[:status] == "closed"
                   @group.requests.includes(:group, :video, :submitter).closed.recent
                 else
-                  @group.requests.includes(:group, :video, :submitter).open.recent
+                  @group.requests.includes(:group, :video, :submitter).pending.recent
                 end
 
     @comment = @group.comment_threads.build
