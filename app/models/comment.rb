@@ -358,6 +358,8 @@ class Comment < ActiveRecord::Base
       RepositoryMailer.new_comment_notify(self).deliver
     when Group
       # GroupMailer.new_comment_notify(self).deliver
+    when User
+      UserMailer.new_comment_notify(self).deliver
     else
       nil
     end
@@ -369,6 +371,8 @@ class Comment < ActiveRecord::Base
       repo_comment_url(self.commentable, self)
     when Group
       comment_group_url(self.commentable, self) + "#comments"
+    when User
+      user_wall_url(self.commentable, self) + "#wall"
     else
       raise "unimplemented commentable url"
     end

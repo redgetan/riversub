@@ -17,6 +17,11 @@ class UsersController < ApplicationController
                                      else
                                        []
                                      end
+
+    @comment = @user.comment_threads.build
+    @comments = @user.comment_threads.includes(:user).arrange_for_user(current_user)
+    Comment.highlight_comment(@comments,params[:comment_short_id])
+
   end
 
 end

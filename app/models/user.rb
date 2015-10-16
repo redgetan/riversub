@@ -13,8 +13,10 @@ class User < ActiveRecord::Base
          :omniauth_providers => [:google_oauth2]
 
   acts_as_voter   
+  acts_as_commentable
 
   has_many :votes, class_name: "ActsAsVotable::Vote", foreign_key: "voter_id"
+  has_many :comments, :foreign_key => "commentable_id"
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :username, :bio, :email, :password, :password_confirmation, :remember_me,
@@ -219,6 +221,14 @@ class User < ActiveRecord::Base
 
   def user_signup_notification
     UserMailer.signup_notify(self).deliver 
+  end
+
+  def short_id
+    self.username
+  end
+
+  def self.find_by_short_id(short_id)
+    self.find_by_username(short_id)
   end
 
   def to_param

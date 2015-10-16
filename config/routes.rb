@@ -16,6 +16,7 @@ River::Application.routes.draw do
       get "/users/fansubber",      :to => "registrations#fansubber",     :as => "user_fansubber"
       get "/users/:username",      :to => "users#show",                  :as => "user"
       get "/users/:username/repositories", :to => "repositories#index",  :as => "user_repositories"
+      get  "/users/:username/comments/:comment_short_id", to: "users#show", as: "user_wall"
     end
 
     get "features", :to => "home#features"
