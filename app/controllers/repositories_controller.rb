@@ -241,7 +241,7 @@ class RepositoriesController < ApplicationController
       redirect_to new_user_session_url and return
     elsif !@repo.user && !user_signed_in?
       @modal_title = "Anonymous Mode"
-      @modal_message = "Anonymous subtitles won't appear in our search results. However, anyone can directly edit/delete this subtitle if they have access to the link. Sign in or create an account to have more control over your work."
+      @modal_message = "Anonymous subtitles won't appear in our search results. Also, anyone can directly edit/delete this subtitle if they have access to the link. Sign in or create an account to have more control over your work."
     elsif cannot?(:edit, @repo)
       flash[:error] = "You don't have permission to see that"
       redirect_to root_url and return
