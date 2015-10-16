@@ -39,17 +39,21 @@ river.ui.SubtitleList = Backbone.View.extend({
     }
 
     this.$showOriginalBtn = this.$parentContainer.find(".show_original_btn");
-    this.$showOriginalBtn.hide();
     this.$hideOriginalBtn = this.$parentContainer.find(".hide_original_btn");
+    this.$parentContainer.find("#original").hide();
   },
 
-  onShowOriginalBtnClick: function() {
+  onShowOriginalBtnClick: function(event) {
+    event.preventDefault();
+
     this.$showOriginalBtn.hide();
     this.$parentContainer.find("#original").show();
     this.$el.find(".parent_text").show();
   },
 
-  onHideOriginalBtnClick: function() {
+  onHideOriginalBtnClick: function(event) {
+    event.preventDefault();
+
     this.$showOriginalBtn.show();
     this.$parentContainer.find("#original").hide();
     this.$el.find(".parent_text").hide();
