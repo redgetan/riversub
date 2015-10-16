@@ -276,6 +276,14 @@ class RepositoriesController < ApplicationController
     @repos = Repository.unpublished.order("updated_at DESC")
   end
 
+  def anonymous
+    unless current_user && current_user.admin?
+     redirect_to new_user_session_url and return
+    end
+
+    @repos = Repository.anonymous.order("updated_at DESC")
+  end
+
   def sync_to_youtube
 
   end

@@ -113,6 +113,7 @@ River::Application.routes.draw do
 
     collection do
       get "unpublished"
+      get "anonymous"
     end
 
     member do

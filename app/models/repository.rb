@@ -64,7 +64,7 @@ class Repository < ActiveRecord::Base
   #                              .joins("LEFT JOIN timings on repositories.id = timings.repository_id")
   #                              .group("repositories.id")
 
-  scope :anonymously_subtitled, where("user_id IS NULL")
+  scope :anonymous,             where("user_id IS NULL")
   scope :user_subtitled,        where("user_id IS NOT NULL")
   scope :published,             where("is_published is true")
   scope :unpublished,           where("is_published is NULL")
