@@ -782,10 +782,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     var html = "<select class='editor_language_select' style='width: 150px;'>";
 
-    for (var i = 0; i < this.repo.repository_languages.length ; i++) {
-      repo_language = this.repo.repository_languages[i];
-      selectedAttr = (repo_language.url === this.repo.editor_url) ? "selected" : "";
-      option = "<option data-url='" + repo_language.url + "' " + selectedAttr + " >" + repo_language.language + "</option>";
+    for (var i = 0; i < this.repo.language_select_options.length ; i++) {
+      repo_language_pretty = this.repo.language_select_options[i][0];
+      repo_language_code   = this.repo.language_select_options[i][1];
+      selectedAttr = (repo_language_code === this.repo.language) ? "selected" : "";
+      option = "<option " + selectedAttr + " value='" + repo_language_code + "'>" + repo_language_pretty + "</option>";
       html += option;
     }
 
@@ -1431,8 +1432,22 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onEditorLanguageSelectChange: function(event) {
-    var url = this.$editorLanguageSelect.find("option:selected").data("url");
-    window.location.href = url;
+    var language_code = this.$editorLanguageSelect.find("option:selected").val();
+
+    this.saveNotify();
+
+    $.ajax({
+      url: repo.update_language_url,
+      type: "POST",
+      data: { repo_language_code : language_code },
+      dataType: "json",
+      success: function(data,status) {
+        this.clearStatusBar();
+      }.bind(this),
+      error: function(data) {
+        this.clearStatusBar();
+      }.bind(this)
+    });
   },
 
   onAskInputAfterTimingCheckbox: function(event) {

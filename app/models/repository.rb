@@ -337,6 +337,14 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def update_language_url
+    if self.class.respond_to?(:http_protocol) 
+      update_repo_language_url(self, protocol: self.class.http_protocol)
+    else
+      update_repo_language_url(self)
+    end
+  end
+
   def update_font_url
     if self.class.respond_to?(:http_protocol) 
       update_repo_font_url(self, protocol: self.class.http_protocol)
@@ -656,12 +664,14 @@ class Repository < ActiveRecord::Base
       :title => self.title,
       :token => self.token,
       :language_pretty => self.language_pretty,
+      :language => self.language,
       :owner => self.owner,
       :owner_profile_url => self.owner_profile_url,
       :editor_url => self.editor_url,
       :publish_url => self.publish_url,
       :update_title_url => self.update_title_url,
       :update_font_url => self.update_font_url,
+      :update_language_url => self.update_language_url,
       :subtitle_download_url => self.subtitle_download_url,
       :parent_repository_id => self.parent_repository_id,
       :is_published => self.is_published,
@@ -670,7 +680,7 @@ class Repository < ActiveRecord::Base
       :current_user => self.class.current_user.try(:username),
       :group => self.group.try(:serialize),
       :release => self.release.try(:serialize),
-      :repository_languages => self.current_user_owned_repository_languages,
+      :language_select_options => Repository.language_select_options,
       :player_repository_languages => self.player_repository_languages,
       :highlight_subtitle_short_id => self.highlight_subtitle_short_id,
       :font_family => self.font_family,
