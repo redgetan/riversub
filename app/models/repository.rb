@@ -68,6 +68,7 @@ class Repository < ActiveRecord::Base
   scope :user_subtitled,        where("user_id IS NOT NULL")
   scope :published,             where("is_published is true")
   scope :unpublished,           where("is_published is NULL")
+  scope :unclassified,          where("group_id IS NULL")
   scope :exported,              where("is_youtube_exported is true")
   scope :unexported,            where("is_youtube_exported is false")
   scope :recent,                order("published_at DESC")

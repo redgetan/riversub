@@ -15,12 +15,6 @@ class HomeController < ApplicationController
                        .where("language <> 'ja'").published.user_subtitled.recent.page params[:page]
   end
 
-  def shit
-    binding.pry
-    puts "hmm"
-    
-  end
-
   def search
     @repos = Repository.search_query(params[:q]).page params[:page]
   end
