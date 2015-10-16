@@ -23,6 +23,7 @@ River::Application.routes.draw do
     get "how_to_use", :to => "home#how_to_use"
     get "how_it_works", :to => "home#how_it_works"
     get "explore",   to: "home#community_translations",   as: "community_translations"
+    get "explore_general",   to: "home#unclassified_translations",   as: "unclassified_community_translations"
     get "search",   to: "home#search",   as: "search"
 
     get "videos/new",                            :to => "videos#new"

@@ -15,6 +15,13 @@ class HomeController < ApplicationController
                        .where("language <> 'ja'").published.user_subtitled.recent.page params[:page]
   end
 
+  def unclassified_translations
+    @repos = Repository.includes({:timings => :subtitle}, :video, :user)
+                       .where("language <> 'ja'").published.user_subtitled
+                       .unclassified
+                       .recent.page params[:page]
+  end
+
   def search
     @repos = Repository.search_query(params[:q]).page params[:page]
   end
