@@ -269,6 +269,7 @@ div.videos li.selected {
 
 #editor #media_container {
   width: inherit;
+  background-color: black;
 }
 
 #river_player #media_container {
