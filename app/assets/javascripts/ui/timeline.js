@@ -408,8 +408,10 @@ river.ui.Timeline = Backbone.View.extend({
   onExpandedTimelineScroll: function(event,delta,deltaX,deltaY){
     deltaX = -(deltaX * 2);
     var secondsToScroll = deltaX / this.resolution(this.$expanded);
-    this.scrollWindow(secondsToScroll);
-    this.updateScrollerHandlePosition(secondsToScroll);
+    if (!isNaN(deltaX)) {
+      this.scrollWindow(secondsToScroll);
+      this.updateScrollerHandlePosition(secondsToScroll);
+    }
   },
 
   onMoveLeftBtnClick: function(event) {
