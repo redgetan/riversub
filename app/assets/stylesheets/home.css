@@ -654,7 +654,7 @@ html.fullscreen #river_player.vimeo .player_controls {
 
 html.embed body #river_player.vimeo #media_container #viewing_screen #subtitle_bar,
 html.fullscreen body #river_player.vimeo #media_container #viewing_screen #subtitle_bar {
-  top: -30%;
+  top: -20%;
 }
 
 html.embed #river_player #subtitle_bar {
@@ -4966,6 +4966,10 @@ ins.differ {
 #river_player.nicovideo #media embed#external_nico_0 {
   width: inherit;
   height: 420px;
+}
+
+html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
+  height: 100%;
 }
 
 #editor.nicovideo #media embed#external_nico_0 {
