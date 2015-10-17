@@ -11,6 +11,7 @@
 //= require lib/popcorn-complete.js
 //= require lib/popcorn_nicovideo.js
 //= require lib/jquery-migrate-1.2.1.js
+//= require lib/jquery.fullscreen.js
 //= require lib/underscore.js
 //= require lib/backbone.js
 //= require lib/backbone.localStorage.js
