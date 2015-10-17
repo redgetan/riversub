@@ -621,7 +621,7 @@ html.fullscreen body #river_player #media_container #viewing_screen {
 
 html.embed body #river_player #media_container #viewing_screen #iframe_container,
 html.fullscreen body #river_player #media_container #viewing_screen #iframe_container {
-  height: 75%;
+  height: 85%;
 }
 
 html.embed body #river_player.vimeo #media_container #viewing_screen #iframe_container,
