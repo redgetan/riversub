@@ -4,7 +4,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.IFRAME_OVERLAY_NON_AD_OVERLAPPING_FACTOR = 2.3;
     this.MAX_SUBTITLE_DISPLAY_FONT_SIZE = 80;
     this.MIN_SUBTITLE_DISPLAY_FONT_SIZE = 12;
-    this.FULLSCREEN_PARAM = "?fullscreen=true";
 
     river.ui.BasePlayer.prototype.initialize.call(this,options);
 
@@ -27,10 +26,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
     river.utility.enableHashTab();
 
-    if (this.repo.is_fullscreen) {
-      this.enterFullscreenMode();
-    }
-    
     // ensure first subtitle appears 
     this.onTrackStart(this.tracks.at(0));
   },
@@ -116,22 +111,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
     });
   },
 
-  addFullscreenToLanguageSelect: function() {
-    var self = this;
-    $(".player_language_select option").each(function(){ 
-      var url = $(this).data("url");
-      $(this).data("url", url + self.FULLSCREEN_PARAM);
-    });
-  },
-
-  removeFullscreenFromLanguageSelect: function() {
-    var self = this;
-    $(".player_language_select option").each(function(){ 
-      var url = $(this).data("url");
-      $(this).data("url", url.replace(self.FULLSCREEN_PARAM,""));
-    });
-  },
-
   setupSubtitleZoom: function() {
     var zoomInBtn = "<i class='subtitle_zoom_in_btn fa fa-search-plus'></i>";
     var zoomOutBtn = "<i class='subtitle_zoom_out_btn fa fa-search-minus'></i>";
@@ -190,29 +169,33 @@ river.ui.Player = river.ui.BasePlayer.extend({
     $(".player_controls").show(); // make sure its visible so dimensions can be adjusted
 
     if ($("html").hasClass("fullscreen")) {
-      this.exitFullscreenMode();
+      this.exitFullscreenMode(event);
     } else {
-      this.enterFullscreenMode();
+      this.enterFullscreenMode(event);
     }
   },
 
-  enterFullscreenMode: function() {
+  enterFullscreenMode: function(event) {
+    $("#media_container").fullscreen();    
+
     $("html").addClass("fullscreen");
     this.$expandBtn.removeClass("fa-arrows-alt");
     this.$expandBtn.addClass("fa-compress");
 
-    this.addFullscreenToLanguageSelect();
-
     this.resizePlayerTimeline();
   },
 
-  exitFullscreenMode: function() {
+  exitFullscreenMode: function(event) {
+    $.fullscreen.exit();
+  },
+
+  onFullScreenClose: function(event) {
+    console.log("onFullScreenClose");
+
     $("html").removeClass("fullscreen");
+
     this.$expandBtn.removeClass("fa-compress");
     this.$expandBtn.addClass("fa-arrows-alt");
-
-    this.removeFullscreenFromLanguageSelect();
-
     this.resizePlayerTimeline();
   },
 
@@ -234,6 +217,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$playerLanguageSelect.on("change", this.onPlayerLanguageSelectChange.bind(this));
     this.$zoomInBtn.on("click", this.onZoomInBtnClick.bind(this));
     this.$zoomOutBtn.on("click", this.onZoomOutBtnClick.bind(this));
+    this.$mediaContainer.on("fscreenclose", this.onFullScreenClose.bind(this));
   },
 
   onPlayerLanguageSelectChange: function(event) {

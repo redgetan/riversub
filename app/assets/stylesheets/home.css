@@ -1513,12 +1513,20 @@ footer a:hover{
   color: gray;
 }
 
-.player_controls_container {
+#river_player .player_controls_container {
+  display: table;
+  width: 100%;
   background-color: black;
   min-height: 30px;
 }
 
-.player_controls {
+html.fullscreen #river_player .player_controls_container {
+  min-height: 10%;
+}
+
+#river_player .player_controls {
+  display: table-cell;
+  vertical-align: middle;
   text-align: left;
   height: 30px;
   padding-left: 10px;
@@ -3127,7 +3135,7 @@ html.fullscreen #river_player .player_right_controls {
 }
 
 html.embed .expand_btn {
-  display: none;
+  /*display: none;*/
 }
 
 .release_item .video_duration {
