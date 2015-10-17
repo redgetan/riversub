@@ -339,6 +339,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     var $el = this.getTargetFontSettingElement();
     $el.css("font-family", this.repo.font_family);
     $el.css("font-size", this.repo.font_size);
+    $el.css("line-height", parseInt(this.repo.font_size) + 2 + "px");
     $el.css("font-weight", this.repo.font_weight);
     $el.css("font-style", this.repo.font_style);
     $el.css("color", this.repo.font_color);

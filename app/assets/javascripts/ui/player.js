@@ -190,13 +190,16 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onFullScreenClose: function(event) {
-    console.log("onFullScreenClose");
-
     $("html").removeClass("fullscreen");
 
     this.$expandBtn.removeClass("fa-compress");
     this.$expandBtn.addClass("fa-arrows-alt");
     this.resizePlayerTimeline();
+
+    this.$subtitleDisplay.css("font-size",this.repo.font_size);
+    this.$subtitleDisplay.css("line-height",this.repo.font_size + 2 + "px");
+    this.$subtitleOriginalDisplay.css("font-size",this.repo.font_size);
+    this.$subtitleOriginalDisplay.css("line-height",this.repo.font_size + 2 + "px");
   },
 
   bindEvents: function() {

@@ -613,13 +613,19 @@ html.fullscreen {
   background-color: black;
 }
 
-html.embed body #river_player #media_container #viewing_screen,
-html.fullscreen body #river_player #media_container #viewing_screen {
+html.embed body #river_player #media_container #viewing_screen {
   height: 90%;
   padding-top: 2%;
 }
 
-html.embed body #river_player #media_container #viewing_screen #iframe_container,
+html.fullscreen body #river_player #media_container #viewing_screen {
+  padding-top: 1%;
+}
+
+html.embed body #river_player #media_container #viewing_screen #iframe_container {
+  height: 75%;
+}
+
 html.fullscreen body #river_player #media_container #viewing_screen #iframe_container {
   height: 85%;
 }
@@ -650,6 +656,16 @@ html.fullscreen body #river_player.vimeo #media_container #viewing_screen #subti
   top: -30%;
 }
 
+html.embed #river_player #subtitle_bar {
+  max-height: 60px;
+  overflow: hidden;
+}
+
+html.fullscreen #river_player #subtitle_bar {
+  max-height: none !important;
+  overflow: auto !important;
+}
+
 html.fullscreen body #river_player #media_container #viewing_screen #subtitle_bar {
   padding-top: 20px;
 }
@@ -669,6 +685,11 @@ html.fullscreen .original_video_stats,
 html.fullscreen .twitter_follow_btn,
 html.fullscreen .related_videos_container {
   display: none;
+}
+
+html.fullscreen .play_btn, 
+html.fullscreen .pause_btn {
+  font-size: 20px;
 }
 
 .modal-body {
