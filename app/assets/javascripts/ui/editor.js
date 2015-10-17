@@ -240,12 +240,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTimelineSeekHandler: function(time, $target) {
-    if ($target.hasClass("track")) {
-      var track = $target.data("model");
-      this.seek(track.startTime());
-    } else {
-      this.seek(time);
+    if ($target.hasClass("track_text")) {
+      this.pause();
+    } else if ($target.hasClass("track")) {
+      this.play();
     }
+
+    this.seek(time);
+
     this.closeAllEditors();
   },
 
@@ -1599,13 +1601,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onExpandedTimelineDblClick: function(event) {
     var $target = $(event.target);
+    var track;
 
     if ($target.hasClass("track") || $target.hasClass("track_text")) {
-      this.replayTrackAndEdit($target.closest(".track").data("model"));
-      return;
+      track = $target.closest(".track").data("model");
+      this.pause();
+    } else {
+      track = this.addFullTrack(this.media.currentTime, { isAddSubBackward: false });
     }
 
-    var track = this.addFullTrack(this.media.currentTime, { isAddSubBackward: false });
     this.openEditorAndHighlight(track);
   },
 
@@ -1869,10 +1873,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   showSubtitleInSubtitleBar: function(subtitle) {
-    // console.log("show sub display");
-    // its possible that this gets triggered when we are still on subtitleEditMode
-    // i.e ghostrack hit start time of next track (ontrackend, subtitleEditMode,
-    //     then next track ontrackstart gets triggered which calls this function )
     this.$subtitleDisplay.show();
     this.$subtitleDisplay.text(subtitle.get("text"));
     this.$subtitleDisplay.data("subtitle", subtitle);

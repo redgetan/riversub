@@ -310,8 +310,7 @@ river.ui.Timeline = Backbone.View.extend({
     }
 
     if ($target.hasClass("track_text")) {
-      $target = $target.parent();
-      track = $target.data("model");
+      track = $target.parent().data("model");
     }
 
     if (track && !track.isGhost) {

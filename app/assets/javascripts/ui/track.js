@@ -42,7 +42,6 @@ river.ui.SummaryTrack = river.ui.Track.extend({
 river.ui.ExpandedTrack = river.ui.Track.extend({
   events: function(){
     return _.extend({},river.ui.Track.prototype.events,{
-      "dblclick": "onMouseClick",
       "mouseenter": "onMouseEnter",
       "mouseleave": "onMouseLeave",
       "mousedown .close": "onCloseMouseDown"
@@ -152,10 +151,6 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
 
   onDraggableStop: function(event, ui) {
     this.model.save();
-  },
-
-  onMouseClick: function(event) {
-    Backbone.trigger("subtitleeditmode",this.model);
   },
 
   onMouseEnter: function(event) {
