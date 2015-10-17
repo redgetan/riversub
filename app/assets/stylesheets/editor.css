@@ -588,7 +588,7 @@ div#time_float {
 	width: 10px;
 	height: 20px;
 	position: absolute;
-	margin-top: -35px;
+	margin-top: -30px;
 	margin-left: -4px;
 	z-index: 5;
 }
