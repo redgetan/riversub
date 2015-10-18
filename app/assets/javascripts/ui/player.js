@@ -136,7 +136,14 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onIframeOverlayClick: function(event) {
-    this.togglePlayPause();
+    if (this.media.paused && river.utility.isMobile() && repo.video.source_type === "youtube") {
+      $(".repo_label_divider").text($(".repo_label_divider").text() + "playVideo-");
+      if (this.playerObject().playVideo !== "undefined") {
+        this.playerObject().playVideo();
+      }
+    } else {
+      this.togglePlayPause();
+    }
   },
 
   onOverlayBtnClick: function(event) {
@@ -253,20 +260,23 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onMediaMouseMove: function(event) {
-    if (!this.$fadeInBuffer) {
-      if (this.$timer) {
-          clearTimeout(this.$timer);
-          this.$timer = 0;
+    // dont hide the player controls for mobile
+    if (!river.utility.isMobile()) {
+      if (!this.$fadeInBuffer) {
+        if (this.$timer) {
+            clearTimeout(this.$timer);
+            this.$timer = 0;
+        }
+       $(".player_controls").fadeIn();
+      } else {
+        this.$fadeInBuffer = false;
       }
-     $(".player_controls").fadeIn();
-    } else {
-      this.$fadeInBuffer = false;
-    }
 
-    this.$timer = setTimeout(function () {
-      $(".player_controls").fadeOut();
-      this.$fadeInBuffer = true;
-    }, 5000)
+      this.$timer = setTimeout(function () {
+        $(".player_controls").fadeOut();
+        this.$fadeInBuffer = true;
+      }, 5000)
+    }
   },
 
   onProgress: function() {

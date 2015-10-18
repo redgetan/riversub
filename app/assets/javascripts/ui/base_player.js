@@ -9,6 +9,10 @@ river.ui.BasePlayer = Backbone.View.extend({
       this.initializeRepository();
     }
 
+    if (river.utility.isMobile()) {
+      $("html").addClass("mobile");
+    }
+
     this.initializeKeyboardShortcuts();
 
     // hide it initially so that we can click on flash object to load/request the actual nicoplayer

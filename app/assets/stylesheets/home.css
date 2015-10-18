@@ -1601,6 +1601,12 @@ html.fullscreen #river_player .player_controls_container {
   top: 0px;
 }
 
+html.mobile .time_total,
+html.mobile .time_loaded,
+html.mobile .time_current {
+  height: 8px;
+}
+
 #editor.nicovideo .time_loaded {
   margin-top: 0px;
   height: 100%;
@@ -3065,6 +3071,9 @@ ul.source_repo_timing_list li span {
   margin-right: 5px;
   border: solid 1px #333;
   float: left;
+  width: 95px;
+  min-width: 95px;
+  float: right;
 }
 
 #river_player .play_btn,
@@ -3076,33 +3085,31 @@ ul.source_repo_timing_list li span {
   width: 64%;
 }
 
-#river_player .player_language_select {
-  width: 95px;
-  min-width: 95px;
-  float: right;
+html.mobile #river_player .player_language_select {
+  /*display: none;*/
 }
 
 @media screen and (min-width: 100px) {
   #river_player .player_timeline_container {
-    width: 35%;
+    width: 35% !important;
   }
 }
 
 @media screen and (min-width: 480px) {
   #river_player .player_timeline_container {
-    width: 48%;
+    width: 48% !important;
   }
 }
 
 @media screen and (min-width: 580px) {
   #river_player .player_timeline_container {
-    width: 58%;
+    width: 58% !important;
   }
 }
 
 @media screen and (min-width: 680px) {
   #river_player .player_timeline_container {
-    width: 62%;
+    width: 62% !important;
   }
 }
 

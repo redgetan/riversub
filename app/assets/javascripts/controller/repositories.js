@@ -28,7 +28,9 @@ $.extend(river.controller,{
     repo = $("#river_player").data("repo") ;
     $("#river_player").removeAttr("data-repo");
     player = new river.ui.Player({repo: repo});
-    player.play();
+    if (!river.utility.isMobile()) {
+      player.play();
+    }
 
     river.model.SocialShare.populateShareCounts(repo.url);
 
