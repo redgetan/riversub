@@ -689,7 +689,7 @@ html.fullscreen .related_videos_container {
   display: none;
 }
 
-html.fullscreen .play_btn, 
+html.fullscreen .play_btn,
 html.fullscreen .pause_btn {
   font-size: 20px;
   margin-top: -3px;
@@ -1535,9 +1535,9 @@ footer a:hover{
   color: gray;
 }
 
-#river_player .player_controls_container {
+.player_controls_container {
   display: table;
-  width: 101%;
+  width: 100%;
   background-color: black;
   min-height: 30px;
 }
@@ -4940,11 +4940,11 @@ ins.differ {
   color: gray;
   display: block;
   width: 250px;
-  float: left;  
+  float: left;
 }
 
 #river_player .repo_owner {
-  display: inline-block;  
+  display: inline-block;
 }
 
 #river_player .repo_translator_profile .thumbnail {
@@ -5040,7 +5040,7 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
   float: left;
   margin-left: 95px;
   margin-top: 10px;
-  padding: 0px 5px; 
+  padding: 0px 5px;
 }
 
 .original_video_description_value {
@@ -5068,7 +5068,7 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
 }
 
 #river_player.anonymous .repo_open_editor_btn {
-  background: none;  
+  background: none;
   color: black;
   border: solid 1px black;
 }
