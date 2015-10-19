@@ -1927,13 +1927,6 @@ form#request_beta_invite input[name='email'] {
   margin-top: 20px;
 }
 
-#comments_container {
-  clear: both;
-  text-align: left;
-  margin-bottom: 50px;
-  margin-top: 50px;
-}
-
 /*
 
   lobster css
@@ -2585,7 +2578,14 @@ div.comment_form_container form {
 }
 
 #comments_container {
+  clear: both;
+  text-align: left;
+  margin-bottom: 50px;
   margin-top: 50px;
+}
+
+.user_show_container #comments_container {
+  margin-top: 0px;
 }
 
 #river_player #comments_container {
