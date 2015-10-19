@@ -692,6 +692,7 @@ html.fullscreen .related_videos_container {
 html.fullscreen .play_btn, 
 html.fullscreen .pause_btn {
   font-size: 20px;
+  margin-top: -3px;
 }
 
 .modal-body {
@@ -1561,6 +1562,7 @@ html.fullscreen #river_player .player_controls_container {
   color: white;
   border: none;
   width: 20px;
+  display: inline-block;
 }
 
 #editor .player_controls button {
@@ -1595,7 +1597,7 @@ html.fullscreen #river_player .player_controls_container {
 
 .time_total, .time_loaded, .time_current {
   margin-top: 9px;
-  height: 2px;
+  height: 3px;
   display: block;
   position: absolute;
   top: 0px;
@@ -3085,13 +3087,18 @@ ul.source_repo_timing_list li span {
   width: 64%;
 }
 
-html.mobile #river_player .player_language_select {
-  /*display: none;*/
+html.mobile.fullscreen #river_player .player_language_select {
+  display: none;
 }
 
 @media screen and (min-width: 100px) {
   #river_player .player_timeline_container {
     width: 35% !important;
+  }
+
+  html.mobile.fullscreen #river_player .player_timeline_container {
+    width: 51% !important;
+    margin-left: 20px;
   }
 }
 
@@ -3105,6 +3112,10 @@ html.mobile #river_player .player_language_select {
   #river_player .player_timeline_container {
     width: 58% !important;
   }
+
+  html.mobile.fullscreen #river_player .player_timeline_container {
+    width: 68% !important;
+  }
 }
 
 @media screen and (min-width: 680px) {
@@ -3113,23 +3124,50 @@ html.mobile #river_player .player_language_select {
   }
 }
 
-html.fullscreen #river_player .player_timeline_container {
-  width: 70%;
+@media screen and (min-width: 1170px) {
+  html.fullscreen #river_player .player_timeline_container {
+    width: 70% !important;
+  }
 }
 
 html.fullscreen #river_player .player_language_select {
   width: 14%;
+  font-size: 20px;
 }
 
 html.fullscreen #river_player .player_right_controls {
   width: 7%;
+  font-size: 20px;
 }
+
+html.fullscreen.mobile #river_player .player_right_controls {
+  width: 100px;
+}
+
+html.fullscreen #river_player .volume_control {
+  width: 3%;
+}
+
+html.fullscreen #river_player .volume_control i {
+  font-size: 25px;
+}
+
+html.fullscreen #river_player .subtitle_zoom_in_btn,
+html.fullscreen #river_player .subtitle_zoom_out_btn,
+html.fullscreen #river_player .expand_btn {
+  margin: 0px 5px;
+}
+
 
 #river_player .subtitle_zoom_in_btn,
 #river_player .subtitle_zoom_out_btn,
 #river_player .expand_btn {
   width: 20px;
   text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
 }
 
 #river_player .player_right_controls {
@@ -4617,10 +4655,12 @@ ins.differ {
 .volume_control {
   display: inline-block;
   position: relative;
+  float: left;
+  text-align: center;
 }
 
-#player .volume_control {
-  float: left;
+.volume_control .mute_btn {
+  float: none;
 }
 
 .mute_btn i {

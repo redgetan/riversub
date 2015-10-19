@@ -177,6 +177,8 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onExpandBtnClick: function(event) {
+    event.preventDefault();
+    
     $(".player_controls").show(); // make sure its visible so dimensions can be adjusted
 
     if ($("html").hasClass("fullscreen")) {
@@ -219,7 +221,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$overlay_btn.on("click",this.onOverlayBtnClick.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
-    this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
+    // this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
     this.popcorn.on("timeupdate",this.onTimeUpdate.bind(this));
     this.popcorn.on("progress", this.onProgress.bind(this) );
   },
@@ -240,6 +242,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onZoomInBtnClick: function(event) {
+    event.preventDefault();
     var originalFontSize = parseInt(this.$subtitleDisplay.css("font-size"));
     var secondaryOriginalFontSize = parseInt(this.$subtitleOriginalDisplay.css("font-size"));
 
@@ -252,6 +255,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onZoomOutBtnClick: function(event) {
+    event.preventDefault();
     var originalFontSize = parseInt(this.$subtitleDisplay.css("font-size"));
     var secondaryOriginalFontSize = parseInt(this.$subtitleOriginalDisplay.css("font-size"));
 

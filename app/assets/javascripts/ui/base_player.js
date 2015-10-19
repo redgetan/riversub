@@ -381,8 +381,8 @@ river.ui.BasePlayer = Backbone.View.extend({
     $(".player_controls").append("<button type='button' class='play_btn river_btn'><i class='fa fa-play'></i></button>");
     $(".player_controls").append("<button type='button' class='pause_btn river_btn'><i class='fa fa-pause'></i></button>");
     $(".player_controls").append("<button type='button' class='forward_btn river_btn'><i class='fa fa-forward'></i> </button> ");
-    $(".player_controls").append(volumeControl);
     $(".player_controls").append("<div class='player_timeline_container'></div>");
+    $(".player_controls").append(volumeControl);
     $("#summary").appendTo(".player_timeline_container")
 
     this.$playBtn = $(".play_btn");

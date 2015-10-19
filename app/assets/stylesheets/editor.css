@@ -573,7 +573,8 @@ div#time_float {
 	background-color: white;
 }
 
-#river_player div#time_float {
+html.fullscreen #river_player div#time_float {
+	margin-top: -5%;
 }
 
 #editor div#time_float {
