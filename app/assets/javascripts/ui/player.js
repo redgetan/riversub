@@ -136,6 +136,10 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onIframeOverlayClick: function(event) {
+    if (river.utility.isMobile() && !$("html").hasClass("fullscreen")) {
+      this.enterFullscreenMode();
+    }
+
     if (this.media.paused && river.utility.isMobile() && repo.video.source_type === "youtube") {
       $(".repo_label_divider").text($(".repo_label_divider").text() + "playVideo-");
       if (this.playerObject().playVideo !== "undefined") {
