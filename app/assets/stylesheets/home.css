@@ -620,7 +620,7 @@ html.embed body #river_player #media_container #viewing_screen {
 
 html.fullscreen body #river_player #media_container #viewing_screen {
   height: 90%;
-  padding-top: 1%;
+  padding-top: 2%;
 }
 
 html.embed body #river_player #media_container #viewing_screen #iframe_container {

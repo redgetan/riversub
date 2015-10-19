@@ -228,7 +228,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$overlay_btn.on("click",this.onOverlayBtnClick.bind(this));
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
-    // this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
+    this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
     this.popcorn.on("timeupdate",this.onTimeUpdate.bind(this));
     this.popcorn.on("progress", this.onProgress.bind(this) );
   },
