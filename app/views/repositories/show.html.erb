@@ -21,7 +21,7 @@
       <%= render 'videos/player' %>
       <% if @repo %>
         <% @sharable = @repo %>
-        <% if can?(:edit, @repo) && (user_signed_in? && current_user == @repo.user) %>
+        <% if can?(:edit, @repo) && (user_signed_in? && current_user == @repo.user) || current_user.try(:is_super_admin?) %>
           <a href="<%= @repo.editor_url %>" class="repo_open_editor_btn pull-left btn btn-danger btn-sm"><i class='fa fa-edit'></i> Edit<a>
         <% end %>
         <div class='new_translation_container pull-left'>
