@@ -195,6 +195,14 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$expandBtn.removeClass("fa-arrows-alt");
     this.$expandBtn.addClass("fa-compress");
 
+    // make subtitle look bigger unless mobile
+    if (!river.utility.isMobile()) {
+      this.$subtitleDisplay.css("font-size",40);
+      this.$subtitleDisplay.css("line-height","42px");
+      this.$subtitleOriginalDisplay.css("font-size",36);
+      this.$subtitleOriginalDisplay.css("line-height","38px");
+    }
+
     this.resizePlayerTimeline();
   },
 
@@ -210,9 +218,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.resizePlayerTimeline();
 
     this.$subtitleDisplay.css("font-size",this.repo.font_size);
-    this.$subtitleDisplay.css("line-height",this.repo.font_size + 2 + "px");
+    this.$subtitleDisplay.css("line-height",parseInt(this.repo.font_size) + 2 + "px");
     this.$subtitleOriginalDisplay.css("font-size",this.repo.font_size);
-    this.$subtitleOriginalDisplay.css("line-height",this.repo.font_size + 2 + "px");
+    this.$subtitleOriginalDisplay.css("line-height",parseInt(this.repo.font_size) + 2 + "px");
   },
 
   bindEvents: function() {
