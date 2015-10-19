@@ -229,6 +229,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.$mediaContainer.on("mousemove",this.onMediaMouseMove.bind(this));
+    $("#viewing_screen").on("mousemove",this.onMediaMouseMove.bind(this));
     this.popcorn.on("timeupdate",this.onTimeUpdate.bind(this));
     this.popcorn.on("progress", this.onProgress.bind(this) );
   },
@@ -276,22 +277,22 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   onMediaMouseMove: function(event) {
     // dont hide the player controls for mobile
-    if (!river.utility.isMobile()) {
-      if (!this.$fadeInBuffer) {
-        if (this.$timer) {
-            clearTimeout(this.$timer);
-            this.$timer = 0;
-        }
-       $(".player_controls").fadeIn();
-      } else {
-        this.$fadeInBuffer = false;
-      }
+    if (river.utility.isMobile()) return;
 
-      this.$timer = setTimeout(function () {
-        $(".player_controls").fadeOut();
-        this.$fadeInBuffer = true;
-      }, 5000)
+    if (!this.$fadeInBuffer) {
+      if (this.$timer) {
+          clearTimeout(this.$timer);
+          this.$timer = 0;
+      }
+     $(".player_controls").fadeIn();
+    } else {
+      this.$fadeInBuffer = false;
     }
+
+    this.$timer = setTimeout(function () {
+      $(".player_controls").fadeOut();
+      this.$fadeInBuffer = true;
+    }, 5000);
   },
 
   onProgress: function() {
