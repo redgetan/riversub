@@ -385,7 +385,6 @@ div#subtitle_bar {
   min-height: 60px;
   height: auto;
   padding-top: 5px;
-  max-width: 1000px;
 }
 
 #editor #subtitle_bar {
@@ -670,6 +669,7 @@ html.fullscreen #river_player #subtitle_bar {
 
 html.fullscreen body #river_player #media_container #viewing_screen #subtitle_bar {
   padding-top: 20px;
+  height: 15%;
 }
 
 html.fullscreen #media_container {
@@ -3164,6 +3164,16 @@ html.fullscreen #river_player .expand_btn {
 #river_player .expand_btn {
   width: 20px;
   text-align: center;
+}
+
+#river_player #subtitle_bar,
+#river_player #subtitle_display,
+#river_player #subtitle_original_display,
+#river_player .play_btn,
+#river_player .pause_btn,
+#river_player .subtitle_zoom_in_btn,
+#river_player .subtitle_zoom_out_btn,
+#river_player .expand_btn {
   -webkit-user-select: none;
   -moz-user-select: none;
   -khtml-user-select: none;
@@ -4677,11 +4687,15 @@ ins.differ {
   display: none;
   height: 100px;
   left: 0;
-  margin: -100px 3px 0;
+  margin: -100px -3px 0;
   position: absolute;
   top: 0;
   width: 30px;
   z-index: 10;
+}
+
+html.fullscreen ._3pao {
+  margin-left: 30%;
 }
 
 ._3paq {
