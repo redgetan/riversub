@@ -577,6 +577,10 @@ html.fullscreen #river_player div#time_float {
 	margin-top: -5%;
 }
 
+html.fullscreen.mobile #river_player div#time_float {
+	margin-top: -75px;
+}
+
 #editor div#time_float {
 	margin-top: 5px;
 	background-color: #333;
