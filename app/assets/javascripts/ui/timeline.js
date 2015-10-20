@@ -224,6 +224,8 @@ river.ui.Timeline = Backbone.View.extend({
     this.$summary.on("mousemove",this.onSummaryMouseMoveHandler.bind(this));
     this.$summary.on("mouseleave",this.onSummaryMouseLeaveHandler.bind(this));
 
+    this.$summary.on("touchstart",this.onSummaryTouchStartHandler.bind(this));
+
     this.$seek_head.on("mousedown",this.onSeekHeadMouseDownHandler.bind(this));
     $(document).on("mouseup",this.onDocumentMouseUpHandler.bind(this));
 
@@ -356,6 +358,16 @@ river.ui.Timeline = Backbone.View.extend({
 
   onSummaryMouseEnterHandler: function(event) {
     this.$time_float.show();
+  },
+
+  onSummaryTouchStartHandler: function(event) {
+    this.$time_float.show();
+
+    if (this.lastTimeFloatHideTimeout) clearTimeout(this.lastTimeFloatHideTimeout);
+
+    this.lastTimeFloatHideTimeout = setTimeout(function(){
+      this.$time_float.hide();
+    }.bind(this),3000);
   },
 
   onSummaryMouseMoveHandler: function(event) {
