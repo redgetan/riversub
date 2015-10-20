@@ -7,7 +7,7 @@
         <h2><%= @video.name %></h2>
         <% if @is_upload %>
           <h3 class="upload_subtitle_header">Upload Subtitle</h3>
-        <% else %>
+        <% elsif @video.metadata %>
           <%= image_tag @video.thumbnail_url %>
         <% end %>
       </div>
