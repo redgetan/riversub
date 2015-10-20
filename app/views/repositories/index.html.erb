@@ -30,27 +30,39 @@
 
   <div class="videos col-xs-12 col-md-9">
       <% @repos.each do |repo| %>
-          <div class="row">
+          <div class="row repo_index_item">
             <div class="col-xs-10 col-xs-offset-1">
-              <div class="video_thumb">
-                <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                  <img src="<%= repo.thumbnail_url %>" alt="" class='user_repo_index_thumbnail'>
-                </a>
+              <div class='pull-left repo_index_item_right_container'>
+                <div class="video_thumb">
+                  <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                    <img src="<%= repo.thumbnail_url %>" alt="" class='user_repo_index_thumbnail'>
+                  </a>
+                </div>
+                <% if (user_signed_in? && current_user == @user) || current_user.try(:is_super_admin?)  %>
+                  <div class='user_repo_traffic_contribution'><%= repo.views_contributed %> views</div>
+                <% end %>
               </div>
-              <div class="video_title">
-                <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
-                  <h4 class='video_name'><%= repo.title %></h4>
-                </a>
-              </div>
-              <div class="transcript_preview">
-                <%= repo.transcript[0..200] %>
-              </div>
-              <!-- <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span> -->
-              <span class='repo_owner'>
-                by 
-                <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
-              </span>
-              <div class='stats'>
+
+              <div class='pull-left repo_index_item_right_container col-xs-9'>
+                <div class="video_title">
+                  <a href="<%= repo.url %>" id="<%= repo.id %>" class="video" >
+                    <h4 class='video_name'><%= repo.title %></h4>
+                  </a>
+                </div>
+                <div class="transcript_preview">
+                  <%= repo.transcript[0..200] %>
+                </div>
+                <!-- <span class='updated_at'><%= time_ago_in_words(repo.updated_at) %> ago</span> -->
+                <span class='repo_owner'>
+                  by 
+                  <a href="<%= repo.owner_profile_url %>" style="color:slategray"><%= repo.owner %></a>
+                </span>
+                <% if user_signed_in? && current_user == @user  %>
+                  <div class='repo_user_action_items' style=''>
+                    <%= link_to "Edit", repo.editor_url, class: "repo_edit_btn" %>
+                    <%= link_to "Delete", repo.destroy_url, method: "post", class: "repo_delete_btn", data: {confirm: "Are you sure?"} %>
+                  </div>
+                <% end %>
               </div>
             </div>
           </div>

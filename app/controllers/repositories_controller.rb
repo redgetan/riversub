@@ -365,7 +365,7 @@ class RepositoriesController < ApplicationController
     @repo.delete
 
     flash[:notice] = "Subtitle deleted"
-    redirect_to @repo.user.url
+    redirect_to :back
   end
 
   private

@@ -261,6 +261,7 @@ div.videos {
 .video_index .video_name {
   line-height: initial;
   height: initial;
+  margin-top: 0px;
 }
 
 div.videos li.selected {
@@ -1367,6 +1368,10 @@ footer a:hover{
   padding: 2px;
   white-space: nowrap;
   overflow: hidden;
+}
+
+#recent_contributors {
+  margin-bottom: 50px;
 }
 
 #recent_contributors .user_avatar {
@@ -4640,6 +4645,11 @@ ins.differ {
 
 #user_repositories .thumbnail:hover .repo_user_action_items .repo_delete_btn,
 #user_repositories .thumbnail:hover .repo_user_action_items .repo_edit_btn {
+  display: inline-block !important;
+}
+
+.repository_index_container .repo_index_item:hover .repo_user_action_items .repo_delete_btn,
+.repository_index_container .repo_index_item:hover .repo_user_action_items .repo_edit_btn {
   display: inline-block !important;
 }
 
