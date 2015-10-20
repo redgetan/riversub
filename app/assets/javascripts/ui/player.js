@@ -144,6 +144,9 @@ river.ui.Player = river.ui.BasePlayer.extend({
       if (this.playerObject().playVideo !== "undefined") {
         this.playerObject().playVideo();
       }
+    } else if (river.utility.isMobile()) {
+      // if its mobile, you have to explicitly click pause button to pause.
+      this.play();
     } else {
       this.togglePlayPause();
     }
@@ -276,9 +279,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onMediaMouseMove: function(event) {
-    // dont hide the player controls for mobile
-    if (river.utility.isMobile()) return;
-
     if (!this.$fadeInBuffer) {
       if (this.$timer) {
           clearTimeout(this.$timer);
@@ -294,6 +294,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
       this.$fadeInBuffer = true;
     }, 5000);
   },
+
 
   onProgress: function() {
     this.renderTimeLoaded();
