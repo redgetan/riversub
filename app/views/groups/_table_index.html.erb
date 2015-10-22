@@ -4,12 +4,12 @@
     <th>Subtitles</th>
     <th>Description</th>
   </tr>
-<!--   <tr onclick="document.location = '<%= unclassified_community_translations_url %>';">
+  <tr onclick="document.location = '<%= unclassified_community_translations_url %>';">
     <td><span class='group_name'>General</span></td>
     <td><%= Repository.published.unclassified.count %></td>
     <td><span class='group_description'>Un-classified subtitles</span></td>
   </tr>
- -->  
+  
   <% @groups.each do |group| %>
     <tr onclick="document.location = '<%= group.url %>';">
       <td><span class='group_name'><%= group.name %></span></td>
