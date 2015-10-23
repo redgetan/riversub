@@ -40,4 +40,15 @@ class RepositoryMailer < ActionMailer::Base
     @approver = correction_request.approver
     mail(:to => @to.email, :subject => "#{@submitter} corrected a subtitle pending your approval", :from => @@from)
   end
+
+  def correction_approved_notify(correction_request)
+    @correction_request = correction_request
+    @repo = correction_request.repository
+    @to   = correction_request.requester
+    @url  = "http://www.yasub.com/"
+    @submitter = correction_request.submitter
+    @approver = correction_request.approver
+    mail(:to => @to.email, :subject => "#{@approver} approved your correction", :from => @@from)
+  end
+
 end

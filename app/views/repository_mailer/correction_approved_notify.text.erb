@@ -1,0 +1,8 @@
+Hello <%= @to.username %>, 
+
+<%= @correction_request.recipient %> has just approved your translation fix for the subtitle of '<%= @repo.title %>' on Yasub. 
+
+You can see the text change from '<%= @correction_request.original_text %>' to '<%= @correction_request.correction_text %>' at <%= @repo.url %>
+
+Thank you,
+Yasub Team

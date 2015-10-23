@@ -63,6 +63,10 @@ class CorrectionRequest < ActiveRecord::Base
     self.subtitle.update_attributes(:text => self.correction_text)
     update_column(:is_approved, true)  
     update_column(:approved_at, Time.now)  
+
+    if requester.present?
+      RepositoryMailer.correction_approved_notify(self).deliver  
+    end
   end
 
   def reject
