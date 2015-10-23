@@ -145,6 +145,15 @@ river.ui.BasePlayer = Backbone.View.extend({
     }
   },
 
+  displayNicoVideoMobileNotSupported: function() {
+    var height = this.$mediaContainer.css("height");
+    var noticeHalfHeight = 60;
+    var paddingTop = parseInt(height) / 2 - noticeHalfHeight;
+    this.$mediaContainer.html("<div style='height: " + height + ";text-align: center; background-color: black; color: white; font-size: 40px; padding-top: " + paddingTop + "px; '>" + 
+                                "Subtitles for NicoNicoDouga is currently only viewable in Desktop." + 
+                              "</div>");
+  },
+
   setVolume: function(level) {
     this.lastSavedVolume = this.popcorn.volume() * 100;
     this.popcorn.volume(level);
@@ -223,7 +232,11 @@ river.ui.BasePlayer = Backbone.View.extend({
       if (repo.video.source_type === "vimeo") {
         popcorn = Popcorn.vimeo(targetSelector,url);
       } else if (repo.video.source_type === "nicovideo") {
-        popcorn = Popcorn.nicovideo(targetSelector,url);
+        if (river.utility.isMobile()) {
+          this.displayNicoVideoMobileNotSupported();
+        } else {
+          popcorn = Popcorn.nicovideo(targetSelector,url);
+        }
       } else {
         popcorn = Popcorn.smart(targetSelector,url);
       }
