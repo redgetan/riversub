@@ -12,7 +12,7 @@
       <% if (user_signed_in? && current_user == @user) || @user.pages.length > 0 %>
         <li class="<%= @user.youtube_accounts_tab_class %>"><a href="#user_youtube_accounts" data-toggle="tab">Youtube Accounts</a></li>
       <% end %>
-      <% if (user_signed_in? && current_user == @user) || current_user.try(:is_super_admin?) %>
+      <% if @user.corrections.count > 0 || (user_signed_in? && current_user == @user) || current_user.try(:is_super_admin?) %>
         <li class=""><a href="#corrections" data-toggle="tab">Corrections</a></li>
       <% end %>
       <li class=""><a href="#wall" data-toggle="tab">Wall</a></li>
@@ -24,7 +24,7 @@
       <div class="tab-pane <%= @user.youtube_accounts_tab_class %>" id="user_youtube_accounts">
         <%= render "user_youtube_accounts" %>
       </div>
-      <% if (user_signed_in? && current_user == @user) || current_user.try(:is_super_admin?) %>
+      <% if @user.corrections.count > 0 || (user_signed_in? && current_user == @user) || current_user.try(:is_super_admin?) %>
         <div class="tab-pane" id="corrections">
           <div class='col-xs-8 col-xs-offset-2'>
             <%= render "user_corrections" %>

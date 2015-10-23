@@ -121,6 +121,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def corrections
+    CorrectionRequest.where("requester_id = ? OR approver_id = ?", self.id, self.id)  
+  end
+
   def page
     pages.first  
   end
