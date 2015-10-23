@@ -2,82 +2,15 @@
 
 <div id='user_corrections' class=''>
   <div class='row'>
-    <h4>Corrections Received</h4>
-
-    <% if @user.correction_requests_received.present? %>
-      <table class='corrections_received_table'>
-        <tr>
-          <th>Video</th>
-          <th>Submitter</th>
-          <th>Before</th>
-          <th>After</th>
-          <th><%= current_user == @user ? "Actions" : "Status" %></th>
-          <th>Date</th>
-        </tr>
-        <% @user.correction_requests_received.each do |cr| %>
-          <tr>
-            <td class='correction_request_video_title'>
-              <a href="<%= cr.subtitle.url %>"><%= image_tag(cr.repository.video.thumbnail_url) %></a>
-            </td>
-            <td class='correction_request_submitter'>
-              <% if cr.requester.present? %>
-                <a href="<%= cr.submitter_url %>"><%= cr.submitter %></a>
-              <% else %>
-                <span><%= cr.submitter %></span>
-              <% end %>
-            </td>
-            <td class='correction_request_original_text'><%= cr.original_text %></td>
-            <td class='correction_request_correction_text'><%= cr.correction_text %></td>
-            <td class='correction_request_actions'>
-              <% if current_user == @user && cr.action_required? %>
-                <%= link_to "Approve", cr.approve_url, class: "approve_correction_request_btn", method: "post"  %>
-                <%= link_to "Reject",  cr.reject_url,  class: "reject_correction_request_btn", method: "post"  %>
-              <% else %>
-                <%= cr.status %>
-              <% end %>
-            </td>
-            <td class='correction_request_date'><%= cr.created_at.to_date %></td>
-          </tr>
-        <% end %>
-      </table>
+    <% if @user.correction_requests_sent.length > @user.correction_requests_received.length %> 
+      <%= render "user_corrections_sent" %>
+      <div class='header-section col-xs-12'></div>
+      <%= render "user_corrections_received" %>
     <% else %>
-      <span>There is currently nothing here.</span>
+      <%= render "user_corrections_received" %>
+      <div class='header-section col-xs-12'></div>
+      <%= render "user_corrections_sent" %>
     <% end %>
-
-    <div class='header-section col-xs-12'></div>
-
-    <h4>Corrections Sent</h4>
-
-    <% if @user.correction_requests_sent.present? %>
-      <table class='corrections_sent_table'>
-        <tr>
-          <th>Video</th>
-          <th>Before</th>
-          <th>After</th>
-          <th>Status</th>
-          <th>Date</th>
-        </tr>
-        <% @user.correction_requests_sent.each do |cr| %>
-          <tr>
-            <td class='correction_request_video_title'>
-              <a href="<%= cr.subtitle.url %>"><%= image_tag(cr.repository.video.thumbnail_url) %></a>
-            </td>
-            <td class='correction_request_original_text'><%= cr.original_text %></td>
-            <td class='correction_request_correction_text'><%= cr.correction_text %></td>
-            <td class='correction_request_actions'><%= cr.status %></td>
-            <td class='correction_request_date'><%= cr.created_at.to_date %></td>
-          </tr>
-        <% end %>
-      </table>
-    <% else %>
-      <span>There is currently nothing here.</span>
-      <% if user_signed_in? && current_user == @user %>
-        <span>Instead of subtitling a complete video, you can start small by correcting subtitles of other translators <a href="<%= community_translations_url %>">here</a>.</span>
-      <% end %>
-    <% end %>
-
-
-
   </div>
 </div>
 

@@ -1,0 +1,29 @@
+<h4>Corrections Sent</h4>
+
+<% if @user.correction_requests_sent.present? %>
+  <table class='corrections_sent_table'>
+    <tr>
+      <th>Video</th>
+      <th>Before</th>
+      <th>After</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+    <% @user.correction_requests_sent.each do |cr| %>
+      <tr>
+        <td class='correction_request_video_title'>
+          <a href="<%= cr.subtitle.url %>"><%= image_tag(cr.repository.video.thumbnail_url) %></a>
+        </td>
+        <td class='correction_request_original_text'><%= cr.original_text %></td>
+        <td class='correction_request_correction_text'><%= cr.correction_text %></td>
+        <td class='correction_request_actions'><%= cr.status %></td>
+        <td class='correction_request_date'><%= cr.created_at.to_date %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <span>There is currently nothing here.</span>
+  <% if user_signed_in? && current_user == @user %>
+    <span>Instead of subtitling a complete video, you can start small by correcting subtitles of other translators <a href="<%= community_translations_url %>">here</a>.</span>
+  <% end %>
+<% end %>
