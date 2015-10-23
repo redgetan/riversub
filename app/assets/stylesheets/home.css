@@ -5081,6 +5081,7 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
   background: none;
   border: none;
   max-width: 230px;
+  white-space: pre-wrap;
 }
 
 .original_video_description_value.less {
