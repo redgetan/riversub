@@ -70,7 +70,7 @@ River::Application.routes.draw do
       resources :release_items, :only => [:create, :show, :update, :destroy]
     end
 
-    resources :correction_requests, :only => [], :controller => "correction_requests" do
+    resources :correction_requests, :only => [:index], :controller => "correction_requests" do
       member do
         post "approve"
         post "reject"

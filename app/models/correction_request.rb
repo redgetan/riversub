@@ -30,8 +30,16 @@ class CorrectionRequest < ActiveRecord::Base
     requester.present? ? requester.username : "Anonymous"  
   end
 
+  def recipient
+    approver.present? ? approver.username : "Anonymous"  
+  end
+
   def submitter_url
     requester.present? ? requester.url : ""  
+  end
+
+  def recipient_url
+    approver.present? ? approver.url : ""  
   end
 
   def status

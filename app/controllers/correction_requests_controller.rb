@@ -12,4 +12,12 @@ class CorrectionRequestsController < ApplicationController
     flash[:notice] = "Correction Rejected"
     redirect_to cr.approver.corrections_url
   end
+
+  def index
+    unless current_user && current_user.admin?
+     redirect_to new_user_session_url and return
+    end
+
+    
+  end
 end

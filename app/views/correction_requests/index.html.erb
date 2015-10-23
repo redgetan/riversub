@@ -1,0 +1,52 @@
+<div class='header-section col-xs-12'></div>
+
+<div id='user_corrections' class=''>
+  <div class='row'>
+    <h4>Corrections Requests</h4>
+
+    <% if CorrectionRequest.count > 0 %>
+      <table class='corrections_received_table'>
+        <tr>
+          <th>Video</th>
+          <th>Submitter</th>
+          <th>Recepient</th>
+          <th>Before</th>
+          <th>After</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+        <% CorrectionRequest.order("created_at DESC").each do |cr| %>
+          <tr>
+            <td class='correction_request_video_title'>
+              <a href="<%= cr.subtitle.url %>"><%= image_tag(cr.repository.video.thumbnail_url) %></a>
+            </td>
+            <td class='correction_request_submitter'>
+              <% if cr.requester.present? %>
+                <a href="<%= cr.submitter_url %>"><%= cr.submitter %></a>
+              <% else %>
+                <span><%= cr.submitter %></span>
+              <% end %>
+            </td>
+            <td class='correction_request_recepient'>
+              <% if cr.approver.present? %>
+                <a href="<%= cr.recipient_url %>"><%= cr.recipient %></a>
+              <% else %>
+                <span><%= cr.recipient %></span>
+              <% end %>
+            </td>
+            <td class='correction_request_original_text'><%= cr.original_text %></td>
+            <td class='correction_request_correction_text'><%= cr.correction_text %></td>
+            <td class='correction_request_actions'>
+              <%= cr.status %>
+            </td>
+            <td class='correction_request_date'><%= cr.created_at.to_date %></td>
+          </tr>
+        <% end %>
+      </table>
+    <% else %>
+      <span>There is currently nothing here.</span>
+    <% end %>
+
+  </div>
+</div>
+
