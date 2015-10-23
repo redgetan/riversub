@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   around_filter :add_current_user_to_models
   around_filter :add_http_protocol_to_models
   before_filter :clear_forwarding_url
+  before_filter :expire_hsts
 
 
   #before_filter :authenticate_user!
@@ -99,5 +100,10 @@ class ApplicationController < ActionController::Base
     # don't track it automatically. only track ones called by ahoy.track_visit manually
   end
 
+  private
+
+    def expire_hsts
+      response.headers['Strict-Transport-Security'] = 'max-age=0; includeSubDomains'
+    end
 
 end
