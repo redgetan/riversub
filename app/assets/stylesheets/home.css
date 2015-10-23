@@ -615,7 +615,11 @@ html.fullscreen {
 }
 
 #river_player.nicovideo #external_nico_0 {
-  padding-top: 20px;
+  padding-top: 10px;
+}
+
+#river_player.nicovideo #subtitle_bar {
+  padding-top: 15px;
 }
 
 html.embed body #river_player #media_container #viewing_screen {
