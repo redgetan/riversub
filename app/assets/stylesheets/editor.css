@@ -104,6 +104,10 @@ div#editor-bottom {
 	opacity: 0.4;
 }
 
+#editor.nicovideo #summary.timeline .track {
+	background-color: lime;
+}
+
 #expanded.timeline {
 	cursor: cell;
 	height: 145px;
