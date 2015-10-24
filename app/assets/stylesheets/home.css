@@ -5105,3 +5105,11 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
   color: black;
   border: solid 1px black;
 }
+
+
+.repo_original_translator {
+  float: left;
+  clear: both;
+  color: gray;
+  margin-top: 15px;
+}

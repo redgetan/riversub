@@ -58,6 +58,9 @@
                 <span><i class='fa fa-microphone'></i>  <%= @user.repositories.published.count  %></span>
               </div>
             <% end %>
+            <% if @repo.original_translator %>
+              <span class='repo_original_translator'>(original translation by <%= @repo.original_translator %>)</span>
+            <% end %>
           </div>
         </div>
       <% end %>
