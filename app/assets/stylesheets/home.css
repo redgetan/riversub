@@ -2729,6 +2729,16 @@ iframe.fansubber_signup_form .ss-base-body {
   }
 }
 
+.topics_table_repo_count {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .topics_table_repo_count {
+    display: block;
+  }
+}
+
 .help-inline {
   position: absolute;
   left: 0px;
@@ -3100,7 +3110,7 @@ ul.source_repo_timing_list li span {
   width: 64%;
 }
 
-html.mobile.fullscreen #river_player .player_language_select {
+html.mobile #river_player .player_language_select {
   display: none;
 }
 
@@ -3109,7 +3119,7 @@ html.mobile.fullscreen #river_player .player_language_select {
     width: 35% !important;
   }
 
-  html.mobile.fullscreen #river_player .player_timeline_container {
+  html.mobile #river_player .player_timeline_container {
     width: 51% !important;
     margin-left: 20px;
   }
@@ -3335,7 +3345,13 @@ html.embed .expand_btn {
 }
 
 .latest_videos .home_try {
-  margin-left: -40px;
+  margin-left: 0px;
+}
+
+@media (min-width: 768px) {
+  .latest_videos .home_try {
+    margin-left: -40px;
+  }
 }
 
 .home_try .section_body {
@@ -4611,9 +4627,9 @@ ins.differ {
 }
 
 .topics_table .group_description {
-  height: 18px !important;
+/*  height: 18px !important;
   overflow: hidden;
-  display: inline-block;
+*/  display: inline-block;
 }
 
 .group_subscribe_btn {
@@ -4909,12 +4925,10 @@ html.fullscreen ._3pao {
 }
 
 .youtube_logo,
-.vimeo_logo {
-  width: 18%;
-}
-
+.vimeo_logo,
 .nico_logo {
-  width: 30%;
+  clear: both;
+  float: none;
 }
 
 .videos_new .youtube_logo,
@@ -5097,7 +5111,8 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
 }
 
 .videosite_support_container .section_body {
-  margin-left: 15%;
+  text-align: center;
+  display: inline-block;
 }
 
 #river_player.anonymous .repo_open_editor_btn {

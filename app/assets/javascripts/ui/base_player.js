@@ -149,7 +149,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     var height = this.$mediaContainer.css("height");
     var noticeHalfHeight = 60;
     var paddingTop = parseInt(height) / 2 - noticeHalfHeight;
-    this.$mediaContainer.html("<div style='height: " + height + ";text-align: center; background-color: black; color: white; font-size: 40px; padding-top: " + paddingTop + "px; '>" + 
+    this.$mediaContainer.html("<div style='height: " + height + ";text-align: center; background-color: black; color: white; font-size: 24px; padding-top: " + paddingTop + "px; '>" + 
                                 "Subtitles for NicoNicoDouga is currently only viewable in Desktop." + 
                               "</div>");
   },

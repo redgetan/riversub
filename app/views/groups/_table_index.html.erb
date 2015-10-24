@@ -1,19 +1,19 @@
 <table class='topics_table col-md-9 col-md-offset-2 col-xs-10 col-xs-offset-1'>
   <tr>
     <th>Topic</th>
-    <th>Subtitles</th>
+    <th class='topics_table_repo_count'>Subtitles</th>
     <th>Description</th>
   </tr>
   <tr onclick="document.location = '<%= unclassified_community_translations_url %>';">
     <td><span class='group_name'>General</span></td>
-    <td><%= Repository.published.unclassified.count %></td>
+    <td class='topics_table_repo_count'><%= Repository.published.unclassified.count %></td>
     <td><span class='group_description'>Un-classified subtitles</span></td>
   </tr>
   
   <% @groups.each do |group| %>
     <tr onclick="document.location = '<%= group.url %>';">
       <td><span class='group_name'><%= group.name %></span></td>
-      <td><%= group.repo_count %></td>
+      <td class='topics_table_repo_count'><%= group.repo_count %></td>
       <td><span class='group_description'><%= truncate(group.raw_description, length: 100) %></span></td>
     </tr>
   <% end %>
