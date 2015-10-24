@@ -141,13 +141,15 @@ river.ui.Player = river.ui.BasePlayer.extend({
         this.enterFullscreenMode();
       }
 
-      if (this.media.paused) {
-        if ((repo.video.source_type === "youtube") && (this.playerObject().playVideo !== "undefined")) {
+      // on mobile, clicking overlay always plays the video
+      if ((repo.video.source_type === "youtube") && (this.playerObject().playVideo !== "undefined")) {
           this.playerObject().playVideo();
         } else {
           this.play();
         }
-      } else {
+      } 
+
+      if (!this.media.paused) {
         // if its already playing, clicking would toggle playercontrols
         if ($(".player_controls").is(":visible")) {
           $(".player_controls").fadeOut();
