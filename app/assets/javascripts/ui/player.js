@@ -143,11 +143,10 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
       // on mobile, clicking overlay always plays the video
       if ((repo.video.source_type === "youtube") && (this.playerObject().playVideo !== "undefined")) {
-          this.playerObject().playVideo();
-        } else {
-          this.play();
-        }
-      } 
+        this.playerObject().playVideo();
+      } else {
+        this.play();
+      }
 
       if (!this.media.paused) {
         // if its already playing, clicking would toggle playercontrols
