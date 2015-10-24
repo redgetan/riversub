@@ -5113,3 +5113,7 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
   color: gray;
   margin-top: 15px;
 }
+
+#river_player.youtube #media iframe {
+  padding-top: 10px;
+}
