@@ -105,7 +105,7 @@ div#editor-bottom {
 }
 
 #editor.nicovideo #summary.timeline .track {
-	background-color: lime;
+	/*background-color: lime;*/
 }
 
 #expanded.timeline {
