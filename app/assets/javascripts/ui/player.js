@@ -136,17 +136,26 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onIframeOverlayClick: function(event) {
-    if (river.utility.isMobile() && !$("html").hasClass("fullscreen")) {
-      this.enterFullscreenMode();
-    }
-
-    if (this.media.paused && river.utility.isMobile() && repo.video.source_type === "youtube") {
-      if (this.playerObject().playVideo !== "undefined") {
-        this.playerObject().playVideo();
+    if (river.utility.isMobile()) {
+      if (!$("html").hasClass("fullscreen")) {
+        this.enterFullscreenMode();
       }
-    } else if (river.utility.isMobile()) {
-      // if its mobile, you have to explicitly click pause button to pause.
-      this.play();
+
+      if (this.media.paused) {
+        if ((repo.video.source_type === "youtube") && (this.playerObject().playVideo !== "undefined")) {
+          this.playerObject().playVideo();
+        } else {
+          this.play();
+        }
+      } else {
+        // if its already playing, clicking would toggle playercontrols
+        if ($(".player_controls").is(":visible")) {
+          $(".player_controls").fadeOut();
+        } else {
+          $(".player_controls").fadeIn();
+        }
+
+      }
     } else {
       this.togglePlayPause();
     }
@@ -279,6 +288,12 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onMediaMouseMove: function(event) {
+    if (!river.utility.isMobile()) {
+      this.showPlayerControlsFor(5000);
+    }
+  },
+
+  showPlayerControlsFor: function(milliseconds) {
     if (!this.$fadeInBuffer) {
       if (this.$timer) {
           clearTimeout(this.$timer);
@@ -292,7 +307,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     this.$timer = setTimeout(function () {
       $(".player_controls").fadeOut();
       this.$fadeInBuffer = true;
-    }, 5000);
+    }, milliseconds);
   },
 
 
