@@ -433,7 +433,7 @@ class Repository < ActiveRecord::Base
   end
 
   def self.listed_in_index
-    user_subtitled || !removed_by_moderator
+    user_subtitled && !self.is_removed_by_moderator
   end
 
   def self.language_select_options
