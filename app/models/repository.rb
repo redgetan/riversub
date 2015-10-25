@@ -66,6 +66,7 @@ class Repository < ActiveRecord::Base
 
   scope :anonymous,             where("user_id IS NULL")
   scope :user_subtitled,        where("user_id IS NOT NULL")
+  scope :not_removed_by_moderator, where("is_removed_by_moderator is false")
   scope :published,             where("is_published is true")
   scope :unpublished,           where("is_published is NULL")
   scope :unclassified,          where("group_id IS NULL")
@@ -433,7 +434,7 @@ class Repository < ActiveRecord::Base
   end
 
   def self.listed_in_index
-    user_subtitled && !self.is_removed_by_moderator
+    user_subtitled.not_removed_by_moderator
   end
 
   def self.language_select_options
