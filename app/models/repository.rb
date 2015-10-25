@@ -432,6 +432,10 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def self.listed_in_index
+    user_subtitled || !removed_by_moderator
+  end
+
   def self.language_select_options
     Language::CODES.map{|k,v| [v,k]}
   end
