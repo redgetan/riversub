@@ -96,6 +96,12 @@ class RepositoriesController < ApplicationController
     redirect_to @repo.editor_url
   end
 
+  def naver_embed_html
+    @repo = Repository.find_by_token! params[:token]
+    
+    render :text => @repo.get_naver_embed_html
+  end
+
   def fork
     @source_repo = Repository.find_by_token! params[:token]
     @target_repo = Repository.create!(video: @source_repo.video, user: current_user)

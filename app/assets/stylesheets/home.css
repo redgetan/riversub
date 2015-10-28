@@ -5146,3 +5146,8 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
 #river_player.youtube #media iframe {
   padding-top: 10px;
 }
+
+.new_repo_thumbnail {
+  width: 300px;
+  border: solid 1px black;
+}

@@ -237,6 +237,8 @@ river.ui.BasePlayer = Backbone.View.extend({
         } else {
           popcorn = Popcorn.nicovideo(targetSelector,url);
         }
+      } else if (repo.video.source_type === "naver") {
+        popcorn = Popcorn.naver(targetSelector,url);
       } else {
         popcorn = Popcorn.smart(targetSelector,url);
       }

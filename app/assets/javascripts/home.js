@@ -113,9 +113,9 @@ $(document).ready(function(){
 
 function subtitleVideo(url, options) {
 
-  if (url.match(/youtu\.?be.com/) || url.match(/vimeo.com/) || url.match(/nicovideo.jp/)) {
+  if (url.match(/youtu\.?be.com/) || url.match(/vimeo.com/) || url.match(/nicovideo.jp/) || url.match(/tvcast.naver.com/)) {
   } else {
-    throw "Only youtube, nicovideo, and vimeo urls are allowed";
+    throw "Only youtube, naver, nicovideo, and vimeo urls are allowed";
   }
 
   var data = {source_url: url};

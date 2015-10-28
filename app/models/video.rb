@@ -1,5 +1,6 @@
 require 'elasticsearch/model'
 require 'active_support/core_ext/hash/conversions'
+require 'open-uri'
 
 class Video < ActiveRecord::Base
 
@@ -54,7 +55,9 @@ class Video < ActiveRecord::Base
                     'metadata.nicovideo_thumb_response.thumb.tags.tag',
                     'metadata.title',
                     'metadata.description',
-                    'metadata.tags'
+                    'metadata.tags',
+                    'metadata.naver_response.title',
+                    'metadata.naver_response.description'
                   ]  
                 } 
               }] 
@@ -83,6 +86,9 @@ class Video < ActiveRecord::Base
       elsif nicovideo?
         self.metadata = get_nicovideo_metadata(source_id)
         self.source_type = "nicovideo"
+      elsif naver?
+        self.metadata = get_naver_metadata(source_id)
+        self.source_type = "naver"
       end
     end
   end
@@ -97,6 +103,10 @@ class Video < ActiveRecord::Base
 
   def nicovideo?
     source_url =~ /nicovideo.jp/
+  end
+
+  def naver?
+    source_url =~ /tvcast.naver.com/
   end
 
   def serialize
@@ -129,6 +139,8 @@ class Video < ActiveRecord::Base
       self.metadata["description"]
     elsif nicovideo?
       self.metadata["nicovideo_thumb_response"]["thumb"]["description"]
+    elsif naver?
+      self.metadata["naver_response"]["description"]
     else 
       ""
     end
@@ -158,6 +170,9 @@ class Video < ActiveRecord::Base
     elsif nicovideo?
       match = self.source_url.match(/.*nicovideo.jp\/watch\/(.*)/)
       match && match[1] ? match[1] : nil
+    elsif naver?
+      match = self.source_url.match(/.*tvcast.naver.com\/v\/(\d+)/)
+      match && match[1] ? match[1] : nil
     end
   end
 
@@ -169,6 +184,8 @@ class Video < ActiveRecord::Base
       self.metadata["stats_number_of_plays"]
     elsif nicovideo?
       self.metadata["nicovideo_thumb_response"]["thumb"]["view_counter"]
+    elsif naver?
+      self.metadata["naver_response"]["view_counter"]
     else 
       0
     end
@@ -184,6 +201,8 @@ class Video < ActiveRecord::Base
       self.metadata["duration"]
     elsif nicovideo?
       nico_duration_to_seconds(self.metadata["nicovideo_thumb_response"]["thumb"]["length"])
+    elsif naver?
+      self.metadata["naver_response"]["duration"]
     else
       0
     end
@@ -198,6 +217,8 @@ class Video < ActiveRecord::Base
       self.metadata["user_name"]
     elsif nicovideo?
       self.metadata["nicovideo_thumb_response"]["thumb"]["user_nickname"]
+    elsif naver?
+      self.metadata["naver_response"]["user_name"]
     else 
       "unavailable"
     end
@@ -212,6 +233,8 @@ class Video < ActiveRecord::Base
       self.metadata["user_url"]
     elsif nicovideo?
       "http://www.nicovideo.jp/user/#{self.metadata["nicovideo_thumb_response"]["thumb"]["user_id"]}"
+    elsif naver?
+      self.metadata["naver_response"]["user_url"]
     else 
       "unavailable"
     end
@@ -226,6 +249,8 @@ class Video < ActiveRecord::Base
       self.metadata["title"]
     elsif nicovideo?
       self.metadata["nicovideo_thumb_response"]["thumb"]["title"]
+    elsif naver?
+      self.metadata["naver_response"]["title"]
     else 
       "Video unavailable"
     end
@@ -240,6 +265,8 @@ class Video < ActiveRecord::Base
       self.metadata["thumbnail_medium"]
     elsif nicovideo?
       self.metadata["nicovideo_thumb_response"]["thumb"]["thumbnail_url"]
+    elsif naver?
+      self.metadata["naver_response"]["thumbnail_url"]
     else 
       ""
     end
@@ -254,6 +281,8 @@ class Video < ActiveRecord::Base
       self.metadata["thumbnail_large"]
     elsif nicovideo?
       self.metadata["nicovideo_thumb_response"]["thumb"]["thumbnail_url"] 
+    elsif naver?
+      self.metadata["naver_response"]["thumbnail_url"]
     else 
       ""
     end
@@ -325,6 +354,23 @@ class Video < ActiveRecord::Base
   def get_nicovideo_metadata(source_id)
     getthumbinfo_url = "http://ext.nicovideo.jp/api/getthumbinfo/#{source_id}"
     Hash.from_xml(RestClient.get(getthumbinfo_url))
+  end
+
+  def get_naver_metadata(source_id)
+    url = "http://tvcast.naver.com/v/#{source_id}"
+    doc = Nokogiri::HTML(open(url))
+
+    {
+      :naver_response => {
+        :title => doc.css("meta[property='og:title']").first.attributes["content"].value,
+        :description => doc.css("meta[property='og:description']").first.attributes["content"].value,
+        :thumbnail_url => doc.css("meta[property='og:image']").first.attributes["content"].value,
+        :user_url => doc.css(".ch_tit a").first.attributes["href"].value,
+        :user_name => doc.css(".ch_tit a img").first.attributes["alt"].value,
+        :view_counter => doc.css(".watch_title .title_info .play").first.text.match(/\d+/).to_s.to_i,
+        :duration => doc.text.match(/playtime=(\d+)/)[1].to_i
+      }
+    }
   end
 
   def to_param

@@ -678,6 +678,7 @@ class Repository < ActiveRecord::Base
       :update_font_url => self.update_font_url,
       :update_language_url => self.update_language_url,
       :subtitle_download_url => self.subtitle_download_url,
+      :naver_embed_html_url => self.naver_embed_html_url,
       :parent_repository_id => self.parent_repository_id,
       :is_published => self.is_published,
       :is_fullscreen => self.is_fullscreen,
@@ -956,6 +957,14 @@ class Repository < ActiveRecord::Base
 
   def views_contributed
     Visit.where("landing_page LIKE ? ", "%" + relative_url + "%").count
+  end
+
+  def get_naver_embed_html
+    `phantomjs script/get_naver_embed.js #{source_url}`
+  end
+
+  def naver_embed_html_url
+    repo_naver_embed_html_url(self)  
   end
 
   def to_param
