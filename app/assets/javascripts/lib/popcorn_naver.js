@@ -61,11 +61,11 @@
           break;
 
         case "connect":
-          impl.duration = player.getVideoTimes()[NAVER_DURATION_INDEX];
+          impl.duration = 198;
           impl.readyState = self.HAVE_METADATA;
           self.dispatchEvent( "loadedmetadata" );
-          currentTimeInterval = setInterval( monitorCurrentTime,
-                                             CURRENT_TIME_MONITOR_MS );
+          // currentTimeInterval = setInterval( monitorCurrentTime,
+          //                                    CURRENT_TIME_MONITOR_MS );
           
           self.dispatchEvent( "loadeddata" );
 
@@ -91,8 +91,7 @@
     }
 
     function getDuration() {
-      debugger
-      return player.getVideoTimes()[NAVER_DURATION_INDEX];
+      return 198;
     }
 
     function destroyPlayer() {
