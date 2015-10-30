@@ -48,7 +48,6 @@
 
     self.parentNode = parent;
 
-    // Mark this as YouTube
     self._util.type = "Naver";
 
     window["initCallbackHandler"] = function(sCallbackType) {
@@ -272,7 +271,6 @@
     }
 
     function getMuted() {
-      // YouTube has isMuted(), but for sync access we use impl.muted
       return impl.muted;
     }
 
@@ -372,7 +370,6 @@
 
       volume: {
         get: function() {
-          // Remap from HTML5's 0-1 to YouTube's 0-100 range
           var volume = getVolume();
           return volume / 100;
         },
