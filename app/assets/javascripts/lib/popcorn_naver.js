@@ -57,6 +57,7 @@
 
       switch(sCallbackType) {
         case "stop":
+          onEnded();
           break;
 
         case "connect":
