@@ -127,6 +127,7 @@ River::Application.routes.draw do
   get "/r/:token/download",               to: "timings#index",   as: "repo_subtitle_download"
   get "/:token",                        to: "repositories#show",   as: "repo"
   get "/r/:token",                        to: "repositories#show",   as: "repo"
+  get "/r/:token/serialize",              to: "repositories#serialize",   as: "repo_serialize"
   get "/r/:token/naver_embed_html",       to: "repositories#naver_embed_html",   as: "repo_naver_embed_html"
   get "/r/:token/comments/:comment_short_id", to: "repositories#show", as: "repo_comment"
   get "/r/:token/subtitles/:subtitle_short_id", to: "repositories#show", as: "repo_subtitle"

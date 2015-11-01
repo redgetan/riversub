@@ -60,6 +60,22 @@ class RepositoriesController < ApplicationController
     Comment.highlight_comment(@comments,params[:comment_short_id])
   end
 
+  def serialize
+    @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
+
+    unless @repo.is_published?
+      render :json => { error: "Subtitle is not yet published" } and return
+    end
+
+    unless can? :read, @repo
+      render :json => { error: "You have no permission to see that" } and return
+    end
+
+    ahoy.track_visit if ahoy.new_visit?
+
+    render :json => @repo.serialize.to_json 
+  end
+
   def embed
     @repo = Repository.find_by_token! params[:token]
     @repo.is_embed = true
