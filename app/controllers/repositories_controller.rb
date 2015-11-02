@@ -254,10 +254,7 @@ class RepositoriesController < ApplicationController
     @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
     @repo.current_user = current_user
 
-    if cannot?(:edit, @repo) && @repo.group.present?
-      @modal_title = "Read Only Mode"
-      @modal_message = "You can't edit someone else subtitle. Any changes you make won't be saved. Sign in or create an account in order to save your changes in the editor."
-    elsif @repo.user && !user_signed_in?
+    if @repo.user && !user_signed_in?
       store_location(@repo.editor_url)
       redirect_to new_user_session_url and return
     elsif !@repo.user && !user_signed_in?
