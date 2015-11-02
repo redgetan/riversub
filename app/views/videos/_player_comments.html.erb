@@ -1,7 +1,12 @@
 <div id='comments_container'>
-  <p >Comments</p>
+  <p class='comments_container_header'>Comments (<%= @repo.comments.count %>)</p>
   <ol class="comments comments1">
-    <li style="margin-bottom: -30px;"><%= render "comments/commentbox", :comment => @comment %></li>
+    <li class="comment_box_item">
+      <div class='comment_avatar thumbnail' style='border: solid 1px lightgray;'>
+        <%= image_tag(current_user.try(:avatar).try(:url) || "/assets/fallback/default.png") %>  
+      </div>
+      <%= render "comments/commentbox", :comment => @comment %>
+    </li>
     <%= render "comments/commentlist" %>
   </ol>
 </div>

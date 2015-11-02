@@ -2044,7 +2044,7 @@ div.voters .downvoter {
 
 div.voters .upvoter:hover,
 .upvoted div.voters .upvoter {
-  border-bottom-color: #ac130d;
+  /*border-bottom-color: #ac130d;*/
 }
 
 div.voters .upvoter {
@@ -2589,10 +2589,9 @@ div.comment_form_container form {
 }
 
 #comments_container button.comment-post {
-  /*background-color: cadetblue;*/
-  background: none;
-  color: gray;
-}
+/*  background-color: steelblue;
+  color: white;
+*/}
 
 #river_player.private #comments_container button.comment-post {
 /*  background: none;
@@ -2616,7 +2615,7 @@ div.comment_form_container form {
 }
 
 #river_player #comments_container {
-  margin-top: 80px;
+  margin-top: 50px;
 }
 
 div.flash-error {
@@ -5146,3 +5145,35 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
 #river_player.youtube #media iframe {
   padding-top: 10px;
 }
+
+.comment_avatar {
+  border: solid 1px lightgray;
+  float: left;
+  width: 100px;
+}
+
+#river_player .comment_form_container {
+  width: 590px;
+  margin-left: 10px;
+  margin-right: 10px;
+  float: left;
+  clear: none;
+  padding-top: 0px;
+}
+
+#river_player #comments_container textarea#comment {
+  height: 60px;
+  padding: 5px 10px;
+}
+
+#river_player .comments_container_header {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+#river_player #comments_container .comment_box_item {
+  display: inline-block;
+  padding: 10px;
+/*  background-color: #eee;
+  border: solid 1px lightgray;
+*/}
