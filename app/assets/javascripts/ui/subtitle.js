@@ -11,7 +11,7 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.MAXLENGTH = 120;
+    this.MAXLENGTH = 240;
     this.MAXWIDTH  = repo.parent_repository_id ? 300 : 650 ;
 
     // http://stackoverflow.com/a/5926782
@@ -126,6 +126,8 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$startTimeInput.on("keydown", this.onSubTextAreaKeydown.bind(this));
     this.$endTimeInput.on("keydown", this.onSubTextAreaKeydown.bind(this));
 
+    this.$startTimeInput.on("keydown", this.subtitleStartTimeKeyDown.bind(this));
+    this.$endTimeInput.on("keydown", this.subtitleEndTimeKeyDown.bind(this));
     this.$startTimeInput.on("keyup", this.subtitleStartTimeKeyUp.bind(this));
     this.$endTimeInput.on("keyup", this.subtitleEndTimeKeyUp.bind(this));
 
@@ -270,6 +272,40 @@ river.ui.Subtitle = Backbone.View.extend({
   disallowNonNumeric: function(event) {
     if (!this.isKeyAllowedInStartEnd(event.which)) {
       event.preventDefault();
+    }
+  },
+
+  subtitleStartTimeKeyDown: function(event) {
+    var newTime;
+
+    if (event.which == 38) {
+      // up arrow
+      newTime = this.model.track.startTime() + 1;
+    } else if (event.which == 40) {
+      // down arrow
+      newTime = this.model.track.startTime() - 1;
+    }
+
+    if (event.which == 38 || event.which == 40) {
+      this.model.track.setStartTime(parseInt(newTime));
+      this.$startTimeInput.val(parseInt(newTime));
+    }
+  },
+
+  subtitleEndTimeKeyDown: function(event) {
+    var newTime;
+
+    if (event.which == 38) {
+      // up arrow
+      newTime = this.model.track.endTime() + 1;
+    } else if (event.which == 40) {
+      // down arrow
+      newTime = this.model.track.endTime() - 1;
+    }
+
+    if (event.which == 38 || event.which == 40) {
+      this.model.track.setEndTime(parseInt(newTime));
+      this.$endTimeInput.val(parseInt(newTime));
     }
   },
 
