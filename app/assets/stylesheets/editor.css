@@ -812,7 +812,7 @@ a.preview_btn {
 #timeline_scroller #scroller_handle {
 	height: inherit;
 	width: 50px;
-	background-color: lightgray;
+	background-color: gray;
 }
 
 .sub_text_area {

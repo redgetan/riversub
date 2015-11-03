@@ -148,13 +148,14 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   setScrollerColor: function() {
-    this.$scroller_handle.css("background-color","gray");
     this.$timeline_scroller.css("background-color","rgb(240,240,240)");
+    this.$timeline_scroller.css("border","solid 1px gray");
+    this.$timeline_scroller.css("border-top","none");
   },
 
   resetScrollerColor: function() {
-    this.$scroller_handle.css("background-color","lightgray");
     this.$timeline_scroller.css("background-color","transparent");
+    this.$timeline_scroller.css("border","none");
   },
 
   setTracks: function(tracks) {
