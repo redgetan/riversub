@@ -132,7 +132,9 @@ div#editor-bottom {
 #expanded #track_viewport {
 	height: 129px;
 	width: inherit;
-	border-bottom: solid 1px lightgray;
+	border: solid 1px gray;
+	border-left: none;
+	border-right: none;
 	position: relative;
 	overflow: hidden;
 }
@@ -785,7 +787,6 @@ a.preview_btn {
 
 #timeline_scroller {
 	height: 15px;
-	border-bottom: solid 1px lightgray;
 }
 
 #timeline_scroller #scroller_handle {

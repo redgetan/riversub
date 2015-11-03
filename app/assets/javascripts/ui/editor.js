@@ -1301,6 +1301,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTrackEnd: function(track) {
     // console.log("ontrackend" + track.toString());
+    track.unhighlight();
     this.hideSubtitleInSubtitleBar();
 
     if (track.shouldPauseOnTrackEnd()) {
