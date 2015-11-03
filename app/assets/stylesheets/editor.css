@@ -180,6 +180,15 @@ div#editor-bottom {
 	overflow: hidden;
 	/*font-size: 10px;*/
 	cursor: text;
+  transition:box-shadow 0.5s ease;
+  box-shadow:0 4px 6px rgba(0,0,0,0.1);
+  font-smoothing:subpixel-antialiased;
+  background:linear-gradient(#A3D4A3, #82A398);
+  background:-o-linear-gradient(#A3D4A3, #82A398);
+  background:-ms-linear-gradient(#A3D4A3, #82A398);
+  background:-moz-linear-gradient(#A3D4A3, #82A398);
+  background:-webkit-linear-gradient(#A3D4A3, #82A398);
+
 }
 
 #summary .track {
@@ -199,6 +208,12 @@ div#editor-bottom {
 .track.selected {
 	/*background-color: lightcoral ;*/
 	background-color: rgb(128, 164, 240) ;
+  background:linear-gradient(#F58369, #D06363);
+  background:-o-linear-gradient(#F58369, #D06363);
+  background:-ms-linear-gradient(#F58369, #D06363);
+  background:-moz-linear-gradient(#F58369, #D06363);
+  background:-webkit-linear-gradient(#F58369, #D06363);
+
 }
 
 #summary.timeline .track.selected,
