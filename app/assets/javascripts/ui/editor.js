@@ -341,7 +341,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if ($(e.target).attr("href") === "#subtitle_tab") {
       this.prepareSubtitleTab();
-      Backbone.trigger("subtitletabshown");
     }
 
     if (($(e.target).attr("href") === "#upload_tab") ||

@@ -25,8 +25,6 @@ river.ui.Subtitle = Backbone.View.extend({
     this.listenTo(this.model.track,"change",this.render);
     this.listenTo(this.model.track,"remove",this.remove);
 
-    Backbone.on("subtitletabshown", this.onSubtitleTabShown.bind(this));
-
     this.setupElement();
   },
 
@@ -81,13 +79,6 @@ river.ui.Subtitle = Backbone.View.extend({
     }
 
     this.render();
-  },
-
-  onSubtitleTabShown: function() {
-    // resize textarea heights once the text are filled
-    // we only execute it once tab is shown since its the
-    // only time scrollHeight (which the method depends on) wont be 0
-    river.utility.resizeTextAreaHeight(this.$textInput);
   },
 
   readOnlyStartEndTime: function() {
@@ -237,16 +228,23 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$textInput.attr("maxlength", this.MAXLENGTH);
 
     this.$textInput.on("focus", this.subtitleLineEdit.bind(this));
+    this.$textInput.on("focus", this.showSubtitleLineBreaks.bind(this));
+    this.$textInput.on("input", this.showSubtitleLineBreaks.bind(this));
 
     this.$textInput.on("blur", this.editTextFinished.bind(this));
+    this.$textInput.on("blur", this.hideSubtitleLineBreaks.bind(this));
 
     // this.$textInput.on("keydown", river.utility.resizeInput.bind(this.$textInput,this.MAXWIDTH));
     this.$textInput.on("keydown", this.onSubTextAreaKeydown.bind(this));
     this.$textInput.on("keyup", this.onSubtitleTextKeyUp.bind(this));
+  },
 
-    this.$textInput.on("input", function(){
-      river.utility.resizeTextAreaHeight(this.$textInput);
-    }.bind(this));
+  showSubtitleLineBreaks: function() {
+    river.utility.resizeTextAreaHeight(this.$textInput);
+  },
+
+  hideSubtitleLineBreaks: function() {
+    this.$textInput.height("18");
   },
 
   onSubTextAreaKeydown: function(event) {
