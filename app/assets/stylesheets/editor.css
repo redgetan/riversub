@@ -188,7 +188,6 @@ div#editor-bottom {
   background:-ms-linear-gradient(#A3D4A3, #82A398);
   background:-moz-linear-gradient(#A3D4A3, #82A398);
   background:-webkit-linear-gradient(#A3D4A3, #82A398);
-
 }
 
 #summary .track {
@@ -244,6 +243,7 @@ div#editor-bottom {
   border: none;
   display: inline-block;
   z-index: 1;
+  resize: none;
 }
 
 .track          .track_text:focus,

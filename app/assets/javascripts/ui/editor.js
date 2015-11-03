@@ -147,7 +147,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     Backbone.on("trackremove",this.onTrackRemove.bind(this));
     Backbone.on("trackinputfocus",this.onTrackInputFocus.bind(this));
     Backbone.on("trackinputblur",this.onTrackInputBlur.bind(this));
-    Backbone.on("trackinputkeyup",this.onTrackInputKeyup.bind(this));
+    Backbone.on("trackinputkeydown",this.onTrackInputKeydown.bind(this));
     Backbone.on("pauseadjust",this.onPauseAdjust.bind(this));
     Backbone.on("trackrequest",this.onTrackRequest.bind(this));
     Backbone.on("editor.sync",this.onEditorSync.bind(this));
@@ -337,6 +337,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if ($(e.target).attr("href") === "#timeline_tab") {
       this.prepareTimerTab();
       this.timeline.ensureCorrectWindowPosition();
+      Backbone.trigger("timelinetabshown");
     }
 
     if ($(e.target).attr("href") === "#subtitle_tab") {
@@ -1360,8 +1361,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     track.save();
   },
 
-  onTrackInputKeyup: function(event, text, track) {
-    if (event.which === 13) {
+  onTrackInputKeydown: function(event, track) {
+    if ((event.shiftKey || event.ctrlKey) &&  
+        event.which === 13) {
+    } else if (event.which === 13) {
+      event.preventDefault();
       track.closeEditor();
       this.play();
     }
