@@ -17,6 +17,10 @@ $.extend(river.utility,{
 
   textWidth: function(text) {
     // http://stackoverflow.com/a/5047712
+
+      // if text contains multiple lines, only get the longest line 
+      text = text.split("\n").sort(function (a, b) { return b.length - a.length; })[0];
+
       var padding = 25;
       var f = '14px arial',
           o = $('<div>' + text + '</div>')
