@@ -245,6 +245,7 @@ river.ui.Subtitle = Backbone.View.extend({
 
   hideSubtitleLineBreaks: function() {
     this.$textInput.height("18");
+    this.$textInput.css("height", "18px");
   },
 
   onSubTextAreaKeydown: function(event) {
