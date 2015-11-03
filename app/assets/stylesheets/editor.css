@@ -206,13 +206,12 @@ div#editor-bottom {
 
 .track.selected {
 	/*background-color: lightcoral ;*/
-	background-color: rgb(128, 164, 240) ;
-  background:linear-gradient(#F58369, #D06363);
-  background:-o-linear-gradient(#F58369, #D06363);
-  background:-ms-linear-gradient(#F58369, #D06363);
-  background:-moz-linear-gradient(#F58369, #D06363);
-  background:-webkit-linear-gradient(#F58369, #D06363);
-
+	/*background-color: rgb(128, 164, 240) ;*/
+  background:linear-gradient(rgba(124, 157, 216, 0.64), #5A92AD);
+  background:-o-linear-gradient(rgba(124, 157, 216, 0.64), #5A92AD);
+  background:-ms-linear-gradient(rgba(124, 157, 216, 0.64), #5A92AD);
+  background:-moz-linear-gradient(rgba(124, 157, 216, 0.64), #5A92AD);
+  background: -webkit-linear-gradient(rgba(124, 157, 216, 0.64), #5A92AD);
 }
 
 #summary.timeline .track.selected,
@@ -324,7 +323,12 @@ div#editor-bottom {
 }
 
 #editor .track.invalid {
-	background-color: lightcoral !important;
+	/*background-color: lightcoral !important;*/
+  background:linear-gradient(#F58369, #D06363);
+  background:-o-linear-gradient(#F58369, #D06363);
+  background:-ms-linear-gradient(#F58369, #D06363);
+  background:-moz-linear-gradient(#F58369, #D06363);
+  background:-webkit-linear-gradient(#F58369, #D06363);
 }
 
 #editor #subtitle_list .subtitle.selected.invalid .sub_text_area,
