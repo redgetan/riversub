@@ -806,6 +806,8 @@ html.fullscreen .pause_btn {
 #river_player #subtitle_list {
   padding: 0px;
   padding-left: 20px;
+  height: auto; 
+  max-height: 500px;
 }
 
 #editor #repo_label {
