@@ -28,7 +28,6 @@ class Subtitle < ActiveRecord::Base
   has_many :correction_requests
 
 
-  before_save :strip_crlf_text
   after_save :touch_parent
 
   after_create do
@@ -47,10 +46,6 @@ class Subtitle < ActiveRecord::Base
 
   def touch_parent
     self.repository.touch if self.repository
-  end
-
-  def strip_crlf_text
-    self.text.gsub!("\n"," ")
   end
 
   def correction_request(new_text)

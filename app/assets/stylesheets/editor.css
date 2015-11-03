@@ -132,7 +132,9 @@ div#editor-bottom {
 #expanded #track_viewport {
 	height: 129px;
 	width: inherit;
-	border-bottom: solid 1px lightgray;
+	border: solid 1px gray;
+	border-left: none;
+	border-right: none;
 	position: relative;
 	overflow: hidden;
 }
@@ -178,6 +180,14 @@ div#editor-bottom {
 	overflow: hidden;
 	/*font-size: 10px;*/
 	cursor: text;
+  transition:box-shadow 0.5s ease;
+  box-shadow:0 4px 6px rgba(0,0,0,0.1);
+  font-smoothing:subpixel-antialiased;
+  background:linear-gradient(#A3D4A3, #82A398);
+  background:-o-linear-gradient(#A3D4A3, #82A398);
+  background:-ms-linear-gradient(#A3D4A3, #82A398);
+  background:-moz-linear-gradient(#A3D4A3, #82A398);
+  background:-webkit-linear-gradient(#A3D4A3, #82A398);
 }
 
 #summary .track {
@@ -197,6 +207,12 @@ div#editor-bottom {
 .track.selected {
 	/*background-color: lightcoral ;*/
 	background-color: rgb(128, 164, 240) ;
+  background:linear-gradient(#F58369, #D06363);
+  background:-o-linear-gradient(#F58369, #D06363);
+  background:-ms-linear-gradient(#F58369, #D06363);
+  background:-moz-linear-gradient(#F58369, #D06363);
+  background:-webkit-linear-gradient(#F58369, #D06363);
+
 }
 
 #summary.timeline .track.selected,
@@ -227,6 +243,7 @@ div#editor-bottom {
   border: none;
   display: inline-block;
   z-index: 1;
+  resize: none;
 }
 
 .track          .track_text:focus,
@@ -497,10 +514,18 @@ div#editor-bottom {
 }
 
 
+.subtitle .text {
+	min-width: 600px;
+}
+
+#editor.translation .subtitle .text,
+#editor.translation .subtitle .parent_text {
+	min-width: 350px;
+}
+
 .subtitle .text,
 .subtitle .parent_text {
 	font-size: 14px;
-	min-width: 350px;
 	min-height: 20px;
 	margin-bottom: 0px;
 	overflow: hidden;
@@ -777,7 +802,6 @@ a.preview_btn {
 
 #timeline_scroller {
 	height: 15px;
-	border-bottom: solid 1px lightgray;
 }
 
 #timeline_scroller #scroller_handle {
@@ -843,7 +867,7 @@ a.preview_btn {
 .text .sub_text_area {
 	resize: none;
 	height: 20px;
-	width: 150px;
+	width: 100%;
 	cursor: text;
 }
 

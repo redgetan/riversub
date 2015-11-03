@@ -519,6 +519,7 @@ river.ui.Timeline = Backbone.View.extend({
     this.renderInContainer(this.$summary,track.summaryView.$el,   { width: duration, left: track.startTime() });
     this.renderInContainer(this.$expanded,track.expandedView.$el, { width: duration, left: track.startTime() });
 
+    Backbone.trigger("trackattachedtotimeline");
   },
 
   renderGhostTrack: function(track) {

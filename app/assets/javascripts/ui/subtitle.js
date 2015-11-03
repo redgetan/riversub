@@ -111,7 +111,7 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   createTextArea: function() {
-    return $("<textarea class='sub_text_area' placeholder='Enter Text'></textarea>");
+    return $("<textarea class='sub_text_area' placeholder='Enter Text' rows='1'></textarea>");
   },
 
   editableStartEndTime: function() {
@@ -228,17 +228,26 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$textInput.attr("maxlength", this.MAXLENGTH);
 
     this.$textInput.on("focus", this.subtitleLineEdit.bind(this));
+    this.$textInput.on("focus", this.showSubtitleLineBreaks.bind(this));
+    this.$textInput.on("input", this.showSubtitleLineBreaks.bind(this));
 
     this.$textInput.on("blur", this.editTextFinished.bind(this));
+    this.$textInput.on("blur", this.hideSubtitleLineBreaks.bind(this));
 
-    this.$textInput.on("keydown", river.utility.resizeInput.bind(this.$textInput,this.MAXWIDTH));
+    // this.$textInput.on("keydown", river.utility.resizeInput.bind(this.$textInput,this.MAXWIDTH));
     this.$textInput.on("keydown", this.onSubTextAreaKeydown.bind(this));
     this.$textInput.on("keyup", this.onSubtitleTextKeyUp.bind(this));
   },
 
+  showSubtitleLineBreaks: function() {
+    river.utility.resizeTextAreaHeight(this.$textInput);
+  },
+
+  hideSubtitleLineBreaks: function() {
+    this.$textInput.height("18");
+  },
+
   onSubTextAreaKeydown: function(event) {
-    // avoids enter key from creating linebreaks in textarea
-    if (event.which === 13) event.preventDefault();
     Backbone.trigger("subtitlelinekeydown", event);
   },
 
@@ -370,7 +379,7 @@ river.ui.Subtitle = Backbone.View.extend({
             textHolder.val(this.model.get("text"));
           }
         }
-        river.utility.resizeInput.bind(textHolder,this.MAXWIDTH).call();
+        // river.utility.resizeInput.bind(textHolder,this.MAXWIDTH).call();
       } else {
         startTimeHolder.text(this.model.startTime());
 
@@ -414,3 +423,5 @@ river.ui.Subtitle = Backbone.View.extend({
   }
 
 });
+
+// http://stackoverflow.com/a/25621277

@@ -274,6 +274,7 @@ div.videos li.selected {
 }
 
 #river_player #media_container {
+  background-color: black;
   /*padding: 10px;*/
   width: 100%;
   /*margin-right: 15px;*/
@@ -397,15 +398,14 @@ div#subtitle_bar {
 }
 
 #river_player #subtitle_bar {
-  min-height: 60px;
+  min-height: 80px;
   height: auto;
   padding-top: 5px;
 }
 
 #editor #subtitle_bar {
   padding: 5px;
-  height: 30px;
-  margin-top: 20px;
+  height: 90px;
   line-height: 18px;
   width: inherit;
 }
@@ -806,7 +806,7 @@ html.fullscreen .pause_btn {
 #river_player #subtitle_list {
   padding: 0px;
   padding-left: 20px;
-  height: auto; 
+  height: auto;
   max-height: 500px;
 }
 
@@ -3434,6 +3434,8 @@ html.embed .expand_btn {
   font-family: Arial;
   color: #999;
   font-weight: 100;
+  background: none;
+  border: none;
 }
 
 .about_faq_container p {
@@ -5179,3 +5181,9 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
 /*  background-color: #eee;
   border: solid 1px lightgray;
 */}
+
+#subtitle_display {
+  color: white;
+  background: none;
+  border: none;
+}

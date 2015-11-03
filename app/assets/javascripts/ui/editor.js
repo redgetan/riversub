@@ -147,7 +147,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     Backbone.on("trackremove",this.onTrackRemove.bind(this));
     Backbone.on("trackinputfocus",this.onTrackInputFocus.bind(this));
     Backbone.on("trackinputblur",this.onTrackInputBlur.bind(this));
-    Backbone.on("trackinputkeyup",this.onTrackInputKeyup.bind(this));
+    Backbone.on("trackinputkeydown",this.onTrackInputKeydown.bind(this));
     Backbone.on("pauseadjust",this.onPauseAdjust.bind(this));
     Backbone.on("trackrequest",this.onTrackRequest.bind(this));
     Backbone.on("editor.sync",this.onEditorSync.bind(this));
@@ -337,6 +337,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if ($(e.target).attr("href") === "#timeline_tab") {
       this.prepareTimerTab();
       this.timeline.ensureCorrectWindowPosition();
+      Backbone.trigger("timelinetabshown");
     }
 
     if ($(e.target).attr("href") === "#subtitle_tab") {
@@ -380,7 +381,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                           // "<div id='overlay_btn'><i class='fa fa-play'></i></div>" +
                         "</div> " +
                         "<div id='subtitle_bar' class='center'> " +
-                          "<span id='subtitle_display' class='center'></span> " +
+                          "<pre id='subtitle_display' class='center'></pre> " +
                         "</div> " +
                       "</div> " +
                       "<div id='seek_head'>" +
@@ -616,6 +617,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         $(".screen_zoom_btn").addClass("fa-desktop");
         $("#editor").removeClass("desktop");
         $("#editor").addClass("laptop");
+        // $(".mute_btn").on("click", function(){ $(".container").eq(0)[0].webkitRequestFullscreen(); });
       } else {
         $(".screen_zoom_btn").removeClass("fa-desktop");
         $(".screen_zoom_btn").addClass("fa-laptop");
@@ -991,11 +993,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
       this.preventAccidentalPreviousPageNavigation($(event.target));
     } else if (event.which === -99) {
-    } else if (event.which == 38) {
+    } else if (event.which == 38 && (event.ctrlKey || event.shiftKey)) {
       // up arrow
 
       this.replayTrackAndEdit(this.currentTrack.prev());
-    } else if (event.which == 40) {
+    } else if (event.which == 40 && (event.ctrlKey || event.shiftKey)) {
       // down arrow
 
       this.replayTrackAndEdit(this.currentTrack.next());
@@ -1300,6 +1302,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onTrackEnd: function(track) {
     // console.log("ontrackend" + track.toString());
+    track.unhighlight();
     this.hideSubtitleInSubtitleBar();
 
     if (track.shouldPauseOnTrackEnd()) {
@@ -1358,15 +1361,23 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     track.save();
   },
 
-  onTrackInputKeyup: function(event, text, track) {
-    if (event.which === 13) {
+  onTrackInputKeydown: function(event, track) {
+    if ((event.shiftKey || event.ctrlKey) &&  
+        event.which === 13) {
+    } else if (event.which === 13) {
+      event.preventDefault();
       track.closeEditor();
       this.play();
     }
   },
 
   onSubtitleLineKeydown: function(event) {
-    if (event.which == 13 ) { // ENTER
+    if ($(event.target).parent().hasClass("text") && 
+        (event.shiftKey || event.ctrlKey) && 
+        event.which === 13) {
+    } else if (event.which == 13 ) { // ENTER
+      // avoids enter key from creating linebreaks in textarea
+      event.preventDefault();
       if (this.focusedTrack.isLast()) {
         time = this.normalizeTime(this.focusedTrack.endTime() + this.TRACK_MARGIN);
         track = this.addFullTrack(time, { isGhost: false, isAddSubBackward: false });
