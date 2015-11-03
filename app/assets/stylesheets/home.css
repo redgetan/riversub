@@ -1568,7 +1568,7 @@ footer a:hover{
   display: table;
   width: 100%;
   background-color: black;
-  min-height: 30px;
+  height: 30px;
 }
 
 html.fullscreen #river_player .player_controls_container {
