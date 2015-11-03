@@ -107,6 +107,10 @@ $.extend(river.utility,{
     else {
       return false;
     }
+  },
+  resizeTextAreaHeight: function($el) {
+    $el.css({'height':'auto','overflow-y':'hidden'})
+        .height($el[0].scrollHeight);
   }
 });
 

@@ -25,6 +25,8 @@ river.ui.Subtitle = Backbone.View.extend({
     this.listenTo(this.model.track,"change",this.render);
     this.listenTo(this.model.track,"remove",this.remove);
 
+    Backbone.on("subtitletabshown", this.onSubtitleTabShown.bind(this));
+
     this.setupElement();
   },
 
@@ -81,6 +83,13 @@ river.ui.Subtitle = Backbone.View.extend({
     this.render();
   },
 
+  onSubtitleTabShown: function() {
+    // resize textarea heights once the text are filled
+    // we only execute it once tab is shown since its the
+    // only time scrollHeight (which the method depends on) wont be 0
+    river.utility.resizeTextAreaHeight(this.$textInput);
+  },
+
   readOnlyStartEndTime: function() {
     this.$startTime.append("<span></span>");
     this.$endTime.append("<span></span>");
@@ -111,7 +120,7 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   createTextArea: function() {
-    return $("<textarea class='sub_text_area' placeholder='Enter Text'></textarea>");
+    return $("<textarea class='sub_text_area' placeholder='Enter Text' rows='1'></textarea>");
   },
 
   editableStartEndTime: function() {
@@ -231,14 +240,16 @@ river.ui.Subtitle = Backbone.View.extend({
 
     this.$textInput.on("blur", this.editTextFinished.bind(this));
 
-    this.$textInput.on("keydown", river.utility.resizeInput.bind(this.$textInput,this.MAXWIDTH));
+    // this.$textInput.on("keydown", river.utility.resizeInput.bind(this.$textInput,this.MAXWIDTH));
     this.$textInput.on("keydown", this.onSubTextAreaKeydown.bind(this));
     this.$textInput.on("keyup", this.onSubtitleTextKeyUp.bind(this));
+
+    this.$textInput.on("input", function(){
+      river.utility.resizeTextAreaHeight(this.$textInput);
+    }.bind(this));
   },
 
   onSubTextAreaKeydown: function(event) {
-    // avoids enter key from creating linebreaks in textarea
-    if (event.which === 13) event.preventDefault();
     Backbone.trigger("subtitlelinekeydown", event);
   },
 
@@ -370,7 +381,7 @@ river.ui.Subtitle = Backbone.View.extend({
             textHolder.val(this.model.get("text"));
           }
         }
-        river.utility.resizeInput.bind(textHolder,this.MAXWIDTH).call();
+        // river.utility.resizeInput.bind(textHolder,this.MAXWIDTH).call();
       } else {
         startTimeHolder.text(this.model.startTime());
 
@@ -414,3 +425,5 @@ river.ui.Subtitle = Backbone.View.extend({
   }
 
 });
+
+// http://stackoverflow.com/a/25621277

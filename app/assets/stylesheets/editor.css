@@ -497,10 +497,18 @@ div#editor-bottom {
 }
 
 
+.subtitle .text {
+	min-width: 600px;
+}
+
+#editor.translation .subtitle .text,
+#editor.translation .subtitle .parent_text {
+	min-width: 350px;
+}
+
 .subtitle .text,
 .subtitle .parent_text {
 	font-size: 14px;
-	min-width: 350px;
 	min-height: 20px;
 	margin-bottom: 0px;
 	overflow: hidden;
@@ -843,7 +851,7 @@ a.preview_btn {
 .text .sub_text_area {
 	resize: none;
 	height: 20px;
-	width: 150px;
+	width: 100%;
 	cursor: text;
 }
 
