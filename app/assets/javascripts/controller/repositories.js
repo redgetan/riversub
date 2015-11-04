@@ -103,6 +103,7 @@ $.extend(river.controller,{
       $("#editor_container").removeAttr("data-repo");
 
       editor = new river.ui.Editor({repo: repo});
+
     }
   }
 });

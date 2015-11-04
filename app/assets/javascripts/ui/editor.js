@@ -378,7 +378,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                         "<div id='iframe_container'>" +
                           "<div id='iframe_overlay'>" +
                           "</div>" +
-                          // "<div id='overlay_btn'><i class='fa fa-play'></i></div>" +
+                          "<div id='overlay_btn'><span class='player_loading_notice'>Loading...</span></div>" +
+                          
                         "</div> " +
                         "<div id='subtitle_bar' class='center'> " +
                           "<pre id='subtitle_display' class='center'></pre> " +
@@ -1072,23 +1073,26 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onPlay: function(event) {
-    this.$overlay_btn.find("i").removeClass("fa-play");
-    this.$overlay_btn.find("i").addClass("fa-pause");
-    this.$overlay_btn.hide();
+    this.$overlay_btn.remove();
+    // this.$overlay_btn.find("i").removeClass("fa-play");
+    // this.$overlay_btn.find("i").addClass("fa-pause");
+    // this.$overlay_btn.hide();
     this.$playBtn.hide();
     this.$pauseBtn.show();
   },
 
   onPause: function(event) {
-    this.$overlay_btn.find("i").removeClass("fa-pause");
-    this.$overlay_btn.find("i").addClass("fa-play");
-    this.$overlay_btn.show();
+    // this.$overlay_btn.find("i").removeClass("fa-pause");
+    // this.$overlay_btn.find("i").addClass("fa-play");
+    // this.$overlay_btn.show();
     this.$pauseBtn.hide();
     this.$playBtn.show();
   },
 
   onLoadedMetadata: function(event) {
     river.ui.BasePlayer.prototype.onLoadedMetadata.call(this, event);
+
+    this.$overlay_btn.html("<i class='fa fa-play'></i>");
 
     this.$startTimingBtn.removeAttr("disabled");
     this.$addSubBtn.removeAttr("disabled");

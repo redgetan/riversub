@@ -4285,6 +4285,10 @@ label[for='group_allow_subtitle_download'] {
   top: 30%;
 }
 
+#editor .player_loading_notice {
+  top: 10%;
+}
+
 .twitter_follow_btn img {
   width: 25px;
   position: relative;
