@@ -6488,7 +6488,8 @@
       duration: {
         get: function() {
           return getDuration();
-        }
+        }, 
+        configurable: true
       },
 
       ended: {

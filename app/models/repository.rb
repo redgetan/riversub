@@ -688,6 +688,7 @@ class Repository < ActiveRecord::Base
       :language_select_options => Repository.language_select_options,
       :player_repository_languages => self.player_repository_languages,
       :highlight_subtitle_short_id => self.highlight_subtitle_short_id,
+      :play_end => self.play_end,
       :font_family => self.font_family,
       :font_size => self.font_size,
       :font_weight => self.font_weight,

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151025232546) do
+ActiveRecord::Schema.define(:version => 20151106014638) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -194,6 +194,7 @@ ActiveRecord::Schema.define(:version => 20151025232546) do
     t.string   "original_translator"
     t.boolean  "is_removed_by_moderator",    :default => false
     t.integer  "moderator_id"
+    t.integer  "play_end"
   end
 
   create_table "requests", :force => true do |t|

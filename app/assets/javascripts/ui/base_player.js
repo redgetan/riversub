@@ -48,6 +48,16 @@ river.ui.BasePlayer = Backbone.View.extend({
     var mediaSource = typeof this.video.source_url === "undefined" ? "" : this.video.source_url;
     this.popcorn = this.loadMedia(targetSelector,mediaSource);
 
+    // modify popcorn duration if user specified play_end
+    if (this.repo.play_end) {
+      Object.defineProperty(this.popcorn.media, "duration", {
+        get: function() {
+          return this.repo.play_end;  
+        }.bind(this)
+      });
+    }
+
+
     if (repo.video.source_type === "nicovideo") {
       this.$nicoplayerLoading = $("<div class='nicoplayer_loading'>Loading Niconico Player...please wait a few seconds.</div>");
       this.$media.append(this.$nicoplayerLoading);
@@ -177,7 +187,7 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   mediaDuration: function() {
-    return Math.floor(parseFloat(this.video.duration) * 1000) / 1000;
+    return Math.floor(parseFloat(this.repo.play_end || this.video.duration) * 1000) / 1000;
   },
 
   postInitializeCommon: function() {
@@ -237,6 +247,8 @@ river.ui.BasePlayer = Backbone.View.extend({
         } else {
           popcorn = Popcorn.nicovideo(targetSelector,url);
         }
+      } else if (repo.video.source_type === "naver") {
+        popcorn = Popcorn.naver(targetSelector,url);
       } else {
         popcorn = Popcorn.smart(targetSelector,url);
       }
