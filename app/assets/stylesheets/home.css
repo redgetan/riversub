@@ -446,7 +446,8 @@ div#avatar img {
 }
 
 #river_player #subtitle_display {
-  padding: 0px 10px;
+  padding: 5px;
+  margin-bottom: 0px;
   font-size: 18px;
   font-family: Arial;
 }
@@ -3436,6 +3437,7 @@ html.embed .expand_btn {
   font-weight: 100;
   background: none;
   border: none;
+  padding: 0px;
 }
 
 .about_faq_container p {
