@@ -480,7 +480,9 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   onSubtitleBarClick: function(event) {
-    this.togglePlayPause();
+    if (!river.utility.isMobile()) {
+      this.togglePlayPause();
+    }
   },
 
   togglePlayPause: function() {
