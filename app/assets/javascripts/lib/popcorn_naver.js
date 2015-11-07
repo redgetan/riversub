@@ -10,7 +10,7 @@
   regexNaver = /.*tvcast.naver.com\/v\/(.*)/,
   ABS = Math.abs;
 
-  function HTMLNaverElement( id ) {
+  function HTMLNaverElement( id, options ) {
 
     var self = this,
       parent = typeof id === "string" ? document.querySelector( id ) : id,
@@ -30,6 +30,7 @@
         duration: NaN,
         ended: false,
         paused: true,
+        options: options,
         error: null
       },
       playerReady = false,
@@ -50,22 +51,27 @@
 
     self._util.type = "Naver";
 
-    window["initCallbackHandler"] = function(sCallbackType) {
-      // dispatch loaded metadata  
+    if (impl.options.is_extension) {
+      var originalInitCallbackHandler = initCallbackHandler;
+    }
 
+    window["initCallbackHandler"] = function(sCallbackType) {
+      if (impl.options.is_extension) {
+        originalInitCallbackHandler(sCallbackType);
+      }
+      onNaverStateChange(sCallbackType);
+    };
+
+    function onNaverStateChange(sCallbackType) {
       playerReady = true;
 
       switch(sCallbackType) {
-        case "stop":
-          onEnded();
-          break;
-
         case "connect":
-          impl.duration = 198;
+          impl.duration = player.getVideoTimes()[NAVER_DURATION_INDEX];
           impl.readyState = self.HAVE_METADATA;
           self.dispatchEvent( "loadedmetadata" );
-          // currentTimeInterval = setInterval( monitorCurrentTime,
-          //                                    CURRENT_TIME_MONITOR_MS );
+          currentTimeInterval = setInterval( monitorCurrentTime,
+                                             CURRENT_TIME_MONITOR_MS );
           
           self.dispatchEvent( "loadeddata" );
 
@@ -87,11 +93,16 @@
           onPause();
           break;
 
+        case "stop":
+          onEnded();
+          break;
+
+
       }
     }
 
     function getDuration() {
-      return 198;
+      return player.getVideoTimes()[NAVER_DURATION_INDEX];
     }
 
     function destroyPlayer() {
@@ -125,10 +136,22 @@
 
       // Get ID out of url
       aSrc = regexNaver.exec( aSrc )[ 1 ];
+
+      if (impl.options.is_extension) {
+        // player already exist, just need to attach to it
+        player = document.querySelector("#player embed");
+      } else {
+        embedExternalPlayer(function(result){
+          player = result;
+        })
+      }
+    }
+
+    function embedExternalPlayer(cb){
       $.get(repo.naver_embed_html_url, function(data) {
-        // document.write(data); 
         document.getElementById("media").innerHTML = data; // write the flash embed
         player = document.querySelector("embed"); 
+        cb(player);
       });
     }
 
@@ -210,7 +233,7 @@
         // Only 1 play when video.loop=true
         if ( ( impl.loop && !loopedPlay ) || !impl.loop ) {
           loopedPlay = true;
-          self.dispatchEvent( "play" );
+          if (!impl.options.is_extension) self.dispatchEvent( "play" );
         }
         self.dispatchEvent( "playing" );
       }
@@ -410,8 +433,8 @@
       EMPTY_STRING;
   };
 
-  Popcorn.HTMLNaverElement = function( id ) {
-    return new HTMLNaverElement( id );
+  Popcorn.HTMLNaverElement = function( id, options ) {
+    return new HTMLNaverElement( id, options );
   };
   Popcorn.HTMLNaverElement._canPlaySrc = HTMLNaverElement.prototype._canPlaySrc;
 
@@ -423,7 +446,7 @@
   });
 
   Popcorn.naver = function( container, url, options ) {
-    var media = Popcorn.HTMLNaverElement( container ),
+    var media = Popcorn.HTMLNaverElement( container, options ),
         popcorn = Popcorn( media, options );
 
     media.src = url;
