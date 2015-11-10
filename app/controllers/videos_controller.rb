@@ -21,7 +21,12 @@ class VideosController < ApplicationController
 
   def query_progress
     @video = Video.find_by_token! params[:token]
-    render :json => { progress: @video.download_progress }
+
+    if !@video.ready?
+      render :json => { progress: @video.download_progress }
+    else
+      render :json => { new_repo_url: @video.new_empty_repository_url }
+    end
   end
 
   def sub
