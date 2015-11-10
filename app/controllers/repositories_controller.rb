@@ -313,7 +313,7 @@ class RepositoriesController < ApplicationController
 
   def current_user_repositories
     if user_signed_in?
-      render :json => Repository.where(user_id: current_user.id).recent.map(&:serialize_summary).to_json
+      render :json => Repository.where(user_id: current_user.id).order("created_at DESC").map(&:serialize_summary).to_json
     else
       render :json => { "not_signed_in" => true }.to_json
     end
