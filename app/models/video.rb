@@ -379,9 +379,9 @@ class Video < ActiveRecord::Base
 
   def ready?
     if source_type == "naver"  
-      !!new_record? && source_file_path.present?
+      !new_record? && source_file_path.present?
     else
-      !!new_record?
+      !new_record?
     end
   end
 
@@ -392,19 +392,22 @@ class Video < ActiveRecord::Base
   class DownloadSourceJob 
 
     def initialize(video, source_download_url)
-      binding.pry
       @video = video
       @source_download_url = source_download_url
     end
 
     def perform
       require 'open-uri'
-      perform_naver if @video.type == "naver"
+      require 'fileutils'
+      FileUtils.mkdir_p File.dirname(file_destination_path)
+
+      perform_naver if @video.source_type == "naver"
     end
 
     def perform_naver
       content_length = 0;
       size_downloaded = 0;
+      last_progress = 0;
 
       IO.copy_stream(open(@source_download_url, {
         "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36",
@@ -412,7 +415,12 @@ class Video < ActiveRecord::Base
         :progress_proc => lambda { |size|
           size_downloaded += size
           progress = (size / content_length.to_f * 100).round
-          @video.update_column(:download_progress, progress)
+
+          if (progress != last_progress) 
+            @video.update_column(:download_progress, progress)
+          end
+
+          last_progress = progress
         }
       }),file_destination_path)
 

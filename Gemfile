@@ -42,6 +42,7 @@ group :development, :test do
   gem 'qunit-rails'
   gem 'view_inspect', "~> 0.3.8"
   gem "bullet"
+  gem "delayed_job_web"
   #gem "rbtrace">' :path => "/Users/reg/ruby/rbtrace"
 end
 

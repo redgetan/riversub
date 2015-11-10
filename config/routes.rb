@@ -3,6 +3,10 @@ River::Application.routes.draw do
   # http://stackoverflow.com/questions/3993651/rails-3-ssl-routing-redirects-from-https-to-http
   protocol = Rails.env.development? ? "http://" : "https://"
 
+  if Rails.env.development?
+    match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
+  end
+
   scope :protocol => protocol, :constraints => { :protocol => protocol } do
     devise_for :users, :controllers => { 
       :registrations => "registrations", 
@@ -145,8 +149,6 @@ River::Application.routes.draw do
   post "videos/:video_token/repositories/upload", :to => "repositories#upload", :as => "video_repository_upload"
   post "/r/:token/upload", :to => "repositories#upload_to_existing_repo", :as => "upload_to_existing_repo"
   post "/r/:token/export_to_youtube", :to => "repositories#export_to_youtube", :as => "export_to_youtube_repo"
-
-  post "shit", :to => "home#shit"
 
 
   # The priority is based upon order of creation:
