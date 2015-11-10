@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151025232546) do
+ActiveRecord::Schema.define(:version => 20151109221429) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -194,6 +194,7 @@ ActiveRecord::Schema.define(:version => 20151025232546) do
     t.string   "original_translator"
     t.boolean  "is_removed_by_moderator",    :default => false
     t.integer  "moderator_id"
+    t.integer  "play_end"
   end
 
   create_table "requests", :force => true do |t|
@@ -306,14 +307,16 @@ ActiveRecord::Schema.define(:version => 20151025232546) do
     t.string   "artist"
     t.string   "genre"
     t.text     "lyrics"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.text     "metadata"
     t.string   "token"
     t.string   "language"
     t.string   "source_url"
     t.string   "yt_channel_id"
     t.string   "source_type"
+    t.integer  "download_progress"
+    t.text     "source_file_path"
   end
 
   create_table "visits", :force => true do |t|

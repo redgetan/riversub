@@ -8,6 +8,22 @@ class VideosController < ApplicationController
     @video = Video.find_by_token! params[:token]
   end
 
+  def prepare
+    @video = Video.where(:source_url => params[:source_url].gsub(/https/,"http").strip).first_or_initialize
+    if !@video.ready?
+      @video.save
+      Delayed::Job.enqueue Video::DownloadSourceJob.new(@video, params[:source_download_url])
+      render :json => { query_progress_url: @video.query_progress_url(@video) }
+    else
+      render :json => { new_repo_url: @video.new_empty_repository_url }
+    end
+  end
+
+  def query_progress
+    @video = Video.find_by_token! params[:token]
+    render :json => { progress: @video.download_progress }
+  end
+
   def sub
     # if video already exist not need to create another one
     @video = Video.where(:source_url => params[:source_url].gsub(/https/,"http").strip)

@@ -29,7 +29,9 @@ River::Application.routes.draw do
 
     get "videos/new",                            :to => "videos#new"
     get "videos/:token",                        to: "videos#show",            as: "video"
+    get "videos/:token/query_progress",        :to => "videos#query_progress",     :as => "query_progress"
     post "videos/sub",                           :to => "videos#sub",          :as => "sub_videos"
+    post "videos/prepare",                        :to => "videos#prepare",     :as => "prepare_videos"
     get  "videos/:video_token/repositories/new", :to => "repositories#new",    :as => "video_repository_new"
     post "videos/:video_token/repositories",     :to => "repositories#create", :as => "video_repository_create"
     get  "requests",         :to => "requests#index",        :as => "video_request_index"

@@ -150,6 +150,10 @@ class Video < ActiveRecord::Base
     self.select("DISTINCT language").map(&:language).compact
   end
 
+  def download_from_source()
+   IO.copy_stream(open('http://example.com/image.png'), 'destination.png') 
+  end
+
   def current_language
     language || "en"
   end
@@ -373,8 +377,52 @@ class Video < ActiveRecord::Base
     }
   end
 
+  def ready?
+    if source_type == "naver"  
+      !!new_record? && source_file_path.present?
+    else
+      !!new_record?
+    end
+  end
+
   def to_param
     self.token
+  end
+
+  class DownloadSourceJob 
+
+    def initialize(video, source_download_url)
+      binding.pry
+      @video = video
+      @source_download_url = source_download_url
+    end
+
+    def perform
+      require 'open-uri'
+      perform_naver if @video.type == "naver"
+    end
+
+    def perform_naver
+      content_length = 0;
+      size_downloaded = 0;
+
+      IO.copy_stream(open(@source_download_url, {
+        "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36",
+        :content_length_proc => lambda { |total_size| content_length = total_size },
+        :progress_proc => lambda { |size|
+          size_downloaded += size
+          progress = (size / content_length.to_f * 100).round
+          @video.update_column(:download_progress, progress)
+        }
+      }),file_destination_path)
+
+      @video.update_column(:source_file_path, file_destination_path)
+    end
+
+    def file_destination_path
+      [Rails.public_path, "downloads", "videos", "#{@video.id}.mp4"].join("/")
+    end
+
   end
 
 end
