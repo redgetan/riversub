@@ -468,6 +468,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   mediaSource: function() {
     if (this.video.source_type === "naver") {
       return this.video.source_local_url;  
+    } else {
+      return typeof this.video.source_url === "undefined" ? "" : this.video.source_url;
     }
   },
 

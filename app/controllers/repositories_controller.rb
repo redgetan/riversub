@@ -311,6 +311,14 @@ class RepositoriesController < ApplicationController
     end
   end
 
+  def current_user_repositories
+    if user_signed_in?
+      render :json => Repository.where(user_id: current_user.id).recent.map(&:serialize_summary).to_json
+    else
+      render :json => { "not_signed_in" => true }.to_json
+    end
+  end
+
   def unpublished
     unless current_user && current_user.admin?
      redirect_to new_user_session_url and return

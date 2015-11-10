@@ -119,6 +119,7 @@ River::Application.routes.draw do
     resources "timings", :only => [:index, :create, :update, :destroy]
 
     collection do
+      get "current_user_repositories"
       get "unpublished"
       get "anonymous"
     end

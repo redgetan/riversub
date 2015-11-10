@@ -1,5 +1,7 @@
 class VideosController < ApplicationController
 
+  skip_before_filter :verify_authenticity_token, :only =>[:prepare]
+
   def new
     @group_id = params[:group_id]
   end

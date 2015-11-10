@@ -128,7 +128,7 @@ class Video < ActiveRecord::Base
   end
 
   def source_local_url
-    source_file_path.gsub(Rails.public_path,"") 
+    source_file_path.present? ? source_file_path.gsub(Rails.public_path,"") : ""
   end
 
   def source_embed_url

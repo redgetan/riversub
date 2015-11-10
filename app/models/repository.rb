@@ -657,6 +657,17 @@ class Repository < ActiveRecord::Base
     "#{self.url}#export"
   end
 
+  def serialize_summary
+    {
+      :id => self.id,
+      :title => self.title,
+      :video => self.video.serialize,
+      :editor_url => self.editor_url,
+      :thumbnail_url => self.thumbnail_url,
+      :views_contributed => self.views_contributed
+    }
+  end
+
   def serialize
     {
       :id => self.id,
