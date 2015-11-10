@@ -33,7 +33,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       Backbone.trigger("trackchange", this.tracks.at(0));
     }
 
-    if (repo.video.source_type === "youtube") {
+    if (repo.video.source_type === "youtube" || repo.video.source_type === "naver") {
       this.setupScreenZoom();
     }
 
@@ -463,6 +463,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                 "</div> " +   // #editor-bottom.row
               "</div>" +  // #editor
             "</div>";  // container
+  },
+
+  mediaSource: function() {
+    if (this.video.source_type === "naver") {
+      return this.video.source_local_url;  
+    }
   },
 
   setupElement: function() {

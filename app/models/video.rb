@@ -117,6 +117,7 @@ class Video < ActiveRecord::Base
       :url => self.url,
       :source_url => self.source_url,
       :source_type => self.source_type,
+      :source_local_url => self.source_local_url,
       :duration => self.duration
     }
   end
@@ -124,6 +125,10 @@ class Video < ActiveRecord::Base
   def source_url
     orig_source_url = super  
     orig_source_url =~ /^http:\/\// ? orig_source_url : orig_source_url.prepend("http://")
+  end
+
+  def source_local_url
+    source_file_path.gsub(Rails.public_path,"") 
   end
 
   def source_embed_url
