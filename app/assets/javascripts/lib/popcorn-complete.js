@@ -3211,7 +3211,7 @@
 
     // IE9 doesn't like dynamic creation of source elements on <video>
     // so we do it in one shot via innerHTML.
-    videoHTML = '<video id="' +  videoID + '" preload=auto autobuffer>';
+    videoHTML = '<video id="' +  videoID + '" width="100%" height="100%" preload=auto autobuffer>';
     for ( i = 0, srcLength = src.length; i < srcLength; i++ ) {
       videoHTML += '<source src="' + src[ i ] + '">';
     }
@@ -3221,7 +3221,7 @@
     if ( options && options.events && options.events.error ) {
       node.addEventListener( "error", options.events.error, false );
     }
-    return Popcorn( '#' + videoID, options );
+    return Popcorn.html5( '#' + videoID, options );
   };
 })( Popcorn );
 /*!
