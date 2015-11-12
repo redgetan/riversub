@@ -413,6 +413,7 @@ class Video < ActiveRecord::Base
       content_length = 0;
       size_downloaded = 0;
       last_progress = 0;
+      last_update_time = Time.now;
 
       IO.copy_stream(open(@source_download_url, {
         "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36",
@@ -421,8 +422,10 @@ class Video < ActiveRecord::Base
           size_downloaded += size
           progress = (size / content_length.to_f * 100).round
 
-          if (progress != last_progress) 
+          if (progress != last_progress) && (Time.now - last_update_time) > 0.5
+            STDOUT.puts("MARIO: #{(Time.now - last_update_time)}")
             @video.update_column(:download_progress, progress)
+            last_update_time = Time.now
           end
 
           last_progress = progress
