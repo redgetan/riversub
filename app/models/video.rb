@@ -174,6 +174,16 @@ class Video < ActiveRecord::Base
     end
   end
 
+  def definition 
+    return "" unless self.metadata
+
+    if youtube?
+      self.metadata["contentDetails"]["definition"]
+    else
+      ""
+    end
+  end
+
   def duration
     return 0 unless self.metadata
 
