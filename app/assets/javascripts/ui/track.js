@@ -88,7 +88,7 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
     this.$el.append(this.$close);
 
     this.$textDisplay = $("<textarea rows='1' class='track_text' placeholder='Enter Text'>");
-    this.$textDisplay.attr("maxlength", 90);
+    this.$textDisplay.attr("maxlength", 240);
     
     this.$el.append(this.$textDisplay);
   },
