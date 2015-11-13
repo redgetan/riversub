@@ -240,7 +240,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTimelineSeekHandler: function(time, $target) {
-    this.closeAllEditors();
     this.seek(time);
 
     if ($target.hasClass("track_text")) {
