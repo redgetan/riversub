@@ -409,7 +409,8 @@ div#subtitle_bar {
 
 #editor #subtitle_bar {
   padding: 5px;
-  height: 90px;
+  height: 75px;
+  margin-top: 20px;
   line-height: 18px;
   width: inherit;
 }
