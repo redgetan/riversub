@@ -243,8 +243,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.seek(time);
 
     if ($target.hasClass("track_text")) {
-      var track = $target.parent().data("model");
-      this.playTillEndOfTrack(track);
+      this.pause();
     } else if ($target.hasClass("track")) {
       this.play();
     }
