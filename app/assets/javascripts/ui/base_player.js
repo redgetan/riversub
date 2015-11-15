@@ -536,7 +536,11 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   isNicoEmbed: function() {
-    return this.video.source_type === "nicovideo" && !this.video.source_local_url;
+    if (this.video.source_type === "nicovideo" && this.repo.is_player) {
+      return true;
+    } else if (this.video.source_type === "nicovideo" && !this.repo.is_player) {
+      return !this.video.source_local_url;
+    }
   },
 
   isNicoMp4: function() {

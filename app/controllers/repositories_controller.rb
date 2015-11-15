@@ -26,6 +26,10 @@ class RepositoriesController < ApplicationController
 
   def show
     @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
+    
+    # needed for base_player.js to determine whether to load nico external player 
+    # or use or downloaded mp4
+    @repo.is_player = true 
 
     unless @repo.is_published?
       redirect_to @repo.editor_url and return

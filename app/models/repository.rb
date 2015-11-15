@@ -45,7 +45,7 @@ class Repository < ActiveRecord::Base
 
   FONT_ATTRIBUTES = %w[font_family font_size font_weight font_style font_color font_outline_color].map(&:to_sym)
 
-  attr_accessor :current_user, :highlight_subtitle_short_id, :is_embed, :is_fullscreen
+  attr_accessor :current_user, :highlight_subtitle_short_id, :is_embed, :is_fullscreen, :is_player
 
   attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :published_at, :language, :parent_repository_id, :title,
@@ -705,7 +705,8 @@ class Repository < ActiveRecord::Base
       :font_weight => self.font_weight,
       :font_style => self.font_style,
       :font_color => self.font_color,
-      :font_outline_color => self.font_outline_color
+      :font_outline_color => self.font_outline_color,
+      :is_player => self.is_player
     }
   end
 
