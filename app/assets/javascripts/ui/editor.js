@@ -360,7 +360,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   getEditorElement: function() {
     return  "<div class=''>" +
-              "<div id='editor' class='desktop " + (repo.video.source_type ? repo.video.source_type : "") + " " + (this.isNicoEmbed() ? "external" : "") + "'> " +
+              "<div id='editor' class='laptop " + (repo.video.source_type ? repo.video.source_type : "") + " " + (this.isNicoEmbed() ? "external" : "") + "'> " +
                 "<div id='editor-top' class='row'> " +
                   "<div class='repo_label_container'> " +
                     "<h5 id='repo_label'>" +
@@ -621,7 +621,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   setupScreenZoom: function() {
-    var screenZoom = "<div class='screen_zoom'><i class='screen_zoom_btn fa fa-laptop'></i></div>";
+    var screenZoom = "<div class='screen_zoom'><i class='screen_zoom_btn fa fa-desktop'></i></div>";
     $(".player_controls").append(screenZoom);
 
     $(".screen_zoom").on("click", function(){
@@ -974,9 +974,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onDocumentScroll: function(event,delta) {
     // disallow horizontal scroll
-    if (event.originalEvent.wheelDeltaX !== 0) {
-      event.preventDefault();
-    }
+    // buggy in firefox (doesnt work in all versions)
+
+    // if (event.originalEvent.wheelDeltaX !== 0) {
+    //   event.preventDefault();
+    // }
   },
 
   onTimeUpdate: function(event) {

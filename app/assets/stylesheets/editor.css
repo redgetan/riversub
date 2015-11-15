@@ -104,7 +104,7 @@ div#editor-bottom {
 	opacity: 0.4;
 }
 
-#editor.nicovideo #summary.timeline .track {
+#editor.nicovideo.external #summary.timeline .track {
 	/*background-color: lime;*/
 	display: none;
 }

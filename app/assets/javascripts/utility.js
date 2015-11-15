@@ -113,7 +113,7 @@ $.extend(river.utility,{
     }
   },
   resizeTextAreaHeight: function($el) {
-    var padding = 4;
+    var padding = 1;
     $el.css({'height':'auto','overflow-y':'hidden'})
         .height($el[0].scrollHeight - padding);
   }

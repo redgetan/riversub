@@ -339,9 +339,13 @@ div.videos li.selected {
 
 #editor.laptop div#iframe_container {
   position: relative;
-  height: 190px;
+  height: 210px;
   width: inherit;
   background-color: #000;
+}
+
+#editor #media iframe {
+  margin-top: -18px;
 }
 
 #editor.desktop div#iframe_container {
@@ -409,8 +413,8 @@ div#subtitle_bar {
 
 #editor #subtitle_bar {
   padding: 5px;
-  height: 75px;
-  margin-top: 20px;
+  height: 55px;
+  /*margin-top: 20px;*/
   line-height: 18px;
   width: inherit;
 }
