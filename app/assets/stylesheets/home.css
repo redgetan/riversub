@@ -657,7 +657,7 @@ html.embed body #river_player #media_container #viewing_screen #iframe_container
 }
 
 html.fullscreen body #river_player #media_container #viewing_screen #iframe_container {
-  height: 85%;
+  height: 100%;
 }
 
 html.embed body #river_player.vimeo #media_container #viewing_screen #iframe_container,
@@ -693,12 +693,10 @@ html.embed #river_player #subtitle_bar {
 
 html.fullscreen #river_player #subtitle_bar {
   max-height: none !important;
-  overflow: auto !important;
 }
 
 html.fullscreen body #river_player #media_container #viewing_screen #subtitle_bar {
   padding-top: 20px;
-  height: 15%;
 }
 
 html.fullscreen #media_container {

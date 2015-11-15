@@ -218,6 +218,27 @@ class RepositoriesController < ApplicationController
     end
   end
 
+  def update_subtitle_position
+    @repo = Repository.find_by_token! params[:token]
+
+    unless can? :edit, @repo
+      flash[:error] = "You don't have permission to do that"
+      if user_signed_in?
+        redirect_to @repo.editor_url and return
+      else
+        redirect_to root_url and return
+      end
+    end
+
+    if @repo.update_attributes!(subtitle_position: params[:repo_subtitle_position])
+      respond_to do |format|
+        format.json  { render :json => {}, :status => 200 }
+      end
+    else
+      render :json => { :error => @repo.errors.full_messages }, :status => 403
+    end
+  end
+
   def update_title
     @repo = Repository.find_by_token! params[:token]
 

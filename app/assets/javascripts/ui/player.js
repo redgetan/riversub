@@ -222,6 +222,11 @@ river.ui.Player = river.ui.BasePlayer.extend({
     $.fullscreen.exit();
   },
 
+  onFullScreenChange: function(event) {
+    var subtitleDisplayTop = this.getSubtitleDisplayTop(this.subtitleViewingScreenMarginPercentage);
+    this.$subtitleDisplay.css("top", subtitleDisplayTop + "px");
+  },
+
   onFullScreenClose: function(event) {
     $("html").removeClass("fullscreen");
 
@@ -245,6 +250,8 @@ river.ui.Player = river.ui.BasePlayer.extend({
     $("#viewing_screen").on("mousemove",this.onMediaMouseMove.bind(this));
     this.popcorn.on("timeupdate",this.onTimeUpdate.bind(this));
     this.popcorn.on("progress", this.onProgress.bind(this) );
+    document.addEventListener(screenfull.raw.fullscreenchange, this.onFullScreenChange.bind(this));
+    
   },
 
   postBindEvents: function() {

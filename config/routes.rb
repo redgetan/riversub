@@ -147,6 +147,7 @@ River::Application.routes.draw do
   post "/r/:token/update_title",          to: "repositories#update_title", as: "update_repo_title"
   post "/r/:token/update_font",          to: "repositories#update_font", as: "update_repo_font"
   post "/r/:token/update_language",       to: "repositories#update_language", as: "update_repo_language"
+  post "/r/:token/update_subtitle_position",       to: "repositories#update_subtitle_position", as: "update_repo_subtitle_position"
 
   post "videos/:video_token/repositories/upload", :to => "repositories#upload", :as => "video_repository_upload"
   post "/r/:token/upload", :to => "repositories#upload_to_existing_repo", :as => "upload_to_existing_repo"

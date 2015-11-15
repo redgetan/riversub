@@ -50,7 +50,7 @@ class Repository < ActiveRecord::Base
   attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :published_at, :language, :parent_repository_id, :title,
                   :group_id, :release_item_id, :current_user,
-                  :highlight_subtitle_short_id, :request_id, :group,
+                  :highlight_subtitle_short_id, :request_id, :group, :subtitle_position,
                   *FONT_ATTRIBUTES
 
   validates :video_id, :presence => true
@@ -690,6 +690,7 @@ class Repository < ActiveRecord::Base
       :update_language_url => self.update_language_url,
       :subtitle_download_url => self.subtitle_download_url,
       :naver_embed_html_url => self.naver_embed_html_url,
+      :update_subtitle_position_url => self.update_subtitle_position_url,
       :parent_repository_id => self.parent_repository_id,
       :is_published => self.is_published,
       :is_fullscreen => self.is_fullscreen,
@@ -707,6 +708,7 @@ class Repository < ActiveRecord::Base
       :font_style => self.font_style,
       :font_color => self.font_color,
       :font_outline_color => self.font_outline_color,
+      :subtitle_position => self.subtitle_position,
       :is_player => self.is_player
     }
   end
@@ -978,6 +980,10 @@ class Repository < ActiveRecord::Base
 
   def naver_embed_html_url
     repo_naver_embed_html_url(self)  
+  end
+
+  def update_subtitle_position_url
+    update_repo_subtitle_position_url(self)  
   end
 
   def to_param

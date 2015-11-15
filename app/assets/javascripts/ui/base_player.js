@@ -41,6 +41,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.release = this.options.release || this.repo.release || {};
     this.user = this.options.user || this.repo.user || {};
 
+    this.subtitleViewingScreenMarginPercentage = this.repo.subtitle_position;
     this.setupElement();
 
     // initialize popcorn
@@ -224,9 +225,14 @@ river.ui.BasePlayer = Backbone.View.extend({
     }
 
     this.$subtitleDisplay = $("#subtitle_display");
+    var subtitleDisplayTop = this.getSubtitleDisplayTop(this.subtitleViewingScreenMarginPercentage);
+    debugger
+    this.$subtitleDisplay.css("top", subtitleDisplayTop + "px");
+
     this.$subtitleDisplay.draggable({
       cursor: "move",
-      axis: "y"
+      axis: "y",
+      stop: this.onSubtitleDisplayDraggableStop.bind(this)
     });
 
     this.applyFontSettings();
@@ -237,6 +243,10 @@ river.ui.BasePlayer = Backbone.View.extend({
 
     this.$mediaContainer.find("#iframe_container").append(media);
     this.$media = this.$mediaContainer.find("#media");
+  },
+
+  onSubtitleDisplayDraggableStop: function(event) {
+    this.subtitleViewingScreenMarginPercentage = this.getSubtitleMarginFromViewingScreen();
   },
 
   loadMedia: function(targetSelector,url) {
@@ -495,6 +505,18 @@ river.ui.BasePlayer = Backbone.View.extend({
         this.togglePlayPause();
       }
     }
+  },
+
+  getSubtitleMarginFromViewingScreen: function() {
+    var padding = parseFloat(this.$subtitleDisplay.css("top")) + $("#viewing_screen").height() - this.$subtitleBar.height()
+    var paddingPercentage = padding / $("#viewing_screen").height();
+    return paddingPercentage;
+  },
+
+  getSubtitleDisplayTop: function(subtitlePaddingPercentage) {
+    var padding = subtitlePaddingPercentage * $("#viewing_screen").height();
+    var top = padding - $("#viewing_screen").height() + this.$subtitleBar.height();
+    return top;
   },
 
   togglePlayPause: function() {

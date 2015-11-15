@@ -1612,6 +1612,23 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     return this.$askInputAfterTimingCheckbox.find("input").is(":checked");
   },
 
+  onSubtitleDisplayDraggableStop: function(event) {
+    river.ui.BasePlayer.prototype.onSubtitleDisplayDraggableStop.call(this, event);
+
+    $.ajax({
+      url: this.repo.update_subtitle_position_url,
+      type: "POST",
+      data: { repo_subtitle_position: this.getSubtitleMarginFromViewingScreen() },
+      dataType: "json",
+      success: function(data) {
+        // do nothing
+      },
+      error: function(data) {
+        console.log("error updating position of subtitle");
+      }
+    });
+  },
+
   onAddSubtitleBtnClick: function(event) {
     this.preventSubtileInputFromLosingFocus(event);
     var text = this.$addSubInput.val();
@@ -1902,7 +1919,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   hideSubtitleInSubtitleBar: function(subtitle) {
-    this.$subtitleDisplay.text("");
+    
   },
 
    // either the start of media or the endTime of prev nearest track
