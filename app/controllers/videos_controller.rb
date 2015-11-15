@@ -14,7 +14,7 @@ class VideosController < ApplicationController
     @video = Video.where(:source_url => params[:source_url].gsub(/https/,"http").strip).first_or_initialize
     if !@video.ready?
       @video.save
-      Delayed::Job.enqueue Video::DownloadSourceJob.new(@video, params[:source_download_url])
+      Delayed::Job.enqueue Video::DownloadSourceJob.new(@video, params[:source_download_url], params[:cookie])
       render :json => { query_progress_url: @video.query_progress_url(@video) }
     else
       render :json => { new_repo_url: @video.new_empty_repository_url }

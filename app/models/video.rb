@@ -383,7 +383,7 @@ class Video < ActiveRecord::Base
   end
 
   def ready?
-    if source_type == "naver"  
+    if source_type == "naver" || source_type == "nicovideo"
       !new_record? && source_file_path.present?
     else
       !new_record?
@@ -396,9 +396,10 @@ class Video < ActiveRecord::Base
 
   class DownloadSourceJob 
 
-    def initialize(video, source_download_url)
+    def initialize(video, source_download_url, cookie = {})
       @video = video
       @source_download_url = source_download_url
+      @cookie = cookie
     end
 
     def perform
@@ -406,37 +407,51 @@ class Video < ActiveRecord::Base
       require 'fileutils'
       FileUtils.mkdir_p File.dirname(file_destination_path)
 
-      perform_naver if @video.source_type == "naver"
+      perform_download if @video.source_type == "naver" || @video.source_type == "nicovideo"
     end
 
-    def perform_naver
+    def perform_download
       content_length = 0;
       size_downloaded = 0;
       last_progress = 0;
       last_update_time = Time.now;
 
-      IO.copy_stream(open(@source_download_url, {
+      file = open(@source_download_url, {
         "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36",
+        "Cookie" => @cookie,
         :content_length_proc => lambda { |total_size| content_length = total_size },
         :progress_proc => lambda { |size|
           size_downloaded += size
           progress = (size / content_length.to_f * 100).round
 
           if (progress != last_progress) && (Time.now - last_update_time) > 0.5
-            STDOUT.puts("MARIO: #{(Time.now - last_update_time)}")
             @video.update_column(:download_progress, progress)
             last_update_time = Time.now
           end
 
           last_progress = progress
         }
-      }),file_destination_path)
+      })
+
+      IO.copy_stream(file,file_destination_path)
 
       @video.update_column(:source_file_path, file_destination_path)
     end
 
     def file_destination_path
       [Rails.public_path, "downloads", "videos", "#{@video.id}.mp4"].join("/")
+    end
+
+    def success(job)
+
+    end
+
+    def error(job, exception)
+
+    end
+
+    def failure(job)
+      
     end
 
   end
