@@ -1312,6 +1312,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     var subtitle = track.subtitle;
     track.highlight();
+    track.subtitle.highlight();
 
     this.showSubtitleInSubtitleBar(subtitle);
   },
@@ -1319,6 +1320,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTrackEnd: function(track) {
     // console.log("ontrackend" + track.toString());
     track.unhighlight();
+    track.subtitle.unhighlight();
     this.hideSubtitleInSubtitleBar();
 
     if (track.shouldPauseOnTrackEnd()) {
