@@ -391,8 +391,8 @@ class Video < ActiveRecord::Base
   end
 
   def start_download(source_download_url, cookie = {})
-    @video.update_column(:download_in_progress, true)
-    @video.update_column(:download_failed, false)
+    self.update_column(:download_in_progress, true)
+    self.update_column(:download_failed, false)
     Delayed::Job.enqueue Video::DownloadSourceJob.new(self, source_download_url, cookie)
   end
 
@@ -449,18 +449,18 @@ class Video < ActiveRecord::Base
     end
 
     def success(job)
-      update_column(:download_in_progress, false)
-      update_column(:download_failed, false)
+      @video.update_column(:download_in_progress, false)
+      @video.update_column(:download_failed, false)
     end
 
     def error(job, exception)
-      update_column(:download_in_progress, false)
-      update_column(:download_failed, true)
+      @video.update_column(:download_in_progress, false)
+      @video.update_column(:download_failed, true)
     end
 
     def failure(job)
-      update_column(:download_in_progress, false)
-      update_column(:download_failed, true)
+      @video.update_column(:download_in_progress, false)
+      @video.update_column(:download_failed, true)
     end
 
   end

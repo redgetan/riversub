@@ -25,7 +25,8 @@ class VideosController < ApplicationController
   end
 
   def ready_state
-    @video = Video.find_by_token! params[:token]
+    @video = Video.where(:source_url => params[:source_url].gsub(/https/,"http").strip).first_or_initialize
+
     if @video.ready?
       render :json => { ready_state: "ready", new_repo_url: @video.new_empty_repository_url }
     elsif @video.download_in_progress?

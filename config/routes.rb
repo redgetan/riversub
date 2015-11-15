@@ -31,10 +31,10 @@ River::Application.routes.draw do
     get "explore_general",   to: "home#unclassified_translations",   as: "unclassified_community_translations"
     get "search",   to: "home#search",   as: "search"
 
+    get "videos/ready_state",                    :to => "videos#ready_state",     :as => "ready_state"
     get "videos/new",                            :to => "videos#new"
     get "videos/:token",                        to: "videos#show",            as: "video"
     get "videos/:token/query_progress",        :to => "videos#query_progress",     :as => "query_progress"
-    get "videos/ready_state",                    :to => "videos#ready_state",     :as => "ready_state"
     post "videos/sub",                           :to => "videos#sub",          :as => "sub_videos"
     post "videos/prepare",                        :to => "videos#prepare",     :as => "prepare_videos"
     get  "videos/:video_token/repositories/new", :to => "repositories#new",    :as => "video_repository_new"
