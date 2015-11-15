@@ -3,6 +3,10 @@ River::Application.routes.draw do
   # http://stackoverflow.com/questions/3993651/rails-3-ssl-routing-redirects-from-https-to-http
   protocol = Rails.env.development? ? "http://" : "https://"
 
+  if Rails.env.development?
+    match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
+  end
+
   scope :protocol => protocol, :constraints => { :protocol => protocol } do
     devise_for :users, :controllers => { 
       :registrations => "registrations", 
@@ -27,9 +31,12 @@ River::Application.routes.draw do
     get "explore_general",   to: "home#unclassified_translations",   as: "unclassified_community_translations"
     get "search",   to: "home#search",   as: "search"
 
+    get "videos/ready_state",                    :to => "videos#ready_state",     :as => "ready_state"
     get "videos/new",                            :to => "videos#new"
     get "videos/:token",                        to: "videos#show",            as: "video"
+    get "videos/:token/query_progress",        :to => "videos#query_progress",     :as => "query_progress"
     post "videos/sub",                           :to => "videos#sub",          :as => "sub_videos"
+    post "videos/prepare",                        :to => "videos#prepare",     :as => "prepare_videos"
     get  "videos/:video_token/repositories/new", :to => "repositories#new",    :as => "video_repository_new"
     post "videos/:video_token/repositories",     :to => "repositories#create", :as => "video_repository_create"
     get  "requests",         :to => "requests#index",        :as => "video_request_index"
@@ -113,6 +120,7 @@ River::Application.routes.draw do
     resources "timings", :only => [:index, :create, :update, :destroy]
 
     collection do
+      get "current_user_repositories"
       get "unpublished"
       get "anonymous"
     end
@@ -127,6 +135,8 @@ River::Application.routes.draw do
   get "/r/:token/download",               to: "timings#index",   as: "repo_subtitle_download"
   get "/:token",                        to: "repositories#show",   as: "repo"
   get "/r/:token",                        to: "repositories#show",   as: "repo"
+  get "/r/:token/serialize",              to: "repositories#serialize",   as: "repo_serialize"
+  get "/r/:token/naver_embed_html",       to: "repositories#naver_embed_html",   as: "repo_naver_embed_html"
   get "/r/:token/comments/:comment_short_id", to: "repositories#show", as: "repo_comment"
   get "/r/:token/subtitles/:subtitle_short_id", to: "repositories#show", as: "repo_subtitle"
   get "/embed/:token",                    to: "repositories#embed",   as: "repo_embed"
@@ -141,8 +151,6 @@ River::Application.routes.draw do
   post "videos/:video_token/repositories/upload", :to => "repositories#upload", :as => "video_repository_upload"
   post "/r/:token/upload", :to => "repositories#upload_to_existing_repo", :as => "upload_to_existing_repo"
   post "/r/:token/export_to_youtube", :to => "repositories#export_to_youtube", :as => "export_to_youtube_repo"
-
-  post "shit", :to => "home#shit"
 
 
   # The priority is based upon order of creation:

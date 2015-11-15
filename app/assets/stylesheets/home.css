@@ -348,7 +348,7 @@ div.videos li.selected {
   height: 310px;
 }
 
-#editor.nicovideo div#iframe_container,
+#editor.nicovideo.external div#iframe_container,
 #editor.vimeo div#iframe_container {
   height: 370px;
 }
@@ -1644,7 +1644,7 @@ html.mobile .time_current {
   height: 8px;
 }
 
-#editor.nicovideo .time_loaded {
+#editor.nicovideo.external .time_loaded {
   margin-top: 0px;
   height: 100%;
 }
@@ -4927,7 +4927,7 @@ html.fullscreen ._3pao {
   left: -200px;
 }
 
-#editor.nicovideo .time_indicator {
+#editor.nicovideo.external .time_indicator {
   top: -350px;
 }
 
@@ -5197,4 +5197,9 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
   color: white;
   background: none;
   border: none;
+}
+
+.new_repo_thumbnail {
+  width: 300px;
+  border: solid 1px black;
 }

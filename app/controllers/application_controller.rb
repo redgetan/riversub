@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   around_filter :add_http_protocol_to_models
   before_filter :clear_forwarding_url
   before_filter :expire_hsts
+  after_filter  :set_cors_headers
 
 
   #before_filter :authenticate_user!
@@ -104,6 +105,11 @@ class ApplicationController < ActionController::Base
 
     def expire_hsts
       response.headers['Strict-Transport-Security'] = 'max-age=0; includeSubDomains'
+    end
+
+    def set_cors_headers
+      headers['Access-Control-Allow-Origin'] = '*'
+      headers['Access-Control-Request-Method'] = '*'
     end
 
 end

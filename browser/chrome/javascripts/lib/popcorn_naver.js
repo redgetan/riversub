@@ -2,13 +2,15 @@
 
   var
 
+  NAVER_CURRENT_TIME_INDEX = 0;
+  NAVER_DURATION_INDEX = 1;
   CURRENT_TIME_MONITOR_MS = 16,
   EMPTY_STRING = "",
-  // Example: http://www.nicovideo.jp/watch/sm26803766
-  regexNicovideo = /.*nicovideo.jp\/watch\/(.*)/,
+  // Example: http://tvcast.naver.com/v/449999
+  regexNaver = /.*tvcast.naver.com\/v\/(.*)/,
   ABS = Math.abs;
 
-  function HTMLNicoVideoElement( id ) {
+  function HTMLNaverElement( id, options ) {
 
     var self = this,
       parent = typeof id === "string" ? document.querySelector( id ) : id,
@@ -28,6 +30,7 @@
         duration: NaN,
         ended: false,
         paused: true,
+        options: options,
         error: null
       },
       playerReady = false,
@@ -35,7 +38,6 @@
       loopedPlay = false,
       player,
       playerPaused = true,
-      bufferedInterval,
       lastLoadedFraction = 0,
       currentTimeInterval,
       timeUpdateInterval,
@@ -43,72 +45,68 @@
       lastPlayerTime;
 
     // Namespace all events we'll produce
-    self._eventNamespace = Popcorn.guid( "HTMLNicoVideoElement::" );
+    self._eventNamespace = Popcorn.guid( "HTMLNaverElement::" );
 
     self.parentNode = parent;
 
-    self._util.type = "Nico";
+    self._util.type = "Naver";
 
-    window["onNicoPlayerReady"] = function() {
-      // dispatch loaded metadata  
+    function listenToNaverCallback() {
+      window.addEventListener("message", function(event) {
+        // We only accept messages from ourselves
+        if (event.source != window) return;
 
+        var message_type = event.data.split(":")[0];
+        var message = event.data.split(":")[1];
+        if (message_type === "sCallbackType") {
+          onNaverStateChange(message);
+        }
+      }, false);
+    }
+
+    listenToNaverCallback();
+
+    function onNaverStateChange(sCallbackType) {
       playerReady = true;
 
-      impl.duration = player.ext_getTotalTime();
-      impl.readyState = self.HAVE_METADATA;
-      self.dispatchEvent( "loadedmetadata" );
-      currentTimeInterval = setInterval( monitorCurrentTime,
-                                         CURRENT_TIME_MONITOR_MS );
-      
-      self.dispatchEvent( "loadeddata" );
+      switch(sCallbackType) {
+        case "connect":
+          impl.duration = player.getVideoTimes()[NAVER_DURATION_INDEX];
+          impl.readyState = self.HAVE_METADATA;
+          self.dispatchEvent( "loadedmetadata" );
+          currentTimeInterval = setInterval( monitorCurrentTime,
+                                             CURRENT_TIME_MONITOR_MS );
+          
+          self.dispatchEvent( "loadeddata" );
 
-      impl.readyState = self.HAVE_FUTURE_DATA;
-      self.dispatchEvent( "canplay" );
+          impl.readyState = self.HAVE_FUTURE_DATA;
+          self.dispatchEvent( "canplay" );
 
-      // We can't easily determine canplaythrough, but will send anyway.
-      impl.readyState = self.HAVE_ENOUGH_DATA;
-      self.dispatchEvent( "canplaythrough" );
+          // We can't easily determine canplaythrough, but will send anyway.
+          impl.readyState = self.HAVE_ENOUGH_DATA;
+          self.dispatchEvent( "canplaythrough" );
 
-      self.dispatchEvent( "loadstart" );
-    }
-
-    function getDuration() {
-      return player.ext_getTotalTime();
-    }
-
-    window["onNicoPlayerStatus"] = function( object, event ) {
-      switch( event ) {
-
-        // ended
-        case "end":
-          onEnded();
-          // Seek back to the start of the video to reset the player,
-          player.ext_setPlayheadTime( 0 );
+          self.dispatchEvent( "loadstart" );
           break;
 
-        // playing
-        case "playing":
-          if( firstPlay ) {
-            // fake ready event
-            firstPlay = false;
-            bufferedInterval = setInterval( monitorBuffered, 50 );
-          }
-
-          impl.paused = false;
+        case "play":
           onPlay();
           break;
 
-        // paused
-        case "paused":
+        case "pause":
           onPause();
           break;
 
-        // paused
-        case "seeking":
-          onSeeking();
-          onSeeked();
+        case "stop":
+          onEnded();
           break;
+
+
       }
+    }
+
+    function getDuration() {
+      return player.getVideoTimes()[NAVER_DURATION_INDEX];
     }
 
     function destroyPlayer() {
@@ -116,8 +114,7 @@
         return;
       }
       clearInterval( currentTimeInterval );
-      clearInterval( bufferedInterval );
-      player.ext_play(false);
+      player.stopVideo();
 
       while (parent.hasChildNodes()) {
         parent.removeChild(parent.lastChild);
@@ -141,26 +138,29 @@
         destroyPlayer();
       }
 
-      // Get ID out of nicovideo url
-      aSrc = regexNicovideo.exec( aSrc )[ 1 ];
+      // Get ID out of url
+      aSrc = regexNaver.exec( aSrc )[ 1 ];
 
-       var oldDocumentWrite = document.write;
+      if (impl.options.is_extension) {
+        // player already exist, just need to attach to it
+        player = document.querySelector("#player embed");
+      } else {
+        embedExternalPlayer(function(result){
+          player = result;
+        })
+      }
+    }
 
-      document.write = function(node){
-        $(parent).append(node);
-      };
-
-      $.getScript("http://ext.nicovideo.jp/thumb_watch/" + aSrc, function() {
-        document.write = oldDocumentWrite;
-        player = document.external_nico_0; // the nicoplayer flash object
-        self.dispatchEvent("nicothumbloaded");
+    function embedExternalPlayer(cb){
+      $.get(repo.naver_embed_html_url, function(data) {
+        document.getElementById("media").innerHTML = data; // write the flash embed
+        player = document.querySelector("embed"); 
+        cb(player);
       });
-
     }
 
     function monitorCurrentTime() {
-      var playerTime = player.ext_getPlayheadTime();
-      var playing = player.ext_getStatus();
+      var playerTime = player.getVideoTimes()[NAVER_CURRENT_TIME_INDEX];
 
       if ( !impl.seeking ) {
 
@@ -168,7 +168,7 @@
 
         // making nico player emit time at 60fps - http://stackoverflow.com/a/24514978/803865
         var playerTimeHasNotChanged = lastPlayerTime == playerTime;
-        if (playing == 1 && playerTimeHasNotChanged) {
+        if (!impl.paused && playerTimeHasNotChanged) {
           impl.currentTime += CURRENT_TIME_MONITOR_MS/1000;
         } else {
           impl.currentTime = playerTime;
@@ -190,20 +190,6 @@
       lastPlayerTime = playerTime;
     }
 
-    function monitorBuffered() {
-      var fraction = getRealLoadedFraction();
-
-      if ( lastLoadedFraction !== fraction ) {
-        lastLoadedFraction = fraction;
-
-        onProgress();
-
-        if ( fraction >= 1 ) {
-          clearInterval( bufferedInterval );
-        }
-      }
-    }
-
     function getCurrentTime() {
       return impl.currentTime;
     }
@@ -212,8 +198,8 @@
       if (!playerReady) return;
       
       onSeeking();
-      player.ext_setPlayheadTime( aTime );
-      impl.currentTime = player.ext_getPlayheadTime();
+      player.seekVideo( aTime );
+      impl.currentTime = player.getVideoTimes()[NAVER_CURRENT_TIME_INDEX];
     }
 
     function onTimeUpdate() {
@@ -251,7 +237,7 @@
         // Only 1 play when video.loop=true
         if ( ( impl.loop && !loopedPlay ) || !impl.loop ) {
           loopedPlay = true;
-          self.dispatchEvent( "play" );
+          if (!impl.options.is_extension) self.dispatchEvent( "play" );
         }
         self.dispatchEvent( "playing" );
       }
@@ -265,23 +251,9 @@
       if (!playerReady) return;
       
       impl.paused = false;
-      player.ext_play(true);
+      player.playVideo();
     };
 
-
-    function getRealLoadedFraction() {
-      var fraction = player.ext_getLoadedRatio();
-      var totalTime = player.ext_getTotalTime();
-
-      var loadedTime = fraction * totalTime;
-      var playerTime = player.ext_getPlayheadTime();
-
-      if (loadedTime < playerTime) {
-        return playerTime / totalTime;
-      } else {
-        return fraction;
-      }
-    }
 
     function onPause() {
       impl.paused = true;
@@ -295,7 +267,7 @@
     self.pause = function() {
       if (!playerReady) return;
       impl.paused = true;
-      player.ext_play(false);
+      player.pauseVideo();
     };
 
     function onEnded() {
@@ -311,15 +283,10 @@
     }
 
     function setVolume( aValue ) {
-      if (!playerReady) return;
-
-      impl.volume = aValue;
-      player.ext_setVolume( impl.volume * 100 );
-      self.dispatchEvent( "volumechange" );
+      // no available api in naver
     }
 
     function getVolume() {
-      // Nico has ext_getVolume(), but for sync access we use impl.volume
       return impl.volume;
     }
 
@@ -456,73 +423,34 @@
         get: function() {
           return impl.error;
         }
-      },
-
-      buffered: {
-        get: function () {
-          var timeRanges = {
-            start: function( index ) {
-              if ( index === 0 ) {
-                return 0;
-              }
-
-              //throw fake DOMException/INDEX_SIZE_ERR
-              throw "INDEX_SIZE_ERR: DOM Exception 1";
-            },
-            end: function( index ) {
-              var duration;
-              if ( index === 0 ) {
-                duration = getDuration();
-                if ( !duration ) {
-                  return 0;
-                }
-                
-                return duration * getRealLoadedFraction();
-              }
-
-              //throw fake DOMException/INDEX_SIZE_ERR
-              throw "INDEX_SIZE_ERR: DOM Exception 1";
-            }
-          };
-
-          Object.defineProperties( timeRanges, {
-            length: {
-              get: function() {
-                return 1;
-              }
-            }
-          });
-
-          return timeRanges;
-        }
       }
     });
   }
 
-  HTMLNicoVideoElement.prototype = new Popcorn._MediaElementProto();
-  HTMLNicoVideoElement.prototype.constructor = HTMLNicoVideoElement;
+  HTMLNaverElement.prototype = new Popcorn._MediaElementProto();
+  HTMLNaverElement.prototype.constructor = HTMLNaverElement;
 
   // Helper for identifying URLs we know how to play.
-  HTMLNicoVideoElement.prototype._canPlaySrc = function( url ) {
-    return (regexNicovideo).test( url ) ?
+  HTMLNaverElement.prototype._canPlaySrc = function( url ) {
+    return (regexNaver).test( url ) ?
       "probably" :
       EMPTY_STRING;
   };
 
-  Popcorn.HTMLNicoVideoElement = function( id ) {
-    return new HTMLNicoVideoElement( id );
+  Popcorn.HTMLNaverElement = function( id, options ) {
+    return new HTMLNaverElement( id, options );
   };
-  Popcorn.HTMLNicoVideoElement._canPlaySrc = HTMLNicoVideoElement.prototype._canPlaySrc;
+  Popcorn.HTMLNaverElement._canPlaySrc = HTMLNaverElement.prototype._canPlaySrc;
 
-  Popcorn.player( "nicovideo", {
+  Popcorn.player( "naver", {
     _canPlayType: function( nodeName, url ) {
       return ( typeof url === "string" &&
-               Popcorn.HTMLNicoVideoElement._canPlaySrc( url ) );
+               Popcorn.HTMLNaverElement._canPlaySrc( url ) );
     }
   });
 
-  Popcorn.nicovideo = function( container, url, options ) {
-    var media = Popcorn.HTMLNicoVideoElement( container ),
+  Popcorn.naver = function( container, url, options ) {
+    var media = Popcorn.HTMLNaverElement( container, options ),
         popcorn = Popcorn( media, options );
 
     media.src = url;

@@ -45,7 +45,7 @@ class Repository < ActiveRecord::Base
 
   FONT_ATTRIBUTES = %w[font_family font_size font_weight font_style font_color font_outline_color].map(&:to_sym)
 
-  attr_accessor :current_user, :highlight_subtitle_short_id, :is_embed, :is_fullscreen
+  attr_accessor :current_user, :highlight_subtitle_short_id, :is_embed, :is_fullscreen, :is_player
 
   attr_accessible :video_id, :user_id, :video, :user, :token,
                   :is_published, :published_at, :language, :parent_repository_id, :title,
@@ -657,6 +657,17 @@ class Repository < ActiveRecord::Base
     "#{self.url}#export"
   end
 
+  def serialize_summary
+    {
+      :id => self.id,
+      :title => self.title,
+      :video => self.video.serialize,
+      :editor_url => self.editor_url,
+      :thumbnail_url => self.thumbnail_url,
+      :views_contributed => self.views_contributed
+    }
+  end
+
   def serialize
     {
       :id => self.id,
@@ -678,6 +689,7 @@ class Repository < ActiveRecord::Base
       :update_font_url => self.update_font_url,
       :update_language_url => self.update_language_url,
       :subtitle_download_url => self.subtitle_download_url,
+      :naver_embed_html_url => self.naver_embed_html_url,
       :parent_repository_id => self.parent_repository_id,
       :is_published => self.is_published,
       :is_fullscreen => self.is_fullscreen,
@@ -694,7 +706,8 @@ class Repository < ActiveRecord::Base
       :font_weight => self.font_weight,
       :font_style => self.font_style,
       :font_color => self.font_color,
-      :font_outline_color => self.font_outline_color
+      :font_outline_color => self.font_outline_color,
+      :is_player => self.is_player
     }
   end
 
@@ -957,6 +970,14 @@ class Repository < ActiveRecord::Base
 
   def views_contributed
     Visit.where("landing_page LIKE ? ", "%" + relative_url + "%").count
+  end
+
+  def get_naver_embed_html
+    `phantomjs script/get_naver_embed.js #{source_url}`
+  end
+
+  def naver_embed_html_url
+    repo_naver_embed_html_url(self)  
   end
 
   def to_param

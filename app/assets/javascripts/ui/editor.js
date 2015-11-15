@@ -33,11 +33,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       Backbone.trigger("trackchange", this.tracks.at(0));
     }
 
-    if (repo.video.source_type === "youtube") {
+    if (repo.video.source_type === "youtube" || 
+         repo.video.source_type === "naver"  ||
+         this.isNicoMp4() ) {
       this.setupScreenZoom();
     }
 
-    if (repo.video.source_type === "nicovideo") {
+    if (this.isNicoEmbed()) {
       this.setupNicoCommentToggle();
       $(".player_controls_container").hide();
     }
@@ -190,7 +192,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.media.addEventListener("pause",this.onPause.bind(this));
     this.media.addEventListener("play",this.onPlay.bind(this));
     this.media.addEventListener("timeupdate",this.onTimeUpdate.bind(this));
-    this.popcorn.on("progress", this.onProgress.bind(this) );
+    if (this.isNicoEmbed()) {
+      this.popcorn.on("progress", this.onProgress.bind(this) );
+    }
   },
 
   preventSubtileInputFromLosingFocus: function(event) {
@@ -356,7 +360,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   getEditorElement: function() {
     return  "<div class=''>" +
-              "<div id='editor' class='desktop " + (repo.video.source_type ? repo.video.source_type : "") + "'> " +
+              "<div id='editor' class='desktop " + (repo.video.source_type ? repo.video.source_type : "") + " " + (this.isNicoEmbed() ? "external" : "") + "'> " +
                 "<div id='editor-top' class='row'> " +
                   "<div class='repo_label_container'> " +
                     "<h5 id='repo_label'>" +
@@ -463,6 +467,16 @@ river.ui.Editor = river.ui.BasePlayer.extend({
                 "</div> " +   // #editor-bottom.row
               "</div>" +  // #editor
             "</div>";  // container
+  },
+
+  mediaSource: function() {
+    if (this.video.source_type === "naver") {
+      return this.video.source_local_url;  
+    } else if (this.isNicoMp4()) {
+      return this.video.source_local_url;  
+    } else {
+      return typeof this.video.source_url === "undefined" ? "" : this.video.source_url;
+    }
   },
 
   setupElement: function() {
@@ -1951,9 +1965,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onProgress: function() {
-    if (repo.video.source_type === "nicovideo") {
-       this.renderTimeLoaded();
-    }
+    this.renderTimeLoaded();
   },
 
   renderTimeLoaded: function() {

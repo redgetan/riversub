@@ -1,0 +1,61 @@
+#yasub_overlay {
+  cursor: pointer;
+  position: absolute;
+  height: 87%;
+  width: 100%;
+  display: block;
+  top: 0px;
+  display: none;
+}
+
+#yasub_subtitle_bar {
+  position: relative;
+  bottom: 100px;
+  border: solid 1px black;
+  background-color: black !important;
+  color: white;
+  opacity: 0.8;
+  font-size: 20px;
+  height: auto;
+  line-height: 20px;
+  padding: 2px 5px;
+  vertical-align: bottom;
+  display: none;
+}
+
+#yasub_subtitle_bar:empty {
+  display: none;
+}
+
+#yasub_expand_btn {
+  height: 30px;
+  width: 35px;
+  right: 10px;
+  bottom: 5px;
+  position: absolute;
+  cursor: pointer;
+  display: inline-block;
+}
+
+#yasub_expand_btn.hovered {
+  background-image: url("chrome-extension://__MSG_@@extension_id__/232.png");
+  background-repeat: no-repeat;
+  background-position-x: 9px;
+  background-position-y: 6px;
+  background-color: black;
+  opacity: 0.8;
+}
+
+#yasub_overlay.fullscreen {
+  height: 91%;
+}
+
+#yasub_subtitle_bar.fullscreen {
+  font-size: 40px;
+  line-height: 40px;
+  bottom: 140px;
+} 
+
+#yasub_expand_btn.fullscreen {
+  right: 15px;
+} 

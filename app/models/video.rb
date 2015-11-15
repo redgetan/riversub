@@ -1,5 +1,6 @@
 require 'elasticsearch/model'
 require 'active_support/core_ext/hash/conversions'
+require 'open-uri'
 
 class Video < ActiveRecord::Base
 
@@ -54,7 +55,9 @@ class Video < ActiveRecord::Base
                     'metadata.nicovideo_thumb_response.thumb.tags.tag',
                     'metadata.title',
                     'metadata.description',
-                    'metadata.tags'
+                    'metadata.tags',
+                    'metadata.naver_response.title',
+                    'metadata.naver_response.description'
                   ]  
                 } 
               }] 
@@ -83,6 +86,9 @@ class Video < ActiveRecord::Base
       elsif nicovideo?
         self.metadata = get_nicovideo_metadata(source_id)
         self.source_type = "nicovideo"
+      elsif naver?
+        self.metadata = get_naver_metadata(source_id)
+        self.source_type = "naver"
       end
     end
   end
@@ -99,6 +105,10 @@ class Video < ActiveRecord::Base
     source_url =~ /nicovideo.jp/
   end
 
+  def naver?
+    source_url =~ /tvcast.naver.com/
+  end
+
   def serialize
     {
       :id => self.id,
@@ -107,6 +117,7 @@ class Video < ActiveRecord::Base
       :url => self.url,
       :source_url => self.source_url,
       :source_type => self.source_type,
+      :source_local_url => self.source_local_url,
       :duration => self.duration
     }
   end
@@ -114,6 +125,10 @@ class Video < ActiveRecord::Base
   def source_url
     orig_source_url = super  
     orig_source_url =~ /^http:\/\// ? orig_source_url : orig_source_url.prepend("http://")
+  end
+
+  def source_local_url
+    source_file_path.present? ? source_file_path.gsub(Rails.public_path,"") : ""
   end
 
   def source_embed_url
@@ -129,6 +144,8 @@ class Video < ActiveRecord::Base
       self.metadata["description"]
     elsif nicovideo?
       self.metadata["nicovideo_thumb_response"]["thumb"]["description"]
+    elsif naver?
+      self.metadata["naver_response"]["description"]
     else 
       ""
     end
@@ -136,6 +153,10 @@ class Video < ActiveRecord::Base
 
   def self.all_language_codes
     self.select("DISTINCT language").map(&:language).compact
+  end
+
+  def download_from_source()
+   IO.copy_stream(open('http://example.com/image.png'), 'destination.png') 
   end
 
   def current_language
@@ -158,6 +179,9 @@ class Video < ActiveRecord::Base
     elsif nicovideo?
       match = self.source_url.match(/.*nicovideo.jp\/watch\/(.*)/)
       match && match[1] ? match[1] : nil
+    elsif naver?
+      match = self.source_url.match(/.*tvcast.naver.com\/v\/(\d+)/)
+      match && match[1] ? match[1] : nil
     end
   end
 
@@ -169,6 +193,8 @@ class Video < ActiveRecord::Base
       self.metadata["stats_number_of_plays"]
     elsif nicovideo?
       self.metadata["nicovideo_thumb_response"]["thumb"]["view_counter"]
+    elsif naver?
+      self.metadata["naver_response"]["view_counter"]
     else 
       0
     end
@@ -194,6 +220,8 @@ class Video < ActiveRecord::Base
       self.metadata["duration"]
     elsif nicovideo?
       nico_duration_to_seconds(self.metadata["nicovideo_thumb_response"]["thumb"]["length"])
+    elsif naver?
+      self.metadata["naver_response"]["duration"]
     else
       0
     end
@@ -208,6 +236,8 @@ class Video < ActiveRecord::Base
       self.metadata["user_name"]
     elsif nicovideo?
       self.metadata["nicovideo_thumb_response"]["thumb"]["user_nickname"]
+    elsif naver?
+      self.metadata["naver_response"]["user_name"]
     else 
       "unavailable"
     end
@@ -222,6 +252,8 @@ class Video < ActiveRecord::Base
       self.metadata["user_url"]
     elsif nicovideo?
       "http://www.nicovideo.jp/user/#{self.metadata["nicovideo_thumb_response"]["thumb"]["user_id"]}"
+    elsif naver?
+      self.metadata["naver_response"]["user_url"]
     else 
       "unavailable"
     end
@@ -236,6 +268,8 @@ class Video < ActiveRecord::Base
       self.metadata["title"]
     elsif nicovideo?
       self.metadata["nicovideo_thumb_response"]["thumb"]["title"]
+    elsif naver?
+      self.metadata["naver_response"]["title"]
     else 
       "Video unavailable"
     end
@@ -250,6 +284,8 @@ class Video < ActiveRecord::Base
       self.metadata["thumbnail_medium"]
     elsif nicovideo?
       self.metadata["nicovideo_thumb_response"]["thumb"]["thumbnail_url"]
+    elsif naver?
+      self.metadata["naver_response"]["thumbnail_url"]
     else 
       ""
     end
@@ -264,6 +300,8 @@ class Video < ActiveRecord::Base
       self.metadata["thumbnail_large"]
     elsif nicovideo?
       self.metadata["nicovideo_thumb_response"]["thumb"]["thumbnail_url"] 
+    elsif naver?
+      self.metadata["naver_response"]["thumbnail_url"]
     else 
       ""
     end
@@ -337,8 +375,104 @@ class Video < ActiveRecord::Base
     Hash.from_xml(RestClient.get(getthumbinfo_url))
   end
 
+  def get_naver_metadata(source_id)
+    url = "http://tvcast.naver.com/v/#{source_id}"
+    doc = Nokogiri::HTML(open(url))
+
+    {
+      :naver_response => {
+        :title => doc.css("meta[property='og:title']").first.attributes["content"].value,
+        :description => doc.css("meta[property='og:description']").first.attributes["content"].value,
+        :thumbnail_url => doc.css("meta[property='og:image']").first.attributes["content"].value,
+        :user_url => doc.css(".ch_tit a").first.attributes["href"].value,
+        :user_name => doc.css(".ch_tit a img").first.attributes["alt"].value,
+        :view_counter => doc.css(".watch_title .title_info .play").first.text.match(/\d+/).to_s.to_i,
+        :duration => doc.text.match(/playtime=(\d+)/)[1].to_i
+      }
+    }
+  end
+
+  def ready?
+    if source_type == "naver" || source_type == "nicovideo"
+      !new_record? && source_file_path.present?
+    else
+      !new_record?
+    end
+  end
+
+  def start_download(source_download_url, cookie = {})
+    self.update_column(:download_in_progress, true)
+    self.update_column(:download_failed, false)
+    Delayed::Job.enqueue Video::DownloadSourceJob.new(self, source_download_url, cookie)
+  end
+
   def to_param
     self.token
+  end
+
+  class DownloadSourceJob 
+
+    def initialize(video, source_download_url, cookie = {})
+      @video = video
+      @source_download_url = source_download_url
+      @cookie = cookie
+    end
+
+    def perform
+      require 'open-uri'
+      require 'fileutils'
+      FileUtils.mkdir_p File.dirname(file_destination_path)
+
+      perform_download if @video.source_type == "naver" || @video.source_type == "nicovideo"
+    end
+
+    def perform_download
+      content_length = 0;
+      size_downloaded = 0;
+      last_progress = 0;
+      last_update_time = Time.now;
+
+      file = open(@source_download_url, {
+        "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36",
+        "Cookie" => @cookie,
+        :content_length_proc => lambda { |total_size| content_length = total_size },
+        :progress_proc => lambda { |size|
+          size_downloaded += size
+          progress = (size / content_length.to_f * 100).round
+
+          if (progress != last_progress) && (Time.now - last_update_time) > 0.5
+            @video.update_column(:download_progress, progress)
+            last_update_time = Time.now
+          end
+
+          last_progress = progress
+        }
+      })
+
+      IO.copy_stream(file,file_destination_path)
+
+      @video.update_column(:source_file_path, file_destination_path)
+    end
+
+    def file_destination_path
+      [Rails.public_path, "downloads", "videos", "#{@video.id}.mp4"].join("/")
+    end
+
+    def success(job)
+      @video.update_column(:download_in_progress, false)
+      @video.update_column(:download_failed, false)
+    end
+
+    def error(job, exception)
+      @video.update_column(:download_in_progress, false)
+      @video.update_column(:download_failed, true)
+    end
+
+    def failure(job)
+      @video.update_column(:download_in_progress, false)
+      @video.update_column(:download_failed, true)
+    end
+
   end
 
 end

@@ -1,0 +1,58 @@
+{
+  "name": "Yasub - Let's Subtitle",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "permissions": [
+    "cookies",
+    "*://*.yasub.com/*",
+    "storage",
+    "tabs",
+    "webRequest",
+    "*://*.smartmediarep.com/*",
+    "*://*.nicovideo.jp/*"
+  ],
+  "background": {
+    "persistent": true,
+    "scripts": ["javascripts/lib/jquery.js","javascripts/background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://tvcast.naver.com/*"],
+      "css": ["stylesheets/extension.css"],
+      "js": [
+        "javascripts/lib/jquery.js",
+        "javascripts/lib/screenfull.js",
+        "javascripts/lib/popcorn-complete.js",
+        "javascripts/lib/popcorn_naver.js",
+        "javascripts/naver/init_naver.js"
+      ]
+    }, 
+    {
+      "matches": ["*://tvcast.naver.com/*"],
+      "js": [
+        "javascripts/naver/inject_scripts_to_page.js"
+      ]
+    },
+    {
+      "matches": ["*://*.nicovideo.jp/*"],
+      "css": ["stylesheets/extension.css"],
+      "js": [
+        "javascripts/lib/jquery.js",
+        "javascripts/lib/screenfull.js",
+        "javascripts/lib/popcorn-complete.js",
+        "javascripts/lib/popcorn_nicovideo.js",
+        "javascripts/nicovideo/init_nicovideo.js"
+      ]
+    }
+  ],
+  "browser_action": {
+    "default_icon": {                    // optional
+      "19": "images/o_16.png",           // optional
+      "38": "images/o_48.png"            // optional
+    },
+    "default_title": "Yasub - Let's Subtitle",      // optional; shown in tooltip
+    "default_popup": "popup.html"        // optional
+  },
+  "web_accessible_resources": ["images/232.png", "javascripts/naver/override_naver_callback.js"]
+                                
+}

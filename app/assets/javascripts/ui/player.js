@@ -471,5 +471,6 @@ river.ui.MiniPlayer = river.ui.Player.extend({
     $("#time_float").hide();
     $("#seek_head").hide();
     $("#blackbar").css("height","5px");
-  },
+  }
+
 });

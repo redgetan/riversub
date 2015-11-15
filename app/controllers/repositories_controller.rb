@@ -26,6 +26,10 @@ class RepositoriesController < ApplicationController
 
   def show
     @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
+    
+    # needed for base_player.js to determine whether to load nico external player 
+    # or use or downloaded mp4
+    @repo.is_player = true 
 
     unless @repo.is_published?
       redirect_to @repo.editor_url and return
@@ -58,6 +62,22 @@ class RepositoriesController < ApplicationController
     end
 
     Comment.highlight_comment(@comments,params[:comment_short_id])
+  end
+
+  def serialize
+    @repo = Repository.includes(:timings => :subtitle).find_by_token! params[:token]
+
+    unless @repo.is_published?
+      render :json => { error: "Subtitle is not yet published" } and return
+    end
+
+    unless can? :read, @repo
+      render :json => { error: "You have no permission to see that" } and return
+    end
+
+    ahoy.track_visit if ahoy.new_visit?
+
+    render :json => @repo.serialize.to_json 
   end
 
   def embed
@@ -94,6 +114,12 @@ class RepositoriesController < ApplicationController
 
 
     redirect_to @repo.editor_url
+  end
+
+  def naver_embed_html
+    @repo = Repository.find_by_token! params[:token]
+    
+    render :text => @repo.get_naver_embed_html
   end
 
   def fork
@@ -283,6 +309,14 @@ class RepositoriesController < ApplicationController
       @repos = @repos.recent.page params[:page]
     else
       @repos = Repository.includes(timings: :subtitle).published.recent.page params[:page]
+    end
+  end
+
+  def current_user_repositories
+    if user_signed_in?
+      render :json => Repository.where(user_id: current_user.id).order("created_at DESC").map(&:serialize_summary).to_json
+    else
+      render :json => { "not_signed_in" => true }.to_json
     end
   end
 

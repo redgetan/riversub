@@ -21,5 +21,6 @@ tags
 .vagrant
 public/assets
 public/uploads
+public/downloads
 TBD
 extra

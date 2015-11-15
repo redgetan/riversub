@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     ).find_by_username(params[:username])
 
     @repositories = if (user_signed_in? && current_user == @user) || current_user.try(:is_super_admin?)
-                      @user.repositories.includes(:video).recent # all
+                      @user.repositories.includes(:video).order("created_at DESC") # all
                     else
                       @user.repositories.includes(:video).published.recent # if not logged in, show only published ones
                     end

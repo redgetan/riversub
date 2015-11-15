@@ -35,11 +35,9 @@
       loopedPlay = false,
       player,
       playerPaused = true,
-      bufferedInterval,
       lastLoadedFraction = 0,
       currentTimeInterval,
       timeUpdateInterval,
-      firstPlay = true,
       lastPlayerTime;
 
     // Namespace all events we'll produce
@@ -82,18 +80,10 @@
         // ended
         case "end":
           onEnded();
-          // Seek back to the start of the video to reset the player,
-          player.ext_setPlayheadTime( 0 );
           break;
 
         // playing
         case "playing":
-          if( firstPlay ) {
-            // fake ready event
-            firstPlay = false;
-            bufferedInterval = setInterval( monitorBuffered, 50 );
-          }
-
           impl.paused = false;
           onPlay();
           break;
@@ -116,7 +106,6 @@
         return;
       }
       clearInterval( currentTimeInterval );
-      clearInterval( bufferedInterval );
       player.ext_play(false);
 
       while (parent.hasChildNodes()) {
@@ -188,20 +177,6 @@
       }
 
       lastPlayerTime = playerTime;
-    }
-
-    function monitorBuffered() {
-      var fraction = getRealLoadedFraction();
-
-      if ( lastLoadedFraction !== fraction ) {
-        lastLoadedFraction = fraction;
-
-        onProgress();
-
-        if ( fraction >= 1 ) {
-          clearInterval( bufferedInterval );
-        }
-      }
     }
 
     function getCurrentTime() {
@@ -531,4 +506,3 @@
   };
 
 }( Popcorn, window, document ));
-

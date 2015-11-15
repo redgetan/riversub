@@ -16,7 +16,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.initializeKeyboardShortcuts();
 
     // hide it initially so that we can click on flash object to load/request the actual nicoplayer
-    if (this.repo.video.source_type === "nicovideo" || this.repo.video.source_type === "vimeo") {
+    if (this.isNicoEmbed() || this.repo.video.source_type === "vimeo") {
       this.$overlay_btn.remove();
       this.$iframeOverlay.hide();
     }
@@ -45,8 +45,7 @@ river.ui.BasePlayer = Backbone.View.extend({
 
     // initialize popcorn
     var targetSelector = this.options["targetSelector"] || "div#media";
-    var mediaSource = typeof this.video.source_url === "undefined" ? "" : this.video.source_url;
-    this.popcorn = this.loadMedia(targetSelector,mediaSource);
+    this.popcorn = this.loadMedia(targetSelector,this.mediaSource());
 
     // modify popcorn duration if user specified play_end
     if (this.repo.play_end) {
@@ -58,7 +57,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     }
 
 
-    if (repo.video.source_type === "nicovideo") {
+    if (this.isNicoEmbed()) {
       this.$nicoplayerLoading = $("<div class='nicoplayer_loading'>Loading Niconico Player...please wait a few seconds.</div>");
       this.$media.append(this.$nicoplayerLoading);
       this.popcorn.on("nicothumbloaded", this.onNicoThumbLoaded.bind(this));
@@ -69,6 +68,10 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.displayNoInternetConnectionIfNeeded();
 
     this.postInitializeCommon();
+  },
+
+  mediaSource: function() {
+    return typeof this.video.source_url === "undefined" ? "" : this.video.source_url;
   },
 
   initializeVideo: function() {
@@ -241,7 +244,7 @@ river.ui.BasePlayer = Backbone.View.extend({
       }
       if (repo.video.source_type === "vimeo") {
         popcorn = Popcorn.vimeo(targetSelector,url);
-      } else if (repo.video.source_type === "nicovideo") {
+      } else if (this.isNicoEmbed()) {
         if (river.utility.isMobile()) {
           this.displayNicoVideoMobileNotSupported();
         } else {
@@ -264,7 +267,9 @@ river.ui.BasePlayer = Backbone.View.extend({
     Backbone.on("trackend",this.onTrackEnd.bind(this));
     this.popcorn.media.addEventListener("loadedmetadata",this.onLoadedMetadata.bind(this));
     this.popcorn.media.addEventListener("playprogress",this.onPlayProgress.bind(this));
-    $(window).on("resize",this.onWindowResize.bind(this));
+    if (this.isNicoEmbed()) {
+      $(window).on("resize",this.onWindowResize.bind(this));
+    }
     this.handleVolumeEvents();
   },
 
@@ -277,9 +282,7 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   onWindowResize: function() {
-    if (repo.video.source_type === "nicovideo") {
-      this.renderNicoFramePosition();
-    }
+    this.renderNicoFramePosition();
   },
 
   handleVolumeEvents: function() {
@@ -343,7 +346,7 @@ river.ui.BasePlayer = Backbone.View.extend({
       // vimeo autoplays but doesnt trigger the onPlay callback 
       // (trigger playprogress instead), so we trigger it manually
       this.onPlay(); 
-    } else if (this.repo.video.source_type === "nicovideo") {
+    } else if (this.isNicoEmbed()) {
       // hide the nicothumbwatch frame blocker 
       this.$frameTop.hide();
       this.$frameBottom.hide();
@@ -452,7 +455,7 @@ river.ui.BasePlayer = Backbone.View.extend({
   seek: function(time) {
     this.popcorn.currentTime(time);
 
-    if (repo.video.source_type === "nicovideo") {
+    if (this.isNicoEmbed()) {
       // nico doesnt give u the accurate seeked time unless its playing
       if (this.media.paused) {
         this.play();      
@@ -544,6 +547,18 @@ river.ui.BasePlayer = Backbone.View.extend({
 
   hideNicoComments: function() {
     this.popcorn.media.playerObject.ext_setCommentVisible(false);
+  },
+
+  isNicoEmbed: function() {
+    if (this.video.source_type === "nicovideo" && this.repo.is_player) {
+      return true;
+    } else if (this.video.source_type === "nicovideo" && !this.repo.is_player) {
+      return !this.video.source_local_url;
+    }
+  },
+
+  isNicoMp4: function() {
+    return this.video.source_type === "nicovideo" && this.video.source_local_url;
   },
 
   // how many pixels per second
