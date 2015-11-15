@@ -223,8 +223,10 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   onFullScreenChange: function(event) {
-    var subtitleDisplayTop = this.getSubtitleDisplayTop(this.subtitleViewingScreenMarginPercentage);
-    this.$subtitleDisplay.css("top", subtitleDisplayTop + "px");
+    if (this.subtitleViewingScreenMarginPercentage) {
+      var subtitleTop = this.getSubtitleTop(this.subtitleViewingScreenMarginPercentage);
+      this.$subtitleBar.css("top", subtitleTop + "px");
+    }
   },
 
   onFullScreenClose: function(event) {

@@ -217,6 +217,16 @@ river.ui.BasePlayer = Backbone.View.extend({
 
   setupElement: function() {
     this.$subtitleBar = $("#subtitle_bar");
+    this.$subtitleBar.draggable({
+      cursor: "move",
+      axis: "y",
+      stop: this.onSubtitleDisplayDraggableStop.bind(this)
+    });
+
+    if (this.subtitleViewingScreenMarginPercentage) {
+      var subtitleTop = this.getSubtitleTop(this.subtitleViewingScreenMarginPercentage);
+      this.$subtitleBar.css("top", subtitleTop + "px");
+    }
 
     this.$downloadBtn = $("#download_btn");
     
@@ -225,16 +235,6 @@ river.ui.BasePlayer = Backbone.View.extend({
     }
 
     this.$subtitleDisplay = $("#subtitle_display");
-    var subtitleDisplayTop = this.getSubtitleDisplayTop(this.subtitleViewingScreenMarginPercentage);
-    debugger
-    this.$subtitleDisplay.css("top", subtitleDisplayTop + "px");
-
-    this.$subtitleDisplay.draggable({
-      cursor: "move",
-      axis: "y",
-      stop: this.onSubtitleDisplayDraggableStop.bind(this)
-    });
-
     this.applyFontSettings();
 
     this.$mediaContainer = this.$mediaContainer || $("#media_container");
@@ -508,15 +508,11 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   getSubtitleMarginFromViewingScreen: function() {
-    var padding = parseFloat(this.$subtitleDisplay.css("top")) + $("#viewing_screen").height() - this.$subtitleBar.height()
-    var paddingPercentage = padding / $("#viewing_screen").height();
-    return paddingPercentage;
+    return parseFloat(this.$subtitleBar.css("top")) / $("#viewing_screen").height();
   },
 
-  getSubtitleDisplayTop: function(subtitlePaddingPercentage) {
-    var padding = subtitlePaddingPercentage * $("#viewing_screen").height();
-    var top = padding - $("#viewing_screen").height() + this.$subtitleBar.height();
-    return top;
+  getSubtitleTop: function(marginPercentage) {
+    return marginPercentage * $("#viewing_screen").height();
   },
 
   togglePlayPause: function() {
