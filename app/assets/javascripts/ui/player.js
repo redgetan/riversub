@@ -397,10 +397,6 @@ river.ui.Player = river.ui.BasePlayer.extend({
   hideEditing: function() {
     this.$backwardBtn.hide();
     this.$forwardBtn.hide();
-    this.$subtitleBar.css("background-color","rgba(255,0,0,0)");
-    this.$subtitleBar.css("z-index","6");
-    this.$subtitleBar.css("line-height","20px");
-    this.$subtitleBar.css("position","relative");
 
     this.$subtitleDisplay.css("background-color","black");
     this.$subtitleDisplay.css("opacity",0.8);
@@ -455,17 +451,6 @@ river.ui.MiniPlayer = river.ui.Player.extend({
 
     this.$iframeOverlay.hide();
    $(".player_controls").hide();
-
-    this.$subtitleBar.css("margin-top","-35px");
-    this.$subtitleBar.css("background-color","black");
-    this.$subtitleBar.css("z-index","6");
-    this.$subtitleBar.css("line-height","16px");
-    this.$subtitleBar.addClass("span5");
-
-    this.$subtitleDisplay.css("background-color","black");
-    this.$subtitleDisplay.css("opacity",0.8);
-    this.$subtitleDisplay.css("font-size","12px");
-    this.$subtitleDisplay.css("padding","3px");
 
     this.$overlay_btn.hide();
     $("#time_float").hide();

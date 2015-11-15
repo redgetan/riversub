@@ -398,22 +398,22 @@ div#iframe_container #media {
 }
 
 div#subtitle_bar {
-  background-color: #000;
   color: white;
-  line-height: 21px;
   font-weight: bold;
-  position: relative;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  background: none;
 }
 
 #river_player #subtitle_bar {
-  min-height: 80px;
   height: auto;
   padding-top: 5px;
 }
 
 #editor #subtitle_bar {
   padding: 5px;
-  height: 55px;
+  height: auto;
   /*margin-top: 20px;*/
   line-height: 18px;
   width: inherit;
@@ -432,13 +432,8 @@ div#subtitle_bar {
   background-color: rgba(128,128,128,0.5);
 }
 
-#editor .time_indicator,
-#editor.laptop .time_indicator {
-  top: -180px;
-}
-
-#editor.desktop .time_indicator {
-  top: -300px;
+#editor .time_indicator {
+  top: 20px;
 }
 
 #river_player .time_indicator {
@@ -4899,6 +4894,10 @@ html.fullscreen ._3pao {
 }
 
 
+#editor .player_controls_container {
+  margin-top: 10px;
+}
+
 #editor.vimeo .player_controls_container {
   display: none;
 }
@@ -5199,8 +5198,14 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
 
 #subtitle_display {
   color: white;
-  background: none;
+  background-color: black;
   border: none;
+  display: inline-block;
+  opacity: 0.8;
+}
+
+#subtitle_display:empty {
+  display: none;
 }
 
 .new_repo_thumbnail {

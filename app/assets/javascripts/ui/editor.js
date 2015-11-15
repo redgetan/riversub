@@ -360,7 +360,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   getEditorElement: function() {
     return  "<div class=''>" +
-              "<div id='editor' class='laptop " + (repo.video.source_type ? repo.video.source_type : "") + " " + (this.isNicoEmbed() ? "external" : "") + "'> " +
+              "<div id='editor' class='desktop " + (repo.video.source_type ? repo.video.source_type : "") + " " + (this.isNicoEmbed() ? "external" : "") + "'> " +
                 "<div id='editor-top' class='row'> " +
                   "<div class='repo_label_container'> " +
                     "<h5 id='repo_label'>" +
@@ -591,8 +591,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$keyboard_shortcuts = $("#keyboard-shortcuts");
     this.$status_bar = $("#status-bar");
 
-    this.applyFontSettings();
-
     // tooltips
     this.$timelineBtn.tooltip({title: "Timer Mode"});
     this.$subtitleBtn.tooltip({title: "Subtitle Mode"});
@@ -621,7 +619,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   setupScreenZoom: function() {
-    var screenZoom = "<div class='screen_zoom'><i class='screen_zoom_btn fa fa-desktop'></i></div>";
+    var screenZoom = "<div class='screen_zoom'><i class='screen_zoom_btn fa fa-laptop'></i></div>";
     $(".player_controls").append(screenZoom);
 
     $(".screen_zoom").on("click", function(){
@@ -1904,7 +1902,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   showSubtitleInSubtitleBar: function(subtitle) {
-    this.$subtitleDisplay.show();
     this.$subtitleDisplay.text(subtitle.get("text"));
     this.$subtitleDisplay.data("subtitle", subtitle);
   },
