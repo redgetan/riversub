@@ -339,7 +339,7 @@ div.videos li.selected {
 
 #editor.laptop div#iframe_container {
   position: relative;
-  height: 210px;
+  height: 360px;
   width: inherit;
   background-color: #000;
 }
@@ -349,7 +349,7 @@ div.videos li.selected {
 }
 
 #editor.desktop div#iframe_container {
-  height: 310px;
+  height: 523px;
 }
 
 #editor.nicovideo.external div#iframe_container,
@@ -429,7 +429,7 @@ div#subtitle_bar {
   left: 20px;
   display: inline;
   z-index: 3;
-  background-color: rgba(128,128,128,0.5);
+  background-color: black;
 }
 
 #editor .time_indicator {
