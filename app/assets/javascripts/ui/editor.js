@@ -274,7 +274,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if ($target.closest(".start_time").length === 0 &&
         $target.closest(".end_time").length === 0) {
-      this.openEditorAndHighlight(track);
+      this.openEditor(track);
     }
   },
 
