@@ -344,10 +344,6 @@ div.videos li.selected {
   background-color: #000;
 }
 
-#editor #media iframe {
-  margin-top: -18px;
-}
-
 #editor.desktop div#iframe_container {
   height: 523px;
 }
