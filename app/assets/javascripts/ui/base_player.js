@@ -224,6 +224,11 @@ river.ui.BasePlayer = Backbone.View.extend({
     }
 
     this.$subtitleDisplay = $("#subtitle_display");
+    this.$subtitleDisplay.draggable({
+      cursor: "move",
+      axis: "y"
+    });
+
     this.applyFontSettings();
 
     this.$mediaContainer = this.$mediaContainer || $("#media_container");
@@ -316,7 +321,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     }.bind(this));
 
     $("._3pao, #viewing_screen").on("mousemove", function(event) {
-      this.pauseEvent(event);
+      // this.pauseEvent(event);
       if (this.isVolumeDragging) {
         this.setVolume(this.getVolumeFromY(event.pageY));
       }
@@ -484,7 +489,11 @@ river.ui.BasePlayer = Backbone.View.extend({
 
   onSubtitleBarClick: function(event) {
     if (!river.utility.isMobile()) {
-      this.togglePlayPause();
+      if ($(event.target).attr("id") === "subtitle_display") {
+        this.pause();
+      } else {
+        this.togglePlayPause();
+      }
     }
   },
 

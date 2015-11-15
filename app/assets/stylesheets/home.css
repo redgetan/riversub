@@ -398,6 +398,7 @@ div#iframe_container #media {
 }
 
 div#subtitle_bar {
+  z-index: 5;
   color: white;
   font-weight: bold;
   position: absolute;
@@ -5197,6 +5198,7 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
 */}
 
 #subtitle_display {
+  cursor: move;
   color: white;
   background-color: black;
   border: none;

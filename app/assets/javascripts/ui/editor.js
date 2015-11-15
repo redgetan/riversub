@@ -1411,11 +1411,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.togglePlayPause();
   },
 
-  onSubtitleBarClick: function(event) {
-    this.preventSubtileInputFromLosingFocus(event);
-    this.togglePlayPause();
-  },
-
   onIframeOverlayMouseEnter: function(event) {
     this.$overlay_btn.show();
   },
