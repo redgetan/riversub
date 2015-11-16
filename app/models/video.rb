@@ -450,6 +450,7 @@ class Video < ActiveRecord::Base
       })
 
       IO.copy_stream(file,file_destination_path)
+      FileUtils.chmod(0664, file_destination_path)
 
       @video.update_column(:source_file_path, file_destination_path)
     end
