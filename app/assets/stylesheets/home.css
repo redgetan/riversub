@@ -319,10 +319,6 @@ div.videos li.selected {
     height: 420px;
   }
 
-  #river_player.show #media_container.sd div#media {
-    height: 540px;
-  }
-
   #river_player #iframe_container {
     min-height: 420px;
   }
