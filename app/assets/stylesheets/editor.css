@@ -665,6 +665,7 @@ div#keyboard-shortcuts {
 	width: 100%;
 	height: inherit;
 	position: relative;
+	overflow: auto;
 }
 
 /*#language_select {
