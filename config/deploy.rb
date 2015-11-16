@@ -40,7 +40,7 @@ set :deploy_to, "/home/hatch/apps/river"
 set :deploy_via, :remote_cache
 
 # http://stackoverflow.com/questions/9043662/carrierwave-files-with-capistrano/9710542#9710542
-set :shared_children, shared_children + %w{public/uploads}
+set :shared_children, shared_children + %w{public/uploads public/downloads}
 
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
@@ -52,6 +52,7 @@ role :app, host                          # This may be the same as your `Web` se
 role :db,  host, :primary => true # This is where Rails migrations will run
 
 after "deploy:setup", "deploy:create_shared_uploads_folder"
+after "deploy:setup", "deploy:create_shared_downloads_folder"
 
 after "deploy:restart", "deploy:cleanup" # keep only the last 5 releases
 after "deploy:restart", "deploy:reload" # unicorn pre init app true uses reload instead of restart
@@ -75,6 +76,11 @@ namespace :deploy do
   desc "create shared/uploads folder"
   task :create_shared_uploads_folder, :except => { :no_release => true } do
     run "mkdir -p #{shared_path}/uploads"
+  end
+
+  desc "create shared/downloads folder"
+  task :create_shared_downloads_folder, :except => { :no_release => true } do
+    run "mkdir -p #{shared_path}/downloads"
   end
 
   task :update_unicorn_init_script, roles: :app do
