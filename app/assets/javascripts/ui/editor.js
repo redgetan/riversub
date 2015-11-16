@@ -622,7 +622,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     var screenZoom = "<div class='screen_zoom'><i class='screen_zoom_btn fa fa-desktop'></i></div>";
     $(".player_controls").append(screenZoom);
 
-    $(".screen_zoom").on("click", function(){
+    $(".screen_zoom").on("click", function(event){
       if ($("#editor").hasClass("desktop")) {
         $(".screen_zoom_btn").removeClass("fa-laptop");
         $(".screen_zoom_btn").addClass("fa-desktop");
@@ -635,7 +635,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         $("#editor").removeClass("laptop");
         $("#editor").addClass("desktop");
       }
-    });
+      
+      if (this.subtitleViewingScreenMarginPercentage) {
+        var subtitleTop = this.getSubtitleTop(this.subtitleViewingScreenMarginPercentage);
+        this.$subtitleBar.css("top", subtitleTop + "px");
+      }
+
+    }.bind(this));
   },
 
   setupNicoCommentToggle: function() {
