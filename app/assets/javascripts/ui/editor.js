@@ -244,13 +244,15 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   onTimelineSeekHandler: function(time, $target) {
-    this.seek(time);
-
     if ($target.hasClass("track_text")) {
+      this.closeAllEditors($target.parent().data("model"));
       this.pause();
     } else if ($target.hasClass("track")) {
+      this.closeAllEditors($target.data("model"));
       this.play();
     }
+
+    this.seek(time);
   },
 
   normalizeTime: function(time) {
@@ -1779,12 +1781,12 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
-  closeAllEditors: function() {
-    if (typeof this.currentTrack !== "undefined" && this.currentTrack) {
+  closeAllEditors: function(excludeTrack) {
+    if (typeof this.currentTrack !== "undefined" && this.currentTrack && this.currentTrack !== excludeTrack) {
       this.closeEditor(this.currentTrack);
     }
 
-    if (typeof this.focusedTrack !== "undefined" && this.focusedTrack) {
+    if (typeof this.focusedTrack !== "undefined" && this.focusedTrack && this.focusedTrack !== excludeTrack) {
       this.closeEditor(this.focusedTrack);
     }
   },
