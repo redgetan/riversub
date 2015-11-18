@@ -9,5 +9,7 @@ $.extend(river.controller,{
     });
 
     player.setVolume(0);
+
+    $(".player_controls_container").hide();
   }
 });
