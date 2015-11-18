@@ -319,7 +319,7 @@ class Repository < ActiveRecord::Base
   end
 
   def thumbnail_url_hq
-    self.video.thumbnail_url_hq
+    self.custom_thumbnail_url || self.video.thumbnail_url_hq
   end
 
   def publish_url
