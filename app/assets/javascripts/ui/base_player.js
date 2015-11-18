@@ -378,8 +378,6 @@ river.ui.BasePlayer = Backbone.View.extend({
       this.$media.off("mousedown",this.onNicoThumbMousedownCallback);
     }
 
-    // player settings
-    this.setVolume(0.5);
   },
 
   applyFontSettings: function() {

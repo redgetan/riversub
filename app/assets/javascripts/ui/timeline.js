@@ -536,6 +536,8 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   renderSeekHead: function() {
+    if (this.$seek_head.length === 0) return;
+    
     this.renderInContainer(this.$summary, this.$seek_head, { left: this.media.currentTime.toFixed(3) });
     var time = Math.round(this.media.currentTime * 1000) / 1000;
     var relativePixelPos = time * this.resolution(this.$summary);

@@ -5205,3 +5205,14 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
   width: 300px;
   border: solid 1px black;
 }
+
+#river_player.home {
+  width: 600px;
+  height: 360px;
+  display: inline-block;
+  margin-bottom: 100px;
+}
+
+#river_player.home #media_container {
+  height: inherit;
+}

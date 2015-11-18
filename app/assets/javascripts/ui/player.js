@@ -446,6 +446,7 @@ river.ui.MiniPlayer = river.ui.Player.extend({
 
   postInitializeCommon: function() {
     // override player's hook - set to empty
+    $("#player_loading_notice").hide();
   },
 
   bindEvents: function() {
