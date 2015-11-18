@@ -34,6 +34,14 @@
     Font Outline Color: 
     <input id='font_outline_color_input' value="<%= @repo.font_outline_color %>">
   </div>
+  <div class='font_outline_width_container'>
+    Font Outline Width: 
+    <%= select_tag("font_weight_select", options_for_select(Repository.font_outline_width_select_options,@repo.font_outline_width)) %>
+  </div>
+  <div class='font_outline_width_container'>
+    Background: 
+    <%= select_tag("font_background_select", options_for_select(Repository.font_background_select_options,@repo.font_background)) %>
+  </div>
 </div>
 
 
