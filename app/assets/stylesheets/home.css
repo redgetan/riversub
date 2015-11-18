@@ -1068,7 +1068,7 @@ ul.social_login_buttons a {
   font-size: 20px;
   margin-top: 25px;
   background-color: black;
-  padding: 5px;
+  padding: 0px 5px;
   color: white;
   font-weight: bold;
   opacity: 0.8;
@@ -5210,7 +5210,7 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
   width: 600px;
   height: 360px;
   display: inline-block;
-  margin-bottom: 100px;
+  margin-bottom: 50px;
 }
 
 #river_player.home #media_container {
