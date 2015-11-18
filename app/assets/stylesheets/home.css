@@ -5216,3 +5216,7 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
 #river_player.home #media_container {
   height: inherit;
 }
+
+#river_player.home #iframe_container {
+  min-height: 360px;
+}

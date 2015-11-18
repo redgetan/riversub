@@ -9,6 +9,7 @@ $.extend(river.controller,{
     });
 
     player.setVolume(0);
+    player.play();
 
     $(".player_controls_container").hide();
   }
