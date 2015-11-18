@@ -4,7 +4,7 @@ class HomeController < ApplicationController
     @group = Group.find_by_short_name("jpweekly")
     @activities = PublicActivity::Activity.order("created_at DESC").limit(6)
     @repos = Repository.includes({:timings => :subtitle}, :video, :user)
-                       .where("language <> 'ja'").published.listed_in_index.recent.limit(5)
+                       .where("language <> 'ja'").published.listed_in_index.recent.limit(4)
     @autoplay_repo =  Repository.homepage_autoplay_repo
 
     respond_to :html
