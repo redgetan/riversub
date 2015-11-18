@@ -1927,7 +1927,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   hideSubtitleInSubtitleBar: function(subtitle) {
-    
+    this.$subtitleDisplay.text("");
   },
 
    // either the start of media or the endTime of prev nearest track
