@@ -1014,11 +1014,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
       this.preventAccidentalPreviousPageNavigation($(event.target));
     } else if (event.which === -99) {
-    } else if (event.which == 38 && (event.ctrlKey || event.shiftKey)) {
+    } else if (event.which == 38 ) {
       // up arrow
 
       this.replayTrackAndEdit(this.currentTrack.prev());
-    } else if (event.which == 40 && (event.ctrlKey || event.shiftKey)) {
+    } else if (event.which == 40 ) {
       // down arrow
 
       this.replayTrackAndEdit(this.currentTrack.next());
