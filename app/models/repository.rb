@@ -43,7 +43,7 @@ class Repository < ActiveRecord::Base
   belongs_to :release_item
   belongs_to :request
 
-  FONT_ATTRIBUTES = %w[font_family font_size font_weight font_style font_color font_outline_color].map(&:to_sym)
+  FONT_ATTRIBUTES = %w[font_family font_size font_weight font_style font_color font_outline_color font_background].map(&:to_sym)
 
   attr_accessor :current_user, :highlight_subtitle_short_id, :is_embed, :is_fullscreen, :is_player
 
@@ -96,7 +96,6 @@ class Repository < ActiveRecord::Base
   FONT_WEIGHTS = %w[normal bold]
   FONT_STYLES = %w[normal italic]
   FONT_SIZES = (12..30).to_a.map { |i| [i,"px"].join }
-  FONT_OUTLINE_WIDTHS = (1..10).to_a.map { |i| [i,"px"].join }
   FONT_COLORS = []
   FONT_BACKGROUNDS = ["none", "black"]
 
@@ -718,6 +717,7 @@ class Repository < ActiveRecord::Base
       :font_style => self.font_style,
       :font_color => self.font_color,
       :font_outline_color => self.font_outline_color,
+      :font_background => self.font_background,
       :subtitle_position => self.subtitle_position,
       :is_player => self.is_player
     }
@@ -729,6 +729,26 @@ class Repository < ActiveRecord::Base
 
   def font_size
     super || "16px"
+  end
+
+  def font_weight
+    super || "normal"
+  end
+
+  def font_style
+    super || "normal"
+  end
+
+  def font_color
+    super || "#fff"
+  end
+
+  def font_outline_color
+    super || "#000"
+  end
+
+  def font_background
+    super || "black"
   end
 
   def serialized_original_timings

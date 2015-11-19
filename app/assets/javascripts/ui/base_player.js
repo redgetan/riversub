@@ -390,6 +390,7 @@ river.ui.BasePlayer = Backbone.View.extend({
     $el.css("font-weight", this.repo.font_weight);
     $el.css("font-style", this.repo.font_style);
     $el.css("color", this.repo.font_color);
+    $el.css("background", this.repo.font_background);
     this.applyOutlineColor($el,this.repo.font_outline_color);
   },
 
