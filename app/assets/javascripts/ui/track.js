@@ -78,7 +78,7 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
   },
 
   onTrackAttachedToTimeline: function() {
-    this.showTrackLineBreaks();
+    // this.showTrackLineBreaks();
   },
 
   setupElement: function() {

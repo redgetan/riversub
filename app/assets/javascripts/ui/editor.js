@@ -26,7 +26,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
     // this.showGuidedWalkthroughWelcome();
     this.useLocalStorageIfNeeded();
-    this.enableHashTab();
+
+    this.showSubtitleTabByDefault();
 
     // this will showinvalid timings
     if (this.tracks.length > 0) {
@@ -50,6 +51,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     if (typeof firstTrack !== "undefined") {
       this.onTrackStart(this.tracks.at(0));
     }
+  },
+
+  showSubtitleTabByDefault: function() {
+    $("#subtitle_tab_anchor a").tab("show");
   },
 
   enableHashTab: function() {
