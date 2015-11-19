@@ -493,8 +493,13 @@ class Repository < ActiveRecord::Base
 
   class SRT::File::InvalidError < StandardError; end
 
+  def convert_to_utf_8(text)
+    actual_encoding = CharDet.detect(text)["encoding"]
+    text.force_encoding(actual_encoding).encode("utf-8")
+  end
+
   def create_timings_from_subtitle_file(uploaded_file)
-    text = uploaded_file.read.force_encoding('UTF-8')
+    text = convert_to_utf_8(uploaded_file.read)
     srt = SRT::File.parse(text)
 
     raise SRT::File::InvalidError.new(format_srt_error(srt.errors)) if srt.errors.present?

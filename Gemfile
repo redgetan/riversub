@@ -91,6 +91,7 @@ gem "elasticsearch-model", :git => "git://github.com/elasticsearch/elasticsearch
 gem "legato", "= 0.4.0"
 gem "vimeo"
 gem "nokogiri"
+gem "rchardet"
 
 
 

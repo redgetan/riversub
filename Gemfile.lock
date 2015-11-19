@@ -345,6 +345,7 @@ GEM
       thor (>= 0.14.6, < 2.0)
     raindrops (0.11.0)
     rake (10.3.2)
+    rchardet (1.6.1)
     rdiscount (2.1.8)
     rdoc (3.12.2)
       json (~> 1.4)
@@ -488,6 +489,7 @@ DEPENDENCIES
   public_activity (= 1.4.2)
   qunit-rails
   rails (= 3.2.13)
+  rchardet
   rdiscount
   rest-client
   rmagick
