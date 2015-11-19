@@ -685,13 +685,13 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     // user highlights selection but doesnt choose yet
     $("#font_" + prop + "_select").data("select2").on("results:focus", function(params){
       var value = params.data.id;
-      this.getTargetFontSettingElement().css(propertyPrefix + prop,value);
+      this.applyFontCss(propertyPrefix + prop, value);
     }.bind(this));
 
     // user cancels selection
     $("#font_" + prop +"_select").data("select2").on("close", function(params){
       var value = $(".font_" + prop +"_container" + " .select2-selection__rendered").text();
-      this.getTargetFontSettingElement().css(propertyPrefix + prop,value);
+      this.applyFontCss(propertyPrefix + prop, value);
     }.bind(this));
 
     // user finally chooses selection
@@ -701,9 +701,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       var data = {}
       data[key] = value;
 
-      this.getTargetFontSettingElement().css(propertyPrefix + prop,value);
+      this.applyFontCss(propertyPrefix + prop, value);
       this.saveFontProperty(data);
     }.bind(this));
+  },
+
+  applyFontCss: function(css_property, css_value) {
+    this.getTargetFontSettingElement().css(css_property, css_value);
+
+    if (css_property === "font-size") {
+      this.getTargetFontSettingElement().css("line-height", parseInt(css_value) + 2 + "px");
+    }
   },
 
   setupFontColorInput: function() {
