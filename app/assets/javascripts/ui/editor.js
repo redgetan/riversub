@@ -622,6 +622,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.setupFontSelect("font-size");
     this.setupFontSelect("font-weight");
     this.setupFontSelect("font-style");
+    this.setupFontSelect("background");
     this.setupFontColorInput();
   },
 
@@ -670,20 +671,27 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   setupFontSelect: function(font_property, width) {
     var width = width || "100px"; 
-    var prop = font_property.split("-")[1];
+
+    if (font_property === "background") {
+      var propertyPrefix = "";
+      var prop = "background";
+    } else {
+      var propertyPrefix = "font-";
+      var prop = font_property.split("-")[1];
+    }
 
     $("#font_" + prop + "_select").select2({width: width});
 
     // user highlights selection but doesnt choose yet
     $("#font_" + prop + "_select").data("select2").on("results:focus", function(params){
       var value = params.data.id;
-      this.getTargetFontSettingElement().css("font-" + prop,value);
+      this.getTargetFontSettingElement().css(propertyPrefix + prop,value);
     }.bind(this));
 
     // user cancels selection
     $("#font_" + prop +"_select").data("select2").on("close", function(params){
       var value = $(".font_" + prop +"_container" + " .select2-selection__rendered").text();
-      this.getTargetFontSettingElement().css("font-" + prop,value);
+      this.getTargetFontSettingElement().css(propertyPrefix + prop,value);
     }.bind(this));
 
     // user finally chooses selection
@@ -693,7 +701,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
       var data = {}
       data[key] = value;
 
-      this.getTargetFontSettingElement().css("font-" + prop,value);
+      this.getTargetFontSettingElement().css(propertyPrefix + prop,value);
       this.saveFontProperty(data);
     }.bind(this));
   },

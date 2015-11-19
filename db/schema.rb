@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151118164300) do
+ActiveRecord::Schema.define(:version => 20151119162615) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -197,6 +197,7 @@ ActiveRecord::Schema.define(:version => 20151118164300) do
     t.integer  "play_end"
     t.float    "subtitle_position"
     t.text     "custom_thumbnail_url"
+    t.string   "font_background"
   end
 
   create_table "requests", :force => true do |t|

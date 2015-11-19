@@ -5224,3 +5224,7 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
 #river_player.home #subtitle_bar {
   height: 60px;
 }
+
+.font_manage_left_column {
+  width: 50%;
+}
