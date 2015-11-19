@@ -392,10 +392,10 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   applyOutlineColor: function($el, color) {
-    $el.css("text-shadow", "-1px 0 " + color + ", " +
-                           "0  1px " + color + ", " +
-                           "1px  0 " + color + ", " +
-                           "0 -1px " + color + "  ");
+    $el.css("text-shadow", "-1px 0 2px" + color + ", " +
+                           "0  1px 2px" + color + ", " +
+                           "1px  0 2px" + color + ", " +
+                           "0 -1px 2px" + color + "  ");
   },
 
   getTargetFontSettingElement: function() {
