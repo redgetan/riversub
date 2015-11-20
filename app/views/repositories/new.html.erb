@@ -8,7 +8,7 @@
         <% if @is_upload %>
           <h3 class="upload_subtitle_header">Upload Subtitle</h3>
         <% elsif @video.metadata %>
-          <%= image_tag @video.thumbnail_url, class: "new_repo_thumbnail" %>
+          <%= image_tag @video.thumbnail_url_hq, class: "new_repo_thumbnail" %>
         <% end %>
       </div>
       <br>
