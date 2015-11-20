@@ -557,7 +557,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$stopTimingBtn.hide();
 
     this.$addSubInput = $(".add_sub_input");
-    this.$addSubInput.attr("maxlength", 90);
+    this.$addSubInput.attr("maxlength", river.utility.MAX_SUBTITLE_LENGTH);
 
     this.$addSubBtn = $(".add_sub_btn");
     this.$addSubBtn.attr("disabled","disabled");

@@ -1,5 +1,5 @@
 $.extend(river.utility,{
-
+  MAX_SUBTITLE_LENGTH: 240,
   escapeHtml: function(string) {
     var entityMap = {
       "&": "&amp;",

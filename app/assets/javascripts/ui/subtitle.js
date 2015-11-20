@@ -11,7 +11,7 @@ river.ui.Subtitle = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.MAXLENGTH = 240;
+    this.MAXLENGTH = river.utility.MAX_SUBTITLE_LENGTH;
     this.MAXWIDTH  = repo.parent_repository_id ? 300 : 650 ;
 
     // http://stackoverflow.com/a/5926782
