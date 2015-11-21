@@ -126,8 +126,8 @@ river.ui.Subtitle = Backbone.View.extend({
     this.$startTimeInput.on("keydown", this.onSubTextAreaKeydown.bind(this));
     this.$endTimeInput.on("keydown", this.onSubTextAreaKeydown.bind(this));
 
-    this.$startTimeInput.on("keydown", this.subtitleStartTimeKeyDown.bind(this));
-    this.$endTimeInput.on("keydown", this.subtitleEndTimeKeyDown.bind(this));
+    // this.$startTimeInput.on("keydown", this.subtitleStartTimeKeyDown.bind(this));
+    // this.$endTimeInput.on("keydown", this.subtitleEndTimeKeyDown.bind(this));
     this.$startTimeInput.on("keyup", this.subtitleStartTimeKeyUp.bind(this));
     this.$endTimeInput.on("keyup", this.subtitleEndTimeKeyUp.bind(this));
 
