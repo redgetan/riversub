@@ -534,14 +534,20 @@ river.ui.BasePlayer = Backbone.View.extend({
 
   loadTracks: function(timings, options) {
     if (typeof timings !== "undefined") {
-      for (var i = 0; i < timings.length; i++) {
+      var addTrackFunc = function(index){
+        if (index >= timings.length) return;
+
         try {
-          var track = new river.model.Track(timings[i],options);
+          var track = new river.model.Track(timings[index],options);
           this.tracks.add(track);
         } catch(e) {
           console.log(e.stack);
         }
-      };
+
+        setTimeout(addTrackFunc.bind(this, index + 1), 0);
+      }
+
+      addTrackFunc.call(this, 0);
     }
   },
 

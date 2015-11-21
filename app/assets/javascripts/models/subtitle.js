@@ -128,7 +128,6 @@ river.model.SubtitleSet = Backbone.Collection.extend({
   },
 
   onSubtitleCreate: function(subtitle) {
-    console.log("subtitle created.." + subtitle.toString());
     this.add(subtitle);
   },
 
