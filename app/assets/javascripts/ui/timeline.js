@@ -43,7 +43,6 @@ river.ui.Timeline = Backbone.View.extend({
     Backbone.on("trackadd",this.onTrackAdd.bind(this));
 
     $(document).on("mouseup",this.onDocumentMouseUpHandler.bind(this));
-
   },
 
   onLoadedMetadata: function() {
@@ -133,13 +132,6 @@ river.ui.Timeline = Backbone.View.extend({
     return seconds;
   },
 
-  onDocumentMouseUpHandler: function(event) {
-    this.seekmode = false;
-    if ($(event.target).attr("id") !== "summary" && $(event.target).closest("#summary").length === 0) {
-      this.$time_float.hide();
-    }
-  },
-
   scrollWindow: function(secondsToScroll) {
     var deltaX = secondsToScroll * this.resolution(this.$expanded);
     this.$expanded.scrollLeft(this.$expanded.scrollLeft() - deltaX) ;
@@ -202,7 +194,9 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   getContainerWidthInPixels: function($container) {
-    if ($container.attr("id") === "summary") {
+    if ($container.attr("id") === "timeline_scroller") {
+      return this.timelineScrollerWidth;
+    } else if ($container.attr("id") === "summary") {
       return this.summaryWidth;
     } else {
       return this.expandedWidth;
@@ -210,7 +204,7 @@ river.ui.Timeline = Backbone.View.extend({
   },
 
   getContainerWidthInSeconds: function($container) {
-    if ($container.attr("id") === "summary") {
+    if ($container.attr("id") === "summary" || $container.attr("id") === "timeline_scroller") {
       return this.mediaDuration || this.WINDOW_WIDTH_IN_SECONDS;
     } else {
       return this.WINDOW_WIDTH_IN_SECONDS;
@@ -348,6 +342,13 @@ river.ui.SummaryTimeline = river.ui.Timeline.extend({
     this.$seek_head.show(); 
   },
 
+  onDocumentMouseUpHandler: function(event) {
+    this.seekmode = false;
+    if ($(event.target).attr("id") !== "summary" && $(event.target).closest("#summary").length === 0) {
+      this.$time_float.hide();
+    }
+  },
+
   renderSeekHead: function() {
     if (this.$seek_head.length === 0) return;
     
@@ -378,6 +379,7 @@ river.ui.SummaryTimeline = river.ui.Timeline.extend({
   },
 
   onTimeUpdate: function(event) {
+    console.log("summary onTimeUpdate");
     this.renderSeekHead();
 
     this.renderTimeIndicator();
@@ -481,6 +483,23 @@ river.ui.ExpandedTimeline = river.ui.Timeline.extend({
     this.$expanded = $("#expanded");
     this.$expanded_track_viewport = $("#track_viewport");
 
+    this.$timeline_scroller = $("#timeline_scroller");
+    this.$scroller_handle = $("#scroller_handle");
+    this.$scroller_handle.css("left",0);
+
+    this.$timeline_scroller.hover(
+      this.setScrollerColor.bind(this),
+      this.resetScrollerColor.bind(this)
+    );
+
+    this.$scroller_handle.draggable({
+      cursor: "move",
+      axis: "x",
+      containment: "parent",
+      drag: this.onScrollerHandleDrag.bind(this),
+      stop: this.onScrollerHandleStop.bind(this)
+    });
+
     this.setTimelineWidth();
 
     // expanded timeline filler
@@ -511,25 +530,11 @@ river.ui.ExpandedTimeline = river.ui.Timeline.extend({
     this.$expanded_time_label = $("#time_label");
     this.$expanded_time_label.append(timeline_label);
 
-    this.$timeline_scroller = $("#timeline_scroller");
-    this.$scroller_handle = $("#scroller_handle");
-    this.$scroller_handle.css("left",0);
-
-    this.$timeline_scroller.hover(
-      this.setScrollerColor.bind(this),
-      this.resetScrollerColor.bind(this)
-    );
-
-    this.$scroller_handle.draggable({
-      cursor: "move",
-      axis: "x",
-      containment: "parent",
-      drag: this.onScrollerHandleDrag.bind(this),
-      stop: this.onScrollerHandleStop.bind(this)
-    });
   },
 
   bindEvents: function() {
+    river.ui.Timeline.prototype.bindEvents.call(this);
+
     if (this.disable_expanded) return;
 
     this.$move_left_btn.on("click",this.onMoveLeftBtnClick.bind(this));
@@ -676,6 +681,8 @@ river.ui.ExpandedTimeline = river.ui.Timeline.extend({
   },
 
   onTimeUpdate: function(event) {
+    console.log("expanded onTimeUpdate");
+
     if (this.disable_expanded) return;
     this.renderScrubber();
     this.scrollWindowIfOutOfBounds();
@@ -764,12 +771,16 @@ river.ui.ExpandedTimeline = river.ui.Timeline.extend({
     this.scrollContainerToTime(this.current_window_slide.start + 10);
   },
 
+  onDocumentMouseUpHandler: function(event) {
+    this.seekmode = false;
+  },
+
   updateScrollerHandlePosition: function(secondsToScroll) {
-    var numPixelsToScrollSummary = this.resolution(this.$summary) * secondsToScroll;
+    var numPixelsToScrollSummary = this.resolution(this.$timeline_scroller) * secondsToScroll;
     var oldWindowSliderLeft = parseFloat(this.$scroller_handle.css("left"));
     var newWindowSliderLeft = oldWindowSliderLeft - numPixelsToScrollSummary;
 
-    newWindowSliderLeft = this.normalizeTargetXPosInContainer(this.$summary, this.$scroller_handle, newWindowSliderLeft);
+    newWindowSliderLeft = this.normalizeTargetXPosInContainer(this.$timeline_scroller, this.$scroller_handle, newWindowSliderLeft);
 
     this.$scroller_handle.css("left",newWindowSliderLeft);
   },
@@ -780,6 +791,7 @@ river.ui.ExpandedTimeline = river.ui.Timeline.extend({
 
   setTimelineWidth: function() {
     this.expandedWidth = this.$expanded.width();
+    this.timelineScrollerWidth = this.$timeline_scroller.width();
   },
 
   ensureCorrectWindowPosition: function() {
