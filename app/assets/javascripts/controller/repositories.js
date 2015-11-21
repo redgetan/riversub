@@ -32,7 +32,7 @@ $.extend(river.controller,{
       player.play();
     }
 
-    river.model.SocialShare.populateShareCounts(repo.url);
+    // river.model.SocialShare.populateShareCounts(repo.url);
 
     $(".read_more_description_btn").on("click", function(event){
       event.preventDefault();
