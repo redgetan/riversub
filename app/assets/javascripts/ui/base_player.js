@@ -532,23 +532,43 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$subtitleDisplay.text("");
   },
 
-  loadTracks: function(timings, options) {
-    if (typeof timings !== "undefined") {
-      var addTrackFunc = function(index){
-        if (index >= timings.length) return;
+  nonUIBlockingBatchProcess: function(array, callback, batch) {
+    batch = batch || 10;
 
-        try {
-          var track = new river.model.Track(timings[index],options);
-          this.tracks.add(track);
-        } catch(e) {
-          console.log(e.stack);
-        }
+    var index = 0;
 
-        setTimeout(addTrackFunc.bind(this, index + 1), 0);
+    function processBatch() {
+      if (index >= array.length) console.log("last: " + Date.now());
+      if (index >= array.length) return;
+
+      var i = 0;
+
+      while (i < batch && index < array.length) {
+          callback(array[index]);
+          index = index + 1;
+          i = i + 1;
       }
 
-      addTrackFunc.call(this, 0);
-    }
+      setTimeout(processBatch, 0);
+    }    
+
+    processBatch();    
+  },
+
+  loadTracks: function(timings, options) {
+    if (typeof timings === "undefined") return;
+
+    var batchCount = 20;
+    var loadTrack = function(timing) {
+      try {
+        var track = new river.model.Track(timing, options);
+        this.tracks.add(track);
+      } catch(e) {
+        console.log(e.stack);
+      }
+    }.bind(this);
+
+    this.nonUIBlockingBatchProcess(timings, loadTrack, batchCount);
   },
 
   play: function() {
