@@ -132,7 +132,12 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   postInitializeCommon: function() {
-    this.timeline = new river.ui.Timeline({media: this.popcorn.media, mediaDuration: this.mediaDuration(), hideTracks: true });
+    this.summaryTimeline = new river.ui.SummaryTimeline({
+      tracks: this.tracks,
+      media: this.popcorn.media, 
+      mediaDuration: this.mediaDuration(), 
+      hideTracks: true 
+    });
   },
 
   onIframeOverlayClick: function(event) {
@@ -331,13 +336,13 @@ river.ui.Player = river.ui.BasePlayer.extend({
 
   renderTimeLoaded: function() {
     var secondsLoaded = this.popcorn.video.buffered.end(0);
-    var width = secondsLoaded * this.timeline.resolution(this.timeline.$summary);
+    var width = secondsLoaded * this.summaryTimeline.resolution(this.summaryTimeline.$summary);
     this.$timeLoaded.css("width", width);
   },
 
   renderTimeCurrent: function() {
     var seconds = this.media.currentTime;  
-    var width = seconds * this.timeline.resolution(this.timeline.$summary);
+    var width = seconds * this.summaryTimeline.resolution(this.summaryTimeline.$summary);
     this.$timeCurrent.css("width", width);
 
     if (seconds >= (this.mediaDuration() - this.VIDEO_END_PADDING)) {
@@ -357,7 +362,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
   },
 
   resizePlayerTimeline: function() {
-    this.timeline.setTimelineWidth();
+    this.summaryTimeline.setTimelineWidth();
     this.renderTimeCurrent();
     
     if (this.isLoadedMetadata) {

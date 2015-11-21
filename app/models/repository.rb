@@ -724,8 +724,15 @@ class Repository < ActiveRecord::Base
       :font_outline_color => self.font_outline_color,
       :font_background => self.font_background,
       :subtitle_position => self.subtitle_position,
-      :is_player => self.is_player
+      :is_player => self.is_player,
+      :is_nico_embed => self.nico_embed?
     }
+  end
+
+  def editor_class
+    css_class = self.video.source_type
+    css_class += "external" if nico_embed? 
+    css_class
   end
 
   def font_family
@@ -1007,6 +1014,18 @@ class Repository < ActiveRecord::Base
 
   def views_contributed
     Visit.where("landing_page LIKE ? ", "%" + relative_url + "%").count
+  end
+
+  def nico_embed?
+    if video.source_type === "nicovideo" && 
+      if is_player
+        true # repo#show nicovideo is always embed
+      else
+        !video.source_local_url # repo#editor is embed if no download mp4 present
+      end
+    else
+      false
+    end
   end
 
   def get_naver_embed_html

@@ -432,10 +432,6 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$backwardBtn = $(".backward_btn");
     this.$forwardBtn = $(".forward_btn");
     this.$pauseBtn.hide();
-
-    if (this.timeline) {
-      this.timeline.setTimelineWidth();
-    }
   },
 
   pauseEvent: function(e){
@@ -576,11 +572,7 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   isNicoEmbed: function() {
-    if (this.video.source_type === "nicovideo" && this.repo.is_player) {
-      return true;
-    } else if (this.video.source_type === "nicovideo" && !this.repo.is_player) {
-      return !this.video.source_local_url;
-    }
+    return this.repo.is_nico_embed;
   },
 
   isNicoMp4: function() {

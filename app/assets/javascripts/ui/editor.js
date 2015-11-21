@@ -2,8 +2,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   initialize: function(options) {
     river.ui.BasePlayer.prototype.initialize.call(this,options);
 
-    this.timeline.setTracks(this.tracks);
-
     this.$fadeInBuffer = false;
     this.currentGhostTrack = null;
     this.isGhostTrackStarted = false;
@@ -126,7 +124,11 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   postInitializeCommon: function() {
-    this.timeline = new river.ui.Timeline({media: this.popcorn.media, mediaDuration: this.mediaDuration() });
+    this.summaryTimeline = new river.ui.SummaryTimeline({
+      tracks: this.tracks,
+      media: this.popcorn.media, 
+      mediaDuration: this.mediaDuration() 
+    });
   },
 
   showGuidedWalkthroughWelcome: function() {
@@ -345,7 +347,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   onTabShown: function (e) {
     if ($(e.target).attr("href") === "#timeline_tab") {
       this.prepareTimerTab();
-      this.timeline.ensureCorrectWindowPosition();
+      if (typeof this.expandedTimeline === "undefined") {
+        this.expandedTimeline = new river.ui.ExpandedTimeline({
+          tracks: this.tracks,
+          media: this.popcorn.media, 
+          mediaDuration: this.mediaDuration() 
+        });
+      }
+      this.expandedTimeline.ensureCorrectWindowPosition();
       Backbone.trigger("timelinetabshown");
     }
 
@@ -489,9 +498,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   setupElement: function() {
     this.$container = this.options["container"] || $("#editor_container");
 
-    var el = this.getEditorElement();
-    this.$container.append(el);
-
     this.$mediaContainer = $("#viewing_screen");
 
     river.ui.BasePlayer.prototype.setupElement.call(this);
@@ -603,11 +609,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$subtitleBtn.tooltip({title: "Subtitle Mode"});
     this.$uploadBtn.tooltip({title: "Upload Mode"});
 
-    // upload form
-    // $(".editor_loading_notice").remove();
-    // $("#upload_subtitle_form").show();
-    $("#upload_subtitle_form").appendTo("#upload_container");
-
     this.setupFontManager();
 
     this.setupLanguageSelect();
@@ -616,8 +617,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
   },
 
   setupFontManager: function() {
-    $(".font_manager").show();
-    $(".font_manager").appendTo("#font_container");
     this.setupFontSelect("font-family", "200px");
     this.setupFontSelect("font-size");
     this.setupFontSelect("font-weight");
@@ -820,24 +819,6 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
 
   setupLanguageSelect: function() {
-    var repo_language;
-    var selectedAttr;
-    var option;
-
-    var html = "<select class='editor_language_select' style='width: 150px;'>";
-
-    for (var i = 0; i < this.repo.language_select_options.length ; i++) {
-      repo_language_pretty = this.repo.language_select_options[i][0];
-      repo_language_code   = this.repo.language_select_options[i][1];
-      selectedAttr = (repo_language_code === this.repo.language) ? "selected" : "";
-      option = "<option " + selectedAttr + " value='" + repo_language_code + "'>" + repo_language_pretty + "</option>";
-      html += option;
-    }
-
-    html += "</select>";
-
-    $(".controls").prepend(html);
-
     this.$editorLanguageSelect = $(".editor_language_select");
     this.$editorLanguageSelect.select2();
 
@@ -2012,7 +1993,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   renderTimeLoaded: function() {
     var secondsLoaded = this.popcorn.video.buffered.end(0);
-    var width = secondsLoaded * this.timeline.resolution(this.timeline.$summary);
+    var width = secondsLoaded * this.summaryTimeline.resolution(this.summaryTimeline.$summary);
     this.$timeLoaded.css("width", width);
   },
 
