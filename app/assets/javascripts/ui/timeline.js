@@ -379,7 +379,6 @@ river.ui.SummaryTimeline = river.ui.Timeline.extend({
   },
 
   onTimeUpdate: function(event) {
-    console.log("summary onTimeUpdate");
     this.renderSeekHead();
 
     this.renderTimeIndicator();
@@ -395,7 +394,6 @@ river.ui.SummaryTimeline = river.ui.Timeline.extend({
   },
 
   renderFillProgress: function(track) {
-    console.log("summary renderFillProgress..");
     var progress = track.progressTime() - track.startTime();
 
     this.renderInContainer(this.$summary,track.summaryView.$el,  { width: progress, left: track.startTime() });
@@ -681,7 +679,6 @@ river.ui.ExpandedTimeline = river.ui.Timeline.extend({
   },
 
   onTimeUpdate: function(event) {
-    console.log("expanded onTimeUpdate");
 
     if (this.disable_expanded) return;
     this.renderScrubber();
@@ -745,7 +742,6 @@ river.ui.ExpandedTimeline = river.ui.Timeline.extend({
   },
 
   renderFillProgress: function(track) {
-    console.log("expanded renderFillProgress..");
 
     var progress = track.progressTime() - track.startTime();
 
