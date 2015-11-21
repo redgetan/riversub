@@ -4860,6 +4860,7 @@ html.fullscreen ._3pao {
 .related_repo_thumbnail_image {
   width: 120px;
   max-height: 90px;
+  min-height: 90px;
 }
 
 #river_player.vimeo #iframe_overlay {
