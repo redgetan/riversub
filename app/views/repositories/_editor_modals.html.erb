@@ -1,0 +1,90 @@
+<!-- Modal -->
+<div class="modal fade" id="keyboard_shortcuts_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-backdrop fade in" style="height: 984px;"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Keyboard Shortcuts</h4>
+      </div>
+      <div class="modal-body">
+        <table class='table table-bordered table-striped'>
+          <tr>
+            <th>Command</th>
+            <th>Mac</th>
+            <th>Windows/Linux</th>
+          </tr>
+          <tr>
+            <td>Play/Pause</td>
+            <td>cmd + p</td>
+            <td>ctrl + p</td>
+          </tr>
+          <tr>
+            <td>Rewind</td>
+            <td>left</td>
+            <td>left</td>
+          </tr>
+          <tr>
+            <td>Forward</td>
+            <td>right</td>
+            <td>right</td>
+          </tr>
+          <tr>
+            <td>Mark Start Time</td>
+            <td>/</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Mark Start Time (alternative)</td>
+            <td>cmd + e</td>
+            <td>ctrl + e</td>
+          </tr>
+          <tr>
+            <td>Mark Start Time (alternative)</td>
+            <td>cmd + 3</td>
+            <td>ctrl + 3</td>
+          </tr>
+          <tr>
+            <td>Mark Stop Time</td>
+            <td>/</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>Mark Stop Time (alternative)</td>
+            <td>cmd + e</td>
+            <td>ctrl + e</td>
+          </tr>
+          <tr>
+            <td>Mark Stop Time (alternative)</td>
+            <td>cmd + 4</td>
+            <td>ctrl + 4</td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<% if @modal_message %>
+  <div class="modal fade" id="demo_mode_modal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel" aria-hidden="true">
+    <div class="modal-backdrop fade in" style="height: 984px;"></div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="demoModalLabel"><%= @modal_title %></h4>
+        </div>
+        <div class="modal-body">
+          <span><%= @modal_message %></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

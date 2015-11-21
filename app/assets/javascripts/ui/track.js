@@ -57,7 +57,6 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
     this.listenTo(this.model,"change",this.render);
     this.listenTo(this.model.subtitle,"change",this.render);
     Backbone.on("timelinetabshown", this.onTimelineTabShown.bind(this));
-    Backbone.on("trackattachedtotimeline", this.onTrackAttachedToTimeline.bind(this));
   },
 
   render: function() {
@@ -75,10 +74,6 @@ river.ui.ExpandedTrack = river.ui.Track.extend({
 
   onTimelineTabShown: function() {
     this.showTrackLineBreaks();
-  },
-
-  onTrackAttachedToTimeline: function() {
-    // this.showTrackLineBreaks();
   },
 
   setupElement: function() {

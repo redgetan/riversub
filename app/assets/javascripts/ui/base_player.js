@@ -355,8 +355,10 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.isLoadedMetadata = true;
     // prevent Youtube's caption from showing up - we only show Yasub Subtitles :)
     if (repo.video.source_type == "youtube") {
-      this.playerObject().unloadModule("cc");        // for AS3 player
-      this.playerObject().unloadModule("captions");  // for HTML5 player
+      if (typeof this.playerObject() !== "undefined") {
+        this.playerObject().unloadModule("cc");        // for AS3 player
+        this.playerObject().unloadModule("captions");  // for HTML5 player
+      }
     } else if (repo.video.source_type == "vimeo") {
       // vimeo autoplays but doesnt trigger the onPlay callback 
       // (trigger playprogress instead), so we trigger it manually
@@ -433,9 +435,8 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$forwardBtn = $(".forward_btn");
     this.$pauseBtn.hide();
 
-    if (this.timeline) {
-      this.timeline.setTimelineWidth();
-    }
+    // ugly: needs refactor - at this point, the #summary width is defined, so lets set the size
+    if (this.summaryTimeline) this.summaryTimeline.setTimelineWidth();  
   },
 
   pauseEvent: function(e){
@@ -531,17 +532,42 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$subtitleDisplay.text("");
   },
 
+  nonUIBlockingBatchProcess: function(array, callback, batch) {
+    batch = batch || 10;
+
+    var index = 0;
+
+    function processBatch() {
+      if (index >= array.length) return;
+
+      var i = 0;
+
+      while (i < batch && index < array.length) {
+          callback(array[index]);
+          index = index + 1;
+          i = i + 1;
+      }
+
+      setTimeout(processBatch, 0);
+    }    
+
+    processBatch();    
+  },
+
   loadTracks: function(timings, options) {
-    if (typeof timings !== "undefined") {
-      for (var i = 0; i < timings.length; i++) {
-        try {
-          var track = new river.model.Track(timings[i],options);
-          this.tracks.add(track);
-        } catch(e) {
-          console.log(e.stack);
-        }
-      };
-    }
+    if (typeof timings === "undefined") return;
+
+    var batchCount = 20;
+    var loadTrack = function(timing) {
+      try {
+        var track = new river.model.Track(timing, options);
+        this.tracks.add(track);
+      } catch(e) {
+        console.log(e.stack);
+      }
+    }.bind(this);
+
+    this.nonUIBlockingBatchProcess(timings, loadTrack, batchCount);
   },
 
   play: function() {
@@ -576,11 +602,7 @@ river.ui.BasePlayer = Backbone.View.extend({
   },
 
   isNicoEmbed: function() {
-    if (this.video.source_type === "nicovideo" && this.repo.is_player) {
-      return true;
-    } else if (this.video.source_type === "nicovideo" && !this.repo.is_player) {
-      return !this.video.source_local_url;
-    }
+    return this.repo.is_nico_embed;
   },
 
   isNicoMp4: function() {
