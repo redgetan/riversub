@@ -355,8 +355,10 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.isLoadedMetadata = true;
     // prevent Youtube's caption from showing up - we only show Yasub Subtitles :)
     if (repo.video.source_type == "youtube") {
-      this.playerObject().unloadModule("cc");        // for AS3 player
-      this.playerObject().unloadModule("captions");  // for HTML5 player
+      if (typeof this.playerObject() !== "undefined") {
+        this.playerObject().unloadModule("cc");        // for AS3 player
+        this.playerObject().unloadModule("captions");  // for HTML5 player
+      }
     } else if (repo.video.source_type == "vimeo") {
       // vimeo autoplays but doesnt trigger the onPlay callback 
       // (trigger playprogress instead), so we trigger it manually
@@ -432,6 +434,9 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$backwardBtn = $(".backward_btn");
     this.$forwardBtn = $(".forward_btn");
     this.$pauseBtn.hide();
+
+    // ugly: needs refactor - at this point, the #summary width is defined, so lets set the size
+    if (this.summaryTimeline) this.summaryTimeline.setTimelineWidth();  
   },
 
   pauseEvent: function(e){

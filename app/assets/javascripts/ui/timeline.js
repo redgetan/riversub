@@ -143,14 +143,7 @@ river.ui.Timeline = Backbone.View.extend({
   scrollWindow: function(secondsToScroll) {
     var deltaX = secondsToScroll * this.resolution(this.$expanded);
     this.$expanded.scrollLeft(this.$expanded.scrollLeft() - deltaX) ;
-    var numPixelsToScrollSummary = this.resolution(this.$summary) * secondsToScroll;
-    var oldWindowSliderLeft = parseFloat(this.$window_slider.css("left"));
-    var newWindowSliderLeft = oldWindowSliderLeft - numPixelsToScrollSummary;
-
-    newWindowSliderLeft = this.normalizeTargetXPosInContainer(this.$summary, this.$window_slider, newWindowSliderLeft);
-
     this.updateCurrentWindowSlideRelative(secondsToScroll);
-    this.$window_slider.css("left",newWindowSliderLeft);
   },
 
   updateCurrentWindowSlideRelative: function(secondsToScroll) {
@@ -172,12 +165,6 @@ river.ui.Timeline = Backbone.View.extend({
     this.current_window_slide.end   = newEnd;
 
     // console.log(this.current_window_slide);
-  },
-
-  renderTracks: function() {
-    for (var i = 0; i < this.tracks.length; i++) {
-      this.renderTrack(this.tracks.at(i));
-    };
   },
 
   renderTrack: function(track) {
@@ -371,14 +358,13 @@ river.ui.SummaryTimeline = river.ui.Timeline.extend({
   },
 
   setTimelineWidth: function() {
-    debugger
     this.summaryWidth  = this.$summary.width();
   },
 
   onTrackAdd: function(track) {
     if (this.hideTracks) return;
 
-    river.ui.Timeline.prototype.onTrackAdd.call(track);
+    river.ui.Timeline.prototype.onTrackAdd.call(this, track);
     this.$summary.append(track.summaryView.$el);
   },
 
@@ -407,6 +393,7 @@ river.ui.SummaryTimeline = river.ui.Timeline.extend({
   },
 
   renderFillProgress: function(track) {
+    console.log("summary renderFillProgress..");
     var progress = track.progressTime() - track.startTime();
 
     this.renderInContainer(this.$summary,track.summaryView.$el,  { width: progress, left: track.startTime() });
@@ -438,7 +425,6 @@ river.ui.SummaryTimeline = river.ui.Timeline.extend({
   },
 
   renderTimeFloat: function(posX) {
-    debugger
     var seconds = this.getSecondsFromCurrentPosition(this.$summary,posX);
 
     // do not allow seeking to negative duration
@@ -500,12 +486,6 @@ river.ui.ExpandedTimeline = river.ui.Timeline.extend({
     // expanded timeline filler
     this.$filler = $("#expanded .filler");
     this.$filler.css("width",this.resolution(this.$expanded) * this.mediaDuration);
-
-    // window slider
-    this.$window_slider = $("#summary .window_slider");
-    this.$window_slider.css("left",0);
-    this.$window_slider.css("width",this.resolution(this.$summary) * this.WINDOW_WIDTH_IN_SECONDS);
-    if (this.mediaDuration < this.WINDOW_WIDTH_IN_SECONDS) this.$window_slider.hide();
 
 
     // scrubber
@@ -574,8 +554,18 @@ river.ui.ExpandedTimeline = river.ui.Timeline.extend({
   onTrackAdd: function(track) {
     if (this.hideTracks) return;
 
-    river.ui.Timeline.prototype.onTrackAdd.call(track);
+    river.ui.Timeline.prototype.onTrackAdd.call(this, track);
     this.$expanded_track_viewport.append(track.expandedView.$el);
+  },
+
+  attachAndRenderTracks: function() {
+    var track;
+
+    for (var i = 0; i < this.tracks.length; i++) {
+      track = this.tracks.at(i);
+      this.$expanded_track_viewport.append(track.expandedView.$el);
+      this.renderTrack(track);
+    };
   },
 
   onScrollerHandleDrag: function(event) {
@@ -748,6 +738,8 @@ river.ui.ExpandedTimeline = river.ui.Timeline.extend({
   },
 
   renderFillProgress: function(track) {
+    console.log("expanded renderFillProgress..");
+
     var progress = track.progressTime() - track.startTime();
 
     this.renderInContainer(this.$expanded,track.expandedView.$el,{ width: progress, left: track.startTime() });

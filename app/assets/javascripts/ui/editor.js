@@ -353,6 +353,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
           media: this.popcorn.media, 
           mediaDuration: this.mediaDuration() 
         });
+
+        this.expandedTimeline.attachAndRenderTracks();
       }
       this.expandedTimeline.ensureCorrectWindowPosition();
       Backbone.trigger("timelinetabshown");
