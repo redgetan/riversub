@@ -538,7 +538,6 @@ river.ui.BasePlayer = Backbone.View.extend({
     var index = 0;
 
     function processBatch() {
-      if (index >= array.length) console.log("last: " + Date.now());
       if (index >= array.length) return;
 
       var i = 0;

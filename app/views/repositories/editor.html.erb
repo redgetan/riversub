@@ -105,10 +105,10 @@
 
         <div class='controls' class=''>
           <div id='main_controls' class='pull-left'>
+            <%= select_tag("editor_language_select", options_for_select(Repository.language_select_options, @repo.language), class: "editor_language_select", style: "width: 150px;") %>  
             <button type='button' class='start_timing_btn river_btn pull-left' style='display: none;'> <i class=''></i>Start</button>
             <button type='button' class='stop_timing_btn river_btn  pull-left' style='display: none;'> <i class='glyphicon glyphicon-stop'></i> Stop</button>
             <div class='checkbox ask_input_after_timing_checkbox' style='display: none;'><label><input type='checkbox'>Ask input after timing</label></div>
-            <%= select_tag("editor_language_select", options_for_select(Repository.language_select_options, @repo.language), class: "editor_language_select", style: "width: 150px;") %>
             <input class='add_sub_input' class='' placeholder='Enter Subtitle Here'>
           </div>
           <div class='sub_controls pull-right'>
