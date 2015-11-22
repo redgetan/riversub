@@ -1017,7 +1017,7 @@ class Repository < ActiveRecord::Base
   end
 
   def nico_embed?
-    if video.source_type === "nicovideo" && 
+    if video.source_type === "nicovideo" 
       if is_player
         true # repo#show nicovideo is always embed
       else
