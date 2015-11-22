@@ -731,7 +731,7 @@ class Repository < ActiveRecord::Base
 
   def editor_class
     css_class = self.video.source_type
-    css_class += "external" if nico_embed? 
+    css_class += " external " if nico_embed? 
     css_class
   end
 
@@ -1021,7 +1021,7 @@ class Repository < ActiveRecord::Base
       if is_player
         true # repo#show nicovideo is always embed
       else
-        !video.source_local_url # repo#editor is embed if no download mp4 present
+        video.source_local_url.empty? # repo#editor is embed if no download mp4 present
       end
     else
       false
