@@ -102,8 +102,6 @@ river.ui.Subtitle = Backbone.View.extend({
 
     this.$parentText = this.$el.find(".parent_text");
     this.$parentText.find("span").text(this.model.get("parent_text"));
-
-    this.$parentText.hide();
   },
 
   createInput: function() {
