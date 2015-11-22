@@ -362,6 +362,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     if ($(e.target).attr("href") === "#subtitle_tab") {
       this.prepareSubtitleTab();
+      if (this.currentTrack) {
+        this.subtitles.view.ensureCorrectWindowPosition(this.currentTrack.subtitle);
+      }
     }
 
     if (($(e.target).attr("href") === "#upload_tab") ||

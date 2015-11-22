@@ -791,11 +791,8 @@ river.ui.ExpandedTimeline = river.ui.Timeline.extend({
   },
 
   ensureCorrectWindowPosition: function() {
-    // check scrollLeft - it must be equal to index * this.summaryWidth, otherwise set it to that
-    var correctWindowPos = this.current_window_slide.start * this.resolution(this.$expanded) ;
-    if (this.$expanded.scrollLeft !== correctWindowPos) {
-      this.$expanded.animate({scrollLeft: correctWindowPos},300);
-    }
+    // we want current scrubber to be at the middle
+    this.scrollContainerToTime(this.media.currentTime - this.WINDOW_WIDTH_IN_SECONDS / 2);    
   }
 
 
