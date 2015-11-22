@@ -335,7 +335,7 @@ div.videos li.selected {
 
 #editor div#iframe_container {
   position: relative;
-  height: auto;
+  height: inherit;
   min-height: 360px;
   width: inherit;
   background-color: #000;
@@ -362,7 +362,7 @@ div.videos li.selected {
 }
 
 div#iframe_container #iframe_overlay {
-  height: inherit;
+  height: 100%;
   width: 100%;
   position: absolute;
   z-index: 2;
