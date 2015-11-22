@@ -4710,9 +4710,13 @@ ins.differ {
   text-align: center;
 }
 
-#user_repositories.logged_in .thumbnail {
+#user_repositories .thumbnail {
   background: none;
   border: none;
+}
+
+#user_repositories .thumbnail img {
+  border: solid 1px black; 
 }
 
 .new_project_thumbnail {
@@ -4900,9 +4904,7 @@ html.fullscreen ._3pao {
 }
 
 #editor.vimeo #subtitle_bar {
-  background: none;
-  width: 500px;
-  margin-top: -80px;
+  bottom: 50px;
 }
 
 #editor.vimeo #subtitle_display,
