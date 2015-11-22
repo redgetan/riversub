@@ -910,11 +910,17 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     } else if (event.which == 38 ) {
       // up arrow
 
-      this.replayTrackAndEdit(this.currentTrack.prev());
+      var $el = $(document.activeElement);
+      if ($el.hasClass("sub_text_area") && river.utility.isTextAreaFirstRow($el)) {
+        this.replayTrackAndEdit(this.currentTrack.prev());
+      }
     } else if (event.which == 40 ) {
       // down arrow
-
-      this.replayTrackAndEdit(this.currentTrack.next());
+      
+      var $el = $(document.activeElement);
+      if ($el.hasClass("sub_text_area") && river.utility.isTextAreaLastRow($el)) {
+        this.replayTrackAndEdit(this.currentTrack.next());
+      }
     } else if (event.which == 27) {
       // escape key
 

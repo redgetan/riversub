@@ -138,6 +138,23 @@ $.extend(river.utility,{
     }    
 
     processBatch();    
+  },
+
+  isTextAreaFirstRow: function($el) {
+    if (!$el.is("textarea")) return false;
+
+    var currRow = $el.val().substr(0, $el[0].selectionStart).split("\n").length;
+
+    return currRow === 1; 
+  },
+
+  isTextAreaLastRow: function($el) {
+    if (!$el.is("textarea")) return false;
+
+    var numRows = $el.val().split("\n").length;
+    var currRow = $el.val().substr(0, $el[0].selectionStart).split("\n").length;
+    
+    return currRow === numRows; 
   }
 
 });
