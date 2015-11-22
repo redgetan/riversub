@@ -680,7 +680,6 @@ html.fullscreen #river_player.vimeo .player_controls {
 
 html.embed body #river_player.vimeo #media_container #viewing_screen #subtitle_bar,
 html.fullscreen body #river_player.vimeo #media_container #viewing_screen #subtitle_bar {
-  top: -20%;
 }
 
 html.embed #river_player #subtitle_bar {
@@ -4889,11 +4888,8 @@ html.fullscreen ._3pao {
 }
 
 #river_player.vimeo #subtitle_bar {
-  background: none;
-  top: -100px;
-  min-height: 0px;
+  bottom: 50px;
 }
-
 
 #editor .player_controls_container {
   margin-top: 10px;
