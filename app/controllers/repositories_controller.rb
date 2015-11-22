@@ -20,7 +20,7 @@ class RepositoriesController < ApplicationController
     @request_id           = params[:request_id]
 
     if !(@is_upload || @is_empty) && params[:source_repo_token]
-      @source_repo = Repository.find_by_token! params[:source_repo_token]
+      @source_repo_token = params[:source_repo_token]
     end
   end
 

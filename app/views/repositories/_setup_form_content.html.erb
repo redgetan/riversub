@@ -1,6 +1,7 @@
 <div id="repo_setup_form_list" class="col-xs-6 col-xs-offset-3">
   <%= hidden_field_tag :request_id, @request_id  %>
   <%= hidden_field_tag :page_id, @page_id  %>
+  <%= hidden_field_tag :source_repo_token, @source_repo_token  %>
   <ol >
     <% if user_signed_in? %>
       <li style="">
@@ -26,28 +27,6 @@
         <h4>Choose File</h4>
         <p>We currently only accept subtitles in the SubRip format (file ends in .srt)</p>
         <%= file_field_tag "subtitle_file" %>
-      </li>
-    <% elsif @video.repositories_visible_to_user(current_user).present? %>
-      <li>
-        <h4>Translate from existing subtitle</h4>
-          <select name="source_repo_token" class='editor_language_select' style='width: 150px;'>
-            <% @video.repositories_visible_to_user(current_user).each do |repo| %>
-              <option value="<%= repo.token %>" data-url="<%= repo.new_translation_url(group_id: @group_id) %>" <%= @source_repo == repo ? "selected" : "" %>>
-                <%= repo.language_pretty %>
-              </option>
-            <% end %>
-            <option value="" data-url="<%= @video.new_empty_repository_url(:group_id => @group_id) %>" <%= (@is_empty || @source_repo.nil?) ? "selected" : "" %>>-- Start Empty --</option>
-          </select>
-          <% if @source_repo %>
-            <ul class="source_repo_timing_list">
-              <% @source_repo.timings.order("start_time").each do |timing| %>
-                <li>
-                  <span class="col-md-2"><%= timing.start_time %></span>
-                  <span class="col-md-10"><%= timing.subtitle.text %></span>
-                </li>
-              <% end %>
-            </ul>
-          <% end %>
       </li>
     <% end %>
   </ol>
