@@ -871,13 +871,10 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     }
   },
 
-  onDocumentScroll: function(event,delta) {
-    // disallow horizontal scroll
-    // buggy in firefox (doesnt work in all versions)
-
-    // if (event.originalEvent.wheelDeltaX !== 0) {
-    //   event.preventDefault();
-    // }
+  onDocumentScroll: function(event, delta, deltaX, deltaY) {
+    if (deltaX !== 0) {
+      event.preventDefault();
+    }
   },
 
   onTimeUpdate: function(event) {
