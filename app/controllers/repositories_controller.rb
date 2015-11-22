@@ -159,7 +159,7 @@ class RepositoriesController < ApplicationController
 
     @repo = Repository.find_by_token! params[:token]
 
-    unless user_signed_in? && can?(:edit, @repo)
+    unless can?(:edit, @repo)
       flash[:error] = "You don't have permission to do that"
       redirect_to @repo.editor_url and return
     end
