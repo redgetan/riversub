@@ -333,14 +333,19 @@ div.videos li.selected {
   border: solid 1px black;
 }
 
-#editor.laptop div#iframe_container {
+#editor div#iframe_container {
   position: relative;
-  height: 360px;
+  height: auto;
+  min-height: 360px;
   width: inherit;
   background-color: #000;
 }
 
-#editor.desktop div#iframe_container {
+#editor.laptop div#iframe_container #media {
+  height: 360px;
+}
+
+#editor.desktop div#iframe_container #media {
   height: 523px;
 }
 
@@ -378,6 +383,7 @@ div#iframe_container #media {
   height: inherit;
   width: inherit;
   margin: auto;
+  display: inline-block;
 }
 
 #overlay_btn {
