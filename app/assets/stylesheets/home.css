@@ -349,7 +349,6 @@ div.videos li.selected {
   height: 523px;
 }
 
-#editor.nicovideo.external div#iframe_container,
 #editor.vimeo div#iframe_container {
   height: 370px;
 }
@@ -5096,8 +5095,7 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
 }
 
 #editor.nicovideo #media embed#external_nico_0 {
-  width: 735px;
-  margin-left: 50px;
+  width: inherit;
 }
 
 .nicoplayer_loading {
