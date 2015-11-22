@@ -300,7 +300,8 @@ river.ui.Editor = river.ui.BasePlayer.extend({
     this.$subtitleDisplay.text(text);
 
     // enter key
-    if (event.which == 13 ) {
+    if ((event.shiftKey || event.ctrlKey) && event.which === 13) {
+    } else if (event.which === 13 ) {
       this.addSubtitledTrack(text);
     }
   },
