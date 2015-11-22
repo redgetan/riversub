@@ -116,6 +116,29 @@ $.extend(river.utility,{
     var padding = 1;
     $el.css({'height':'auto','overflow-y':'hidden'})
         .height($el[0].scrollHeight - padding);
+  },
+
+  nonUIBlockingBatchProcess: function(array, callback, batch) {
+    batch = batch || 10;
+
+    var index = 0;
+
+    function processBatch() {
+      if (index >= array.length) return;
+
+      var i = 0;
+
+      while (i < batch && index < array.length) {
+          callback(array[index]);
+          index = index + 1;
+          i = i + 1;
+      }
+
+      setTimeout(processBatch, 0);
+    }    
+
+    processBatch();    
   }
+
 });
 

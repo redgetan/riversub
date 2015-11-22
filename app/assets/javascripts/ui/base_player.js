@@ -532,28 +532,6 @@ river.ui.BasePlayer = Backbone.View.extend({
     this.$subtitleDisplay.text("");
   },
 
-  nonUIBlockingBatchProcess: function(array, callback, batch) {
-    batch = batch || 10;
-
-    var index = 0;
-
-    function processBatch() {
-      if (index >= array.length) return;
-
-      var i = 0;
-
-      while (i < batch && index < array.length) {
-          callback(array[index]);
-          index = index + 1;
-          i = i + 1;
-      }
-
-      setTimeout(processBatch, 0);
-    }    
-
-    processBatch();    
-  },
-
   loadTracks: function(timings, options) {
     if (typeof timings === "undefined") return;
 
@@ -567,7 +545,7 @@ river.ui.BasePlayer = Backbone.View.extend({
       }
     }.bind(this);
 
-    this.nonUIBlockingBatchProcess(timings, loadTrack, batchCount);
+    river.utility.nonUIBlockingBatchProcess(timings, loadTrack, batchCount);
   },
 
   play: function() {
