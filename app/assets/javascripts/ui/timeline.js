@@ -651,7 +651,9 @@ river.ui.ExpandedTimeline = river.ui.Timeline.extend({
     var seconds = ui.position.left / this.resolution($container);
     var duration = ui.size.width   / this.resolution($container);
 
-    track.setStartTime(seconds);
+    if (ui.originalPosition.left !== ui.position.left) {
+      track.setStartTime(seconds);
+    }
     track.setEndTime(seconds + duration);
   },
 
