@@ -172,7 +172,7 @@ class RepositoriesController < ApplicationController
     begin
       @repo.create_timings_from_subtitle_file params[:subtitle_file]
     rescue SRT::File::InvalidError => e
-      flash[:error] = e.message
+      flash[:error] = e.message[0..500]
       redirect_to @repo.editor_upload_tab_url and return
     rescue ActiveRecord::RecordInvalid => e
       flash[:error] = e.message
