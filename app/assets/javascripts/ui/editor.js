@@ -9,7 +9,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
     this.MINIMUM_TRACK_DURATION = 0.50;
     this.DEFAULT_TRACK_DURATION = 3;
-    this.TRACK_MARGIN = 0.20;
+    this.TRACK_MARGIN = 0.001;
     this.KEYCODE_THAT_PAUSES_VIDEO = this.getKeycodeThatPausesVideo();
 
     this.startTiming = false;
@@ -940,10 +940,7 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onDocumentKeyup: function(event) {
     if (event.which === 13) {
-
       // enter key
-
-      // this.goToNextTrack();
     }
   },
 
@@ -1292,8 +1289,14 @@ river.ui.Editor = river.ui.BasePlayer.extend({
         event.which === 13) {
     } else if (event.which === 13) {
       event.preventDefault();
-      track.closeEditor();
-      this.play();
+
+      if (this.focusedTrack.isLast()) {
+        time = this.normalizeTime(this.focusedTrack.endTime() + this.TRACK_MARGIN);
+        track = this.addFullTrack(time, { isGhost: false, isAddSubBackward: false });
+        this.replayTrackAndEdit(track);
+      } else {
+        this.goToNextTrack();
+      }
     }
   },
 
