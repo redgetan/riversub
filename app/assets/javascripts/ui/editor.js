@@ -292,7 +292,9 @@ river.ui.Editor = river.ui.BasePlayer.extend({
 
   onAddSubtitleInputKeyup: function(event) {
     if (this.shouldPauseAndPlayAfterTime(event)) {
-      this.pauseAndPlayAfterTime(800);
+      if (!this.media.paused) {
+        this.pause();
+      }
     }
 
     var text = this.$addSubInput.val();
