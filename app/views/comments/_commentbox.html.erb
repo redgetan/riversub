@@ -1,4 +1,6 @@
-<div class="comment comment_form_container"
+<% custom_class ||= "" %>
+
+<div class="comment comment_form_container <%= custom_class %>"
 data-shortid="<%= comment.short_id %>">
 
 <%= form_for comment, :html => { :id => "edit_comment_#{comment.short_id}", :data => { "commentable-type" => comment.commentable_type } } do |f| %>
@@ -14,7 +16,7 @@ data-shortid="<%= comment.short_id %>">
 
   <div style="width: 100%;">
     <%= text_area_tag "comment", comment.body, :rows => 5,
-      :style => "", :autocomplete => "off", :placeholder => "type something awesome.." %>
+      :style => "", :autocomplete => "off", :placeholder => "type something.." %>
       
 
     <div class="markdown_help_toggler">

@@ -2889,6 +2889,7 @@ div.field, div.actions {
 .repo_open_editor_btn {
   margin-top: 35px;
   font-size: 14px;
+  margin-left: 20px;
 }
 
 .publish_release_btn {
@@ -3046,7 +3047,7 @@ ul.source_repo_timing_list li span {
 }
 
 .new_translation_container {
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
 .repo_favorite_btn div.score {
@@ -4440,7 +4441,7 @@ label[for='group_allow_subtitle_download'] {
 .traffic_contribution_count {
   color: green;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 18px;
 }
 
 .group_user_submission_count,
@@ -4822,6 +4823,7 @@ html.fullscreen ._3pao {
 .traffic_contribution_stats {
   margin-top: 30px;
   font-size: 20px;
+  margin-right:  10px;
 }
 
 .repo_details_line_separator {
@@ -5161,30 +5163,29 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
 .comment_avatar {
   border: solid 1px lightgray;
   float: left;
-  width: 100px;
+  width: 50px;
+  position: absolute;
 }
 
 #river_player .comment_form_container {
-  width: 590px;
-  margin-left: 10px;
-  margin-right: 10px;
-  float: left;
-  clear: none;
   padding-top: 0px;
 }
 
+#river_player .comment_form_container.primary {
+  margin-left: 65px;  
+}
+
 #river_player #comments_container textarea#comment {
-  height: 60px;
+  height: 50px;
   padding: 5px 10px;
 }
 
 #river_player .comments_container_header {
-  font-size: 24px;
   margin-bottom: 20px;
+  text-align: right;
 }
 
 #river_player #comments_container .comment_box_item {
-  display: inline-block;
   padding: 10px;
 /*  background-color: #eee;
   border: solid 1px lightgray;
@@ -5242,4 +5243,36 @@ html.fullscreen #river_player.nicovideo #media embed#external_nico_0 {
 
 .font_manage_left_column {
   width: 50%;
+}
+
+.repo_show_nav_tab {
+  float: left; 
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.repo_show_nav_tab .active a {
+  background: none !important;
+  border: solid 1px #aaa !important;
+}
+
+.repo_show_nav_tab > li > a:hover {
+  border-bottom: solid 1px #aaa;
+  background: none;
+}
+
+#river_player #repo_setup_form {
+  margin-top: 100px;
+  text-align: left;
+  padding-left: 15px;
+}
+
+.repo_show_translate_thumbnail {
+  border: solid 1px black;
+  width: 100px;
+}
+
+.repo_show_translate_submit_btn {
+  background-color: black;
+  border: solid 1px black;
 }
