@@ -494,7 +494,7 @@ div#edit_user_sidebar li i{
 }
 
 div#user_profile #user_details {
-  border-bottom: 1px solid #ddd;
+  /*border-bottom: 1px solid #ddd;*/
   padding: 10px 0;
   margin: 10px 0;
 }
@@ -4442,8 +4442,6 @@ label[for='group_allow_subtitle_download'] {
 }
 
 .traffic_contribution_count {
-  color: green;
-  font-weight: bold;
   font-size: 18px;
 }
 
