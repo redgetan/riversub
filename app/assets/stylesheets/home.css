@@ -2983,7 +2983,6 @@ form.new_user #user_login {
 .traffic_contribution_count,
 .original_video_view_count {
  padding: 5px;
- color: gray;
  cursor: default;
 }
 
@@ -4446,6 +4445,7 @@ label[for='group_allow_subtitle_download'] {
 
 .traffic_contribution_count {
   font-size: 18px;
+   color: green;
 }
 
 .group_user_submission_count,
