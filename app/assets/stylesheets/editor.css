@@ -445,7 +445,7 @@ div#editor-bottom {
 }
 
 #editor .subtitle:hover {
-	background-color: lightgray;
+	/*background-color: lightgray;*/
 }
 
 #editor .subtitle.selected {
@@ -496,10 +496,10 @@ div#editor-bottom {
 #editor .subtitle:hover .start_time input,
 #editor .subtitle:hover .end_time input,
 #editor .subtitle:hover .text input {
-	background-color: lightgray;
+/*	background-color: lightgray;
 	border: solid 1px gray;
 	color: black;
-}
+*/}
 
 #editor.template .subtitle:hover .start_time input,
 #editor.template .subtitle:hover .end_time input {
@@ -848,7 +848,6 @@ a.preview_btn {
 .subtitle.focused  .end_time   .sub_text_area {
 	border: solid 1px #ccc;
 	display: block;
-	/*background-color: white;*/
 }
 
 .selected div .sub_text_area {
