@@ -1,6 +1,7 @@
 class Visit < ActiveRecord::Base
   has_many :ahoy_events, class_name: "Ahoy::Event"
   belongs_to :user
+  belongs_to :visitable, :polymorphic => true
 end
 
 Ahoy.geocode = :async
@@ -15,6 +16,16 @@ module Ahoy
       end
     end
   end
+end
+
+class Ahoy::Store < Ahoy::Stores::ActiveRecordStore
+
+  def track_visit(options)
+    super do |visit|
+      visit.visitable = options[:visitable] if options[:visitable].present?
+    end
+  end
+
 end
 
 module Ahoy

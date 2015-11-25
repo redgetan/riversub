@@ -37,7 +37,7 @@ class RepositoriesController < ApplicationController
 
     @related_repos = Repository.includes(:user, :video).related(@repo)
 
-    ahoy.track_visit if ahoy.new_visit?
+    ahoy.track_visit(:visitable => @repo) if ahoy.new_visit?
 
     unless can? :read, @repo
       if user_signed_in?
@@ -75,7 +75,7 @@ class RepositoriesController < ApplicationController
       render :json => { error: "You have no permission to see that" } and return
     end
 
-    ahoy.track_visit if ahoy.new_visit?
+    ahoy.track_visit(:visitable => @repo) if ahoy.new_visit?
 
     render :json => @repo.serialize.to_json 
   end

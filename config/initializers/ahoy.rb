@@ -5,7 +5,7 @@ end
 module Ahoy
   class Tracker
 
-    FRESH_VISIT_DURATION = Rails.env.production? ? 4.hours : 1.minute
+    FRESH_VISIT_DURATION = Rails.env.production? ? 4.hours : 1.seconds
 
     def new_visit?
       !current_page_recently_visited?(request.ip)

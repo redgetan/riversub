@@ -32,6 +32,7 @@ class Repository < ActiveRecord::Base
   belongs_to :video
   belongs_to :user
 
+  has_many :visits, :as => :visitable
   has_many :subtitles
   has_many :timings
   has_many :comments, :foreign_key => "commentable_id"
@@ -111,6 +112,14 @@ class Repository < ActiveRecord::Base
         }
       }  
     }.merge(options))  
+  end
+
+  def self.popular
+    self.select("*, COUNT(visits.id) AS repo_view_count")
+        .joins(:visits)
+        .where("visits.visitable_type = 'Repository'")
+        .group(:visitable_id)
+        .order("repo_view_count DESC")
   end
 
   def self.find_by_short_id(short_id)
@@ -1013,7 +1022,7 @@ class Repository < ActiveRecord::Base
   end
 
   def views_contributed
-    Visit.where("landing_page LIKE ? ", "%" + relative_url + "%").count
+    self.visits.count
   end
 
   def nico_embed?

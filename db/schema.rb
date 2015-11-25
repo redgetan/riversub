@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151119162615) do
+ActiveRecord::Schema.define(:version => 20151125034124) do
 
   create_table "activities", :force => true do |t|
     t.integer  "trackable_id"
@@ -351,6 +351,8 @@ ActiveRecord::Schema.define(:version => 20151119162615) do
     t.string   "utm_campaign"
     t.datetime "started_at"
     t.boolean  "is_google_analytics_imported"
+    t.integer  "visitable_id"
+    t.string   "visitable_type"
   end
 
   add_index "visits", ["user_id"], :name => "index_visits_on_user_id"
