@@ -2733,6 +2733,9 @@ iframe.fansubber_signup_form .ss-base-body {
   height: 125px;
 }
 
+.search_results_container .release_item {
+  margin-right: 20px;
+}
 
 .release_item .video_thumb img {
   width: 125px;
