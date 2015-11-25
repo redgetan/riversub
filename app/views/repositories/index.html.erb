@@ -38,7 +38,7 @@
                     <img src="<%= repo.thumbnail_url %>" alt="" class='user_repo_index_thumbnail'>
                   </a>
                 </div>
-                <% if (user_signed_in? && current_user == @user) || current_user.try(:is_super_admin?)  %>
+                <% if true || (user_signed_in? && current_user == @user) || current_user.try(:is_super_admin?)  %>
                   <div class='user_repo_traffic_contribution'><%= repo.views_contributed %> views</div>
                 <% end %>
               </div>

@@ -2890,6 +2890,9 @@ div.field, div.actions {
   margin-top: 35px;
   font-size: 14px;
   margin-left: 20px;
+  background: none;
+  color: brown;
+  border: solid 1px brown;
 }
 
 .publish_release_btn {
