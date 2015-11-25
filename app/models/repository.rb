@@ -1040,6 +1040,14 @@ class Repository < ActiveRecord::Base
     update_repo_subtitle_position_url(self)  
   end
 
+  def player_comment_tab_class
+    self.comments.present? ? "active" : ""  
+  end
+
+  def player_transcript_tab_class
+    self.comments.present? ? "" : "active"  
+  end
+
   def to_param
     self.token
   end

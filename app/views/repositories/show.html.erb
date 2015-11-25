@@ -22,12 +22,12 @@
       <% if @repo %>
         <% @sharable = @repo %>
         <ul class="nav nav-tabs repo_show_nav_tab" >
-          <li class="active">
+          <li class="<%= @repo.player_comment_tab_class %>">
             <a href="#comments" data-toggle="tab">
             Comments             
             </a>
           </li>
-          <li class=""><a href="#transcript" data-toggle="tab">Read</a></li>
+          <li class="<%= @repo.player_transcript_tab_class %>"><a href="#transcript" data-toggle="tab">Read</a></li>
           <li class=""><a href="#translate" data-toggle="tab">Translate</a></li>
         </ul>
         <% if can?(:edit, @repo) && (user_signed_in? && current_user == @repo.user) || current_user.try(:is_super_admin?) %>
@@ -45,11 +45,11 @@
         <% end %>
 
         <div class='tab-content'>
-          <div class="tab-pane active" id='comments'>
+          <div class="tab-pane <%= @repo.player_comment_tab_class %>" id='comments'>
             <%= render "videos/player_comments" %>
           </div>
 
-          <div class="tab-pane" id='transcript'>
+          <div class="tab-pane <%= @repo.player_transcript_tab_class %>" id='transcript'>
             <div id='transcript_container'>
               <div id='subtitle_list'></div>
             </div>
