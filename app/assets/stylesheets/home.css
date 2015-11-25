@@ -4445,7 +4445,11 @@ label[for='group_allow_subtitle_download'] {
 
 .traffic_contribution_count {
   font-size: 18px;
-   color: green;
+  color: green;
+}
+
+html.mobile #river_player .traffic_contribution_count {
+  display: none;
 }
 
 .group_user_submission_count,
