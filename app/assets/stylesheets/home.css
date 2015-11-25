@@ -4448,10 +4448,6 @@ label[for='group_allow_subtitle_download'] {
   color: green;
 }
 
-html.mobile #river_player .traffic_contribution_count {
-  display: none;
-}
-
 .group_user_submission_count,
 .group_request_count,
 .group_comment_count {
@@ -4832,6 +4828,10 @@ html.fullscreen ._3pao {
   margin-top: 30px;
   font-size: 20px;
   margin-right:  10px;
+}
+
+html.mobile #river_player .traffic_contribution_stats {
+  display: none;
 }
 
 .repo_details_line_separator {
