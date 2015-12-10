@@ -3,9 +3,8 @@
     Social:
   </div>
   <div class='request_field_value social_share_original_value' >
-    <div class="fb-share-button" data-href="<%= sharable.url %>" data-layout="box_count"></div>
-    <a href="https://twitter.com/share?count=vertical&url=<%= sharable.url %>&text=<%= CGI.escape(sharable.share_text) %>" target="_blank" class="twitter-share-button">Tweet</a>
-    <div class="g-plus" data-action="share" data-annotation="vertical-bubble" data-height="60"></div>
+    <div class="fb-share-button" data-href="<%= sharable.url %>" data-layout="button"></div>
+    <a href="https://twitter.com/share?url=<%= sharable.url %>&text=<%= CGI.escape(sharable.share_text) %>" target="_blank" class="twitter-share-button">Tweet</a>
   </div>
 </div>
 

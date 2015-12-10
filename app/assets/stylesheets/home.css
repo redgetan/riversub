@@ -4039,9 +4039,8 @@ html.embed .expand_btn {
 }
 
 .fb-share-button.fb_iframe_widget {
-  top: 2px;
   width: 60px;
-  margin-right: -5px;
+  margin-right: 5px;
   float: left;
 }
 
@@ -4854,7 +4853,6 @@ html.mobile #river_player .traffic_contribution_stats {
 }
 
 #river_player .social_share_original_value {
-  min-width: 195px;
   float: left;
 }
 
@@ -5052,6 +5050,7 @@ html.mobile #river_player .traffic_contribution_stats {
 
 .player_right_header {
   text-align: left;
+  font-size: 16px;
 }
 
 .player_repo_owner_name,
