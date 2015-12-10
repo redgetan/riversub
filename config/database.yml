@@ -18,10 +18,8 @@ test:
 
 staging:
   database: river_staging
-  password: iwtetr9
   <<: *defaults
 
 production:
   database: river_production
-  password: iwtetr9
   <<: *defaults
