@@ -336,13 +336,13 @@ div.videos li.selected {
 #editor div#iframe_container {
   position: relative;
   height: inherit;
-  min-height: 360px;
+  min-height: 300px;
   width: inherit;
   background-color: #000;
 }
 
 #editor.laptop div#iframe_container #media {
-  height: 360px;
+  height: 300px;
 }
 
 #editor.desktop div#iframe_container #media {
