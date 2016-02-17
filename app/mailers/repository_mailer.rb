@@ -35,6 +35,8 @@ class RepositoryMailer < ActionMailer::Base
   def subtitle_correction_notify(correction_request)
     @repo = correction_request.repository
     @to   = correction_request.approver
+
+    return unless @to.present?
     @url  = "http://www.yasub.com/"
     @submitter = correction_request.submitter
     @approver = correction_request.approver

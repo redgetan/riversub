@@ -59,7 +59,7 @@ class Subtitle < ActiveRecord::Base
   end
 
   def url
-    repo_subtitle_url(self.repository_token, self)  
+    self.repository_token ? repo_subtitle_url(self.repository_token, self) : ""
   end
 
   def assign_short_id
