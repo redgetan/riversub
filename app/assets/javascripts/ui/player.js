@@ -27,7 +27,7 @@ river.ui.Player = river.ui.BasePlayer.extend({
     river.utility.enableHashTab();
 
     // // ensure first subtitle appears 
-    // this.onTrackStart(this.tracks.at(0));
+    this.onTrackStart(this.tracks.at(0));
   },
 
   setupOverlayBtn: function () {
