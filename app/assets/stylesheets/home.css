@@ -448,6 +448,7 @@ div#avatar img {
 }
 
 #river_player #subtitle_display {
+  word-break: normal;
   white-space: normal;
   padding: 5px;
   margin-bottom: 0px;
