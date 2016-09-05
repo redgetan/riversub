@@ -8,7 +8,7 @@ set :rvm_type, :system
 set :myconfig, {
   :production => {
     :user => "hatch",
-    :host => "107.170.174.207"
+    :host => "162.243.222.38"
   },
   :staging => {
     :user => "hatch",

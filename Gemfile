@@ -15,8 +15,8 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'libv8', '~> 3.11.8'
-  gem 'therubyracer'
+  gem 'libv8', '= 3.16.14.0'
+  gem 'therubyracer', '= 0.12.2'
   gem "twitter-bootstrap-rails", :git => "https://github.com/redgetan/twitter-bootstrap-rails", :ref => "2e714678ad969e4241ab29758262d81a5518d823"
 
   gem 'turbo-sprockets-rails3'
