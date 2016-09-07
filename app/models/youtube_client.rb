@@ -163,7 +163,10 @@ class YoutubeClient
   def get_metadata(video_ids, part = "snippet,contentDetails,statistics")
     tries ||= 3
 
-    url = "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{Array(video_ids).join(",")}&key=#{GOOGLE_API_KEY}"
+    google_api_key = File.exists?("/home/hatch/.google_api_key") ? File.read("/home/hatch/.google_api_key") : ENV["GOOGLE_API_KEY"]
+    url = "https://www.googleapis.com/youtube/v3/videos?part=#{part}&id=#{Array(video_ids).join(",")}&key=#{google_api_key}"
+    STDOUT.puts "KURORO: #{url}"
+
     response = RestClient::Request.execute(method: :get, url: url, verify_ssl: false)
     JSON.parse(response)["items"]
   rescue RestClient::Forbidden
