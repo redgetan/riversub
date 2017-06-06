@@ -6,7 +6,7 @@ gem 'rails', '3.2.13'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql2'
+gem 'mysql2', '~> 0.3.17'
 
 
 # Gems used only for assets and not required
@@ -25,12 +25,13 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'rb-readline'
 
 group :development, :test do
   gem 'thin'
   gem 'capistrano', "~> 2.15.4"
   gem 'capistrano-unicorn', :require => false
-  gem 'rvm-capistrano'
+  gem 'rvm-capistrano', :require => false
   gem "pry"
   gem "pry-debugger"
   gem 'pry-stack_explorer'

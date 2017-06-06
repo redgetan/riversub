@@ -259,7 +259,7 @@ GEM
     multi_json (1.11.0)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    mysql2 (0.3.11)
+    mysql2 (0.3.21)
     naught (1.0.0)
     net-scp (1.1.1)
       net-ssh (>= 2.6.5)
@@ -345,6 +345,7 @@ GEM
       thor (>= 0.14.6, < 2.0)
     raindrops (0.11.0)
     rake (10.3.2)
+    rb-readline (0.5.3)
     rchardet (1.6.1)
     rdiscount (2.1.8)
     rdoc (3.12.2)
@@ -477,7 +478,7 @@ DEPENDENCIES
   legato (= 0.4.0)
   libv8 (= 3.16.14.0)
   meta-tags
-  mysql2
+  mysql2 (~> 0.3.17)
   nokogiri
   omniauth-facebook
   omniauth-google-oauth2 (>= 0.2.6)
@@ -489,6 +490,7 @@ DEPENDENCIES
   public_activity (= 1.4.2)
   qunit-rails
   rails (= 3.2.13)
+  rb-readline
   rchardet
   rdiscount
   rest-client
