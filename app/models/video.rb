@@ -36,36 +36,39 @@ class Video < ActiveRecord::Base
   before_create :generate_token
 
   def self.nested_search(query, options = {})
-    self.search({
-      query: { 
-        nested: { 
-          path: 'metadata', 
-          query: { 
-            bool: { 
-              must: [{ 
-                multi_match: { 
-                  query: query, 
-                  type: "phrase", 
-                  fields: [
-                    'metadata.snippet.title',
-                    'metadata.snippet.description',
-                    'metadata.snippet.tags',
-                    'metadata.nicovideo_thumb_response.thumb.title', 
-                    'metadata.nicovideo_thumb_response.thumb.description',
-                    'metadata.nicovideo_thumb_response.thumb.tags.tag',
-                    'metadata.title',
-                    'metadata.description',
-                    'metadata.tags',
-                    'metadata.naver_response.title',
-                    'metadata.naver_response.description'
-                  ]  
-                } 
-              }] 
-            } 
-          } 
-        }
-      },
-    }.merge(options))
+    self.where("metadata LIKE ? ", "%#{query}%")
+
+
+    # self.search({
+    #   query: { 
+    #     nested: { 
+    #       path: 'metadata', 
+    #       query: { 
+    #         bool: { 
+    #           must: [{ 
+    #             multi_match: { 
+    #               query: query, 
+    #               type: "phrase", 
+    #               fields: [
+    #                 'metadata.snippet.title',
+    #                 'metadata.snippet.description',
+    #                 'metadata.snippet.tags',
+    #                 'metadata.nicovideo_thumb_response.thumb.title', 
+    #                 'metadata.nicovideo_thumb_response.thumb.description',
+    #                 'metadata.nicovideo_thumb_response.thumb.tags.tag',
+    #                 'metadata.title',
+    #                 'metadata.description',
+    #                 'metadata.tags',
+    #                 'metadata.naver_response.title',
+    #                 'metadata.naver_response.description'
+    #               ]  
+    #             } 
+    #           }] 
+    #         } 
+    #       } 
+    #     }
+    #   },
+    # }.merge(options))
   end
 
   def correct_metadata
